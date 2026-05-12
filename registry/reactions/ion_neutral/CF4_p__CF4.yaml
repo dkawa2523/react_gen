@@ -1,0 +1,33 @@
+schema_version: 1
+pair:
+  family: ion_neutral
+  projectile: CF4+
+  target: CF4
+channels:
+- id: CF4p_CF4_elastic
+  type: elastic
+  dnt_class: elastic
+  products:
+  - species: CF4+
+    n: 1
+  - species: CF4
+    n: 1
+  deltaE_products_minus_reactants_eV: 0.0
+  status: estimated
+- id: CF4p_CF4_resonant_charge_exchange
+  type: charge_transfer
+  dnt_class: long_range_charge_exchange
+  products:
+  - species: CF4
+    n: 1
+  - species: CF4+
+    n: 1
+  deltaE_products_minus_reactants_eV: 0.0
+  status: estimated
+  notes:
+  - Symmetric/resonant charge exchange placeholder; cross section must be supplied
+    before production use.
+metadata:
+  status: estimated
+  notes:
+  - Parent CF4+ is retained only as an estimated surrogate.

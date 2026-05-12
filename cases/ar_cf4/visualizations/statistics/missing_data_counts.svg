@@ -1,0 +1,28 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1120' height='300' viewBox='0 0 1120 300' role='img' aria-labelledby='missing_data_counts-title missing_data_counts-desc'>
+<title id='missing_data_counts-title'>Missing data by severity and subject</title>
+<desc id='missing_data_counts-desc'>Horizontal bar chart with count axis.</desc>
+<rect width='100%' height='100%' fill='#FFFFFF'/>
+<text x='28.00' y='34.00' text-anchor='start' font-size='21' font-family='Arial, Helvetica, sans-serif' fill='#222222' font-weight='700'>Missing data by severity and subject</text>
+<text x='28.00' y='58.00' text-anchor='start' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>case=ar_cf4 / species=12 / reactions=42</text>
+<line x1='340.00' y1='82' x2='340.00' y2='226' stroke='#D9D9D9' stroke-width='1'/>
+<text x='340.00' y='248.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>0</text>
+<line x1='506.00' y1='82' x2='506.00' y2='226' stroke='#D9D9D9' stroke-width='1'/>
+<text x='506.00' y='248.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>5</text>
+<line x1='672.00' y1='82' x2='672.00' y2='226' stroke='#D9D9D9' stroke-width='1'/>
+<text x='672.00' y='248.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>10</text>
+<line x1='838.00' y1='82' x2='838.00' y2='226' stroke='#D9D9D9' stroke-width='1'/>
+<text x='838.00' y='248.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>15</text>
+<line x1='1004.00' y1='82' x2='1004.00' y2='226' stroke='#D9D9D9' stroke-width='1'/>
+<text x='1004.00' y='248.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>20</text>
+<line x1='340' y1='226' x2='1004' y2='226' stroke='#333333' stroke-width='1.2'/>
+<text x='672.00' y='276.00' text-anchor='middle' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>Count</text>
+<text x='326.00' y='117.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>warning:asset</text>
+<rect x='340' y='99' width='531.20' height='24' fill='#E69F00' stroke='#1A1A1A' stroke-width='0.4'><title>warning:asset: 16</title></rect>
+<text x='880.20' y='117.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>16</text>
+<text x='326.00' y='159.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>required:dnt_task</text>
+<rect x='340' y='141' width='66.40' height='24' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>required:dnt_task: 2</title></rect>
+<text x='415.40' y='159.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>2</text>
+<text x='326.00' y='201.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>required:species</text>
+<rect x='340' y='183' width='33.20' height='24' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>required:species: 1</title></rect>
+<text x='382.20' y='201.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>1</text>
+</svg>

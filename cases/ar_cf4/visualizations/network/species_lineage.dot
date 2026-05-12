@@ -1,0 +1,53 @@
+digraph species_lineage {
+  graph [
+    rankdir=LR,
+    overlap=false,
+    splines=true,
+    label="Species lineage: ar_cf4",
+    labelloc=t,
+    fontsize=22,
+    fontname="Arial"
+  ];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=11, margin=0.08];
+  edge [fontname="Arial", fontsize=9, arrowsize=0.8];
+
+  subgraph cluster_legend {
+    label="Legend";
+    fontsize=12;
+    color="#DDDDDD";
+    legend_neutral [label="neutral / input gas", fillcolor="#E8F5E9", color="#666666"];
+    legend_positive [label="positive ion", fillcolor="#E3F2FD", color="#666666"];
+    legend_negative [label="negative ion", fillcolor="#FFF8E1", color="#666666"];
+    legend_missing [label="missing property", fillcolor="#F7F7F7", color="#D62728", penwidth="2.0"];
+    legend_e_a [label="electron reaction", shape=plain];
+    legend_e_b [label="dashed blue edge", shape=plain];
+    legend_i_a [label="ion-neutral reaction", shape=plain];
+    legend_i_b [label="solid red edge", shape=plain];
+    legend_e_a -> legend_e_b [color="#2F6DB3", style="dashed"];
+    legend_i_a -> legend_i_b [color="#B23B3B", style="solid"];
+  }
+
+  "node:Ar" [label="Ar\nq=0 | depth=0\natom,neutral", fillcolor="#E8F5E9", color="#666666", penwidth="1.0", tooltip="Ar | roles=dnt_neutral,electron_target,input_gas,ion_neutral_target,reaction_product"];
+  "node:CF2" [label="CF2\nq=0 | depth=1\nmolecule,neutral,radical\nmissing=1", fillcolor="#F7F7F7", color="#D62728", penwidth="2.0", tooltip="CF2 | roles=dnt_neutral,electron_target,ion_neutral_target,reaction_product | missing=dipole_moment_D"];
+  "node:CF3" [label="CF3\nq=0 | depth=1\nmolecule,neutral,radical", fillcolor="#F7F7F7", color="#666666", penwidth="1.0", tooltip="CF3 | roles=dnt_neutral,electron_target,ion_neutral_target,reaction_product"];
+  "node:CF4" [label="CF4\nq=0 | depth=0\nmolecule,neutral", fillcolor="#E8F5E9", color="#666666", penwidth="1.0", tooltip="CF4 | roles=dnt_neutral,electron_target,input_gas,ion_neutral_target,reaction_product"];
+  "node:F" [label="F\nq=0 | depth=1\natom,neutral,radical", fillcolor="#F7F7F7", color="#666666", penwidth="1.0", tooltip="F | roles=dnt_neutral,electron_target,ion_neutral_target,reaction_product"];
+  "node:Ar+" [label="Ar+\nq=1 | depth=1\natom,positive_ion", fillcolor="#E3F2FD", color="#666666", penwidth="1.0", tooltip="Ar+ | roles=dnt_ion,ion_neutral_projectile,reaction_product"];
+  "node:CF2+" [label="CF2+\nq=1 | depth=1\nmolecular_ion,positive_ion", fillcolor="#E3F2FD", color="#666666", penwidth="1.0", tooltip="CF2+ | roles=reaction_product"];
+  "node:CF3+" [label="CF3+\nq=1 | depth=1\nmolecular_ion,positive_ion", fillcolor="#E3F2FD", color="#666666", penwidth="1.0", tooltip="CF3+ | roles=dnt_ion,ion_neutral_projectile,reaction_product"];
+  "node:CF4+" [label="CF4+\nq=1 | depth=1\nmolecular_ion,positive_ion", fillcolor="#E3F2FD", color="#666666", penwidth="1.0", tooltip="CF4+ | roles=dnt_ion,ion_neutral_projectile,reaction_product"];
+  "node:F+" [label="F+\nq=1 | depth=2\natom,positive_ion", fillcolor="#E3F2FD", color="#666666", penwidth="1.0", tooltip="F+ | roles=dnt_ion,ion_neutral_projectile,reaction_product"];
+  "node:CF3-" [label="CF3-\nq=-1 | depth=1\nmolecular_ion,negative_ion", fillcolor="#FFF8E1", color="#666666", penwidth="1.0", tooltip="CF3- | roles=reaction_product"];
+  "node:F-" [label="F-\nq=-1 | depth=1\natom,negative_ion", fillcolor="#FFF8E1", color="#666666", penwidth="1.0", tooltip="F- | roles=dnt_ion,ion_neutral_projectile,reaction_product"];
+
+  "node:Ar" -> "node:Ar+" [label="e: ionization\nD0 | e_Ar_ionization", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + Ar -> 2 e + Ar+", penwidth="1.8"];
+  "node:CF4" -> "node:CF4+" [label="e: ionization\nD0 | e_CF4_ionization_parent_effective", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + CF4 -> 2 e + CF4+", penwidth="1.8"];
+  "node:CF4" -> "node:CF3" [label="e: dissociation\nD0 | e_CF4_dissociation_CF3_F", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + CF4 -> e + CF3 + F", penwidth="1.8"];
+  "node:CF4" -> "node:F" [label="e: dissociation\nD0 | e_CF4_dissociation_CF3_F", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + CF4 -> e + CF3 + F", penwidth="1.8"];
+  "node:CF4" -> "node:CF2" [label="e: dissociation\nD0 | e_CF4_dissociation_CF2_2F", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + CF4 -> e + CF2 + 2 F", penwidth="1.8"];
+  "node:CF4" -> "node:F-" [label="e: attachment\nD0 | e_CF4_attachment_Fm", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + CF4 -> CF3 + F-", penwidth="1.8"];
+  "node:CF4" -> "node:CF3-" [label="e: attachment\nD0 | e_CF4_attachment_CF3m", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + CF4 -> CF3- + F", penwidth="1.8"];
+  "node:CF4" -> "node:CF3+" [label="e: dissociative_ionization\nD0 | e_CF4_dissociative_ionization_CF3p", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + CF4 -> 2 e + CF3+ + F", penwidth="1.8"];
+  "node:CF4" -> "node:CF2+" [label="e: dissociative_ionization\nD0 | e_CF4_dissociative_ionization_CF2p", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + CF4 -> 2 e + CF2+ + 2 F", penwidth="1.8"];
+  "node:F" -> "node:F+" [label="e: ionization\nD1 | e_F_ionization", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + F -> 2 e + F+", penwidth="1.8"];
+}

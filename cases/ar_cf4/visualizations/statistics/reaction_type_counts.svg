@@ -1,0 +1,50 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1120' height='628' viewBox='0 0 1120 628' role='img' aria-labelledby='reaction_type_counts-title reaction_type_counts-desc'>
+<title id='reaction_type_counts-title'>Reaction counts by type</title>
+<desc id='reaction_type_counts-desc'>Horizontal bar chart with count axis.</desc>
+<rect width='100%' height='100%' fill='#FFFFFF'/>
+<text x='28.00' y='34.00' text-anchor='start' font-size='21' font-family='Arial, Helvetica, sans-serif' fill='#222222' font-weight='700'>Reaction counts by type</text>
+<text x='28.00' y='58.00' text-anchor='start' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>case=ar_cf4 / species=12 / reactions=42</text>
+<line x1='340.00' y1='82' x2='340.00' y2='562' stroke='#D9D9D9' stroke-width='1'/>
+<text x='340.00' y='584.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>0</text>
+<line x1='561.33' y1='82' x2='561.33' y2='562' stroke='#D9D9D9' stroke-width='1'/>
+<text x='561.33' y='584.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>5</text>
+<line x1='782.67' y1='82' x2='782.67' y2='562' stroke='#D9D9D9' stroke-width='1'/>
+<text x='782.67' y='584.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>10</text>
+<line x1='1004.00' y1='82' x2='1004.00' y2='562' stroke='#D9D9D9' stroke-width='1'/>
+<text x='1004.00' y='584.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>15</text>
+<line x1='340' y1='562' x2='1004' y2='562' stroke='#333333' stroke-width='1.2'/>
+<text x='672.00' y='606.00' text-anchor='middle' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>Count</text>
+<text x='326.00' y='117.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>ion_neutral:elastic</text>
+<rect x='340' y='99' width='531.20' height='24' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>ion_neutral:elastic: 12</title></rect>
+<text x='880.20' y='117.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>12</text>
+<text x='326.00' y='159.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>ion_neutral:charge_transfer</text>
+<rect x='340' y='141' width='398.40' height='24' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>ion_neutral:charge_transfer: 9</title></rect>
+<text x='747.40' y='159.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>9</text>
+<text x='326.00' y='201.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>electron:ionization</text>
+<rect x='340' y='183' width='221.33' height='24' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>electron:ionization: 5</title></rect>
+<text x='570.33' y='201.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>5</text>
+<text x='326.00' y='243.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>electron:dissociation</text>
+<rect x='340' y='225' width='132.80' height='24' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>electron:dissociation: 3</title></rect>
+<text x='481.80' y='243.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>3</text>
+<text x='326.00' y='285.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>electron:elastic</text>
+<rect x='340' y='267' width='132.80' height='24' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>electron:elastic: 3</title></rect>
+<text x='481.80' y='285.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>3</text>
+<text x='326.00' y='327.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>ion_neutral:dissociative_charge_transfer</text>
+<rect x='340' y='309' width='132.80' height='24' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>ion_neutral:dissociative_charge_transfer: 3</title></rect>
+<text x='481.80' y='327.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>3</text>
+<text x='326.00' y='369.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>electron:attachment</text>
+<rect x='340' y='351' width='88.53' height='24' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>electron:attachment: 2</title></rect>
+<text x='437.53' y='369.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>2</text>
+<text x='326.00' y='411.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>electron:dissociative_ionization</text>
+<rect x='340' y='393' width='88.53' height='24' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>electron:dissociative_ionization: 2</title></rect>
+<text x='437.53' y='411.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>2</text>
+<text x='326.00' y='453.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>electron:excitation</text>
+<rect x='340' y='435' width='44.27' height='24' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>electron:excitation: 1</title></rect>
+<text x='393.27' y='453.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>1</text>
+<text x='326.00' y='495.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>ion_neutral:electron_detachment</text>
+<rect x='340' y='477' width='44.27' height='24' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>ion_neutral:electron_detachment: 1</title></rect>
+<text x='393.27' y='495.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>1</text>
+<text x='326.00' y='537.00' text-anchor='end' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>ion_neutral:reactive_scattering</text>
+<rect x='340' y='519' width='44.27' height='24' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>ion_neutral:reactive_scattering: 1</title></rect>
+<text x='393.27' y='537.00' text-anchor='start' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222'>1</text>
+</svg>

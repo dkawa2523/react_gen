@@ -1,0 +1,49 @@
+schema_version: 1
+id: Ar
+display_name: Ar
+composition:
+  Ar: 1
+charge: 0
+classes:
+- neutral
+- atom
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 39.948
+    unit: amu
+    source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+  polarizability_A3:
+    value: 1.6411
+    unit: A3
+    source: Experimental/static polarizability literature seed; CCCBDB/NIST polarizability
+      tables for review
+    quality: curated_seed
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic symmetry
+  collision_radius_A:
+    value: 1.7025
+    unit: A
+    source: estimated from LJ sigma 3.405 A / 2
+    quality: estimated
+  enthalpy_formation_eV:
+    value: 0.0
+    unit: eV
+    source: elemental reference state
+  ionization_energy_eV:
+    value: 15.75961
+    unit: eV
+    source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: curated
+  notes:
+  - Curated atomic values; collision radius is a transport/DNT engineering estimate.

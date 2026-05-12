@@ -1,0 +1,46 @@
+from __future__ import annotations
+
+from plasma_reactgen.domain.models import Species, PropertyValue
+
+
+def get_property_value(species: Species, name: str):
+    prop = species.properties.get(name)
+    return None if prop is None else prop.value
+
+
+def has_property_value(species: Species, name: str) -> bool:
+    if name == "charge":
+        return True
+    if name == "composition":
+        return bool(species.composition)
+    prop = species.properties.get(name)
+    return prop is not None and prop.value is not None
+
+
+def species_has_any_class(species: Species, classes: list[str] | set[str]) -> bool:
+    return bool(species.classes.intersection(set(classes)))
+
+
+def is_excited_state(species: Species) -> bool:
+    state = species.state or {}
+    if state.get("kind") == "excited":
+        return True
+    energy = state.get("excitation_energy_eV")
+    try:
+        return energy is not None and float(energy) > 0.0
+    except (TypeError, ValueError):
+        return False
+
+
+def make_electron_species() -> Species:
+    return Species(
+        id="e",
+        composition={},
+        charge=-1,
+        classes={"electron"},
+        state={"kind": "electron"},
+        properties={
+            "mass_amu": PropertyValue(value=5.48579909065e-4, unit="amu", source="internal")
+        },
+        status="internal",
+    )

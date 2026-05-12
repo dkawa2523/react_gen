@@ -1,0 +1,134 @@
+schema_version: 1
+case:
+  name: ar_cf4
+missing_data:
+- subject_kind: species
+  subject_id: CF2
+  field: dipole_moment_D
+  required_by: dnt_neutral;electron_target;ion_neutral_target;reaction_product
+  severity: required
+  message: Required property is missing for at least one assigned role.
+- subject_kind: asset
+  subject_id: e_Ar_elastic
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_Ar_excitation_4s_lumped
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_Ar_ionization
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF4_elastic
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF4_ionization_parent_effective
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF4_dissociation_CF3_F
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF4_dissociation_CF2_2F
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF4_attachment_Fm
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF4_attachment_CF3m
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF4_dissociative_ionization_CF3p
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF4_dissociative_ionization_CF2p
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF2_ionization_CF2p
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF3_ionization_CF3p
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_CF3_dissociation_CF2_F
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_F_elastic
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: asset
+  subject_id: e_F_ionization
+  field: data.cross_section.path
+  required_by: electron_collision
+  severity: warning
+  message: Cross-section source is registered but numeric table has not been imported
+    yet.
+- subject_kind: dnt_task
+  subject_id: Ar+__CF2
+  field: neutral.dipole_moment_D
+  required_by: dnt_plus_dm
+  severity: required
+  message: DNT+/DNT+DM task is not ready because a required property is missing.
+- subject_kind: dnt_task
+  subject_id: CF3+__CF2
+  field: neutral.dipole_moment_D
+  required_by: dnt_plus_dm
+  severity: required
+  message: DNT+/DNT+DM task is not ready because a required property is missing.

@@ -1,0 +1,52 @@
+schema_version: 1
+pair:
+  family: ion_neutral
+  projectile: Ar+
+  target: CF4
+channels:
+- id: Arp_CF4_elastic
+  type: elastic
+  products:
+  - species: Ar+
+    n: 1
+  - species: CF4
+    n: 1
+  status: curated
+  dnt_class: elastic
+  deltaE_products_minus_reactants_eV: 0.0
+  notes:
+  - Elastic channel for DNT+/transport set.
+- id: Arp_CF4_dissociative_charge_transfer_CF3p
+  type: dissociative_charge_transfer
+  products:
+  - species: Ar
+    n: 1
+  - species: CF3+
+    n: 1
+  - species: F
+    n: 1
+  status: curated
+  dnt_class: short_range_charge_exchange
+  deltaE_products_minus_reactants_eV: -1.0891
+  notes:
+  - Kato et al., J. Vac. Sci. Technol. A 40, 063007 (2022), DNT+ validates Ar+-CF4
+    examples against literature.
+  - Thermochemistry from NIST-derived Hf values gives an exothermic channel.
+- id: Arp_CF4_charge_transfer_parent_surrogate
+  type: charge_transfer
+  products:
+  - species: Ar
+    n: 1
+  - species: CF4+
+    n: 1
+  status: deprecated
+  dnt_class: long_range_charge_exchange
+  deltaE_products_minus_reactants_eV: -1.0596
+  notes:
+  - Disabled by default; parent CF4+ is a surrogate and CF4 ionization/charge transfer
+    is generally dissociative.
+metadata:
+  status: curated
+  notes:
+  - DNT+ paper uses Ar+-CF4 as a validation/example system; numeric DNT+ CS generation
+    remains outside registry.

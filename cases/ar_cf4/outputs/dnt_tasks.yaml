@@ -1,0 +1,374 @@
+schema_version: 1
+case:
+  name: ar_cf4
+summary:
+  n_dnt_pairs: 12
+  n_ready_pairs: 10
+  n_pairs_with_missing_properties: 2
+dnt_tasks:
+- pair_id: Ar+__Ar
+  ion: Ar+
+  neutral: Ar
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_Ar_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: Ar
+      n: 1.0
+  - reaction_id: Arp_Ar_resonant_charge_exchange
+    type: charge_transfer
+    dnt_class: resonant_charge_exchange
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar
+      n: 1.0
+    - species: Ar+
+      n: 1.0
+- pair_id: Ar+__CF2
+  ion: Ar+
+  neutral: CF2
+  model_variant: dnt_plus_or_dm_unknown
+  readiness:
+    status: missing_properties
+    missing:
+      ion: []
+      neutral:
+      - dipole_moment_D
+  channels:
+  - reaction_id: Arp_CF2_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: CF2
+      n: 1.0
+  - reaction_id: Arp_CF2_charge_transfer_CF2p
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: -4.3976
+    products:
+    - species: Ar
+      n: 1.0
+    - species: CF2+
+      n: 1.0
+- pair_id: Ar+__CF3
+  ion: Ar+
+  neutral: CF3
+  model_variant: dnt_plus_dm
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_CF3_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: CF3
+      n: 1.0
+  - reaction_id: Arp_CF3_charge_transfer_CF3p
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: -6.7096
+    products:
+    - species: Ar
+      n: 1.0
+    - species: CF3+
+      n: 1.0
+  - reaction_id: Arp_CF3_dissociative_charge_transfer_CF2p
+    type: dissociative_charge_transfer
+    dnt_class: short_range_charge_exchange
+    deltaE_products_minus_reactants_eV: -0.5871
+    products:
+    - species: Ar
+      n: 1.0
+    - species: CF2+
+      n: 1.0
+    - species: F
+      n: 1.0
+- pair_id: Ar+__CF4
+  ion: Ar+
+  neutral: CF4
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_CF4_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: CF4
+      n: 1.0
+  - reaction_id: Arp_CF4_dissociative_charge_transfer_CF3p
+    type: dissociative_charge_transfer
+    dnt_class: short_range_charge_exchange
+    deltaE_products_minus_reactants_eV: -1.0891
+    products:
+    - species: Ar
+      n: 1.0
+    - species: CF3+
+      n: 1.0
+    - species: F
+      n: 1.0
+- pair_id: Ar+__F
+  ion: Ar+
+  neutral: F
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_F_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: F
+      n: 1.0
+  - reaction_id: Arp_F_charge_transfer_Fp
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: 1.6632
+    products:
+    - species: Ar
+      n: 1.0
+    - species: F+
+      n: 1.0
+- pair_id: CF3+__CF2
+  ion: CF3+
+  neutral: CF2
+  model_variant: dnt_plus_or_dm_unknown
+  readiness:
+    status: missing_properties
+    missing:
+      ion: []
+      neutral:
+      - dipole_moment_D
+  channels:
+  - reaction_id: CF3p_CF2_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: CF3+
+      n: 1.0
+    - species: CF2
+      n: 1.0
+  - reaction_id: CF3p_CF2_charge_transfer_CF2p
+    type: charge_transfer
+    dnt_class: short_range_charge_exchange
+    deltaE_products_minus_reactants_eV: 2.312
+    products:
+    - species: CF3
+      n: 1.0
+    - species: CF2+
+      n: 1.0
+- pair_id: CF3+__Ar
+  ion: CF3+
+  neutral: Ar
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: CF3p_Ar_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: CF3+
+      n: 1.0
+    - species: Ar
+      n: 1.0
+  - reaction_id: CF3p_Ar_charge_transfer_Arp
+    type: charge_transfer
+    dnt_class: short_range_charge_exchange
+    deltaE_products_minus_reactants_eV: 6.7096
+    products:
+    - species: CF3
+      n: 1.0
+    - species: Ar+
+      n: 1.0
+- pair_id: CF3+__CF4
+  ion: CF3+
+  neutral: CF4
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: CF3p_CF4_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: CF3+
+      n: 1.0
+    - species: CF4
+      n: 1.0
+  - reaction_id: CF3p_CF4_collision_induced_dissociation_CF3_F
+    type: reactive_scattering
+    dnt_class: reactive_inelastic
+    deltaE_products_minus_reactants_eV: 5.6205
+    products:
+    - species: CF3+
+      n: 1.0
+    - species: CF3
+      n: 1.0
+    - species: F
+      n: 1.0
+- pair_id: CF4+__Ar
+  ion: CF4+
+  neutral: Ar
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: CF4p_Ar_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: CF4+
+      n: 1.0
+    - species: Ar
+      n: 1.0
+  - reaction_id: CF4p_Ar_charge_transfer_Arp
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: 1.0596
+    products:
+    - species: CF4
+      n: 1.0
+    - species: Ar+
+      n: 1.0
+- pair_id: CF4+__CF4
+  ion: CF4+
+  neutral: CF4
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: CF4p_CF4_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: CF4+
+      n: 1.0
+    - species: CF4
+      n: 1.0
+  - reaction_id: CF4p_CF4_resonant_charge_exchange
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: CF4
+      n: 1.0
+    - species: CF4+
+      n: 1.0
+- pair_id: F-__CF4
+  ion: F-
+  neutral: CF4
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Fm_CF4_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: F-
+      n: 1.0
+    - species: CF4
+      n: 1.0
+  - reaction_id: Fm_CF4_collisional_detachment
+    type: electron_detachment
+    dnt_class: inelastic_detachment
+    deltaE_products_minus_reactants_eV: 3.4012
+    products:
+    - species: F
+      n: 1.0
+    - species: CF4
+      n: 1.0
+    - species: e
+      n: 1.0
+- pair_id: F+__CF4
+  ion: F+
+  neutral: CF4
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Fp_CF4_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: F+
+      n: 1.0
+    - species: CF4
+      n: 1.0
+  - reaction_id: Fp_CF4_charge_transfer_CF4p
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: -2.7228
+    products:
+    - species: F
+      n: 1.0
+    - species: CF4+
+      n: 1.0
+  - reaction_id: Fp_CF4_dissociative_charge_transfer_CF3p
+    type: dissociative_charge_transfer
+    dnt_class: short_range_charge_exchange
+    deltaE_products_minus_reactants_eV: -2.7523
+    products:
+    - species: F
+      n: 1.0
+    - species: CF3+
+      n: 1.0
+    - species: F
+      n: 1.0

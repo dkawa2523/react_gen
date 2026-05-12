@@ -1,0 +1,29 @@
+schema_version: 1
+case:
+  name: ar_cf4
+  description: Ar/CF4 low-pressure plasma reaction-network sample with public-source-backed
+    starter registry data
+gases:
+- Ar
+- CF4
+profile: low_pressure_plasma_v1
+expansion:
+  max_depth: 2
+outputs:
+  reactions: true
+  states: true
+  dnt_tasks: true
+  coverage_report: true
+  missing_data: true
+  csv_summary: true
+data_policy:
+  include_incomplete_reactions: true
+  include_reactions_without_cross_section: true
+  include_reactions_without_dnt_ready_properties: true
+  allowed_status:
+  - curated
+  - literature_supported
+  - estimated
+  - draft
+  exclude_status:
+  - deprecated
