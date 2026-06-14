@@ -7,11 +7,22 @@ import yaml
 
 from plasma_reactgen.application.config import load_case_config
 from plasma_reactgen.application.diagnostics import build_missing_data
+from plasma_reactgen.application.dnt_input_builder import READY_STATUSES, build_dnt_inputs
 from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks
 from plasma_reactgen.application.network_builder import NetworkBuilderDependencies, ReactionNetworkBuilder
 from plasma_reactgen.application.state_builder import build_state_list
 from plasma_reactgen.domain.identifiers import pair_filename, to_file_key
+from plasma_reactgen.inference.candidate_writer import (
+    build_candidate_registry,
+    write_candidate_registry,
+)
+from plasma_reactgen.inference.provider import (
+    CompositeReactionProvider,
+    InferredReactionProvider,
+    RegisteredReactionProvider,
+)
 from plasma_reactgen.infrastructure.csv_writer import write_csv_outputs
+from plasma_reactgen.infrastructure.dnt_writer import write_dnt_inputs
 from plasma_reactgen.infrastructure.file_registry import FileRegistry
 from plasma_reactgen.infrastructure.indexer import build_indexes, check_registry
 from plasma_reactgen.infrastructure.yaml_writer import write_yaml_outputs
@@ -23,12 +34,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="reactgen")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    gen = sub.add_parser("generate", help="generate reaction-network outputs from a case input yaml")
-    gen.add_argument("input", type=Path)
-    gen.add_argument("--registry", type=Path, default=Path("registry"))
-    gen.add_argument("--output", type=Path, default=None)
+    gen = sub.add_parser("generate", help="generate registry-driven network outputs from a case YAML")
+    gen.add_argument("input", type=Path, help="case input YAML")
+    gen.add_argument("--registry", type=Path, default=Path("registry"), help="local registry root")
+    gen.add_argument("--output", type=Path, default=None, help="output directory; defaults to CASE_DIR/outputs")
     gen.add_argument("--visualize", action="store_true", help="also create visualization files after generation")
     gen.add_argument("--visualization-output", type=Path, default=None, help="destination for visualization files when --visualize is used")
+    gen.add_argument("--export-dnt-inputs", action="store_true", help="also write solver-free pair-wise DNT input files")
+    gen.add_argument("--dnt-input-output", type=Path, default=None, help="destination for pair-wise DNT input files")
 
     vis = sub.add_parser("visualize", help="create statistical charts and Graphviz reaction-network outputs")
     vis.add_argument("outputs", type=Path, help="case output directory containing network.*.yaml files")
@@ -45,6 +58,19 @@ def main(argv: list[str] | None = None) -> int:
     idx = sub.add_parser("dev-index", help="build registry index files")
     idx.add_argument("--registry", type=Path, default=Path("registry"))
 
+    infer = sub.add_parser(
+        "infer-candidates",
+        help="developer tool: write inferred candidates for review without changing the registry",
+    )
+    infer.add_argument("input", type=Path, help="case input YAML")
+    infer.add_argument("--registry", type=Path, default=Path("registry"), help="local registry root")
+    infer.add_argument("--output", type=Path, default=None, help="candidate_registry output directory")
+
+    dnt = sub.add_parser("export-dnt", help="export solver-free pair-wise DNT+/DNT+DM input YAML files")
+    dnt.add_argument("input", type=Path, help="case input YAML")
+    dnt.add_argument("--registry", type=Path, default=Path("registry"), help="local registry root")
+    dnt.add_argument("--output", type=Path, default=None, help="output directory for dnt_manifest.yaml and dnt_inputs/")
+
     tmpl = sub.add_parser("template", help="print a registration template to stdout")
     tmpl.add_argument("kind", choices=["species", "electron-pair", "ion-pair"])
     tmpl.add_argument("args", nargs="+")
@@ -52,7 +78,15 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     if args.command == "generate":
-        return _cmd_generate(args.input, args.registry, args.output, args.visualize, args.visualization_output)
+        return _cmd_generate(
+            args.input,
+            args.registry,
+            args.output,
+            args.visualize,
+            args.visualization_output,
+            args.export_dnt_inputs,
+            args.dnt_input_output,
+        )
     if args.command == "visualize":
         return _cmd_visualize(
             outputs=args.outputs,
@@ -69,6 +103,10 @@ def main(argv: list[str] | None = None) -> int:
         build_indexes(args.registry)
         print("Registry indexes updated.")
         return 0
+    if args.command == "infer-candidates":
+        return _cmd_infer_candidates(args.input, args.registry, args.output)
+    if args.command == "export-dnt":
+        return _cmd_export_dnt(args.input, args.registry, args.output)
     if args.command == "template":
         print(_template(args.kind, args.args))
         return 0
@@ -77,17 +115,21 @@ def main(argv: list[str] | None = None) -> int:
     return 1
 
 
-def _cmd_generate(input_path: Path, registry_root: Path, output_dir: Path | None, visualize: bool = False, visualization_output: Path | None = None) -> int:
+def _cmd_generate(
+    input_path: Path,
+    registry_root: Path,
+    output_dir: Path | None,
+    visualize: bool = False,
+    visualization_output: Path | None = None,
+    export_dnt_inputs: bool = False,
+    dnt_input_output: Path | None = None,
+) -> int:
     config = load_case_config(input_path, registry_root)
     if output_dir is None:
         output_dir = input_path.parent / "outputs"
 
     registry = FileRegistry(registry_root)
-    deps = NetworkBuilderDependencies(
-        species_repo=registry,
-        reaction_repo=registry,
-        rule_repo=registry,
-    )
+    deps = _build_network_dependencies(registry, config)
 
     network = ReactionNetworkBuilder(deps).generate(config)
     states = build_state_list(network=network, rule_repo=registry)
@@ -111,17 +153,99 @@ def _cmd_generate(input_path: Path, registry_root: Path, output_dir: Path | None
     if config.outputs.csv_summary:
         write_csv_outputs(output_dir=output_dir, network=network, states=states, missing_data=missing_data)
 
+    dnt_output_dir = None
+    dnt_inputs = None
+    if export_dnt_inputs or config.outputs.dnt_inputs:
+        dnt_output_dir = dnt_input_output or output_dir
+        dnt_inputs = _write_dnt_inputs_for_network(dnt_output_dir, network)
+
     print(f"Generated outputs: {output_dir}")
     print(f"  species: {len(network.species_nodes)}")
     print(f"  reactions: {len(network.reactions)}")
     print(f"  dnt_tasks: {len(dnt_tasks)}")
     print(f"  missing_data_items: {len(missing_data)}")
+    if dnt_inputs is not None:
+        _print_dnt_input_summary(dnt_output_dir, dnt_inputs)
 
     if visualize:
         manifest = write_visualizations(output_dir, visualization_output)
         print(f"Generated visualizations: {manifest['visualization_dir']}")
 
     return 0
+
+
+def _cmd_infer_candidates(input_path: Path, registry_root: Path, output_dir: Path | None) -> int:
+    config = load_case_config(input_path, registry_root)
+    if output_dir is None:
+        output_dir = input_path.parent / "candidate_registry"
+
+    registry = FileRegistry(registry_root)
+    candidates = build_candidate_registry(config, registry)
+    write_candidate_registry(output_dir=output_dir, candidates=candidates)
+
+    summary = candidates["summary"]
+    print(f"Generated inferred candidate registry: {output_dir}")
+    print(f"  species_candidates: {summary['n_species_candidates']}")
+    print(f"  reaction_candidates: {summary['n_reaction_candidates']}")
+    print("  registry_mutated: false")
+    return 0
+
+
+def _cmd_export_dnt(input_path: Path, registry_root: Path, output_dir: Path | None) -> int:
+    config = load_case_config(input_path, registry_root)
+    if output_dir is None:
+        output_dir = input_path.parent / "outputs"
+
+    registry = FileRegistry(registry_root)
+    deps = _build_network_dependencies(registry, config)
+
+    network = ReactionNetworkBuilder(deps).generate(config)
+    dnt_inputs = _write_dnt_inputs_for_network(output_dir, network)
+
+    _print_dnt_input_summary(output_dir, dnt_inputs, include_statuses=True)
+    return 0
+
+
+def _write_dnt_inputs_for_network(output_dir: Path, network) -> dict:
+    dnt_inputs = build_dnt_inputs(network)
+    write_dnt_inputs(output_dir=output_dir, dnt_inputs=dnt_inputs)
+    return dnt_inputs
+
+
+def _print_dnt_input_summary(
+    output_dir: Path | None,
+    dnt_inputs: dict,
+    *,
+    include_statuses: bool = False,
+) -> None:
+    summary = dnt_inputs["summary"]
+    print(f"Generated DNT pair inputs: {output_dir}")
+    print(f"  dnt_pairs: {summary['total_pairs']}")
+    if include_statuses:
+        for status in READY_STATUSES:
+            print(f"  {status}: {summary[status]}")
+
+
+def _build_network_dependencies(registry: FileRegistry, config) -> NetworkBuilderDependencies:
+    if not (config.inference.enabled and config.inference.include_inferred_reactions):
+        return NetworkBuilderDependencies(
+            species_repo=registry,
+            reaction_repo=registry,
+            rule_repo=registry,
+        )
+
+    registered = RegisteredReactionProvider(registry)
+    inferred = InferredReactionProvider(species_repo=registry)
+    composite = CompositeReactionProvider(
+        registered=registered,
+        inferred=inferred,
+        config=config,
+    )
+    return NetworkBuilderDependencies(
+        species_repo=composite,
+        reaction_repo=composite,
+        rule_repo=registry,
+    )
 
 
 def _cmd_visualize(

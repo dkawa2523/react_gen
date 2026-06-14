@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from plasma_reactgen.application.channel_policy import is_channel_allowed
 from plasma_reactgen.application.config import CaseConfig
 from plasma_reactgen.application.pair_selection import select_pairs_involving_frontier
 from plasma_reactgen.application.ports import ReactionRepository, RuleRepository, SpeciesRepository
@@ -111,9 +112,7 @@ class ReactionNetworkBuilder:
                 reactants = [SpeciesAmount(pair.projectile, 1.0), SpeciesAmount(pair.target, 1.0)]
 
                 for channel in channels:
-                    if channel.status in config.data_policy.exclude_status:
-                        continue
-                    if channel.status not in config.data_policy.allowed_status:
+                    if not is_channel_allowed(channel, config):
                         continue
                     if channel.id in seen_reaction_ids:
                         continue
@@ -286,5 +285,5 @@ class ReactionNetworkBuilder:
             else:
                 out["cross_section"] = cs.get("status", "reference_only_needs_import")
         elif family == "ion_neutral":
-            out["dnt_class"] = "registered"
+            out["dnt_class"] = "inferred" if status == "inferred" else "registered"
         return out

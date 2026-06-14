@@ -57,9 +57,21 @@ class OutputConfig:
     reactions: bool = True
     states: bool = True
     dnt_tasks: bool = True
+    dnt_inputs: bool = False
     coverage_report: bool = True
     missing_data: bool = True
     csv_summary: bool = True
+
+
+@dataclass
+class InferenceConfig:
+    enabled: bool = False
+    include_inferred_species: bool = True
+    include_inferred_reactions: bool = False
+    min_confidence: float = 0.4
+    max_products: int = 3
+    max_fragment_depth: int = 1
+    allow_unknown_energy: bool = True
 
 
 @dataclass
@@ -78,6 +90,7 @@ class CaseConfig:
     limits: LimitsConfig = field(default_factory=LimitsConfig)
     data_policy: DataPolicyConfig = field(default_factory=DataPolicyConfig)
     outputs: OutputConfig = field(default_factory=OutputConfig)
+    inference: InferenceConfig = field(default_factory=InferenceConfig)
 
 
 def load_case_config(input_path: str | Path, registry_root: str | Path) -> CaseConfig:
@@ -106,6 +119,7 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
     limits_data = data.get("limits", {})
     policy_data = data.get("data_policy", {})
     outputs_data = data.get("outputs", {})
+    inference_data = data.get("inference", {})
 
     gases = data.get("gases", [])
     if not gases:
@@ -170,9 +184,19 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
             reactions=bool(outputs_data.get("reactions", True)),
             states=bool(outputs_data.get("states", True)),
             dnt_tasks=bool(outputs_data.get("dnt_tasks", True)),
+            dnt_inputs=bool(outputs_data.get("dnt_inputs", False)),
             coverage_report=bool(outputs_data.get("coverage_report", True)),
             missing_data=bool(outputs_data.get("missing_data", True)),
             csv_summary=bool(outputs_data.get("csv_summary", True)),
+        ),
+        inference=InferenceConfig(
+            enabled=bool(inference_data.get("enabled", False)),
+            include_inferred_species=bool(inference_data.get("include_inferred_species", True)),
+            include_inferred_reactions=bool(inference_data.get("include_inferred_reactions", False)),
+            min_confidence=float(inference_data.get("min_confidence", 0.4)),
+            max_products=int(inference_data.get("max_products", 3)),
+            max_fragment_depth=int(inference_data.get("max_fragment_depth", 1)),
+            allow_unknown_energy=bool(inference_data.get("allow_unknown_energy", True)),
         ),
     )
 

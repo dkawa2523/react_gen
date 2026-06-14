@@ -1,5 +1,9 @@
 # 公開登録データに基づく低圧 Ar/CF4 プラズマ反応ネットワーク自動生成手法の設計と検証
 
+> Status: historical Ar/CF4 technical report. It may not list newer Phase 1-6
+> CLI additions such as `export-dnt` and `infer-candidates`; use `README.md`
+> and `docs/product_architecture.md` for the current product entry point.
+
 日付: 2026-05-12  
 著者: [川人大希]
 
