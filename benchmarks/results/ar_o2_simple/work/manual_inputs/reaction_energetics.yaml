@@ -1,0 +1,24 @@
+schema_version: 1
+records:
+- reaction_id: Arp_O2_charge_transfer
+  unit: eV
+  why_needed: Reaction energy is not registered. DNT+/DNT+DM calculation may need
+    it.
+  source_record:
+    source_type: manual_review
+    citation: null
+    source_id: null
+    notes:
+    - Fill from reviewed reaction energetics or compute externally from reviewed thermochemistry.
+  deltaE_products_minus_reactants_eV: null
+- reaction_id: Op_O2_association_O3p
+  unit: eV
+  why_needed: Reaction energy is not registered. DNT+/DNT+DM calculation may need
+    it.
+  source_record:
+    source_type: manual_review
+    citation: null
+    source_id: null
+    notes:
+    - Fill from reviewed reaction energetics or compute externally from reviewed thermochemistry.
+  deltaE_products_minus_reactants_eV: null

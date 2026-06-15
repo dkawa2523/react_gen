@@ -1,0 +1,45 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: CF3
+channels:
+- id: e_CF3_ionization_CF3p
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: CF3+
+    n: 1
+  status: curated
+  threshold_eV: 9.05
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Irikura, JACS 121, 7689-7694 (1999)
+      status: needs_import
+      note: CF3 ionization energy selected as 9.05 eV seed; cross-section import pending.
+- id: e_CF3_dissociation_CF2_F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: CF2
+    n: 1
+  - species: F
+    n: 1
+  status: estimated
+  threshold_eV: 3.811
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: thermochemical threshold estimate from NIST WebBook Hf values
+      status: needs_import
+      note: No curated cross-section imported.
+metadata:
+  status: estimated
+  notes:
+  - Radical electron-collision data are sparse; thresholds are seeds pending cross-section
+    import.

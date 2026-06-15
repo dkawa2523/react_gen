@@ -1,97 +1,120 @@
-# plasma-reactgen product architecture
+# plasma-reactgen Product Architecture
 
-`plasma-reactgen` is a registry-driven reaction-network generator for low-pressure plasma modeling.
+`plasma-reactgen` is organized around a deterministic local generation core,
+plus reviewable preparation, enrichment, external data, and promotion layers.
+The layers are intentionally separated so public data acquisition and optional
+source tooling do not become runtime requirements for `reactgen generate`.
 
-## Core responsibility
+## Core Generation Layer
 
-The core responsibility is to generate reproducible reaction lists, state lists, DNT preparation tasks, coverage reports, missing-data reports, and visualizations from local registry data.
+The core generation layer reads a case YAML and a local registry, then writes
+reaction-network outputs. It owns:
 
-The core does not numerically calculate electron-collision cross sections, rate coefficients, or DNT+/DNT+DM cross sections. Numerical solvers and public-database importers should remain separate adapters.
+- case loading
+- local `FileRegistry` access
+- collision-pair selection
+- registered and optionally inferred channel providers
+- `ReactionNetworkBuilder`
+- species reference, charge-balance, and element-balance checks
+- state lists, DNT task summaries, coverage reports, and missing-data reports
+- YAML/CSV output writing
 
-## Design goals
+User commands in this layer:
 
-- Keep the user workflow simple: provide gas species and receive reaction, state, and DNT-related outputs.
-- Keep the developer workflow explicit: add or review species, reaction channels, rules, and assets in the registry.
-- Preserve physical sanity with basic hard checks: species reference, charge balance, and element balance.
-- Allow incomplete data during early mechanism construction; report missing cross sections and missing properties instead of failing.
-- Support future public database importers without making external services mandatory at runtime.
-- Keep inferred candidates clearly separated from curated or literature-supported data.
+- `reactgen generate`
+- `reactgen visualize`
+- `reactgen export-dnt`
+- `reactgen infer-candidates`
+- `reactgen dev-check`
 
-## Current core flow
+The core generation layer does not download public data, call online APIs,
+calculate cross sections, run Boltzmann solvers, or run DNT/DNT+DM solvers.
 
-1. Load case input YAML.
-2. Load registry species and reaction channels from local files.
-3. Expand a reaction network by frontier depth.
-4. Select electron and ion-neutral collision pairs.
-5. Read registered channels for each pair.
-6. Validate species references, charge balance, and element balance.
-7. Register newly introduced product species for the next depth when allowed by configuration.
-8. Build state list.
-9. Build DNT task summary.
-10. Build coverage and missing-data reports.
-11. Write YAML/CSV outputs.
-12. Optionally write visualization files.
+## Preparation And Enrichment Layer
 
-## Extension layers
+The preparation/enrichment layer creates a review workspace and writes local
+prepared registry files. It owns:
 
-Extension layers live beside the current core. They should not turn `ReactionNetworkBuilder` into a chemistry inference engine, numerical DNT solver, or public database client.
+- `workspace/prepared_registry/`
+- `prepare_report.yaml`
+- `enrichment_report.yaml`
+- local registry providers
+- internal file providers
+- local snapshot providers such as NIST and Argonne/ATcT-style thermochemistry
+- optional local `chemicals` package providers
+- property enrichment and conflict reporting
+- reaction enrichment from configured local providers
+- cross-section asset imports and mapping updates
+- missing-data planning
 
-### DNT input export layer
+User commands in this layer:
 
-Status: implemented as a solver-free exporter.
+- `reactgen enrich`
+- `reactgen import-cross-sections`
+- `reactgen apply-cross-section-mapping`
+- `reactgen plan-missing`
 
-Purpose:
+This layer may write `prepared_registry/` and workspace reports. It must not
+mutate curated `registry/` files.
 
-- Convert generated ion-neutral network data into pair-wise DNT+/DNT+DM input YAML files.
-- Keep `dnt_tasks.yaml` as a human-readable summary.
-- Write normalized calculation-oriented files under `dnt_inputs/`.
-- Do not calculate cross sections or reaction energies.
+## External Data Tools Layer
 
-Output:
+`external_data_tools/` is outside `src/plasma_reactgen`. It owns optional public
+DB/API experiments, explicit URL downloads, raw local file caching, snapshot
+planning, and snapshot validation.
 
-- `dnt_manifest.yaml`
-- `dnt_inputs/<pair_id>.yaml`
+Implemented external tools include:
 
-### Inference layer
+- explicit download manifests using stdlib `urllib`
+- PubChem identity snapshot fetching and normalization
+- NIST snapshot planning and validation
+- LXCat/manual raw cross-section import
+- OpenADAS raw file registration
+- VAMDC raw query capture
+- KIDA/UMIST-like local network conversion
+- Argonne/ATcT-style thermochemistry snapshot planning and validation
+- chemical identity snapshot/fetch skeletons for ChEBI, ChemSpider, OPSIN, and
+  NCI/Cactus
 
-Status: implemented as default-disabled candidate tooling and minimal optional generation integration.
+These tools may access online resources only when explicitly invoked by a user.
+They are not imported by the core runtime and do not make `generate` depend on
+network access.
 
-Purpose:
+## Registry Promotion And Review Layer
 
-- Generate physically plausible species and reaction candidates when local registry data are missing.
-- Keep inference disabled by default.
-- Mark every inferred item with `status: inferred`, `confidence`, `inference.rule`, and missing-data fields.
-- Never silently promote inferred data to curated registry data.
+The review layer is the only supported path from prepared/candidate data into
+curated `registry/`.
 
-Implemented modules:
+User command:
 
-- `src/plasma_reactgen/inference/provider.py`
-- `src/plasma_reactgen/inference/candidates.py`
-- `src/plasma_reactgen/inference/species_candidates.py`
-- `src/plasma_reactgen/inference/reaction_templates.py`
-- `src/plasma_reactgen/inference/screening.py`
-- `src/plasma_reactgen/inference/scoring.py`
-- `src/plasma_reactgen/inference/candidate_writer.py`
+- `reactgen promote`
 
-### External data adapter layer
+Promotion is dry-run by default. `--apply` is required to mutate curated
+registry files. Existing curated species and reaction channels are not
+overwritten, and conflicts are reported in `promote_report.yaml`.
 
-Status: placeholder tooling only. Real public database parsers/downloaders are planned adapters, not core runtime behavior.
+## Benchmark Layer
 
-Purpose:
+The repository contains `benchmarks/` scaffolding for future benchmark cases and
+results. Benchmark inputs should reference local registries, prepared registries,
+or reviewed snapshots/assets. Large raw external downloads and generated
+benchmark outputs should not be committed by default.
 
-- Import or link public data sources such as LxCat or species-property databases.
-- Produce local registry YAML and asset files.
-- Avoid network access in core generation.
+Before a real benchmark, record:
 
-Location:
+- the case input
+- the source profile
+- the registry or prepared registry used by `generate`
+- local snapshot and asset provenance
+- missing-data and enrichment reports
+- any promotion decisions
 
-- `tools/importers/`
+## Design Boundaries
 
-## What not to do
-
-- Do not put all chemistry inference inside `ReactionNetworkBuilder`.
-- Do not make public DB access required for `reactgen generate`.
-- Do not implement DNT+/DNT+DM numerical solvers inside the generator core.
-- Do not add excessive schema frameworks or heavy validation layers.
-- Do not merge inferred candidates into curated registry files automatically.
-- Do not duplicate long explanations in README and docs.
+- Keep `ReactionNetworkBuilder` focused on network generation from available
+  local data.
+- Keep inference default-disabled and clearly marked as `status: inferred`.
+- Keep imported data marked as `imported` or `literature_supported` until
+  reviewed.
+- Keep public DB/API/download logic out of `src/plasma_reactgen`.
+- Keep source acquisition, preparation, and promotion separate from generation.

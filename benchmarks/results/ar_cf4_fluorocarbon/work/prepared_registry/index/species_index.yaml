@@ -1,0 +1,14 @@
+schema_version: 1
+species:
+  Ar: species/Ar.yaml
+  Ar+: species/Ar_p.yaml
+  CF2: species/CF2.yaml
+  CF2+: species/CF2_p.yaml
+  CF3: species/CF3.yaml
+  CF3-: species/CF3_m.yaml
+  CF3+: species/CF3_p.yaml
+  CF4: species/CF4.yaml
+  CF4+: species/CF4_p.yaml
+  F: species/F.yaml
+  F-: species/F_m.yaml
+  F+: species/F_p.yaml

@@ -1,0 +1,45 @@
+schema_version: 1
+case:
+  name: sf6_o2_electronegative
+source_profile: sf6_o2_electronegative_fixture_profile
+prepared_registry: C:\Users\user\Desktop\react_gen-main\benchmarks\results\sf6_o2_electronegative\work\prepared_registry
+registry_mutated: false
+auto_promoted: false
+summary:
+  species_seeded: 2
+  species_seeded_from_reactions: 7
+  properties_filled: 6
+  properties_filled_for_seeded_species: 0
+  property_conflicts: 0
+  reaction_channels_imported: 14
+  cross_section_assets_registered: 0
+  unresolved_items: 117
+  unresolved_product_species: 0
+  identity_species_updated: 0
+  identity_conflicts: 0
+prepare_report: C:\Users\user\Desktop\react_gen-main\benchmarks\results\sf6_o2_electronegative\work\prepared_registry\prepare_report.yaml
+source_cache:
+- source_type: local_file_cache
+  source_name: internal_file
+  original_path: benchmarks\fixtures\sf6_o2_electronegative\internal_data\species\species.yaml
+  cached_path: internal_file\species_4562b830dcb4.yaml
+  sha256: 4562b830dcb40c5a1e097edbd90039fdf02ffb37bfd0477e0f759e65780fb14c
+  imported_at: '2026-06-15T06:46:16.539399+00:00'
+- source_type: local_file_cache
+  source_name: internal_file
+  original_path: benchmarks\fixtures\sf6_o2_electronegative\internal_data\properties\properties.yaml
+  cached_path: internal_file\properties_a389ebf14d79.yaml
+  sha256: a389ebf14d79b46c70fdcc3da3d619874e00bcce1bcc0d01a0ba4368c682b241
+  imported_at: '2026-06-15T06:46:16.541526+00:00'
+- source_type: local_file_cache
+  source_name: internal_file
+  original_path: benchmarks\fixtures\sf6_o2_electronegative\internal_data\reactions\electron.yaml
+  cached_path: internal_file\electron_5f0ea385b155.yaml
+  sha256: 5f0ea385b1551e4a3e786b794dbda7a337e0701d26617a784973866e3e8d23c3
+  imported_at: '2026-06-15T06:46:16.544168+00:00'
+- source_type: local_file_cache
+  source_name: internal_file
+  original_path: benchmarks\fixtures\sf6_o2_electronegative\internal_data\reactions\ion_neutral.yaml
+  cached_path: internal_file\ion_neutral_94ff7228b73e.yaml
+  sha256: 94ff7228b73e065483b17a0fe369d62cfdd169fbba48c5b61681754d439db574
+  imported_at: '2026-06-15T06:46:16.546859+00:00'

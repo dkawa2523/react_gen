@@ -51,6 +51,14 @@ from plasma_reactgen.data_sources.chemical_identity_snapshot import (
     enrich_species_identity_metadata,
 )
 from plasma_reactgen.data_sources.lxcat_offline import LxcatOfflineCrossSectionProvider
+from plasma_reactgen.data_sources.provider_factory import (
+    ProviderBuildResult,
+    SourceProviderConfigurationError,
+    available_provider_names,
+    build_property_providers,
+    build_reaction_providers,
+    build_species_providers,
+)
 from plasma_reactgen.data_sources.registry import (
     get_providers,
     register_argonne_atct_snapshot_provider,
@@ -90,10 +98,16 @@ __all__ = [
     "ArgonneAtctSnapshotPropertyProvider",
     "ChemicalIdentitySnapshotProvider",
     "LxcatOfflineCrossSectionProvider",
+    "ProviderBuildResult",
+    "SourceProviderConfigurationError",
     "CrossSectionImportResult",
     "SourceRecord",
     "SpeciesCandidate",
     "SpeciesProvider",
+    "available_provider_names",
+    "build_property_providers",
+    "build_reaction_providers",
+    "build_species_providers",
     "get_providers",
     "import_cross_section_table",
     "j_per_mol_to_ev",

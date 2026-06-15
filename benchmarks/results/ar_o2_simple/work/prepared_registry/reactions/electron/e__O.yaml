@@ -1,0 +1,26 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: O
+channels:
+- id: e_O_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: O+
+    n: 1
+  threshold_eV: null
+  status: imported
+  data:
+    fixture_note: synthetic workflow benchmark only; added to exercise depth-3 expansion
+    source_record: &id001
+      source_type: internal_file_db
+      source_id: internal_reaction:e_O_ionization
+    provenance: *id001
+  source_record: *id001
+metadata:
+  status: prepared
+  notes:
+  - Prepared reaction enrichment; curated registry was not mutated.

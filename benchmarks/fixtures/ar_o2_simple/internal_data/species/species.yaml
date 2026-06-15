@@ -1,0 +1,126 @@
+- id: O2
+  aliases:
+    - oxygen
+  formula: O2
+  composition:
+    O: 2
+  charge: 0
+  classes:
+    - neutral
+    - molecule
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 31.9988
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:species:O2
+- id: O2+
+  formula: O2+
+  composition:
+    O: 2
+  charge: 1
+  classes:
+    - ion
+    - positive_ion
+    - molecular_ion
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 31.9983
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:species:O2p
+- id: O
+  formula: O
+  composition:
+    O: 1
+  charge: 0
+  classes:
+    - neutral
+    - atom
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 15.999
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:species:O
+- id: O+
+  formula: O+
+  composition:
+    O: 1
+  charge: 1
+  classes:
+    - ion
+    - positive_ion
+    - atomic_ion
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 15.9985
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:species:Op
+- id: O3+
+  formula: O3+
+  composition:
+    O: 3
+  charge: 1
+  classes:
+    - ion
+    - positive_ion
+    - molecular_ion
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 47.9973
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:species:O3p
+- id: O-
+  formula: O-
+  composition:
+    O: 1
+  charge: -1
+  classes:
+    - ion
+    - negative_ion
+    - atomic_ion
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 15.9995
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:species:Om

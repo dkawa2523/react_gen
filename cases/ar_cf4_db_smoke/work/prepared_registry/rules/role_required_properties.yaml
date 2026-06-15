@@ -1,0 +1,52 @@
+schema_version: 1
+
+roles:
+  input_gas:
+    required: []
+    recommended: []
+
+  reaction_product:
+    required: []
+    recommended:
+      - mass_amu
+
+  electron_target:
+    required:
+      - mass_amu
+    recommended:
+      - ionization_energy_eV
+      - electron_affinity_eV
+
+  ion_neutral_projectile:
+    required:
+      - mass_amu
+      - charge
+    recommended:
+      - enthalpy_formation_eV
+
+  ion_neutral_target:
+    required:
+      - mass_amu
+    recommended:
+      - polarizability_A3
+      - dipole_moment_D
+      - collision_radius_A
+      - enthalpy_formation_eV
+
+  dnt_ion:
+    required:
+      - mass_amu
+      - charge
+    recommended:
+      - enthalpy_formation_eV
+
+  dnt_neutral:
+    required:
+      - mass_amu
+      - polarizability_A3
+      - dipole_moment_D
+      - collision_radius_A
+    recommended:
+      - enthalpy_formation_eV
+      - ionization_energy_eV
+      - electron_affinity_eV

@@ -1,0 +1,48 @@
+schema_version: 1
+pair:
+  family: ion_neutral
+  projectile: F+
+  target: CF4
+channels:
+- id: Fp_CF4_elastic
+  type: elastic
+  products:
+  - species: F+
+    n: 1
+  - species: CF4
+    n: 1
+  status: estimated
+  dnt_class: elastic
+  deltaE_products_minus_reactants_eV: 0.0
+- id: Fp_CF4_charge_transfer_CF4p
+  type: charge_transfer
+  products:
+  - species: F
+    n: 1
+  - species: CF4+
+    n: 1
+  status: estimated
+  dnt_class: long_range_charge_exchange
+  deltaE_products_minus_reactants_eV: -2.7228
+  notes:
+  - Peko et al., Phys. Rev. E 60, 7449-7460 (1999) / NIST page reports F+ + CF4 ion-molecule
+    reactions; parent-ion channel is a surrogate.
+- id: Fp_CF4_dissociative_charge_transfer_CF3p
+  type: dissociative_charge_transfer
+  products:
+  - species: F
+    n: 1
+  - species: CF3+
+    n: 1
+  - species: F
+    n: 1
+  status: estimated
+  dnt_class: short_range_charge_exchange
+  deltaE_products_minus_reactants_eV: -2.7523
+  notes:
+  - Thermochemically exothermic dissociative charge-transfer seed; cross-section must
+    be curated.
+metadata:
+  status: estimated
+  notes:
+  - F+ + CF4 included from Peko et al. CF4 discharge ion-molecule study.

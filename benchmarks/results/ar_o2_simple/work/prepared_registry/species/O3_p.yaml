@@ -1,0 +1,25 @@
+schema_version: 1
+id: O3+
+display_name: O3+
+composition:
+  O: 3
+charge: 1
+classes:
+- ion
+- molecular_ion
+- positive_ion
+state:
+  electronic: ground
+properties:
+  mass_amu:
+    value: 47.9973
+    unit: amu
+    source: synthetic workflow benchmark fixture
+metadata:
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:species:O3p
+  notes:
+  - Seeded from reaction enrichment; curated registry was not mutated.

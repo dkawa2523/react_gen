@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "case": {
+    "name": "ar_o2_simple",
+    "gases": [
+      "Ar",
+      "O2"
+    ]
+  },
+  "n_species": 8,
+  "n_reactions": 14,
+  "n_electron_reactions": 8,
+  "n_ion_neutral_reactions": 6,
+  "n_pairs_found": 7,
+  "n_pairs_missing": 8,
+  "n_dnt_tasks": 4,
+  "n_missing_data_items": 9,
+  "n_reactions_with_cross_section_asset": 1,
+  "n_reactions_missing_cross_section": 7,
+  "n_reactions_with_provenance": 9,
+  "n_inferred_reactions": 0,
+  "n_imported_reactions": 9,
+  "n_literature_supported_reactions": 0,
+  "by_depth": {
+    "0": {
+      "n_reactions": 7,
+      "n_electron_reactions": 7,
+      "n_ion_neutral_reactions": 0
+    },
+    "1": {
+      "n_reactions": 5,
+      "n_electron_reactions": 1,
+      "n_ion_neutral_reactions": 4
+    },
+    "2": {
+      "n_reactions": 1,
+      "n_electron_reactions": 0,
+      "n_ion_neutral_reactions": 1
+    },
+    "3": {
+      "n_reactions": 1,
+      "n_electron_reactions": 0,
+      "n_ion_neutral_reactions": 1
+    }
+  }
+}

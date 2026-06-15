@@ -7,18 +7,12 @@ from typing import Any
 import yaml
 
 from plasma_reactgen.application.config import load_case_config
-from plasma_reactgen.data_sources.chemicals_provider import (
-    ChemicalsPropertyProvider,
-    ChemicalsSpeciesProvider,
-)
 from plasma_reactgen.data_sources.cache import record_source_file
-from plasma_reactgen.data_sources.internal_file import (
-    InternalFilePropertyProvider,
-    InternalFileReactionProvider,
-    InternalFileSpeciesProvider,
+from plasma_reactgen.data_sources.provider_factory import (
+    build_property_providers,
+    build_reaction_providers,
+    build_species_providers,
 )
-from plasma_reactgen.data_sources.ion_reaction_table import IonReactionTableProvider
-from plasma_reactgen.data_sources.nist_snapshot import NistSnapshotPropertyProvider
 from plasma_reactgen.data_sources.source_profile import load_source_profile
 from plasma_reactgen.domain.identifiers import pair_filename, to_file_key
 from plasma_reactgen.domain.models import CollisionPair, PropertyValue
@@ -47,8 +41,22 @@ def prepare_case(
     chemicals_properties_name = _chemicals_provider_name(profile, "properties")
     uses_chemicals_species = chemicals_species_name is not None
     uses_chemicals_properties = chemicals_properties_name is not None
-    uses_nist_properties = _profile_includes(profile, "properties", "nist_snapshot")
-    uses_ion_reaction_table = _profile_includes(profile, "ion_neutral_reactions", "ion_reaction_table")
+    species_result = build_species_providers(profile)
+    property_result = build_property_providers(profile)
+    reaction_result = build_reaction_providers(profile)
+    species_providers = species_result.providers
+    property_providers = property_result.providers
+    reaction_providers = reaction_result.providers
+    provider_warnings = [
+        *species_result.warnings,
+        *property_result.warnings,
+        *reaction_result.warnings,
+    ]
+    unavailable_sources = [
+        *species_result.unavailable_sources,
+        *property_result.unavailable_sources,
+        *reaction_result.unavailable_sources,
+    ]
 
     report = {
         "schema_version": 1,
@@ -61,13 +69,22 @@ def prepare_case(
         },
         "prepared_registry": str(output_dir),
         "registry_mutated": False,
+        "auto_promoted": False,
         "summary": {
             "n_species_written": 0,
             "n_properties_written": 0,
             "n_reaction_files_written": 0,
+            "n_species_seeded_from_reactions": 0,
+            "n_properties_filled_for_seeded_species": 0,
+            "n_unresolved_product_species": 0,
         },
         "entries": [],
         "source_cache": [],
+        "source_provider_warnings": provider_warnings,
+        "unavailable_sources": unavailable_sources,
+        "species_seeded_from_reactions": [],
+        "properties_filled_for_seeded_species": [],
+        "unresolved_product_species": [],
     }
 
     source_cache_root = output_dir.parent / "source_cache"
@@ -76,31 +93,11 @@ def prepare_case(
     if ion_reaction_table_files:
         report["source_cache"].extend(_record_existing_source_files(source_cache_root, "ion_reaction_table", ion_reaction_table_files))
 
-    if (
-        internal_root is None
-        and nist_root is None
-        and not ion_reaction_table_files
-        and not (uses_chemicals_species or uses_chemicals_properties)
-    ):
+    if not (species_providers or property_providers or reaction_providers):
         _write_yaml(output_dir / "prepare_report.yaml", report)
         return report
 
     registry = FileRegistry(registry_root)
-    species_providers = []
-    property_providers = []
-    reaction_providers = []
-    if internal_root is not None:
-        species_providers.append(InternalFileSpeciesProvider(internal_root))
-        property_providers.append(InternalFilePropertyProvider(internal_root))
-        reaction_providers.append(InternalFileReactionProvider(internal_root))
-    if uses_ion_reaction_table and ion_reaction_table_files:
-        reaction_providers.append(IonReactionTableProvider(ion_reaction_table_files))
-    if uses_nist_properties and nist_root is not None:
-        property_providers.append(NistSnapshotPropertyProvider(nist_root))
-    if uses_chemicals_species:
-        species_providers.append(ChemicalsSpeciesProvider(provider_name=chemicals_species_name or "chemicals_optional"))
-    if uses_chemicals_properties:
-        property_providers.append(ChemicalsPropertyProvider(provider_name=chemicals_properties_name or "chemicals_optional"))
 
     prepared_species: dict[str, dict[str, Any]] = {}
     for query in config.gases:
@@ -128,6 +125,11 @@ def prepare_case(
     enrichment_report = enrich_species_properties(output_dir, property_providers, profile)
     if not preserve_local_overlays:
         _remove_unmodified_local_overlays(output_dir)
+    properties_filled = list(enrichment_report["properties_filled"])
+    property_conflicts = list(enrichment_report["property_conflicts"])
+    unresolved_properties = list(enrichment_report["unresolved"])
+    properties_filled_for_seeded_species: list[dict[str, Any]] = []
+
     report["properties_filled"] = enrichment_report["properties_filled"]
     report["property_conflicts"] = enrichment_report["property_conflicts"]
     report["unresolved"] = enrichment_report["unresolved"]
@@ -137,7 +139,43 @@ def prepare_case(
     report["summary"]["n_unresolved_properties"] = enrichment_report["summary"]["n_unresolved"]
 
     if reaction_providers:
-        reaction_report = enrich_reaction_channels(output_dir, reaction_providers, config, profile)
+        reaction_report = enrich_reaction_channels(
+            output_dir,
+            reaction_providers,
+            config,
+            profile,
+            species_providers=species_providers,
+        )
+        seeded_species_ids = sorted(
+            {
+                item["species"]
+                for item in reaction_report.get("species_seeded_from_reactions", [])
+                if item.get("species")
+            }
+        )
+        if seeded_species_ids and property_providers:
+            seeded_property_report = enrich_species_properties(
+                output_dir,
+                property_providers,
+                profile,
+                species_ids=seeded_species_ids,
+            )
+            properties_filled_for_seeded_species = seeded_property_report["properties_filled"]
+            properties_filled.extend(seeded_property_report["properties_filled"])
+            property_conflicts.extend(seeded_property_report["property_conflicts"])
+            unresolved_properties.extend(seeded_property_report["unresolved"])
+
+            report["properties_filled"] = properties_filled
+            report["property_conflicts"] = property_conflicts
+            report["unresolved"] = unresolved_properties
+            report["summary"]["n_properties_written"] = len(properties_filled)
+            report["summary"]["n_properties_filled"] = len(properties_filled)
+            report["summary"]["n_property_conflicts"] = len(property_conflicts)
+            report["summary"]["n_unresolved_properties"] = len(unresolved_properties)
+
+        report["species_seeded_from_reactions"] = reaction_report["species_seeded_from_reactions"]
+        report["properties_filled_for_seeded_species"] = properties_filled_for_seeded_species
+        report["unresolved_product_species"] = reaction_report["unresolved_product_species"]
         report["reaction_pairs_imported"] = reaction_report["reaction_pairs_imported"]
         report["reaction_channels_imported"] = reaction_report["reaction_channels_imported"]
         report["reaction_channels_skipped"] = reaction_report["reaction_channels_skipped"]
@@ -146,6 +184,9 @@ def prepare_case(
         report["summary"]["n_reaction_pairs_imported"] = reaction_report["summary"]["n_reaction_pairs_imported"]
         report["summary"]["n_reaction_channels_imported"] = reaction_report["summary"]["n_reaction_channels_imported"]
         report["summary"]["n_reaction_channels_skipped"] = reaction_report["summary"]["n_reaction_channels_skipped"]
+        report["summary"]["n_species_seeded_from_reactions"] = reaction_report["summary"]["n_species_seeded_from_reactions"]
+        report["summary"]["n_properties_filled_for_seeded_species"] = len(properties_filled_for_seeded_species)
+        report["summary"]["n_unresolved_product_species"] = reaction_report["summary"]["n_unresolved_product_species"]
         report["summary"]["n_unresolved_reactions"] = reaction_report["summary"]["n_unresolved_reactions"]
 
     _write_yaml(output_dir / "prepare_report.yaml", report)

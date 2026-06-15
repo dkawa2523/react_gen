@@ -1,0 +1,32 @@
+schema_version: 1
+case: sf6_o2_electronegative
+required_species:
+  - Ar
+  - SF6
+  - O2
+  - Ar+
+  - SF5
+  - F
+  - F-
+  - O
+  - O-
+required_reaction_families:
+  - electron
+  - ion_neutral
+required_reaction_types:
+  electron:
+    - elastic
+    - ionization
+    - dissociation
+    - attachment
+  ion_neutral:
+    - elastic
+    - charge_transfer
+required_outputs:
+  - network.reactions.yaml
+  - network.states.yaml
+  - dnt_tasks.yaml
+  - missing_data.yaml
+  - summary.json
+forbidden:
+  reactions_with_failed_balance: true

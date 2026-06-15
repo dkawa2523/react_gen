@@ -1,0 +1,100 @@
+schema_version: 1
+case:
+  name: ar_o2_simple
+summary:
+  n_dnt_pairs: 4
+  n_ready_pairs: 4
+  n_pairs_with_missing_properties: 0
+dnt_tasks:
+- pair_id: Ar+__Ar
+  ion: Ar+
+  neutral: Ar
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_Ar_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: Ar
+      n: 1.0
+  - reaction_id: Arp_Ar_resonant_charge_exchange
+    type: charge_transfer
+    dnt_class: resonant_charge_exchange
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar
+      n: 1.0
+    - species: Ar+
+      n: 1.0
+- pair_id: Ar+__O2
+  ion: Ar+
+  neutral: O2
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_O2_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: O2
+      n: 1.0
+  - reaction_id: Arp_O2_charge_transfer
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: null
+    products:
+    - species: Ar
+      n: 1.0
+    - species: O2+
+      n: 1.0
+- pair_id: O+__O2
+  ion: O+
+  neutral: O2
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Op_O2_association_O3p
+    type: association
+    dnt_class: association
+    deltaE_products_minus_reactants_eV: null
+    products:
+    - species: O3+
+      n: 1.0
+- pair_id: O3+__O2
+  ion: O3+
+  neutral: O2
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: O3p_O2_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: O3+
+      n: 1.0
+    - species: O2
+      n: 1.0

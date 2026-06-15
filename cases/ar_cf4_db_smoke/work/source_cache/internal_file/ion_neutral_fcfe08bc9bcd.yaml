@@ -1,0 +1,24 @@
+- pair:
+    family: ion_neutral
+    projectile: Ar+
+    target: CF4
+  channels:
+    - id: Arp_CF4_smoke_dissociative_charge_transfer_CF3p
+      type: dissociative_charge_transfer
+      products:
+        - species: Ar
+          n: 1
+        - species: CF3+
+          n: 1
+        - species: F
+          n: 1
+      threshold_eV: null
+      deltaE_products_minus_reactants_eV: -1.0891
+      dnt_class: short_range_charge_exchange
+      status: imported
+      evidence_type: synthetic_smoke_fixture
+      data:
+        provenance:
+          source_type: internal_file_db
+          source_id: smoke_fixture_reaction:Arp_CF4_smoke_dissociative_charge_transfer_CF3p
+          note: Synthetic fixture for end-to-end workflow coverage; not a recommended production rate or cross section.

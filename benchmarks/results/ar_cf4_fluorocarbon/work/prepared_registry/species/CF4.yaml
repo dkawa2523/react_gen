@@ -1,0 +1,58 @@
+schema_version: 1
+id: CF4
+display_name: CF4
+composition:
+  C: 1
+  F: 4
+charge: 0
+classes:
+- molecule
+- neutral
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+properties:
+  collision_radius_A:
+    value: 2.35
+    unit: A
+    source: engineering DNT short-range seed from kinetic-diameter scale about 4.7
+      A / 2; not a curated fundamental constant
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: Td symmetry of CF4
+  dnt_polarizability_alt_A3:
+    value: 3.86
+    unit: A3
+    source: Ar+ in CF4 transport-set literature; adopted in Stojanović/Nikitović-style
+      mobility fitting, not the primary molecular polarizability.
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+  enthalpy_formation_eV:
+    value: -9.671936443224865
+    unit: eV
+    source: NIST Chemistry WebBook SRD 69, ΔfH°gas=-933.20 kJ/mol
+  ionization_energy_eV:
+    value: 14.7
+    unit: eV
+    source: NIST Chemistry WebBook SRD 69, evaluated IE <=14.7 eV
+  mass_amu:
+    value: 88.0043
+    unit: amu
+    source: NIST Chemistry WebBook SRD 69
+  polarizability_A3:
+    value: 2.824
+    unit: A3
+    source: NIST CCCBDB experimental data for CF4; Olney et al. Chem. Phys. 223 (1997)
+      59-98
+  vertical_ionization_energy_eV:
+    value: 16.2
+    unit: eV
+    source: NIST Chemistry WebBook SRD 69, vertical IE determinations ~16.2 eV
+metadata:
+  status: estimated
+  notes:
+  - Prepared overlay; curated registry was not mutated.

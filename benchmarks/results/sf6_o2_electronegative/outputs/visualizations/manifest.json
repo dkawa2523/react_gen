@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "case": {
+    "name": "sf6_o2_electronegative",
+    "gases": [
+      "Ar",
+      "SF6",
+      "O2"
+    ]
+  },
+  "source_dir": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs",
+  "visualization_dir": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations",
+  "statistics": [
+    {
+      "name": "reaction_family_counts",
+      "description": "Reaction count split by collision family",
+      "path": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\statistics\\reaction_family_counts.svg"
+    },
+    {
+      "name": "reaction_type_counts",
+      "description": "Reaction count split by reaction type",
+      "path": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\statistics\\reaction_type_counts.svg"
+    },
+    {
+      "name": "reaction_depth_by_family",
+      "description": "Reaction expansion depth grouped by family",
+      "path": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\statistics\\reaction_depth_by_family.svg"
+    },
+    {
+      "name": "species_charge_counts",
+      "description": "Species count split by charge",
+      "path": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\statistics\\species_charge_counts.svg"
+    },
+    {
+      "name": "species_class_counts",
+      "description": "Species count split by species class",
+      "path": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\statistics\\species_class_counts.svg"
+    },
+    {
+      "name": "species_depth_counts",
+      "description": "Species first-seen depth distribution",
+      "path": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\statistics\\species_depth_counts.svg"
+    },
+    {
+      "name": "coverage_status_counts",
+      "description": "Candidate pair coverage by status/family",
+      "path": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\statistics\\coverage_status_counts.svg"
+    },
+    {
+      "name": "dnt_readiness_counts",
+      "description": "DNT+/DNT+DM task readiness",
+      "path": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\statistics\\dnt_readiness_counts.svg"
+    },
+    {
+      "name": "missing_data_counts",
+      "description": "Missing data count by subject/severity",
+      "path": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\statistics\\missing_data_counts.svg"
+    }
+  ],
+  "network": {
+    "dot": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\network\\reaction_network.dot",
+    "rendered": [
+      "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\network\\reaction_network.svg",
+      "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\network\\reaction_network.png"
+    ],
+    "graphviz_dot_available": true
+  },
+  "lineage": {
+    "dot": "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\network\\species_lineage.dot",
+    "rendered": [
+      "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\network\\species_lineage.svg",
+      "C:\\Users\\user\\Desktop\\react_gen-main\\benchmarks\\results\\sf6_o2_electronegative\\outputs\\visualizations\\network\\species_lineage.png"
+    ],
+    "graphviz_dot_available": true
+  },
+  "notes": [
+    "Statistical charts are dependency-free SVG files.",
+    "Graphviz DOT is always written; SVG/PNG rendering requires the 'dot' executable."
+  ]
+}

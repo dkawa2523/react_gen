@@ -157,6 +157,43 @@ def test_collision_radius_is_not_invented(tmp_path):
     } in report["unresolved"]
 
 
+def test_enrichment_can_be_limited_to_selected_species(tmp_path):
+    prepared_registry = tmp_path / "prepared_registry"
+    _write_species(prepared_registry, "CF3", {})
+    _write_species(prepared_registry, "CF4", {})
+    provider = _PropertyProvider(
+        {
+            ("CF3", "mass_amu"): {
+                "species": "CF3",
+                "property": "mass_amu",
+                "value": 69.0,
+                "unit": "amu",
+                "source": "seeded product source",
+                "source_record": _source_record("test:CF3:mass"),
+            },
+            ("CF4", "mass_amu"): {
+                "species": "CF4",
+                "property": "mass_amu",
+                "value": 88.0,
+                "unit": "amu",
+                "source": "gas source",
+                "source_record": _source_record("test:CF4:mass"),
+            },
+        }
+    )
+
+    report = enrich_species_properties(
+        prepared_registry,
+        [provider],
+        {"name": "test"},
+        species_ids=["CF3"],
+    )
+
+    assert _read_species(prepared_registry, "CF3")["properties"]["mass_amu"]["value"] == 69.0
+    assert "mass_amu" not in _read_species(prepared_registry, "CF4")["properties"]
+    assert report["summary"]["n_properties_filled"] == 1
+
+
 class _PropertyProvider:
     def __init__(self, candidates):
         self.candidates = candidates

@@ -1,0 +1,83 @@
+schema_version: 1
+source_catalog: external_data/source_catalog.yaml
+policies:
+  allow_network_downloads: false
+  report_path: external_data/manifests/source_setup_report.yaml
+optional_python_dependencies:
+  chemicals:
+    requirements: external_data_tools/requirements-chemicals.txt
+sources:
+  - source_id: nist_snapshot
+    enabled: false
+    access_mode: manual_snapshot_or_explicit_url
+    automation_level: explicit_user_url_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    download_manifest: external_data/downloads/source_download_manifest.example.yaml
+    download_output_root: external_data/raw
+    snapshot_path: external_data/snapshots/nist_species_properties.yaml
+    validator: external_data_tools.nist_snapshot_validate
+    license_note: Review NIST source terms, citation, and redistribution limits before sharing snapshots.
+    notes:
+      - No NIST scraping or automatic online query is implemented.
+      - Prepare reviewed local YAML snapshots before use in enrich.
+
+  - source_id: argonne_atct_snapshot
+    enabled: false
+    access_mode: manual_snapshot_or_explicit_url
+    automation_level: explicit_user_url_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    download_manifest: external_data/downloads/source_download_manifest.example.yaml
+    download_output_root: external_data/raw
+    snapshot_path: external_data/snapshots/argonne_atct_species_thermochemistry.yaml
+    validator: external_data_tools.argonne_atct_snapshot_validate
+    license_note: Review ATcT/Argonne or internal thermochemistry use and redistribution terms.
+    notes:
+      - Explicit URLs or local files may be cached, but no website scraping is implemented.
+      - Use snapshots only after source and sign-convention review.
+
+  - source_id: chemicals_optional
+    enabled: true
+    access_mode: optional_python_package
+    automation_level: explicit_install_flag_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    license_note: Review the chemicals package license and source database citations before using exported values.
+    notes:
+      - Installed only with source_setup --install-chemicals.
+      - Core provider remains lazy and returns empty results when the package is unavailable.
+
+  - source_id: pubchem
+    enabled: false
+    access_mode: public_api_explicit_cli
+    automation_level: explicit_cli_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    raw_output_root: external_data/raw/pubchem
+    snapshot_path: external_data/snapshots/pubchem_species.yaml
+    cli: python -m external_data_tools.pubchem_fetch SPECIES_LIST.yaml --output-root external_data/raw/pubchem --snapshot external_data/snapshots/pubchem_species.yaml
+    license_note: PubChem snapshots should preserve citation/provenance and be reviewed before enrichment use.
+    notes:
+      - PubChem is for identity, formula, synonyms, and identifiers only.
+      - PubChem is not used as a plasma reaction or cross-section database.
+
+  - source_id: lxcat_offline
+    enabled: false
+    access_mode: manual_download_or_explicit_url
+    automation_level: manual_file_or_explicit_user_url_only
+    requires_registration: true
+    requires_license_review: true
+    requires_api_key: false
+    download_manifest: external_data/downloads/source_download_manifest.example.yaml
+    download_output_root: external_data/raw
+    snapshot_path: external_data/snapshots/lxcat_cross_sections_index.yaml
+    cli: python -m external_data_tools.lxcat_raw_import RAW_FILE --workspace WORKSPACE --target TARGET --source lxcat_manual
+    license_note: Follow LXCat citation, license, login, and redistribution requirements.
+    notes:
+      - No LXCat login/session automation or scraping is implemented.
+      - Users may import manually downloaded files or explicit URLs they are permitted to use.

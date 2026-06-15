@@ -1,0 +1,22 @@
+source_type: local_file
+database: user_provided
+original_file: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\sf6_o2_electronegative\cross_sections\e_SF6_elastic.csv
+imported_at: '2026-06-15T06:46:16.827645+00:00'
+columns:
+- energy_eV
+- cross_section_m2
+units:
+  energy: eV
+  cross_section: m2
+row_count: 3
+energy_min_eV: 0.1
+energy_max_eV: 10.0
+sha256: ed7ca1c08fd75dd144598c18bac0e19d1ce82f09e24b2f6203b7c240b3ed3bd6
+license_note: synthetic benchmark fixture
+source_cache:
+  source_type: local_file_cache
+  source_name: local_file
+  original_path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\sf6_o2_electronegative\cross_sections\e_SF6_elastic.csv
+  cached_path: local_file\e_SF6_elastic_ed7ca1c08fd7.csv
+  sha256: ed7ca1c08fd75dd144598c18bac0e19d1ce82f09e24b2f6203b7c240b3ed3bd6
+  imported_at: '2026-06-15T06:46:16.825989+00:00'

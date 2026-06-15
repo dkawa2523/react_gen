@@ -1,8 +1,8 @@
 # External Data Tools
 
 This directory is intentionally separate from the core `plasma_reactgen`
-package. It is the place for future public database/API experiments, local raw
-file ingestion, snapshot creation, and benchmark dataset preparation.
+package. It is the place for public database/API experiments, local raw file
+ingestion, snapshot creation, and benchmark dataset preparation.
 
 The core runtime and `reactgen generate` must remain deterministic and
 local-registry-only. Do not put online API clients, download logic, scraping, or
@@ -16,6 +16,43 @@ curated `registry/`.
 
 Optional dependencies for future external tools belong in
 `requirements-external.txt`, not in the core project dependencies.
+
+## Current Tools
+
+Implemented tools include:
+
+- external source setup checks for NIST/ATcT/Chemicals/PubChem/LXCat workflows
+- explicit URL download manifests with dry-run support
+- PubChem identity snapshot fetch/normalize
+- NIST snapshot planning and validation
+- LXCat/manual raw cross-section import
+- OpenADAS raw file registration
+- VAMDC raw query capture
+- KIDA/UMIST-like local network conversion
+- Argonne/ATcT-style thermochemistry snapshot planning and validation
+- chemical identity fetch/normalize skeletons for optional providers such as
+  ChEBI, ChemSpider, OPSIN, and NCI/Cactus
+
+Some tools can access online resources when explicitly invoked by the user.
+Tests do not use real network access. Generated raw files and snapshots must be
+reviewed before they are used by prepare/enrich workflows.
+
+## Source Setup
+
+Use `source_setup` to check the configured external source environment, install
+the optional `chemicals` package only when explicitly requested, and run
+user-provided explicit URL downloads only when policy allows it:
+
+```bash
+python -m external_data_tools.source_setup --config external_data/source_access_profiles.yaml --check
+python -m external_data_tools.source_setup --config external_data/source_access_profiles.yaml --install-chemicals
+python -m external_data_tools.source_setup --config external_data/source_access_profiles.yaml --download-explicit-data
+```
+
+The default profile keeps network downloads disabled. NIST, Argonne/ATcT, and
+LXCat data require local snapshots/assets or explicit user-provided URLs after
+license and citation review. PubChem API access is limited to the external
+identity snapshot fetcher; the core runtime does not call PubChem.
 
 ## Explicit URL Downloads
 

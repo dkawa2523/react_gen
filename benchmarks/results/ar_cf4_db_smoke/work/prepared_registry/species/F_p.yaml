@@ -1,0 +1,47 @@
+schema_version: 1
+id: F+
+display_name: F+
+composition:
+  F: 1
+charge: 1
+classes:
+- positive_ion
+- atom
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 18.9978546
+    unit: amu
+    source: F atomic mass minus electron mass
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic-ion symmetry
+  collision_radius_A:
+    value: 1.47
+    unit: A
+    source: reuse F atom radius estimate
+    quality: estimated
+  enthalpy_formation_eV:
+    value: 18.245535725314177
+    unit: eV
+    source: derived from F atom ΔfH° and F IE
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: curated
+  notes:
+  - F+ is included because CF4 discharge ion-molecule data include F+ + CF4.

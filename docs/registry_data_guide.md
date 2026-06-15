@@ -14,9 +14,12 @@ It stores:
 - cross-section asset links
 - provenance and source information
 
-The generator core should read the local registry.
+The generator core should read local registry-compatible files. In normal
+curated runs this is `registry/`; in review runs it may be a workspace
+`prepared_registry/`.
 
-External public DB importers are developer-side adapters that may create registry files in the future. Normal generation does not require network access.
+Normal generation does not require network access. Public DB data must first be
+made available as reviewed local snapshots or local assets.
 
 ## Directory concept
 
@@ -52,6 +55,33 @@ registry/
 Keep the registry readable.
 
 Avoid deeply nested structures unless needed.
+
+## Prepared registry concept
+
+`prepared_registry/` is a workspace-local registry overlay used by prepare and
+enrich workflows. It has the same broad shape as `registry/`, but it is not
+curated source of truth:
+
+```text
+workspace/
+  prepared_registry/
+    species/
+    reactions/
+    assets/
+  prepare_report.yaml
+  enrichment_report.yaml
+  source_cache/
+```
+
+Use `prepared_registry/` for imported local data, local snapshot enrichment,
+cross-section asset links, and review runs. It can be passed to generation:
+
+```powershell
+reactgen generate CASE --registry workspace/prepared_registry --output workspace/outputs
+```
+
+Do not treat prepared files as curated until they are reviewed and explicitly
+promoted with `reactgen promote --apply`.
 
 ## Species YAML
 
@@ -296,6 +326,18 @@ Work in progress.
 
 Kept for traceability but not recommended for use.
 
+Guidance:
+
+- Use `curated` only for data accepted into curated `registry/` after review.
+- Use `literature_supported` for reviewed literature or database-snapshot data
+  with citation/provenance.
+- Use `imported` for mechanically imported local files or snapshots before
+  full domain review.
+- Use `inferred` only for rule/template candidates; never present inferred data
+  as literature or curated data.
+- Use `estimated` only when the value is explicitly calculated or approximated
+  from documented assumptions.
+
 ## Provenance
 
 Every nontrivial data entry should keep source information when available.
@@ -311,16 +353,31 @@ evidence:
   accessed_date: null
 ```
 
-For imported public DB data:
+Many prepare/enrich providers use `source_record`, especially for property
+sources and imported local snapshots:
 
 ```yaml
-evidence:
-  source_type: public_database
-  database: LxCat
-  dataset: null
-  original_file: assets/external_sources/lxcat/example.txt
-  imported_at: null
+source_record:
+  source_type: public_database_snapshot
+  database: NIST Chemistry WebBook SRD 69
+  source_id: nist_webbook:CF4:ionization_energy
+  citation: NIST Chemistry WebBook SRD 69
+  accessed_date: 2026-06-15
 ```
+
+For species property enrichment, keep detailed provenance under metadata:
+
+```yaml
+metadata:
+  property_sources:
+    ionization_energy_eV:
+      source_type: public_database_snapshot
+      database: NIST Chemistry WebBook SRD 69
+      source_id: nist_webbook:CF4:ionization_energy
+```
+
+For imported local files, record the original file and hash in
+`workspace/source_cache/manifest.yaml` where practical.
 
 ## Cross-section assets
 
@@ -343,6 +400,34 @@ data:
 The registry entry should link to the asset.
 
 The reaction generator should not need to parse all possible public DB formats directly.
+
+Prepared cross-section imports also write a metadata sidecar next to the
+normalized CSV:
+
+```text
+workspace/prepared_registry/assets/cross_sections/<safe_name>.csv
+workspace/prepared_registry/assets/cross_sections/<safe_name>.metadata.yaml
+```
+
+Recommended sidecar fields include:
+
+```yaml
+source_type: public_database_snapshot
+database: LXCat
+original_file: external_data/lxcat/e_cf4.csv
+imported_at: 2026-06-15T00:00:00+00:00
+columns:
+  - energy_eV
+  - cross_section_m2
+units:
+  energy: eV
+  cross_section: m2
+row_count: 120
+energy_min_eV: 0.0
+energy_max_eV: 100.0
+sha256: ...
+license_note: user must follow source citation and redistribution requirements
+```
 
 ## DNT-related data
 
@@ -386,13 +471,12 @@ Do not automatically write inferred candidates into curated registry files.
 
 Use a separate candidate output directory first.
 
-## External database importer policy
+## External data and importer policy
 
 External DB importers should:
 
 - run outside the normal generation path
-- produce local registry YAML files
-- produce local asset files
+- produce local snapshots, prepared registry YAML, or local asset files
 - preserve source and provenance
 - avoid overwriting curated files automatically
 - make imported status explicit
@@ -405,10 +489,19 @@ External DB importers should not:
 - silently change existing curated reaction mechanisms
 - mix inferred and curated entries without status labels
 
-Placeholder and future importer tools live under `tools/importers/`. Current
-placeholders do not download, parse, or write public database data. They are
-developer utilities for producing reviewable local registry files and assets,
-not core runtime dependencies.
+Implemented local import/preparation commands include:
+
+- `reactgen enrich`
+- `reactgen import-cross-sections`
+- `reactgen apply-cross-section-mapping`
+- `reactgen plan-missing`
+- `reactgen promote`
+
+External acquisition and conversion tools live under `external_data_tools/`.
+They are separate from the core package and may write local files under
+`external_data/`, `workspaces/`, or `benchmarks/`. If an external tool fetches
+public data, it must be invoked explicitly by the user and its outputs require
+review before prepare/enrich or promotion.
 
 ## User input reduction strategy
 

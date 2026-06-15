@@ -8,6 +8,30 @@ The purpose is not to replace curated data.
 
 The purpose is to help users and developers discover likely missing reactions and missing species for low-pressure plasma modeling.
 
+## Relationship To Enrichment, Imports, Snapshots, And Promotion
+
+Inference is not the same as enrichment:
+
+- **Inference** creates rule/template-generated candidates when registry data
+  are missing. Inferred items are marked `status: inferred` and are review
+  targets, not evidence-backed data.
+- **Enrichment** fills prepared registry gaps from configured local/offline
+  providers such as local registry data, internal files, NIST snapshots,
+  Argonne/ATcT-style thermochemistry snapshots, optional `chemicals`, or ion
+  reaction tables.
+- **Imported local DB data** comes from user-provided local files or internal
+  snapshots. It should normally be marked `status: imported` unless it has been
+  reviewed and assigned `literature_supported` or `curated`.
+- **External data snapshots** are created outside the core runtime by
+  `external_data_tools/` or by manual preparation. They must be reviewed before
+  being used as source-profile inputs.
+- **Promotion** is the explicit review step that copies selected prepared or
+  candidate data into curated `registry/`. It is dry-run by default and requires
+  `reactgen promote --apply` for mutation.
+
+`reactgen generate` remains local-registry-only. It does not fetch external
+data, run enrichers, import cross sections, or promote candidates.
+
 ## Default behavior
 
 Inference must be disabled by default.
@@ -288,7 +312,7 @@ Recommended developer workflow:
 1. Run candidate inference.
 2. Inspect candidate_registry/.
 3. Edit or reject questionable candidates.
-4. Promote selected candidates into registry/.
+4. Promote selected candidates with reactgen promote --apply.
 5. Run dev checks.
 6. Run normal generation.
 ```

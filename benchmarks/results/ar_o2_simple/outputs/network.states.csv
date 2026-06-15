@@ -1,0 +1,9 @@
+id,charge,composition,classes,depth_first_seen,roles,propagated,required_properties,missing_properties,introduced_by,status
+Ar,0,Ar:1,atom;neutral,0,dnt_neutral;electron_target;input_gas;ion_neutral_target;reaction_product,True,collision_radius_A;dipole_moment_D;mass_amu;polarizability_A3,,input_gas;Arp_Ar_resonant_charge_exchange;Arp_O2_charge_transfer,curated
+Ar+,1,Ar:1,atom;positive_ion,1,dnt_ion;ion_neutral_projectile;reaction_product,True,charge;mass_amu,,e_Ar_ionization;Arp_Ar_resonant_charge_exchange,curated
+O,0,O:1,atom;neutral,1,electron_target;reaction_product,True,mass_amu,,e_O2_dissociation_O_O;e_O2_attachment_Om_O,imported
+O+,1,O:1,atomic_ion;ion;positive_ion,2,dnt_ion;ion_neutral_projectile;reaction_product,True,charge;mass_amu,,e_O_ionization,imported
+O-,-1,O:1,atomic_ion;ion;negative_ion,1,reaction_product,True,,,e_O2_attachment_Om_O,imported
+O2,0,O:2,molecule;neutral,0,dnt_neutral;electron_target;input_gas;ion_neutral_target,True,collision_radius_A;dipole_moment_D;mass_amu;polarizability_A3,,input_gas,imported
+O2+,1,O:2,ion;molecular_ion,1,reaction_product,False,,,e_O2_ionization;Arp_O2_charge_transfer,imported
+O3+,1,O:3,ion;molecular_ion;positive_ion,3,dnt_ion;ion_neutral_projectile;reaction_product,True,charge;mass_amu,,Op_O2_association_O3p,imported

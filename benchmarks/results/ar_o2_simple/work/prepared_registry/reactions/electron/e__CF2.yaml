@@ -1,0 +1,26 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: CF2
+channels:
+- id: e_CF2_ionization_CF2p
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: CF2+
+    n: 1
+  status: curated
+  threshold_eV: 11.362
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Innocenti et al., Chem. Eur. J. 14, 11452-11460 (2008)
+      status: needs_import
+      note: AIE=11.362 eV; cross-section import pending.
+metadata:
+  status: estimated
+  notes:
+  - CF2 ionization added so generated CF2 can become CF2+ in recursive networks.

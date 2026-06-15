@@ -1,0 +1,116 @@
+- pair:
+    family: electron
+    projectile: e
+    target: CF4
+  channels:
+    - id: e_CF4_elastic
+      type: elastic
+      products:
+        - species: e
+          n: 1
+        - species: CF4
+          n: 1
+      threshold_eV: 0.0
+      status: imported
+      data:
+        fixture_note: synthetic workflow benchmark only
+    - id: e_CF4_ionization
+      type: ionization
+      products:
+        - species: e
+          n: 2
+        - species: CF4+
+          n: 1
+      threshold_eV: null
+      status: imported
+      data:
+        fixture_note: synthetic workflow benchmark only
+    - id: e_CF4_dissociation_CF3_F
+      type: dissociation
+      products:
+        - species: e
+          n: 1
+        - species: CF3
+          n: 1
+        - species: F
+          n: 1
+      threshold_eV: null
+      status: imported
+      data:
+        fixture_note: synthetic workflow benchmark only
+    - id: e_CF4_attachment_Fm
+      type: attachment
+      products:
+        - species: CF3
+          n: 1
+        - species: F-
+          n: 1
+      threshold_eV: null
+      status: imported
+      data:
+        fixture_note: synthetic workflow benchmark only
+    - id: e_CF4_dissociative_ionization_CF3p
+      type: dissociative_ionization
+      products:
+        - species: e
+          n: 2
+        - species: CF3+
+          n: 1
+        - species: F
+          n: 1
+      threshold_eV: null
+      status: imported
+      data:
+        fixture_note: synthetic workflow benchmark only
+- pair:
+    family: electron
+    projectile: e
+    target: CF2
+  channels:
+    - id: e_CF2_dissociation_CF_F
+      type: dissociation
+      products:
+        - species: e
+          n: 1
+        - species: CF
+          n: 1
+        - species: F
+          n: 1
+      threshold_eV: null
+      status: imported
+      data:
+        fixture_note: synthetic workflow benchmark only; added to exercise depth-3 expansion
+- pair:
+    family: electron
+    projectile: e
+    target: CF
+  channels:
+    - id: e_CF_dissociation_C_F
+      type: dissociation
+      products:
+        - species: e
+          n: 1
+        - species: C
+          n: 1
+        - species: F
+          n: 1
+      threshold_eV: null
+      status: imported
+      data:
+        fixture_note: synthetic workflow benchmark only; added to exercise depth-3 expansion
+- pair:
+    family: electron
+    projectile: e
+    target: C
+  channels:
+    - id: e_C_elastic
+      type: elastic
+      products:
+        - species: e
+          n: 1
+        - species: C
+          n: 1
+      threshold_eV: 0.0
+      status: imported
+      data:
+        fixture_note: synthetic workflow benchmark only; added to exercise depth-3 expansion

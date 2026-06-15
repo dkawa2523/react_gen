@@ -1,0 +1,167 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: SF6
+channels:
+- id: e_SF6_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: SF6
+    n: 1
+  threshold_eV: 0.0
+  status: imported
+  data:
+    fixture_note: synthetic workflow benchmark only
+    source_record: &id001
+      source_type: internal_file_db
+      source_id: internal_reaction:e_SF6_elastic
+    provenance: *id001
+    cross_section:
+      status: local_file_registered
+      path: assets/cross_sections/e_SF6_elastic_ed7ca1c08f.csv
+      format: csv_energy_eV_sigma_m2
+      source: local_file
+      mapping_status: reviewed_fixture
+      process_label_original: elastic
+  source_record: *id001
+- id: e_SF6_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF6+
+    n: 1
+    species_candidate:
+      composition:
+        S: 1
+        F: 6
+      charge: 1
+      classes:
+      - ion
+      - molecular_ion
+      properties:
+        mass_amu:
+          value: 145.9645
+          unit: amu
+          source: synthetic workflow benchmark fixture
+      source_record:
+        source_type: benchmark_fixture
+        database: local_benchmark_fixture
+        source_id: sf6_o2_electronegative:species:SF6p
+  threshold_eV: null
+  status: imported
+  data:
+    fixture_note: synthetic workflow benchmark only
+    source_record: &id002
+      source_type: internal_file_db
+      source_id: internal_reaction:e_SF6_ionization
+    provenance: *id002
+  source_record: *id002
+- id: e_SF6_dissociation_SF5_F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: SF5
+    n: 1
+    species_candidate:
+      composition:
+        S: 1
+        F: 5
+      charge: 0
+      classes:
+      - neutral
+      - radical
+      properties:
+        mass_amu:
+          value: 126.9666
+          unit: amu
+          source: synthetic workflow benchmark fixture
+      source_record:
+        source_type: benchmark_fixture
+        database: local_benchmark_fixture
+        source_id: sf6_o2_electronegative:species:SF5
+  - species: F
+    n: 1
+    species_candidate:
+      composition:
+        F: 1
+      charge: 0
+      classes:
+      - neutral
+      - atom
+      properties:
+        mass_amu:
+          value: 18.9984
+          unit: amu
+          source: synthetic workflow benchmark fixture
+      source_record:
+        source_type: benchmark_fixture
+        database: local_benchmark_fixture
+        source_id: sf6_o2_electronegative:species:F
+  threshold_eV: null
+  status: imported
+  data:
+    fixture_note: synthetic workflow benchmark only
+    source_record: &id003
+      source_type: internal_file_db
+      source_id: internal_reaction:e_SF6_dissociation_SF5_F
+    provenance: *id003
+  source_record: *id003
+- id: e_SF6_attachment_Fm
+  type: attachment
+  products:
+  - species: F-
+    n: 1
+    species_candidate:
+      composition:
+        F: 1
+      charge: -1
+      classes:
+      - ion
+      - negative_ion
+      - atomic_ion
+      properties:
+        mass_amu:
+          value: 18.9989
+          unit: amu
+          source: synthetic workflow benchmark fixture
+      source_record:
+        source_type: benchmark_fixture
+        database: local_benchmark_fixture
+        source_id: sf6_o2_electronegative:species:Fm
+  - species: SF5
+    n: 1
+    species_candidate:
+      composition:
+        S: 1
+        F: 5
+      charge: 0
+      classes:
+      - neutral
+      - radical
+      properties:
+        mass_amu:
+          value: 126.9666
+          unit: amu
+          source: synthetic workflow benchmark fixture
+      source_record:
+        source_type: benchmark_fixture
+        database: local_benchmark_fixture
+        source_id: sf6_o2_electronegative:species:SF5
+  threshold_eV: null
+  status: imported
+  data:
+    fixture_note: synthetic workflow benchmark only
+    source_record: &id004
+      source_type: internal_file_db
+      source_id: internal_reaction:e_SF6_attachment_Fm
+    provenance: *id004
+  source_record: *id004
+metadata:
+  status: prepared
+  notes:
+  - Prepared reaction enrichment; curated registry was not mutated.

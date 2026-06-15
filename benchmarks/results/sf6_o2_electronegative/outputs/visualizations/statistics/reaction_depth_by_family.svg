@@ -1,0 +1,43 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1080' height='468' viewBox='0 0 1080 468' role='img' aria-labelledby='reaction_depth_by_family-title reaction_depth_by_family-desc'>
+<title id='reaction_depth_by_family-title'>Reaction counts by depth and family</title>
+<desc id='reaction_depth_by_family-desc'>Grouped bar chart with count axis.</desc>
+<rect width='100%' height='100%' fill='#FFFFFF'/>
+<text x='28.00' y='34.00' text-anchor='start' font-size='21' font-family='Arial, Helvetica, sans-serif' fill='#222222' font-weight='700'>Reaction counts by depth and family</text>
+<text x='28.00' y='58.00' text-anchor='start' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>case=sf6_o2_electronegative / species=14 / reactions=23</text>
+<line x1='96' y1='358.00' x2='1032' y2='358.00' stroke='#D9D9D9' stroke-width='1'/>
+<text x='84.00' y='362.00' text-anchor='end' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>0</text>
+<line x1='96' y1='306.00' x2='1032' y2='306.00' stroke='#D9D9D9' stroke-width='1'/>
+<text x='84.00' y='310.00' text-anchor='end' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>2</text>
+<line x1='96' y1='254.00' x2='1032' y2='254.00' stroke='#D9D9D9' stroke-width='1'/>
+<text x='84.00' y='258.00' text-anchor='end' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>4</text>
+<line x1='96' y1='202.00' x2='1032' y2='202.00' stroke='#D9D9D9' stroke-width='1'/>
+<text x='84.00' y='206.00' text-anchor='end' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>6</text>
+<line x1='96' y1='150.00' x2='1032' y2='150.00' stroke='#D9D9D9' stroke-width='1'/>
+<text x='84.00' y='154.00' text-anchor='end' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>8</text>
+<line x1='96' y1='98.00' x2='1032' y2='98.00' stroke='#D9D9D9' stroke-width='1'/>
+<text x='84.00' y='102.00' text-anchor='end' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#555555'>10</text>
+<line x1='96' y1='98' x2='96' y2='358' stroke='#333333' stroke-width='1.2'/>
+<line x1='96' y1='358' x2='1032' y2='358' stroke='#333333' stroke-width='1.2'/>
+<text x='24' y='228.00' transform='rotate(-90 24 228.00)' font-size='13' font-family='Arial, Helvetica, sans-serif' fill='#222222' text-anchor='middle'>Count</text>
+<text x='213.00' y='386.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#222222'>depth 0</text>
+<rect x='118.00' y='98.00' width='88.00' height='260.00' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>depth 0 / electron: 10</title></rect>
+<text x='162.00' y='92.00' text-anchor='middle' font-size='11' font-family='Arial, Helvetica, sans-serif' fill='#222222'>10</text>
+<rect x='213.00' y='358.00' width='88.00' height='0.00' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>depth 0 / ion_neutral: 0</title></rect>
+<text x='447.00' y='386.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#222222'>depth 1</text>
+<rect x='352.00' y='280.00' width='88.00' height='78.00' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>depth 1 / electron: 3</title></rect>
+<text x='396.00' y='274.00' text-anchor='middle' font-size='11' font-family='Arial, Helvetica, sans-serif' fill='#222222'>3</text>
+<rect x='447.00' y='150.00' width='88.00' height='208.00' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>depth 1 / ion_neutral: 8</title></rect>
+<text x='491.00' y='144.00' text-anchor='middle' font-size='11' font-family='Arial, Helvetica, sans-serif' fill='#222222'>8</text>
+<text x='681.00' y='386.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#222222'>depth 2</text>
+<rect x='586.00' y='332.00' width='88.00' height='26.00' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>depth 2 / electron: 1</title></rect>
+<text x='630.00' y='326.00' text-anchor='middle' font-size='11' font-family='Arial, Helvetica, sans-serif' fill='#222222'>1</text>
+<rect x='681.00' y='358.00' width='88.00' height='0.00' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>depth 2 / ion_neutral: 0</title></rect>
+<text x='915.00' y='386.00' text-anchor='middle' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#222222'>depth 3</text>
+<rect x='820.00' y='332.00' width='88.00' height='26.00' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'><title>depth 3 / electron: 1</title></rect>
+<text x='864.00' y='326.00' text-anchor='middle' font-size='11' font-family='Arial, Helvetica, sans-serif' fill='#222222'>1</text>
+<rect x='915.00' y='358.00' width='88.00' height='0.00' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'><title>depth 3 / ion_neutral: 0</title></rect>
+<rect x='96' y='414' width='13' height='13' fill='#0072B2' stroke='#1A1A1A' stroke-width='0.4'/>
+<text x='116.00' y='425.00' text-anchor='start' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#222222'>electron</text>
+<rect x='196' y='414' width='13' height='13' fill='#D55E00' stroke='#1A1A1A' stroke-width='0.4'/>
+<text x='216.00' y='425.00' text-anchor='start' font-size='12' font-family='Arial, Helvetica, sans-serif' fill='#222222'>ion_neutral</text>
+</svg>

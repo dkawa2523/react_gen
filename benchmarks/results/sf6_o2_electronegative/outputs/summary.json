@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "case": {
+    "name": "sf6_o2_electronegative",
+    "gases": [
+      "Ar",
+      "SF6",
+      "O2"
+    ]
+  },
+  "n_species": 14,
+  "n_reactions": 23,
+  "n_electron_reactions": 15,
+  "n_ion_neutral_reactions": 8,
+  "n_pairs_found": 11,
+  "n_pairs_missing": 29,
+  "n_dnt_tasks": 4,
+  "n_missing_data_items": 15,
+  "n_reactions_with_cross_section_asset": 2,
+  "n_reactions_missing_cross_section": 13,
+  "n_reactions_with_provenance": 14,
+  "n_inferred_reactions": 0,
+  "n_imported_reactions": 14,
+  "n_literature_supported_reactions": 0,
+  "by_depth": {
+    "0": {
+      "n_reactions": 10,
+      "n_electron_reactions": 10,
+      "n_ion_neutral_reactions": 0
+    },
+    "1": {
+      "n_reactions": 11,
+      "n_electron_reactions": 3,
+      "n_ion_neutral_reactions": 8
+    },
+    "2": {
+      "n_reactions": 1,
+      "n_electron_reactions": 1,
+      "n_ion_neutral_reactions": 0
+    },
+    "3": {
+      "n_reactions": 1,
+      "n_electron_reactions": 1,
+      "n_ion_neutral_reactions": 0
+    }
+  }
+}

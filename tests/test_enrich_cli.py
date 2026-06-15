@@ -76,6 +76,45 @@ def test_enrich_with_internal_file_adds_property_and_reaction_without_mutating_r
     assert _snapshot_yaml(registry) == original_registry
 
 
+def test_enrich_seeds_reaction_product_species_and_fills_their_properties(tmp_path):
+    registry = _make_registry(tmp_path / "registry")
+    internal_root = _make_product_seed_internal_data(tmp_path / "internal_data")
+    profile = _make_product_seed_source_profile(tmp_path / "product_seed_profile.yaml", internal_root)
+    case = _make_case(tmp_path / "case.yaml", ["CF4"])
+    workspace = tmp_path / "workspace"
+    original_registry = _snapshot_yaml(registry)
+
+    rc = main(
+        [
+            "enrich",
+            str(case),
+            "--registry",
+            str(registry),
+            "--workspace",
+            str(workspace),
+            "--source-profile",
+            str(profile),
+        ]
+    )
+
+    prepared_cf3 = _read_yaml(workspace / "prepared_registry" / "species" / "CF3.yaml")
+    prepared_reaction = _read_yaml(workspace / "prepared_registry" / "reactions" / "electron" / "e__CF4.yaml")
+    report = _read_yaml(workspace / "enrichment_report.yaml")
+    prepare_report = _read_yaml(workspace / "prepare_report.yaml")
+
+    assert rc == 0
+    assert prepared_cf3["composition"] == {"C": 1, "F": 3}
+    assert prepared_cf3["properties"]["mass_amu"]["value"] == 69.0
+    assert prepared_cf3["properties"]["mass_amu"]["source_record"]["source_type"] == "internal_file_db"
+    assert prepared_reaction["channels"][0]["id"] == "e_CF4_dissociation_CF3_F"
+    assert report["summary"]["species_seeded_from_reactions"] == 2
+    assert report["summary"]["properties_filled_for_seeded_species"] == 1
+    assert report["summary"]["unresolved_product_species"] == 0
+    assert {item["species"] for item in prepare_report["species_seeded_from_reactions"]} == {"CF3", "F"}
+    assert prepare_report["properties_filled_for_seeded_species"][0]["species"] == "CF3"
+    assert _snapshot_yaml(registry) == original_registry
+
+
 def test_enriched_prepared_registry_can_be_used_with_generate(tmp_path):
     registry = _make_registry(tmp_path / "registry")
     internal_root = _make_internal_data(tmp_path / "internal_data")
@@ -216,6 +255,94 @@ def _make_source_profile(path: Path, internal_root: Path) -> Path:
         },
     )
     return path
+
+
+def _make_product_seed_source_profile(path: Path, internal_root: Path) -> Path:
+    _write_yaml(
+        path,
+        {
+            "schema_version": 1,
+            "name": "product_seed_enrich_test",
+            "species_identity": ["internal_species_db", "local_registry"],
+            "properties": ["internal_property_db", "local_registry"],
+            "electron_reactions": ["internal_reaction_db", "local_registry"],
+            "ion_neutral_reactions": ["local_registry"],
+            "internal_file": {"root": str(internal_root)},
+            "policy": {
+                "prefer_status": ["curated", "literature_supported", "imported"],
+                "require_review_for": [],
+            },
+        },
+    )
+    return path
+
+
+def _make_product_seed_internal_data(root: Path) -> Path:
+    _write_yaml(
+        root / "species" / "species.yaml",
+        [
+            {
+                "id": "CF3",
+                "composition": {"C": 1, "F": 3},
+                "charge": 0,
+                "classes": ["neutral", "radical"],
+                "status": "imported",
+                "source_record": {
+                    "source_type": "internal_file_db",
+                    "source_id": "internal_species:CF3",
+                },
+            },
+            {
+                "id": "F",
+                "composition": {"F": 1},
+                "charge": 0,
+                "classes": ["neutral", "atom"],
+                "status": "imported",
+                "source_record": {
+                    "source_type": "internal_file_db",
+                    "source_id": "internal_species:F",
+                },
+            },
+        ],
+    )
+    _write_yaml(
+        root / "properties" / "properties.yaml",
+        [
+            {
+                "species": "CF3",
+                "property": "mass_amu",
+                "value": 69.0,
+                "unit": "amu",
+                "status": "imported",
+                "source_record": {
+                    "source_type": "internal_file_db",
+                    "source_id": "internal_property:CF3:mass_amu",
+                },
+            }
+        ],
+    )
+    _write_yaml(
+        root / "reactions" / "electron.yaml",
+        [
+            {
+                "pair": {"family": "electron", "projectile": "e", "target": "CF4"},
+                "channels": [
+                    {
+                        "id": "e_CF4_dissociation_CF3_F",
+                        "type": "dissociation",
+                        "products": [
+                            {"species": "e", "n": 1},
+                            {"species": "CF3", "n": 1},
+                            {"species": "F", "n": 1},
+                        ],
+                        "status": "imported",
+                        "threshold_eV": None,
+                    }
+                ],
+            }
+        ],
+    )
+    return root
 
 
 def _make_case(path: Path, gases: list[str]) -> Path:

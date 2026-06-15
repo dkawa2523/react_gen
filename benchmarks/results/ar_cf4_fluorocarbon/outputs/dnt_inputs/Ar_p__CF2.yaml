@@ -1,0 +1,88 @@
+schema_version: 1
+pair_id: Ar_p__CF2
+model_variant: dnt_plus
+status: missing_required_data
+projectile:
+  id: Ar_p
+  charge: 1
+  mass_amu: 39.94745
+  composition:
+    Ar: 1
+  properties:
+    mass_amu:
+      value: 39.94745
+      unit: amu
+      source: Ar atomic mass minus electron mass
+target:
+  id: CF2
+  charge: 0
+  mass_amu: 50.0075
+  composition:
+    C: 1
+    F: 2
+  properties:
+    mass_amu:
+      value: 50.0075
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: 1.85
+      unit: A3
+      source: engineering estimate for DNT pre-processing; replace with curated value
+        before production
+    dipole_moment_D:
+      value: null
+      unit: D
+      source: missing
+    collision_radius_A:
+      value: 2.0
+      unit: A
+      source: engineering estimate for DNT pre-processing; replace with curated value
+        before production
+pair_properties:
+  reduced_mass_amu: 22.207472805832257
+  long_range_model: ion_induced_dipole
+  missing_required_properties:
+  - target.dipole_moment_D
+channels:
+- reaction_id: Arp_CF2_elastic
+  type: elastic
+  dnt_class: elastic
+  products:
+  - species: Ar_p
+    n: 1.0
+  - species: CF2
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: 0.0
+  status: estimated
+  missing_for_complete_dnt:
+  - threshold_eV
+  provenance:
+    source_type: registry
+    source_id: null
+- reaction_id: Arp_CF2_charge_transfer_CF2p
+  type: charge_transfer
+  dnt_class: long_range_charge_exchange
+  products:
+  - species: Ar
+    n: 1.0
+  - species: CF2_p
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: -4.3976
+  status: estimated
+  missing_for_complete_dnt:
+  - threshold_eV
+  provenance:
+    source_type: registry
+    source_id: null
+run_config:
+  energy_grid_eV:
+    min: 0.01
+    max: 100.0
+    n: 200
+  output_cross_section_unit: cm2
+provenance:
+  generated_by: plasma-reactgen
+  source_network: network.reactions.yaml

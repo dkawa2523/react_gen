@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "case": {
+    "name": "ar_cf4_fluorocarbon",
+    "gases": [
+      "Ar",
+      "CF4"
+    ]
+  },
+  "n_species": 14,
+  "n_reactions": 46,
+  "n_electron_reactions": 20,
+  "n_ion_neutral_reactions": 26,
+  "n_pairs_found": 19,
+  "n_pairs_missing": 37,
+  "n_dnt_tasks": 12,
+  "n_missing_data_items": 22,
+  "n_reactions_with_cross_section_asset": 1,
+  "n_reactions_missing_cross_section": 19,
+  "n_reactions_with_provenance": 4,
+  "n_inferred_reactions": 0,
+  "n_imported_reactions": 4,
+  "n_literature_supported_reactions": 0,
+  "by_depth": {
+    "0": {
+      "n_reactions": 12,
+      "n_electron_reactions": 12,
+      "n_ion_neutral_reactions": 0
+    },
+    "1": {
+      "n_reactions": 29,
+      "n_electron_reactions": 6,
+      "n_ion_neutral_reactions": 23
+    },
+    "2": {
+      "n_reactions": 4,
+      "n_electron_reactions": 1,
+      "n_ion_neutral_reactions": 3
+    },
+    "3": {
+      "n_reactions": 1,
+      "n_electron_reactions": 1,
+      "n_ion_neutral_reactions": 0
+    }
+  }
+}

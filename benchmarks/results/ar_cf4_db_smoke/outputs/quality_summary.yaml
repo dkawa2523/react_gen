@@ -1,0 +1,43 @@
+schema_version: 1
+case:
+  name: ar_cf4_db_smoke
+  gases:
+  - Ar
+  - CF4
+readiness:
+  mechanism_ready_for_review: true
+  dnt_ready_pairs:
+    ready: 10
+    total: 12
+  cross_section_asset_coverage_fraction: 0.0
+  provenance_coverage_fraction: 0.023256
+top_missing_actions:
+- action: enrich_properties
+  priority: high
+  count: 3
+  subjects:
+  - CF2
+  - Ar+__CF2
+  - CF3+__CF2
+- action: import_cross_sections
+  priority: high
+  count: 16
+  subjects:
+  - e_Ar_elastic
+  - e_Ar_excitation_4s_lumped
+  - e_Ar_ionization
+  - e_CF4_elastic
+  - e_CF4_ionization_parent_effective
+  - e_CF4_dissociation_CF3_F
+  - e_CF4_dissociation_CF2_2F
+  - e_CF4_attachment_Fm
+  - e_CF4_attachment_CF3m
+  - e_CF4_dissociative_ionization_CF3p
+warnings:
+  inferred_fraction_high: false
+  cross_section_coverage_low: true
+  dnt_required_properties_missing: true
+notes:
+- Advisory summary only; generation is not blocked by this file.
+- Cross-section coverage counts electron reactions with registered local asset paths.
+- DNT readiness is based on required pair properties, not solver execution.

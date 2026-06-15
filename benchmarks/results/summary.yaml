@@ -1,0 +1,27 @@
+schema_version: 1
+generated_at: '2026-06-15T06:46:17.172714+00:00'
+config: benchmarks\benchmark_config_semiconductor.yaml
+summary:
+  n_benchmarks: 3
+  n_passed: 3
+  n_failed: 0
+benchmarks:
+- id: ar_o2_simple
+  passed: true
+  score: 1.0
+  report: C:\Users\user\Desktop\react_gen-main\benchmarks\results\ar_o2_simple\benchmark_report.yaml
+  metrics: C:\Users\user\Desktop\react_gen-main\benchmarks\results\ar_o2_simple\benchmark_metrics.yaml
+- id: ar_cf4_fluorocarbon
+  passed: true
+  score: 1.0
+  report: C:\Users\user\Desktop\react_gen-main\benchmarks\results\ar_cf4_fluorocarbon\benchmark_report.yaml
+  metrics: C:\Users\user\Desktop\react_gen-main\benchmarks\results\ar_cf4_fluorocarbon\benchmark_metrics.yaml
+- id: sf6_o2_electronegative
+  passed: true
+  score: 1.0
+  report: C:\Users\user\Desktop\react_gen-main\benchmarks\results\sf6_o2_electronegative\benchmark_report.yaml
+  metrics: C:\Users\user\Desktop\react_gen-main\benchmarks\results\sf6_o2_electronegative\benchmark_metrics.yaml
+setup:
+  report: C:\Users\user\Desktop\react_gen-main\benchmarks\results\setup_report.yaml
+  required_data_ready: true
+  required_solvers_ready: true

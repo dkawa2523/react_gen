@@ -1,0 +1,7 @@
+schema_version: 1
+id: ar_cf4_db_smoke
+case: ../../cases/ar_cf4_db_smoke/input.yaml
+description: Ar/CF4 local-fixture benchmark case used by benchmarks/benchmark_config.yaml.
+notes:
+  - The benchmark uses the canonical case fixture under cases/ar_cf4_db_smoke/.
+  - Outputs are written under benchmarks/results/ar_cf4_db_smoke/.

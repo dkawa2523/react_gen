@@ -1,0 +1,169 @@
+schema_version: 1
+case:
+  name: ar_o2_simple
+species:
+- id: Ar
+  charge: 0
+  composition:
+    Ar: 1
+  classes:
+  - atom
+  - neutral
+  depth_first_seen: 0
+  introduced_by:
+  - input_gas
+  - Arp_Ar_resonant_charge_exchange
+  - Arp_O2_charge_transfer
+  roles:
+  - dnt_neutral
+  - electron_target
+  - input_gas
+  - ion_neutral_target
+  - reaction_product
+  propagated: true
+  required_properties:
+  - collision_radius_A
+  - dipole_moment_D
+  - mass_amu
+  - polarizability_A3
+  missing_properties: []
+  status: curated
+- id: Ar+
+  charge: 1
+  composition:
+    Ar: 1
+  classes:
+  - atom
+  - positive_ion
+  depth_first_seen: 1
+  introduced_by:
+  - e_Ar_ionization
+  - Arp_Ar_resonant_charge_exchange
+  roles:
+  - dnt_ion
+  - ion_neutral_projectile
+  - reaction_product
+  propagated: true
+  required_properties:
+  - charge
+  - mass_amu
+  missing_properties: []
+  status: curated
+- id: O
+  charge: 0
+  composition:
+    O: 1
+  classes:
+  - atom
+  - neutral
+  depth_first_seen: 1
+  introduced_by:
+  - e_O2_dissociation_O_O
+  - e_O2_attachment_Om_O
+  roles:
+  - electron_target
+  - reaction_product
+  propagated: true
+  required_properties:
+  - mass_amu
+  missing_properties: []
+  status: imported
+- id: O+
+  charge: 1
+  composition:
+    O: 1
+  classes:
+  - atomic_ion
+  - ion
+  - positive_ion
+  depth_first_seen: 2
+  introduced_by:
+  - e_O_ionization
+  roles:
+  - dnt_ion
+  - ion_neutral_projectile
+  - reaction_product
+  propagated: true
+  required_properties:
+  - charge
+  - mass_amu
+  missing_properties: []
+  status: imported
+- id: O-
+  charge: -1
+  composition:
+    O: 1
+  classes:
+  - atomic_ion
+  - ion
+  - negative_ion
+  depth_first_seen: 1
+  introduced_by:
+  - e_O2_attachment_Om_O
+  roles:
+  - reaction_product
+  propagated: true
+  required_properties: []
+  missing_properties: []
+  status: imported
+- id: O2
+  charge: 0
+  composition:
+    O: 2
+  classes:
+  - molecule
+  - neutral
+  depth_first_seen: 0
+  introduced_by:
+  - input_gas
+  roles:
+  - dnt_neutral
+  - electron_target
+  - input_gas
+  - ion_neutral_target
+  propagated: true
+  required_properties:
+  - collision_radius_A
+  - dipole_moment_D
+  - mass_amu
+  - polarizability_A3
+  missing_properties: []
+  status: imported
+- id: O2+
+  charge: 1
+  composition:
+    O: 2
+  classes:
+  - ion
+  - molecular_ion
+  depth_first_seen: 1
+  introduced_by:
+  - e_O2_ionization
+  - Arp_O2_charge_transfer
+  roles:
+  - reaction_product
+  propagated: false
+  required_properties: []
+  missing_properties: []
+  status: imported
+- id: O3+
+  charge: 1
+  composition:
+    O: 3
+  classes:
+  - ion
+  - molecular_ion
+  - positive_ion
+  depth_first_seen: 3
+  introduced_by:
+  - Op_O2_association_O3p
+  roles:
+  - dnt_ion
+  - ion_neutral_projectile
+  - reaction_product
+  propagated: true
+  required_properties:
+  - charge
+  - mass_amu
+  missing_properties: []
+  status: imported

@@ -1,0 +1,134 @@
+schema_version: 1
+generated_at: '2026-06-15T06:46:14.889622+00:00'
+config: C:\Users\user\Desktop\react_gen-main\benchmarks\benchmark_setup.yaml
+mode:
+  check: true
+  install_python_deps: false
+  download_explicit_data: false
+summary:
+  required_data_ready: true
+  optional_data_ready: false
+  required_solvers_ready: true
+  optional_solvers_ready: true
+  python_optional_dependencies_installed: false
+  downloads_ready: true
+policies:
+  allow_network_downloads: false
+  allow_system_package_install: false
+  fail_if_required_data_missing: true
+  fail_if_required_solver_missing: false
+solver_status:
+  bolsig_plus:
+    enabled: false
+    status: disabled
+    executable: null
+    adapter: export_only
+    required_for:
+    - optional_transport_validation
+    suggested_actions:
+    - Enable this solver and set an executable path if this benchmark requires it.
+  ngspice:
+    enabled: false
+    status: disabled
+    executable: null
+    adapter: ngspice_basic
+    required_for:
+    - optional_circuit_coupling_smoke
+    suggested_actions:
+    - Enable this solver and set an executable path if this benchmark requires it.
+  thunderboltz:
+    enabled: false
+    status: disabled
+    executable: null
+    adapter: export_only
+    required_for: []
+    suggested_actions:
+    - Enable this solver and set an executable path if this benchmark requires it.
+  loki_b:
+    enabled: false
+    status: disabled
+    executable: null
+    adapter: export_only
+    required_for: []
+    suggested_actions:
+    - Enable this solver and set an executable path if this benchmark requires it.
+  zdplaskin:
+    enabled: false
+    status: disabled
+    executable: null
+    adapter: export_only
+    required_for: []
+    suggested_actions:
+    - Enable this solver and set an executable path if this benchmark requires it.
+data_status:
+- id: ar_o2_simple_internal_fixture
+  kind: internal_file_db
+  section: required_for_registry_benchmark
+  required: true
+  path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\ar_o2_simple\internal_data
+  status: ready
+- id: ar_o2_simple_cross_section_fixture
+  kind: cross_section_csv
+  section: required_for_registry_benchmark
+  required: true
+  path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\ar_o2_simple\cross_sections\e_O2_elastic.csv
+  status: ready
+  sha256: 6e4b8aa7fef3bca902c5d53155475e79387c420a1955a0b6e18ea7de322946af
+- id: ar_cf4_internal_fixture
+  kind: internal_file_db
+  section: required_for_registry_benchmark
+  required: true
+  path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\ar_cf4_fluorocarbon\internal_data
+  status: ready
+- id: ar_cf4_cross_section_fixture
+  kind: cross_section_csv
+  section: required_for_registry_benchmark
+  required: true
+  path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\ar_cf4_fluorocarbon\cross_sections\e_CF4_elastic.csv
+  status: ready
+  sha256: 4801b90abcd3ce32f581ddd8b6becb50380304a19e2777150aa6f977a2943310
+- id: sf6_o2_internal_fixture
+  kind: internal_file_db
+  section: required_for_registry_benchmark
+  required: true
+  path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\sf6_o2_electronegative\internal_data
+  status: ready
+- id: sf6_o2_cross_section_fixture_sf6
+  kind: cross_section_csv
+  section: required_for_registry_benchmark
+  required: true
+  path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\sf6_o2_electronegative\cross_sections\e_SF6_elastic.csv
+  status: ready
+  sha256: ed7ca1c08fd75dd144598c18bac0e19d1ce82f09e24b2f6203b7c240b3ed3bd6
+- id: sf6_o2_cross_section_fixture_o2
+  kind: cross_section_csv
+  section: required_for_registry_benchmark
+  required: true
+  path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\sf6_o2_electronegative\cross_sections\e_O2_elastic.csv
+  status: ready
+  sha256: 6e4b8aa7fef3bca902c5d53155475e79387c420a1955a0b6e18ea7de322946af
+- id: bolsig_plus_executable
+  kind: executable
+  section: optional_for_live_solver_benchmark
+  required: false
+  path: null
+  status: optional_missing
+  solver: bolsig_plus
+  suggested_action: Configure an external solver executable path if this optional
+    benchmark is needed.
+python:
+  requested: false
+  python_optional_dependencies_installed: false
+  requirements:
+  - requirements: C:\Users\user\Desktop\react_gen-main\external_data_tools\requirements-external.txt
+    exists: true
+    installed: false
+  - requirements: C:\Users\user\Desktop\react_gen-main\external_data_tools\requirements-solvers.txt
+    exists: true
+    installed: false
+downloads:
+  requested: false
+  ran: false
+  summary:
+    downloaded: 0
+    failed: 0

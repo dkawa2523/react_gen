@@ -1,0 +1,30 @@
+schema_version: 1
+case:
+  name: ar_cf4_db_smoke
+source_profile: ar_cf4_db_smoke_local_fixture
+prepared_registry: cases\ar_cf4_db_smoke\work\prepared_registry
+registry_mutated: false
+auto_promoted: false
+summary:
+  species_seeded: 0
+  properties_filled: 0
+  property_conflicts: 0
+  reaction_channels_imported: 1
+  cross_section_assets_registered: 0
+  unresolved_items: 55
+  identity_species_updated: 0
+  identity_conflicts: 0
+prepare_report: cases\ar_cf4_db_smoke\work\prepared_registry\prepare_report.yaml
+source_cache:
+- source_type: local_file_cache
+  source_name: internal_file
+  original_path: cases\ar_cf4_db_smoke\internal_data\properties\properties.yaml
+  cached_path: internal_file\properties_b4f4459309ea.yaml
+  sha256: b4f4459309ead0794f93aa3f35c8fd882f5fb15e2d6bc0eb7c2b11f174d31826
+  imported_at: '2026-06-15T04:50:41.531410+00:00'
+- source_type: local_file_cache
+  source_name: internal_file
+  original_path: cases\ar_cf4_db_smoke\internal_data\reactions\ion_neutral.yaml
+  cached_path: internal_file\ion_neutral_fcfe08bc9bcd.yaml
+  sha256: fcfe08bc9bcd96888f57b9a399aef67ce53a08628409f0e559ed48eca07d7a67
+  imported_at: '2026-06-15T04:50:41.533757+00:00'

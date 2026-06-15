@@ -1,0 +1,4 @@
+energy_eV,cross_section_m2,process,target,reaction_id,source,comment
+0.1,1.0e-20,ELASTIC,CF4,e_CF4_elastic,synthetic_smoke_fixture,not physical data
+1.0,2.0e-20,ELASTIC,CF4,e_CF4_elastic,synthetic_smoke_fixture,not physical data
+10.0,1.5e-20,ELASTIC,CF4,e_CF4_elastic,synthetic_smoke_fixture,not physical data

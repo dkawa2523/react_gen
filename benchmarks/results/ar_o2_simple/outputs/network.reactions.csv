@@ -1,0 +1,15 @@
+id,depth,family,type,equation,source_pair,introduced_species,charge_balance,element_balance,status
+e_Ar_elastic,0,electron,elastic,e + Ar -> e + Ar,e + Ar,,ok,ok,curated
+e_Ar_excitation_4s_lumped,0,electron,excitation,e + Ar -> e + Ar,e + Ar,,ok,ok,curated
+e_Ar_ionization,0,electron,ionization,e + Ar -> 2 e + Ar+,e + Ar,Ar+,ok,ok,curated
+e_O2_elastic,0,electron,elastic,e + O2 -> e + O2,e + O2,,ok,ok,imported
+e_O2_ionization,0,electron,ionization,e + O2 -> 2 e + O2+,e + O2,O2+,ok,ok,imported
+e_O2_dissociation_O_O,0,electron,dissociation,e + O2 -> e + 2 O,e + O2,O,ok,ok,imported
+e_O2_attachment_Om_O,0,electron,attachment,e + O2 -> O- + O,e + O2,O-,ok,ok,imported
+e_O_ionization,1,electron,ionization,e + O -> 2 e + O+,e + O,O+,ok,ok,imported
+Arp_Ar_elastic,1,ion_neutral,elastic,Ar+ + Ar -> Ar+ + Ar,Ar+ + Ar,,ok,ok,curated
+Arp_Ar_resonant_charge_exchange,1,ion_neutral,charge_transfer,Ar+ + Ar -> Ar + Ar+,Ar+ + Ar,,ok,ok,curated
+Arp_O2_elastic,1,ion_neutral,elastic,Ar+ + O2 -> Ar+ + O2,Ar+ + O2,,ok,ok,imported
+Arp_O2_charge_transfer,1,ion_neutral,charge_transfer,Ar+ + O2 -> Ar + O2+,Ar+ + O2,,ok,ok,imported
+Op_O2_association_O3p,2,ion_neutral,association,O+ + O2 -> O3+,O+ + O2,O3+,ok,ok,imported
+O3p_O2_elastic,3,ion_neutral,elastic,O3+ + O2 -> O3+ + O2,O3+ + O2,,ok,ok,imported

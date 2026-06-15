@@ -1,0 +1,48 @@
+schema_version: 1
+id: Ar+
+display_name: Ar+
+composition:
+  Ar: 1
+charge: 1
+classes:
+- positive_ion
+- atom
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 39.94745
+    unit: amu
+    source: Ar atomic mass minus electron mass
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic-ion symmetry
+  collision_radius_A:
+    value: 1.7025
+    unit: A
+    source: reuse Ar LJ-radius estimate for short-range DNT seed
+    quality: estimated
+  enthalpy_formation_eV:
+    value: 15.75961
+    unit: eV
+    source: derived from Ar IE, NIST Atomic Spectra Database / Basic Atomic Spectroscopic
+      Data
+  ionization_energy_eV:
+    value: 27.62966
+    unit: eV
+    source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: curated
+  notes:
+  - Ar+ enthalpy is relative to neutral Ar + ionization energy.

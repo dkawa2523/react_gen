@@ -1,0 +1,285 @@
+schema_version: 1
+case:
+  name: sf6_o2_electronegative
+species:
+- id: Ar
+  charge: 0
+  composition:
+    Ar: 1
+  classes:
+  - atom
+  - neutral
+  depth_first_seen: 0
+  introduced_by:
+  - input_gas
+  - Arp_Ar_resonant_charge_exchange
+  - Arp_F_charge_transfer_Fp
+  - Arp_O2_charge_transfer
+  - Arp_SF6_charge_transfer
+  roles:
+  - dnt_neutral
+  - electron_target
+  - input_gas
+  - ion_neutral_target
+  - reaction_product
+  propagated: true
+  required_properties:
+  - collision_radius_A
+  - dipole_moment_D
+  - mass_amu
+  - polarizability_A3
+  missing_properties: []
+  status: curated
+- id: Ar+
+  charge: 1
+  composition:
+    Ar: 1
+  classes:
+  - atom
+  - positive_ion
+  depth_first_seen: 1
+  introduced_by:
+  - e_Ar_ionization
+  - Arp_Ar_resonant_charge_exchange
+  roles:
+  - dnt_ion
+  - ion_neutral_projectile
+  - reaction_product
+  propagated: true
+  required_properties:
+  - charge
+  - mass_amu
+  missing_properties: []
+  status: curated
+- id: F
+  charge: 0
+  composition:
+    F: 1
+  classes:
+  - atom
+  - neutral
+  - radical
+  depth_first_seen: 1
+  introduced_by:
+  - e_SF6_dissociation_SF5_F
+  - e_SF5_dissociation_SF4_F
+  - e_SF4_dissociation_SF3_F
+  roles:
+  - dnt_neutral
+  - electron_target
+  - ion_neutral_target
+  - reaction_product
+  propagated: true
+  required_properties:
+  - collision_radius_A
+  - dipole_moment_D
+  - mass_amu
+  - polarizability_A3
+  missing_properties: []
+  status: curated
+- id: F+
+  charge: 1
+  composition:
+    F: 1
+  classes:
+  - atom
+  - positive_ion
+  depth_first_seen: 2
+  introduced_by:
+  - e_F_ionization
+  - Arp_F_charge_transfer_Fp
+  roles:
+  - reaction_product
+  propagated: true
+  required_properties: []
+  missing_properties: []
+  status: curated
+- id: F-
+  charge: -1
+  composition:
+    F: 1
+  classes:
+  - atom
+  - negative_ion
+  depth_first_seen: 1
+  introduced_by:
+  - e_SF6_attachment_Fm
+  roles:
+  - reaction_product
+  propagated: true
+  required_properties: []
+  missing_properties: []
+  status: curated
+- id: O
+  charge: 0
+  composition:
+    O: 1
+  classes:
+  - atom
+  - neutral
+  depth_first_seen: 1
+  introduced_by:
+  - e_O2_dissociation_O_O
+  - e_O2_attachment_Om_O
+  roles:
+  - reaction_product
+  propagated: true
+  required_properties: []
+  missing_properties: []
+  status: imported
+- id: O-
+  charge: -1
+  composition:
+    O: 1
+  classes:
+  - atomic_ion
+  - ion
+  - negative_ion
+  depth_first_seen: 1
+  introduced_by:
+  - e_O2_attachment_Om_O
+  roles:
+  - reaction_product
+  propagated: true
+  required_properties: []
+  missing_properties: []
+  status: imported
+- id: O2
+  charge: 0
+  composition:
+    O: 2
+  classes:
+  - molecule
+  - neutral
+  depth_first_seen: 0
+  introduced_by:
+  - input_gas
+  roles:
+  - dnt_neutral
+  - electron_target
+  - input_gas
+  - ion_neutral_target
+  propagated: true
+  required_properties:
+  - collision_radius_A
+  - dipole_moment_D
+  - mass_amu
+  - polarizability_A3
+  missing_properties: []
+  status: imported
+- id: O2+
+  charge: 1
+  composition:
+    O: 2
+  classes:
+  - ion
+  - molecular_ion
+  depth_first_seen: 2
+  introduced_by:
+  - Arp_O2_charge_transfer
+  roles:
+  - reaction_product
+  propagated: false
+  required_properties: []
+  missing_properties: []
+  status: imported
+- id: SF3
+  charge: 0
+  composition:
+    S: 1
+    F: 3
+  classes:
+  - neutral
+  - radical
+  depth_first_seen: 3
+  introduced_by:
+  - e_SF4_dissociation_SF3_F
+  roles:
+  - electron_target
+  - reaction_product
+  propagated: true
+  required_properties:
+  - mass_amu
+  missing_properties: []
+  status: imported
+- id: SF4
+  charge: 0
+  composition:
+    S: 1
+    F: 4
+  classes:
+  - neutral
+  - radical
+  depth_first_seen: 2
+  introduced_by:
+  - e_SF5_dissociation_SF4_F
+  roles:
+  - electron_target
+  - reaction_product
+  propagated: true
+  required_properties:
+  - mass_amu
+  missing_properties: []
+  status: imported
+- id: SF5
+  charge: 0
+  composition:
+    S: 1
+    F: 5
+  classes:
+  - neutral
+  - radical
+  depth_first_seen: 1
+  introduced_by:
+  - e_SF6_dissociation_SF5_F
+  - e_SF6_attachment_Fm
+  roles:
+  - electron_target
+  - reaction_product
+  propagated: true
+  required_properties:
+  - mass_amu
+  missing_properties: []
+  status: imported
+- id: SF6
+  charge: 0
+  composition:
+    S: 1
+    F: 6
+  classes:
+  - molecule
+  - neutral
+  depth_first_seen: 0
+  introduced_by:
+  - input_gas
+  roles:
+  - dnt_neutral
+  - electron_target
+  - input_gas
+  - ion_neutral_target
+  propagated: true
+  required_properties:
+  - collision_radius_A
+  - dipole_moment_D
+  - mass_amu
+  - polarizability_A3
+  missing_properties: []
+  status: imported
+- id: SF6+
+  charge: 1
+  composition:
+    S: 1
+    F: 6
+  classes:
+  - ion
+  - molecular_ion
+  depth_first_seen: 1
+  introduced_by:
+  - e_SF6_ionization
+  - Arp_SF6_charge_transfer
+  roles:
+  - reaction_product
+  propagated: false
+  required_properties: []
+  missing_properties: []
+  status: imported

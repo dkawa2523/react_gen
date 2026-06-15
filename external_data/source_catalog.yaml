@@ -1,0 +1,167 @@
+schema_version: 1
+sources:
+  - source_id: local_registry
+    category: bundled
+    allowed_in_core_generate: true
+    allowed_in_enrich: true
+    allowed_in_external_tools: false
+    requires_license_review: false
+    requires_api_key: false
+    redistribution_risk: low
+    default_status: curated
+    notes: "Curated local YAML/assets bundled with the repository or provided as a local registry root."
+
+  - source_id: internal_file
+    category: internal
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: false
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: high
+    default_status: imported
+    notes: "Company/local file database input for prepare-time enrichment. Do not redistribute without internal approval."
+
+  - source_id: nist_snapshot
+    category: public_snapshot
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: medium
+    default_status: literature_supported
+    notes: "Local NIST-derived snapshot files only. No scraping or online NIST access from core workflows."
+
+  - source_id: argonne_atct_snapshot
+    category: commercial_or_license_restricted
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: high
+    default_status: literature_supported
+    notes: "Local thermochemistry snapshot family for ATcT/Argonne-style or internally approved values."
+
+  - source_id: chemicals_optional
+    category: optional_python_package
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: false
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: medium
+    default_status: imported
+    package_name: chemicals
+    notes: "Optional local Python package provider. It must remain lazy and absent from core dependencies."
+
+  - source_id: chemical_identity_snapshot
+    category: public_snapshot
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: medium
+    default_status: imported
+    notes: "Reviewed local identity snapshot compiled from PubChem, ChEBI, ChemSpider, OPSIN, NCI/Cactus, or internal identity records."
+
+  - source_id: pubchem
+    category: public_api
+    allowed_in_core_generate: false
+    allowed_in_enrich: false
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: medium
+    default_status: imported
+    notes: "External identity snapshot acquisition only. Core PubChem provider is a disabled placeholder."
+
+  - source_id: lxcat_offline
+    category: public_snapshot
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: high
+    default_status: imported
+    notes: "User-provided LXCat/manual files and local indexes. No login, scraping, automatic download, or redistribution is implemented."
+
+  - source_id: openadas
+    category: public_snapshot
+    allowed_in_core_generate: false
+    allowed_in_enrich: false
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: medium
+    default_status: imported
+    notes: "Manual raw OpenADAS file registration and optional mapping skeletons only. Full ADF parsing is future work."
+
+  - source_id: vamdc
+    category: public_api
+    allowed_in_core_generate: false
+    allowed_in_enrich: false
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: unknown
+    default_status: imported
+    notes: "External raw TAP/XSAMS query capture only. Node terms and coverage vary and require user review."
+
+  - source_id: astrochem_kida_umist_converted
+    category: public_snapshot
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: medium
+    default_status: imported
+    notes: "Local KIDA/UMIST-like network conversion for candidate discovery. Treat as review-required, not semiconductor-validated data."
+
+  - source_id: ion_reaction_table
+    category: user_provided_file
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: unknown
+    default_status: imported
+    notes: "Generic local ion-neutral reaction table. Source-specific licensing depends on the records inside the table."
+
+  - source_id: literature_candidates
+    category: user_provided_file
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: unknown
+    default_status: literature_supported
+    notes: "Reviewed literature-derived local candidates. Current built-in provider is a placeholder unless user supplies a concrete local table."
+
+  - source_id: qdb_or_commercial_export
+    category: commercial_or_license_restricted
+    allowed_in_core_generate: false
+    allowed_in_enrich: false
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: true
+    redistribution_risk: high
+    default_status: imported
+    notes: "Placeholder governance entry for QDB/commercial exports if supplied by a user. Not an implemented adapter."
+
+  - source_id: user_provided_cross_section_csv
+    category: user_provided_file
+    allowed_in_core_generate: false
+    allowed_in_enrich: true
+    allowed_in_external_tools: true
+    requires_license_review: true
+    requires_api_key: false
+    redistribution_risk: unknown
+    default_status: imported
+    notes: "User-provided CSV/TSV cross-section tables imported into prepared_registry assets with metadata sidecars."

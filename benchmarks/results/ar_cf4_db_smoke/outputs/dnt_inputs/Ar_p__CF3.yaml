@@ -1,0 +1,106 @@
+schema_version: 1
+pair_id: Ar_p__CF3
+model_variant: dnt_plus_dm
+status: ready_with_warnings
+projectile:
+  id: Ar_p
+  charge: 1
+  mass_amu: 39.94745
+  composition:
+    Ar: 1
+  properties:
+    mass_amu:
+      value: 39.94745
+      unit: amu
+      source: Ar atomic mass minus electron mass
+target:
+  id: CF3
+  charge: 0
+  mass_amu: 69.0059
+  composition:
+    C: 1
+    F: 3
+  properties:
+    mass_amu:
+      value: 69.0059
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: 2.25
+      unit: A3
+      source: engineering estimate for DNT pre-processing; replace with curated value
+        before production
+    dipole_moment_D:
+      value: 0.43
+      unit: D
+      source: Mass-spectrometric molecular-beam focusing measurement, Chem. Phys.
+        Lett. 63, 375-377 (1979)
+    collision_radius_A:
+      value: 2.2
+      unit: A
+      source: engineering estimate for DNT pre-processing; replace with curated value
+        before production
+pair_properties:
+  reduced_mass_amu: 25.30082590351742
+  long_range_model: ion_induced_dipole
+  missing_required_properties: []
+channels:
+- reaction_id: Arp_CF3_elastic
+  type: elastic
+  dnt_class: elastic
+  products:
+  - species: Ar_p
+    n: 1.0
+  - species: CF3
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: 0.0
+  status: estimated
+  missing_for_complete_dnt:
+  - threshold_eV
+  provenance:
+    source_type: registry
+    source_id: null
+- reaction_id: Arp_CF3_charge_transfer_CF3p
+  type: charge_transfer
+  dnt_class: long_range_charge_exchange
+  products:
+  - species: Ar
+    n: 1.0
+  - species: CF3_p
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: -6.7096
+  status: estimated
+  missing_for_complete_dnt:
+  - threshold_eV
+  provenance:
+    source_type: registry
+    source_id: null
+- reaction_id: Arp_CF3_dissociative_charge_transfer_CF2p
+  type: dissociative_charge_transfer
+  dnt_class: short_range_charge_exchange
+  products:
+  - species: Ar
+    n: 1.0
+  - species: CF2_p
+    n: 1.0
+  - species: F
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: -0.5871
+  status: estimated
+  missing_for_complete_dnt:
+  - threshold_eV
+  provenance:
+    source_type: registry
+    source_id: null
+run_config:
+  energy_grid_eV:
+    min: 0.01
+    max: 100.0
+    n: 200
+  output_cross_section_unit: cm2
+provenance:
+  generated_by: plasma-reactgen
+  source_network: network.reactions.yaml

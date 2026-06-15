@@ -1,0 +1,105 @@
+schema_version: 1
+pair_id: F_p__CF4
+model_variant: dnt_plus
+status: ready_with_warnings
+projectile:
+  id: F_p
+  charge: 1
+  mass_amu: 18.9978546
+  composition:
+    F: 1
+  properties:
+    mass_amu:
+      value: 18.9978546
+      unit: amu
+      source: F atomic mass minus electron mass
+target:
+  id: CF4
+  charge: 0
+  mass_amu: 88.0043
+  composition:
+    C: 1
+    F: 4
+  properties:
+    mass_amu:
+      value: 88.0043
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: 2.824
+      unit: A3
+      source: NIST CCCBDB experimental data for CF4; Olney et al. Chem. Phys. 223
+        (1997) 59-98
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: Td symmetry of CF4
+    collision_radius_A:
+      value: 2.35
+      unit: A
+      source: engineering DNT short-range seed from kinetic-diameter scale about 4.7
+        A / 2; not a curated fundamental constant
+pair_properties:
+  reduced_mass_amu: 15.624852619320807
+  long_range_model: ion_induced_dipole
+  missing_required_properties: []
+channels:
+- reaction_id: Fp_CF4_elastic
+  type: elastic
+  dnt_class: elastic
+  products:
+  - species: F_p
+    n: 1.0
+  - species: CF4
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: 0.0
+  status: estimated
+  missing_for_complete_dnt:
+  - threshold_eV
+  provenance:
+    source_type: registry
+    source_id: null
+- reaction_id: Fp_CF4_charge_transfer_CF4p
+  type: charge_transfer
+  dnt_class: long_range_charge_exchange
+  products:
+  - species: F
+    n: 1.0
+  - species: CF4_p
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: -2.7228
+  status: estimated
+  missing_for_complete_dnt:
+  - threshold_eV
+  provenance:
+    source_type: registry
+    source_id: null
+- reaction_id: Fp_CF4_dissociative_charge_transfer_CF3p
+  type: dissociative_charge_transfer
+  dnt_class: short_range_charge_exchange
+  products:
+  - species: F
+    n: 1.0
+  - species: CF3_p
+    n: 1.0
+  - species: F
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: -2.7523
+  status: estimated
+  missing_for_complete_dnt:
+  - threshold_eV
+  provenance:
+    source_type: registry
+    source_id: null
+run_config:
+  energy_grid_eV:
+    min: 0.01
+    max: 100.0
+    n: 200
+  output_cross_section_unit: cm2
+provenance:
+  generated_by: plasma-reactgen
+  source_network: network.reactions.yaml

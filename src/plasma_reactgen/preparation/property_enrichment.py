@@ -34,8 +34,10 @@ def enrich_species_properties(
     prepared_registry: Path,
     providers: list[Any],
     source_profile: dict[str, Any],
+    species_ids: list[str] | set[str] | None = None,
 ) -> dict[str, Any]:
     prepared_registry = Path(prepared_registry)
+    target_species_ids = set(species_ids) if species_ids is not None else None
     report: dict[str, Any] = {
         "schema_version": 1,
         "source_profile": source_profile.get("name", "custom"),
@@ -56,6 +58,8 @@ def enrich_species_properties(
     for path in sorted(species_dir.glob("*.yaml")):
         species = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
         species_id = species.get("id") or path.stem
+        if target_species_ids is not None and species_id not in target_species_ids:
+            continue
         changed = False
         for property_name in PROPERTY_NAMES:
             existing = _property_payload(species, property_name)

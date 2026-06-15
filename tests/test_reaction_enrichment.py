@@ -127,6 +127,110 @@ def test_reaction_enrichment_reports_missing_product_species(tmp_path):
     ]
 
 
+def test_reaction_enrichment_seeds_product_species_from_species_provider(tmp_path):
+    prepared_registry = _make_base_prepared_registry(tmp_path / "prepared_registry")
+    provider = _ReactionProvider(
+        [
+            {
+                "id": "e_CF4_dissociation_CF3_F",
+                "type": "dissociation",
+                "products": [
+                    {"species": "e", "n": 1},
+                    {"species": "CF3", "n": 1},
+                    {"species": "F", "n": 1},
+                ],
+                "status": "imported",
+                "source_record": {"source_type": "internal_file_db", "source_id": "reaction:cf3_f"},
+            }
+        ]
+    )
+    species_provider = _SpeciesProvider(
+        {
+            "CF3": {
+                "id": "CF3",
+                "composition": {"C": 1, "F": 3},
+                "charge": 0,
+                "classes": ["neutral", "radical"],
+                "status": "imported",
+                "source_record": {"source_type": "internal_file_db", "source_id": "species:CF3"},
+            },
+            "F": {
+                "id": "F",
+                "composition": {"F": 1},
+                "charge": 0,
+                "classes": ["neutral", "atom"],
+                "status": "imported",
+                "source_record": {"source_type": "internal_file_db", "source_id": "species:F"},
+            },
+        }
+    )
+
+    report = enrich_reaction_channels(
+        prepared_registry,
+        [provider],
+        _case_config(),
+        {"name": "test"},
+        species_providers=[species_provider],
+    )
+
+    assert report["summary"]["n_reaction_channels_imported"] == 1
+    assert report["summary"]["n_species_seeded_from_reactions"] == 2
+    assert {item["species"] for item in report["species_seeded_from_reactions"]} == {"CF3", "F"}
+    assert (prepared_registry / "species" / "CF3.yaml").exists()
+    assert (prepared_registry / "species" / "F.yaml").exists()
+
+
+def test_reaction_enrichment_rejects_incomplete_provider_species_candidate(tmp_path):
+    prepared_registry = _make_base_prepared_registry(tmp_path / "prepared_registry")
+    provider = _ReactionProvider(
+        [
+            {
+                "id": "e_CF4_dissociation_incomplete",
+                "type": "dissociation",
+                "products": [{"species": "e", "n": 1}, {"species": "CF3", "n": 1}],
+                "status": "imported",
+                "source_record": {"source_type": "internal_file_db", "source_id": "reaction:bad"},
+            }
+        ]
+    )
+    species_provider = _SpeciesProvider(
+        {
+            "CF3": {
+                "id": "CF3",
+                "composition": {"C": 1, "F": 3},
+                "classes": ["neutral", "radical"],
+                "status": "imported",
+            }
+        }
+    )
+
+    report = enrich_reaction_channels(
+        prepared_registry,
+        [provider],
+        _case_config(),
+        {"name": "test"},
+        species_providers=[species_provider],
+    )
+
+    assert report["summary"]["n_reaction_channels_imported"] == 0
+    assert report["unresolved_reactions"] == [
+        {
+            "pair": "electron|e|CF4",
+            "id": "e_CF4_dissociation_incomplete",
+            "reason": "incomplete_species_candidate",
+        }
+    ]
+    assert report["unresolved_product_species"] == [
+        {
+            "pair": "electron|e|CF4",
+            "channel": "e_CF4_dissociation_incomplete",
+            "species": "CF3",
+            "reason": "incomplete_species_candidate",
+        }
+    ]
+    assert not (prepared_registry / "species" / "CF3.yaml").exists()
+
+
 def test_enriched_prepared_registry_can_be_used_by_generate(tmp_path):
     prepared_registry = _make_base_prepared_registry(tmp_path / "prepared_registry")
     config = _case_config()
@@ -144,6 +248,28 @@ def test_enriched_prepared_registry_can_be_used_by_generate(tmp_path):
     assert any(reaction.id == "e_CF4_dissociation_CF3_F" for reaction in network.reactions)
 
 
+def test_reaction_enrichment_imports_provider_channels_across_depths(tmp_path):
+    prepared_registry = _make_base_prepared_registry(tmp_path / "prepared_registry")
+    config = case_config_from_dict(
+        {
+            "case": {"name": "reaction-enrichment-depth-test"},
+            "gases": ["CF4"],
+            "expansion": {"max_depth": 3},
+            "outputs": {"csv_summary": False},
+        }
+    )
+    provider = _DepthReactionProvider()
+
+    report = enrich_reaction_channels(prepared_registry, [provider], config, {"name": "test"})
+
+    assert report["summary"]["n_reaction_channels_imported"] == 4
+    assert (prepared_registry / "reactions" / "electron" / "e__CF4.yaml").exists()
+    assert (prepared_registry / "reactions" / "electron" / "e__CF3.yaml").exists()
+    assert (prepared_registry / "reactions" / "electron" / "e__CF2.yaml").exists()
+    assert (prepared_registry / "reactions" / "electron" / "e__CF.yaml").exists()
+    assert (prepared_registry / "species" / "CF.yaml").exists()
+
+
 class _ReactionProvider:
     def __init__(self, channels):
         self.channels = channels
@@ -152,6 +278,39 @@ class _ReactionProvider:
         if pair.family == "electron" and pair.projectile == "e" and pair.target == "CF4":
             return self.channels
         return []
+
+
+class _SpeciesProvider:
+    def __init__(self, candidates):
+        self.candidates = candidates
+
+    def find_species(self, query):
+        candidate = self.candidates.get(query)
+        return [candidate] if candidate is not None else []
+
+
+class _DepthReactionProvider:
+    def find_channels(self, pair):
+        return {
+            "electron|e|CF4": [
+                _dissociation_with_candidate("e_CF4_to_CF3_F", "CF3", {"C": 1, "F": 3}, "F", {"F": 1})
+            ],
+            "electron|e|CF3": [
+                _dissociation_with_candidate("e_CF3_to_CF2_F", "CF2", {"C": 1, "F": 2}, "F", {"F": 1})
+            ],
+            "electron|e|CF2": [
+                _dissociation_with_candidate("e_CF2_to_CF_F", "CF", {"C": 1, "F": 1}, "F", {"F": 1})
+            ],
+            "electron|e|CF": [
+                {
+                    "id": "e_CF_elastic",
+                    "type": "elastic",
+                    "products": [{"species": "e", "n": 1}, {"species": "CF", "n": 1}],
+                    "status": "imported",
+                    "source_record": {"source_type": "internal_file_db", "source_id": "reaction:e_CF_elastic"},
+                }
+            ],
+        }.get(pair.key, [])
 
 
 def _valid_dissociation_channel():
@@ -195,6 +354,40 @@ def _valid_dissociation_channel():
             "source_type": "internal_file_db",
             "source_id": "internal_reaction:e_CF4_dissociation_CF3_F",
         },
+    }
+
+
+def _dissociation_with_candidate(channel_id, product_a, composition_a, product_b, composition_b):
+    return {
+        "id": channel_id,
+        "type": "dissociation",
+        "products": [
+            {"species": "e", "n": 1},
+            {
+                "species": product_a,
+                "n": 1,
+                "species_candidate": {
+                    "composition": composition_a,
+                    "charge": 0,
+                    "classes": ["neutral", "radical"],
+                    "status": "imported",
+                    "source_record": {"source_type": "internal_file_db", "source_id": f"species:{product_a}"},
+                },
+            },
+            {
+                "species": product_b,
+                "n": 1,
+                "species_candidate": {
+                    "composition": composition_b,
+                    "charge": 0,
+                    "classes": ["neutral", "atom"],
+                    "status": "imported",
+                    "source_record": {"source_type": "internal_file_db", "source_id": f"species:{product_b}"},
+                },
+            },
+        ],
+        "status": "imported",
+        "source_record": {"source_type": "internal_file_db", "source_id": f"reaction:{channel_id}"},
     }
 
 

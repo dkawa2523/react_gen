@@ -1,0 +1,15 @@
+id,charge,composition,classes,depth_first_seen,roles,propagated,required_properties,missing_properties,introduced_by,status
+Ar,0,Ar:1,atom;neutral,0,dnt_neutral;electron_target;input_gas;ion_neutral_target;reaction_product,True,collision_radius_A;dipole_moment_D;mass_amu;polarizability_A3,,input_gas;Arp_Ar_resonant_charge_exchange;Arp_F_charge_transfer_Fp;Arp_O2_charge_transfer;Arp_SF6_charge_transfer,curated
+Ar+,1,Ar:1,atom;positive_ion,1,dnt_ion;ion_neutral_projectile;reaction_product,True,charge;mass_amu,,e_Ar_ionization;Arp_Ar_resonant_charge_exchange,curated
+F,0,F:1,atom;neutral;radical,1,dnt_neutral;electron_target;ion_neutral_target;reaction_product,True,collision_radius_A;dipole_moment_D;mass_amu;polarizability_A3,,e_SF6_dissociation_SF5_F;e_SF5_dissociation_SF4_F;e_SF4_dissociation_SF3_F,curated
+F+,1,F:1,atom;positive_ion,2,reaction_product,True,,,e_F_ionization;Arp_F_charge_transfer_Fp,curated
+F-,-1,F:1,atom;negative_ion,1,reaction_product,True,,,e_SF6_attachment_Fm,curated
+O,0,O:1,atom;neutral,1,reaction_product,True,,,e_O2_dissociation_O_O;e_O2_attachment_Om_O,imported
+O-,-1,O:1,atomic_ion;ion;negative_ion,1,reaction_product,True,,,e_O2_attachment_Om_O,imported
+O2,0,O:2,molecule;neutral,0,dnt_neutral;electron_target;input_gas;ion_neutral_target,True,collision_radius_A;dipole_moment_D;mass_amu;polarizability_A3,,input_gas,imported
+O2+,1,O:2,ion;molecular_ion,2,reaction_product,False,,,Arp_O2_charge_transfer,imported
+SF3,0,S:1;F:3,neutral;radical,3,electron_target;reaction_product,True,mass_amu,,e_SF4_dissociation_SF3_F,imported
+SF4,0,S:1;F:4,neutral;radical,2,electron_target;reaction_product,True,mass_amu,,e_SF5_dissociation_SF4_F,imported
+SF5,0,S:1;F:5,neutral;radical,1,electron_target;reaction_product,True,mass_amu,,e_SF6_dissociation_SF5_F;e_SF6_attachment_Fm,imported
+SF6,0,S:1;F:6,molecule;neutral,0,dnt_neutral;electron_target;input_gas;ion_neutral_target,True,collision_radius_A;dipole_moment_D;mass_amu;polarizability_A3,,input_gas,imported
+SF6+,1,S:1;F:6,ion;molecular_ion,1,reaction_product,False,,,e_SF6_ionization;Arp_SF6_charge_transfer,imported

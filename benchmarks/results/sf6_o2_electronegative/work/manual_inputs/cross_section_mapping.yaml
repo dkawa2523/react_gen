@@ -1,0 +1,111 @@
+schema_version: 1
+mappings:
+- reaction_id: e_Ar_elastic
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Cross-section source is registered but numeric table has not been imported
+    yet.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_Ar_excitation_4s_lumped
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Cross-section source is registered but numeric table has not been imported
+    yet.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_Ar_ionization
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Cross-section source is registered but numeric table has not been imported
+    yet.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_O2_dissociation_O_O
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Electron-collision channel has no cross-section reference.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_O2_attachment_Om_O
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Electron-collision channel has no cross-section reference.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_SF6_ionization
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Electron-collision channel has no cross-section reference.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_SF6_dissociation_SF5_F
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Electron-collision channel has no cross-section reference.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_SF6_attachment_Fm
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Electron-collision channel has no cross-section reference.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_F_elastic
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Cross-section source is registered but numeric table has not been imported
+    yet.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_F_ionization
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Cross-section source is registered but numeric table has not been imported
+    yet.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_SF5_dissociation_SF4_F
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Electron-collision channel has no cross-section reference.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_SF4_dissociation_SF3_F
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Electron-collision channel has no cross-section reference.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.
+- reaction_id: e_SF3_elastic
+  asset_path: null
+  source: null
+  mapping_status: manual_review_required
+  why_needed: Electron-collision channel has no cross-section reference.
+  process_label_original: null
+  notes:
+  - Import a reviewed local CSV/TSV asset first, then set asset_path to assets/cross_sections/<file>.csv.

@@ -1,0 +1,33 @@
+schema_version: 1
+n_species: 14
+n_reactions: 23
+n_electron_reactions: 15
+n_ion_neutral_reactions: 8
+max_depth_reached: 3
+n_pairs_found: 11
+n_pairs_missing: 29
+n_missing_data_items: 15
+n_missing_plan_actions: 2
+n_dnt_tasks: 4
+n_dnt_ready_pairs: 4
+n_dnt_pairs_with_missing_properties: 0
+n_cross_section_assets: 2
+n_reactions_with_cross_section_asset: 2
+cross_section_asset_coverage_fraction: 0.133333
+n_reactions_with_provenance: 14
+provenance_coverage_fraction: 0.608696
+n_inferred_reactions: 0
+n_imported_reactions: 14
+n_literature_supported_reactions: 0
+inferred_reaction_fraction: 0.0
+imported_or_literature_supported_fraction: 0.608696
+validation_error_count: 0
+expectation_score: 1.0
+solver_status_summary:
+  ready: 0
+  disabled: 5
+  skipped_missing_executable: 0
+  skipped_missing_adapter: 0
+  skipped_missing_input_adapter: 0
+  completed: 0
+  failed: 0

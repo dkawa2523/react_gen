@@ -1,0 +1,9 @@
+schema_version: 1
+mappings:
+  - reaction_id: e_CF4_elastic
+    asset_path: assets/cross_sections/e_CF4_elastic_4801b90abc.csv
+    source: local_file
+    mapping_status: reviewed_fixture
+    process_label_original: elastic
+    notes:
+      - Synthetic minimal workflow fixture for benchmark only.

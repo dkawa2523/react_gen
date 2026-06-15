@@ -1,0 +1,49 @@
+digraph reaction_network {
+  graph [
+    rankdir=LR,
+    overlap=false,
+    splines=true,
+    concentrate=false,
+    label="Reaction network: ar_o2_simple",
+    labelloc=t,
+    fontsize=22,
+    fontname="Arial"
+  ];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=11, margin=0.08];
+  edge [fontname="Arial", fontsize=9, arrowsize=0.7];
+
+  subgraph cluster_legend {
+    label="Legend";
+    fontsize=12;
+    color="#DDDDDD";
+    legend_neutral [label="neutral / input gas", fillcolor="#E8F5E9", color="#666666"];
+    legend_positive [label="positive ion", fillcolor="#E3F2FD", color="#666666"];
+    legend_negative [label="negative ion", fillcolor="#FFF8E1", color="#666666"];
+    legend_missing [label="missing property", fillcolor="#F7F7F7", color="#D62728", penwidth="2.0"];
+    legend_e_a [label="electron reaction", shape=plain];
+    legend_e_b [label="dashed blue edge", shape=plain];
+    legend_i_a [label="ion-neutral reaction", shape=plain];
+    legend_i_b [label="solid red edge", shape=plain];
+    legend_e_a -> legend_e_b [color="#2F6DB3", style="dashed"];
+    legend_i_a -> legend_i_b [color="#B23B3B", style="solid"];
+  }
+
+  "node:Ar" [label="Ar\nq=0 | depth=0\natom,neutral", fillcolor="#E8F5E9", color="#666666", penwidth="1.0", tooltip="Ar | roles=dnt_neutral,electron_target,input_gas,ion_neutral_target,reaction_product"];
+  "node:O" [label="O\nq=0 | depth=1\natom,neutral", fillcolor="#F7F7F7", color="#666666", penwidth="1.0", tooltip="O | roles=electron_target,reaction_product"];
+  "node:O2" [label="O2\nq=0 | depth=0\nmolecule,neutral", fillcolor="#E8F5E9", color="#666666", penwidth="1.0", tooltip="O2 | roles=dnt_neutral,electron_target,input_gas,ion_neutral_target"];
+  "node:Ar+" [label="Ar+\nq=1 | depth=1\natom,positive_ion", fillcolor="#E3F2FD", color="#666666", penwidth="1.0", tooltip="Ar+ | roles=dnt_ion,ion_neutral_projectile,reaction_product"];
+  "node:O+" [label="O+\nq=1 | depth=2\natomic_ion,ion,positive_ion", fillcolor="#E3F2FD", color="#666666", penwidth="1.0", tooltip="O+ | roles=dnt_ion,ion_neutral_projectile,reaction_product"];
+  "node:O2+" [label="O2+\nq=1 | depth=1\nion,molecular_ion", fillcolor="#E3F2FD", color="#666666", penwidth="1.0", tooltip="O2+ | roles=reaction_product"];
+  "node:O3+" [label="O3+\nq=1 | depth=3\nion,molecular_ion,positive_ion", fillcolor="#E3F2FD", color="#666666", penwidth="1.0", tooltip="O3+ | roles=dnt_ion,ion_neutral_projectile,reaction_product"];
+  "node:O-" [label="O-\nq=-1 | depth=1\natomic_ion,ion,negative_ion", fillcolor="#FFF8E1", color="#666666", penwidth="1.0", tooltip="O- | roles=reaction_product"];
+
+  "node:Ar" -> "node:Ar+" [label="e: ionization\nD0 | e_Ar_ionization", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + Ar -> 2 e + Ar+"];
+  "node:O2" -> "node:O2+" [label="e: ionization\nD0 | e_O2_ionization", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + O2 -> 2 e + O2+"];
+  "node:O2" -> "node:O" [label="e: dissociation\nD0 | e_O2_dissociation_O_O", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + O2 -> e + 2 O"];
+  "node:O2" -> "node:O-" [label="e: attachment\nD0 | e_O2_attachment_Om_O", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + O2 -> O- + O"];
+  "node:O2" -> "node:O" [label="e: attachment\nD0 | e_O2_attachment_Om_O", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + O2 -> O- + O"];
+  "node:O" -> "node:O+" [label="e: ionization\nD1 | e_O_ionization", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + O -> 2 e + O+"];
+  "node:Ar+" -> "node:Ar" [label="ion: charge_transfer\nD1 | Arp_O2_charge_transfer", color="#B23B3B", fontcolor="#B23B3B", style="solid", tooltip="Ar+ + O2 -> Ar + O2+"];
+  "node:O2" -> "node:O2+" [label="ion: charge_transfer\nD1 | Arp_O2_charge_transfer", color="#B23B3B", fontcolor="#B23B3B", style="solid", tooltip="Ar+ + O2 -> Ar + O2+"];
+  "node:O2" -> "node:O3+" [label="ion: association\nD2 | Op_O2_association_O3p", color="#B23B3B", fontcolor="#B23B3B", style="solid", tooltip="O+ + O2 -> O3+"];
+}

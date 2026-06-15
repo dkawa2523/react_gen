@@ -1,0 +1,47 @@
+schema_version: 1
+pair:
+  family: ion_neutral
+  projectile: Ar+
+  target: CF3
+channels:
+- id: Arp_CF3_elastic
+  type: elastic
+  products:
+  - species: Ar+
+    n: 1
+  - species: CF3
+    n: 1
+  status: estimated
+  dnt_class: elastic
+  deltaE_products_minus_reactants_eV: 0.0
+- id: Arp_CF3_charge_transfer_CF3p
+  type: charge_transfer
+  products:
+  - species: Ar
+    n: 1
+  - species: CF3+
+    n: 1
+  status: estimated
+  dnt_class: long_range_charge_exchange
+  deltaE_products_minus_reactants_eV: -6.7096
+  notes:
+  - Estimated from Ar IE and CF3 IE; needs dedicated DNT+/literature cross-section.
+- id: Arp_CF3_dissociative_charge_transfer_CF2p
+  type: dissociative_charge_transfer
+  products:
+  - species: Ar
+    n: 1
+  - species: CF2+
+    n: 1
+  - species: F
+    n: 1
+  status: estimated
+  dnt_class: short_range_charge_exchange
+  deltaE_products_minus_reactants_eV: -0.5871
+  notes:
+  - Generated-product pair included for recursive Ar/CF4 network; cross-section not
+    yet curated.
+metadata:
+  status: estimated
+  notes:
+  - Generated-product pair for Ar+ with CF3 radical.

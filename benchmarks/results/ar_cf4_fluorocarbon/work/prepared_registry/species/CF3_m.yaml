@@ -1,0 +1,50 @@
+schema_version: 1
+id: CF3-
+display_name: CF3-
+composition:
+  C: 1
+  F: 3
+charge: -1
+classes:
+- negative_ion
+- molecular_ion
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 69.0064486
+    unit: amu
+    source: CF3 mass plus electron mass
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: null
+    unit: D
+    source: null
+  collision_radius_A:
+    value: 2.2
+    unit: A
+    source: reuse CF3 radius estimate
+    quality: estimated
+  enthalpy_formation_eV:
+    value: -6.694108733947481
+    unit: eV
+    source: derived from CF3 ΔfH° and EA=1.82 eV
+    quality: estimated
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  electron_affinity_eV:
+    value: 1.82
+    unit: eV
+    source: Deyerl/Alconcel/Continetti, J. Phys. Chem. A 105, 552-557 (2001)
+metadata:
+  status: estimated
+  notes:
+  - CF3- is observed in CF4 dissociative attachment studies; downstream pair data
+    are not yet complete.

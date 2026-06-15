@@ -1,14 +1,73 @@
 # Data Sources
 
 Prepare and enrich workflows may read optional local data sources and write
-reviewable outputs under `prepared_registry/` or report files. Normal
-`reactgen generate` remains local-registry-only and does not access online
-services.
+reviewable outputs under a workspace. Normal `reactgen generate` remains
+local-registry-only and does not access online services.
+
+## Source Profiles
+
+Source profiles define provider order and simple status policy. Built-in
+profiles live under `registry/rules/source_profiles/`:
+
+- `local_only`
+- `experimental_first`
+- `internal_first`
+
+Profiles can include provider names such as `local_registry`,
+`internal_property_db`, `nist_snapshot`, `argonne_atct_snapshot`,
+`chemicals_optional`, `ion_reaction_table`, `local_assets`, and
+`lxcat_offline`. Some providers also need local configuration blocks, for
+example:
+
+```yaml
+properties:
+  - local_registry
+  - nist_snapshot
+nist_snapshot:
+  root: external_data/nist
+```
+
+Unknown or missing profile names fall back to `local_only`.
+
+## Source Governance
+
+External and internal data source governance is recorded in:
+
+```text
+external_data/source_catalog.yaml
+```
+
+The catalog classifies currently mentioned sources by category, allowed use,
+license-review requirement, API-key requirement, redistribution risk, and
+default status. Validate it with:
+
+```powershell
+python -m external_data_tools.source_catalog_check external_data/source_catalog.yaml
+```
+
+Sources with public API access, commercial terms, high redistribution risk, or
+unknown redistribution risk must not be treated as bundled production data.
+
+External acquisition setup is configured separately in:
+
+```text
+external_data/source_access_profiles.yaml
+```
+
+Check it with:
+
+```powershell
+python -m external_data_tools.source_setup --config external_data/source_access_profiles.yaml --check
+```
+
+This setup layer can install the optional `chemicals` package only with an
+explicit flag and can run explicit URL downloads only when policy allows it.
+It does not make core generation call online databases.
 
 ## Enrich Command
 
-`reactgen enrich` runs the prepare workflow and configured local/offline
-enrichers into a workspace:
+`reactgen enrich` runs prepare plus configured local/offline enrichers into a
+workspace:
 
 ```powershell
 reactgen enrich CASE `
@@ -17,129 +76,94 @@ reactgen enrich CASE `
   --source-profile experimental_first
 ```
 
-The command creates a local working registry at `workspace/prepared_registry/`,
-then writes `workspace/prepare_report.yaml` and
-`workspace/enrichment_report.yaml`. It does not call online services, mutate the
-curated `registry/`, or promote prepared data back into curated files.
-
-Configured local providers are used only when their source profile entries and
-local configuration are available. Supported local/offline inputs include local
-registry data, internal file snapshots, NIST snapshots, optional local
-`chemicals` package data, ion reaction tables, and already imported/local
-cross-section assets. The resulting `prepared_registry/` is intended to be
-usable as the registry input to `reactgen generate` for review runs.
-
-## Source Cache Manifest
-
-Imported local files can be recorded under a workspace cache directory:
+The command writes:
 
 ```text
-workspace/source_cache/
-  manifest.yaml
-  <source_name>/<safe_file_name>_<sha12>.ext
+workspace/prepared_registry/
+workspace/prepare_report.yaml
+workspace/enrichment_report.yaml
 ```
 
-The helper `record_source_file(cache_root, source_name, original_path)` computes
-the source file SHA-256, copies the original file into the cache, and appends a
-record to `manifest.yaml`:
+It does not call online services, mutate curated `registry/`, or promote
+prepared data. The prepared registry can be passed to `reactgen generate` for a
+review run:
 
-```yaml
-schema_version: 1
-source_files:
-  - source_type: local_file_cache
-    source_name: lxcat_offline
-    original_path: external_data/lxcat/e_cf4.csv
-    cached_path: lxcat_offline/e_cf4_0123456789ab.csv
-    sha256: ...
-    imported_at: ...
+```powershell
+reactgen generate CASE --registry workspace/prepared_registry --output workspace/outputs
 ```
 
-Repeated imports are allowed. If a file with the same SHA-256 is already in the
-manifest, a note is added to the new manifest entry instead of trying to resolve
-or deduplicate the records. The source cache is local YAML plus copied files; it
-does not require a database server and never mutates curated `registry/` files.
+## Implemented Core Prepare Providers
 
-`reactgen import-cross-sections` records its input file in this cache and also
-writes the cache record into the cross-section metadata sidecar. Prepare-time
-local file inputs such as internal file DB snapshots and ion reaction tables are
-recorded in the prepare report when practical. Future import commands, such as a
-literature-candidate importer, should use the same helper.
+### Local Registry
 
-## NIST Snapshot Files
+`local_registry` providers expose existing `FileRegistry` species, properties,
+reaction channels, and local cross-section asset links. They are read-only and
+are the safest default source.
 
-The NIST snapshot adapter is a local file reader. It does not scrape NIST
-websites, call NIST online services, or download public database content. Users
-prepare snapshot YAML files themselves under a directory such as:
+### Internal File Data
+
+`internal_file` providers read local YAML/JSON/CSV files under a configured
+directory, for example:
 
 ```text
-external_data/nist/
-  species_properties.yaml
-  atomic_properties.yaml
-  README.md
+internal_data/
+  species/species.yaml
+  properties/properties.yaml
+  reactions/electron.yaml
+  reactions/ion_neutral.yaml
+  cross_sections/index.yaml
 ```
 
-Enable the snapshot in a source profile:
+Use this for company/local curated data without SQL, REST, or network access.
 
-```yaml
-properties:
-  - local_registry
-  - internal_property_db
-  - nist_snapshot
-  - chemicals_optional
-nist_snapshot:
-  root: external_data/nist
-```
+### NIST Snapshot Files
 
-The adapter accepts only clearly documented local units: `eV`, `amu`, `D`, and
-`A3`. Records with other units are skipped and reported as unresolved by the
-provider. Users are responsible for licensing, citation, and redistribution
-requirements for any NIST-derived local snapshots they prepare.
+`nist_snapshot` reads manually prepared local snapshot YAML. It does not scrape
+NIST websites, call NIST services, or download NIST data.
 
-## PubChem Provider Skeleton
+Accepted property units are intentionally narrow: `eV`, `amu`, `D`, and `A3`.
+Users are responsible for licensing, citation, and redistribution requirements
+for any NIST-derived local snapshots.
 
-`PubChemProvider` is currently a disabled extension point for future identity
-and property enrichment. It does not import `requests` or `httpx`, does not make
-HTTP calls, and returns empty candidate lists by default.
+### Argonne/ATcT-Style Thermochemistry Snapshots
 
-Configuration placeholder:
+`argonne_atct_snapshot` reads local thermochemistry snapshots with explicit
+values such as `enthalpy_formation_eV`, `ionization_energy_eV`, and
+`electron_affinity_eV`. The reaction energetics helper can fill missing
+ion-neutral `deltaE_products_minus_reactants_eV` in a prepared registry only
+when all required enthalpies are available from explicit sources.
 
-```yaml
-species_identity:
-  - local_registry
-  - pubchem_offline
-properties:
-  - local_registry
-  - pubchem_online
-pubchem:
-  enabled: false
-  mode: online
-  cache_dir: external_data/pubchem/cache
-```
+These snapshots require license/citation review before benchmark use.
 
-Future PubChem support should be limited to explicit `prepare` or `enrich`
-workflows, never `reactgen generate`. Any online adapter should write and reuse
-a local cache under `cache_dir` so repeated enrichment remains reviewable and
-reproducible. Normal workflows must continue to work when PubChem is unavailable
-or disabled.
+### Optional Chemicals Provider
 
-## Offline Cross-Section Tables
+`chemicals_optional` / `chemicals_local` can use the optional Python
+`chemicals` package for conservative identity and basic property candidates.
+The package is imported lazily and is not a core dependency. If unavailable, the
+provider returns no candidates and prepare/enrich continues.
 
-`reactgen import-cross-sections` imports simple local CSV or TSV files into a
-workspace `prepared_registry` asset directory. It does not log in to LXCat,
-download data, scrape websites, call APIs, or compute cross sections.
+This provider should rank below curated local, internal, NIST, and ATcT-style
+sources. It does not provide plasma cross sections.
 
-Supported v1 columns are:
+### Chemical Identity Snapshot
 
-```text
-energy_eV,cross_section_m2
-```
+`chemical_identity_snapshot` reads local merged identity snapshots and can merge
+aliases, identifiers, and ontology tags into prepared species metadata. It does
+not overwrite conflicting composition/formula data; conflicts are reported.
 
-Optional columns such as `process`, `target`, `reaction_id`, `source`, and
-`comment` may be present, but only `energy_eV` and `cross_section_m2` are written
-to the normalized table. The importer validates numeric energies, non-negative
-cross sections, sortable energy grids, and at least two rows.
+### Ion Reaction Tables
 
-Example:
+`ion_reaction_table` reads local YAML ion-neutral reaction tables. It is useful
+for internally reviewed literature tables or converted local snapshots. Reaction
+enrichment validates species references, charge balance, and element balance
+before writing channels into `prepared_registry`.
+
+## Cross-Section Assets
+
+### Import Local Tables
+
+`reactgen import-cross-sections` imports simple local CSV/TSV files into
+workspace assets:
 
 ```powershell
 reactgen import-cross-sections external_data/lxcat/e_cf4.csv `
@@ -149,6 +173,12 @@ reactgen import-cross-sections external_data/lxcat/e_cf4.csv `
   --target CF4
 ```
 
+Supported v1 columns:
+
+```text
+energy_eV,cross_section_m2
+```
+
 The command writes:
 
 ```text
@@ -156,14 +186,13 @@ workspace/prepared_registry/assets/cross_sections/<safe_name>.csv
 workspace/prepared_registry/assets/cross_sections/<safe_name>.metadata.yaml
 ```
 
-If `--reaction-id` matches a channel under
-`workspace/prepared_registry/reactions/`, only that prepared registry channel is
-linked to the imported asset. Curated `registry/` files are never modified.
+If `--reaction-id` matches a channel in the prepared registry, only that
+prepared channel is linked. Curated `registry/` files are never modified.
 
-## Cross-Section Mapping Files
+### Apply Reviewed Mappings
 
-For reviewed manual mappings, use `reactgen apply-cross-section-mapping` with a
-simple YAML file:
+`reactgen apply-cross-section-mapping` applies reviewed YAML mappings to
+prepared electron channels:
 
 ```yaml
 schema_version: 1
@@ -173,175 +202,112 @@ mappings:
     source: lxcat_offline
     mapping_status: reviewed
     process_label_original: DISSOCIATION
-    notes:
-      - Mapped manually from local LXCat export.
 ```
-
-Apply it to a workspace:
 
 ```powershell
 reactgen apply-cross-section-mapping mapping.yaml --workspace workspace
 ```
 
-Only `workspace/prepared_registry/reactions/electron/*.yaml` is scanned. There
-is no fuzzy matching, no online access, and no updates to curated `registry/`
-files. Missing reaction ids or missing asset paths are reported as unresolved.
+There is no fuzzy matching and no curated registry mutation.
 
-## Property Enrichment
+### LXCat Offline Index
 
-Prepare workflows can fill missing species properties in `prepared_registry`
-from configured local providers. Enrichment is intentionally simple: provider
-order follows the source profile, the first non-null candidate with the expected
-unit is used, and existing non-null curated values are never overwritten.
+`lxcat_offline` reads a local index YAML and returns candidates pointing to
+local files. It does not log in to LXCat, scrape LXCat, download data, compute
+cross sections, or run a Boltzmann solver.
 
-When a provider offers a different value for an already populated property, the
-value is left untouched and a `property_conflict` item is written to the prepare
-report for manual review. Unsupported units are skipped. `collision_radius_A` is
-not estimated automatically; it is filled only when an explicit provider returns
-a value in angstroms, otherwise it remains unresolved for DNT readiness.
+## Property And Reaction Enrichment
 
-## Reaction Enrichment
+Property enrichment fills missing or null prepared species properties from
+configured providers. Existing non-null values are not overwritten. Conflicting
+candidate values are reported as `property_conflict` for manual review.
 
-Prepare workflows may import reviewed reaction channels from configured local
-providers into `prepared_registry/reactions/`. The enrichment step reuses the
-existing collision pair selection logic from the case config, asks providers in
-source-profile order, and writes only channels whose species references, charge
-balance, and element balance validate.
+Reaction enrichment imports configured local reaction candidates into
+`prepared_registry/reactions/`. Existing channel IDs are not overwritten, and
+invalid species references, charge imbalance, or element imbalance are skipped
+and reported.
 
-Existing prepared channels with the same id are not overwritten. If a product
-species is missing, the channel may include a simple `species_candidate` payload
-with composition, charge, classes, and optional properties; that species is
-written as a prepared seed before the channel is accepted. Channels with missing
-unresolvable products or failed validation are reported for review instead of
-being written. Curated `registry/` files and `reactgen generate` behavior are not
-changed.
+When a provider reaction references product species that are not yet registered,
+prepare/enrich can seed those product species conservatively. It first uses an
+explicit `species_candidate` embedded in the channel, then tries configured
+species identity providers by exact species id. A species is seeded only when
+composition and charge are present from an explicit local source. Alias-only
+matches, formula-only records, and incomplete candidates are reported for manual
+review instead of being guessed.
 
-## Ion Reaction Tables
+This means users normally provide initial gases and a source profile; they do
+not need to list every expected fragment up front. Cross sections, DNT
+properties, collision radii, and reaction energetics are still not invented.
+They remain in `missing_data.yaml` until reviewed data is imported or provided.
 
-`IonReactionTableProvider` reads simple local YAML snapshots for ion-neutral
-reaction candidates. The format is intentionally generic so that internal DB
-exports, KIDA/UMIST-like gas-phase network conversions, OpenADAS-like
-charge-exchange table conversions, or manually reviewed literature tables can be
-mapped into the same local structure. The adapter does not access KIDA, UMIST,
-OpenADAS, VAMDC, or any online service.
+## Source Cache Manifest
 
-Example:
+Local source files may be copied into a workspace cache:
 
-```yaml
-schema_version: 1
-source:
-  source_type: local_snapshot
-  database: internal_ion_reaction_db
-  version: 2026-06
-reactions:
-  - id: Arp_CF4_dct_CF3p
-    projectile: Ar+
-    target: CF4
-    family: ion_neutral
-    type: dissociative_charge_transfer
-    dnt_class: short_range_charge_exchange
-    products:
-      - species: Ar
-        n: 1
-      - species: CF3+
-        n: 1
-      - species: F
-        n: 1
-    deltaE_products_minus_reactants_eV: -1.0891
-    status: literature_supported
-    evidence_type: experimental_or_literature
-    citation: local literature table
+```text
+workspace/source_cache/
+  manifest.yaml
+  <source_name>/<safe_file_name>_<sha12>.ext
 ```
 
-Configure it in a source profile:
-
-```yaml
-ion_neutral_reactions:
-  - local_registry
-  - ion_reaction_table
-ion_reaction_table:
-  files:
-    - external_data/ion_reactions/internal.yaml
-    - external_data/ion_reactions/kida_converted.yaml
-```
-
-Only `family: ion_neutral` records are used. Records without explicit
-`curated` or `literature_supported` status are treated as `imported`
-candidates. Reaction enrichment validates species references, charge balance,
-and element balance before writing any channel into `prepared_registry`; invalid
-or unresolved records are reported instead of being written.
+Cache records include original path, cached path, SHA-256, source name, and
+import timestamp. The cache is local YAML plus copied files; it is not a
+database server and does not mutate curated registry files.
 
 ## Missing-Data Plans
 
-`reactgen plan-missing` converts an existing `missing_data.yaml` report into a
-small action plan. It is a reporting command only: it does not fetch data, call
-online services, change diagnostics, or mutate any registry files.
-
-Example:
+`reactgen plan-missing` converts an existing `missing_data.yaml` into a small
+action plan:
 
 ```powershell
 reactgen plan-missing cases/ar_cf4/outputs --output missing_plan.yaml
 ```
 
-The input may be either `missing_data.yaml` itself or an output directory that
-contains it. The resulting `missing_plan.yaml` groups items into a few reviewed
-actions: `seed_species`, `enrich_properties`, `import_cross_sections`,
-`review_reaction_energetics`, and `manual_review`. Command hints are deliberately
-lightweight; they point to the relevant prepare, enrich, import, or review step
-without performing it automatically.
+The output groups missing items into actions such as `seed_species`,
+`enrich_properties`, `import_cross_sections`,
+`review_reaction_energetics`, and `manual_review`. It does not fetch data.
 
 ## Promotion Workflow
 
 `reactgen promote` copies only explicitly reviewed prepared or candidate records
-into curated `registry/`. The default mode is dry-run, so registry files are not
-mutated unless `--apply` is provided.
+into curated `registry/`. The default mode is dry-run; `--apply` is required for
+mutation.
 
-Example decision file:
+Existing curated species and channels are not overwritten. Provenance fields
+are preserved by copying reviewed payloads rather than rebuilding them.
 
-```yaml
-schema_version: 1
-decisions:
-  - kind: species
-    id: CF3
-    action: promote
-    target_status: literature_supported
-    notes:
-      - reviewed by domain expert
-  - kind: reaction_channel
-    id: e_CF4_dissociation_CF3_F
-    pair:
-      family: electron
-      projectile: e
-      target: CF4
-    action: promote
-    target_status: literature_supported
-  - kind: species
-    id: speculative_fragment
-    action: reject
-```
+## External Data Tools
 
-Dry-run:
+`external_data_tools/` is outside the core package. It contains optional tools
+for explicit URL downloads, raw file caching, snapshot planning/validation, and
+local conversion workflows. These tools are not imported by `reactgen generate`.
 
-```powershell
-reactgen promote workspace/prepared_registry `
-  --registry registry `
-  --decision review_decisions.yaml
-```
+Implemented external tools include:
 
-Apply:
+- PubChem identity snapshot fetch/normalize
+- NIST snapshot plan/validate
+- LXCat/manual raw cross-section import
+- OpenADAS raw file registration
+- VAMDC raw query capture
+- KIDA/UMIST-like local network conversion
+- Argonne/ATcT-style thermochemistry plan/validate
+- chemical identity fetch/normalize skeletons
 
-```powershell
-reactgen promote workspace/prepared_registry `
-  --registry registry `
-  --decision review_decisions.yaml `
-  --apply
-```
+External outputs must be reviewed before use in prepare/enrich workflows.
 
-Species are copied only when the curated registry does not already contain that
-species. Reaction channels are appended only when the corresponding curated pair
-file does not already contain the channel id. Existing curated files and channels
-are never overwritten, and conflicts are reported in
-`workspace/promote_report.yaml` for manual review. Provenance fields such as
-`data.provenance`, `data.evidence`, `data.source_record`, `confidence`, and
-`inference` are preserved by copying the reviewed payload rather than rebuilding
-it.
+## Potential Future Adapters
+
+These are not production-ready core adapters:
+
+- Core `PubChemProvider`: disabled placeholder that returns empty candidate
+  lists and performs no network calls.
+- ChemSpider online fetch: skeleton only; requires explicit credentials before
+  any future implementation.
+- OPSIN and NCI/Cactus online resolvers: disabled external skeletons.
+- VAMDC conversion into registry-ready chemistry: raw query capture exists, but
+  full XSAMS parsing/conversion is future work.
+- Full OpenADAS parsing: raw file registration and mapping skeletons exist, but
+  broad ADF parsing is future work.
+- Automatic LXCat login/download/scraping: intentionally not implemented.
+
+Do not treat these placeholders as validated production data sources.

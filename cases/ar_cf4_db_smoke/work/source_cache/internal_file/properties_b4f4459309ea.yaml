@@ -1,0 +1,50 @@
+- species: CF4
+  property: polarizability_A3
+  value: 2.824
+  unit: A3
+  source: synthetic Ar/CF4 smoke fixture mirroring reviewed local registry value
+  evidence_type: test_fixture
+  status: imported
+  source_record:
+    source_type: internal_file_db
+    source_id: smoke_fixture_property:CF4:polarizability_A3
+- species: CF4
+  property: dipole_moment_D
+  value: 0.0
+  unit: D
+  source: synthetic Ar/CF4 smoke fixture; CF4 symmetry check value
+  evidence_type: test_fixture
+  status: imported
+  source_record:
+    source_type: internal_file_db
+    source_id: smoke_fixture_property:CF4:dipole_moment_D
+- species: CF4
+  property: collision_radius_A
+  value: 2.35
+  unit: A
+  source: synthetic Ar/CF4 smoke fixture mirroring local registry DNT seed
+  evidence_type: test_fixture
+  status: imported
+  source_record:
+    source_type: internal_file_db
+    source_id: smoke_fixture_property:CF4:collision_radius_A
+- species: Ar
+  property: polarizability_A3
+  value: 1.6411
+  unit: A3
+  source: synthetic Ar/CF4 smoke fixture mirroring reviewed local registry value
+  evidence_type: test_fixture
+  status: imported
+  source_record:
+    source_type: internal_file_db
+    source_id: smoke_fixture_property:Ar:polarizability_A3
+- species: Ar
+  property: collision_radius_A
+  value: 1.7025
+  unit: A
+  source: synthetic Ar/CF4 smoke fixture mirroring local registry DNT seed
+  evidence_type: test_fixture
+  status: imported
+  source_record:
+    source_type: internal_file_db
+    source_id: smoke_fixture_property:Ar:collision_radius_A

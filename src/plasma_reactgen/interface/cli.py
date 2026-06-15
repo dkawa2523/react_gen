@@ -29,8 +29,10 @@ from plasma_reactgen.infrastructure.indexer import build_indexes, check_registry
 from plasma_reactgen.infrastructure.yaml_writer import write_yaml_outputs
 from plasma_reactgen.preparation.cross_section_mapping import apply_cross_section_mappings
 from plasma_reactgen.preparation.enricher import enrich_case
+from plasma_reactgen.preparation.input_templates import generate_missing_input_templates
 from plasma_reactgen.preparation.missing_plan import write_missing_plan
 from plasma_reactgen.preparation.promote import promote_reviewed_registry
+from plasma_reactgen.data_sources.source_listing import build_source_list_report, format_source_list_report
 from plasma_reactgen.visualization.network import GraphvizOptions
 from plasma_reactgen.visualization.writer import write_visualizations
 
@@ -98,6 +100,14 @@ def main(argv: list[str] | None = None) -> int:
     mplan.add_argument("outputs_or_missing_data", type=Path, help="outputs directory or missing_data.yaml file")
     mplan.add_argument("--output", type=Path, default=Path("missing_plan.yaml"), help="destination missing_plan.yaml")
 
+    tmissing = sub.add_parser("template-missing", help="write manual fill-in templates from missing_data.yaml")
+    tmissing.add_argument("outputs_or_missing_data", type=Path, help="outputs directory or missing_data.yaml file")
+    tmissing.add_argument("--output-dir", type=Path, default=Path("manual_inputs"), help="destination directory for templates")
+
+    slist = sub.add_parser("source-list", help="show source-provider status for a source profile")
+    slist.add_argument("--source-profile", default="local_only", help="source profile name or YAML path")
+    slist.add_argument("--registry", type=Path, default=Path("registry"), help="local registry root")
+
     promote = sub.add_parser("promote", help="promote reviewed prepared/candidate registry items into curated registry")
     promote.add_argument("prepared_registry", type=Path, help="prepared_registry or candidate_registry root")
     promote.add_argument("--registry", type=Path, default=Path("registry"), help="curated registry root")
@@ -158,6 +168,10 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_apply_cross_section_mapping(args.mapping_file, args.workspace)
     if args.command == "plan-missing":
         return _cmd_plan_missing(args.outputs_or_missing_data, args.output)
+    if args.command == "template-missing":
+        return _cmd_template_missing(args.outputs_or_missing_data, args.output_dir)
+    if args.command == "source-list":
+        return _cmd_source_list(args.source_profile, args.registry)
     if args.command == "promote":
         return _cmd_promote(
             prepared_registry=args.prepared_registry,
@@ -220,8 +234,16 @@ def _cmd_generate(
     print(f"Generated outputs: {output_dir}")
     print(f"  species: {len(network.species_nodes)}")
     print(f"  reactions: {len(network.reactions)}")
+    print(f"  electron_reactions: {sum(1 for reaction in network.reactions if reaction.family == 'electron')}")
+    print(f"  ion_neutral_reactions: {sum(1 for reaction in network.reactions if reaction.family == 'ion_neutral')}")
+    print(f"  pairs_found: {sum(1 for item in network.coverage if item.status == 'found')}")
+    print(f"  pairs_missing: {sum(1 for item in network.coverage if item.status == 'missing')}")
     print(f"  dnt_tasks: {len(dnt_tasks)}")
+    print(f"  dnt_ready_pairs: {_count_ready_dnt_pairs(dnt_tasks)}")
+    print(f"  reactions_with_cross_section_asset: {_count_reactions_with_cross_section_asset(network)}")
+    print(f"  electron_reactions_missing_cross_section: {_count_electron_reactions_missing_cross_section(network)}")
     print(f"  missing_data_items: {len(missing_data)}")
+    print(f"  quality_summary: {output_dir / 'quality_summary.yaml'}")
     if dnt_inputs is not None:
         _print_dnt_input_summary(dnt_output_dir, dnt_inputs)
 
@@ -258,9 +280,16 @@ def _cmd_enrich(input_path: Path, registry_root: Path, workspace: Path, source_p
     )
     print(f"Enriched prepared registry: {workspace / 'prepared_registry'}")
     print(f"  source_profile: {report['source_profile']}")
+    print(f"  species_seeded_from_reactions: {report['summary'].get('species_seeded_from_reactions', 0)}")
     print(f"  properties_filled: {report['summary']['properties_filled']}")
+    print(f"  properties_filled_for_seeded_species: {report['summary'].get('properties_filled_for_seeded_species', 0)}")
+    print(f"  property_conflicts: {report['summary']['property_conflicts']}")
     print(f"  reaction_channels_imported: {report['summary']['reaction_channels_imported']}")
+    print(f"  cross_section_assets_registered: {report['summary']['cross_section_assets_registered']}")
+    print(f"  unresolved_product_species: {report['summary'].get('unresolved_product_species', 0)}")
     print(f"  unresolved_items: {report['summary']['unresolved_items']}")
+    print(f"  prepare_report: {workspace / 'prepare_report.yaml'}")
+    print(f"  enrichment_report: {workspace / 'enrichment_report.yaml'}")
     print("  registry_mutated: false")
     print("  auto_promoted: false")
     return 0
@@ -299,10 +328,13 @@ def _cmd_import_cross_sections(
     )
     print(f"Imported cross-section table: {result.asset_path}")
     print(f"  metadata: {result.metadata_path}")
+    print(f"  registry_asset_path: {result.relative_asset_path}")
     print(f"  rows: {result.row_count}")
     print(f"  registry_mutated: false")
     if reaction_id:
         print(f"  prepared_reaction_files_linked: {len(result.linked_reaction_files)}")
+        if not result.linked_reaction_files:
+            print("  link_status: reaction_id not found in prepared_registry; use apply-cross-section-mapping after review")
     return 0
 
 
@@ -312,6 +344,7 @@ def _cmd_apply_cross_section_mapping(mapping_file: Path, workspace: Path) -> int
         mapping_file=mapping_file,
     )
     print(f"Applied cross-section mappings: {mapping_file}")
+    print(f"  mappings: {report['summary']['n_mappings']}")
     print(f"  updated: {report['summary']['n_updated']}")
     print(f"  unresolved: {report['summary']['n_unresolved']}")
     print("  registry_mutated: false")
@@ -323,7 +356,27 @@ def _cmd_plan_missing(outputs_or_missing_data: Path, output: Path) -> int:
     print(f"Wrote missing-data enrichment plan: {output}")
     print(f"  total_missing_items: {plan['summary']['total_missing_items']}")
     print(f"  suggested_actions: {plan['summary']['suggested_actions']}")
+    for action in plan.get("actions", [])[:5]:
+        print(f"  action[{action['priority']}]: {action['action']} ({len(action['subjects'])} subjects)")
     print("  data_fetched: false")
+    return 0
+
+
+def _cmd_template_missing(outputs_or_missing_data: Path, output_dir: Path) -> int:
+    report = generate_missing_input_templates(outputs_or_missing_data, output_dir)
+    print(f"Wrote manual missing-data templates: {output_dir}")
+    print(f"  missing_items: {report['summary']['n_missing_items']}")
+    print(f"  species_property_records: {report['summary']['n_species_property_records']}")
+    print(f"  cross_section_mappings: {report['summary']['n_cross_section_mappings']}")
+    print(f"  reaction_energetics_records: {report['summary']['n_reaction_energetics_records']}")
+    print("  data_fetched: false")
+    print("  registry_mutated: false")
+    return 0
+
+
+def _cmd_source_list(source_profile: str, registry: Path) -> int:
+    report = build_source_list_report(source_profile, registry)
+    print(format_source_list_report(report))
     return 0
 
 
@@ -336,8 +389,10 @@ def _cmd_promote(prepared_registry: Path, registry: Path, decision: Path, apply:
     )
     report_path = prepared_registry.parent / "promote_report.yaml"
     print(f"Wrote promote report: {report_path}")
+    print(f"  mode: {'apply' if apply else 'dry_run'}")
     print(f"  promoted_species: {report['summary']['n_promoted_species']}")
     print(f"  promoted_channels: {report['summary']['n_promoted_channels']}")
+    print(f"  rejected: {report['summary']['n_rejected']}")
     print(f"  conflicts: {report['summary']['n_conflicts']}")
     print(f"  registry_mutated: {str(report['registry_mutated']).lower()}")
     return 0
@@ -361,6 +416,27 @@ def _print_dnt_input_summary(
     if include_statuses:
         for status in READY_STATUSES:
             print(f"  {status}: {summary[status]}")
+
+
+def _count_ready_dnt_pairs(dnt_tasks: list[dict]) -> int:
+    return sum(1 for task in dnt_tasks if task.get("readiness", {}).get("status") == "ready")
+
+
+def _count_reactions_with_cross_section_asset(network) -> int:
+    return sum(1 for reaction in network.reactions if _has_cross_section_asset(reaction.data))
+
+
+def _count_electron_reactions_missing_cross_section(network) -> int:
+    return sum(
+        1
+        for reaction in network.reactions
+        if reaction.family == "electron" and not _has_cross_section_asset(reaction.data)
+    )
+
+
+def _has_cross_section_asset(data: dict) -> bool:
+    cross_section = data.get("cross_section") if isinstance(data, dict) else None
+    return isinstance(cross_section, dict) and bool(cross_section.get("path"))
 
 
 def _build_network_dependencies(registry: FileRegistry, config) -> NetworkBuilderDependencies:

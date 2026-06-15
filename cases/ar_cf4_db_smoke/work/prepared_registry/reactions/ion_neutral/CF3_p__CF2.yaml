@@ -1,0 +1,33 @@
+schema_version: 1
+pair:
+  family: ion_neutral
+  projectile: CF3+
+  target: CF2
+channels:
+- id: CF3p_CF2_elastic
+  type: elastic
+  products:
+  - species: CF3+
+    n: 1
+  - species: CF2
+    n: 1
+  status: estimated
+  dnt_class: elastic
+  deltaE_products_minus_reactants_eV: 0.0
+- id: CF3p_CF2_charge_transfer_CF2p
+  type: charge_transfer
+  products:
+  - species: CF3
+    n: 1
+  - species: CF2+
+    n: 1
+  status: estimated
+  dnt_class: short_range_charge_exchange
+  deltaE_products_minus_reactants_eV: 2.312
+  notes:
+  - Endothermic charge-transfer estimate; included to demonstrate generated-ion/generated-neutral
+    pair handling.
+metadata:
+  status: estimated
+  notes:
+  - No public cross-section set identified in this pass.

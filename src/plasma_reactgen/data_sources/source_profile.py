@@ -28,10 +28,56 @@ _PUBCHEM_PLACEHOLDER = {
     "cache_dir": "external_data/pubchem/cache",
 }
 
+_COMMON_DISABLED_SOURCES = [
+    "pubchem_online",
+    "vamdc",
+    "openadas",
+]
+
+_COMMON_EXTERNAL_ONLY_SOURCES = [
+    "pubchem_fetch",
+    "lxcat_raw_import",
+    "openadas_raw_import",
+    "vamdc_query",
+]
+
+_LOCAL_METADATA = {
+    "active_sources": [
+        "local_registry",
+        "local_assets",
+    ],
+    "optional_sources": [
+        "internal_file",
+        "nist_snapshot",
+        "chemicals_optional",
+    ],
+    "disabled_sources": _COMMON_DISABLED_SOURCES,
+    "external_only_sources": _COMMON_EXTERNAL_ONLY_SOURCES,
+}
+
+_ENRICHMENT_METADATA = {
+    "active_sources": [
+        "local_registry",
+        "local_assets",
+    ],
+    "optional_sources": [
+        "internal_file",
+        "chemical_identity_snapshot",
+        "nist_snapshot",
+        "argonne_atct_snapshot",
+        "chemicals_optional",
+        "lxcat_offline",
+        "ion_reaction_table",
+    ],
+    "disabled_sources": _COMMON_DISABLED_SOURCES,
+    "external_only_sources": _COMMON_EXTERNAL_ONLY_SOURCES,
+}
+
 _BUILTIN_PROFILES: dict[str, dict[str, Any]] = {
     "local_only": {
         "schema_version": 1,
         "name": "local_only",
+        **_LOCAL_METADATA,
         "species_identity": ["local_registry"],
         "properties": ["local_registry"],
         "electron_cross_sections": ["local_assets"],
@@ -42,6 +88,7 @@ _BUILTIN_PROFILES: dict[str, dict[str, Any]] = {
     "experimental_first": {
         "schema_version": 1,
         "name": "experimental_first",
+        **_ENRICHMENT_METADATA,
         "species_identity": [
             "local_registry",
             "internal_species_db",
@@ -71,6 +118,7 @@ _BUILTIN_PROFILES: dict[str, dict[str, Any]] = {
     "internal_first": {
         "schema_version": 1,
         "name": "internal_first",
+        **_ENRICHMENT_METADATA,
         "species_identity": [
             "internal_species_db",
             "local_registry",

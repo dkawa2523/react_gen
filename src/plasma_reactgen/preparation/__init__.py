@@ -1,5 +1,6 @@
 from plasma_reactgen.preparation.cross_section_mapping import apply_cross_section_mappings
 from plasma_reactgen.preparation.enricher import enrich_case
+from plasma_reactgen.preparation.input_templates import generate_missing_input_templates
 from plasma_reactgen.preparation.missing_plan import build_missing_plan, write_missing_plan
 from plasma_reactgen.preparation.preparer import prepare_case
 from plasma_reactgen.preparation.property_enrichment import enrich_species_properties
@@ -12,6 +13,7 @@ __all__ = [
     "enrich_case",
     "enrich_reaction_channels",
     "enrich_species_properties",
+    "generate_missing_input_templates",
     "prepare_case",
     "promote_reviewed_registry",
     "write_missing_plan",

@@ -1,0 +1,9 @@
+schema_version: 1
+mappings:
+  - reaction_id: e_CF4_elastic
+    asset_path: assets/cross_sections/e_CF4_elastic_ad89a4ea17.csv
+    source: local_file
+    mapping_status: reviewed
+    process_label_original: ELASTIC
+    notes:
+      - Synthetic fixture mapping. The suffix is the first 10 SHA-256 characters of the included CSV.

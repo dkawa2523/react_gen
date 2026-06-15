@@ -1,0 +1,26 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: SF3
+channels:
+- id: e_SF3_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: SF3
+    n: 1
+  threshold_eV: 0.0
+  status: imported
+  data:
+    fixture_note: synthetic workflow benchmark only; added to exercise depth-3 expansion
+    source_record: &id001
+      source_type: internal_file_db
+      source_id: internal_reaction:e_SF3_elastic
+    provenance: *id001
+  source_record: *id001
+metadata:
+  status: prepared
+  notes:
+  - Prepared reaction enrichment; curated registry was not mutated.

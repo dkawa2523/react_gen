@@ -1,0 +1,120 @@
+schema_version: 1
+case:
+  name: sf6_o2_electronegative
+summary:
+  n_dnt_pairs: 4
+  n_ready_pairs: 4
+  n_pairs_with_missing_properties: 0
+dnt_tasks:
+- pair_id: Ar+__Ar
+  ion: Ar+
+  neutral: Ar
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_Ar_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: Ar
+      n: 1.0
+  - reaction_id: Arp_Ar_resonant_charge_exchange
+    type: charge_transfer
+    dnt_class: resonant_charge_exchange
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar
+      n: 1.0
+    - species: Ar+
+      n: 1.0
+- pair_id: Ar+__F
+  ion: Ar+
+  neutral: F
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_F_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: F
+      n: 1.0
+  - reaction_id: Arp_F_charge_transfer_Fp
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: 1.6632
+    products:
+    - species: Ar
+      n: 1.0
+    - species: F+
+      n: 1.0
+- pair_id: Ar+__O2
+  ion: Ar+
+  neutral: O2
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_O2_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: O2
+      n: 1.0
+  - reaction_id: Arp_O2_charge_transfer
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: null
+    products:
+    - species: Ar
+      n: 1.0
+    - species: O2+
+      n: 1.0
+- pair_id: Ar+__SF6
+  ion: Ar+
+  neutral: SF6
+  model_variant: dnt_plus
+  readiness:
+    status: ready
+    missing:
+      ion: []
+      neutral: []
+  channels:
+  - reaction_id: Arp_SF6_elastic
+    type: elastic
+    dnt_class: elastic
+    deltaE_products_minus_reactants_eV: 0.0
+    products:
+    - species: Ar+
+      n: 1.0
+    - species: SF6
+      n: 1.0
+  - reaction_id: Arp_SF6_charge_transfer
+    type: charge_transfer
+    dnt_class: long_range_charge_exchange
+    deltaE_products_minus_reactants_eV: null
+    products:
+    - species: Ar
+      n: 1.0
+    - species: SF6+
+      n: 1.0

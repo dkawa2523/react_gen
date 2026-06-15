@@ -1,0 +1,17 @@
+schema_version: 1
+python:
+  install_optional_dependencies: false
+  requirements:
+    - external_data_tools/requirements-external.txt
+    - external_data_tools/requirements-solvers.txt
+external_solvers:
+  config: benchmarks/external_solvers.example.yaml
+data_requirements:
+  config: benchmarks/data_requirements_semiconductor.yaml
+downloads:
+  manifest: external_data/downloads/semiconductor_benchmark_downloads.yaml
+policies:
+  allow_network_downloads: false
+  allow_system_package_install: false
+  fail_if_required_data_missing: true
+  fail_if_required_solver_missing: false

@@ -1,0 +1,10 @@
+subject_kind,subject_id,field,required_by,severity,message
+asset,e_Ar_elastic,data.cross_section.path,electron_collision,warning,Cross-section source is registered but numeric table has not been imported yet.
+asset,e_Ar_excitation_4s_lumped,data.cross_section.path,electron_collision,warning,Cross-section source is registered but numeric table has not been imported yet.
+asset,e_Ar_ionization,data.cross_section.path,electron_collision,warning,Cross-section source is registered but numeric table has not been imported yet.
+reaction,e_O2_ionization,data.cross_section,electron_collision,warning,Electron-collision channel has no cross-section reference.
+reaction,e_O2_dissociation_O_O,data.cross_section,electron_collision,warning,Electron-collision channel has no cross-section reference.
+reaction,e_O2_attachment_Om_O,data.cross_section,electron_collision,warning,Electron-collision channel has no cross-section reference.
+reaction,e_O_ionization,data.cross_section,electron_collision,warning,Electron-collision channel has no cross-section reference.
+reaction,Arp_O2_charge_transfer,deltaE_products_minus_reactants_eV,dnt_task,warning,Reaction energy is not registered. DNT+/DNT+DM calculation may need it.
+reaction,Op_O2_association_O3p,deltaE_products_minus_reactants_eV,dnt_task,warning,Reaction energy is not registered. DNT+/DNT+DM calculation may need it.

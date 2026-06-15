@@ -1,0 +1,44 @@
+schema_version: 1
+name: sf6_o2_electronegative_fixture_profile
+active_sources:
+  - local_registry
+  - local_assets
+  - internal_file
+optional_sources: []
+disabled_sources:
+  - pubchem_online
+  - vamdc
+  - openadas
+external_only_sources:
+  - pubchem_fetch
+  - lxcat_raw_import
+  - openadas_raw_import
+  - vamdc_query
+species_identity:
+  - local_registry
+  - internal_file
+properties:
+  - local_registry
+  - internal_file
+electron_cross_sections:
+  - local_assets
+  - internal_file
+ion_neutral_reactions:
+  - local_registry
+  - internal_file
+electron_reactions:
+  - local_registry
+  - internal_file
+local_registry:
+  root: registry
+internal_file:
+  root: benchmarks/fixtures/sf6_o2_electronegative/internal_data
+policy:
+  prefer_status:
+    - curated
+    - literature_supported
+    - imported
+    - estimated
+    - inferred
+  require_review_for:
+    - synthetic_fixture_data

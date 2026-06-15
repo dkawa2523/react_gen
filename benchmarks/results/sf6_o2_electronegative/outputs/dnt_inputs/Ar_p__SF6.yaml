@@ -1,0 +1,86 @@
+schema_version: 1
+pair_id: Ar_p__SF6
+model_variant: dnt_plus
+status: ready_with_warnings
+projectile:
+  id: Ar_p
+  charge: 1
+  mass_amu: 39.94745
+  composition:
+    Ar: 1
+  properties:
+    mass_amu:
+      value: 39.94745
+      unit: amu
+      source: Ar atomic mass minus electron mass
+target:
+  id: SF6
+  charge: 0
+  mass_amu: 145.965
+  composition:
+    S: 1
+    F: 6
+  properties:
+    mass_amu:
+      value: 145.965
+      unit: amu
+      source: synthetic workflow benchmark fixture
+    polarizability_A3:
+      value: 6.54
+      unit: A3
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: null
+    collision_radius_A:
+      value: 2.75
+      unit: A
+      source: null
+pair_properties:
+  reduced_mass_amu: 31.363846473165193
+  long_range_model: ion_induced_dipole
+  missing_required_properties: []
+channels:
+- reaction_id: Arp_SF6_elastic
+  type: elastic
+  dnt_class: elastic
+  products:
+  - species: Ar_p
+    n: 1.0
+  - species: SF6
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: 0.0
+  status: imported
+  missing_for_complete_dnt:
+  - threshold_eV
+  provenance:
+    source_type: internal_file_db
+    source_id: internal_reaction:Arp_SF6_elastic
+- reaction_id: Arp_SF6_charge_transfer
+  type: charge_transfer
+  dnt_class: long_range_charge_exchange
+  products:
+  - species: Ar
+    n: 1.0
+  - species: SF6_p
+    n: 1.0
+  threshold_eV: null
+  deltaE_products_minus_reactants_eV: null
+  status: imported
+  missing_for_complete_dnt:
+  - threshold_eV
+  - deltaE_products_minus_reactants_eV
+  provenance:
+    source_type: internal_file_db
+    source_id: internal_reaction:Arp_SF6_charge_transfer
+run_config:
+  energy_grid_eV:
+    min: 0.01
+    max: 100.0
+    n: 200
+  output_cross_section_unit: cm2
+provenance:
+  generated_by: plasma-reactgen
+  source_network: network.reactions.yaml

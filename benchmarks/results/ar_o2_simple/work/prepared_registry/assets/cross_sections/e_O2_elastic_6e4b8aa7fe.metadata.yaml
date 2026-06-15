@@ -1,0 +1,22 @@
+source_type: local_file
+database: user_provided
+original_file: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\ar_o2_simple\cross_sections\e_O2_elastic.csv
+imported_at: '2026-06-15T06:46:15.353053+00:00'
+columns:
+- energy_eV
+- cross_section_m2
+units:
+  energy: eV
+  cross_section: m2
+row_count: 3
+energy_min_eV: 0.1
+energy_max_eV: 10.0
+sha256: 6e4b8aa7fef3bca902c5d53155475e79387c420a1955a0b6e18ea7de322946af
+license_note: synthetic benchmark fixture
+source_cache:
+  source_type: local_file_cache
+  source_name: local_file
+  original_path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\ar_o2_simple\cross_sections\e_O2_elastic.csv
+  cached_path: local_file\e_O2_elastic_6e4b8aa7fef3.csv
+  sha256: 6e4b8aa7fef3bca902c5d53155475e79387c420a1955a0b6e18ea7de322946af
+  imported_at: '2026-06-15T06:46:15.351405+00:00'

@@ -1,0 +1,28 @@
+schema_version: 1
+pairs:
+- pair_id: Ar_p__Ar
+  file: dnt_inputs/Ar_p__Ar.yaml
+  model_variant: dnt_plus
+  status: ready_with_warnings
+  missing_required_properties: []
+- pair_id: Ar_p__F
+  file: dnt_inputs/Ar_p__F.yaml
+  model_variant: dnt_plus
+  status: ready_with_warnings
+  missing_required_properties: []
+- pair_id: Ar_p__O2
+  file: dnt_inputs/Ar_p__O2.yaml
+  model_variant: dnt_plus
+  status: ready_with_warnings
+  missing_required_properties: []
+- pair_id: Ar_p__SF6
+  file: dnt_inputs/Ar_p__SF6.yaml
+  model_variant: dnt_plus
+  status: ready_with_warnings
+  missing_required_properties: []
+summary:
+  total_pairs: 4
+  ready: 0
+  ready_with_warnings: 4
+  missing_required_data: 0
+  no_dnt_channels: 0

@@ -1,0 +1,22 @@
+source_type: local_file
+database: user_provided
+original_file: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\ar_cf4_fluorocarbon\cross_sections\e_CF4_elastic.csv
+imported_at: '2026-06-15T06:46:16.003417+00:00'
+columns:
+- energy_eV
+- cross_section_m2
+units:
+  energy: eV
+  cross_section: m2
+row_count: 3
+energy_min_eV: 0.1
+energy_max_eV: 10.0
+sha256: 4801b90abcd3ce32f581ddd8b6becb50380304a19e2777150aa6f977a2943310
+license_note: synthetic benchmark fixture
+source_cache:
+  source_type: local_file_cache
+  source_name: local_file
+  original_path: C:\Users\user\Desktop\react_gen-main\benchmarks\fixtures\ar_cf4_fluorocarbon\cross_sections\e_CF4_elastic.csv
+  cached_path: local_file\e_CF4_elastic_4801b90abcd3.csv
+  sha256: 4801b90abcd3ce32f581ddd8b6becb50380304a19e2777150aa6f977a2943310
+  imported_at: '2026-06-15T06:46:16.001711+00:00'

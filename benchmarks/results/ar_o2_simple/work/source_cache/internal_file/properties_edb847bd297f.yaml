@@ -1,0 +1,60 @@
+- species: O2
+  property: mass_amu
+  value: 31.9988
+  unit: amu
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:property:O2:mass_amu
+- species: O2
+  property: polarizability_A3
+  value: 1.58
+  unit: A3
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:property:O2:polarizability_A3
+- species: O2
+  property: dipole_moment_D
+  value: 0.0
+  unit: D
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:property:O2:dipole_moment_D
+- species: O2
+  property: collision_radius_A
+  value: 1.73
+  unit: A
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:property:O2:collision_radius_A
+- species: O
+  property: mass_amu
+  value: 15.999
+  unit: amu
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:property:O:mass_amu
+- species: O
+  property: electron_affinity_eV
+  value: 1.461
+  unit: eV
+  evidence_type: reviewed_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_o2_simple:property:O:electron_affinity_eV

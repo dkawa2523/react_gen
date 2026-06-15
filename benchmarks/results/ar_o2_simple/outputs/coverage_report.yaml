@@ -1,0 +1,116 @@
+schema_version: 1
+case:
+  name: ar_o2_simple
+summary:
+  n_pairs_found: 7
+  n_pairs_missing: 8
+  n_pairs_other: 0
+pairs:
+  found:
+  - pair_key: electron|e|Ar
+    pair_label: e + Ar
+    family: electron
+    depth: 0
+    status: found
+    reason: null
+    n_channels: 3
+  - pair_key: electron|e|O2
+    pair_label: e + O2
+    family: electron
+    depth: 0
+    status: found
+    reason: null
+    n_channels: 4
+  - pair_key: electron|e|O
+    pair_label: e + O
+    family: electron
+    depth: 1
+    status: found
+    reason: null
+    n_channels: 1
+  - pair_key: ion_neutral|Ar+|Ar
+    pair_label: Ar+ + Ar
+    family: ion_neutral
+    depth: 1
+    status: found
+    reason: null
+    n_channels: 2
+  - pair_key: ion_neutral|Ar+|O2
+    pair_label: Ar+ + O2
+    family: ion_neutral
+    depth: 1
+    status: found
+    reason: null
+    n_channels: 2
+  - pair_key: ion_neutral|O+|O2
+    pair_label: O+ + O2
+    family: ion_neutral
+    depth: 2
+    status: found
+    reason: null
+    n_channels: 1
+  - pair_key: ion_neutral|O3+|O2
+    pair_label: O3+ + O2
+    family: ion_neutral
+    depth: 3
+    status: found
+    reason: null
+    n_channels: 1
+  missing:
+  - pair_key: ion_neutral|Ar+|O
+    pair_label: Ar+ + O
+    family: ion_neutral
+    depth: 1
+    status: missing
+    reason: No registered reaction file
+    n_channels: 0
+  - pair_key: ion_neutral|O-|O
+    pair_label: O- + O
+    family: ion_neutral
+    depth: 1
+    status: missing
+    reason: No registered reaction file
+    n_channels: 0
+  - pair_key: ion_neutral|O-|Ar
+    pair_label: O- + Ar
+    family: ion_neutral
+    depth: 1
+    status: missing
+    reason: No registered reaction file
+    n_channels: 0
+  - pair_key: ion_neutral|O-|O2
+    pair_label: O- + O2
+    family: ion_neutral
+    depth: 1
+    status: missing
+    reason: No registered reaction file
+    n_channels: 0
+  - pair_key: ion_neutral|O+|Ar
+    pair_label: O+ + Ar
+    family: ion_neutral
+    depth: 2
+    status: missing
+    reason: No registered reaction file
+    n_channels: 0
+  - pair_key: ion_neutral|O+|O
+    pair_label: O+ + O
+    family: ion_neutral
+    depth: 2
+    status: missing
+    reason: No registered reaction file
+    n_channels: 0
+  - pair_key: ion_neutral|O3+|Ar
+    pair_label: O3+ + Ar
+    family: ion_neutral
+    depth: 3
+    status: missing
+    reason: No registered reaction file
+    n_channels: 0
+  - pair_key: ion_neutral|O3+|O
+    pair_label: O3+ + O
+    family: ion_neutral
+    depth: 3
+    status: missing
+    reason: No registered reaction file
+    n_channels: 0
+  other: []
