@@ -20,3 +20,13 @@ dist/
 Thumbs.db
 .vscode/
 .idea/
+
+# External data tooling outputs
+/external_data/raw/**
+/external_data/snapshots/**
+/external_data/manifests/**
+!/external_data/raw/.gitkeep
+!/external_data/snapshots/.gitkeep
+!/external_data/manifests/.gitkeep
+/benchmarks/results/**
+!/benchmarks/results/.gitkeep

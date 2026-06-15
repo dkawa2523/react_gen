@@ -1,0 +1,36 @@
+schema_version: 1
+name: internal_first
+species_identity:
+  - internal_species_db
+  - local_registry
+  - chemical_identity_snapshot
+  - pubchem_offline
+properties:
+  - internal_property_db
+  - local_registry
+  - nist_snapshot
+  - argonne_atct_snapshot
+  - chemicals_optional
+electron_cross_sections:
+  - internal_cross_section_db
+  - local_assets
+  - lxcat_offline
+ion_neutral_reactions:
+  - internal_reaction_db
+  - local_registry
+  - literature_candidates
+pubchem:
+  enabled: false
+  mode: online
+  cache_dir: external_data/pubchem/cache
+policy:
+  prefer_status:
+    - curated
+    - literature_supported
+    - imported
+    - estimated
+    - inferred
+  require_review_for:
+    - conflicting_values
+    - estimated_collision_radius
+    - llm_extracted

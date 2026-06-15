@@ -11,6 +11,7 @@ from plasma_reactgen.application.dnt_input_builder import READY_STATUSES, build_
 from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks
 from plasma_reactgen.application.network_builder import NetworkBuilderDependencies, ReactionNetworkBuilder
 from plasma_reactgen.application.state_builder import build_state_list
+from plasma_reactgen.data_sources.cross_section_table import import_cross_section_table
 from plasma_reactgen.domain.identifiers import pair_filename, to_file_key
 from plasma_reactgen.inference.candidate_writer import (
     build_candidate_registry,
@@ -26,6 +27,10 @@ from plasma_reactgen.infrastructure.dnt_writer import write_dnt_inputs
 from plasma_reactgen.infrastructure.file_registry import FileRegistry
 from plasma_reactgen.infrastructure.indexer import build_indexes, check_registry
 from plasma_reactgen.infrastructure.yaml_writer import write_yaml_outputs
+from plasma_reactgen.preparation.cross_section_mapping import apply_cross_section_mappings
+from plasma_reactgen.preparation.enricher import enrich_case
+from plasma_reactgen.preparation.missing_plan import write_missing_plan
+from plasma_reactgen.preparation.promote import promote_reviewed_registry
 from plasma_reactgen.visualization.network import GraphvizOptions
 from plasma_reactgen.visualization.writer import write_visualizations
 
@@ -66,10 +71,41 @@ def main(argv: list[str] | None = None) -> int:
     infer.add_argument("--registry", type=Path, default=Path("registry"), help="local registry root")
     infer.add_argument("--output", type=Path, default=None, help="candidate_registry output directory")
 
+    enrich = sub.add_parser("enrich", help="prepare and run configured local/offline enrichers into a workspace")
+    enrich.add_argument("input", type=Path, help="case input YAML")
+    enrich.add_argument("--registry", type=Path, default=Path("registry"), help="local registry root")
+    enrich.add_argument("--workspace", type=Path, required=True, help="workspace for prepared_registry and reports")
+    enrich.add_argument("--source-profile", default="local_only", help="source profile name or YAML path")
+
     dnt = sub.add_parser("export-dnt", help="export solver-free pair-wise DNT+/DNT+DM input YAML files")
     dnt.add_argument("input", type=Path, help="case input YAML")
     dnt.add_argument("--registry", type=Path, default=Path("registry"), help="local registry root")
     dnt.add_argument("--output", type=Path, default=None, help="output directory for dnt_manifest.yaml and dnt_inputs/")
+
+    xsec = sub.add_parser("import-cross-sections", help="import local CSV/TSV cross-section tables into prepared_registry assets")
+    xsec.add_argument("input_file", type=Path, help="CSV or TSV file with energy_eV and cross_section_m2 columns")
+    xsec.add_argument("--workspace", type=Path, required=True, help="workspace containing prepared_registry/")
+    xsec.add_argument("--source", choices=["lxcat_offline", "local_file"], default="local_file")
+    xsec.add_argument("--reaction-id", default=None, help="prepared_registry reaction channel id to link if present")
+    xsec.add_argument("--target", default=None, help="target species label used for output naming/provenance")
+    xsec.add_argument("--license-note", default=None, help="license/citation note to write into metadata")
+
+    xmap = sub.add_parser("apply-cross-section-mapping", help="apply reviewed cross-section mappings to prepared_registry electron channels")
+    xmap.add_argument("mapping_file", type=Path, help="YAML file containing reviewed cross-section mappings")
+    xmap.add_argument("--workspace", type=Path, required=True, help="workspace containing prepared_registry/")
+
+    mplan = sub.add_parser("plan-missing", help="write an enrichment action plan from missing_data.yaml")
+    mplan.add_argument("outputs_or_missing_data", type=Path, help="outputs directory or missing_data.yaml file")
+    mplan.add_argument("--output", type=Path, default=Path("missing_plan.yaml"), help="destination missing_plan.yaml")
+
+    promote = sub.add_parser("promote", help="promote reviewed prepared/candidate registry items into curated registry")
+    promote.add_argument("prepared_registry", type=Path, help="prepared_registry or candidate_registry root")
+    promote.add_argument("--registry", type=Path, default=Path("registry"), help="curated registry root")
+    promote.add_argument("--decision", type=Path, required=True, help="review decision YAML")
+    promote_mode = promote.add_mutually_exclusive_group()
+    promote_mode.add_argument("--dry-run", dest="apply", action="store_false", help="plan promotion without registry mutation")
+    promote_mode.add_argument("--apply", dest="apply", action="store_true", help="apply accepted promotions to registry")
+    promote.set_defaults(apply=False)
 
     tmpl = sub.add_parser("template", help="print a registration template to stdout")
     tmpl.add_argument("kind", choices=["species", "electron-pair", "ion-pair"])
@@ -105,8 +141,30 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "infer-candidates":
         return _cmd_infer_candidates(args.input, args.registry, args.output)
+    if args.command == "enrich":
+        return _cmd_enrich(args.input, args.registry, args.workspace, args.source_profile)
     if args.command == "export-dnt":
         return _cmd_export_dnt(args.input, args.registry, args.output)
+    if args.command == "import-cross-sections":
+        return _cmd_import_cross_sections(
+            input_file=args.input_file,
+            workspace=args.workspace,
+            source=args.source,
+            reaction_id=args.reaction_id,
+            target=args.target,
+            license_note=args.license_note,
+        )
+    if args.command == "apply-cross-section-mapping":
+        return _cmd_apply_cross_section_mapping(args.mapping_file, args.workspace)
+    if args.command == "plan-missing":
+        return _cmd_plan_missing(args.outputs_or_missing_data, args.output)
+    if args.command == "promote":
+        return _cmd_promote(
+            prepared_registry=args.prepared_registry,
+            registry=args.registry,
+            decision=args.decision,
+            apply=args.apply,
+        )
     if args.command == "template":
         print(_template(args.kind, args.args))
         return 0
@@ -191,6 +249,23 @@ def _cmd_infer_candidates(input_path: Path, registry_root: Path, output_dir: Pat
     return 0
 
 
+def _cmd_enrich(input_path: Path, registry_root: Path, workspace: Path, source_profile: str) -> int:
+    report = enrich_case(
+        input_path=input_path,
+        registry_root=registry_root,
+        workspace=workspace,
+        source_profile=source_profile,
+    )
+    print(f"Enriched prepared registry: {workspace / 'prepared_registry'}")
+    print(f"  source_profile: {report['source_profile']}")
+    print(f"  properties_filled: {report['summary']['properties_filled']}")
+    print(f"  reaction_channels_imported: {report['summary']['reaction_channels_imported']}")
+    print(f"  unresolved_items: {report['summary']['unresolved_items']}")
+    print("  registry_mutated: false")
+    print("  auto_promoted: false")
+    return 0
+
+
 def _cmd_export_dnt(input_path: Path, registry_root: Path, output_dir: Path | None) -> int:
     config = load_case_config(input_path, registry_root)
     if output_dir is None:
@@ -203,6 +278,68 @@ def _cmd_export_dnt(input_path: Path, registry_root: Path, output_dir: Path | No
     dnt_inputs = _write_dnt_inputs_for_network(output_dir, network)
 
     _print_dnt_input_summary(output_dir, dnt_inputs, include_statuses=True)
+    return 0
+
+
+def _cmd_import_cross_sections(
+    input_file: Path,
+    workspace: Path,
+    source: str,
+    reaction_id: str | None,
+    target: str | None,
+    license_note: str | None,
+) -> int:
+    result = import_cross_section_table(
+        input_file=input_file,
+        workspace=workspace,
+        source=source,
+        reaction_id=reaction_id,
+        target=target,
+        license_note=license_note,
+    )
+    print(f"Imported cross-section table: {result.asset_path}")
+    print(f"  metadata: {result.metadata_path}")
+    print(f"  rows: {result.row_count}")
+    print(f"  registry_mutated: false")
+    if reaction_id:
+        print(f"  prepared_reaction_files_linked: {len(result.linked_reaction_files)}")
+    return 0
+
+
+def _cmd_apply_cross_section_mapping(mapping_file: Path, workspace: Path) -> int:
+    report = apply_cross_section_mappings(
+        prepared_registry=workspace / "prepared_registry",
+        mapping_file=mapping_file,
+    )
+    print(f"Applied cross-section mappings: {mapping_file}")
+    print(f"  updated: {report['summary']['n_updated']}")
+    print(f"  unresolved: {report['summary']['n_unresolved']}")
+    print("  registry_mutated: false")
+    return 0
+
+
+def _cmd_plan_missing(outputs_or_missing_data: Path, output: Path) -> int:
+    plan = write_missing_plan(outputs_or_missing_data, output)
+    print(f"Wrote missing-data enrichment plan: {output}")
+    print(f"  total_missing_items: {plan['summary']['total_missing_items']}")
+    print(f"  suggested_actions: {plan['summary']['suggested_actions']}")
+    print("  data_fetched: false")
+    return 0
+
+
+def _cmd_promote(prepared_registry: Path, registry: Path, decision: Path, apply: bool) -> int:
+    report = promote_reviewed_registry(
+        prepared_registry=prepared_registry,
+        registry=registry,
+        decision_file=decision,
+        apply=apply,
+    )
+    report_path = prepared_registry.parent / "promote_report.yaml"
+    print(f"Wrote promote report: {report_path}")
+    print(f"  promoted_species: {report['summary']['n_promoted_species']}")
+    print(f"  promoted_channels: {report['summary']['n_promoted_channels']}")
+    print(f"  conflicts: {report['summary']['n_conflicts']}")
+    print(f"  registry_mutated: {str(report['registry_mutated']).lower()}")
     return 0
 
 
