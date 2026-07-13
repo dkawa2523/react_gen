@@ -15,7 +15,7 @@ from plasma_reactgen.data_sources.provider_factory import (
 from plasma_reactgen.preparation import prepare_case
 
 
-def test_provider_factory_builds_local_registry_provider_from_config(tmp_path: Path) -> None:
+def test_provider_factory_treats_local_registry_as_baseline_not_enrichment(tmp_path: Path) -> None:
     registry = _make_registry(tmp_path / "registry")
     result = build_species_providers(
         {
@@ -26,7 +26,7 @@ def test_provider_factory_builds_local_registry_provider_from_config(tmp_path: P
     )
 
     assert not result.warnings
-    assert result.providers[0].find_species("Ar")[0]["id"] == "Ar"
+    assert result.providers == []
     assert "local_registry" in available_provider_names()["species_identity"]
 
 
@@ -96,9 +96,10 @@ def test_prepare_case_still_uses_internal_file_and_nist_sources(tmp_path: Path) 
     report = prepare_case(
         input_path=case,
         registry_root=registry,
-        source_profile={
-            "name": "factory_prepare_equivalence",
-            "properties": ["internal_property_db", "nist_snapshot"],
+            source_profile={
+                "name": "factory_prepare_equivalence",
+                "species_identity": ["internal_species_db"],
+                "properties": ["internal_property_db", "nist_snapshot"],
             "ion_neutral_reactions": ["internal_reaction_db"],
             "internal_file": {"root": str(internal_root)},
             "nist_snapshot": {"root": str(nist_root)},

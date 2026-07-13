@@ -101,11 +101,10 @@ def test_semiconductor_benchmark_config_default_case_ids():
         "ar_cf4_fluorocarbon",
         "sf6_o2_electronegative",
     ]
-    for config_path in (Path("benchmarks/benchmark_config.yaml"), Path("benchmarks/benchmark_config_semiconductor.yaml")):
-        config = _read_yaml(config_path)
-        ids = [item["id"] for item in config["benchmarks"]]
-        assert ids == expected
-        assert "cl2_bcl3_halogen" not in yaml.safe_dump(config, sort_keys=True)
+    config = _read_yaml(Path("benchmarks/benchmark_config_semiconductor.yaml"))
+    ids = [item["id"] for item in config["benchmarks"]]
+    assert ids == expected
+    assert "cl2_bcl3_halogen" not in yaml.safe_dump(config, sort_keys=True)
 
 
 def test_semiconductor_benchmark_docs_do_not_make_cl2_bcl3_default():

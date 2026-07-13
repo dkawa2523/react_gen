@@ -208,7 +208,11 @@ mappings:
 reactgen apply-cross-section-mapping mapping.yaml --workspace workspace
 ```
 
-There is no fuzzy matching and no curated registry mutation.
+There is no fuzzy matching and no curated registry mutation. Each asset path
+must be relative to, contained by, and already present in
+`workspace/prepared_registry/`. Missing or escaping paths are left unresolved,
+recorded in `workspace/cross_section_mapping_report.yaml`, and make the command
+return a non-zero exit code.
 
 ### LXCat Offline Index
 
@@ -299,8 +303,6 @@ External outputs must be reviewed before use in prepare/enrich workflows.
 
 These are not production-ready core adapters:
 
-- Core `PubChemProvider`: disabled placeholder that returns empty candidate
-  lists and performs no network calls.
 - ChemSpider online fetch: skeleton only; requires explicit credentials before
   any future implementation.
 - OPSIN and NCI/Cactus online resolvers: disabled external skeletons.

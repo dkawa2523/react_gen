@@ -102,6 +102,7 @@ def _property_payload(
 
 def _reaction_payload(pair: CollisionPair, channel: ReactionChannel) -> dict[str, Any]:
     return {
+        "id": channel.id,
         "pair": _pair_payload(pair),
         "type": channel.type,
         "products": [_amount_payload(amount) for amount in channel.products],
@@ -133,11 +134,14 @@ def _cross_section_payload(
 
 
 def _property_value_payload(prop: PropertyValue) -> dict[str, Any]:
-    return {
+    payload = {
         "value": prop.value,
         "unit": prop.unit,
         "source": prop.source,
     }
+    if prop.source_record is not None:
+        payload["source_record"] = deepcopy(prop.source_record)
+    return payload
 
 
 def _pair_payload(pair: CollisionPair) -> dict[str, str]:

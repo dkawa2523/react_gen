@@ -28,7 +28,7 @@ py -m external_data_tools.benchmark_report benchmarks/results/summary.yaml --out
 ## Status Labels
 
 - `passed`: the workflow produced required species, reaction families, outputs,
-  and zero validation errors.
+  and zero validation or structural enrichment errors.
 - `warning`: the workflow ran, but data coverage, provenance, DNT readiness, or
   solver availability needs attention.
 - `failed`: setup, generation, or validation failed.
@@ -43,18 +43,45 @@ py -m external_data_tools.benchmark_report benchmarks/results/summary.yaml --out
 
 - expectation score at least `0.75`
 - `validation_error_count == 0`
+- `structural_enrichment_unresolved_count == 0`
+- `generation_complete == true`
 - at least one electron reaction
 - at least one ion-neutral reaction
 
+The structural enrichment gate counts unavailable configured sources,
+non-missing-property unresolved records (for example unsupported units),
+unresolved product species or reactions, and invalid/skipped reaction channels.
+Missing physical-property values are measured and reported, but do not by
+themselves fail the workflow.
+
 `WARNING_DATA_GAPS` is emitted for low cross-section coverage, low provenance
-coverage, high inferred reaction fraction, or no DNT-ready pairs.
+coverage, high inferred reaction fraction, or no DNT pair-property-ready pairs.
+Cross-section coverage counts only asset paths that resolve to existing files
+inside the prepared registry.
 
 `WARNING_SOLVER_SKIPPED` or `SKIPPED_SOLVER` means optional solver paths or
 adapters were not configured. The benchmark still passes if the registry-level
 workflow succeeded.
 
-`FAIL_SETUP`, `FAIL_VALIDATION`, and `FAIL_GENERATION` indicate missing required
-fixtures, charge/element balance errors, or no generated reactions.
+`FAIL_SETUP`, `FAIL_ENRICHMENT`, `FAIL_VALIDATION`, and `FAIL_GENERATION`
+indicate missing required fixtures, structural enrichment defects,
+charge/element balance errors, truncated generation, or no generated reactions.
+
+## DNT Readiness Metrics
+
+Do not interpret `n_dnt_ready_pairs` as complete solver input. It is retained as
+a compatibility alias for `n_dnt_property_ready_pairs`, meaning the required
+ion/neutral pair properties are present. Use
+`n_dnt_complete_ready_pairs` for pairs whose properties and required channel
+fields are complete; `n_dnt_ready_with_warnings_pairs` identifies
+property-ready pairs with missing channel fields.
+
+## Results And Snapshots
+
+For the current run, treat per-case `benchmark_metrics.yaml` and
+`benchmark_report.yaml`, together with `benchmarks/results/summary.yaml`, as the
+source of truth. Markdown reports and narrative result pages checked into the
+repository are review snapshots, not automatically synchronized live status.
 
 ## Interpreting The Report
 

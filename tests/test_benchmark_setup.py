@@ -77,6 +77,28 @@ def test_explicit_fake_executable_path_is_detected(tmp_path):
     assert report["solvers"]["ngspice"]["executable"] == str(exe)
 
 
+def test_missing_explicit_executable_does_not_fall_back_to_path(tmp_path, monkeypatch):
+    monkeypatch.setattr(
+        "external_data_tools.solver_discovery.which_executable",
+        lambda _name: str(tmp_path / "other_ngspice.exe"),
+    )
+
+    report = check_solver_config(
+        {
+            "solvers": {
+                "ngspice": {
+                    "enabled": True,
+                    "executable": str(tmp_path / "configured_but_missing.exe"),
+                    "adapter": "ngspice_basic",
+                }
+            }
+        }
+    )
+
+    assert report["solvers"]["ngspice"]["status"] == "missing_executable"
+    assert report["solvers"]["ngspice"]["executable"] is None
+
+
 def test_install_python_deps_is_not_run_unless_flag_is_passed(tmp_path, monkeypatch):
     requirement = tmp_path / "requirements.txt"
     requirement.write_text("# empty\n", encoding="utf-8")

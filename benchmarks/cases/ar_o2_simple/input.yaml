@@ -5,7 +5,6 @@ case:
 gases:
   - Ar
   - O2
-profile: low_pressure_plasma_v1
 expansion:
   max_depth: 3
 data_policy:
@@ -16,10 +15,4 @@ data_policy:
     - estimated
     - draft
 outputs:
-  reactions: true
-  states: true
-  dnt_tasks: true
   dnt_inputs: true
-  coverage_report: true
-  missing_data: true
-  csv_summary: true

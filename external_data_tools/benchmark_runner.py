@@ -128,6 +128,7 @@ def _run_one_benchmark(benchmark: dict[str, Any], *, config_path: Path, results_
                 str(registry),
                 "--workspace",
                 str(workspace),
+                "--fresh",
                 "--source-profile",
                 str(source_profile),
             ]
@@ -173,7 +174,6 @@ def _run_one_benchmark(benchmark: dict[str, Any], *, config_path: Path, results_
                 str(prepared_registry),
                 "--output",
                 str(output),
-                "--export-dnt-inputs",
             ]
         )
     )
@@ -198,6 +198,7 @@ def _run_one_benchmark(benchmark: dict[str, Any], *, config_path: Path, results_
         )
     )
 
+    quality_gate = _enrichment_quality_gate(workspace / "prepare_report.yaml")
     expectations = evaluate_expectations(output, expectation_path)
     metrics = collect_metrics(
         output,
@@ -205,6 +206,7 @@ def _run_one_benchmark(benchmark: dict[str, Any], *, config_path: Path, results_
         missing_plan=missing_plan_path,
         expectation_score=expectations["score"],
         solver_status_summary=solver_status["summary"],
+        structural_enrichment_unresolved_count=quality_gate["structural_unresolved_count"],
     )
     metrics_path = result_dir / "benchmark_metrics.yaml"
     report_path = result_dir / "benchmark_report.yaml"
@@ -230,11 +232,14 @@ def _run_one_benchmark(benchmark: dict[str, Any], *, config_path: Path, results_
         "metrics": metrics,
         "metrics_path": str(metrics_path),
         "expectations": expectations,
+        "quality_gate": quality_gate,
         "solver_status": solver_status,
         "missing_plan": str(missing_plan_path),
         "manual_input_templates": str(manual_input_dir),
         "passed": bool(
             expectations["passed"]
+            and quality_gate["passed"]
+            and metrics["generation_complete"]
             and solver_gate_passed
             and all(step["return_code"] == 0 for step in steps)
         ),
@@ -277,6 +282,55 @@ def _collect_solver_status(benchmark: dict[str, Any], config_path: Path) -> dict
         "config": str(solver_config_path),
         "solvers": solvers,
         "summary": _solver_status_summary(solvers),
+    }
+
+
+def _enrichment_quality_gate(prepare_report_path: Path) -> dict[str, Any]:
+    """Fail only on structural enrichment defects, not ordinary data gaps."""
+
+    if not prepare_report_path.exists():
+        return {
+            "passed": False,
+            "prepare_report": str(prepare_report_path),
+            "structural_unresolved_count": 1,
+            "normal_missing_property_count": 0,
+            "by_category": {"missing_prepare_report": 1},
+        }
+
+    report = _read_yaml(prepare_report_path)
+    unresolved = _as_list(report.get("unresolved"))
+    unresolved_properties = [
+        item
+        for item in unresolved
+        if isinstance(item, dict) and item.get("kind") == "missing_property"
+    ]
+    invalid_property_candidates = [
+        item
+        for item in unresolved
+        if not isinstance(item, dict) or item.get("kind") != "missing_property"
+    ]
+    unavailable_sources = _as_list(report.get("unavailable_sources"))
+    unresolved_products = _as_list(report.get("unresolved_product_species"))
+    unresolved_reactions = _as_list(report.get("unresolved_reactions"))
+    invalid_channels = [
+        item
+        for item in _as_list(report.get("reaction_channels_skipped"))
+        if isinstance(item, dict) and item.get("reason") not in {"duplicate_channel"}
+    ]
+    by_category = {
+        "non_missing_property_unresolved": len(invalid_property_candidates),
+        "unavailable_sources": len(unavailable_sources),
+        "unresolved_product_species": len(unresolved_products),
+        "unresolved_reactions": len(unresolved_reactions),
+        "invalid_or_skipped_reaction_channels": len(invalid_channels),
+    }
+    structural_count = sum(by_category.values())
+    return {
+        "passed": structural_count == 0,
+        "prepare_report": str(prepare_report_path),
+        "structural_unresolved_count": structural_count,
+        "normal_missing_property_count": len(unresolved_properties),
+        "by_category": by_category,
     }
 
 

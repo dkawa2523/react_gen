@@ -5,6 +5,11 @@ from typing import Any
 
 import yaml
 
+from plasma_reactgen.infrastructure.registry_paths import (
+    registry_asset_exists,
+    resolve_registry_asset,
+)
+
 
 def apply_cross_section_mappings(prepared_registry: Path, mapping_file: Path) -> dict[str, Any]:
     prepared_registry = Path(prepared_registry)
@@ -26,21 +31,34 @@ def apply_cross_section_mappings(prepared_registry: Path, mapping_file: Path) ->
             "n_unresolved": 0,
         },
         "registry_mutated": False,
+        "prepared_registry_mutated": False,
     }
 
-    for mapping in mappings:
+    for mapping_index, mapping in enumerate(mappings):
         if not isinstance(mapping, dict):
+            report["unresolved"].append(
+                {
+                    "mapping_index": mapping_index,
+                    "reaction_id": None,
+                    "asset_path": None,
+                    "reason": "invalid_mapping_entry",
+                }
+            )
             continue
         reaction_id = mapping.get("reaction_id")
         asset_path = mapping.get("asset_path")
-        if not reaction_id:
+        if not isinstance(reaction_id, str) or not reaction_id.strip():
             _add_unresolved(report, mapping, "missing_reaction_id")
             continue
-        if not asset_path:
+        if not isinstance(asset_path, str) or not asset_path.strip():
             _add_unresolved(report, mapping, "missing_asset_path")
             continue
-        if not (prepared_registry / asset_path).exists():
+        if resolve_registry_asset(prepared_registry, asset_path) is None:
+            _add_unresolved(report, mapping, "asset_path_outside_registry")
+            continue
+        if not registry_asset_exists(prepared_registry, asset_path):
             _add_unresolved(report, mapping, "asset_not_found")
+            continue
 
         updated_files = _apply_one_mapping(prepared_registry, mapping)
         if not updated_files:
@@ -58,6 +76,7 @@ def apply_cross_section_mappings(prepared_registry: Path, mapping_file: Path) ->
         report["summary"]["n_updated"] += len(updated_files)
 
     report["summary"]["n_unresolved"] = len(report["unresolved"])
+    report["prepared_registry_mutated"] = bool(report["updated"])
     return report
 
 

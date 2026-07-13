@@ -71,7 +71,11 @@ def _check_one_solver(solver_name: str, config: dict[str, Any]) -> dict[str, Any
     adapter = config.get("adapter")
     install = config.get("install", {}) if isinstance(config.get("install"), dict) else {}
     required_for = list(config.get("required_for", [])) if isinstance(config.get("required_for"), list) else []
-    explicit = validate_executable(config.get("executable"))
+    configured_executable = config.get("executable")
+    has_explicit_executable = configured_executable is not None and bool(
+        str(configured_executable).strip()
+    )
+    explicit = validate_executable(configured_executable)
     executable = explicit.get("executable") if explicit["status"] == "ready" else None
 
     if not enabled:
@@ -104,7 +108,10 @@ def _check_one_solver(solver_name: str, config: dict[str, Any]) -> dict[str, Any
             "suggested_actions": [],
         }
 
-    found = _find_on_path(solver_name)
+    # An explicit path is an intentional, reproducible choice.  Falling back to
+    # PATH when that path is broken can silently select a different solver
+    # installation and makes benchmark results machine-dependent.
+    found = None if has_explicit_executable else _find_on_path(solver_name)
     if found:
         return {
             "enabled": True,

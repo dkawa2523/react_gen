@@ -29,8 +29,4 @@ download or provide external data
   -> run normal reactgen generate
 ```
 
-## Current placeholders
-
-- `import_lxcat_placeholder.py`: command-line placeholder for a future LxCat
-  importer. It does not download, parse, or write files, and it is not called by
-  `reactgen generate`.
+No importer is shipped until it can produce validated, reviewable output.

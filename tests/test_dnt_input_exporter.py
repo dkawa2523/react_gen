@@ -31,6 +31,9 @@ def test_build_dnt_inputs_uses_normalized_pair_schema():
     assert pair["projectile"]["id"]
     assert pair["target"]["id"]
     assert "missing_required_properties" in pair["pair_properties"]
+    assert pair["pair_property_readiness"]["scope"] == "pair_properties"
+    assert pair["complete_readiness"]["scope"] == "pair_properties_and_channels"
+    assert pair["status"] == pair["complete_readiness"]["status"]
 
     channel = pair["channels"][0]
     assert {
@@ -44,8 +47,10 @@ def test_build_dnt_inputs_uses_normalized_pair_schema():
         "provenance",
     } <= set(channel)
     assert channel["provenance"]["source_type"] == "registry"
-    if channel["threshold_eV"] is None:
+    if channel["threshold_eV"] is None and channel["type"] != "elastic":
         assert "threshold_eV" in channel["missing_for_complete_dnt"]
+    if channel["threshold_eV"] is None and channel["type"] == "elastic":
+        assert "threshold_eV" not in channel["missing_for_complete_dnt"]
     if channel["deltaE_products_minus_reactants_eV"] is None:
         assert "deltaE_products_minus_reactants_eV" in channel["missing_for_complete_dnt"]
 

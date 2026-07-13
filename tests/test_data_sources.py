@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import yaml
+import pytest
 
 from plasma_reactgen.data_sources.local_registry import (
     LocalAssetCrossSectionProvider,
@@ -21,8 +22,8 @@ from plasma_reactgen.infrastructure.file_registry import FileRegistry
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_load_builtin_local_only_without_profile_file(tmp_path):
-    profile = load_source_profile("local_only", tmp_path / "registry")
+def test_load_local_only_from_registry_yaml():
+    profile = load_source_profile("local_only", ROOT / "registry")
 
     assert profile["name"] == "local_only"
     assert profile["species_identity"] == ["local_registry"]
@@ -53,11 +54,9 @@ def test_load_yaml_source_profile_by_name(tmp_path):
     assert profile == payload
 
 
-def test_missing_source_profile_falls_back_to_local_only(tmp_path):
-    profile = load_source_profile("does_not_exist", tmp_path / "registry")
-
-    assert profile["name"] == "local_only"
-    assert profile["species_identity"] == ["local_registry"]
+def test_missing_source_profile_fails_explicitly(tmp_path):
+    with pytest.raises(ValueError, match="does not exist"):
+        load_source_profile("does_not_exist", tmp_path / "registry")
 
 
 def test_repository_yaml_profile_loads_by_name():

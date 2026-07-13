@@ -3,7 +3,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
-import copy
 import yaml
 
 
@@ -42,25 +41,31 @@ class LimitsConfig:
     max_pairs_per_depth: int = 1000
     max_missing_pairs_per_depth: int = 100
 
+    def __post_init__(self) -> None:
+        for name in (
+            "max_species",
+            "max_reactions",
+            "max_pairs_per_depth",
+            "max_missing_pairs_per_depth",
+        ):
+            value = getattr(self, name)
+            if value < 0:
+                raise ValueError(f"limits.{name} must be greater than or equal to zero")
+
 
 @dataclass
 class DataPolicyConfig:
     include_incomplete_reactions: bool = True
     include_reactions_without_cross_section: bool = True
     include_reactions_without_dnt_ready_properties: bool = True
-    allowed_status: list[str] = field(default_factory=lambda: ["curated", "literature_supported", "estimated", "draft"])
-    exclude_status: list[str] = field(default_factory=lambda: ["deprecated"])
+    allowed_status: list[str] = field(
+        default_factory=lambda: ["curated", "literature_supported", "imported", "estimated", "draft"]
+    )
 
 
 @dataclass
 class OutputConfig:
-    reactions: bool = True
-    states: bool = True
-    dnt_tasks: bool = True
     dnt_inputs: bool = False
-    coverage_report: bool = True
-    missing_data: bool = True
-    csv_summary: bool = True
 
 
 @dataclass
@@ -71,20 +76,17 @@ class InferenceConfig:
     min_confidence: float = 0.4
     max_products: int = 3
     max_fragment_depth: int = 1
-    allow_unknown_energy: bool = True
 
 
 @dataclass
 class CaseInfo:
     name: str = "case"
-    description: str | None = None
 
 
 @dataclass
 class CaseConfig:
     case: CaseInfo
     gases: list[str]
-    profile: str | None = None
     expansion: ExpansionConfig = field(default_factory=ExpansionConfig)
     collisions: CollisionConfig = field(default_factory=CollisionConfig)
     limits: LimitsConfig = field(default_factory=LimitsConfig)
@@ -95,19 +97,8 @@ class CaseConfig:
 
 def load_case_config(input_path: str | Path, registry_root: str | Path) -> CaseConfig:
     input_path = Path(input_path)
-    registry_root = Path(registry_root)
-
-    user_data = _read_yaml(input_path)
-    profile_name = user_data.get("profile")
-
-    merged: dict[str, Any] = {}
-    if profile_name:
-        profile_path = registry_root / "rules" / "profiles" / f"{profile_name}.yaml"
-        if profile_path.exists():
-            merged = _read_yaml(profile_path)
-
-    merged = _deep_merge(merged, user_data)
-    return case_config_from_dict(merged)
+    _ = registry_root
+    return case_config_from_dict(_read_yaml(input_path))
 
 
 def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
@@ -128,10 +119,8 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
     return CaseConfig(
         case=CaseInfo(
             name=case_data.get("name", "case"),
-            description=case_data.get("description"),
         ),
         gases=list(gases),
-        profile=data.get("profile"),
         expansion=ExpansionConfig(
             max_depth=int(expansion_data.get("max_depth", 2)),
             propagate_species_classes=list(
@@ -176,18 +165,14 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
                 policy_data.get("include_reactions_without_dnt_ready_properties", True)
             ),
             allowed_status=list(
-                policy_data.get("allowed_status", ["curated", "literature_supported", "estimated", "draft"])
+                policy_data.get(
+                    "allowed_status",
+                    ["curated", "literature_supported", "imported", "estimated", "draft"],
+                )
             ),
-            exclude_status=list(policy_data.get("exclude_status", ["deprecated"])),
         ),
         outputs=OutputConfig(
-            reactions=bool(outputs_data.get("reactions", True)),
-            states=bool(outputs_data.get("states", True)),
-            dnt_tasks=bool(outputs_data.get("dnt_tasks", True)),
             dnt_inputs=bool(outputs_data.get("dnt_inputs", False)),
-            coverage_report=bool(outputs_data.get("coverage_report", True)),
-            missing_data=bool(outputs_data.get("missing_data", True)),
-            csv_summary=bool(outputs_data.get("csv_summary", True)),
         ),
         inference=InferenceConfig(
             enabled=bool(inference_data.get("enabled", False)),
@@ -196,7 +181,6 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
             min_confidence=float(inference_data.get("min_confidence", 0.4)),
             max_products=int(inference_data.get("max_products", 3)),
             max_fragment_depth=int(inference_data.get("max_fragment_depth", 1)),
-            allow_unknown_energy=bool(inference_data.get("allow_unknown_energy", True)),
         ),
     )
 
@@ -204,17 +188,3 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
 def _read_yaml(path: Path) -> dict[str, Any]:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     return data or {}
-
-
-def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
-    result = copy.deepcopy(base)
-    for key, value in override.items():
-        if (
-            key in result
-            and isinstance(result[key], dict)
-            and isinstance(value, dict)
-        ):
-            result[key] = _deep_merge(result[key], value)
-        else:
-            result[key] = copy.deepcopy(value)
-    return result

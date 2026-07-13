@@ -2,8 +2,15 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+import sys
 
 import yaml
+
+_LOCAL_SRC = Path(__file__).resolve().parents[1] / "src"
+if _LOCAL_SRC.exists() and str(_LOCAL_SRC) not in sys.path:
+    sys.path.insert(0, str(_LOCAL_SRC))
+
+from plasma_reactgen.infrastructure.registry_paths import registry_asset_exists
 
 
 def collect_metrics(
@@ -13,6 +20,7 @@ def collect_metrics(
     missing_plan: str | Path | None = None,
     expectation_score: float | None = None,
     solver_status_summary: dict[str, int] | None = None,
+    structural_enrichment_unresolved_count: int | None = None,
 ) -> dict[str, Any]:
     output_dir = Path(output_dir)
     prepared_registry_path = Path(prepared_registry) if prepared_registry is not None else None
@@ -23,6 +31,7 @@ def collect_metrics(
     coverage_payload = _read_yaml(output_dir / "coverage_report.yaml")
     missing_payload = _read_yaml(output_dir / "missing_data.yaml")
     dnt_payload = _read_yaml(output_dir / "dnt_tasks.yaml")
+    dnt_manifest_payload = _read_yaml(output_dir / "dnt_manifest.yaml")
     plan_payload = _read_yaml(missing_plan_path) if missing_plan_path is not None else {}
 
     reactions = _as_list(reactions_payload.get("reactions"))
@@ -32,6 +41,9 @@ def collect_metrics(
     reaction_summary = reactions_payload.get("summary", {}) if isinstance(reactions_payload.get("summary"), dict) else {}
     coverage_summary = coverage_payload.get("summary", {}) if isinstance(coverage_payload.get("summary"), dict) else {}
     dnt_summary = dnt_payload.get("summary", {}) if isinstance(dnt_payload.get("summary"), dict) else {}
+    dnt_readiness = _dnt_readiness_metrics(dnt_tasks, dnt_summary, dnt_manifest_payload)
+    generation_complete = reaction_summary.get("generation_complete", True) is True
+    truncations = _as_list(reactions_payload.get("truncations"))
 
     n_reactions = len(reactions)
     n_inferred = sum(1 for reaction in reactions if _reaction_status(reaction) == "inferred")
@@ -42,7 +54,11 @@ def collect_metrics(
     )
     n_electron = sum(1 for reaction in reactions if reaction.get("family") == "electron")
     n_ion_neutral = sum(1 for reaction in reactions if reaction.get("family") == "ion_neutral")
-    n_with_cross_sections = sum(1 for reaction in reactions if _has_cross_section_asset(reaction))
+    n_with_cross_sections = sum(
+        1
+        for reaction in reactions
+        if _has_cross_section_asset(reaction, prepared_registry_path)
+    )
     n_with_provenance = sum(1 for reaction in reactions if _has_provenance(reaction))
 
     return {
@@ -55,10 +71,25 @@ def collect_metrics(
         "n_pairs_found": int(coverage_summary.get("n_pairs_found", 0)),
         "n_pairs_missing": int(coverage_summary.get("n_pairs_missing", 0)),
         "n_missing_data_items": len(missing_data),
+        "generation_complete": generation_complete,
+        "n_generation_truncations": len(truncations),
         "n_missing_plan_actions": len(_as_list(plan_payload.get("actions"))),
         "n_dnt_tasks": len(dnt_tasks) or int(dnt_summary.get("n_dnt_pairs", 0)),
-        "n_dnt_ready_pairs": int(dnt_summary.get("n_ready_pairs", 0)),
-        "n_dnt_pairs_with_missing_properties": int(dnt_summary.get("n_pairs_with_missing_properties", 0)),
+        # Legacy metric: this intentionally remains pair-property readiness.
+        "n_dnt_ready_pairs": dnt_readiness["property_ready"],
+        "n_dnt_property_ready_pairs": dnt_readiness["property_ready"],
+        "n_dnt_complete_ready_pairs": dnt_readiness["complete_ready"],
+        "n_dnt_ready_with_warnings_pairs": dnt_readiness["ready_with_warnings"],
+        "n_dnt_pairs_with_missing_properties": dnt_readiness["missing_properties"],
+        "n_dnt_pairs_missing_required_data": dnt_readiness["missing_required_data"],
+        "n_dnt_pairs_without_channels": dnt_readiness["no_dnt_channels"],
+        "dnt_complete_readiness_available": dnt_readiness["complete_readiness_available"],
+        "dnt_readiness_semantics": {
+            "n_dnt_ready_pairs": "legacy alias for n_dnt_property_ready_pairs",
+            "property_ready": "required ion/neutral pair properties are present",
+            "complete_ready": "pair properties and all required DNT channel fields are present",
+            "ready_with_warnings": "pair properties are present but one or more DNT channel fields are missing",
+        },
         "n_cross_section_assets": _count_cross_section_assets(prepared_registry_path),
         "n_reactions_with_cross_section_asset": n_with_cross_sections,
         "cross_section_asset_coverage_fraction": _fraction(n_with_cross_sections, n_electron),
@@ -70,77 +101,9 @@ def collect_metrics(
         "inferred_reaction_fraction": _fraction(n_inferred, n_reactions),
         "imported_or_literature_supported_fraction": _fraction(n_imported_or_literature, n_reactions),
         "validation_error_count": _validation_error_count(reactions, missing_data),
+        "structural_enrichment_unresolved_count": int(structural_enrichment_unresolved_count or 0),
         "expectation_score": 1.0 if expectation_score is None else float(expectation_score),
         "solver_status_summary": _solver_summary(solver_status_summary),
-    }
-
-
-def evaluate_expectations(output_dir: str | Path, expectation_path: str | Path | None) -> dict[str, Any]:
-    if expectation_path is None:
-        return {
-            "schema_version": 1,
-            "passed": True,
-            "score": 1.0,
-            "missing_species": [],
-            "missing_reaction_families": [],
-            "missing_reaction_types": {},
-            "missing_outputs": [],
-            "forbidden_violations": [],
-        }
-
-    output_dir = Path(output_dir)
-    expectation = _read_yaml(expectation_path)
-    states = _as_list(_read_yaml(output_dir / "network.states.yaml").get("species"))
-    reactions = _as_list(_read_yaml(output_dir / "network.reactions.yaml").get("reactions"))
-
-    species_ids = {str(state.get("id")) for state in states if isinstance(state, dict)}
-    families = {str(reaction.get("family")) for reaction in reactions if isinstance(reaction, dict)}
-    types_by_family: dict[str, set[str]] = {}
-    for reaction in reactions:
-        if not isinstance(reaction, dict):
-            continue
-        family = str(reaction.get("family"))
-        types_by_family.setdefault(family, set()).add(str(reaction.get("type")))
-
-    required_species = [str(item) for item in _as_list(expectation.get("required_species"))]
-    required_families = [str(item) for item in _as_list(expectation.get("required_reaction_families"))]
-    required_outputs = [str(item) for item in _as_list(expectation.get("required_outputs"))]
-    required_types = expectation.get("required_reaction_types", {})
-    if not isinstance(required_types, dict):
-        required_types = {}
-
-    missing_species = [item for item in required_species if item not in species_ids]
-    missing_families = [item for item in required_families if item not in families]
-    missing_outputs = [item for item in required_outputs if not (output_dir / item).exists()]
-    missing_types: dict[str, list[str]] = {}
-    for family, required in required_types.items():
-        missing = [str(item) for item in _as_list(required) if str(item) not in types_by_family.get(str(family), set())]
-        if missing:
-            missing_types[str(family)] = missing
-    forbidden_violations = _forbidden_violations(reactions, expectation.get("forbidden"))
-
-    total_checks = (
-        len(required_species)
-        + len(required_families)
-        + len(required_outputs)
-        + sum(len(_as_list(required)) for required in required_types.values())
-        + len(forbidden_violations)
-    )
-    failed_checks = len(missing_species) + len(missing_families) + len(missing_outputs) + sum(
-        len(items) for items in missing_types.values()
-    ) + len(forbidden_violations)
-    score = 1.0 if total_checks == 0 else max(0.0, (total_checks - failed_checks) / total_checks)
-
-    return {
-        "schema_version": 1,
-        "expectation": str(expectation_path),
-        "passed": failed_checks == 0,
-        "score": round(score, 6),
-        "missing_species": missing_species,
-        "missing_reaction_families": missing_families,
-        "missing_reaction_types": missing_types,
-        "missing_outputs": missing_outputs,
-        "forbidden_violations": forbidden_violations,
     }
 
 
@@ -165,6 +128,56 @@ def _max_depth(reactions: list[dict[str, Any]]) -> int:
     return max(depths, default=0)
 
 
+def _dnt_readiness_metrics(
+    dnt_tasks: list[dict[str, Any]],
+    dnt_summary: dict[str, Any],
+    dnt_manifest: dict[str, Any],
+) -> dict[str, Any]:
+    task_count = len(dnt_tasks) or int(dnt_summary.get("n_dnt_pairs", 0))
+    property_statuses = [
+        _nested_status(task, "pair_property_readiness")
+        or _nested_status(task, "readiness")
+        for task in dnt_tasks
+        if isinstance(task, dict)
+    ]
+    if property_statuses:
+        property_ready = sum(status == "ready" for status in property_statuses)
+        missing_properties = sum(status != "ready" for status in property_statuses)
+    else:
+        property_ready = int(dnt_summary.get("n_ready_pairs", 0))
+        missing_properties = int(dnt_summary.get("n_pairs_with_missing_properties", 0))
+
+    complete_statuses = [
+        status
+        for task in dnt_tasks
+        if isinstance(task, dict)
+        if (status := _nested_status(task, "complete_readiness")) is not None
+    ]
+    if not complete_statuses:
+        complete_statuses = [
+            str(pair.get("status"))
+            for pair in _as_list(dnt_manifest.get("pairs"))
+            if isinstance(pair, dict) and pair.get("status")
+        ]
+
+    return {
+        "property_ready": property_ready,
+        "missing_properties": missing_properties,
+        "complete_ready": sum(status == "ready" for status in complete_statuses),
+        "ready_with_warnings": sum(status == "ready_with_warnings" for status in complete_statuses),
+        "missing_required_data": sum(status == "missing_required_data" for status in complete_statuses),
+        "no_dnt_channels": sum(status == "no_dnt_channels" for status in complete_statuses),
+        "complete_readiness_available": bool(complete_statuses) or task_count == 0,
+    }
+
+
+def _nested_status(payload: dict[str, Any], key: str) -> str | None:
+    value = payload.get(key)
+    if not isinstance(value, dict) or value.get("status") is None:
+        return None
+    return str(value["status"])
+
+
 def _reaction_status(reaction: dict[str, Any]) -> str | None:
     data_status = reaction.get("data_status")
     if isinstance(data_status, dict):
@@ -172,12 +185,20 @@ def _reaction_status(reaction: dict[str, Any]) -> str | None:
     return None
 
 
-def _has_cross_section_asset(reaction: dict[str, Any]) -> bool:
+def _has_cross_section_asset(
+    reaction: dict[str, Any],
+    prepared_registry: Path | None,
+) -> bool:
+    if prepared_registry is None:
+        return False
     data = reaction.get("data")
     if not isinstance(data, dict):
         return False
     cross_section = data.get("cross_section")
-    return isinstance(cross_section, dict) and bool(cross_section.get("path"))
+    return (
+        isinstance(cross_section, dict)
+        and registry_asset_exists(prepared_registry, cross_section.get("path"))
+    )
 
 
 def _has_provenance(reaction: dict[str, Any]) -> bool:

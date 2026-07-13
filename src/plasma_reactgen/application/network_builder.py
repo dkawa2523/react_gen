@@ -1,8 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Callable
 
-from plasma_reactgen.application.channel_policy import is_channel_allowed
+from plasma_reactgen.application.channel_policy import (
+    has_available_cross_section,
+    is_channel_allowed,
+    is_reaction_validation_allowed,
+)
 from plasma_reactgen.application.config import CaseConfig
 from plasma_reactgen.application.pair_selection import select_pairs_involving_frontier
 from plasma_reactgen.application.ports import ReactionRepository, RuleRepository, SpeciesRepository
@@ -14,9 +19,11 @@ from plasma_reactgen.domain.models import (
     GeneratedReaction,
     MissingDataItem,
     NetworkSpeciesNode,
+    ReactionChannel,
     ReactionNetwork,
     Species,
     SpeciesAmount,
+    TruncationEvent,
 )
 from plasma_reactgen.validation.validators import validate_reaction
 
@@ -41,12 +48,21 @@ class ReactionNetworkBuilder:
         self.deps = deps
 
     def generate(self, config: CaseConfig) -> ReactionNetwork:
+        input_species_count = len(set(config.gases))
+        if input_species_count > config.limits.max_species:
+            raise ValueError(
+                "limits.max_species must accommodate all unique input gases "
+                f"({config.limits.max_species} < {input_species_count})"
+            )
+
         reaction_catalog = self.deps.rule_repo.get_reaction_type_catalog()
+        asset_exists = self._find_asset_exists_predicate()
 
         known_species: dict[str, Species] = {"e": make_electron_species()}
         active_species: dict[str, Species] = {"e": known_species["e"]}
         species_nodes: dict[str, NetworkSpeciesNode] = {}
         missing_data: list[MissingDataItem] = []
+        truncations: list[TruncationEvent] = []
 
         for gas in config.gases:
             sp = self.deps.species_repo.get_species(gas)
@@ -71,6 +87,17 @@ class ReactionNetworkBuilder:
         for depth in range(config.expansion.max_depth + 1):
             pairs = select_pairs_involving_frontier(active_species, frontier, config)
             if len(pairs) > config.limits.max_pairs_per_depth:
+                truncations.append(
+                    TruncationEvent(
+                        limit_name="max_pairs_per_depth",
+                        scope="pair_selection",
+                        limit_value=config.limits.max_pairs_per_depth,
+                        depth=depth,
+                        observed_count=len(pairs),
+                        retained_count=config.limits.max_pairs_per_depth,
+                        omitted_count=len(pairs) - config.limits.max_pairs_per_depth,
+                    )
+                )
                 pairs = pairs[: config.limits.max_pairs_per_depth]
 
             new_frontier: set[str] = set()
@@ -96,6 +123,38 @@ class ReactionNetworkBuilder:
                             )
                         )
                     missing_pairs_count += 1
+                    self._record_missing_report_truncation(
+                        truncations=truncations,
+                        depth=depth,
+                        observed_count=missing_pairs_count,
+                        limit=config.limits.max_missing_pairs_per_depth,
+                    )
+                    continue
+
+                eligible_channels = [
+                    channel
+                    for channel in channels
+                    if is_channel_allowed(
+                        channel,
+                        config,
+                        pair=pair,
+                        species=known_species,
+                        asset_exists=asset_exists,
+                    )
+                    and channel.id not in seen_reaction_ids
+                ]
+                if not eligible_channels:
+                    coverage.append(
+                        CoverageItem(
+                            pair_key=pair.key,
+                            pair_label=pair.label,
+                            family=pair.family,
+                            depth=depth,
+                            status="filtered",
+                            reason="Registered channels did not pass the data policy",
+                            n_channels=0,
+                        )
+                    )
                     continue
 
                 coverage.append(
@@ -105,18 +164,13 @@ class ReactionNetworkBuilder:
                         family=pair.family,
                         depth=depth,
                         status="found",
-                        n_channels=len(channels),
+                        n_channels=len(eligible_channels),
                     )
                 )
 
                 reactants = [SpeciesAmount(pair.projectile, 1.0), SpeciesAmount(pair.target, 1.0)]
 
-                for channel in channels:
-                    if not is_channel_allowed(channel, config):
-                        continue
-                    if channel.id in seen_reaction_ids:
-                        continue
-
+                for channel in eligible_channels:
                     self._load_registered_product_species(
                         products=channel.products,
                         known_species=known_species,
@@ -145,13 +199,56 @@ class ReactionNetworkBuilder:
                             )
                         )
                         continue
+                    if not is_reaction_validation_allowed(validation, config):
+                        continue
 
                     equation = format_equation(reactants=reactants, products=channel.products)
                     channel_rule = reaction_catalog.get(pair.family, {}).get(channel.type, {})
                     expands_species = bool(channel_rule.get("expands_species", True))
 
+                    if len(reactions) >= config.limits.max_reactions:
+                        truncations.append(
+                            TruncationEvent(
+                                limit_name="max_reactions",
+                                scope="reactions",
+                                limit_value=config.limits.max_reactions,
+                                depth=depth,
+                                observed_count=len(reactions) + 1,
+                                retained_count=len(reactions),
+                                omitted_count=None,
+                                details={"first_omitted_reaction_id": channel.id},
+                            )
+                        )
+                        return ReactionNetwork(
+                            species=known_species,
+                            species_nodes=species_nodes,
+                            reactions=reactions,
+                            coverage=coverage,
+                            missing_data=missing_data,
+                            truncations=truncations,
+                        )
+
                     introduced: list[str] = []
                     if expands_species:
+                        new_species_ids = self._new_product_species_ids(
+                            products=channel.products,
+                            known_species=known_species,
+                            species_nodes=species_nodes,
+                        )
+                        if (
+                            len(species_nodes) + len(new_species_ids)
+                            > config.limits.max_species
+                        ):
+                            self._record_species_truncation(
+                                truncations=truncations,
+                                depth=depth,
+                                limit=config.limits.max_species,
+                                retained_count=len(species_nodes),
+                                channel_id=channel.id,
+                                blocked_species_ids=new_species_ids,
+                            )
+                            seen_reaction_ids.add(channel.id)
+                            continue
                         introduced = self._register_product_nodes(
                             channel_id=channel.id,
                             depth=depth,
@@ -176,7 +273,11 @@ class ReactionNetworkBuilder:
                         source_pair_label=pair.label,
                         introduced_species=introduced,
                         validation=validation,
-                        data_status=self._build_data_status(channel_data=channel.data, family=pair.family, status=channel.status),
+                        data_status=self._build_data_status(
+                            channel=channel,
+                            family=pair.family,
+                            asset_exists=asset_exists,
+                        ),
                         threshold_eV=channel.threshold_eV,
                         deltaE_products_minus_reactants_eV=channel.deltaE_products_minus_reactants_eV,
                         dnt_class=channel.dnt_class,
@@ -186,17 +287,106 @@ class ReactionNetworkBuilder:
                     reactions.append(generated)
                     seen_reaction_ids.add(channel.id)
 
-                    if len(reactions) >= config.limits.max_reactions:
-                        return ReactionNetwork(known_species, species_nodes, reactions, coverage, missing_data)
-
             if not new_frontier:
                 break
             frontier = new_frontier
 
-            if len(species_nodes) >= config.limits.max_species:
-                break
+        return ReactionNetwork(
+            species=known_species,
+            species_nodes=species_nodes,
+            reactions=reactions,
+            coverage=coverage,
+            missing_data=missing_data,
+            truncations=truncations,
+        )
 
-        return ReactionNetwork(known_species, species_nodes, reactions, coverage, missing_data)
+    def _find_asset_exists_predicate(self) -> Callable[[str | None], bool] | None:
+        for repository in (
+            self.deps.reaction_repo,
+            self.deps.species_repo,
+            self.deps.rule_repo,
+        ):
+            predicate = getattr(repository, "asset_exists", None)
+            if callable(predicate):
+                return predicate
+        return None
+
+    def _new_product_species_ids(
+        self,
+        products: list[SpeciesAmount],
+        known_species: dict[str, Species],
+        species_nodes: dict[str, NetworkSpeciesNode],
+    ) -> list[str]:
+        return list(
+            dict.fromkeys(
+                amount.species
+                for amount in products
+                if amount.species != "e"
+                and amount.species in known_species
+                and amount.species not in species_nodes
+            )
+        )
+
+    def _record_missing_report_truncation(
+        self,
+        *,
+        truncations: list[TruncationEvent],
+        depth: int,
+        observed_count: int,
+        limit: int,
+    ) -> None:
+        if observed_count <= limit:
+            return
+        existing = next(
+            (
+                event
+                for event in truncations
+                if event.limit_name == "max_missing_pairs_per_depth"
+                and event.depth == depth
+            ),
+            None,
+        )
+        if existing is None:
+            truncations.append(
+                TruncationEvent(
+                    limit_name="max_missing_pairs_per_depth",
+                    scope="coverage.missing_pairs",
+                    limit_value=limit,
+                    depth=depth,
+                    observed_count=observed_count,
+                    retained_count=limit,
+                    omitted_count=observed_count - limit,
+                )
+            )
+            return
+        existing.observed_count = observed_count
+        existing.omitted_count = observed_count - limit
+
+    def _record_species_truncation(
+        self,
+        *,
+        truncations: list[TruncationEvent],
+        depth: int,
+        limit: int,
+        retained_count: int,
+        channel_id: str,
+        blocked_species_ids: list[str],
+    ) -> None:
+        truncations.append(
+            TruncationEvent(
+                limit_name="max_species",
+                scope="species_expansion",
+                limit_value=limit,
+                depth=depth,
+                observed_count=retained_count + len(blocked_species_ids),
+                retained_count=retained_count,
+                omitted_count=len(blocked_species_ids),
+                details={
+                    "blocked_reaction_ids": [channel_id],
+                    "blocked_species_ids": list(blocked_species_ids),
+                },
+            )
+        )
 
     def _load_registered_product_species(
         self,
@@ -274,16 +464,31 @@ class ReactionNetworkBuilder:
             return False
         return True
 
-    def _build_data_status(self, channel_data: dict, family: str, status: str) -> dict[str, str]:
-        out = {"reaction": status}
+    def _build_data_status(
+        self,
+        channel: ReactionChannel,
+        family: str,
+        asset_exists: Callable[[str | None], bool] | None,
+    ) -> dict[str, str]:
+        out = {"reaction": channel.status}
         if family == "electron":
-            cs = channel_data.get("cross_section")
+            cs = channel.data.get("cross_section")
             if not cs:
                 out["cross_section"] = "missing"
-            elif cs.get("path"):
-                out["cross_section"] = "local_file_registered"
+            elif isinstance(cs, dict) and cs.get("path"):
+                out["cross_section"] = (
+                    "local_file_registered"
+                    if has_available_cross_section(channel, asset_exists)
+                    else "path_registered_but_missing"
+                )
             else:
-                out["cross_section"] = cs.get("status", "reference_only_needs_import")
+                out["cross_section"] = (
+                    cs.get("status", "reference_only_needs_import")
+                    if isinstance(cs, dict)
+                    else "reference_only_needs_import"
+                )
         elif family == "ion_neutral":
-            out["dnt_class"] = "inferred" if status == "inferred" else "registered"
+            out["dnt_class"] = (
+                "inferred" if channel.status == "inferred" else "registered"
+            )
         return out

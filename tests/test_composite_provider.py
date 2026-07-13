@@ -216,7 +216,7 @@ def test_missing_data_reports_inferred_cross_section_and_dnt_energy():
     deps = _deps(registry, config)
     network = ReactionNetworkBuilder(deps).generate(config)
 
-    missing = build_missing_data(network, states=[], dnt_tasks=[], registry=registry)
+    missing = build_missing_data(network, states=[])
 
     assert any(
         item.subject_id == "inferred_e_CF4_ionization_parent"

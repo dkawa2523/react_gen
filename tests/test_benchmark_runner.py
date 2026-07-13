@@ -5,7 +5,8 @@ import socket
 
 import yaml
 
-from external_data_tools.benchmark_metrics import collect_metrics, evaluate_expectations
+from external_data_tools.benchmark_expectations import evaluate_expectations
+from external_data_tools.benchmark_metrics import collect_metrics
 from external_data_tools.benchmark_runner import run_benchmarks
 
 

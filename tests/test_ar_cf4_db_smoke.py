@@ -69,7 +69,6 @@ def test_ar_cf4_db_smoke_workflow_runs_end_to_end(tmp_path):
             str(workspace / "prepared_registry"),
             "--output",
             str(outputs),
-            "--export-dnt-inputs",
         ]
     ) == 0
 

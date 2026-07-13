@@ -20,6 +20,7 @@ class PropertyValue:
     value: Any | None = None
     unit: str | None = None
     source: str | None = None
+    source_record: dict[str, Any] | None = None
 
 
 @dataclass
@@ -112,9 +113,36 @@ class MissingDataItem:
 
 
 @dataclass
+class TruncationEvent:
+    """Machine-readable record of output omitted by a configured limit.
+
+    ``omitted_count`` may be ``None`` when generation stops at the first omitted
+    item and the total number of remaining items is intentionally not scanned.
+    ``details`` carries limit-specific identifiers without forcing every limit
+    into one rigid schema.
+    """
+
+    limit_name: str
+    scope: str
+    limit_value: int
+    depth: int | None
+    observed_count: int
+    retained_count: int
+    omitted_count: int | None
+    details: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
 class ReactionNetwork:
     species: dict[SpeciesId, Species]
     species_nodes: dict[SpeciesId, NetworkSpeciesNode]
     reactions: list[GeneratedReaction]
     coverage: list[CoverageItem]
     missing_data: list[MissingDataItem] = field(default_factory=list)
+    truncations: list[TruncationEvent] = field(default_factory=list)
+
+    @property
+    def generation_complete(self) -> bool:
+        """Whether no configured generation/reporting limit omitted data."""
+
+        return not self.truncations

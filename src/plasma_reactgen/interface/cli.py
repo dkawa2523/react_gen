@@ -25,7 +25,10 @@ from plasma_reactgen.inference.provider import (
 from plasma_reactgen.infrastructure.csv_writer import write_csv_outputs
 from plasma_reactgen.infrastructure.dnt_writer import write_dnt_inputs
 from plasma_reactgen.infrastructure.file_registry import FileRegistry
-from plasma_reactgen.infrastructure.indexer import build_indexes, check_registry
+from plasma_reactgen.infrastructure.indexer import (
+    check_registry_details,
+    format_registry_check,
+)
 from plasma_reactgen.infrastructure.yaml_writer import write_yaml_outputs
 from plasma_reactgen.preparation.cross_section_mapping import apply_cross_section_mappings
 from plasma_reactgen.preparation.enricher import enrich_case
@@ -45,10 +48,6 @@ def main(argv: list[str] | None = None) -> int:
     gen.add_argument("input", type=Path, help="case input YAML")
     gen.add_argument("--registry", type=Path, default=Path("registry"), help="local registry root")
     gen.add_argument("--output", type=Path, default=None, help="output directory; defaults to CASE_DIR/outputs")
-    gen.add_argument("--visualize", action="store_true", help="also create visualization files after generation")
-    gen.add_argument("--visualization-output", type=Path, default=None, help="destination for visualization files when --visualize is used")
-    gen.add_argument("--export-dnt-inputs", action="store_true", help="also write solver-free pair-wise DNT input files")
-    gen.add_argument("--dnt-input-output", type=Path, default=None, help="destination for pair-wise DNT input files")
 
     vis = sub.add_parser("visualize", help="create statistical charts and Graphviz reaction-network outputs")
     vis.add_argument("outputs", type=Path, help="case output directory containing network.*.yaml files")
@@ -61,9 +60,6 @@ def main(argv: list[str] | None = None) -> int:
     chk = sub.add_parser("dev-check", help="check registry readability and basic references")
     chk.add_argument("--registry", type=Path, default=Path("registry"))
     chk.add_argument("--strict", action="store_true")
-
-    idx = sub.add_parser("dev-index", help="build registry index files")
-    idx.add_argument("--registry", type=Path, default=Path("registry"))
 
     infer = sub.add_parser(
         "infer-candidates",
@@ -78,6 +74,11 @@ def main(argv: list[str] | None = None) -> int:
     enrich.add_argument("--registry", type=Path, default=Path("registry"), help="local registry root")
     enrich.add_argument("--workspace", type=Path, required=True, help="workspace for prepared_registry and reports")
     enrich.add_argument("--source-profile", default="local_only", help="source profile name or YAML path")
+    enrich.add_argument(
+        "--fresh",
+        action="store_true",
+        help="clear enrich-owned workspace artifacts before preparing the registry",
+    )
 
     dnt = sub.add_parser("export-dnt", help="export solver-free pair-wise DNT+/DNT+DM input YAML files")
     dnt.add_argument("input", type=Path, help="case input YAML")
@@ -128,10 +129,6 @@ def main(argv: list[str] | None = None) -> int:
             args.input,
             args.registry,
             args.output,
-            args.visualize,
-            args.visualization_output,
-            args.export_dnt_inputs,
-            args.dnt_input_output,
         )
     if args.command == "visualize":
         return _cmd_visualize(
@@ -143,16 +140,19 @@ def main(argv: list[str] | None = None) -> int:
             formats=args.formats,
         )
     if args.command == "dev-check":
-        print(check_registry(args.registry, strict=args.strict))
-        return 0
-    if args.command == "dev-index":
-        build_indexes(args.registry)
-        print("Registry indexes updated.")
-        return 0
+        details = check_registry_details(args.registry, strict=args.strict)
+        print(format_registry_check(details))
+        return 1 if details["errors"] else 0
     if args.command == "infer-candidates":
         return _cmd_infer_candidates(args.input, args.registry, args.output)
     if args.command == "enrich":
-        return _cmd_enrich(args.input, args.registry, args.workspace, args.source_profile)
+        return _cmd_enrich(
+            args.input,
+            args.registry,
+            args.workspace,
+            args.source_profile,
+            fresh=args.fresh,
+        )
     if args.command == "export-dnt":
         return _cmd_export_dnt(args.input, args.registry, args.output)
     if args.command == "import-cross-sections":
@@ -191,10 +191,6 @@ def _cmd_generate(
     input_path: Path,
     registry_root: Path,
     output_dir: Path | None,
-    visualize: bool = False,
-    visualization_output: Path | None = None,
-    export_dnt_inputs: bool = False,
-    dnt_input_output: Path | None = None,
 ) -> int:
     config = load_case_config(input_path, registry_root)
     if output_dir is None:
@@ -209,8 +205,6 @@ def _cmd_generate(
     missing_data = build_missing_data(
         network=network,
         states=states,
-        dnt_tasks=dnt_tasks,
-        registry=registry,
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -222,13 +216,12 @@ def _cmd_generate(
         dnt_tasks=dnt_tasks,
         missing_data=missing_data,
     )
-    if config.outputs.csv_summary:
-        write_csv_outputs(output_dir=output_dir, network=network, states=states, missing_data=missing_data)
+    write_csv_outputs(output_dir=output_dir, network=network, states=states, missing_data=missing_data)
 
     dnt_output_dir = None
     dnt_inputs = None
-    if export_dnt_inputs or config.outputs.dnt_inputs:
-        dnt_output_dir = dnt_input_output or output_dir
+    if config.outputs.dnt_inputs:
+        dnt_output_dir = output_dir
         dnt_inputs = _write_dnt_inputs_for_network(dnt_output_dir, network)
 
     print(f"Generated outputs: {output_dir}")
@@ -238,18 +231,23 @@ def _cmd_generate(
     print(f"  ion_neutral_reactions: {sum(1 for reaction in network.reactions if reaction.family == 'ion_neutral')}")
     print(f"  pairs_found: {sum(1 for item in network.coverage if item.status == 'found')}")
     print(f"  pairs_missing: {sum(1 for item in network.coverage if item.status == 'missing')}")
+    print(f"  generation_complete: {str(network.generation_complete).lower()}")
+    print(f"  truncations: {len(network.truncations)}")
     print(f"  dnt_tasks: {len(dnt_tasks)}")
-    print(f"  dnt_ready_pairs: {_count_ready_dnt_pairs(dnt_tasks)}")
+    print(
+        "  dnt_property_ready_pairs: "
+        f"{_count_dnt_status(dnt_tasks, 'pair_property_readiness', 'ready')}"
+    )
+    print(
+        "  dnt_complete_ready_pairs: "
+        f"{_count_dnt_status(dnt_tasks, 'complete_readiness', 'ready')}"
+    )
     print(f"  reactions_with_cross_section_asset: {_count_reactions_with_cross_section_asset(network)}")
     print(f"  electron_reactions_missing_cross_section: {_count_electron_reactions_missing_cross_section(network)}")
     print(f"  missing_data_items: {len(missing_data)}")
     print(f"  quality_summary: {output_dir / 'quality_summary.yaml'}")
     if dnt_inputs is not None:
         _print_dnt_input_summary(dnt_output_dir, dnt_inputs)
-
-    if visualize:
-        manifest = write_visualizations(output_dir, visualization_output)
-        print(f"Generated visualizations: {manifest['visualization_dir']}")
 
     return 0
 
@@ -271,15 +269,26 @@ def _cmd_infer_candidates(input_path: Path, registry_root: Path, output_dir: Pat
     return 0
 
 
-def _cmd_enrich(input_path: Path, registry_root: Path, workspace: Path, source_profile: str) -> int:
+def _cmd_enrich(
+    input_path: Path,
+    registry_root: Path,
+    workspace: Path,
+    source_profile: str,
+    *,
+    fresh: bool = False,
+) -> int:
     report = enrich_case(
         input_path=input_path,
         registry_root=registry_root,
         workspace=workspace,
         source_profile=source_profile,
+        fresh=fresh,
     )
     print(f"Enriched prepared registry: {workspace / 'prepared_registry'}")
     print(f"  source_profile: {report['source_profile']}")
+    print(f"  workspace_mode: {report['workspace']['mode']}")
+    if report["workspace"]["reused_existing_prepared_registry"]:
+        print("  warning: existing prepared-registry overlays were preserved; use --fresh for a clean run")
     print(f"  species_seeded_from_reactions: {report['summary'].get('species_seeded_from_reactions', 0)}")
     print(f"  properties_filled: {report['summary']['properties_filled']}")
     print(f"  properties_filled_for_seeded_species: {report['summary'].get('properties_filled_for_seeded_species', 0)}")
@@ -343,12 +352,20 @@ def _cmd_apply_cross_section_mapping(mapping_file: Path, workspace: Path) -> int
         prepared_registry=workspace / "prepared_registry",
         mapping_file=mapping_file,
     )
+    report_path = workspace / "cross_section_mapping_report.yaml"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(
+        yaml.safe_dump(report, sort_keys=False, allow_unicode=True),
+        encoding="utf-8",
+    )
     print(f"Applied cross-section mappings: {mapping_file}")
     print(f"  mappings: {report['summary']['n_mappings']}")
     print(f"  updated: {report['summary']['n_updated']}")
     print(f"  unresolved: {report['summary']['n_unresolved']}")
-    print("  registry_mutated: false")
-    return 0
+    print(f"  report: {report_path}")
+    print(f"  prepared_registry_mutated: {str(report['prepared_registry_mutated']).lower()}")
+    print("  curated_registry_mutated: false")
+    return 1 if report["summary"]["n_unresolved"] else 0
 
 
 def _cmd_plan_missing(outputs_or_missing_data: Path, output: Path) -> int:
@@ -418,25 +435,36 @@ def _print_dnt_input_summary(
             print(f"  {status}: {summary[status]}")
 
 
-def _count_ready_dnt_pairs(dnt_tasks: list[dict]) -> int:
-    return sum(1 for task in dnt_tasks if task.get("readiness", {}).get("status") == "ready")
+def _count_dnt_status(dnt_tasks: list[dict], field: str, status: str) -> int:
+    count = 0
+    for task in dnt_tasks:
+        readiness = task.get(field)
+        if not isinstance(readiness, dict) and field == "pair_property_readiness":
+            readiness = task.get("readiness")
+        if isinstance(readiness, dict) and readiness.get("status") == status:
+            count += 1
+    return count
 
 
 def _count_reactions_with_cross_section_asset(network) -> int:
-    return sum(1 for reaction in network.reactions if _has_cross_section_asset(reaction.data))
+    return sum(
+        1
+        for reaction in network.reactions
+        if _has_cross_section_asset(reaction.data_status)
+    )
 
 
 def _count_electron_reactions_missing_cross_section(network) -> int:
     return sum(
         1
         for reaction in network.reactions
-        if reaction.family == "electron" and not _has_cross_section_asset(reaction.data)
+        if reaction.family == "electron"
+        and not _has_cross_section_asset(reaction.data_status)
     )
 
 
-def _has_cross_section_asset(data: dict) -> bool:
-    cross_section = data.get("cross_section") if isinstance(data, dict) else None
-    return isinstance(cross_section, dict) and bool(cross_section.get("path"))
+def _has_cross_section_asset(data_status: dict) -> bool:
+    return data_status.get("cross_section") == "local_file_registered"
 
 
 def _build_network_dependencies(registry: FileRegistry, config) -> NetworkBuilderDependencies:

@@ -6,6 +6,7 @@ import yaml
 
 from plasma_reactgen.application.ports import ReactionRepository, RuleRepository, SpeciesRepository
 from plasma_reactgen.domain.models import CollisionPair, PropertyValue, ReactionChannel, Species, SpeciesAmount
+from plasma_reactgen.infrastructure.registry_paths import registry_asset_exists
 
 
 class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
@@ -14,7 +15,7 @@ class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
         self._species_index: dict[str, Path] = {}
         self._reaction_index: dict[str, Path] = {}
         self._species_cache: dict[str, Species] = {}
-        self._build_indexes_by_scan()
+        self._scan_registry()
 
     def get_species(self, species_id: str) -> Species | None:
         if species_id in self._species_cache:
@@ -30,6 +31,7 @@ class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
                 value=(payload or {}).get("value"),
                 unit=(payload or {}).get("unit"),
                 source=(payload or {}).get("source"),
+                source_record=(payload or {}).get("source_record"),
             )
             for name, payload in data.get("properties", {}).items()
         }
@@ -89,14 +91,8 @@ class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
         path = self.root / "rules" / "role_required_properties.yaml"
         return self._read_yaml(path)
 
-    def get_profile(self, profile_name: str) -> dict:
-        path = self.root / "rules" / "profiles" / f"{profile_name}.yaml"
-        return self._read_yaml(path)
-
     def asset_exists(self, relative_path: str | None) -> bool:
-        if not relative_path:
-            return False
-        return (self.root / relative_path).exists()
+        return registry_asset_exists(self.root, relative_path)
 
     def iter_species_files(self) -> list[Path]:
         species_dir = self.root / "species"
@@ -108,7 +104,7 @@ class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
             return []
         return sorted(reaction_root.glob("*/*.yaml"))
 
-    def _build_indexes_by_scan(self) -> None:
+    def _scan_registry(self) -> None:
         self._species_index.clear()
         self._reaction_index.clear()
 

@@ -12,7 +12,8 @@ Start with the local-only profile:
 reactgen enrich cases/ar_cf4/input.yaml `
   --registry registry `
   --workspace workspaces/ar_cf4 `
-  --source-profile local_only
+  --source-profile local_only `
+  --fresh
 ```
 
 This writes:
@@ -25,6 +26,10 @@ workspaces/ar_cf4/enrichment_report.yaml
 
 Curated `registry/` is not changed.
 
+`--fresh` clears only enrich-owned artifacts from this workspace before the
+prepared registry is rebuilt. Use it at the beginning of a reproducible run;
+omit it when intentionally continuing an incremental prepared-registry review.
+
 You usually do not need to list every expected fragment species in the case
 input. During enrich, local/internal reaction providers may introduce product
 species into `prepared_registry` when a configured species provider has an exact
@@ -36,8 +41,10 @@ reported for manual review.
 ```powershell
 reactgen generate cases/ar_cf4/input.yaml `
   --registry workspaces/ar_cf4/prepared_registry `
-  --output workspaces/ar_cf4/outputs `
-  --export-dnt-inputs
+  --output workspaces/ar_cf4/outputs
+reactgen export-dnt cases/ar_cf4/input.yaml `
+  --registry workspaces/ar_cf4/prepared_registry `
+  --output workspaces/ar_cf4/outputs
 ```
 
 Inspect:
@@ -118,15 +125,20 @@ reactgen apply-cross-section-mapping external_data/lxcat/mappings.yaml `
 ```
 
 Only `workspaces/ar_cf4/prepared_registry/reactions/electron/*.yaml` is
-updated. Curated `registry/` is not changed.
+updated. Curated `registry/` is not changed. The mapping is rejected if its
+asset is missing or its path escapes `prepared_registry`; inspect
+`workspaces/ar_cf4/cross_section_mapping_report.yaml` if the command exits
+non-zero.
 
 ## 6. Rerun Generate
 
 ```powershell
 reactgen generate cases/ar_cf4/input.yaml `
   --registry workspaces/ar_cf4/prepared_registry `
-  --output workspaces/ar_cf4/outputs_after_xsec `
-  --export-dnt-inputs
+  --output workspaces/ar_cf4/outputs_after_xsec
+reactgen export-dnt cases/ar_cf4/input.yaml `
+  --registry workspaces/ar_cf4/prepared_registry `
+  --output workspaces/ar_cf4/outputs_after_xsec
 ```
 
 Compare `missing_data.yaml`, `dnt_tasks.yaml`, and DNT input files before using

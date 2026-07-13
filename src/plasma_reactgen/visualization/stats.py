@@ -200,7 +200,10 @@ def _chart_coverage_status_counts(dataset: VisualizationDataset, output_dir: Pat
 
 
 def _chart_dnt_readiness_counts(dataset: VisualizationDataset, output_dir: Path) -> Path:
-    counts = Counter(str(t.get("readiness", {}).get("status", "unknown")) for t in dataset.dnt_tasks)
+    counts = Counter(
+        str(t.get("pair_property_readiness", {}).get("status", "unknown"))
+        for t in dataset.dnt_tasks
+    )
     path = output_dir / "dnt_readiness_counts.svg"
     write_horizontal_bar_chart(
         path,

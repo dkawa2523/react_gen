@@ -30,9 +30,13 @@ It continues to show:
 
 - ion-neutral pair
 - model variant
-- ready/missing status
+- pair-property readiness (`pair_property_readiness`)
+- complete pair-and-channel readiness (`complete_readiness`)
 - missing required properties
 - associated reactions
+
+The legacy `readiness` field remains an alias for pair-property readiness. It
+must not be read as a claim that every channel has complete solver input.
 
 ### `dnt_manifest.yaml`
 
@@ -46,16 +50,19 @@ pairs:
   - pair_id: Ar_p__CF4
     file: dnt_inputs/Ar_p__CF4.yaml
     model_variant: dnt_plus
-    status: ready_with_warnings
+    status: missing_required_data
     missing_required_properties:
       - target.polarizability_A3
       - target.collision_radius_A
 
 summary:
   total_pairs: 1
+  property_ready_pairs: 0
+  complete_ready_pairs: 0
+  complete_ready_with_warnings_pairs: 0
   ready: 0
-  ready_with_warnings: 1
-  missing_required_data: 0
+  ready_with_warnings: 0
+  missing_required_data: 1
   no_dnt_channels: 0
 ```
 
@@ -73,7 +80,25 @@ Example:
 schema_version: 1
 pair_id: Ar_p__CF4
 model_variant: dnt_plus
-status: ready_with_warnings
+status: missing_required_data
+
+pair_property_readiness:
+  status: missing_properties
+  scope: pair_properties
+  missing:
+    - target.polarizability_A3
+    - target.collision_radius_A
+
+complete_readiness:
+  status: missing_required_data
+  scope: pair_properties_and_channels
+  missing_required_properties:
+    - target.polarizability_A3
+    - target.collision_radius_A
+  channel_warnings:
+    - reaction_id: ion_Ar_p__CF4__ct_parent
+      fields:
+        - deltaE_products_minus_reactants_eV
 
 projectile:
   id: Ar_p
@@ -149,7 +174,16 @@ provenance:
   source_network: network.reactions.yaml
 ```
 
-## Readiness status
+## Two Readiness Scopes
+
+`pair_property_readiness.status` is either `ready` or `missing_properties` and
+only answers whether the required ion/neutral properties are available.
+
+`complete_readiness.status`, the top-level pair-file `status`, and the manifest
+status use the statuses below. They combine pair properties with DNT channel
+classification, thresholds, and energetics.
+
+## Complete Readiness Status
 
 Use only a small set of statuses.
 
@@ -159,14 +193,13 @@ All required pair properties and required channel-level DNT values are available
 
 ### `ready_with_warnings`
 
-The pair-level DNT input can be written, but one or more optional or channel-level values are missing.
+The required pair properties are present, but one or more channel-level values
+are missing.
 
 Typical examples:
 
 - missing reaction energy
-- missing threshold
-- missing provenance
-- incomplete channel-specific DNT parameter
+- missing threshold for a non-elastic channel
 
 ### `missing_required_data`
 
@@ -231,6 +264,9 @@ Unknown values should be written as `null`.
 
 Unknown values should not cause export failure unless the pair itself cannot be identified.
 
+They do, however, keep complete readiness at `ready_with_warnings` when the
+missing field is required for a complete DNT channel.
+
 ## Model variant
 
 Use a simple model selection rule at this layer.
@@ -276,14 +312,13 @@ Pair-wise DNT input export is optional in normal generation:
 
 ```yaml
 outputs:
-  dnt_tasks: true
   dnt_inputs: false
 ```
 
 If `outputs.dnt_inputs` is missing, the default is `false` to preserve existing `generate` outputs.
 
-Use `outputs.dnt_inputs: true`, `reactgen generate --export-dnt-inputs`, or
-`reactgen export-dnt` to write `dnt_manifest.yaml` and `dnt_inputs/`.
+Use `outputs.dnt_inputs: true` during generation, or `reactgen export-dnt` for
+an explicit export destination.
 
 ## Missing data policy
 

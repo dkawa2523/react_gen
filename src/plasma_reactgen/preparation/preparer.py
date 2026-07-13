@@ -14,8 +14,8 @@ from plasma_reactgen.data_sources.provider_factory import (
     build_species_providers,
 )
 from plasma_reactgen.data_sources.source_profile import load_source_profile
-from plasma_reactgen.domain.identifiers import pair_filename, to_file_key
-from plasma_reactgen.domain.models import CollisionPair, PropertyValue
+from plasma_reactgen.domain.identifiers import to_file_key
+from plasma_reactgen.domain.models import PropertyValue
 from plasma_reactgen.infrastructure.file_registry import FileRegistry
 from plasma_reactgen.preparation.property_enrichment import enrich_species_properties
 from plasma_reactgen.preparation.reaction_enrichment import enrich_reaction_channels
@@ -122,7 +122,12 @@ def prepare_case(
         if _has_prepared_provenance(species) or property_providers:
             _write_yaml(output_dir / "species" / f"{to_file_key(species_id)}.yaml", species)
 
-    enrichment_report = enrich_species_properties(output_dir, property_providers, profile)
+    enrichment_report = enrich_species_properties(
+        output_dir,
+        property_providers,
+        profile,
+        species_ids=species_ids,
+    )
     if not preserve_local_overlays:
         _remove_unmodified_local_overlays(output_dir)
     properties_filled = list(enrichment_report["properties_filled"])
@@ -260,11 +265,6 @@ def _record_existing_source_files(cache_root: Path, source_name: str, files: lis
     return records
 
 
-def _profile_includes(profile: dict[str, Any], section: str, provider_name: str) -> bool:
-    providers = profile.get(section, [])
-    return isinstance(providers, list) and provider_name in providers
-
-
 def _chemicals_provider_name(profile: dict[str, Any], section: str) -> str | None:
     providers = profile.get(section, [])
     if not isinstance(providers, list):
@@ -332,86 +332,6 @@ def _species_payload_from_registry(species) -> dict[str, Any]:
     }
 
 
-def _minimal_species_payload(species_id: str) -> dict[str, Any]:
-    return {
-        "schema_version": 1,
-        "id": species_id,
-        "display_name": species_id,
-        "composition": {},
-        "charge": 0,
-        "classes": [],
-        "state": {},
-        "properties": {},
-        "metadata": {
-            "status": "prepared",
-            "notes": ["Prepared overlay; curated registry was not mutated."],
-        },
-    }
-
-
-def _property_can_fill_gap(
-    registry: FileRegistry,
-    prepared_species: dict[str, dict[str, Any]],
-    candidate: dict[str, Any],
-) -> bool:
-    species_id = candidate.get("species")
-    property_name = candidate.get("property")
-    if not species_id or not property_name:
-        return False
-
-    local_species = registry.get_species(species_id)
-    if local_species is not None:
-        prop = local_species.properties.get(property_name)
-        if prop is not None and prop.value is not None:
-            return False
-
-    prepared = prepared_species.get(species_id)
-    if prepared is not None:
-        existing = prepared.get("properties", {}).get(property_name)
-        if isinstance(existing, dict) and existing.get("value") is not None:
-            return False
-
-    return True
-
-
-def _apply_property_candidate(species: dict[str, Any], candidate: dict[str, Any]) -> None:
-    property_name = candidate["property"]
-    species.setdefault("properties", {})[property_name] = {
-        "value": candidate.get("value"),
-        "unit": candidate.get("unit"),
-        "source": candidate.get("source"),
-        "evidence_type": candidate.get("evidence_type"),
-        "status": candidate.get("status", "imported"),
-        "source_record": deepcopy(candidate.get("source_record")),
-    }
-
-
-def _reaction_file_payload(pair: CollisionPair, channels: list[dict[str, Any]]) -> dict[str, Any]:
-    return {
-        "schema_version": 1,
-        "pair": {
-            "family": pair.family,
-            "projectile": pair.projectile,
-            "target": pair.target,
-        },
-        "channels": [_channel_payload(channel) for channel in channels],
-        "metadata": {
-            "status": "prepared",
-            "notes": ["Prepared from internal file data; curated registry was not mutated."],
-        },
-    }
-
-
-def _channel_payload(channel: dict[str, Any]) -> dict[str, Any]:
-    payload = deepcopy(channel)
-    payload.pop("pair", None)
-    return payload
-
-
-def _electron_pairs(species_ids: list[str]) -> list[CollisionPair]:
-    return [CollisionPair("electron", "e", species_id) for species_id in species_ids]
-
-
 def _has_prepared_provenance(species: dict[str, Any]) -> bool:
     source_types = {"internal_file_db", "python_package", "public_database_snapshot"}
     metadata = species.get("metadata", {})
@@ -435,11 +355,14 @@ def _remove_unmodified_local_overlays(output_dir: Path) -> None:
 
 
 def _property_value_payload(prop: PropertyValue) -> dict[str, Any]:
-    return {
+    payload = {
         "value": prop.value,
         "unit": prop.unit,
         "source": prop.source,
     }
+    if prop.source_record is not None:
+        payload["source_record"] = deepcopy(prop.source_record)
+    return payload
 
 
 def _write_yaml(path: Path, payload: dict[str, Any]) -> None:

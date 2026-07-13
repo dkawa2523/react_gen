@@ -6,16 +6,8 @@ case:
 gases:
 - Ar
 - CF4
-profile: low_pressure_plasma_v1
 expansion:
   max_depth: 2
-outputs:
-  reactions: true
-  states: true
-  dnt_tasks: true
-  coverage_report: true
-  missing_data: true
-  csv_summary: true
 data_policy:
   include_incomplete_reactions: true
   include_reactions_without_cross_section: true
@@ -25,5 +17,3 @@ data_policy:
   - literature_supported
   - estimated
   - draft
-  exclude_status:
-  - deprecated

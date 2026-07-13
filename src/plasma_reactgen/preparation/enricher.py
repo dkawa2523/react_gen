@@ -20,12 +20,20 @@ def enrich_case(
     registry_root: str | Path,
     workspace: str | Path,
     source_profile: str | dict[str, Any] | None = None,
+    *,
+    fresh: bool = False,
 ) -> dict[str, Any]:
     input_path = Path(input_path)
     registry_root = Path(registry_root)
     workspace = Path(workspace)
     prepared_registry = workspace / "prepared_registry"
+    reused_existing_workspace = prepared_registry.exists()
+    workspace_mode = "reuse" if reused_existing_workspace else "new"
+    if fresh:
+        workspace_mode = "fresh"
 
+    if fresh:
+        _clear_generated_workspace_files(workspace)
     workspace.mkdir(parents=True, exist_ok=True)
     _copy_registry_missing_files(registry_root, prepared_registry)
 
@@ -37,7 +45,7 @@ def enrich_case(
         output_dir=prepared_registry,
         preserve_local_overlays=True,
     )
-    _write_yaml(workspace / "prepare_report.yaml", prepare_report)
+    (prepared_registry / "prepare_report.yaml").replace(workspace / "prepare_report.yaml")
 
     identity_report = _run_identity_enrichment(prepared_registry, profile)
 
@@ -48,6 +56,8 @@ def enrich_case(
         prepared_registry=prepared_registry,
         prepare_report=prepare_report,
         identity_report=identity_report,
+        workspace_mode=workspace_mode,
+        reused_existing_workspace=reused_existing_workspace and not fresh,
     )
     _write_yaml(workspace / "enrichment_report.yaml", enrichment_report)
     return enrichment_report
@@ -74,12 +84,37 @@ def _copy_registry_missing_files(registry_root: Path, prepared_registry: Path) -
         shutil.copy2(source, target)
 
 
+def _clear_generated_workspace_files(workspace: Path) -> None:
+    """Remove only artifacts owned by ``enrich`` from a workspace."""
+
+    root = workspace.resolve()
+    for name in (
+        "prepared_registry",
+        "source_cache",
+        "prepare_report.yaml",
+        "enrichment_report.yaml",
+        "cross_section_mapping_report.yaml",
+    ):
+        target = workspace / name
+        if not target.exists():
+            continue
+        resolved = target.resolve()
+        if resolved.parent != root:
+            raise ValueError(f"refusing to clear workspace path outside workspace: {target}")
+        if target.is_dir():
+            shutil.rmtree(target)
+        else:
+            target.unlink()
+
+
 def _enrichment_report(
     *,
     case_name: str,
     source_profile_name: str,
     prepared_registry: Path,
     prepare_report: dict[str, Any],
+    workspace_mode: str,
+    reused_existing_workspace: bool,
     identity_report: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     summary = prepare_report.get("summary", {})
@@ -95,6 +130,10 @@ def _enrichment_report(
         "case": {"name": case_name},
         "source_profile": source_profile_name,
         "prepared_registry": str(prepared_registry),
+        "workspace": {
+            "mode": workspace_mode,
+            "reused_existing_prepared_registry": reused_existing_workspace,
+        },
         "registry_mutated": False,
         "auto_promoted": False,
         "summary": {
@@ -110,7 +149,7 @@ def _enrichment_report(
             "identity_species_updated": int((identity_report or {}).get("summary", {}).get("n_updated_species", 0)),
             "identity_conflicts": int((identity_report or {}).get("summary", {}).get("n_conflicts", 0)),
         },
-        "prepare_report": str(prepared_registry / "prepare_report.yaml"),
+        "prepare_report": str(prepared_registry.parent / "prepare_report.yaml"),
         "source_cache": prepare_report.get("source_cache", []),
     }
     if identity_report is not None:

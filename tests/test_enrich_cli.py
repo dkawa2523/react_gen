@@ -6,6 +6,9 @@ import yaml
 from plasma_reactgen.interface.cli import main
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
 def test_enrich_command_works_with_local_profile_without_network(tmp_path, monkeypatch):
     def fail_socket(*args, **kwargs):
         raise AssertionError("network access should not be attempted")
@@ -25,7 +28,7 @@ def test_enrich_command_works_with_local_profile_without_network(tmp_path, monke
             "--workspace",
             str(workspace),
             "--source-profile",
-            "local_only",
+            str(ROOT / "registry" / "rules" / "source_profiles" / "local_only.yaml"),
         ]
     )
 
@@ -37,8 +40,47 @@ def test_enrich_command_works_with_local_profile_without_network(tmp_path, monke
     assert report["source_profile"] == "local_only"
     assert report["registry_mutated"] is False
     assert report["auto_promoted"] is False
+    assert report["workspace"] == {
+        "mode": "new",
+        "reused_existing_prepared_registry": False,
+    }
     assert report["summary"]["properties_filled"] == 0
     assert _snapshot_yaml(registry) == original_registry
+
+
+def test_enrich_fresh_removes_stale_generated_workspace_files(tmp_path):
+    registry = _make_registry(tmp_path / "registry")
+    case = _make_case(tmp_path / "case.yaml", ["CF4"])
+    workspace = tmp_path / "workspace"
+    stale = workspace / "prepared_registry" / "species" / "stale.yaml"
+    stale.parent.mkdir(parents=True, exist_ok=True)
+    stale.write_text("id: stale\n", encoding="utf-8")
+    cached = workspace / "source_cache" / "stale.txt"
+    cached.parent.mkdir(parents=True, exist_ok=True)
+    cached.write_text("stale", encoding="utf-8")
+
+    rc = main(
+        [
+            "enrich",
+            str(case),
+            "--registry",
+            str(registry),
+            "--workspace",
+            str(workspace),
+            "--source-profile",
+            str(ROOT / "registry" / "rules" / "source_profiles" / "local_only.yaml"),
+            "--fresh",
+        ]
+    )
+
+    report = _read_yaml(workspace / "enrichment_report.yaml")
+    assert rc == 0
+    assert not stale.exists()
+    assert not cached.exists()
+    assert report["workspace"] == {
+        "mode": "fresh",
+        "reused_existing_prepared_registry": False,
+    }
 
 
 def test_enrich_with_internal_file_adds_property_and_reaction_without_mutating_registry(tmp_path):

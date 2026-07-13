@@ -81,7 +81,12 @@ def enrich_reaction_channels(
                         _skipped(report, pair, channel_id, "duplicate_channel")
                         continue
 
-                    resolution = _resolve_missing_product_species(channel, species, species_providers)
+                    resolution = _resolve_missing_product_species(
+                        channel,
+                        species,
+                        registry,
+                        species_providers,
+                    )
                     if resolution["unresolved"]:
                         for item in resolution["unresolved"]:
                             _unresolved_product(report, pair, channel_id, item)
@@ -143,6 +148,11 @@ def _collect_frontier_from_existing_channels(
     config: CaseConfig,
 ) -> None:
     for channel in registry.get_channels(pair):
+        for amount in channel.products:
+            if amount.species not in species:
+                item = registry.get_species(amount.species)
+                if item is not None:
+                    species[amount.species] = item
         payload = {
             "products": [
                 {"species": amount.species, "n": amount.n}
@@ -179,14 +189,6 @@ def _should_propagate_species(species: Species, config: CaseConfig) -> bool:
 
 def _load_active_species(registry: FileRegistry, config: CaseConfig) -> dict[str, Species]:
     species: dict[str, Species] = {"e": make_electron_species()}
-    for path in registry.iter_species_files():
-        payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        species_id = payload.get("id")
-        if not species_id:
-            continue
-        item = registry.get_species(species_id)
-        if item is not None:
-            species[species_id] = item
     for gas in config.gases:
         item = registry.get_species(gas)
         if item is not None:
@@ -213,6 +215,7 @@ def _normalize_channel(raw_channel: dict[str, Any]) -> dict[str, Any]:
 def _resolve_missing_product_species(
     channel: dict[str, Any],
     species: dict[str, Species],
+    registry: FileRegistry,
     species_providers: list[Any],
 ) -> dict[str, Any]:
     resolved_species: dict[str, Species] = {}
@@ -227,6 +230,10 @@ def _resolve_missing_product_species(
             or species_id in species
             or species_id in resolved_species
         ):
+            continue
+        local_species = registry.get_species(species_id)
+        if local_species is not None:
+            resolved_species[species_id] = local_species
             continue
         candidate_info = _species_candidate_for_product(product, species_id, species_providers)
         candidate = candidate_info["candidate"]
@@ -292,8 +299,10 @@ def _write_resolved_species(
     for species_id, seeded in sorted(resolved_species.items()):
         if species_id in species:
             continue
-        candidate = candidates[species_id]
         species[species_id] = seeded
+        candidate = candidates.get(species_id)
+        if candidate is None:
+            continue
         _write_species_seed(prepared_registry, seeded, candidate)
         item = {
             "species": species_id,
@@ -317,6 +326,7 @@ def _species_from_candidate(species_id: str, candidate: dict[str, Any]) -> Speci
                 value=(payload or {}).get("value"),
                 unit=(payload or {}).get("unit"),
                 source=(payload or {}).get("source"),
+                source_record=deepcopy((payload or {}).get("source_record")),
             )
             for name, payload in candidate.get("properties", {}).items()
         },

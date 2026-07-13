@@ -3,7 +3,7 @@ import hashlib
 
 import yaml
 
-from external_data_tools.cache import copy_to_cache, safe_filename, sha256_file
+from external_data_tools.cache import safe_filename, sha256_file
 from external_data_tools.config import load_config
 from external_data_tools.manifest import append_record, load_manifest
 
@@ -21,25 +21,6 @@ def test_safe_filename_replaces_unsafe_text():
     assert safe_filename("Ar+ + CF4") == "Ar_CF4"
     assert safe_filename("delta \u0394 sigma") == "delta_sigma"
     assert safe_filename("///") == "unknown"
-
-
-def test_copy_to_cache_copies_file_and_returns_source_record(tmp_path):
-    source = tmp_path / "inputs" / "table.csv"
-    source.parent.mkdir()
-    source.write_text("energy_eV,cross_section_m2\n0,0\n1,1e-20\n", encoding="utf-8")
-    cache_dir = tmp_path / "external_data" / "raw"
-
-    record = copy_to_cache(source, cache_dir, "LXCat Offline")
-
-    cached_path = Path(record["cached_path"])
-    assert cached_path.exists()
-    assert cached_path.read_text(encoding="utf-8") == source.read_text(encoding="utf-8")
-    assert cached_path.parent == cache_dir / "LXCat_Offline"
-    assert cached_path.name.startswith("table_")
-    assert record["original_path"] == str(source)
-    assert record["sha256"] == sha256_file(source)
-    assert record["source_name"] == "LXCat Offline"
-    assert len(record["imported_at"]) > 10
 
 
 def test_manifest_append_creates_and_appends_records(tmp_path):

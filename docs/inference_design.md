@@ -57,7 +57,6 @@ inference:
   min_confidence: 0.4
   max_products: 3
   max_fragment_depth: 1
-  allow_unknown_energy: true
 ```
 
 ## Candidate status

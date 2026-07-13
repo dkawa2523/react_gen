@@ -1,4 +1,3 @@
-from plasma_reactgen.inference.candidates import build_inferred_candidate, propose_reaction_candidates
 from plasma_reactgen.inference.candidate_writer import build_candidate_registry, write_candidate_registry
 from plasma_reactgen.inference.provider import (
     CompositeReactionProvider,
@@ -23,7 +22,6 @@ __all__ = [
     "CompositeReactionProvider",
     "RegisteredReactionProvider",
     "build_candidate_registry",
-    "build_inferred_candidate",
     "composition_mass_amu",
     "confidence",
     "electron_parent_ionization_channel",
@@ -32,6 +30,5 @@ __all__ = [
     "make_parent_ion_candidates",
     "passes_hard_filters",
     "parse_formula",
-    "propose_reaction_candidates",
     "write_candidate_registry",
 ]

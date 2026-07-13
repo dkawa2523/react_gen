@@ -8,6 +8,7 @@ This report evaluates mechanism readiness, data coverage, missing-data transpare
 - Ar/SF6/O2 electronegative plasma (`sf6_o2_electronegative`)
 
 This benchmark does not validate final quantitative plasma process accuracy. Fixture values and cross sections may be synthetic and must be replaced with reviewed data before scientific conclusions.
+The generated YAML reports and metrics are the source of truth; this Markdown report is a point-in-time snapshot.
 
 ## Execution Summary
 

@@ -19,6 +19,8 @@ def test_benchmark_report_generated_from_summary_fixture(tmp_path):
     assert "Ar/O2 simple oxygen plasma" in text
     assert "Ar/CF4 fluorocarbon plasma" in text
     assert "Ar/SF6/O2 electronegative plasma" in text
+    assert "YAML reports and metrics are the source of truth" in text
+    assert "Markdown report is a point-in-time snapshot" in text
 
 
 def test_benchmark_report_does_not_include_cl2_bcl3_as_default(tmp_path):
@@ -82,12 +84,44 @@ def test_validation_error_generates_failure(tmp_path):
     assert "Charge or element balance validation errors are present" in text
 
 
+def test_structural_enrichment_error_prevents_workflow_pass(tmp_path):
+    summary = _write_summary_fixture(
+        tmp_path,
+        structural_errors={"ar_o2_simple": 2},
+    )
+    output = tmp_path / "report.md"
+    result = generate_benchmark_report(summary, output)
+    text = output.read_text(encoding="utf-8")
+
+    assert result["statuses"]["failed"] >= 1
+    assert "FAIL_ENRICHMENT" in text
+    assert "Structural enrichment or configured-source defects remain unresolved" in text
+
+
+def test_truncated_generation_prevents_workflow_pass(tmp_path):
+    summary = _write_summary_fixture(
+        tmp_path,
+        generation_complete={"ar_o2_simple": False},
+    )
+    output = tmp_path / "report.md"
+    result = generate_benchmark_report(summary, output)
+    text = output.read_text(encoding="utf-8")
+
+    assert result["statuses"]["failed"] >= 1
+    assert "FAIL_GENERATION" in text
+    assert "Generation was truncated by a configured limit" in text
+
+
 def _write_summary_fixture(
     tmp_path: Path,
     validation_errors: dict[str, int] | None = None,
+    structural_errors: dict[str, int] | None = None,
+    generation_complete: dict[str, bool] | None = None,
     solver_summary: dict[str, int] | None = None,
 ) -> Path:
     validation_errors = validation_errors or {}
+    structural_errors = structural_errors or {}
+    generation_complete = generation_complete or {}
     case_ids = ["ar_o2_simple", "ar_cf4_fluorocarbon", "sf6_o2_electronegative"]
     results = tmp_path / "results"
     summary_rows = []
@@ -97,7 +131,13 @@ def _write_summary_fixture(
         work_dir = case_dir / "work"
         output_dir.mkdir(parents=True, exist_ok=True)
         work_dir.mkdir(parents=True, exist_ok=True)
-        metrics = _metrics(case_id, validation_errors.get(case_id, 0), solver_summary)
+        metrics = _metrics(
+            case_id,
+            validation_errors.get(case_id, 0),
+            structural_errors.get(case_id, 0),
+            generation_complete.get(case_id, True),
+            solver_summary,
+        )
         report = {
             "schema_version": 1,
             "id": case_id,
@@ -115,7 +155,11 @@ def _write_summary_fixture(
                 "config": str(tmp_path / "external_solvers.example.yaml"),
                 "summary": metrics["solver_status_summary"],
             },
-            "passed": validation_errors.get(case_id, 0) == 0,
+            "passed": (
+                validation_errors.get(case_id, 0) == 0
+                and structural_errors.get(case_id, 0) == 0
+                and generation_complete.get(case_id, True)
+            ),
         }
         _write_yaml(case_dir / "benchmark_metrics.yaml", metrics)
         _write_yaml(case_dir / "benchmark_report.yaml", report)
@@ -149,7 +193,13 @@ def _write_summary_fixture(
     return path
 
 
-def _metrics(case_id: str, validation_error_count: int, solver_summary: dict[str, int] | None = None) -> dict:
+def _metrics(
+    case_id: str,
+    validation_error_count: int,
+    structural_enrichment_unresolved_count: int,
+    generation_complete: bool,
+    solver_summary: dict[str, int] | None = None,
+) -> dict:
     counts = {
         "ar_o2_simple": (6, 11, 7, 4),
         "ar_cf4_fluorocarbon": (12, 43, 17, 26),
@@ -165,6 +215,8 @@ def _metrics(case_id: str, validation_error_count: int, solver_summary: dict[str
         "n_pairs_found": 4,
         "n_pairs_missing": 3,
         "n_missing_data_items": 5,
+        "generation_complete": generation_complete,
+        "n_generation_truncations": 0 if generation_complete else 1,
         "n_missing_plan_actions": 2,
         "n_dnt_tasks": 2,
         "n_dnt_ready_pairs": 1,
@@ -180,6 +232,7 @@ def _metrics(case_id: str, validation_error_count: int, solver_summary: dict[str
         "inferred_reaction_fraction": 0.0,
         "imported_or_literature_supported_fraction": 0.2,
         "validation_error_count": validation_error_count,
+        "structural_enrichment_unresolved_count": structural_enrichment_unresolved_count,
         "expectation_score": 1.0,
         "solver_status_summary": solver_summary or {
             "ready": 0,

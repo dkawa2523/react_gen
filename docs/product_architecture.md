@@ -17,6 +17,7 @@ reaction-network outputs. It owns:
 - `ReactionNetworkBuilder`
 - species reference, charge-balance, and element-balance checks
 - state lists, DNT task summaries, coverage reports, and missing-data reports
+- explicit generation completeness and machine-readable truncation records
 - YAML/CSV output writing
 
 User commands in this layer:
@@ -29,6 +30,16 @@ User commands in this layer:
 
 The core generation layer does not download public data, call online APIs,
 calculate cross sections, run Boltzmann solvers, or run DNT/DNT+DM solvers.
+`dnt_tasks.yaml` reports pair-property readiness separately from complete-input
+readiness: a pair can have all transport properties while still lacking channel
+thresholds or energetics.
+
+`summary.json` is the primary completeness view. Its `generation_complete`
+field is false whenever a configured limit omits data, and `truncations` records
+the limit name, scope, value, depth, observed/retained/omitted counts, and
+limit-specific details. The reaction, coverage, and quality YAML outputs expose
+the same status where relevant; truncated generation is never marked
+mechanism-ready for review.
 
 ## Preparation And Enrichment Layer
 
@@ -38,7 +49,7 @@ prepared registry files. It owns:
 - `workspace/prepared_registry/`
 - `prepare_report.yaml`
 - `enrichment_report.yaml`
-- local registry providers
+- curated registry copied as the prepared-registry baseline
 - internal file providers
 - local snapshot providers such as NIST and Argonne/ATcT-style thermochemistry
 - optional local `chemicals` package providers
@@ -55,7 +66,11 @@ User commands in this layer:
 - `reactgen plan-missing`
 
 This layer may write `prepared_registry/` and workspace reports. It must not
-mutate curated `registry/` files.
+mutate curated `registry/` files. `reactgen enrich --fresh` removes only
+enrich-owned workspace artifacts before rebuilding the prepared registry;
+omitting it preserves local overlays for incremental review. Cross-section
+mapping accepts only existing files contained by `prepared_registry/` and
+reports every rejected mapping.
 
 ## External Data Tools Layer
 
@@ -95,10 +110,17 @@ overwritten, and conflicts are reported in `promote_report.yaml`.
 
 ## Benchmark Layer
 
-The repository contains `benchmarks/` scaffolding for future benchmark cases and
-results. Benchmark inputs should reference local registries, prepared registries,
-or reviewed snapshots/assets. Large raw external downloads and generated
-benchmark outputs should not be committed by default.
+The repository contains a local three-case semiconductor benchmark workflow.
+Each run rebuilds its enrichment workspace in fresh mode, validates expected
+network content, collects coverage/readiness metrics, and writes per-case YAML
+reports plus a generated Markdown report. Its enrichment quality gate fails on
+unavailable configured sources, invalid property candidates, unresolved product
+species or reactions, and invalid/skipped reaction channels. Ordinary missing
+physical properties remain visible data gaps rather than structural failures.
+
+Generated `benchmark_report.yaml`, `benchmark_metrics.yaml`, and `summary.yaml`
+are the source of truth for a run. Checked-in Markdown result narratives are
+review snapshots and can become stale when code, fixtures, or policies change.
 
 Before a real benchmark, record:
 
@@ -113,8 +135,17 @@ Before a real benchmark, record:
 
 - Keep `ReactionNetworkBuilder` focused on network generation from available
   local data.
+- Treat `ReactionNetwork` as the diagnostic source of truth; output builders
+  must not independently rediscover reaction gaps.
+- Build pair-wise DNT exports from `dnt_tasks`, which is the canonical DNT
+  classification and readiness representation.
+- Define source profiles in registry YAML only, and apply providers in their
+  declared order. The local registry is a baseline, not an enrichment source.
 - Keep inference default-disabled and clearly marked as `status: inferred`.
 - Keep imported data marked as `imported` or `literature_supported` until
   reviewed.
 - Keep public DB/API/download logic out of `src/plasma_reactgen`.
 - Keep source acquisition, preparation, and promotion separate from generation.
+- Make every configured generation limit visible in output completeness data.
+- Never register a cross-section path that escapes the prepared registry or
+  does not resolve to a local file.

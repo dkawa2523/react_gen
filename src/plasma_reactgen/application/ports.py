@@ -27,6 +27,3 @@ class RuleRepository(Protocol):
 
     def get_role_required_properties(self) -> dict:
         ...
-
-    def get_profile(self, profile_name: str) -> dict:
-        ...

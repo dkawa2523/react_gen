@@ -32,7 +32,7 @@ that mapping path to the new imported asset name before applying it.
 
 ```powershell
 reactgen apply-cross-section-mapping cases/ar_cf4_db_smoke/cross_section_mapping.yaml --workspace cases/ar_cf4_db_smoke/work
-reactgen generate cases/ar_cf4_db_smoke/input.yaml --registry cases/ar_cf4_db_smoke/work/prepared_registry --output cases/ar_cf4_db_smoke/outputs --export-dnt-inputs
+reactgen generate cases/ar_cf4_db_smoke/input.yaml --registry cases/ar_cf4_db_smoke/work/prepared_registry --output cases/ar_cf4_db_smoke/outputs
 reactgen plan-missing cases/ar_cf4_db_smoke/outputs --output cases/ar_cf4_db_smoke/work/missing_plan.yaml
 reactgen visualize cases/ar_cf4_db_smoke/outputs --output cases/ar_cf4_db_smoke/visualizations
 ```

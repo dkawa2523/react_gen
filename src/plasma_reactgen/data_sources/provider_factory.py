@@ -2,10 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterator
-
-from plasma_reactgen.infrastructure.file_registry import FileRegistry
-
+from typing import Any
 
 class SourceProviderConfigurationError(ValueError):
     """Raised when strict source profiles request unavailable providers."""
@@ -14,47 +11,79 @@ class SourceProviderConfigurationError(ValueError):
 @dataclass
 class ProviderBuildResult:
     providers: list[Any]
-    warnings: list[dict[str, Any]]
     unavailable_sources: list[dict[str, Any]]
 
-    def __iter__(self) -> Iterator[Any]:
-        return iter(self.providers)
-
-    def __len__(self) -> int:
-        return len(self.providers)
-
-    def __getitem__(self, index: int) -> Any:
-        return self.providers[index]
+    @property
+    def warnings(self) -> list[dict[str, Any]]:
+        return self.unavailable_sources
 
 
 def build_species_providers(profile: dict[str, Any]) -> ProviderBuildResult:
     builder = _ProviderFactory(profile)
-    providers: list[Any] = []
-    providers.extend(builder.internal_species())
-    providers.extend(builder.local_species())
-    providers.extend(builder.chemical_identity_species())
-    providers.extend(builder.chemicals_species())
+    providers = _build_in_profile_order(
+        builder,
+        "species_identity",
+        {
+            "internal_file": builder.internal_species,
+            "internal_species_db": builder.internal_species,
+            "chemicals_optional": builder.chemicals_species,
+            "chemicals_local": builder.chemicals_species,
+        },
+    )
     return builder.result(providers)
 
 
 def build_property_providers(profile: dict[str, Any]) -> ProviderBuildResult:
     builder = _ProviderFactory(profile)
-    providers: list[Any] = []
-    providers.extend(builder.internal_properties())
-    providers.extend(builder.local_properties())
-    providers.extend(builder.nist_properties())
-    providers.extend(builder.argonne_atct_properties())
-    providers.extend(builder.chemicals_properties())
+    providers = _build_in_profile_order(
+        builder,
+        "properties",
+        {
+            "internal_file": builder.internal_properties,
+            "internal_property_db": builder.internal_properties,
+            "nist_snapshot": builder.nist_properties,
+            "argonne_atct_snapshot": builder.argonne_atct_properties,
+            "chemicals_optional": builder.chemicals_properties,
+            "chemicals_local": builder.chemicals_properties,
+        },
+    )
     return builder.result(providers)
 
 
 def build_reaction_providers(profile: dict[str, Any]) -> ProviderBuildResult:
     builder = _ProviderFactory(profile)
+    factories = {
+        "internal_file": builder.internal_reactions,
+        "internal_reaction_db": builder.internal_reactions,
+        "ion_reaction_table": builder.ion_reaction_tables,
+    }
+    names: list[str] = []
+    for section in ("electron_reactions", "ion_neutral_reactions"):
+        for name in profile.get(section, []):
+            if name not in names:
+                names.append(name)
     providers: list[Any] = []
-    providers.extend(builder.internal_reactions())
-    providers.extend(builder.local_reactions())
-    providers.extend(builder.ion_reaction_tables())
+    for name in names:
+        factory = factories.get(str(name))
+        if factory is not None:
+            providers.extend(factory())
     return builder.result(providers)
+
+
+def _build_in_profile_order(
+    builder: "_ProviderFactory",
+    section: str,
+    factories: dict[str, Any],
+) -> list[Any]:
+    names = builder.profile.get(section, [])
+    if not isinstance(names, list):
+        return []
+    providers: list[Any] = []
+    for name in names:
+        factory = factories.get(str(name))
+        if factory is not None:
+            providers.extend(factory())
+    return providers
 
 
 def available_provider_names() -> dict[str, list[str]]:
@@ -94,13 +123,11 @@ def available_provider_names() -> dict[str, list[str]]:
 class _ProviderFactory:
     def __init__(self, profile: dict[str, Any]):
         self.profile = profile
-        self.warnings: list[dict[str, Any]] = []
         self.unavailable_sources: list[dict[str, Any]] = []
 
     def result(self, providers: list[Any]) -> ProviderBuildResult:
         result = ProviderBuildResult(
             providers=providers,
-            warnings=self.warnings,
             unavailable_sources=self.unavailable_sources,
         )
         if self.profile.get("strict_sources") and result.unavailable_sources:
@@ -142,39 +169,6 @@ class _ProviderFactory:
 
         return [InternalFileReactionProvider(root)]
 
-    def local_species(self) -> list[Any]:
-        if not self._listed("species_identity", "local_registry"):
-            return []
-        registry = self._local_registry()
-        if registry is None:
-            return []
-        from plasma_reactgen.data_sources.local_registry import LocalRegistrySpeciesProvider
-
-        return [LocalRegistrySpeciesProvider(registry)]
-
-    def local_properties(self) -> list[Any]:
-        if not self._listed("properties", "local_registry"):
-            return []
-        registry = self._local_registry()
-        if registry is None:
-            return []
-        from plasma_reactgen.data_sources.local_registry import LocalRegistryPropertyProvider
-
-        return [LocalRegistryPropertyProvider(registry)]
-
-    def local_reactions(self) -> list[Any]:
-        if not (
-            self._listed("ion_neutral_reactions", "local_registry")
-            or self._listed("electron_reactions", "local_registry")
-        ):
-            return []
-        registry = self._local_registry()
-        if registry is None:
-            return []
-        from plasma_reactgen.data_sources.local_registry import LocalRegistryReactionProvider
-
-        return [LocalRegistryReactionProvider(registry)]
-
     def nist_properties(self) -> list[Any]:
         if not self._listed("properties", "nist_snapshot"):
             return []
@@ -215,22 +209,6 @@ class _ProviderFactory:
 
         return [ChemicalsPropertyProvider(provider_name=provider_name)]
 
-    def chemical_identity_species(self) -> list[Any]:
-        if not self._listed("species_identity", "chemical_identity_snapshot"):
-            return []
-        config = self.profile.get("chemical_identity_snapshot")
-        snapshot = config.get("snapshot") if isinstance(config, dict) else None
-        if not snapshot:
-            self._warn_missing_config(
-                "species_identity",
-                "chemical_identity_snapshot",
-                "chemical_identity_snapshot.snapshot",
-            )
-            return []
-        from plasma_reactgen.data_sources.chemical_identity_snapshot import ChemicalIdentitySnapshotProvider
-
-        return [_ChemicalIdentitySpeciesAdapter(ChemicalIdentitySnapshotProvider(snapshot))]
-
     def ion_reaction_tables(self) -> list[Any]:
         if not self._listed("ion_neutral_reactions", "ion_reaction_table"):
             return []
@@ -254,18 +232,6 @@ class _ProviderFactory:
         if root is None:
             self._warn_missing_config(section, source_name, "internal_file.root")
         return root
-
-    def _local_registry(self) -> FileRegistry | None:
-        config = self.profile.get("local_registry")
-        if not isinstance(config, dict):
-            return None
-        registry = config.get("registry")
-        if registry is not None:
-            return registry
-        root = config.get("root") or config.get("registry_root")
-        if root:
-            return FileRegistry(root)
-        return None
 
     def _uses_internal(self, section: str) -> bool:
         return (
@@ -313,38 +279,7 @@ class _ProviderFactory:
             "reason": "missing_config",
             "required": required,
         }
-        self.warnings.append(item)
         self.unavailable_sources.append(item)
-
-
-class _ChemicalIdentitySpeciesAdapter:
-    def __init__(self, provider: Any):
-        self.provider = provider
-
-    def find_species(self, query: str) -> list[dict[str, Any]]:
-        candidates = []
-        for record in self.provider.find_species(query):
-            species_id = record.get("species")
-            if not species_id:
-                continue
-            candidates.append(
-                {
-                    "id": species_id,
-                    "formula": record.get("formula"),
-                    "aliases": list(record.get("aliases", [])),
-                    "composition": {},
-                    "charge": 0,
-                    "classes": [],
-                    "state": {},
-                    "status": record.get("status", "imported"),
-                    "source_record": {
-                        "source_type": "local_snapshot",
-                        "database": "chemical_identity_snapshot",
-                        "source_id": species_id,
-                    },
-                }
-            )
-        return candidates
 
 
 def _paths_from_config(config: Any, key: str) -> list[Path]:

@@ -24,21 +24,32 @@ def build_dnt_tasks(network: ReactionNetwork) -> list[dict]:
         if pair_id not in tasks:
             ion = network.species[ion_id]
             neutral = network.species[neutral_id]
+            pair_property_readiness = check_dnt_property_readiness(ion=ion, neutral=neutral)
             tasks[pair_id] = {
                 "pair_id": pair_id,
                 "ion": ion_id,
                 "neutral": neutral_id,
                 "model_variant": infer_dnt_model_variant(neutral),
-                "readiness": check_dnt_readiness(ion=ion, neutral=neutral),
+                "pair_property_readiness": pair_property_readiness,
                 "channels": [],
             }
 
+        missing_for_complete_dnt = dnt_channel_missing_fields(
+            reaction_type=rxn.type,
+            dnt_class=rxn.dnt_class,
+            threshold_eV=rxn.threshold_eV,
+            delta_e_eV=rxn.deltaE_products_minus_reactants_eV,
+        )
         tasks[pair_id]["channels"].append(
             {
                 "reaction_id": rxn.id,
                 "type": rxn.type,
                 "dnt_class": rxn.dnt_class,
+                "threshold_eV": rxn.threshold_eV,
                 "deltaE_products_minus_reactants_eV": rxn.deltaE_products_minus_reactants_eV,
+                "missing_for_complete_dnt": missing_for_complete_dnt,
+                "status": rxn.data_status.get("reaction"),
+                "provenance": _channel_provenance(rxn.data),
                 "products": [
                     {"species": product.species, "n": product.n}
                     for product in rxn.products
@@ -46,7 +57,13 @@ def build_dnt_tasks(network: ReactionNetwork) -> list[dict]:
             }
         )
 
-    return list(tasks.values())
+    result = list(tasks.values())
+    for task in result:
+        task["complete_readiness"] = build_complete_dnt_readiness(
+            task["pair_property_readiness"],
+            task["channels"],
+        )
+    return result
 
 
 def infer_ion_neutral_pair(
@@ -80,14 +97,99 @@ def infer_dnt_model_variant(neutral: Species) -> str:
         return "dnt_plus_or_dm_unknown"
 
 
-def check_dnt_readiness(ion: Species, neutral: Species) -> dict:
+def check_dnt_property_readiness(ion: Species, neutral: Species) -> dict:
+    """Return readiness of pair properties only.
+
+    Channel energetics and thresholds are deliberately evaluated separately by
+    :func:`build_complete_dnt_readiness`.
+    """
+
     ion_missing = [name for name in DNT_ION_REQUIRED if not has_property_value(ion, name)]
     neutral_missing = [name for name in DNT_NEUTRAL_REQUIRED if not has_property_value(neutral, name)]
     status = "ready" if not ion_missing and not neutral_missing else "missing_properties"
     return {
         "status": status,
+        "scope": "pair_properties",
         "missing": {
             "ion": ion_missing,
             "neutral": neutral_missing,
         },
     }
+
+
+def dnt_channel_missing_fields(
+    *,
+    reaction_type: str | None,
+    dnt_class: str | None,
+    threshold_eV,
+    delta_e_eV,
+) -> list[str]:
+    """Return fields needed to make one DNT channel complete.
+
+    An elastic channel has an implicit zero threshold, so an omitted threshold
+    is not a data gap.  Other channel types must provide it explicitly.
+    """
+
+    missing: list[str] = []
+    if not dnt_class:
+        missing.append("dnt_class")
+    if threshold_eV is None and reaction_type != "elastic":
+        missing.append("threshold_eV")
+    if delta_e_eV is None:
+        missing.append("deltaE_products_minus_reactants_eV")
+    return missing
+
+
+def build_complete_dnt_readiness(
+    pair_property_readiness: dict,
+    channels: list[dict],
+) -> dict:
+    """Combine pair properties and channel completeness into one status."""
+
+    missing_properties = _flatten_property_missing(pair_property_readiness.get("missing", {}))
+    dnt_channels = [channel for channel in channels if channel.get("dnt_class")]
+    channel_warnings = [
+        {
+            "reaction_id": channel.get("reaction_id"),
+            "fields": list(channel.get("missing_for_complete_dnt", [])),
+        }
+        for channel in dnt_channels
+        if channel.get("missing_for_complete_dnt")
+    ]
+
+    if missing_properties:
+        status = "missing_required_data"
+    elif not dnt_channels:
+        status = "no_dnt_channels"
+    elif channel_warnings:
+        status = "ready_with_warnings"
+    else:
+        status = "ready"
+
+    return {
+        "status": status,
+        "scope": "pair_properties_and_channels",
+        "missing_required_properties": missing_properties,
+        "channel_warnings": channel_warnings,
+    }
+
+
+def _flatten_property_missing(missing) -> list[str]:
+    if isinstance(missing, list):
+        return [str(field) for field in missing]
+    if not isinstance(missing, dict):
+        return []
+    flattened: list[str] = []
+    for side, fields in missing.items():
+        if not isinstance(fields, list):
+            continue
+        flattened.extend(f"{side}.{field}" for field in fields)
+    return flattened
+
+
+def _channel_provenance(data: dict) -> dict:
+    for key in ("provenance", "evidence"):
+        value = data.get(key)
+        if isinstance(value, dict):
+            return dict(value)
+    return {"source_type": "registry", "source_id": None}

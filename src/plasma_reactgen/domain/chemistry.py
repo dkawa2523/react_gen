@@ -10,7 +10,7 @@ def get_property_value(species: Species, name: str):
 
 def has_property_value(species: Species, name: str) -> bool:
     if name == "charge":
-        return True
+        return species.charge is not None
     if name == "composition":
         return bool(species.composition)
     prop = species.properties.get(name)

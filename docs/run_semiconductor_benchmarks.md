@@ -21,6 +21,13 @@ The default cases are:
 No network access or external solver executable is required. Optional solvers are
 reported as skipped when no executable paths are configured.
 
+The runner invokes enrichment with `--fresh`, so each case starts from the
+configured registry and fixtures instead of inheriting a previous prepared
+registry. A case fails its quality gate when enrichment leaves structural
+defects (unavailable configured sources, invalid property candidates,
+unresolved product species/reactions, or invalid skipped channels); ordinary
+missing property values remain reported data gaps.
+
 ## Commands
 
 Run all three cases:
@@ -63,10 +70,15 @@ The command prints paths to:
 - `benchmarks/results/setup_report.yaml`
 - `benchmarks/results/summary.yaml`
 - per-case `benchmark_report.yaml`
+- per-case `benchmark_metrics.yaml`
 - per-case `work/missing_plan.yaml`
 - per-case `work/manual_inputs/`
 - per-case `outputs/visualizations/`
 - `benchmarks/results/semiconductor_benchmark_report.md`
+
+The generated YAML files are authoritative for that run. The Markdown report
+and files under `docs/` are readable snapshots and may describe an earlier run
+until regenerated or reviewed.
 
 Graphviz is optional. DOT files and dependency-free SVG statistics are written
 without requiring Graphviz; rendered network SVG/PNG files appear only when the

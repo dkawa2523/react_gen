@@ -8,19 +8,11 @@ from plasma_reactgen.data_sources.base import (
     ReactionProvider,
     SpeciesProvider,
 )
-from plasma_reactgen.data_sources.models import (
-    CrossSectionCandidate,
-    PropertyCandidate,
-    ReactionCandidate,
-    SpeciesCandidate,
-)
-
-
 _PROVIDERS: dict[str, dict[str, Any]] = {}
 
 
 class _EmptySpeciesProvider(SpeciesProvider):
-    def find_species(self, query: Any) -> list[SpeciesCandidate]:
+    def find_species(self, query: Any) -> list[dict[str, Any]]:
         return []
 
 
@@ -29,24 +21,17 @@ class _EmptyPropertyProvider(PropertyProvider):
         self,
         species_id: str,
         property_names: list[str] | None = None,
-    ) -> list[PropertyCandidate]:
+    ) -> list[dict[str, Any]]:
         return []
 
 
 class _EmptyReactionProvider(ReactionProvider):
-    def find_reactions(
-        self,
-        reactants: list[str],
-        family: str | None = None,
-    ) -> list[ReactionCandidate]:
-        return []
-
-    def find_channels(self, pair: Any) -> list[ReactionCandidate]:
+    def find_channels(self, pair: Any) -> list[dict[str, Any]]:
         return []
 
 
 class _EmptyCrossSectionProvider(CrossSectionProvider):
-    def find_cross_sections(self, pair: Any) -> list[CrossSectionCandidate]:
+    def find_cross_sections(self, pair: Any) -> list[dict[str, Any]]:
         return []
 
 
@@ -129,20 +114,6 @@ def register_chemicals_optional_providers() -> None:
         register_provider("properties", name, ChemicalsPropertyProvider(provider_name=name))
 
 
-def register_pubchem_provider(config: dict[str, Any] | None = None) -> None:
-    from plasma_reactgen.data_sources.pubchem_provider import PubChemProvider
-
-    config = config or {}
-    provider = PubChemProvider(
-        enabled=bool(config.get("enabled", False)),
-        mode=str(config.get("mode", "online")),
-        cache_dir=config.get("cache_dir", "external_data/pubchem/cache"),
-    )
-    for name in ("pubchem_offline", "pubchem_online"):
-        register_provider("species_identity", name, provider)
-        register_provider("properties", name, provider)
-
-
 def register_nist_snapshot_provider(root: Any) -> None:
     from plasma_reactgen.data_sources.nist_snapshot import NistSnapshotPropertyProvider
 
@@ -182,8 +153,6 @@ def _register_builtin_placeholders() -> None:
     for name in (
         "local_registry",
         "internal_species_db",
-        "pubchem_offline",
-        "pubchem_online",
         "chemicals_optional",
         "chemicals_local",
         "chemical_identity_snapshot",
@@ -195,8 +164,6 @@ def _register_builtin_placeholders() -> None:
         "internal_property_db",
         "nist_snapshot",
         "argonne_atct_snapshot",
-        "pubchem_offline",
-        "pubchem_online",
         "chemicals_optional",
         "chemicals_local",
     ):
@@ -210,5 +177,4 @@ def _register_builtin_placeholders() -> None:
 
 
 _register_builtin_placeholders()
-register_pubchem_provider()
 register_chemicals_optional_providers()

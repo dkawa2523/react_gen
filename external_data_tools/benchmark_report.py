@@ -130,12 +130,20 @@ def _evaluate_case(case: dict[str, Any]) -> dict[str, Any]:
     if _float(metrics.get("validation_error_count")) > 0:
         statuses.append("FAIL_VALIDATION")
         failures.append("Charge or element balance validation errors are present.")
+    if _int(metrics.get("structural_enrichment_unresolved_count")) > 0:
+        statuses.append("FAIL_ENRICHMENT")
+        failures.append("Structural enrichment or configured-source defects remain unresolved.")
     if _int(metrics.get("n_reactions")) <= 0:
         statuses.append("FAIL_GENERATION")
         failures.append("No reactions were generated.")
+    if metrics.get("generation_complete") is False:
+        statuses.append("FAIL_GENERATION")
+        failures.append("Generation was truncated by a configured limit.")
     if (
         _float(metrics.get("expectation_score")) >= 0.75
         and _float(metrics.get("validation_error_count")) == 0
+        and _int(metrics.get("structural_enrichment_unresolved_count")) == 0
+        and metrics.get("generation_complete", True) is True
         and _int(metrics.get("n_electron_reactions")) > 0
         and _int(metrics.get("n_ion_neutral_reactions")) > 0
     ):
@@ -202,6 +210,7 @@ def _render_markdown(
         lines.append(f"- {CASE_TITLES[case_id]} (`{case_id}`)")
     lines.append("")
     lines.append("This benchmark does not validate final quantitative plasma process accuracy. Fixture values and cross sections may be synthetic and must be replaced with reviewed data before scientific conclusions.")
+    lines.append("The generated YAML reports and metrics are the source of truth; this Markdown report is a point-in-time snapshot.")
     lines.append("")
 
     lines.extend(_execution_summary(summary, setup, evaluation))

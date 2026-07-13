@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from collections import defaultdict
+from copy import deepcopy
 from typing import Any
 
-from plasma_reactgen.application.dnt_task_builder import infer_ion_neutral_pair
+from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks
 from plasma_reactgen.domain.identifiers import to_file_key
-from plasma_reactgen.domain.models import GeneratedReaction, PropertyValue, ReactionNetwork, Species, SpeciesAmount
+from plasma_reactgen.domain.models import PropertyValue, ReactionNetwork, Species
 
 
 DNT_PROJECTILE_PROPERTIES = ["mass_amu"]
@@ -40,21 +40,9 @@ def build_dnt_inputs(network: ReactionNetwork) -> dict[str, Any]:
     instead of being replaced with guessed numbers.
     """
 
-    groups: dict[tuple[str, str], list[GeneratedReaction]] = defaultdict(list)
-    for rxn in network.reactions:
-        if rxn.family != "ion_neutral":
-            continue
-        pair = infer_ion_neutral_pair(rxn.reactants, network.species)
-        if pair is None:
-            continue
-        groups[pair].append(rxn)
-
     pairs = [
-        _build_pair_payload(network, ion_id, target_id, reactions)
-        for (ion_id, target_id), reactions in sorted(
-            groups.items(),
-            key=lambda item: _pair_id(*item[0]),
-        )
+        _build_pair_payload(network, task)
+        for task in sorted(build_dnt_tasks(network), key=lambda item: item["pair_id"])
     ]
 
     return {
@@ -66,23 +54,36 @@ def build_dnt_inputs(network: ReactionNetwork) -> dict[str, Any]:
 
 def _build_pair_payload(
     network: ReactionNetwork,
-    ion_id: str,
-    target_id: str,
-    reactions: list[GeneratedReaction],
+    task: dict[str, Any],
 ) -> dict[str, Any]:
+    ion_id = task["ion"]
+    target_id = task["neutral"]
     projectile = network.species.get(ion_id)
     target = network.species.get(target_id)
-    dnt_reactions = [rxn for rxn in reactions if rxn.dnt_class]
-
-    missing_required_properties = _missing_required_properties(projectile, target)
-    channels = [_channel_payload(rxn) for rxn in dnt_reactions]
-    status = _pair_status(missing_required_properties, channels)
+    missing_required_properties = _input_property_names(
+        task["pair_property_readiness"].get("missing", {})
+    )
+    channels = [
+        _normalized_channel(channel)
+        for channel in task["channels"]
+        if channel.get("dnt_class")
+    ]
+    pair_property_readiness = {
+        "status": task["pair_property_readiness"]["status"],
+        "scope": "pair_properties",
+        "missing": missing_required_properties,
+    }
+    complete_readiness = deepcopy(task["complete_readiness"])
+    complete_readiness["missing_required_properties"] = missing_required_properties
 
     return {
         "schema_version": 1,
         "pair_id": _pair_id(ion_id, target_id),
-        "model_variant": _model_variant(target),
-        "status": status,
+        "model_variant": task["model_variant"],
+        # ``status`` remains the complete-input status used by the manifest.
+        "status": complete_readiness["status"],
+        "pair_property_readiness": pair_property_readiness,
+        "complete_readiness": complete_readiness,
         "projectile": _species_payload(projectile, DNT_PROJECTILE_PROPERTIES),
         "target": _species_payload(target, DNT_TARGET_PROPERTIES),
         "pair_properties": {
@@ -132,59 +133,24 @@ def _property_payload(prop: PropertyValue | None, name: str) -> dict[str, Any]:
             "unit": PROPERTY_UNITS.get(name),
             "source": "missing",
         }
-    return {
+    payload = {
         "value": prop.value,
         "unit": prop.unit or PROPERTY_UNITS.get(name),
         "source": prop.source,
     }
+    source_record = getattr(prop, "source_record", None)
+    if source_record is not None:
+        payload["source_record"] = deepcopy(source_record)
+    return payload
 
 
-def _channel_payload(rxn: GeneratedReaction) -> dict[str, Any]:
-    return {
-        "reaction_id": rxn.id,
-        "type": rxn.type,
-        "dnt_class": rxn.dnt_class,
-        "products": _amounts_payload(rxn.products),
-        "threshold_eV": rxn.threshold_eV,
-        "deltaE_products_minus_reactants_eV": rxn.deltaE_products_minus_reactants_eV,
-        "status": rxn.data_status.get("reaction"),
-        "missing_for_complete_dnt": _channel_missing_for_complete_dnt(rxn),
-        "provenance": _channel_provenance(rxn),
-    }
-
-
-def _amounts_payload(amounts: list[SpeciesAmount]) -> list[dict[str, Any]]:
-    return [
-        {
-            "species": to_file_key(amount.species),
-            "n": amount.n,
-        }
-        for amount in amounts
+def _normalized_channel(channel: dict[str, Any]) -> dict[str, Any]:
+    payload = deepcopy(channel)
+    payload["products"] = [
+        {**product, "species": to_file_key(product["species"])}
+        for product in payload.get("products", [])
     ]
-
-
-def _channel_missing_for_complete_dnt(rxn: GeneratedReaction) -> list[str]:
-    missing: list[str] = []
-    if not rxn.dnt_class:
-        missing.append("dnt_class")
-    if rxn.threshold_eV is None:
-        missing.append("threshold_eV")
-    if rxn.deltaE_products_minus_reactants_eV is None:
-        missing.append("deltaE_products_minus_reactants_eV")
-    return missing
-
-
-def _channel_provenance(rxn: GeneratedReaction) -> dict[str, Any]:
-    provenance = rxn.data.get("provenance")
-    if isinstance(provenance, dict):
-        return dict(provenance)
-    evidence = rxn.data.get("evidence")
-    if isinstance(evidence, dict):
-        return dict(evidence)
-    return {
-        "source_type": "registry",
-        "source_id": None,
-    }
+    return payload
 
 
 def _run_config() -> dict[str, Any]:
@@ -194,53 +160,13 @@ def _run_config() -> dict[str, Any]:
     }
 
 
-def _missing_required_properties(projectile: Species | None, target: Species | None) -> list[str]:
-    missing: list[str] = []
-
-    if projectile is None:
-        return [
-            "projectile.charge",
-            "projectile.mass_amu",
-        ]
-    if target is None:
-        missing.extend(
-            [
-                "target.mass_amu",
-                "target.polarizability_A3",
-                "target.dipole_moment_D",
-                "target.collision_radius_A",
-            ]
-        )
-        return missing
-
-    if projectile.charge is None:
-        missing.append("projectile.charge")
-    if _property_value(projectile, "mass_amu") is None:
-        missing.append("projectile.mass_amu")
-
-    for name in DNT_TARGET_PROPERTIES:
-        if _property_value(target, name) is None:
-            missing.append(f"target.{name}")
-
-    return missing
-
-
-def _pair_status(missing_required_properties: list[str], channels: list[dict[str, Any]]) -> str:
-    if missing_required_properties:
-        return "missing_required_data"
-    if not channels:
-        return "no_dnt_channels"
-    if any(channel.get("missing_for_complete_dnt") for channel in channels):
-        return "ready_with_warnings"
-    return "ready"
-
-
-def _model_variant(target: Species | None) -> str:
-    dipole = _property_value(target, "dipole_moment_D") if target is not None else None
-    try:
-        return "dnt_plus_dm" if dipole is not None and abs(float(dipole)) > 1.0e-12 else "dnt_plus"
-    except (TypeError, ValueError):
-        return "dnt_plus"
+def _input_property_names(missing: dict[str, list[str]]) -> list[str]:
+    prefixes = {"ion": "projectile", "neutral": "target"}
+    return [
+        f"{prefixes[side]}.{name}"
+        for side in ("ion", "neutral")
+        for name in missing.get(side, [])
+    ]
 
 
 def _reduced_mass_amu(projectile: Species | None, target: Species | None) -> float | None:
@@ -276,5 +202,20 @@ def _pair_id(ion_id: str, target_id: str) -> str:
 def _summary(pairs: list[dict[str, Any]]) -> dict[str, int]:
     return {
         "total_pairs": len(pairs),
+        "property_ready_pairs": sum(
+            1
+            for pair in pairs
+            if pair.get("pair_property_readiness", {}).get("status") == "ready"
+        ),
+        "complete_ready_pairs": sum(
+            1
+            for pair in pairs
+            if pair.get("complete_readiness", {}).get("status") == "ready"
+        ),
+        "complete_ready_with_warnings_pairs": sum(
+            1
+            for pair in pairs
+            if pair.get("complete_readiness", {}).get("status") == "ready_with_warnings"
+        ),
         **{status: sum(1 for pair in pairs if pair.get("status") == status) for status in READY_STATUSES},
     }

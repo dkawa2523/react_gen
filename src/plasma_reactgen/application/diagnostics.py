@@ -1,11 +1,19 @@
 from __future__ import annotations
 
-from typing import Any
-
+from plasma_reactgen.application.dnt_task_builder import dnt_channel_missing_fields
 from plasma_reactgen.domain.models import MissingDataItem, ReactionNetwork
 
 
-def build_missing_data(network: ReactionNetwork, states: list[dict], dnt_tasks: list[dict], registry) -> list[MissingDataItem]:
+def build_missing_data(
+    network: ReactionNetwork,
+    states: list[dict],
+) -> list[MissingDataItem]:
+    """Build user-facing gaps from the generated network and state roles.
+
+    Builders already resolve assets and DNT channels into ``ReactionNetwork``.
+    Keeping those derived representations out of this API prevents the same gap
+    from being reported once per output format.
+    """
     items: list[MissingDataItem] = list(network.missing_data)
 
     for state in states:
@@ -23,8 +31,8 @@ def build_missing_data(network: ReactionNetwork, states: list[dict], dnt_tasks: 
 
     for rxn in network.reactions:
         if rxn.family == "electron":
-            cs = _nested_get(rxn.data, ["cross_section"])
-            if not cs:
+            cross_section_status = rxn.data_status.get("cross_section")
+            if cross_section_status == "missing":
                 items.append(
                     MissingDataItem(
                         subject_kind="reaction",
@@ -35,69 +43,53 @@ def build_missing_data(network: ReactionNetwork, states: list[dict], dnt_tasks: 
                         message="Electron-collision channel has no cross-section reference.",
                     )
                 )
-            else:
-                path = cs.get("path")
-                if not path:
-                    items.append(
-                        MissingDataItem(
-                            subject_kind="asset",
-                            subject_id=rxn.id,
-                            field="data.cross_section.path",
-                            required_by="electron_collision",
-                            severity="warning",
-                            message="Cross-section source is registered but numeric table has not been imported yet.",
-                        )
-                    )
-                elif hasattr(registry, "asset_exists") and not registry.asset_exists(path):
-                    items.append(
-                        MissingDataItem(
-                            subject_kind="asset",
-                            subject_id=rxn.id,
-                            field="data.cross_section.path",
-                            required_by="electron_collision",
-                            severity="warning",
-                            message=f"Registered cross-section path does not exist: {path}",
-                        )
-                    )
-
-        if rxn.family == "ion_neutral" and rxn.type != "elastic":
-            if rxn.deltaE_products_minus_reactants_eV is None:
+            elif cross_section_status in {
+                "reference_only_needs_import",
+                "path_registered_but_missing",
+            }:
                 items.append(
                     MissingDataItem(
-                        subject_kind="reaction",
+                        subject_kind="asset",
                         subject_id=rxn.id,
-                        field="deltaE_products_minus_reactants_eV",
-                        required_by="dnt_task",
+                        field="data.cross_section.path",
+                        required_by="electron_collision",
                         severity="warning",
-                        message="Reaction energy is not registered. DNT+/DNT+DM calculation may need it.",
+                        message="Cross-section numeric data is not available locally.",
                     )
                 )
 
-    for task in dnt_tasks:
-        missing = task.get("readiness", {}).get("missing", {})
-        for side, fields in missing.items():
-            for field in fields:
-                items.append(
-                    MissingDataItem(
-                        subject_kind="dnt_task",
-                        subject_id=task["pair_id"],
-                        field=f"{side}.{field}",
-                        required_by="dnt_plus_dm",
-                        severity="required",
-                        message="DNT+/DNT+DM task is not ready because a required property is missing.",
-                    )
+        if rxn.family != "ion_neutral" or not rxn.dnt_class:
+            continue
+        missing_fields = dnt_channel_missing_fields(
+            reaction_type=rxn.type,
+            dnt_class=rxn.dnt_class,
+            threshold_eV=rxn.threshold_eV,
+            delta_e_eV=rxn.deltaE_products_minus_reactants_eV,
+        )
+        if "threshold_eV" in missing_fields:
+            items.append(
+                MissingDataItem(
+                    subject_kind="reaction",
+                    subject_id=rxn.id,
+                    field="threshold_eV",
+                    required_by="dnt_task",
+                    severity="warning",
+                    message="Non-elastic DNT channel has no registered threshold energy.",
                 )
+            )
+        if "deltaE_products_minus_reactants_eV" in missing_fields:
+            items.append(
+                MissingDataItem(
+                    subject_kind="reaction",
+                    subject_id=rxn.id,
+                    field="deltaE_products_minus_reactants_eV",
+                    required_by="dnt_task",
+                    severity="warning",
+                    message="Reaction energy is not registered. DNT+/DNT+DM calculation may need it.",
+                )
+            )
 
     return _dedupe_missing_items(items)
-
-
-def _nested_get(data: dict[str, Any], path: list[str]):
-    cur: Any = data
-    for key in path:
-        if not isinstance(cur, dict) or key not in cur:
-            return None
-        cur = cur[key]
-    return cur
 
 
 def _dedupe_missing_items(items: list[MissingDataItem]) -> list[MissingDataItem]:

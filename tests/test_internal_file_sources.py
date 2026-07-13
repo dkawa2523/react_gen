@@ -131,6 +131,9 @@ def test_prepare_case_writes_internal_data_to_prepared_registry_without_mutating
         registry_root=registry_root,
         source_profile={
             "name": "internal_file_test",
+            "species_identity": ["internal_species_db"],
+            "properties": ["internal_property_db"],
+            "electron_reactions": ["internal_reaction_db"],
             "internal_file": {"root": str(internal_root)},
         },
         output_dir=output_dir,

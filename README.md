@@ -23,7 +23,7 @@ and missing-data outputs. It does not access online databases.
 | `visualize` | Create statistics plots and Graphviz reaction-network views from generated outputs. | No |
 | `export-dnt` | Write solver-free pair-wise DNT+/DNT+DM input YAML from a case and registry. | No |
 | `infer-candidates` | Write inferred species/reaction candidates into `candidate_registry/` for review. | No |
-| `dev-check` | Check registry readability and basic references. | No |
+| `dev-check` | Validate registry structure, uniqueness, references, and local asset links. Returns non-zero on errors. | No |
 
 ## Core Workflows
 
@@ -41,9 +41,18 @@ Main outputs include:
 - `coverage_report.yaml`
 - `missing_data.yaml` / `.csv`
 - `summary.json`
+- `quality_summary.yaml`
 
 `generate` does not calculate electron cross sections, run DNT or Boltzmann
 solvers, download public data, scrape websites, or call online APIs.
+
+Configured limits are never silent. `summary.json` contains
+`generation_complete` and a machine-readable `truncations` list; the reaction,
+coverage, and quality YAML outputs repeat the relevant completeness data. Limit
+events identify `max_pairs_per_depth`, `max_missing_pairs_per_depth`,
+`max_reactions`, or `max_species` and record retained/omitted counts and
+context. A truncated run is not marked mechanism-ready for review in
+`quality_summary.yaml`.
 
 ### Enrich
 
@@ -51,12 +60,16 @@ solvers, download public data, scrape websites, or call online APIs.
 reactgen enrich cases/ar_cf4/input.yaml `
   --registry registry `
   --workspace workspaces/ar_cf4 `
-  --source-profile experimental_first
+  --source-profile experimental_first `
+  --fresh
 ```
 
 `enrich` creates `workspaces/ar_cf4/prepared_registry/`, writes
 `prepare_report.yaml` and `enrichment_report.yaml`, and uses only configured
-local/offline providers. Curated `registry/` files are not changed.
+local/offline providers. Curated `registry/` files are not changed. Use
+`--fresh` at the start of a reproducible run to clear only enrich-owned
+workspace artifacts before rebuilding them. Without it, existing prepared
+overlays are retained for an incremental review workflow.
 
 ### Import And Map Cross Sections
 
@@ -73,7 +86,11 @@ reactgen apply-cross-section-mapping external_data/lxcat/mappings.yaml `
 
 The importer accepts simple CSV/TSV files with `energy_eV` and
 `cross_section_m2`, writes normalized local assets plus metadata sidecars under
-`prepared_registry`, and can link only prepared registry channels.
+`prepared_registry`, and can link only prepared registry channels. Mapping
+refuses absolute paths, paths that escape the prepared registry, and missing
+assets. Unresolved entries are written to `cross_section_mapping_report.yaml`,
+and the command exits non-zero
+when any remain.
 
 ### Plan Missing Data
 
@@ -104,7 +121,7 @@ channels are not overwritten; conflicts are reported for manual review.
 ## Minimal Ar/CF4 Workflow
 
 ```powershell
-reactgen enrich cases/ar_cf4/input.yaml --registry registry --workspace workspaces/ar_cf4 --source-profile local_only
+reactgen enrich cases/ar_cf4/input.yaml --registry registry --workspace workspaces/ar_cf4 --source-profile local_only --fresh
 reactgen generate cases/ar_cf4/input.yaml --registry workspaces/ar_cf4/prepared_registry --output workspaces/ar_cf4/outputs
 reactgen plan-missing workspaces/ar_cf4/outputs --output workspaces/ar_cf4/missing_plan.yaml
 reactgen visualize workspaces/ar_cf4/outputs --output workspaces/ar_cf4/visualizations
@@ -163,6 +180,17 @@ interpreter or the Python launcher:
 py -m pytest
 ```
 
+Validate a registry before generation or promotion:
+
+```powershell
+reactgen dev-check --registry registry --strict
+```
+
+`dev-check` returns exit code `1` for a missing registry or any validation
+error, so it can be used directly as a CI gate. In non-strict mode, unresolved
+product references and missing cross-section files remain warnings; `--strict`
+promotes them to errors.
+
 ## Documentation
 
 - [Product architecture](docs/product_architecture.md)
@@ -170,7 +198,6 @@ py -m pytest
 - [Semiconductor quickstart](docs/quickstart_semiconductor.md)
 - [Source and license policy](docs/source_license_policy.md)
 - [External source setup](docs/external_source_setup.md)
-- [DB cleanup workflow](docs/db_cleanup_workflow.md)
 - [Provider extension guide](docs/provider_extension_guide.md)
 - [Registry data guide](docs/registry_data_guide.md)
 - [Inference design](docs/inference_design.md)

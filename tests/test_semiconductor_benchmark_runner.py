@@ -152,9 +152,11 @@ def test_cross_section_import_and_mapping_happen_before_generate(tmp_path, monke
     report = _read_yaml(result_dir / "benchmark_report.yaml")
     commands = [step["command"] for step in report["steps"]]
 
+    enrich_index = _index_containing(commands, "reactgen enrich")
     import_index = _index_containing(commands, "import-cross-sections")
     mapping_index = _index_containing(commands, "apply-cross-section-mapping")
     generate_index = _index_containing(commands, "generate")
+    assert "--fresh" in commands[enrich_index].split()
     assert import_index < generate_index
     assert mapping_index < generate_index
 

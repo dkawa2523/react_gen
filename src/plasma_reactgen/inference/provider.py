@@ -294,6 +294,7 @@ def _properties_from_payload(payload: dict[str, Any]) -> dict[str, PropertyValue
             value=value.get("value"),
             unit=value.get("unit"),
             source=value.get("source"),
+            source_record=value.get("source_record"),
         )
     return properties
 

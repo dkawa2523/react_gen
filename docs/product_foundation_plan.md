@@ -10,7 +10,7 @@ This document records the implementation direction for extending `plasma-reactge
 ## Goals
 
 - Preserve current registry-driven network generation behavior.
-- Keep `generate`, `visualize`, `dev-check`, `dev-index`, and `template` backward compatible.
+- Keep the user-facing `generate`, `visualize`, `dev-check`, and `template` workflows stable.
 - Keep `ReactionNetworkBuilder` focused on registered data expansion and basic validation.
 - Add inferred reaction candidates through a separate inference layer.
 - Export DNT+/DNT+DM inputs as pair-wise files that remain compatible with the current `dnt_tasks.yaml` structure.
@@ -58,7 +58,7 @@ User-facing workflows:
 Developer workflows:
 
 - `dev-check`: validate registry readability and references.
-- `dev-index`: rebuild registry index files.
+- Registry lookup scans the small local registry directly; generated index files are not maintained.
 - `template`: print registration templates for new species or reaction pairs.
 
 Candidate review is a developer workflow (`infer-candidates`) rather than a silent change to `generate`.

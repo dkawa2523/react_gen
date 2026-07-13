@@ -36,6 +36,7 @@ def test_mapping_updates_prepared_registry_channel_preserving_fields(tmp_path):
 
     assert report["summary"]["n_updated"] == 1
     assert report["summary"]["n_unresolved"] == 0
+    assert report["prepared_registry_mutated"] is True
     assert cross_section["status"] == "local_file_registered"
     assert cross_section["path"] == "assets/cross_sections/e_CF4_elastic.csv"
     assert cross_section["source"] == "lxcat_offline"
@@ -57,6 +58,7 @@ def test_missing_reaction_is_reported(tmp_path):
     report = apply_cross_section_mappings(prepared_registry, mapping_file)
 
     assert report["summary"]["n_updated"] == 0
+    assert report["prepared_registry_mutated"] is False
     assert report["unresolved"] == [
         {
             "reaction_id": "missing_reaction",
@@ -66,7 +68,7 @@ def test_missing_reaction_is_reported(tmp_path):
     ]
 
 
-def test_missing_asset_is_reported_but_matching_channel_is_updated(tmp_path):
+def test_missing_asset_is_reported_without_writing_dangling_reference(tmp_path):
     prepared_registry = tmp_path / "workspace" / "prepared_registry"
     _make_prepared_reaction(prepared_registry)
     mapping_file = _make_mapping(
@@ -88,7 +90,7 @@ def test_missing_asset_is_reported_but_matching_channel_is_updated(tmp_path):
         )
     )
 
-    assert report["summary"]["n_updated"] == 1
+    assert report["summary"]["n_updated"] == 0
     assert report["unresolved"] == [
         {
             "reaction_id": "e_CF4_elastic",
@@ -96,7 +98,46 @@ def test_missing_asset_is_reported_but_matching_channel_is_updated(tmp_path):
             "reason": "asset_not_found",
         }
     ]
-    assert payload["channels"][0]["data"]["cross_section"]["path"] == "assets/cross_sections/does_not_exist.csv"
+    assert payload["channels"][0]["data"]["cross_section"]["path"] is None
+
+
+def test_mapping_rejects_asset_path_outside_prepared_registry(tmp_path):
+    prepared_registry = tmp_path / "workspace" / "prepared_registry"
+    _make_prepared_reaction(prepared_registry)
+    outside_asset = tmp_path / "outside.csv"
+    outside_asset.write_text("energy_eV,cross_section_m2\n0,0\n", encoding="utf-8")
+    mapping_file = _make_mapping(
+        tmp_path / "mapping.yaml",
+        [
+            {
+                "reaction_id": "e_CF4_elastic",
+                "asset_path": "../../outside.csv",
+            }
+        ],
+    )
+
+    report = apply_cross_section_mappings(prepared_registry, mapping_file)
+
+    assert report["summary"] == {"n_mappings": 1, "n_updated": 0, "n_unresolved": 1}
+    assert report["unresolved"][0]["reason"] == "asset_path_outside_registry"
+
+
+def test_invalid_mapping_entry_is_an_unresolved_error(tmp_path):
+    prepared_registry = tmp_path / "workspace" / "prepared_registry"
+    _make_prepared_reaction(prepared_registry)
+    mapping_file = _make_mapping(tmp_path / "mapping.yaml", ["not-a-mapping"])
+
+    report = apply_cross_section_mappings(prepared_registry, mapping_file)
+
+    assert report["summary"]["n_unresolved"] == 1
+    assert report["unresolved"] == [
+        {
+            "mapping_index": 0,
+            "reaction_id": None,
+            "asset_path": None,
+            "reason": "invalid_mapping_entry",
+        }
+    ]
 
 
 def test_mapping_only_scans_electron_prepared_registry_and_registry_is_unchanged(tmp_path):
@@ -166,7 +207,38 @@ def test_cli_apply_cross_section_mapping(tmp_path):
         )
     )
     assert rc == 0
+    assert (workspace / "cross_section_mapping_report.yaml").exists()
     assert payload["channels"][0]["data"]["cross_section"]["path"] == "assets/cross_sections/e_CF4_elastic.csv"
+
+
+def test_cli_mapping_returns_failure_when_any_mapping_is_unresolved(tmp_path):
+    workspace = tmp_path / "workspace"
+    prepared_registry = workspace / "prepared_registry"
+    _make_prepared_reaction(prepared_registry)
+    mapping_file = _make_mapping(
+        tmp_path / "mapping.yaml",
+        [
+            {
+                "reaction_id": "e_CF4_elastic",
+                "asset_path": "assets/cross_sections/missing.csv",
+            }
+        ],
+    )
+
+    rc = main(
+        [
+            "apply-cross-section-mapping",
+            str(mapping_file),
+            "--workspace",
+            str(workspace),
+        ]
+    )
+
+    assert rc == 1
+    report = yaml.safe_load(
+        (workspace / "cross_section_mapping_report.yaml").read_text(encoding="utf-8")
+    )
+    assert report["unresolved"][0]["reason"] == "asset_not_found"
 
 
 def _make_prepared_reaction(prepared_registry: Path) -> None:
