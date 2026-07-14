@@ -1,0 +1,371 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1696" height="3620" viewBox="0 0 1696 3620">
+<defs>
+<marker id="reaction-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+<path d="M0,0 L8,4 L0,8 z" fill="#64748B"/>
+</marker>
+</defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="40" y="42" text-anchor="start" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#0F172A">反応経路図: ar_cf4_fluorocarbon</text>
+<text x="40" y="70" text-anchor="start" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#475569">各枠は反応式、矢印は前段反応からの到達関係を示す</text>
+<text x="218.0" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#0F172A">深さ 0</text>
+<text x="638.0" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#0F172A">深さ 1</text>
+<text x="1058.0" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#0F172A">深さ 2</text>
+<text x="1478.0" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#0F172A">深さ 3</text>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 175.0, 468.0 175.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_Ar_elastic</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 293.0, 468.0 293.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_Ar_resonant_charge_exchange</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 411.0, 468.0 411.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_CF2_charge_transfer_CF2p</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 411.0, 468.0 411.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → Arp_CF2_charge_transfer_CF2p</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 529.0, 468.0 529.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_CF2_elastic</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 529.0, 468.0 529.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → Arp_CF2_elastic</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 647.0, 468.0 647.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_CF3_charge_transfer_CF3p</title></path>
+<path d="M 388.0 647.0 C 424.0 647.0, 432.0 647.0, 468.0 647.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_Fm → Arp_CF3_charge_transfer_CF3p</title></path>
+<path d="M 388.0 883.0 C 424.0 883.0, 432.0 647.0, 468.0 647.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF3_F → Arp_CF3_charge_transfer_CF3p</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 765.0, 468.0 765.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_CF3_dissociative_charge_transfer_CF2p</title></path>
+<path d="M 388.0 647.0 C 424.0 647.0, 432.0 765.0, 468.0 765.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_Fm → Arp_CF3_dissociative_charge_transfer_CF2p</title></path>
+<path d="M 388.0 883.0 C 424.0 883.0, 432.0 765.0, 468.0 765.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF3_F → Arp_CF3_dissociative_charge_transfer_CF2p</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 883.0, 468.0 883.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_CF3_elastic</title></path>
+<path d="M 388.0 647.0 C 424.0 647.0, 432.0 883.0, 468.0 883.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_Fm → Arp_CF3_elastic</title></path>
+<path d="M 388.0 883.0 C 424.0 883.0, 432.0 883.0, 468.0 883.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF3_F → Arp_CF3_elastic</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 1001.0, 468.0 1001.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_CF4_dissociative_charge_transfer_CF3p</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 1119.0, 468.0 1119.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_CF4_elastic</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 1237.0, 468.0 1237.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_F_charge_transfer_Fp</title></path>
+<path d="M 388.0 529.0 C 424.0 529.0, 432.0 1237.0, 468.0 1237.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_CF3m → Arp_F_charge_transfer_Fp</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 1237.0, 468.0 1237.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → Arp_F_charge_transfer_Fp</title></path>
+<path d="M 388.0 883.0 C 424.0 883.0, 432.0 1237.0, 468.0 1237.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF3_F → Arp_F_charge_transfer_Fp</title></path>
+<path d="M 388.0 1001.0 C 424.0 1001.0, 432.0 1237.0, 468.0 1237.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF2p → Arp_F_charge_transfer_Fp</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 1237.0, 468.0 1237.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → Arp_F_charge_transfer_Fp</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 1355.0, 468.0 1355.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_F_elastic</title></path>
+<path d="M 388.0 529.0 C 424.0 529.0, 432.0 1355.0, 468.0 1355.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_CF3m → Arp_F_elastic</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 1355.0, 468.0 1355.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → Arp_F_elastic</title></path>
+<path d="M 388.0 883.0 C 424.0 883.0, 432.0 1355.0, 468.0 1355.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF3_F → Arp_F_elastic</title></path>
+<path d="M 388.0 1001.0 C 424.0 1001.0, 432.0 1355.0, 468.0 1355.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF2p → Arp_F_elastic</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 1355.0, 468.0 1355.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → Arp_F_elastic</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 1473.0, 468.0 1473.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → CF3p_Ar_charge_transfer_Arp</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 1591.0, 468.0 1591.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → CF3p_Ar_elastic</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 1709.0, 468.0 1709.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → CF3p_CF2_charge_transfer_CF2p</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 1709.0, 468.0 1709.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → CF3p_CF2_charge_transfer_CF2p</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 1827.0, 468.0 1827.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → CF3p_CF2_elastic</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 1827.0, 468.0 1827.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → CF3p_CF2_elastic</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 1945.0, 468.0 1945.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → CF3p_CF4_collision_induced_dissociation_CF3_F</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 2063.0, 468.0 2063.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → CF3p_CF4_elastic</title></path>
+<path d="M 388.0 1355.0 C 424.0 1355.0, 432.0 2181.0, 468.0 2181.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_ionization → CF4p_Ar_charge_transfer_Arp</title></path>
+<path d="M 388.0 1473.0 C 424.0 1473.0, 432.0 2181.0, 468.0 2181.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_ionization_parent_effective → CF4p_Ar_charge_transfer_Arp</title></path>
+<path d="M 388.0 1355.0 C 424.0 1355.0, 432.0 2299.0, 468.0 2299.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_ionization → CF4p_Ar_elastic</title></path>
+<path d="M 388.0 1473.0 C 424.0 1473.0, 432.0 2299.0, 468.0 2299.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_ionization_parent_effective → CF4p_Ar_elastic</title></path>
+<path d="M 388.0 1355.0 C 424.0 1355.0, 432.0 2417.0, 468.0 2417.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_ionization → CF4p_CF4_elastic</title></path>
+<path d="M 388.0 1473.0 C 424.0 1473.0, 432.0 2417.0, 468.0 2417.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_ionization_parent_effective → CF4p_CF4_elastic</title></path>
+<path d="M 388.0 1355.0 C 424.0 1355.0, 432.0 2535.0, 468.0 2535.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_ionization → CF4p_CF4_resonant_charge_exchange</title></path>
+<path d="M 388.0 1473.0 C 424.0 1473.0, 432.0 2535.0, 468.0 2535.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_ionization_parent_effective → CF4p_CF4_resonant_charge_exchange</title></path>
+<path d="M 388.0 647.0 C 424.0 647.0, 432.0 2653.0, 468.0 2653.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_Fm → Fm_CF4_collisional_detachment</title></path>
+<path d="M 388.0 647.0 C 424.0 647.0, 432.0 2771.0, 468.0 2771.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_Fm → Fm_CF4_elastic</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 2889.0, 468.0 2889.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → e_CF2_dissociation_CF_F</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 3007.0, 468.0 3007.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → e_CF2_ionization_CF2p</title></path>
+<path d="M 388.0 647.0 C 424.0 647.0, 432.0 3125.0, 468.0 3125.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_Fm → e_CF3_dissociation_CF2_F</title></path>
+<path d="M 388.0 883.0 C 424.0 883.0, 432.0 3125.0, 468.0 3125.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF3_F → e_CF3_dissociation_CF2_F</title></path>
+<path d="M 388.0 647.0 C 424.0 647.0, 432.0 3243.0, 468.0 3243.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_Fm → e_CF3_ionization_CF3p</title></path>
+<path d="M 388.0 883.0 C 424.0 883.0, 432.0 3243.0, 468.0 3243.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF3_F → e_CF3_ionization_CF3p</title></path>
+<path d="M 388.0 529.0 C 424.0 529.0, 432.0 3361.0, 468.0 3361.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_CF3m → e_F_elastic</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 3361.0, 468.0 3361.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → e_F_elastic</title></path>
+<path d="M 388.0 883.0 C 424.0 883.0, 432.0 3361.0, 468.0 3361.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF3_F → e_F_elastic</title></path>
+<path d="M 388.0 1001.0 C 424.0 1001.0, 432.0 3361.0, 468.0 3361.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF2p → e_F_elastic</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 3361.0, 468.0 3361.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → e_F_elastic</title></path>
+<path d="M 388.0 529.0 C 424.0 529.0, 432.0 3479.0, 468.0 3479.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_attachment_CF3m → e_F_ionization</title></path>
+<path d="M 388.0 765.0 C 424.0 765.0, 432.0 3479.0, 468.0 3479.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF2_2F → e_F_ionization</title></path>
+<path d="M 388.0 883.0 C 424.0 883.0, 432.0 3479.0, 468.0 3479.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociation_CF3_F → e_F_ionization</title></path>
+<path d="M 388.0 1001.0 C 424.0 1001.0, 432.0 3479.0, 468.0 3479.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF2p → e_F_ionization</title></path>
+<path d="M 388.0 1119.0 C 424.0 1119.0, 432.0 3479.0, 468.0 3479.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF4_dissociative_ionization_CF3p → e_F_ionization</title></path>
+<path d="M 808.0 1237.0 C 844.0 1237.0, 852.0 175.0, 888.0 175.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>Arp_F_charge_transfer_Fp → Fp_CF4_charge_transfer_CF4p</title></path>
+<path d="M 808.0 3479.0 C 844.0 3479.0, 852.0 175.0, 888.0 175.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_F_ionization → Fp_CF4_charge_transfer_CF4p</title></path>
+<path d="M 808.0 1237.0 C 844.0 1237.0, 852.0 293.0, 888.0 293.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>Arp_F_charge_transfer_Fp → Fp_CF4_dissociative_charge_transfer_CF3p</title></path>
+<path d="M 808.0 3479.0 C 844.0 3479.0, 852.0 293.0, 888.0 293.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_F_ionization → Fp_CF4_dissociative_charge_transfer_CF3p</title></path>
+<path d="M 808.0 1237.0 C 844.0 1237.0, 852.0 411.0, 888.0 411.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>Arp_F_charge_transfer_Fp → Fp_CF4_elastic</title></path>
+<path d="M 808.0 3479.0 C 844.0 3479.0, 852.0 411.0, 888.0 411.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_F_ionization → Fp_CF4_elastic</title></path>
+<path d="M 808.0 2889.0 C 844.0 2889.0, 852.0 529.0, 888.0 529.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF2_dissociation_CF_F → e_CF_dissociation_C_F</title></path>
+<path d="M 1228.0 529.0 C 1264.0 529.0, 1272.0 175.0, 1308.0 175.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_CF_dissociation_C_F → e_C_elastic</title></path>
+<g><title>e_Ar_elastic | e + Ar -&gt; e + Ar | 電子衝突 / 弾性</title>
+<rect x="48" y="128" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="148" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_Ar_elastic</text>
+<text x="62" y="173" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + Ar -&gt; e + Ar</text>
+<text x="62" y="212" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 弾性</text>
+</g>
+<g><title>e_Ar_excitation_4s_lumped | e + Ar -&gt; e + Ar | 電子衝突 / 励起</title>
+<rect x="48" y="246" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="266" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_Ar_excitation_4s_lumped</text>
+<text x="62" y="291" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + Ar -&gt; e + Ar</text>
+<text x="62" y="330" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 励起</text>
+</g>
+<g><title>e_Ar_ionization | e + Ar -&gt; 2 e + Ar+ | 電子衝突 / 電離</title>
+<rect x="48" y="364" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="384" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_Ar_ionization</text>
+<text x="62" y="409" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + Ar -&gt; 2 e + Ar+</text>
+<text x="62" y="448" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 電離</text>
+</g>
+<g><title>e_CF4_attachment_CF3m | e + CF4 -&gt; CF3- + F | 電子衝突 / 付着</title>
+<rect x="48" y="482" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="502" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF4_attachment_CF3m</text>
+<text x="62" y="527" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF4 -&gt; CF3- + F</text>
+<text x="62" y="566" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 付着</text>
+</g>
+<g><title>e_CF4_attachment_Fm | e + CF4 -&gt; CF3 + F- | 電子衝突 / 付着</title>
+<rect x="48" y="600" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="620" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF4_attachment_Fm</text>
+<text x="62" y="645" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF4 -&gt; CF3 + F-</text>
+<text x="62" y="684" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 付着</text>
+</g>
+<g><title>e_CF4_dissociation_CF2_2F | e + CF4 -&gt; e + CF2 + 2 F | 電子衝突 / 解離</title>
+<rect x="48" y="718" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="738" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF4_dissociation_CF2_2F</text>
+<text x="62" y="763" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF4 -&gt; e + CF2 + 2 F</text>
+<text x="62" y="802" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 解離</text>
+</g>
+<g><title>e_CF4_dissociation_CF3_F | e + CF4 -&gt; e + CF3 + F | 電子衝突 / 解離</title>
+<rect x="48" y="836" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="856" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF4_dissociation_CF3_F</text>
+<text x="62" y="881" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF4 -&gt; e + CF3 + F</text>
+<text x="62" y="920" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 解離</text>
+</g>
+<g><title>e_CF4_dissociative_ionization_CF2p | e + CF4 -&gt; 2 e + CF2+ + 2 F | 電子衝突 / dissociative_ionization</title>
+<rect x="48" y="954" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="974" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF4_dissociative_ionization_CF2p</text>
+<text x="62" y="999" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF4 -&gt; 2 e + CF2+ + 2 F</text>
+<text x="62" y="1038" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / dissociative_ionization</text>
+</g>
+<g><title>e_CF4_dissociative_ionization_CF3p | e + CF4 -&gt; 2 e + CF3+ + F | 電子衝突 / dissociative_ionization</title>
+<rect x="48" y="1072" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="1092" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF4_dissociative_ionization_CF3p</text>
+<text x="62" y="1117" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF4 -&gt; 2 e + CF3+ + F</text>
+<text x="62" y="1156" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / dissociative_ionization</text>
+</g>
+<g><title>e_CF4_elastic | e + CF4 -&gt; e + CF4 | 電子衝突 / 弾性</title>
+<rect x="48" y="1190" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="1210" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF4_elastic</text>
+<text x="62" y="1235" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF4 -&gt; e + CF4</text>
+<text x="62" y="1274" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 弾性</text>
+</g>
+<g><title>e_CF4_ionization | e + CF4 -&gt; 2 e + CF4+ | 電子衝突 / 電離</title>
+<rect x="48" y="1308" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="1328" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF4_ionization</text>
+<text x="62" y="1353" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF4 -&gt; 2 e + CF4+</text>
+<text x="62" y="1392" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 電離</text>
+</g>
+<g><title>e_CF4_ionization_parent_effective | e + CF4 -&gt; 2 e + CF4+ | 電子衝突 / 電離</title>
+<rect x="48" y="1426" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="1446" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF4_ionization_parent_effective</text>
+<text x="62" y="1471" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF4 -&gt; 2 e + CF4+</text>
+<text x="62" y="1510" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 電離</text>
+</g>
+<g><title>Arp_Ar_elastic | Ar+ + Ar -&gt; Ar+ + Ar | イオン–中性 / 弾性</title>
+<rect x="468" y="128" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="148" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_Ar_elastic</text>
+<text x="482" y="173" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + Ar -&gt; Ar+ + Ar</text>
+<text x="482" y="212" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>Arp_Ar_resonant_charge_exchange | Ar+ + Ar -&gt; Ar + Ar+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="246" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="266" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_Ar_resonant_charge_exchange</text>
+<text x="482" y="291" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + Ar -&gt; Ar + Ar+</text>
+<text x="482" y="330" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>Arp_CF2_charge_transfer_CF2p | Ar+ + CF2 -&gt; Ar + CF2+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="364" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="384" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_CF2_charge_transfer_CF2p</text>
+<text x="482" y="409" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + CF2 -&gt; Ar + CF2+</text>
+<text x="482" y="448" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>Arp_CF2_elastic | Ar+ + CF2 -&gt; Ar+ + CF2 | イオン–中性 / 弾性</title>
+<rect x="468" y="482" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="502" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_CF2_elastic</text>
+<text x="482" y="527" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + CF2 -&gt; Ar+ + CF2</text>
+<text x="482" y="566" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>Arp_CF3_charge_transfer_CF3p | Ar+ + CF3 -&gt; Ar + CF3+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="600" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="620" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_CF3_charge_transfer_CF3p</text>
+<text x="482" y="645" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + CF3 -&gt; Ar + CF3+</text>
+<text x="482" y="684" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>Arp_CF3_dissociative_charge_transfer_CF2p | Ar+ + CF3 -&gt; Ar + CF2+ + F | イオン–中性 / 解離性電荷移行</title>
+<rect x="468" y="718" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="738" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_CF3_dissociative_charge_transfer_CF2p</text>
+<text x="482" y="763" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + CF3 -&gt; Ar + CF2+ + F</text>
+<text x="482" y="802" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 解離性電荷移行</text>
+</g>
+<g><title>Arp_CF3_elastic | Ar+ + CF3 -&gt; Ar+ + CF3 | イオン–中性 / 弾性</title>
+<rect x="468" y="836" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="856" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_CF3_elastic</text>
+<text x="482" y="881" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + CF3 -&gt; Ar+ + CF3</text>
+<text x="482" y="920" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>Arp_CF4_dissociative_charge_transfer_CF3p | Ar+ + CF4 -&gt; Ar + CF3+ + F | イオン–中性 / 解離性電荷移行</title>
+<rect x="468" y="954" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="974" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_CF4_dissociative_charge_transfer_CF3p</text>
+<text x="482" y="999" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + CF4 -&gt; Ar + CF3+ + F</text>
+<text x="482" y="1038" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 解離性電荷移行</text>
+</g>
+<g><title>Arp_CF4_elastic | Ar+ + CF4 -&gt; Ar+ + CF4 | イオン–中性 / 弾性</title>
+<rect x="468" y="1072" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="1092" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_CF4_elastic</text>
+<text x="482" y="1117" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + CF4 -&gt; Ar+ + CF4</text>
+<text x="482" y="1156" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>Arp_F_charge_transfer_Fp | Ar+ + F -&gt; Ar + F+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="1190" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="1210" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_F_charge_transfer_Fp</text>
+<text x="482" y="1235" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + F -&gt; Ar + F+</text>
+<text x="482" y="1274" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>Arp_F_elastic | Ar+ + F -&gt; Ar+ + F | イオン–中性 / 弾性</title>
+<rect x="468" y="1308" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="1328" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_F_elastic</text>
+<text x="482" y="1353" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + F -&gt; Ar+ + F</text>
+<text x="482" y="1392" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>CF3p_Ar_charge_transfer_Arp | CF3+ + Ar -&gt; CF3 + Ar+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="1426" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="1446" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF3p_Ar_charge_transfer_Arp</text>
+<text x="482" y="1471" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF3+ + Ar -&gt; CF3 + Ar+</text>
+<text x="482" y="1510" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>CF3p_Ar_elastic | CF3+ + Ar -&gt; CF3+ + Ar | イオン–中性 / 弾性</title>
+<rect x="468" y="1544" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="1564" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF3p_Ar_elastic</text>
+<text x="482" y="1589" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF3+ + Ar -&gt; CF3+ + Ar</text>
+<text x="482" y="1628" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>CF3p_CF2_charge_transfer_CF2p | CF3+ + CF2 -&gt; CF3 + CF2+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="1662" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="1682" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF3p_CF2_charge_transfer_CF2p</text>
+<text x="482" y="1707" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF3+ + CF2 -&gt; CF3 + CF2+</text>
+<text x="482" y="1746" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>CF3p_CF2_elastic | CF3+ + CF2 -&gt; CF3+ + CF2 | イオン–中性 / 弾性</title>
+<rect x="468" y="1780" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="1800" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF3p_CF2_elastic</text>
+<text x="482" y="1825" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF3+ + CF2 -&gt; CF3+ + CF2</text>
+<text x="482" y="1864" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>CF3p_CF4_collision_induced_dissociation_CF3_F | CF3+ + CF4 -&gt; CF3+ + CF3 + F | イオン–中性 / 反応性散乱</title>
+<rect x="468" y="1898" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="1918" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF3p_CF4_collision_induced_dissociation_CF3_F</text>
+<text x="482" y="1943" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF3+ + CF4 -&gt; CF3+ + CF3 + F</text>
+<text x="482" y="1982" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 反応性散乱</text>
+</g>
+<g><title>CF3p_CF4_elastic | CF3+ + CF4 -&gt; CF3+ + CF4 | イオン–中性 / 弾性</title>
+<rect x="468" y="2016" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="2036" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF3p_CF4_elastic</text>
+<text x="482" y="2061" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF3+ + CF4 -&gt; CF3+ + CF4</text>
+<text x="482" y="2100" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>CF4p_Ar_charge_transfer_Arp | CF4+ + Ar -&gt; CF4 + Ar+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="2134" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="2154" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF4p_Ar_charge_transfer_Arp</text>
+<text x="482" y="2179" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF4+ + Ar -&gt; CF4 + Ar+</text>
+<text x="482" y="2218" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>CF4p_Ar_elastic | CF4+ + Ar -&gt; CF4+ + Ar | イオン–中性 / 弾性</title>
+<rect x="468" y="2252" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="2272" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF4p_Ar_elastic</text>
+<text x="482" y="2297" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF4+ + Ar -&gt; CF4+ + Ar</text>
+<text x="482" y="2336" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>CF4p_CF4_elastic | CF4+ + CF4 -&gt; CF4+ + CF4 | イオン–中性 / 弾性</title>
+<rect x="468" y="2370" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="2390" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF4p_CF4_elastic</text>
+<text x="482" y="2415" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF4+ + CF4 -&gt; CF4+ + CF4</text>
+<text x="482" y="2454" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>CF4p_CF4_resonant_charge_exchange | CF4+ + CF4 -&gt; CF4 + CF4+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="2488" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="2508" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">CF4p_CF4_resonant_charge_exchange</text>
+<text x="482" y="2533" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">CF4+ + CF4 -&gt; CF4 + CF4+</text>
+<text x="482" y="2572" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>Fm_CF4_collisional_detachment | F- + CF4 -&gt; F + CF4 + e | イオン–中性 / electron_detachment</title>
+<rect x="468" y="2606" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="2626" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Fm_CF4_collisional_detachment</text>
+<text x="482" y="2651" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">F- + CF4 -&gt; F + CF4 + e</text>
+<text x="482" y="2690" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / electron_detachment</text>
+</g>
+<g><title>Fm_CF4_elastic | F- + CF4 -&gt; F- + CF4 | イオン–中性 / 弾性</title>
+<rect x="468" y="2724" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="2744" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Fm_CF4_elastic</text>
+<text x="482" y="2769" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">F- + CF4 -&gt; F- + CF4</text>
+<text x="482" y="2808" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>e_CF2_dissociation_CF_F | e + CF2 -&gt; e + CF + F | 電子衝突 / 解離</title>
+<rect x="468" y="2842" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="482" y="2862" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF2_dissociation_CF_F</text>
+<text x="482" y="2887" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF2 -&gt; e + CF + F</text>
+<text x="482" y="2926" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 解離</text>
+</g>
+<g><title>e_CF2_ionization_CF2p | e + CF2 -&gt; 2 e + CF2+ | 電子衝突 / 電離</title>
+<rect x="468" y="2960" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="482" y="2980" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF2_ionization_CF2p</text>
+<text x="482" y="3005" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF2 -&gt; 2 e + CF2+</text>
+<text x="482" y="3044" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 電離</text>
+</g>
+<g><title>e_CF3_dissociation_CF2_F | e + CF3 -&gt; e + CF2 + F | 電子衝突 / 解離</title>
+<rect x="468" y="3078" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="482" y="3098" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF3_dissociation_CF2_F</text>
+<text x="482" y="3123" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF3 -&gt; e + CF2 + F</text>
+<text x="482" y="3162" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 解離</text>
+</g>
+<g><title>e_CF3_ionization_CF3p | e + CF3 -&gt; 2 e + CF3+ | 電子衝突 / 電離</title>
+<rect x="468" y="3196" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="482" y="3216" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF3_ionization_CF3p</text>
+<text x="482" y="3241" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF3 -&gt; 2 e + CF3+</text>
+<text x="482" y="3280" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 電離</text>
+</g>
+<g><title>e_F_elastic | e + F -&gt; e + F | 電子衝突 / 弾性</title>
+<rect x="468" y="3314" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="482" y="3334" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_F_elastic</text>
+<text x="482" y="3359" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + F -&gt; e + F</text>
+<text x="482" y="3398" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 弾性</text>
+</g>
+<g><title>e_F_ionization | e + F -&gt; 2 e + F+ | 電子衝突 / 電離</title>
+<rect x="468" y="3432" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="482" y="3452" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_F_ionization</text>
+<text x="482" y="3477" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + F -&gt; 2 e + F+</text>
+<text x="482" y="3516" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 電離</text>
+</g>
+<g><title>Fp_CF4_charge_transfer_CF4p | F+ + CF4 -&gt; F + CF4+ | イオン–中性 / 電荷移行</title>
+<rect x="888" y="128" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="902" y="148" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Fp_CF4_charge_transfer_CF4p</text>
+<text x="902" y="173" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">F+ + CF4 -&gt; F + CF4+</text>
+<text x="902" y="212" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>Fp_CF4_dissociative_charge_transfer_CF3p | F+ + CF4 -&gt; F + CF3+ + F | イオン–中性 / 解離性電荷移行</title>
+<rect x="888" y="246" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="902" y="266" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Fp_CF4_dissociative_charge_transfer_CF3p</text>
+<text x="902" y="291" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">F+ + CF4 -&gt; F + CF3+ + F</text>
+<text x="902" y="330" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 解離性電荷移行</text>
+</g>
+<g><title>Fp_CF4_elastic | F+ + CF4 -&gt; F+ + CF4 | イオン–中性 / 弾性</title>
+<rect x="888" y="364" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="902" y="384" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Fp_CF4_elastic</text>
+<text x="902" y="409" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">F+ + CF4 -&gt; F+ + CF4</text>
+<text x="902" y="448" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>e_CF_dissociation_C_F | e + CF -&gt; e + C + F | 電子衝突 / 解離</title>
+<rect x="888" y="482" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="902" y="502" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_CF_dissociation_C_F</text>
+<text x="902" y="527" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + CF -&gt; e + C + F</text>
+<text x="902" y="566" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 解離</text>
+</g>
+<g><title>e_C_elastic | e + C -&gt; e + C | 電子衝突 / 弾性</title>
+<rect x="1308" y="128" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="1322" y="148" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_C_elastic</text>
+<text x="1322" y="173" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + C -&gt; e + C</text>
+<text x="1322" y="212" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 弾性</text>
+</g>
+<rect x="40" y="3586" width="16" height="12" rx="2" fill="#DBEAFE" stroke="#2563EB"/>
+<text x="62" y="3597" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">電子衝突</text>
+<rect x="200" y="3586" width="16" height="12" rx="2" fill="#FEE2E2" stroke="#DC2626"/>
+<text x="222" y="3597" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">イオン–中性</text>
+<rect x="360" y="3586" width="16" height="12" rx="2" fill="#D1FAE5" stroke="#059669"/>
+<text x="382" y="3597" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">中性–中性</text>
+<rect x="520" y="3586" width="16" height="12" rx="2" fill="#EDE9FE" stroke="#7C3AED"/>
+<text x="542" y="3597" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">イオン–イオン</text>
+<rect x="680" y="3586" width="16" height="12" rx="2" fill="#FEF3C7" stroke="#D97706"/>
+<text x="702" y="3597" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">電子–イオン</text>
+</svg>

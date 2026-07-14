@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1696" height="1024" viewBox="0 0 1696 1024">
+<defs>
+<marker id="reaction-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+<path d="M0,0 L8,4 L0,8 z" fill="#64748B"/>
+</marker>
+</defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="40" y="42" text-anchor="start" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#0F172A">反応経路図: ar_o2_simple</text>
+<text x="40" y="70" text-anchor="start" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#475569">各枠は反応式、矢印は前段反応からの到達関係を示す</text>
+<text x="218.0" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#0F172A">深さ 0</text>
+<text x="638.0" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#0F172A">深さ 1</text>
+<text x="1058.0" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#0F172A">深さ 2</text>
+<text x="1478.0" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#0F172A">深さ 3</text>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 175.0, 468.0 175.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_Ar_elastic</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 293.0, 468.0 293.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_Ar_resonant_charge_exchange</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 411.0, 468.0 411.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_O2_charge_transfer</title></path>
+<path d="M 388.0 411.0 C 424.0 411.0, 432.0 529.0, 468.0 529.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_Ar_ionization → Arp_O2_elastic</title></path>
+<path d="M 388.0 529.0 C 424.0 529.0, 432.0 647.0, 468.0 647.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_O2_attachment_Om_O → e_O_ionization</title></path>
+<path d="M 388.0 647.0 C 424.0 647.0, 432.0 647.0, 468.0 647.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_O2_dissociation_O_O → e_O_ionization</title></path>
+<path d="M 808.0 647.0 C 844.0 647.0, 852.0 175.0, 888.0 175.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>e_O_ionization → Op_O2_association_O3p</title></path>
+<path d="M 1228.0 175.0 C 1264.0 175.0, 1272.0 175.0, 1308.0 175.0" fill="none" stroke="#64748B" stroke-width="1.5" opacity="0.7" marker-end="url(#reaction-arrow)"><title>Op_O2_association_O3p → O3p_O2_elastic</title></path>
+<g><title>e_Ar_elastic | e + Ar -&gt; e + Ar | 電子衝突 / 弾性</title>
+<rect x="48" y="128" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="148" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_Ar_elastic</text>
+<text x="62" y="173" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + Ar -&gt; e + Ar</text>
+<text x="62" y="212" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 弾性</text>
+</g>
+<g><title>e_Ar_excitation_4s_lumped | e + Ar -&gt; e + Ar | 電子衝突 / 励起</title>
+<rect x="48" y="246" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="266" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_Ar_excitation_4s_lumped</text>
+<text x="62" y="291" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + Ar -&gt; e + Ar</text>
+<text x="62" y="330" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 励起</text>
+</g>
+<g><title>e_Ar_ionization | e + Ar -&gt; 2 e + Ar+ | 電子衝突 / 電離</title>
+<rect x="48" y="364" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="384" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_Ar_ionization</text>
+<text x="62" y="409" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + Ar -&gt; 2 e + Ar+</text>
+<text x="62" y="448" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 電離</text>
+</g>
+<g><title>e_O2_attachment_Om_O | e + O2 -&gt; O- + O | 電子衝突 / 付着</title>
+<rect x="48" y="482" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="502" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_O2_attachment_Om_O</text>
+<text x="62" y="527" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + O2 -&gt; O- + O</text>
+<text x="62" y="566" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 付着</text>
+</g>
+<g><title>e_O2_dissociation_O_O | e + O2 -&gt; e + 2 O | 電子衝突 / 解離</title>
+<rect x="48" y="600" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="620" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_O2_dissociation_O_O</text>
+<text x="62" y="645" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + O2 -&gt; e + 2 O</text>
+<text x="62" y="684" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 解離</text>
+</g>
+<g><title>e_O2_elastic | e + O2 -&gt; e + O2 | 電子衝突 / 弾性</title>
+<rect x="48" y="718" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="738" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_O2_elastic</text>
+<text x="62" y="763" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + O2 -&gt; e + O2</text>
+<text x="62" y="802" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 弾性</text>
+</g>
+<g><title>e_O2_ionization | e + O2 -&gt; 2 e + O2+ | 電子衝突 / 電離</title>
+<rect x="48" y="836" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="62" y="856" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_O2_ionization</text>
+<text x="62" y="881" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + O2 -&gt; 2 e + O2+</text>
+<text x="62" y="920" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 電離</text>
+</g>
+<g><title>Arp_Ar_elastic | Ar+ + Ar -&gt; Ar+ + Ar | イオン–中性 / 弾性</title>
+<rect x="468" y="128" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="148" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_Ar_elastic</text>
+<text x="482" y="173" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + Ar -&gt; Ar+ + Ar</text>
+<text x="482" y="212" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>Arp_Ar_resonant_charge_exchange | Ar+ + Ar -&gt; Ar + Ar+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="246" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="266" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_Ar_resonant_charge_exchange</text>
+<text x="482" y="291" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + Ar -&gt; Ar + Ar+</text>
+<text x="482" y="330" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>Arp_O2_charge_transfer | Ar+ + O2 -&gt; Ar + O2+ | イオン–中性 / 電荷移行</title>
+<rect x="468" y="364" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="384" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_O2_charge_transfer</text>
+<text x="482" y="409" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + O2 -&gt; Ar + O2+</text>
+<text x="482" y="448" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 電荷移行</text>
+</g>
+<g><title>Arp_O2_elastic | Ar+ + O2 -&gt; Ar+ + O2 | イオン–中性 / 弾性</title>
+<rect x="468" y="482" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="482" y="502" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Arp_O2_elastic</text>
+<text x="482" y="527" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">Ar+ + O2 -&gt; Ar+ + O2</text>
+<text x="482" y="566" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<g><title>e_O_ionization | e + O -&gt; 2 e + O+ | 電子衝突 / 電離</title>
+<rect x="468" y="600" width="340" height="94" rx="10" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.7"/>
+<text x="482" y="620" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">e_O_ionization</text>
+<text x="482" y="645" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">e + O -&gt; 2 e + O+</text>
+<text x="482" y="684" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#2563EB">電子衝突 / 電離</text>
+</g>
+<g><title>Op_O2_association_O3p | O+ + O2 -&gt; O3+ | イオン–中性 / 会合</title>
+<rect x="888" y="128" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="902" y="148" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">Op_O2_association_O3p</text>
+<text x="902" y="173" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">O+ + O2 -&gt; O3+</text>
+<text x="902" y="212" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 会合</text>
+</g>
+<g><title>O3p_O2_elastic | O3+ + O2 -&gt; O3+ + O2 | イオン–中性 / 弾性</title>
+<rect x="1308" y="128" width="340" height="94" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.7"/>
+<text x="1322" y="148" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#475569">O3p_O2_elastic</text>
+<text x="1322" y="173" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0F172A">O3+ + O2 -&gt; O3+ + O2</text>
+<text x="1322" y="212" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#DC2626">イオン–中性 / 弾性</text>
+</g>
+<rect x="40" y="990" width="16" height="12" rx="2" fill="#DBEAFE" stroke="#2563EB"/>
+<text x="62" y="1001" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">電子衝突</text>
+<rect x="200" y="990" width="16" height="12" rx="2" fill="#FEE2E2" stroke="#DC2626"/>
+<text x="222" y="1001" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">イオン–中性</text>
+<rect x="360" y="990" width="16" height="12" rx="2" fill="#D1FAE5" stroke="#059669"/>
+<text x="382" y="1001" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">中性–中性</text>
+<rect x="520" y="990" width="16" height="12" rx="2" fill="#EDE9FE" stroke="#7C3AED"/>
+<text x="542" y="1001" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">イオン–イオン</text>
+<rect x="680" y="990" width="16" height="12" rx="2" fill="#FEF3C7" stroke="#D97706"/>
+<text x="702" y="1001" text-anchor="start" font-family="Arial, sans-serif" font-size="10" font-weight="400" fill="#334155">電子–イオン</text>
+</svg>

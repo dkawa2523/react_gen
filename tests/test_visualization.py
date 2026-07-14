@@ -38,8 +38,10 @@ def test_visualization_outputs_are_written(tmp_path, generated_outputs):
     assert (tmp_path / "statistics" / "species_charge_counts.svg").exists()
     assert (tmp_path / "network" / "reaction_network.dot").exists()
     assert (tmp_path / "network" / "species_lineage.dot").exists()
+    assert (tmp_path / "network" / "reaction_equation_network.svg").exists()
     assert manifest["statistics"]
     assert "lineage" in manifest
+    assert manifest["reaction_pathway"]["reaction_nodes"] > 0
 
     reaction_type_svg = (tmp_path / "statistics" / "reaction_type_counts.svg").read_text(encoding="utf-8")
     assert "<title>electron:ionization" in reaction_type_svg
@@ -56,3 +58,17 @@ def test_reaction_network_dot_contains_state_nodes_and_reaction_edges(generated_
     assert "CF4" in dot
     assert "q=0" in dot
     assert "D0" in dot
+
+
+def test_reaction_pathway_svg_contains_equations_and_precursors(tmp_path, generated_outputs):
+    manifest = write_visualizations(
+        generated_outputs,
+        tmp_path,
+        graphviz_options=GraphvizOptions(render_formats=()),
+    )
+
+    svg = (tmp_path / "network" / "reaction_equation_network.svg").read_text(encoding="utf-8")
+    assert "反応経路図" in svg
+    assert "e + CF4" in svg
+    assert "precursor_edges" not in svg
+    assert manifest["reaction_pathway"]["precursor_edges"] > 0

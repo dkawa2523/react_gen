@@ -151,6 +151,7 @@ promotes them to errors.
 
 ## Documentation
 
+- [物理・シミュレーション技術レポート](docs/plasma_reactgen_technical_report.md)
 - [Product architecture](docs/product_architecture.md)
 - [Data sources](docs/data_sources.md)
 - [Semiconductor quickstart](docs/quickstart_semiconductor.md)

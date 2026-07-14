@@ -11,6 +11,7 @@ src/plasma_reactgen/visualization/
 |-- svg_charts.py    # Dependency-free SVG chart primitives
 |-- stats.py         # Statistical chart definitions and chart registry
 |-- network.py       # Graphviz DOT generation and optional dot rendering
+|-- reaction_pathway.py # Dependency-free reaction-equation lineage SVG
 `-- writer.py        # Orchestrates all visualization outputs and manifest.json
 ```
 
@@ -76,6 +77,19 @@ CF4 -> F
 ```
 
 This keeps paths readable while preserving the original full reaction equation in edge tooltips.
+
+## Reaction-equation pathway
+
+`reaction_equation_network.svg` complements the species graphs with one card
+per reaction. Cards are grouped by expansion depth and show the reaction id,
+full equation, family, and type. Directed edges are built from
+`precursor_reaction_ids`, so the graph exposes which earlier reactions enabled
+each later reaction. It is generated without Graphviz and is therefore always
+available with the statistical SVG charts.
+
+The pathway graph describes registered reachability, not reaction flux or
+kinetic importance. Use the species graphs for topology and the equation graph
+for reviewing the chemical meaning of a multistep path.
 
 ## CLI
 

@@ -5,6 +5,7 @@ import json
 
 from plasma_reactgen.visualization.loader import load_visualization_dataset
 from plasma_reactgen.visualization.network import GraphvizOptions, write_reaction_network_graphviz, write_species_lineage_graphviz
+from plasma_reactgen.visualization.reaction_pathway import write_reaction_pathway_svg
 from plasma_reactgen.visualization.stats import write_statistical_charts
 
 
@@ -49,6 +50,7 @@ def write_visualizations(
         network_dir,
         options=options,
     )
+    reaction_pathway = write_reaction_pathway_svg(dataset, network_dir)
 
     manifest = {
         "schema_version": 1,
@@ -58,8 +60,10 @@ def write_visualizations(
         "statistics": charts,
         "network": network,
         "lineage": lineage,
+        "reaction_pathway": reaction_pathway,
         "notes": [
             "Statistical charts are dependency-free SVG files.",
+            "The reaction pathway SVG shows equations and precursor-reaction links without Graphviz.",
             "Graphviz DOT is always written; SVG/PNG rendering requires the 'dot' executable.",
         ],
     }
