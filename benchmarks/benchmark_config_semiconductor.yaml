@@ -12,7 +12,6 @@ benchmarks:
     workspace: benchmarks/results/ar_o2_simple/work
     output: benchmarks/results/ar_o2_simple/outputs
     expectation: benchmarks/expectations/ar_o2_simple.yaml
-    external_solvers: benchmarks/external_solvers.example.yaml
     cross_section_imports:
       - file: benchmarks/fixtures/ar_o2_simple/cross_sections/e_O2_elastic.csv
         source: local_file
@@ -27,7 +26,6 @@ benchmarks:
     workspace: benchmarks/results/ar_cf4_fluorocarbon/work
     output: benchmarks/results/ar_cf4_fluorocarbon/outputs
     expectation: benchmarks/expectations/ar_cf4_fluorocarbon.yaml
-    external_solvers: benchmarks/external_solvers.example.yaml
     cross_section_imports:
       - file: benchmarks/fixtures/ar_cf4_fluorocarbon/cross_sections/e_CF4_elastic.csv
         source: local_file
@@ -42,7 +40,6 @@ benchmarks:
     workspace: benchmarks/results/sf6_o2_electronegative/work
     output: benchmarks/results/sf6_o2_electronegative/outputs
     expectation: benchmarks/expectations/sf6_o2_electronegative.yaml
-    external_solvers: benchmarks/external_solvers.example.yaml
     cross_section_imports:
       - file: benchmarks/fixtures/sf6_o2_electronegative/cross_sections/e_SF6_elastic.csv
         source: local_file

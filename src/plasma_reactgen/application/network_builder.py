@@ -3,23 +3,18 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable
 
-from plasma_reactgen.application.channel_policy import (
-    has_available_cross_section,
-    is_channel_allowed,
-    is_reaction_validation_allowed,
-)
+from plasma_reactgen.application.channel_policy import is_channel_allowed, is_reaction_validation_allowed
 from plasma_reactgen.application.config import CaseConfig
-from plasma_reactgen.application.pair_selection import select_pairs_involving_frontier
 from plasma_reactgen.application.ports import ReactionRepository, RuleRepository, SpeciesRepository
-from plasma_reactgen.domain.chemistry import is_excited_state, make_electron_species, species_has_any_class
-from plasma_reactgen.domain.equations import format_equation
+from plasma_reactgen.application.reaction_factory import build_generated_reaction
+from plasma_reactgen.application.network_state import finalize_network, initialize_species
+from plasma_reactgen.domain.chemistry import is_excited_state, species_has_any_class
 from plasma_reactgen.domain.models import (
     CollisionPair,
     CoverageItem,
     GeneratedReaction,
     MissingDataItem,
     NetworkSpeciesNode,
-    ReactionChannel,
     ReactionNetwork,
     Species,
     SpeciesAmount,
@@ -58,25 +53,12 @@ class ReactionNetworkBuilder:
         reaction_catalog = self.deps.rule_repo.get_reaction_type_catalog()
         asset_exists = self._find_asset_exists_predicate()
 
-        known_species: dict[str, Species] = {"e": make_electron_species()}
-        active_species: dict[str, Species] = {"e": known_species["e"]}
-        species_nodes: dict[str, NetworkSpeciesNode] = {}
+        known_species, active_species, species_nodes = initialize_species(
+            config.gases,
+            self.deps.species_repo,
+        )
         missing_data: list[MissingDataItem] = []
         truncations: list[TruncationEvent] = []
-
-        for gas in config.gases:
-            sp = self.deps.species_repo.get_species(gas)
-            if sp is None:
-                raise ValueError(f"Input gas species is not registered: {gas}")
-            known_species[gas] = sp
-            active_species[gas] = sp
-            species_nodes[gas] = NetworkSpeciesNode(
-                species_id=gas,
-                depth_first_seen=0,
-                introduced_by=["input_gas"],
-                roles={"input_gas"},
-                propagated=True,
-            )
 
         frontier = set(config.gases)
         reactions: list[GeneratedReaction] = []
@@ -85,7 +67,10 @@ class ReactionNetworkBuilder:
         seen_pair_keys: set[str] = set()
 
         for depth in range(config.expansion.max_depth + 1):
-            pairs = select_pairs_involving_frontier(active_species, frontier, config)
+            pairs = self.deps.reaction_repo.find_pairs_involving(
+                set(active_species),
+                frontier,
+            )
             if len(pairs) > config.limits.max_pairs_per_depth:
                 truncations.append(
                     TruncationEvent(
@@ -202,7 +187,6 @@ class ReactionNetworkBuilder:
                     if not is_reaction_validation_allowed(validation, config):
                         continue
 
-                    equation = format_equation(reactants=reactants, products=channel.products)
                     channel_rule = reaction_catalog.get(pair.family, {}).get(channel.type, {})
                     expands_species = bool(channel_rule.get("expands_species", True))
 
@@ -219,7 +203,7 @@ class ReactionNetworkBuilder:
                                 details={"first_omitted_reaction_id": channel.id},
                             )
                         )
-                        return ReactionNetwork(
+                        return finalize_network(
                             species=known_species,
                             species_nodes=species_nodes,
                             reactions=reactions,
@@ -261,27 +245,14 @@ class ReactionNetworkBuilder:
                             missing_data=missing_data,
                         )
 
-                    generated = GeneratedReaction(
-                        id=channel.id,
+                    generated = build_generated_reaction(
+                        channel=channel,
+                        pair=pair,
                         depth=depth,
-                        family=pair.family,
-                        type=channel.type,
-                        equation=equation,
                         reactants=reactants,
-                        products=channel.products,
-                        source_pair_key=pair.key,
-                        source_pair_label=pair.label,
                         introduced_species=introduced,
                         validation=validation,
-                        data_status=self._build_data_status(
-                            channel=channel,
-                            family=pair.family,
-                            asset_exists=asset_exists,
-                        ),
-                        threshold_eV=channel.threshold_eV,
-                        deltaE_products_minus_reactants_eV=channel.deltaE_products_minus_reactants_eV,
-                        dnt_class=channel.dnt_class,
-                        data=channel.data,
+                        asset_exists=asset_exists,
                     )
 
                     reactions.append(generated)
@@ -291,7 +262,7 @@ class ReactionNetworkBuilder:
                 break
             frontier = new_frontier
 
-        return ReactionNetwork(
+        return finalize_network(
             species=known_species,
             species_nodes=species_nodes,
             reactions=reactions,
@@ -463,32 +434,3 @@ class ReactionNetworkBuilder:
         if is_excited_state(species) and not config.expansion.propagate_excited_states:
             return False
         return True
-
-    def _build_data_status(
-        self,
-        channel: ReactionChannel,
-        family: str,
-        asset_exists: Callable[[str | None], bool] | None,
-    ) -> dict[str, str]:
-        out = {"reaction": channel.status}
-        if family == "electron":
-            cs = channel.data.get("cross_section")
-            if not cs:
-                out["cross_section"] = "missing"
-            elif isinstance(cs, dict) and cs.get("path"):
-                out["cross_section"] = (
-                    "local_file_registered"
-                    if has_available_cross_section(channel, asset_exists)
-                    else "path_registered_but_missing"
-                )
-            else:
-                out["cross_section"] = (
-                    cs.get("status", "reference_only_needs_import")
-                    if isinstance(cs, dict)
-                    else "reference_only_needs_import"
-                )
-        elif family == "ion_neutral":
-            out["dnt_class"] = (
-                "inferred" if channel.status == "inferred" else "registered"
-            )
-        return out

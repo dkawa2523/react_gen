@@ -18,7 +18,8 @@ from plasma_reactgen.application.network_builder import (
     NetworkBuilderDependencies,
     ReactionNetworkBuilder,
 )
-from plasma_reactgen.domain.models import PropertyValue, ReactionChannel, Species, SpeciesAmount
+from plasma_reactgen.domain.datasets import DatasetAsset, ReactionDataset
+from plasma_reactgen.domain.models import CollisionPair, PropertyValue, ReactionChannel, Species, SpeciesAmount
 from plasma_reactgen.infrastructure.yaml_writer import write_yaml_outputs
 
 
@@ -36,6 +37,18 @@ class MemoryRegistry:
 
     def get_channels(self, pair):
         return list(self.channels.get(pair.key, []))
+
+    def find_pairs_involving(self, active_species_ids, frontier_species_ids):
+        pairs = []
+        for key in sorted(self.channels):
+            family, projectile, target = key.split("|", 2)
+            if (
+                projectile in active_species_ids
+                and target in active_species_ids
+                and {projectile, target}.intersection(frontier_species_ids)
+            ):
+                pairs.append(CollisionPair(family, projectile, target))
+        return pairs
 
     def has_pair(self, pair):
         return pair.key in self.channels
@@ -120,6 +133,32 @@ def test_strict_cross_section_policy_requires_a_verified_local_asset():
     assert network.coverage[0].n_channels == 1
 
 
+def test_strict_cross_section_policy_accepts_new_dataset_format():
+    species = {"A": _species("A", {"A": 1}, 0, {"neutral"})}
+    channel = _elastic_channel("dataset_only")
+    channel.datasets = [
+        ReactionDataset(
+            id="ds_dataset_only",
+            reaction_id=channel.id,
+            kind="cross_section",
+            representation="table",
+            asset=DatasetAsset(path="cross_sections/A.csv"),
+            status="imported",
+        )
+    ]
+    registry = MemoryRegistry(
+        species,
+        {"electron|e|A": [channel]},
+        assets={"cross_sections/A.csv"},
+    )
+    policy = DataPolicyConfig(include_reactions_without_cross_section=False)
+
+    network = _generate(registry, _config(["A"], data_policy=policy))
+
+    assert [reaction.id for reaction in network.reactions] == ["dataset_only"]
+    assert network.reactions[0].data_status["cross_section"] == "local_file_registered"
+
+
 def test_permissive_dangling_cross_section_is_not_counted_as_an_asset(tmp_path):
     species = {"A": _species("A", {"A": 1}, 0, {"neutral"})}
     channel = _elastic_channel(
@@ -195,7 +234,11 @@ def test_pair_limit_records_exact_truncation():
     }
     limits = LimitsConfig(max_pairs_per_depth=1, max_missing_pairs_per_depth=10)
 
-    network = _generate(MemoryRegistry(species), _config(["A", "B"], limits=limits))
+    registry = MemoryRegistry(
+        species,
+        {"electron|e|A": [], "electron|e|B": []},
+    )
+    network = _generate(registry, _config(["A", "B"], limits=limits))
 
     event = _event(network, "max_pairs_per_depth")
     assert (event.depth, event.observed_count, event.retained_count, event.omitted_count) == (
@@ -215,7 +258,11 @@ def test_missing_pair_report_limit_records_exact_truncation():
     }
     limits = LimitsConfig(max_pairs_per_depth=10, max_missing_pairs_per_depth=1)
 
-    network = _generate(MemoryRegistry(species), _config(["A", "B"], limits=limits))
+    registry = MemoryRegistry(
+        species,
+        {"electron|e|A": [], "electron|e|B": []},
+    )
+    network = _generate(registry, _config(["A", "B"], limits=limits))
 
     event = _event(network, "max_missing_pairs_per_depth")
     assert (event.depth, event.observed_count, event.retained_count, event.omitted_count) == (

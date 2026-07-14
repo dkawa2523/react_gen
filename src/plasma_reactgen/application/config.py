@@ -5,6 +5,11 @@ from pathlib import Path
 from typing import Any
 import yaml
 
+from plasma_reactgen.application.legacy_config import (
+    CollisionConfig,
+    ElectronCollisionConfig,
+    IonNeutralCollisionConfig,
+)
 
 @dataclass
 class ExpansionConfig:
@@ -13,25 +18,6 @@ class ExpansionConfig:
         default_factory=lambda: ["neutral", "radical", "positive_ion", "negative_ion"]
     )
     propagate_excited_states: bool = False
-
-
-@dataclass
-class ElectronCollisionConfig:
-    enabled: bool = True
-    targets: list[str] = field(default_factory=lambda: ["neutral", "radical"])
-
-
-@dataclass
-class IonNeutralCollisionConfig:
-    enabled: bool = True
-    projectiles: list[str] = field(default_factory=lambda: ["positive_ion", "negative_ion"])
-    targets: list[str] = field(default_factory=lambda: ["neutral", "radical"])
-
-
-@dataclass
-class CollisionConfig:
-    electron: ElectronCollisionConfig = field(default_factory=ElectronCollisionConfig)
-    ion_neutral: IonNeutralCollisionConfig = field(default_factory=IonNeutralCollisionConfig)
 
 
 @dataclass

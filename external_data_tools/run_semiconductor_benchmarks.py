@@ -54,7 +54,6 @@ def run_semiconductor_benchmarks(
             "manual_inputs": {},
             "strict_failures": [],
             "error": "required benchmark setup check failed",
-            "solver_skipped": False,
         }
 
     summary = run_benchmarks(config_path, only=only)
@@ -67,7 +66,6 @@ def run_semiconductor_benchmarks(
     artifacts = _collect_artifacts(summary_path)
     strict_failures = _strict_failures(artifacts["case_reports"]) if strict else []
     missing_outputs = _missing_required_outputs(summary_path, artifacts)
-    solver_skipped = _solver_skipped(artifacts["case_reports"])
     return_code = 0
     error = None
     if summary["summary"]["n_failed"] > 0:
@@ -94,7 +92,6 @@ def run_semiconductor_benchmarks(
         "manual_inputs": {case_id: str(path) for case_id, path in artifacts["manual_inputs"].items()},
         "strict_failures": strict_failures,
         "missing_outputs": [str(path) for path in missing_outputs],
-        "solver_skipped": solver_skipped,
         "error": error,
     }
 
@@ -194,18 +191,6 @@ def _strict_failures(case_reports: dict[str, dict[str, Any]]) -> list[dict[str, 
     return failures
 
 
-def _solver_skipped(case_reports: dict[str, dict[str, Any]]) -> bool:
-    for report in case_reports.values():
-        metrics = report.get("metrics", {}) if isinstance(report.get("metrics"), dict) else {}
-        summary = metrics.get("solver_status_summary", {})
-        if not isinstance(summary, dict):
-            continue
-        for key in ("disabled", "skipped_missing_executable", "skipped_missing_adapter", "skipped_missing_input_adapter"):
-            if _int(summary.get(key)) > 0:
-                return True
-    return False
-
-
 def _selected_case_ids(config: dict[str, Any], only: str | None) -> list[str]:
     ids = [
         str(item.get("id"))
@@ -220,8 +205,6 @@ def _print_result(result: dict[str, Any]) -> None:
     print("  cases:")
     for case_id in result["cases"]:
         print(f"    - {case_id}")
-    if result.get("solver_skipped"):
-        print("External solvers skipped because no executable paths are configured. This is expected for registry-level benchmark runs.")
     print(f"  setup_report: {result['setup_report']}")
     print(f"  summary: {result['summary']}")
     print(f"  semiconductor_report: {result['semiconductor_report']}")

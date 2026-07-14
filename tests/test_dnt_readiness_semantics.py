@@ -77,12 +77,11 @@ def test_metrics_name_property_and_complete_readiness_explicitly(tmp_path: Path)
 
     metrics = collect_metrics(output)
 
-    assert metrics["n_dnt_ready_pairs"] == 1
+    assert "n_dnt_ready_pairs" not in metrics
     assert metrics["n_dnt_property_ready_pairs"] == 1
     assert metrics["n_dnt_complete_ready_pairs"] == 0
     assert metrics["n_dnt_ready_with_warnings_pairs"] == 1
     assert metrics["dnt_complete_readiness_available"] is True
-    assert "legacy alias" in metrics["dnt_readiness_semantics"]["n_dnt_ready_pairs"]
 
 
 def test_metrics_count_only_cross_section_assets_inside_prepared_registry(tmp_path: Path):

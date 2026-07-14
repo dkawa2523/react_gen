@@ -1,5 +1,9 @@
 # Manual Data Input Guide
 
+This is an exceptional maintainer workflow, not a prerequisite for
+`reactgen generate`. Missing properties and datasets never stop the registered
+reaction list from being written.
+
 `reactgen template-missing` creates fill-in templates from `missing_data.yaml`
 when local providers and snapshots cannot supply everything needed for a case.
 It does not fetch data, guess values, mutate curated `registry/`, or promote

@@ -15,7 +15,7 @@ def check_data_requirements(path: Path) -> dict[str, Any]:
         raise ValueError("data requirements must be a YAML mapping")
 
     records = []
-    for section in ("required_for_registry_benchmark", "optional_for_live_solver_benchmark"):
+    for section in ("required_for_registry_benchmark", "optional_for_registry_benchmark"):
         for item in payload.get(section, []) if isinstance(payload.get(section, []), list) else []:
             if isinstance(item, dict):
                 records.append(_check_one_requirement(item, base_dir=path.parent, section=section))
@@ -51,8 +51,6 @@ def _check_one_requirement(item: dict[str, Any], *, base_dir: Path, section: str
         "path": str(resolved) if resolved is not None else None,
         "status": status,
     }
-    if item.get("solver"):
-        record["solver"] = item.get("solver")
     if ready and resolved and resolved.is_file():
         record["sha256"] = sha256_file(resolved)
     if status != "ready":
@@ -78,6 +76,4 @@ def _suggested_action(item: dict[str, Any]) -> str:
         return "Import reviewed LXCat or user-provided files using reactgen import-cross-sections."
     if kind == "internal_file_db":
         return "Provide reviewed internal_data YAML fixtures."
-    if kind == "executable":
-        return "Configure an external solver executable path if this optional benchmark is needed."
     return "Provide the required local benchmark data."

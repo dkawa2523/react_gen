@@ -234,7 +234,6 @@ DNT readiness should be evaluated by the DNT input exporter.
 ```text
 src/plasma_reactgen/inference/
   __init__.py
-  candidates.py
   provider.py
   species_candidates.py
   reaction_templates.py
@@ -279,8 +278,8 @@ conservative parent ionization and parent charge transfer candidates. Required
 product species may be created in memory for validation and propagation, but
 they are not written into curated registry files.
 
-`candidates.py` is a legacy compatibility helper. Normal generation and
-`infer-candidates` use the provider and candidate-writer path.
+Normal generation and `infer-candidates` use the provider and
+candidate-writer path.
 
 ## Candidate output workflow
 

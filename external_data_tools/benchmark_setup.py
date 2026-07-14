@@ -11,7 +11,6 @@ import yaml
 
 from external_data_tools.benchmark_data_requirements import check_data_requirements
 from external_data_tools.http_client import download_many
-from external_data_tools.solver_discovery import check_solver_config
 
 
 def run_setup(
@@ -26,17 +25,14 @@ def run_setup(
     config = _read_yaml(config_path)
     policies = config.get("policies", {}) if isinstance(config.get("policies"), dict) else {}
 
-    solver_config_path = _resolve_path(config.get("external_solvers", {}).get("config"), config_path)
     data_config_path = _resolve_path(config.get("data_requirements", {}).get("config"), config_path)
 
-    solver_status = _check_solvers(solver_config_path)
     data_report = check_data_requirements(data_config_path)
     python_report = _python_dependency_report(config, config_path, install_python_deps)
     download_report = _download_report(config, config_path, download_explicit_data, policies)
 
     report = _setup_report(
         config_path=config_path,
-        solver_status=solver_status,
         data_report=data_report,
         python_report=python_report,
         download_report=download_report,
@@ -51,9 +47,9 @@ def run_setup(
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Check local benchmark setup and optional external solver paths.")
+    parser = argparse.ArgumentParser(description="Check local registry benchmark data and Python tooling.")
     parser.add_argument("--config", type=Path, required=True, help="benchmark setup YAML")
-    parser.add_argument("--check", action="store_true", help="check solvers and data")
+    parser.add_argument("--check", action="store_true", help="check benchmark data")
     parser.add_argument("--install-python-deps", action="store_true", help="explicitly install listed Python requirements")
     parser.add_argument("--download-explicit-data", action="store_true", help="download explicit user-provided URLs if policy allows it")
     parser.add_argument("--write-report", type=Path, default=None, help="optional setup report YAML path")
@@ -68,17 +64,6 @@ def main(argv: list[str] | None = None) -> int:
     )
     _print_summary(report)
     return exit_code
-
-
-def _check_solvers(path: Path | None) -> dict[str, Any]:
-    if path is None or not path.exists():
-        return {
-            "schema_version": 1,
-            "solvers": {},
-            "summary": {"n_solvers": 0, "n_ready": 0, "n_enabled_missing": 0},
-            "warning": "solver config not found",
-        }
-    return check_solver_config(_read_yaml(path))
 
 
 def _python_dependency_report(config: dict[str, Any], config_path: Path, install: bool) -> dict[str, Any]:
@@ -152,16 +137,12 @@ def _download_report(
 def _setup_report(
     *,
     config_path: Path,
-    solver_status: dict[str, Any],
     data_report: dict[str, Any],
     python_report: dict[str, Any],
     download_report: dict[str, Any],
     policies: dict[str, Any],
     check: bool,
 ) -> dict[str, Any]:
-    solvers = solver_status.get("solvers", {})
-    enabled_solver_statuses = [item for item in solvers.values() if item.get("enabled")]
-    enabled_missing = [item for item in enabled_solver_statuses if item.get("status") != "ready"]
     return {
         "schema_version": 1,
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -174,13 +155,10 @@ def _setup_report(
         "summary": {
             "required_data_ready": bool(data_report["summary"]["required_data_ready"]),
             "optional_data_ready": bool(data_report["summary"]["optional_data_ready"]),
-            "required_solvers_ready": not enabled_missing,
-            "optional_solvers_ready": not enabled_missing,
             "python_optional_dependencies_installed": bool(python_report["python_optional_dependencies_installed"]),
             "downloads_ready": not download_report.get("error") and download_report.get("summary", {}).get("failed", 0) == 0,
         },
         "policies": policies,
-        "solver_status": solvers,
         "data_status": data_report["data_status"],
         "python": python_report,
         "downloads": download_report,
@@ -189,8 +167,6 @@ def _setup_report(
 
 def _exit_code(report: dict[str, Any], policies: dict[str, Any]) -> int:
     if policies.get("fail_if_required_data_missing", True) and not report["summary"]["required_data_ready"]:
-        return 1
-    if policies.get("fail_if_required_solver_missing", False) and not report["summary"]["required_solvers_ready"]:
         return 1
     if report["downloads"].get("error"):
         return 1
@@ -226,8 +202,6 @@ def _print_summary(report: dict[str, Any]) -> None:
     print("benchmark setup:")
     print(f"  required_data_ready: {str(summary['required_data_ready']).lower()}")
     print(f"  optional_data_ready: {str(summary['optional_data_ready']).lower()}")
-    print(f"  required_solvers_ready: {str(summary['required_solvers_ready']).lower()}")
-    print(f"  optional_solvers_ready: {str(summary['optional_solvers_ready']).lower()}")
     print(f"  python_optional_dependencies_installed: {str(summary['python_optional_dependencies_installed']).lower()}")
     if report["downloads"].get("error"):
         print(f"  download_error: {report['downloads']['error']}")

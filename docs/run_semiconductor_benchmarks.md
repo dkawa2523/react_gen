@@ -18,8 +18,7 @@ The default cases are:
 - `ar_cf4_fluorocarbon`: Ar/CF4 fluorocarbon plasma
 - `sf6_o2_electronegative`: Ar/SF6/O2 electronegative plasma
 
-No network access or external solver executable is required. Optional solvers are
-reported as skipped when no executable paths are configured.
+No network access or external executable is required.
 
 The runner invokes enrichment with `--fresh`, so each case starts from the
 configured registry and fixtures instead of inheriting a previous prepared
@@ -91,10 +90,3 @@ replace files under `benchmarks/fixtures/<case>/internal_data/` and
 `benchmarks/fixtures/<case>/cross_sections/` with reviewed internal data,
 licensed local snapshots, or reviewed literature-derived files. Keep provenance
 in `source_record` fields and rerun the benchmark.
-
-## Configuring Solvers Later
-
-External solvers are not bundled. To use them later, copy or edit
-`benchmarks/external_solvers.example.yaml`, set executable paths, and make a
-benchmark config point to that solver config. Missing optional solvers do not
-fail registry-level benchmark runs.

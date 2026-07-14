@@ -30,6 +30,18 @@ class MemoryRegistry:
     def get_channels(self, pair):
         return list(self.channels.get(pair.key, []))
 
+    def find_pairs_involving(self, active_species_ids, frontier_species_ids):
+        pairs = []
+        for key in sorted(self.channels):
+            family, projectile, target = key.split("|", 2)
+            if (
+                projectile in active_species_ids
+                and target in active_species_ids
+                and {projectile, target}.intersection(frontier_species_ids)
+            ):
+                pairs.append(CollisionPair(family, projectile, target))
+        return pairs
+
     def has_pair(self, pair):
         return pair.key in self.channels
 

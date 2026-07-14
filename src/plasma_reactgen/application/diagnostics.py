@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from plasma_reactgen.application.dnt_task_builder import dnt_channel_missing_fields
+from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks, dnt_channel_missing_fields
 from plasma_reactgen.domain.models import MissingDataItem, ReactionNetwork
+from plasma_reactgen.application.reaction_catalog import DATASET_OUTPUT_KINDS
 
 
 def build_missing_data(
     network: ReactionNetwork,
     states: list[dict],
+    dnt_tasks: list[dict] | None = None,
 ) -> list[MissingDataItem]:
     """Build user-facing gaps from the generated network and state roles.
 
@@ -86,6 +88,46 @@ def build_missing_data(
                     required_by="dnt_task",
                     severity="warning",
                     message="Reaction energy is not registered. DNT+/DNT+DM calculation may need it.",
+                )
+            )
+
+    # Accept the already-built catalog from the generate workflow.  The
+    # fallback keeps this public helper convenient for callers and tests.
+    for task in dnt_tasks if dnt_tasks is not None else build_dnt_tasks(network):
+        for side, properties in task["required_properties"].items():
+            for name, prop in properties.items():
+                if prop["available"]:
+                    continue
+                items.append(
+                    MissingDataItem(
+                        subject_kind="dnt_pair",
+                        subject_id=task["pair_id"],
+                        field=f"{side}.{name}",
+                        required_by="dnt_task",
+                        severity="warning",
+                        message="Required DNT pair property is unavailable.",
+                    )
+                )
+        missing_dataset_kinds = []
+        for output_name, kind in DATASET_OUTPUT_KINDS.items():
+            if not any(
+                item["available"]
+                for item in task["existing_datasets"][output_name]
+            ):
+                missing_dataset_kinds.append(kind)
+        if missing_dataset_kinds:
+            items.append(
+                MissingDataItem(
+                    subject_kind="dnt_pair",
+                    subject_id=task["pair_id"],
+                    field="data.datasets",
+                    required_by="reaction_data_review",
+                    severity="info",
+                    message=(
+                        "No available dataset is registered for: "
+                        + ", ".join(missing_dataset_kinds)
+                        + "."
+                    ),
                 )
             )
 

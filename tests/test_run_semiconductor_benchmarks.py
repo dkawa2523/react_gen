@@ -44,7 +44,7 @@ def test_only_ar_o2_simple_works(tmp_path, monkeypatch):
     assert list(result["case_reports"]) == ["ar_o2_simple"]
 
 
-def test_cli_prints_skipped_solver_message(tmp_path, monkeypatch, capsys):
+def test_cli_prints_selected_case(tmp_path, monkeypatch, capsys):
     _block_network(monkeypatch)
     config = _write_config(tmp_path, Path(__file__).resolve().parents[1])
 
@@ -53,7 +53,6 @@ def test_cli_prints_skipped_solver_message(tmp_path, monkeypatch, capsys):
 
     assert rc == 0
     assert "ar_o2_simple" in captured.out
-    assert "External solvers skipped because no executable paths are configured" in captured.out
     assert "cl2_bcl3_halogen" not in captured.out
 
 
@@ -87,35 +86,6 @@ def test_strict_mode_fails_on_low_expectation_fixture(tmp_path, monkeypatch):
     assert result["error"] in {"strict benchmark checks failed", "benchmark runner reported failed cases"}
 
 
-def test_strict_mode_does_not_fail_for_missing_optional_solver(tmp_path, monkeypatch):
-    _block_network(monkeypatch)
-    repo_root = Path(__file__).resolve().parents[1]
-    solver_config = tmp_path / "external_solvers.yaml"
-    solver_config.write_text(
-        yaml.safe_dump(
-            {
-                "schema_version": 1,
-                "solvers": {
-                    "ngspice": {
-                        "enabled": True,
-                        "executable": str(tmp_path / "missing_ngspice"),
-                        "adapter": "ngspice_basic",
-                        "install": {"mode": "package_manager_or_user_path"},
-                    }
-                },
-            },
-            sort_keys=False,
-        ),
-        encoding="utf-8",
-    )
-    config = _write_config(tmp_path, repo_root, external_solvers=solver_config)
-
-    result = run_semiconductor_benchmarks(config, only="ar_o2_simple", strict=True)
-
-    assert result["return_code"] == 0
-    assert result["solver_skipped"] is True
-
-
 def test_required_fixture_missing_fails_setup(tmp_path):
     data_requirements = tmp_path / "data_requirements.yaml"
     data_requirements.write_text(
@@ -135,16 +105,13 @@ def test_required_fixture_missing_fails_setup(tmp_path):
         ),
         encoding="utf-8",
     )
-    solver_config = tmp_path / "solvers.yaml"
-    solver_config.write_text("schema_version: 1\nsolvers: {}\n", encoding="utf-8")
     setup_config = tmp_path / "benchmark_setup.yaml"
     setup_config.write_text(
         yaml.safe_dump(
             {
                 "schema_version": 1,
-                "external_solvers": {"config": str(solver_config)},
                 "data_requirements": {"config": str(data_requirements)},
-                "policies": {"fail_if_required_data_missing": True, "fail_if_required_solver_missing": False},
+                "policies": {"fail_if_required_data_missing": True},
             },
             sort_keys=False,
         ),
@@ -170,11 +137,9 @@ def _write_config(
     tmp_path: Path,
     repo_root: Path,
     *,
-    external_solvers: Path | None = None,
     expectation_overrides: dict[str, Path] | None = None,
 ) -> Path:
     config_path = tmp_path / "benchmarks" / "benchmark_config_semiconductor.yaml"
-    solver_config = external_solvers or repo_root / "benchmarks" / "external_solvers.example.yaml"
     expectation_overrides = expectation_overrides or {}
     payload = {
         "schema_version": 1,
@@ -187,7 +152,6 @@ def _write_config(
                 case_id,
                 repo_root,
                 config_path.parent / "results" / case_id,
-                solver_config,
                 expectation_overrides.get(case_id),
             )
             for case_id in CASE_IDS
@@ -202,7 +166,6 @@ def _benchmark_payload(
     case_id: str,
     repo_root: Path,
     result_dir: Path,
-    solver_config: Path,
     expectation_override: Path | None,
 ) -> dict:
     fixture = repo_root / "benchmarks" / "fixtures" / case_id
@@ -250,7 +213,6 @@ def _benchmark_payload(
         "workspace": str(result_dir / "work"),
         "output": str(result_dir / "outputs"),
         "expectation": str(expectation_override or repo_root / "benchmarks" / "expectations" / f"{case_id}.yaml"),
-        "external_solvers": str(solver_config),
         "cross_section_imports": imports[case_id],
         "cross_section_mapping": str(fixture / "cross_section_mapping.yaml"),
     }

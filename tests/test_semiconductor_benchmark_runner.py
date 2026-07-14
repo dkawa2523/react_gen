@@ -32,7 +32,7 @@ def test_runner_executes_ar_o2_simple(tmp_path, monkeypatch):
     assert (result_dir / "work" / "manual_inputs" / "cross_section_mapping.yaml").exists()
     assert metrics["n_missing_plan_actions"] > 0
     assert metrics["expectation_score"] == 1.0
-    assert metrics["solver_status_summary"]["disabled"] >= 1
+    assert "solver_status_summary" not in metrics
 
 
 def test_runner_executes_all_three_benchmarks(tmp_path, monkeypatch):
@@ -71,19 +71,15 @@ def test_required_fixture_missing_causes_setup_failure(tmp_path):
         ),
         encoding="utf-8",
     )
-    solver_config = tmp_path / "solvers.yaml"
-    solver_config.write_text("schema_version: 1\nsolvers: {}\n", encoding="utf-8")
     setup_config = tmp_path / "benchmark_setup.yaml"
     setup_config.write_text(
         yaml.safe_dump(
             {
                 "schema_version": 1,
-                "external_solvers": {"config": str(solver_config)},
                 "data_requirements": {"config": str(data_requirements)},
                 "policies": {
                     "allow_network_downloads": False,
                     "fail_if_required_data_missing": True,
-                    "fail_if_required_solver_missing": False,
                 },
             },
             sort_keys=False,
@@ -110,38 +106,6 @@ def test_required_fixture_missing_causes_setup_failure(tmp_path):
     assert report["summary"]["required_data_ready"] is False
 
 
-def test_optional_missing_solver_is_skipped_not_failed(tmp_path, monkeypatch):
-    _block_network(monkeypatch)
-    repo_root = Path(__file__).resolve().parents[1]
-    solver_config = tmp_path / "external_solvers.yaml"
-    solver_config.write_text(
-        yaml.safe_dump(
-            {
-                "schema_version": 1,
-                "solvers": {
-                    "ngspice": {
-                        "enabled": True,
-                        "executable": str(tmp_path / "missing_ngspice"),
-                        "adapter": "ngspice_basic",
-                        "install": {"mode": "package_manager_or_user_path"},
-                    }
-                },
-            },
-            sort_keys=False,
-        ),
-        encoding="utf-8",
-    )
-    config = _write_config(tmp_path, repo_root, external_solvers=solver_config)
-
-    summary = run_benchmarks(config, only="ar_o2_simple")
-    report = _read_yaml(config.parent / "results" / "ar_o2_simple" / "benchmark_report.yaml")
-    metrics = _read_yaml(config.parent / "results" / "ar_o2_simple" / "benchmark_metrics.yaml")
-
-    assert summary["summary"]["n_failed"] == 0
-    assert report["passed"] is True
-    assert metrics["solver_status_summary"]["skipped_missing_executable"] == 1
-
-
 def test_cross_section_import_and_mapping_happen_before_generate(tmp_path, monkeypatch):
     _block_network(monkeypatch)
     repo_root = Path(__file__).resolve().parents[1]
@@ -165,9 +129,8 @@ def test_cross_section_import_and_mapping_happen_before_generate(tmp_path, monke
     assert elastic["data"]["cross_section"]["path"].endswith(".csv")
 
 
-def _write_config(tmp_path: Path, repo_root: Path, *, external_solvers: Path | None = None) -> Path:
+def _write_config(tmp_path: Path, repo_root: Path) -> Path:
     config_path = tmp_path / "benchmarks" / "benchmark_config.yaml"
-    solver_config = external_solvers or repo_root / "benchmarks" / "external_solvers.example.yaml"
     payload = {
         "schema_version": 1,
         "setup": {
@@ -179,7 +142,6 @@ def _write_config(tmp_path: Path, repo_root: Path, *, external_solvers: Path | N
                 case_id,
                 repo_root,
                 config_path.parent / "results" / case_id,
-                solver_config,
             )
             for case_id in CASE_IDS
         ],
@@ -189,7 +151,7 @@ def _write_config(tmp_path: Path, repo_root: Path, *, external_solvers: Path | N
     return config_path
 
 
-def _benchmark_payload(case_id: str, repo_root: Path, result_dir: Path, solver_config: Path) -> dict:
+def _benchmark_payload(case_id: str, repo_root: Path, result_dir: Path) -> dict:
     fixture = repo_root / "benchmarks" / "fixtures" / case_id
     imports = {
         "ar_o2_simple": [
@@ -235,7 +197,6 @@ def _benchmark_payload(case_id: str, repo_root: Path, result_dir: Path, solver_c
         "workspace": str(result_dir / "work"),
         "output": str(result_dir / "outputs"),
         "expectation": str(repo_root / "benchmarks" / "expectations" / f"{case_id}.yaml"),
-        "external_solvers": str(solver_config),
         "cross_section_imports": imports[case_id],
         "cross_section_mapping": str(fixture / "cross_section_mapping.yaml"),
     }

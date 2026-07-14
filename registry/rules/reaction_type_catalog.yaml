@@ -63,3 +63,27 @@ ion_neutral:
     requires_dnt_class: true
     default_dnt_class: inelastic_detachment
     default_propagate_products: true
+neutral_neutral:
+  reactive_scattering:
+    expands_species: true
+    default_propagate_products: true
+  association:
+    expands_species: true
+    default_propagate_products: true
+  dissociation:
+    expands_species: true
+    default_propagate_products: true
+ion_ion:
+  mutual_neutralization:
+    expands_species: true
+    default_propagate_products: true
+  charge_transfer:
+    expands_species: true
+    default_propagate_products: true
+electron_ion:
+  recombination:
+    expands_species: true
+    default_propagate_products: true
+  dissociative_recombination:
+    expands_species: true
+    default_propagate_products: true

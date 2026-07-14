@@ -28,5 +28,8 @@ Thumbs.db
 !/external_data/raw/.gitkeep
 !/external_data/snapshots/.gitkeep
 !/external_data/manifests/.gitkeep
-/benchmarks/results/**
-!/benchmarks/results/.gitkeep
+/benchmarks/results/*
+
+# Reproducible case outputs and preparation workspaces
+/cases/*/outputs/**
+/cases/*/work/**

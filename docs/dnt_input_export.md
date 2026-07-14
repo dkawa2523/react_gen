@@ -4,11 +4,15 @@
 
 The project generates a DNT task summary from ion-neutral reactions.
 
-The DNT input exporter additionally writes pair-wise DNT+/DNT+DM input files that can be passed to, or converted for, a separate DNT solver.
+The primary DNT-facing output is `dnt_tasks.yaml`, which inventories
+ion-neutral properties, related reactions, and existing cross-section, rate,
+and mobility datasets. Optional pair-wise input files remain for backward
+compatibility with downstream tools.
 
 This document defines the normalized output format for those pair-wise files.
 
-The exporter does not run a DNT solver, calculate cross sections, or estimate missing reaction energies.
+The project does not run a DNT solver, provide a DNT result importer, calculate
+cross sections, or estimate missing reaction energies.
 
 ## Output files
 
@@ -34,9 +38,17 @@ It continues to show:
 - complete pair-and-channel readiness (`complete_readiness`)
 - missing required properties
 - associated reactions
+- required ion and neutral property values, units, sources, and availability
+- existing cross-section, rate-coefficient, and mobility datasets
+- channel threshold and reaction energy
+- a deterministic `data_choice.status`
 
-The legacy `readiness` field remains an alias for pair-property readiness. It
-must not be read as a claim that every channel has complete solver input.
+Missing masses are derived from registered elemental composition when all
+elements are known. Missing properties remain diagnostics and never block the
+reaction list.
+
+`pair_property_readiness` must not be read as a claim that every channel has
+complete solver input; channel completeness is reported separately.
 
 ### `dnt_manifest.yaml`
 
@@ -260,7 +272,9 @@ missing_for_complete_dnt
 provenance
 ```
 
-Unknown values should be written as `null`.
+Unknown values should be written as `null`. Mass values derived from species
+composition in `dnt_tasks.yaml` are reused by the optional DNT input export;
+the exporter does not repeat property resolution.
 
 Unknown values should not cause export failure unless the pair itself cannot be identified.
 

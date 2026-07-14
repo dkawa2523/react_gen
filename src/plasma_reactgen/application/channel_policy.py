@@ -4,6 +4,7 @@ from collections.abc import Mapping
 from typing import Callable
 
 from plasma_reactgen.application.config import CaseConfig
+from plasma_reactgen.application.channel_compat import confidence_score, legacy_cross_section
 from plasma_reactgen.application.dnt_task_builder import check_dnt_property_readiness
 from plasma_reactgen.domain.models import CollisionPair, ReactionChannel, Species
 
@@ -25,7 +26,7 @@ def is_channel_allowed(
     elif not config.inference.enabled or not config.inference.include_inferred_reactions:
         return False
     else:
-        score = _channel_confidence_score(channel)
+        score = confidence_score(channel)
         status_allowed = score is not None and score >= config.inference.min_confidence
 
     if not status_allowed:
@@ -65,22 +66,25 @@ def is_reaction_validation_allowed(
     return bool(validation) and all(status == "ok" for status in validation.values())
 
 
-def _channel_confidence_score(channel: ReactionChannel) -> float | None:
-    confidence = channel.data.get("confidence", {})
-    if isinstance(confidence, dict):
-        confidence = confidence.get("score")
-    try:
-        return float(confidence)
-    except (TypeError, ValueError):
-        return None
-
-
 def has_available_cross_section(
     channel: ReactionChannel,
     asset_exists: Callable[[str | None], bool] | None,
 ) -> bool:
-    cross_section = channel.data.get("cross_section")
-    if not isinstance(cross_section, Mapping):
+    if asset_exists is not None:
+        for dataset in channel.datasets:
+            if (
+                dataset.kind == "cross_section"
+                and dataset.asset is not None
+                and dataset.asset.path
+            ):
+                try:
+                    if bool(asset_exists(dataset.asset.path)):
+                        return True
+                except (OSError, TypeError, ValueError):
+                    continue
+
+    cross_section = legacy_cross_section(channel)
+    if cross_section is None:
         return False
     path = cross_section.get("path")
     if not isinstance(path, str) or not path.strip() or asset_exists is None:

@@ -19,7 +19,6 @@ def collect_metrics(
     *,
     missing_plan: str | Path | None = None,
     expectation_score: float | None = None,
-    solver_status_summary: dict[str, int] | None = None,
     structural_enrichment_unresolved_count: int | None = None,
 ) -> dict[str, Any]:
     output_dir = Path(output_dir)
@@ -75,8 +74,6 @@ def collect_metrics(
         "n_generation_truncations": len(truncations),
         "n_missing_plan_actions": len(_as_list(plan_payload.get("actions"))),
         "n_dnt_tasks": len(dnt_tasks) or int(dnt_summary.get("n_dnt_pairs", 0)),
-        # Legacy metric: this intentionally remains pair-property readiness.
-        "n_dnt_ready_pairs": dnt_readiness["property_ready"],
         "n_dnt_property_ready_pairs": dnt_readiness["property_ready"],
         "n_dnt_complete_ready_pairs": dnt_readiness["complete_ready"],
         "n_dnt_ready_with_warnings_pairs": dnt_readiness["ready_with_warnings"],
@@ -84,12 +81,6 @@ def collect_metrics(
         "n_dnt_pairs_missing_required_data": dnt_readiness["missing_required_data"],
         "n_dnt_pairs_without_channels": dnt_readiness["no_dnt_channels"],
         "dnt_complete_readiness_available": dnt_readiness["complete_readiness_available"],
-        "dnt_readiness_semantics": {
-            "n_dnt_ready_pairs": "legacy alias for n_dnt_property_ready_pairs",
-            "property_ready": "required ion/neutral pair properties are present",
-            "complete_ready": "pair properties and all required DNT channel fields are present",
-            "ready_with_warnings": "pair properties are present but one or more DNT channel fields are missing",
-        },
         "n_cross_section_assets": _count_cross_section_assets(prepared_registry_path),
         "n_reactions_with_cross_section_asset": n_with_cross_sections,
         "cross_section_asset_coverage_fraction": _fraction(n_with_cross_sections, n_electron),
@@ -103,7 +94,6 @@ def collect_metrics(
         "validation_error_count": _validation_error_count(reactions, missing_data),
         "structural_enrichment_unresolved_count": int(structural_enrichment_unresolved_count or 0),
         "expectation_score": 1.0 if expectation_score is None else float(expectation_score),
-        "solver_status_summary": _solver_summary(solver_status_summary),
     }
 
 
@@ -221,25 +211,6 @@ def _fraction(numerator: int, denominator: int) -> float:
     if denominator <= 0:
         return 0.0
     return round(numerator / denominator, 6)
-
-
-def _solver_summary(value: dict[str, int] | None) -> dict[str, int]:
-    defaults = {
-        "ready": 0,
-        "disabled": 0,
-        "skipped_missing_executable": 0,
-        "skipped_missing_adapter": 0,
-        "skipped_missing_input_adapter": 0,
-        "completed": 0,
-        "failed": 0,
-    }
-    if isinstance(value, dict):
-        for key in defaults:
-            try:
-                defaults[key] = int(value.get(key, defaults[key]))
-            except (TypeError, ValueError):
-                defaults[key] = 0
-    return defaults
 
 
 def _validation_error_count(reactions: list[dict[str, Any]], missing_data: list[dict[str, Any]]) -> int:

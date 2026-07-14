@@ -1,5 +1,10 @@
 # External Data Tools
 
+Registry-pack planning, exact-only local snapshot imports, and versioned pack
+builds are available through `python -m external_data_tools.data_admin`. These
+commands are separate from normal `reactgen generate`; formats and
+redistribution rules are documented in `docs/registry_packs.md`.
+
 This directory is intentionally separate from the core `plasma_reactgen`
 package. It is the place for public database/API experiments, local raw file
 ingestion, snapshot creation, and benchmark dataset preparation.

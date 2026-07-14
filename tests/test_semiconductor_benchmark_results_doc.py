@@ -35,10 +35,8 @@ def test_report_has_ar_o2_evaluation_and_fixture_warning() -> None:
     assert "synthetic fixture warning" in text
 
 
-def test_report_interprets_solver_skip_status_as_non_failure() -> None:
+def test_report_keeps_simulation_execution_out_of_scope() -> None:
     text = _report_text()
 
-    assert "## Live Solver Status" in text
-    assert "| BOLSIG+ | false | null | export_only | disabled |" in text
-    assert "registry-level benchmark can complete without live solvers" in text
-    assert "not registry benchmark failures" in text
+    assert "## Live Solver Status" not in text
+    assert "executing simulation software" in text

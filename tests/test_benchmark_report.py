@@ -32,37 +32,6 @@ def test_benchmark_report_does_not_include_cl2_bcl3_as_default(tmp_path):
     assert "cl2_bcl3_halogen" not in text
 
 
-def test_skipped_solvers_are_not_reported_as_failure(tmp_path):
-    output = tmp_path / "report.md"
-    generate_benchmark_report(_write_summary_fixture(tmp_path), output)
-    text = output.read_text(encoding="utf-8")
-
-    assert "skipped: disabled" in text
-    assert "not a benchmark failure" in text
-    assert "FAIL_SETUP" not in text
-
-
-def test_missing_solver_executable_gets_solver_warning(tmp_path):
-    output = tmp_path / "report.md"
-    summary = _write_summary_fixture(
-        tmp_path,
-        solver_summary={
-            "ready": 0,
-            "disabled": 0,
-            "skipped_missing_executable": 1,
-            "skipped_missing_adapter": 0,
-            "skipped_missing_input_adapter": 0,
-            "completed": 0,
-            "failed": 0,
-        },
-    )
-    generate_benchmark_report(summary, output)
-    text = output.read_text(encoding="utf-8")
-
-    assert "WARNING_SOLVER_SKIPPED" in text
-    assert "failed: 0" in text
-
-
 def test_low_cross_section_coverage_generates_warning(tmp_path):
     output = tmp_path / "report.md"
     generate_benchmark_report(_write_summary_fixture(tmp_path), output)
@@ -117,7 +86,6 @@ def _write_summary_fixture(
     validation_errors: dict[str, int] | None = None,
     structural_errors: dict[str, int] | None = None,
     generation_complete: dict[str, bool] | None = None,
-    solver_summary: dict[str, int] | None = None,
 ) -> Path:
     validation_errors = validation_errors or {}
     structural_errors = structural_errors or {}
@@ -136,7 +104,6 @@ def _write_summary_fixture(
             validation_errors.get(case_id, 0),
             structural_errors.get(case_id, 0),
             generation_complete.get(case_id, True),
-            solver_summary,
         )
         report = {
             "schema_version": 1,
@@ -150,10 +117,6 @@ def _write_summary_fixture(
                 "score": metrics["expectation_score"],
                 "missing_species": [],
                 "missing_reaction_families": [],
-            },
-            "solver_status": {
-                "config": str(tmp_path / "external_solvers.example.yaml"),
-                "summary": metrics["solver_status_summary"],
             },
             "passed": (
                 validation_errors.get(case_id, 0) == 0
@@ -176,7 +139,7 @@ def _write_summary_fixture(
             }
         )
     setup_report = results / "setup_report.yaml"
-    _write_yaml(setup_report, {"summary": {"required_data_ready": True, "required_solvers_ready": True}})
+    _write_yaml(setup_report, {"summary": {"required_data_ready": True}})
     summary = {
         "schema_version": 1,
         "generated_at": "2026-06-15T00:00:00+00:00",
@@ -185,7 +148,6 @@ def _write_summary_fixture(
         "setup": {
             "report": str(setup_report),
             "required_data_ready": True,
-            "required_solvers_ready": True,
         },
     }
     path = results / "summary.yaml"
@@ -198,7 +160,6 @@ def _metrics(
     validation_error_count: int,
     structural_enrichment_unresolved_count: int,
     generation_complete: bool,
-    solver_summary: dict[str, int] | None = None,
 ) -> dict:
     counts = {
         "ar_o2_simple": (6, 11, 7, 4),
@@ -219,7 +180,7 @@ def _metrics(
         "n_generation_truncations": 0 if generation_complete else 1,
         "n_missing_plan_actions": 2,
         "n_dnt_tasks": 2,
-        "n_dnt_ready_pairs": 1,
+        "n_dnt_property_ready_pairs": 1,
         "n_dnt_pairs_with_missing_properties": 1,
         "n_cross_section_assets": 1,
         "n_reactions_with_cross_section_asset": 1,
@@ -234,15 +195,6 @@ def _metrics(
         "validation_error_count": validation_error_count,
         "structural_enrichment_unresolved_count": structural_enrichment_unresolved_count,
         "expectation_score": 1.0,
-        "solver_status_summary": solver_summary or {
-            "ready": 0,
-            "disabled": 5,
-            "skipped_missing_executable": 0,
-            "skipped_missing_adapter": 0,
-            "skipped_missing_input_adapter": 0,
-            "completed": 0,
-            "failed": 0,
-        },
     }
 
 

@@ -23,7 +23,8 @@ py -m external_data_tools.benchmark_runner benchmarks/benchmark_config_semicondu
 
 ## Outputs
 
-Benchmark outputs are written under `benchmarks/results/`:
+Benchmark outputs are written under `benchmarks/results/`. They are
+reproducible artifacts and are not source-controlled:
 
 - `benchmarks/results/<id>/work/` contains the enrichment workspace and
   `prepared_registry/`.
@@ -38,14 +39,11 @@ Benchmark outputs are written under `benchmarks/results/`:
   metrics, expectations, and pass/fail status.
 - `benchmarks/results/summary.yaml` summarizes all benchmarks in a run.
 
-These generated YAML files are the source of truth for the run. Checked-in
-Markdown reports and result narratives are review snapshots and may lag the
-current code or fixtures.
+These generated files are the source of truth for that local run. Fixtures and
+case definitions are versioned separately under `benchmarks/fixtures/`.
 
 The runner runs the configured setup check before executing benchmarks. Required
-fixture data missing from `benchmarks/fixtures/` is a setup failure. Optional
-external solvers are reported as disabled or skipped when no executable/adapter
-is configured; registry-level benchmarks still run.
+fixture data missing from `benchmarks/fixtures/` is a setup failure.
 
 The runner clears the configured benchmark `workspace` and `output` directories
 before each run. Both must be under `benchmarks/results/` for the checked-in
@@ -57,8 +55,7 @@ The metric collector reads generated YAML files and counts species, reactions,
 reaction families, DNT task readiness, missing-data items, missing-plan actions,
 cross-section assets, cross-section coverage, provenance coverage, inferred
 reaction fraction, imported/literature-supported reaction fraction, validation
-errors, expectation score, and solver skip/ready status. It does not run DNT,
-Boltzmann solvers, or live circuit/plasma solvers.
+errors, and expectation score. It does not execute DNT or simulation software.
 
 `generation_complete` must be true for a benchmark case to pass. The companion
 `n_generation_truncations` metric exposes configured limits that omitted data.
@@ -66,8 +63,8 @@ Boltzmann solvers, or live circuit/plasma solvers.
 Cross-section coverage counts only paths that resolve to existing files inside
 the prepared registry; a path string alone is not treated as coverage.
 
-`n_dnt_ready_pairs` is a compatibility alias for pair-property readiness. Use
-`n_dnt_complete_ready_pairs` to count complete pair-and-channel inputs and
+Use `n_dnt_property_ready_pairs` to count pairs with required ion/neutral
+properties, `n_dnt_complete_ready_pairs` to count complete pair-and-channel inputs, and
 `n_dnt_ready_with_warnings_pairs` to find property-ready pairs with missing
 channel fields.
 

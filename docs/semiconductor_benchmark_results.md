@@ -28,7 +28,7 @@ Ar/O2 is the compact baseline. Ar/CF4 exercises a more connected fluorocarbon
 mechanism, while Ar/SF6/O2 emphasizes attachment and negative-ion chemistry.
 Together they exercise enrichment, cross-section import and mapping, network
 generation, DNT export, missing-data planning, and visualization without
-requiring a live external solver.
+executing simulation software.
 
 ## Historical Snapshot Context
 
@@ -68,9 +68,8 @@ linking, but their coverage is not evidence of production mechanism quality.
 Use the generated missing-data plan and coverage metrics to select the next
 review task.
 
-`n_dnt_ready_pairs` is retained as a compatibility alias for
-`n_dnt_property_ready_pairs`: it only means the required ion/neutral pair
-properties are present. It does not imply complete DNT solver input. Read
+`n_dnt_property_ready_pairs` only means the required ion/neutral pair properties
+are present. It does not imply complete DNT input. Read
 `n_dnt_complete_ready_pairs` and `n_dnt_ready_with_warnings_pairs` to distinguish
 complete inputs from property-ready pairs that still lack channel thresholds or
 energetics.
@@ -108,27 +107,8 @@ Ar/SF6/O2:
 - Review negative-ion channels and SFx thermochemistry.
 - Complete missing DNT pair properties and channel energetics.
 
-## Live Solver Status
-
-The 2026-06-15 snapshot used this optional-solver setup:
-
-| Solver | Enabled | Executable path | Adapter | Result |
-| --- | --- | --- | --- | --- |
-| BOLSIG+ | false | null | export_only | disabled |
-| LoKI-B | false | null | export_only | disabled |
-| ZDPlasKin | false | null | export_only | disabled |
-| ThunderBoltz | false | null | export_only | disabled |
-| ngspice | false | null | ngspice_basic | disabled |
-
-Consult the current generated setup and benchmark reports instead of assuming
-this table still applies. Missing or disabled solver executables are setup
-issues, not registry benchmark failures. The registry-level benchmark can complete without live solvers;
-quantitative validation requires reviewed input data and configured solver
-adapters.
-
 ## Release Interpretation
 
 The benchmark workflow is suitable for repeatable local regression and review.
 Release decisions still require domain review of synthetic or imported values,
-reaction channels, mappings, energetics, DNT assumptions, and any quantitative
-solver configuration.
+reaction channels, mappings, energetics, and DNT assumptions.

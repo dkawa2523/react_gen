@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from plasma_reactgen.application.config import CaseConfig
+from plasma_reactgen.application.channel_compat import confidence_score
 from plasma_reactgen.domain.chemistry import get_property_value
 from plasma_reactgen.domain.models import (
     CollisionPair,
@@ -26,6 +27,16 @@ class RegisteredReactionProvider:
 
     def get_channels(self, pair: CollisionPair) -> list[ReactionChannel]:
         return self.repository.get_channels(pair)
+
+    def find_pairs_involving(
+        self,
+        active_species_ids: set[str],
+        frontier_species_ids: set[str],
+    ) -> list[CollisionPair]:
+        return self.repository.find_pairs_involving(
+            active_species_ids,
+            frontier_species_ids,
+        )
 
     def has_pair(self, pair: CollisionPair) -> bool:
         return self.repository.has_pair(pair)
@@ -184,13 +195,50 @@ class CompositeReactionProvider:
             channel
             for channel in self.inferred.get_channels(pair, {"config": self.config})
             if channel.id not in seen_ids
-            and _confidence_score(channel) >= self.config.inference.min_confidence
+            and (confidence_score(channel) or 0.0)
+            >= self.config.inference.min_confidence
             and passes_hard_filters(
                 channel,
                 {"max_products": self.config.inference.max_products},
             )
         ]
         return [*registered_channels, *inferred_channels]
+
+    def find_pairs_involving(
+        self,
+        active_species_ids: set[str],
+        frontier_species_ids: set[str],
+    ) -> list[CollisionPair]:
+        pairs = self.registered.find_pairs_involving(
+            active_species_ids,
+            frontier_species_ids,
+        )
+        if not _inference_enabled(self.config):
+            return pairs
+
+        candidates = list(pairs)
+        for species_id in sorted(frontier_species_ids):
+            if species_id != "e":
+                candidates.append(CollisionPair("electron", "e", species_id))
+        ions = sorted(
+            species_id
+            for species_id in active_species_ids
+            if species_id != "e"
+            and (species := self.get_species(species_id)) is not None
+            and species.charge > 0
+        )
+        neutrals = sorted(
+            species_id
+            for species_id in active_species_ids
+            if species_id != "e"
+            and (species := self.get_species(species_id)) is not None
+            and species.charge == 0
+        )
+        for ion in ions:
+            for neutral in neutrals:
+                if ion in frontier_species_ids or neutral in frontier_species_ids:
+                    candidates.append(CollisionPair("ion_neutral", ion, neutral))
+        return _unique_pairs(candidates)
 
     def has_pair(self, pair: CollisionPair) -> bool:
         if self.registered.has_pair(pair):
@@ -222,14 +270,11 @@ def _inference_enabled(config: CaseConfig | None) -> bool:
     )
 
 
-def _confidence_score(channel: ReactionChannel) -> float:
-    payload = channel.data.get("confidence")
-    if isinstance(payload, dict):
-        payload = payload.get("score")
-    try:
-        return float(payload)
-    except (TypeError, ValueError):
-        return 0.0
+def _unique_pairs(pairs: list[CollisionPair]) -> list[CollisionPair]:
+    return [
+        pair
+        for _, pair in sorted({pair.key: pair for pair in pairs}.items())
+    ]
 
 
 def _species_from_candidate(

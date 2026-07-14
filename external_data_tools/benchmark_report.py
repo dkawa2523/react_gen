@@ -103,17 +103,14 @@ def _evaluate_suite(summary: dict[str, Any], cases: list[dict[str, Any]], setup:
         "passed": sum(1 for item in case_evaluations if "PASS_WORKFLOW" in item["statuses"]),
         "warning": sum(1 for item in case_evaluations if any(status.startswith("WARNING") for status in item["statuses"])),
         "failed": sum(1 for item in case_evaluations if any(status.startswith("FAIL") for status in item["statuses"])),
-        "skipped": sum(1 for item in case_evaluations if "SKIPPED_SOLVER" in item["statuses"]),
         "needs_domain_review": len(case_evaluations),
     }
     if setup_failed:
         statuses["failed"] += 1
 
-    solver_summary = _sum_solver_statuses(cases)
     return {
         "case_evaluations": case_evaluations,
         "status_counts": statuses,
-        "solver_summary": solver_summary,
         "setup_failed": setup_failed,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "summary_counts": summary.get("summary", {}),
@@ -161,23 +158,12 @@ def _evaluate_case(case: dict[str, Any]) -> dict[str, Any]:
         statuses.append("WARNING_DATA_GAPS")
         warnings.append("Inferred reaction fraction is high.")
         recommendations.append("Reduce inferred reaction fraction by replacing inferred channels with reviewed data.")
-    if _int(metrics.get("n_dnt_ready_pairs")) == 0:
+    if _int(metrics.get("n_dnt_property_ready_pairs")) == 0:
         statuses.append("WARNING_DATA_GAPS")
         warnings.append("No DNT-ready pairs were identified.")
         recommendations.append("Fill DNT neutral properties such as collision_radius_A where missing.")
     if _int(metrics.get("n_missing_plan_actions")) > 0:
         recommendations.append("Review missing-data actions and fill manual templates where source enrichment cannot help.")
-
-    solver_summary = metrics.get("solver_status_summary", {})
-    if isinstance(solver_summary, dict) and any(
-        _int(solver_summary.get(key)) > 0
-        for key in ("disabled", "skipped_missing_executable", "skipped_missing_adapter", "skipped_missing_input_adapter")
-    ):
-        if _int(solver_summary.get("skipped_missing_executable")) > 0:
-            statuses.append("WARNING_SOLVER_SKIPPED")
-        statuses.append("SKIPPED_SOLVER")
-        warnings.append("Optional live solvers were disabled or skipped; this is not a registry benchmark failure.")
-        recommendations.append("Configure live solver paths only if quantitative transport/coupling validation is needed.")
 
     if _needs_energetics_review(case):
         recommendations.append("Review ion-neutral reaction energetics for channels listed in the missing plan.")
@@ -227,7 +213,6 @@ def _render_markdown(
 
 def _execution_summary(summary: dict[str, Any], setup: dict[str, Any], evaluation: dict[str, Any]) -> list[str]:
     status_counts = evaluation["status_counts"]
-    solver = evaluation["solver_summary"]
     lines = ["## Execution Summary", ""]
     lines.append(f"- Report generated at: {evaluation['generated_at']}")
     lines.append(f"- Benchmark summary timestamp: {summary.get('generated_at', 'unknown')}")
@@ -235,14 +220,7 @@ def _execution_summary(summary: dict[str, Any], setup: dict[str, Any], evaluatio
     lines.append(f"- Passed workflow cases: {status_counts['passed']}")
     lines.append(f"- Warning cases: {status_counts['warning']}")
     lines.append(f"- Failed checks: {status_counts['failed']}")
-    lines.append(f"- Skipped solver cases: {status_counts['skipped']}")
     lines.append(f"- Needs domain review: {status_counts['needs_domain_review']}")
-    lines.append("")
-    lines.append("Solver status summary:")
-    for key in ("ready", "disabled", "skipped_missing_executable", "skipped_missing_adapter", "skipped_missing_input_adapter", "completed", "failed"):
-        lines.append(f"- {key}: {solver.get(key, 0)}")
-    if any(solver.get(key, 0) for key in ("disabled", "skipped_missing_executable", "skipped_missing_adapter", "skipped_missing_input_adapter")):
-        lines.append("- Live external solvers were skipped or disabled; this is a warning, not a benchmark failure.")
     if setup and setup.get("report_path"):
         lines.append(f"- Setup report: `{setup['report_path']}`")
     lines.append("")
@@ -252,11 +230,10 @@ def _execution_summary(summary: dict[str, Any], setup: dict[str, Any], evaluatio
 def _case_summary(cases: list[dict[str, Any]], evaluation: dict[str, Any]) -> list[str]:
     eval_by_id = {item["case_id"]: item for item in evaluation["case_evaluations"]}
     lines = ["## Case-By-Case Summary", ""]
-    lines.append("| Case | Status | Species | Reactions | Electron | Ion-neutral | Score | Xsec coverage | DNT ready | Missing actions | Provenance | Solver |")
-    lines.append("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |")
+    lines.append("| Case | Status | Species | Reactions | Electron | Ion-neutral | Score | Xsec coverage | DNT property ready | Missing actions | Provenance |")
+    lines.append("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
     for case in cases:
         metrics = case["metrics"]
-        solver = metrics.get("solver_status_summary", {})
         status = ", ".join(eval_by_id.get(case["id"], {}).get("statuses", []))
         lines.append(
             "| "
@@ -270,10 +247,9 @@ def _case_summary(cases: list[dict[str, Any]], evaluation: dict[str, Any]) -> li
                     str(_int(metrics.get("n_ion_neutral_reactions"))),
                     f"{_float(metrics.get('expectation_score')):.2f}",
                     f"{_float(metrics.get('cross_section_asset_coverage_fraction')):.2f}",
-                    str(_int(metrics.get("n_dnt_ready_pairs"))),
+                    str(_int(metrics.get("n_dnt_property_ready_pairs"))),
                     str(_int(metrics.get("n_missing_plan_actions"))),
                     f"{_float(metrics.get('provenance_coverage_fraction')):.2f}",
-                    _solver_label(solver),
                 ]
             )
             + " |"
@@ -356,7 +332,6 @@ def _plausibility_checks(cases: list[dict[str, Any]]) -> list[str]:
         lines.append(f"- {'passed' if _int(metrics.get('validation_error_count')) == 0 else 'failed'}: validation_error_count == 0")
         lines.append("- passed: no unreviewed imported data was promoted to the curated registry by the benchmark runner")
         lines.append(f"- {'passed' if _int(metrics.get('n_missing_data_items')) >= 0 else 'failed'}: missing data is reported")
-        lines.append("- skipped: optional solver skipped status is not a failure for registry-level benchmarks")
         lines.append("")
     return lines
 
@@ -364,8 +339,7 @@ def _plausibility_checks(cases: list[dict[str, Any]]) -> list[str]:
 def _warnings_and_limitations(evaluation: dict[str, Any]) -> list[str]:
     lines = ["## Warnings And Limitations", ""]
     lines.append("- warning: fixture cross-section data may be synthetic.")
-    lines.append("- skipped: external solvers are not executed unless configured.")
-    lines.append("- skipped: no Boltzmann, DNT, ngspice, or other quantitative solver validation runs by default.")
+    lines.append("- warning: this registry benchmark does not perform quantitative solver validation.")
     lines.append("- warning: missing cross sections remain a modeling blocker for quantitative rates.")
     lines.append("- warning: missing `collision_radius_A` remains a DNT blocker for affected neutral targets.")
     lines.append("- needs domain review: synthetic fixture values must be replaced before scientific conclusions.")
@@ -384,7 +358,6 @@ def _recommended_actions(evaluation: dict[str, Any]) -> list[str]:
         "Fill DNT neutral properties.",
         "Review ion-neutral reaction energetics.",
         "Reduce inferred reaction fraction by promoting reviewed data.",
-        "Configure live solver paths if quantitative transport validation is needed.",
     ]
     lines = ["## Recommended Next Actions", ""]
     for item in _unique([*recommendations, *fallback]):
@@ -406,7 +379,6 @@ def _appendix(summary_path: Path, cases: list[dict[str, Any]], setup: dict[str, 
         lines.append(f"- {case['title']} metrics: `{case['metrics_path']}`")
         lines.append(f"- {case['title']} missing plan: `{case['missing_plan_path']}`")
         lines.append(f"- {case['title']} source profile: `{report.get('source_profile')}`")
-        lines.append(f"- {case['title']} external solver config: `{report.get('solver_status', {}).get('config')}`")
         if plot_paths:
             for plot_path in plot_paths:
                 lines.append(f"- {case['title']} plot: `{plot_path}`")
@@ -414,41 +386,6 @@ def _appendix(summary_path: Path, cases: list[dict[str, Any]], setup: dict[str, 
             lines.append(f"- {case['title']} plots: none detected")
     lines.append("")
     return lines
-
-
-def _sum_solver_statuses(cases: list[dict[str, Any]]) -> dict[str, int]:
-    result = {
-        "ready": 0,
-        "disabled": 0,
-        "skipped_missing_executable": 0,
-        "skipped_missing_adapter": 0,
-        "skipped_missing_input_adapter": 0,
-        "completed": 0,
-        "failed": 0,
-    }
-    for case in cases:
-        summary = case["metrics"].get("solver_status_summary", {})
-        if not isinstance(summary, dict):
-            continue
-        for key in result:
-            result[key] += _int(summary.get(key))
-    return result
-
-
-def _solver_label(solver: Any) -> str:
-    if not isinstance(solver, dict):
-        return "unknown"
-    if _int(solver.get("ready")):
-        return "ready"
-    if _int(solver.get("disabled")):
-        return "skipped: disabled"
-    if _int(solver.get("skipped_missing_executable")):
-        return "skipped: missing executable"
-    if _int(solver.get("skipped_missing_adapter")) or _int(solver.get("skipped_missing_input_adapter")):
-        return "skipped: missing adapter"
-    if _int(solver.get("failed")):
-        return "failed"
-    return "skipped"
 
 
 def _needs_energetics_review(case: dict[str, Any]) -> bool:

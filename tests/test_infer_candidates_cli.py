@@ -9,6 +9,16 @@ from plasma_reactgen.interface.cli import main
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_normal_help_hides_maintenance_commands(capsys):
+    with pytest.raises(SystemExit) as exc:
+        main(["--help"])
+    assert exc.value.code == 0
+    help_text = capsys.readouterr().out
+    assert "generate" in help_text
+    assert "infer-candidates" not in help_text
+    assert "promote" not in help_text
+
+
 def test_infer_candidates_help_is_available():
     with pytest.raises(SystemExit) as exc:
         main(["infer-candidates", "--help"])

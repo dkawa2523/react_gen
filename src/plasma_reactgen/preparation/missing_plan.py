@@ -6,14 +6,11 @@ from typing import Any
 
 import yaml
 
-
-ACTION_ORDER = [
-    "seed_species",
-    "enrich_properties",
-    "import_cross_sections",
-    "review_reaction_energetics",
-    "manual_review",
-]
+from plasma_reactgen.application.missing_actions import (
+    ACTION_ORDER,
+    action_for_missing_item,
+    priority_for_action,
+)
 
 COMMAND_HINTS = {
     "seed_species": "Add reviewed species YAML under prepared_registry/species/.",
@@ -22,17 +19,6 @@ COMMAND_HINTS = {
     "review_reaction_energetics": "Review deltaE_products_minus_reactants_eV in prepared_registry reaction channels.",
     "manual_review": "Inspect missing_data.yaml and decide the next reviewed action.",
 }
-
-PROPERTY_FIELDS = {
-    "target.polarizability_A3",
-    "target.dipole_moment_D",
-    "target.collision_radius_A",
-    "polarizability_A3",
-    "dipole_moment_D",
-    "collision_radius_A",
-    "enthalpy_formation_eV",
-}
-
 
 def build_missing_plan(outputs_or_missing_data: Path) -> dict[str, Any]:
     missing_path = resolve_missing_data_path(outputs_or_missing_data)
@@ -95,7 +81,7 @@ def _group_actions(missing_items: list[dict[str, Any]]) -> list[dict[str, Any]]:
     for action in ACTION_ORDER:
         grouped[action] = {
             "action": action,
-            "priority": _priority_for_action(action),
+            "priority": priority_for_action(action),
             "subjects": [],
             "command_hint": COMMAND_HINTS[action],
             "notes": [],
@@ -110,27 +96,3 @@ def _group_actions(missing_items: list[dict[str, Any]]) -> list[dict[str, Any]]:
             seen_subjects[action].add(subject)
 
     return [grouped[action] for action in ACTION_ORDER if grouped[action]["subjects"]]
-
-
-def action_for_missing_item(item: dict[str, Any]) -> str:
-    field = str(item.get("field") or "")
-    if field == "registry/species":
-        return "seed_species"
-    if field in {"data.cross_section", "data.cross_section.path"}:
-        return "import_cross_sections"
-    if field == "deltaE_products_minus_reactants_eV":
-        return "review_reaction_energetics"
-    if field in PROPERTY_FIELDS:
-        return "enrich_properties"
-    if field.startswith(("target.", "neutral.", "projectile.", "ion.")):
-        if field.rsplit(".", 1)[-1] in PROPERTY_FIELDS:
-            return "enrich_properties"
-    return "manual_review"
-
-
-def _priority_for_action(action: str) -> str:
-    if action in {"seed_species", "enrich_properties", "import_cross_sections"}:
-        return "high"
-    if action == "review_reaction_energetics":
-        return "medium"
-    return "low"

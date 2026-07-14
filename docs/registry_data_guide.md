@@ -243,6 +243,18 @@ channels:
       - Add source and energy data before using as final DNT input.
 ```
 
+## Registry-driven pair discovery
+
+Every YAML file below `registry/reactions/<family>/` contributes its `pair` to
+the generate-time index. The same pair is indexed by both reactant species, but
+is returned only once. It becomes eligible when both species are active and at
+least one was newly introduced at the current frontier depth. There is no
+CaseConfig family allow-list and no enumeration of unregistered combinations.
+
+The `family` value may describe any registered two-body family. The curated
+catalog currently documents `electron`, `ion_neutral`, `neutral_neutral`,
+`ion_ion`, and `electron_ion` reaction types.
+
 ## Electron reaction pair example
 
 ```yaml
@@ -401,6 +413,50 @@ The registry entry should link to the asset.
 
 The reaction generator should not need to parse all possible public DB formats directly.
 
+### Multiple reaction datasets
+
+Channels may retain multiple cross-section, rate, mobility, branching,
+threshold, or reaction-energy candidates without overwriting one another:
+
+```yaml
+data:
+  datasets:
+    - id: ds_e_CF4_xs_lxcat
+      kind: cross_section
+      representation: table
+      independent_variable: energy
+      dependent_variable: cross_section
+      unit: m2
+      asset:
+        path: assets/cross_sections/e_CF4.csv
+        format: csv
+      validity:
+        minimum: 0.0
+        maximum: 100.0
+        unit: eV
+      source:
+        source_type: local_snapshot
+        source_id: lxcat:e_CF4
+      status: imported
+      preferred: true
+    - id: ds_e_CF4_rate_literature
+      kind: rate_coefficient
+      representation: arrhenius
+      unit: m3/s
+      parameters:
+        A: 1.0e-15
+        n: 0.5
+      source:
+        source_type: literature
+        source_id: doi:example
+      status: literature_supported
+```
+
+The legacy `data.cross_section` mapping remains valid and is normalized to one
+dataset at read time. Loading it never rewrites the registry file. Channel-level
+`evidence`, `provenance`, `source_record`, and `confidence` are preserved in
+generated reaction records.
+
 Prepared cross-section imports also write a metadata sidecar next to the
 normalized CSV:
 
@@ -444,7 +500,9 @@ data:
       - deltaE_products_minus_reactants_eV
 ```
 
-Pair-level DNT readiness should be evaluated by the DNT input exporter, not manually duplicated everywhere.
+Pair-level DNT readiness and existing dataset availability are reported in
+`dnt_tasks.yaml`. This is data inventory only; core generation does not
+execute DNT+ or import DNT results.
 
 ## Inferred candidate data
 

@@ -6,23 +6,19 @@ semiconductor plasma workflows where species, reaction channels, physical
 properties, and cross-section asset links are kept as readable YAML and local
 files.
 
-The normal generation path is deterministic: `reactgen generate` reads a case
-YAML plus a local registry and writes network, state, DNT-readiness, coverage,
-and missing-data outputs. It does not access online databases.
+The normal generation path is deterministic: `reactgen generate` follows
+primary, secondary, and later products from the input gases and writes a
+lineage-aware reaction list. `network.reactions.yaml` / `.csv` are the primary
+products. Generation also writes DNT-readiness, coverage, and
+missing-data views, and does not access online databases or run solvers.
 
-## What The Main Commands Do
+## User Commands
 
 | command | purpose | mutates curated `registry/`? |
 |---|---|---|
 | `generate` | Build a reaction network from a case YAML and local registry. | No |
-| `enrich` | Prepare a workspace registry and run configured local/offline enrichers. | No |
-| `import-cross-sections` | Normalize a local CSV/TSV cross-section table into `workspace/prepared_registry/assets/`. | No |
-| `apply-cross-section-mapping` | Apply reviewed cross-section asset mappings to prepared electron channels. | No |
-| `plan-missing` | Convert `missing_data.yaml` into a simple action plan. | No |
-| `promote` | Promote explicitly reviewed prepared/candidate data into curated registry. Dry-run by default. | Only with `--apply` |
 | `visualize` | Create statistics plots and Graphviz reaction-network views from generated outputs. | No |
 | `export-dnt` | Write solver-free pair-wise DNT+/DNT+DM input YAML from a case and registry. | No |
-| `infer-candidates` | Write inferred species/reaction candidates into `candidate_registry/` for review. | No |
 | `dev-check` | Validate registry structure, uniqueness, references, and local asset links. Returns non-zero on errors. | No |
 
 ## Core Workflows
@@ -30,12 +26,23 @@ and missing-data outputs. It does not access online databases.
 ### Generate
 
 ```powershell
-reactgen generate cases/ar_cf4/input.yaml --registry registry --output cases/ar_cf4/outputs
+reactgen generate cases/ar_cf4/input.yaml --output cases/ar_cf4/outputs
 ```
 
+The normal user supplies only the gases in the case YAML and runs `generate`;
+source profiles, workspaces, mappings, and property files are not required.
+When `--registry` is omitted, a versioned registry pack matching all input
+gases is selected automatically; if none is available, generation falls back
+to the base registry and reports the coverage gap. Explicit `--registry`
+remains supported.
+Pair discovery is driven entirely by files under `registry/reactions/*/*.yaml`:
+both reactants must already be active and at least one must be in the current
+frontier. Consequently, registered families such as `electron`, `ion_neutral`,
+`neutral_neutral`, `ion_ion`, and `electron_ion` need no CaseConfig switches,
+and unregistered species combinations are not enumerated.
 Main outputs include:
 
-- `network.reactions.yaml` / `.csv`
+- `network.reactions.yaml` / `.csv` (primary reaction list)
 - `network.states.yaml` / `.csv`
 - `dnt_tasks.yaml`
 - `coverage_report.yaml`
@@ -46,92 +53,36 @@ Main outputs include:
 `generate` does not calculate electron cross sections, run DNT or Boltzmann
 solvers, download public data, scrape websites, or call online APIs.
 
+See [Reaction output contract](docs/reaction_output_contract.md) for lineage,
+dataset, and missing-data field definitions. `dnt_tasks.yaml` only inventories
+ion-neutral properties and existing datasets; no DNT runner or result importer
+is included.
+Pack creation and local snapshot imports are maintainer workflows documented in
+[Registry packs and data administration](docs/registry_packs.md).
+
 Configured limits are never silent. `summary.json` contains
 `generation_complete` and a machine-readable `truncations` list; the reaction,
 coverage, and quality YAML outputs repeat the relevant completeness data. Limit
-events identify `max_pairs_per_depth`, `max_missing_pairs_per_depth`,
-`max_reactions`, or `max_species` and record retained/omitted counts and
+events identify the applied limit and record retained/omitted counts and
 context. A truncated run is not marked mechanism-ready for review in
 `quality_summary.yaml`.
 
-### Enrich
+## Data Maintainer Workflows
 
-```powershell
-reactgen enrich cases/ar_cf4/input.yaml `
-  --registry registry `
-  --workspace workspaces/ar_cf4 `
-  --source-profile experimental_first `
-  --fresh
-```
+Normal generation does not require enrichment, a workspace, mappings, or
+manual property input. Those operations are optional registry-maintenance
+workflows and are intentionally documented separately:
 
-`enrich` creates `workspaces/ar_cf4/prepared_registry/`, writes
-`prepare_report.yaml` and `enrichment_report.yaml`, and uses only configured
-local/offline providers. Curated `registry/` files are not changed. Use
-`--fresh` at the start of a reproducible run to clear only enrich-owned
-workspace artifacts before rebuilding them. Without it, existing prepared
-overlays are retained for an incremental review workflow.
+- [Registry packs and data administration](docs/registry_packs.md) covers
+  versioned packs and exact-match local snapshot imports.
+- [Manual data input](docs/manual_data_input_guide.md) covers exceptional gaps
+  that cannot be filled from reviewed snapshots.
+- [Semiconductor maintainer workflow](docs/quickstart_semiconductor.md) covers
+  preparation, review, and explicit promotion.
 
-### Import And Map Cross Sections
-
-```powershell
-reactgen import-cross-sections external_data/lxcat/e_cf4.csv `
-  --workspace workspaces/ar_cf4 `
-  --source lxcat_offline `
-  --reaction-id e_CF4_elastic `
-  --target CF4
-
-reactgen apply-cross-section-mapping external_data/lxcat/mappings.yaml `
-  --workspace workspaces/ar_cf4
-```
-
-The importer accepts simple CSV/TSV files with `energy_eV` and
-`cross_section_m2`, writes normalized local assets plus metadata sidecars under
-`prepared_registry`, and can link only prepared registry channels. Mapping
-refuses absolute paths, paths that escape the prepared registry, and missing
-assets. Unresolved entries are written to `cross_section_mapping_report.yaml`,
-and the command exits non-zero
-when any remain.
-
-### Plan Missing Data
-
-```powershell
-reactgen plan-missing cases/ar_cf4/outputs --output workspaces/ar_cf4/missing_plan.yaml
-```
-
-This reads existing `missing_data.yaml` and writes suggested actions such as
-`enrich_properties`, `import_cross_sections`, and
-`review_reaction_energetics`. It is reporting only and fetches no data.
-
-### Promote Reviewed Data
-
-```powershell
-reactgen promote workspaces/ar_cf4/prepared_registry `
-  --registry registry `
-  --decision review_decisions.yaml
-
-reactgen promote workspaces/ar_cf4/prepared_registry `
-  --registry registry `
-  --decision review_decisions.yaml `
-  --apply
-```
-
-Promotion is explicit and dry-run by default. Existing curated species or
-channels are not overwritten; conflicts are reported for manual review.
-
-## Minimal Ar/CF4 Workflow
-
-```powershell
-reactgen enrich cases/ar_cf4/input.yaml --registry registry --workspace workspaces/ar_cf4 --source-profile local_only --fresh
-reactgen generate cases/ar_cf4/input.yaml --registry workspaces/ar_cf4/prepared_registry --output workspaces/ar_cf4/outputs
-reactgen plan-missing workspaces/ar_cf4/outputs --output workspaces/ar_cf4/missing_plan.yaml
-reactgen visualize workspaces/ar_cf4/outputs --output workspaces/ar_cf4/visualizations
-```
-
-For a cross-section update, import a reviewed local table, apply a reviewed
-mapping if needed, then rerun `generate` with the prepared registry.
-
-See [docs/quickstart_semiconductor.md](docs/quickstart_semiconductor.md) for a
-more complete minimal semiconductor workflow.
+The compatibility commands `enrich`, `import-cross-sections`,
+`apply-cross-section-mapping`, `plan-missing`, and `promote` remain available,
+but they are not part of the normal user path.
 
 ## External Data Tools
 
@@ -149,6 +100,13 @@ Source/license governance is tracked in `external_data/source_catalog.yaml`; see
 [docs/source_license_policy.md](docs/source_license_policy.md). External source
 setup for NIST/ATcT/Chemicals/PubChem/LXCat workflows is described in
 [docs/external_source_setup.md](docs/external_source_setup.md).
+
+Benchmark outputs under `benchmarks/results/` are reproducible artifacts and
+are intentionally not versioned. Benchmark fixtures remain under
+`benchmarks/fixtures/`.
+Case `outputs/` and `work/` directories are likewise reproducible local
+artifacts and are not versioned; case inputs and reviewed fixtures remain in
+the repository.
 
 ## What It Does Not Do
 

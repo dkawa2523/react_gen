@@ -5,7 +5,7 @@ from typing import Any
 
 from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks
 from plasma_reactgen.domain.identifiers import to_file_key
-from plasma_reactgen.domain.models import PropertyValue, ReactionNetwork, Species
+from plasma_reactgen.domain.models import ReactionNetwork, Species
 
 
 DNT_PROJECTILE_PROPERTIES = ["mass_amu"]
@@ -32,7 +32,10 @@ DEFAULT_ENERGY_GRID_EV = {
 DEFAULT_OUTPUT_CROSS_SECTION_UNIT = "cm2"
 
 
-def build_dnt_inputs(network: ReactionNetwork) -> dict[str, Any]:
+def build_dnt_inputs(
+    network: ReactionNetwork,
+    dnt_tasks: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     """Build normalized pair-wise DNT+/DNT+DM input payloads.
 
     The exporter is intentionally calculation-oriented but solver-free. Unknown
@@ -40,9 +43,10 @@ def build_dnt_inputs(network: ReactionNetwork) -> dict[str, Any]:
     instead of being replaced with guessed numbers.
     """
 
+    tasks = dnt_tasks if dnt_tasks is not None else build_dnt_tasks(network)
     pairs = [
         _build_pair_payload(network, task)
-        for task in sorted(build_dnt_tasks(network), key=lambda item: item["pair_id"])
+        for task in sorted(tasks, key=lambda item: item["pair_id"])
     ]
 
     return {
@@ -75,6 +79,7 @@ def _build_pair_payload(
     }
     complete_readiness = deepcopy(task["complete_readiness"])
     complete_readiness["missing_required_properties"] = missing_required_properties
+    required_properties = task["required_properties"]
 
     return {
         "schema_version": 1,
@@ -84,10 +89,18 @@ def _build_pair_payload(
         "status": complete_readiness["status"],
         "pair_property_readiness": pair_property_readiness,
         "complete_readiness": complete_readiness,
-        "projectile": _species_payload(projectile, DNT_PROJECTILE_PROPERTIES),
-        "target": _species_payload(target, DNT_TARGET_PROPERTIES),
+        "projectile": _species_payload(
+            projectile,
+            DNT_PROJECTILE_PROPERTIES,
+            required_properties["ion"],
+        ),
+        "target": _species_payload(
+            target,
+            DNT_TARGET_PROPERTIES,
+            required_properties["neutral"],
+        ),
         "pair_properties": {
-            "reduced_mass_amu": _reduced_mass_amu(projectile, target),
+            "reduced_mass_amu": _reduced_mass_amu(required_properties),
             "long_range_model": "ion_induced_dipole",
             "missing_required_properties": missing_required_properties,
         },
@@ -100,23 +113,23 @@ def _build_pair_payload(
     }
 
 
-def _species_payload(species: Species | None, property_names: list[str]) -> dict[str, Any]:
+def _species_payload(
+    species: Species | None,
+    property_names: list[str],
+    resolved_properties: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    properties = {
+        name: _input_property(resolved_properties.get(name, {}), name)
+        for name in property_names
+    }
     if species is None:
         return {
             "id": None,
             "charge": None,
             "mass_amu": None,
             "composition": {},
-            "properties": {
-                name: _property_payload(None, name)
-                for name in property_names
-            },
+            "properties": properties,
         }
-
-    properties = {
-        name: _property_payload(species.properties.get(name), name)
-        for name in property_names
-    }
     return {
         "id": to_file_key(species.id),
         "charge": species.charge,
@@ -126,19 +139,13 @@ def _species_payload(species: Species | None, property_names: list[str]) -> dict
     }
 
 
-def _property_payload(prop: PropertyValue | None, name: str) -> dict[str, Any]:
-    if prop is None or prop.value is None:
-        return {
-            "value": None,
-            "unit": PROPERTY_UNITS.get(name),
-            "source": "missing",
-        }
+def _input_property(prop: dict[str, Any], name: str) -> dict[str, Any]:
     payload = {
-        "value": prop.value,
-        "unit": prop.unit or PROPERTY_UNITS.get(name),
-        "source": prop.source,
+        "value": prop.get("value"),
+        "unit": prop.get("unit") or PROPERTY_UNITS.get(name),
+        "source": prop.get("source") or "missing",
     }
-    source_record = getattr(prop, "source_record", None)
+    source_record = prop.get("source_record")
     if source_record is not None:
         payload["source_record"] = deepcopy(source_record)
     return payload
@@ -169,21 +176,12 @@ def _input_property_names(missing: dict[str, list[str]]) -> list[str]:
     ]
 
 
-def _reduced_mass_amu(projectile: Species | None, target: Species | None) -> float | None:
-    projectile_mass = _as_float(
-        _property_value(projectile, "mass_amu") if projectile is not None else None
-    )
-    target_mass = _as_float(
-        _property_value(target, "mass_amu") if target is not None else None
-    )
+def _reduced_mass_amu(required_properties: dict[str, dict]) -> float | None:
+    projectile_mass = _as_float(required_properties["ion"]["mass_amu"]["value"])
+    target_mass = _as_float(required_properties["neutral"]["mass_amu"]["value"])
     if projectile_mass is None or target_mass is None:
         return None
     return projectile_mass * target_mass / (projectile_mass + target_mass)
-
-
-def _property_value(species: Species, name: str):
-    prop = species.properties.get(name)
-    return None if prop is None else prop.value
 
 
 def _as_float(value) -> float | None:

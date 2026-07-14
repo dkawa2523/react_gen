@@ -25,7 +25,6 @@ User commands in this layer:
 - `reactgen generate`
 - `reactgen visualize`
 - `reactgen export-dnt`
-- `reactgen infer-candidates`
 - `reactgen dev-check`
 
 The core generation layer does not download public data, call online APIs,
@@ -64,6 +63,7 @@ User commands in this layer:
 - `reactgen import-cross-sections`
 - `reactgen apply-cross-section-mapping`
 - `reactgen plan-missing`
+- `reactgen infer-candidates`
 
 This layer may write `prepared_registry/` and workspace reports. It must not
 mutate curated `registry/` files. `reactgen enrich --fresh` removes only
@@ -134,11 +134,16 @@ Before a real benchmark, record:
 ## Design Boundaries
 
 - Keep `ReactionNetworkBuilder` focused on network generation from available
-  local data.
+  local data. Species initialization/finalization lives in
+  `application/network_state.py`; validated channel conversion and compatibility
+  data status live in `application/reaction_factory.py`.
 - Treat `ReactionNetwork` as the diagnostic source of truth; output builders
   must not independently rediscover reaction gaps.
-- Build pair-wise DNT exports from `dnt_tasks`, which is the canonical DNT
-  classification and readiness representation.
+- Keep readiness, quality, and action-summary decisions in
+  `application/output_summary.py`; infrastructure writers only serialize the
+  resulting contracts.
+- Build the DNT task catalog once per generated network and reuse it for
+  diagnostics, YAML output, and optional solver-free input export.
 - Define source profiles in registry YAML only, and apply providers in their
   declared order. The local registry is a baseline, not an enrichment source.
 - Keep inference default-disabled and clearly marked as `status: inferred`.
@@ -149,3 +154,23 @@ Before a real benchmark, record:
 - Make every configured generation limit visible in output completeness data.
 - Never register a cross-section path that escapes the prepared registry or
   does not resolve to a local file.
+- Keep `interface/cli.py` focused on normal generation commands. Historic
+  preparation/review commands are implemented in
+  `interface/maintenance_cli.py` until they can move to data-admin completely.
+- Construct the public reaction record explicitly in
+  `application/reaction_catalog.py`; adding an internal dataclass field must not
+  silently extend the YAML contract.
+
+## Compatibility boundary
+
+Pair discovery is registry-driven. The old `collisions.electron` and
+`collisions.ion_neutral` selectors are parsed only for case-file and Python API
+compatibility and live in `application/legacy_config.py`; they do not select
+normal generated families. New code must not depend on them.
+
+The family-specific selector implementation lives under
+`preparation/pair_selection.py`.
+
+`max_missing_pairs_per_depth` and the strict data-policy switches are also
+legacy expert controls. Registered reactions remain visible under the default
+policy even when numerical datasets or DNT properties are missing.

@@ -7,7 +7,7 @@ from typing import Any
 import yaml
 
 from plasma_reactgen.application.config import CaseConfig
-from plasma_reactgen.application.pair_selection import select_pairs_involving_frontier
+from plasma_reactgen.preparation.pair_selection import select_pairs_involving_frontier
 from plasma_reactgen.domain.chemistry import is_excited_state, make_electron_species, species_has_any_class
 from plasma_reactgen.domain.identifiers import pair_filename, to_file_key
 from plasma_reactgen.domain.models import CollisionPair, PropertyValue, ReactionChannel, Species, SpeciesAmount

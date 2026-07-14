@@ -1,8 +1,15 @@
-# Quickstart: Semiconductor Plasma Review Workflow
+# Semiconductor Registry Maintainer Workflow
 
-This quickstart shows a minimal local workflow for a semiconductor-style
-low-pressure plasma case. It uses Ar/CF4 as the sample case and keeps all
-prepared/imported data outside curated `registry/` until explicit review.
+This guide is for registry maintainers reviewing local data. It is not the
+normal user workflow. A normal user needs only a case containing `gases`:
+
+```powershell
+reactgen generate cases/ar_cf4/input.yaml --output cases/ar_cf4/outputs
+```
+
+The steps below are needed only when a maintainer is preparing or updating a
+registry or registry pack. They keep imported data outside curated `registry/`
+until explicit review.
 
 ## 1. Prepare And Enrich A Workspace
 

@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 import csv
-
+import json
+from plasma_reactgen.application.reaction_catalog import AssetExists, provenance_summary, reaction_available_data
 from plasma_reactgen.domain.models import MissingDataItem, ReactionNetwork
 
 
@@ -11,15 +12,20 @@ def write_csv_outputs(
     network: ReactionNetwork,
     states: list[dict],
     missing_data: list[MissingDataItem],
+    asset_exists: AssetExists | None = None,
 ) -> None:
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    _write_reactions_csv(output_dir / "network.reactions.csv", network)
+    _write_reactions_csv(output_dir / "network.reactions.csv", network, asset_exists)
     _write_states_csv(output_dir / "network.states.csv", states)
     _write_missing_data_csv(output_dir / "missing_data.csv", missing_data)
 
 
-def _write_reactions_csv(path: Path, network: ReactionNetwork) -> None:
+def _write_reactions_csv(
+    path: Path,
+    network: ReactionNetwork,
+    asset_exists: AssetExists | None = None,
+) -> None:
     fields = [
         "id",
         "depth",
@@ -28,6 +34,11 @@ def _write_reactions_csv(path: Path, network: ReactionNetwork) -> None:
         "equation",
         "source_pair",
         "introduced_species",
+        "precursor_reaction_ids",
+        "available_data",
+        "threshold_eV",
+        "deltaE_products_minus_reactants_eV",
+        "provenance_summary",
         "charge_balance",
         "element_balance",
         "status",
@@ -45,6 +56,13 @@ def _write_reactions_csv(path: Path, network: ReactionNetwork) -> None:
                     "equation": rxn.equation,
                     "source_pair": rxn.source_pair_label,
                     "introduced_species": ";".join(rxn.introduced_species),
+                    "precursor_reaction_ids": ";".join(rxn.precursor_reaction_ids),
+                    "available_data": json.dumps(
+                        reaction_available_data(rxn, asset_exists), ensure_ascii=False
+                    ),
+                    "threshold_eV": rxn.threshold_eV,
+                    "deltaE_products_minus_reactants_eV": rxn.deltaE_products_minus_reactants_eV,
+                    "provenance_summary": json.dumps(provenance_summary(rxn), ensure_ascii=False),
                     "charge_balance": rxn.validation.get("charge_balance"),
                     "element_balance": rxn.validation.get("element_balance"),
                     "status": rxn.data_status.get("reaction"),

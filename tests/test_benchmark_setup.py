@@ -7,7 +7,6 @@ import yaml
 
 from external_data_tools.benchmark_setup import main, run_setup
 from external_data_tools.benchmark_data_requirements import check_data_requirements
-from external_data_tools.solver_discovery import check_solver_config, validate_executable
 
 
 def test_missing_required_data_causes_failed_status_and_nonzero(tmp_path):
@@ -28,75 +27,6 @@ def test_missing_required_data_causes_failed_status_and_nonzero(tmp_path):
     assert exit_code == 1
     assert report["summary"]["required_data_ready"] is False
     assert report["data_status"][0]["status"] == "required_missing"
-
-
-def test_optional_missing_solver_does_not_fail_when_policy_allows(tmp_path):
-    data_dir = tmp_path / "data"
-    data_dir.mkdir()
-    setup = _write_setup_config(
-        tmp_path,
-        data_records=[{"id": "fixture", "kind": "internal_file_db", "path": str(data_dir), "required": True}],
-        solvers={
-            "bolsig_plus": {
-                "enabled": True,
-                "executable": None,
-                "adapter": "export_only",
-                "install": {"mode": "manual_or_user_path"},
-            }
-        },
-        policies={"fail_if_required_solver_missing": False},
-    )
-
-    report, exit_code = run_setup(setup, check=True)
-
-    assert exit_code == 0
-    assert report["solver_status"]["bolsig_plus"]["status"] == "manual_install_required"
-    assert report["summary"]["optional_solvers_ready"] is False
-
-
-def test_explicit_fake_executable_path_is_detected(tmp_path):
-    exe = tmp_path / "fake_solver.exe"
-    exe.write_text("fake", encoding="utf-8")
-
-    assert validate_executable(str(exe))["status"] == "ready"
-
-    report = check_solver_config(
-        {
-            "schema_version": 1,
-            "solvers": {
-                "ngspice": {
-                    "enabled": True,
-                    "executable": str(exe),
-                    "adapter": "ngspice_basic",
-                }
-            },
-        }
-    )
-
-    assert report["solvers"]["ngspice"]["status"] == "ready"
-    assert report["solvers"]["ngspice"]["executable"] == str(exe)
-
-
-def test_missing_explicit_executable_does_not_fall_back_to_path(tmp_path, monkeypatch):
-    monkeypatch.setattr(
-        "external_data_tools.solver_discovery.which_executable",
-        lambda _name: str(tmp_path / "other_ngspice.exe"),
-    )
-
-    report = check_solver_config(
-        {
-            "solvers": {
-                "ngspice": {
-                    "enabled": True,
-                    "executable": str(tmp_path / "configured_but_missing.exe"),
-                    "adapter": "ngspice_basic",
-                }
-            }
-        }
-    )
-
-    assert report["solvers"]["ngspice"]["status"] == "missing_executable"
-    assert report["solvers"]["ngspice"]["executable"] is None
 
 
 def test_install_python_deps_is_not_run_unless_flag_is_passed(tmp_path, monkeypatch):
@@ -232,24 +162,18 @@ def _write_setup_config(
     root: Path,
     *,
     data_records: list[dict],
-    solvers: dict | None = None,
     requirements: list[str] | None = None,
     download_manifest: str | None = None,
     policies: dict | None = None,
 ) -> Path:
     root.mkdir(parents=True, exist_ok=True)
-    solver_config = root / "external_solvers.yaml"
-    solver_config.write_text(
-        yaml.safe_dump({"schema_version": 1, "solvers": solvers or {}}, sort_keys=False),
-        encoding="utf-8",
-    )
     data_config = root / "data_requirements.yaml"
     data_config.write_text(
         yaml.safe_dump(
             {
                 "schema_version": 1,
                 "required_for_registry_benchmark": data_records,
-                "optional_for_live_solver_benchmark": [],
+                "optional_for_registry_benchmark": [],
             },
             sort_keys=False,
         ),
@@ -264,14 +188,12 @@ def _write_setup_config(
                     "install_optional_dependencies": False,
                     "requirements": requirements or [],
                 },
-                "external_solvers": {"config": str(solver_config)},
                 "data_requirements": {"config": str(data_config)},
                 "downloads": {"manifest": download_manifest or str(root / "downloads.yaml")},
                 "policies": {
                     "allow_network_downloads": False,
                     "allow_system_package_install": False,
                     "fail_if_required_data_missing": True,
-                    "fail_if_required_solver_missing": False,
                     **(policies or {}),
                 },
             },

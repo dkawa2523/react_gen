@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from plasma_reactgen.domain.datasets import ReactionDataset
+
 
 SpeciesId = str
 ReactionId = str
@@ -58,6 +60,11 @@ class ReactionChannel:
     deltaE_products_minus_reactants_eV: float | None = None
     dnt_class: str | None = None
     data: dict[str, Any] = field(default_factory=dict)
+    evidence: dict[str, Any] | None = None
+    provenance: dict[str, Any] | None = None
+    source_record: dict[str, Any] | None = None
+    confidence: Any | None = None
+    datasets: list[ReactionDataset] = field(default_factory=list)
     status: str = "draft"
     notes: list[str] = field(default_factory=list)
 
@@ -80,6 +87,12 @@ class GeneratedReaction:
     deltaE_products_minus_reactants_eV: float | None = None
     dnt_class: str | None = None
     data: dict[str, Any] = field(default_factory=dict)
+    evidence: dict[str, Any] | None = None
+    provenance: dict[str, Any] | None = None
+    source_record: dict[str, Any] | None = None
+    confidence: Any | None = None
+    datasets: list[ReactionDataset] = field(default_factory=list)
+    precursor_reaction_ids: list[ReactionId] = field(default_factory=list)
 
 
 @dataclass

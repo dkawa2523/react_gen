@@ -28,8 +28,3 @@ required_for_registry_benchmark:
     kind: cross_section_csv
     path: benchmarks/fixtures/sf6_o2_electronegative/cross_sections/e_O2_elastic.csv
     required: true
-optional_for_live_solver_benchmark:
-  - id: bolsig_plus_executable
-    kind: executable
-    solver: bolsig_plus
-    required: false

@@ -1,5 +1,5 @@
 from plasma_reactgen.application.config import CaseConfig, CaseInfo
-from plasma_reactgen.application.pair_selection import select_pairs_involving_frontier
+from plasma_reactgen.preparation.pair_selection import select_pairs_involving_frontier
 from plasma_reactgen.domain.models import Species
 
 
