@@ -6,16 +6,17 @@ from typing import Any
 
 import yaml
 
-from plasma_reactgen.data_sources.base import CrossSectionProvider
 from plasma_reactgen.domain.models import CollisionPair
 
 
-class LxcatOfflineCrossSectionProvider(CrossSectionProvider):
+class LxcatOfflineCrossSectionProvider:
     def __init__(self, root: str | Path):
         self.root = Path(root)
         self.records = _load_index(self.root / "index.yaml")
 
-    def find_cross_sections(self, pair: CollisionPair | str | dict[str, Any]) -> list[dict[str, Any]]:
+    def find_cross_sections(
+        self, pair: CollisionPair | str | dict[str, Any]
+    ) -> list[dict[str, Any]]:
         candidates: list[dict[str, Any]] = []
         for record in self.records:
             if not _matches(record, pair):
@@ -24,13 +25,19 @@ class LxcatOfflineCrossSectionProvider(CrossSectionProvider):
             path = candidate.get("path") or candidate.get("file")
             if path is not None:
                 candidate["path"] = str(path)
-            candidate.setdefault("status", "local_file_registered" if _asset_exists(self.root, path) else "path_registered_but_missing")
+            source_id = candidate.get("reaction_id") or candidate.get("channel_id") or path
+            candidate.setdefault(
+                "status",
+                "local_file_registered"
+                if _asset_exists(self.root, path)
+                else "path_registered_but_missing",
+            )
             candidate.setdefault(
                 "source_record",
                 {
                     "source_type": "public_database_snapshot",
                     "database": "LXCat",
-                    "source_id": f"lxcat_offline:{candidate.get('reaction_id') or candidate.get('channel_id') or path}",
+                    "source_id": f"lxcat_offline:{source_id}",
                 },
             )
             candidates.append(candidate)
@@ -59,12 +66,8 @@ def _matches(record: dict[str, Any], query: CollisionPair | str | dict[str, Any]
                 "projectile": str(pair.get("projectile", "")),
                 "target": str(pair.get("target", "")),
             }
-        if record.get("target") == query.target:
-            return True
-        return False
-    if isinstance(query, dict):
-        return record.get("pair") == query
-    return False
+        return record.get("target") == query.target
+    return record.get("pair") == query
 
 
 def _asset_exists(root: Path, path: Any) -> bool:

@@ -5,8 +5,8 @@ from types import SimpleNamespace
 
 import yaml
 
-from external_data_tools.benchmark_setup import main, run_setup
 from external_data_tools.benchmark_data_requirements import check_data_requirements
+from external_data_tools.benchmark_setup import main, run_setup
 
 
 def test_missing_required_data_causes_failed_status_and_nonzero(tmp_path):
@@ -40,11 +40,11 @@ def test_install_python_deps_is_not_run_unless_flag_is_passed(tmp_path, monkeypa
     )
     calls = []
 
-    def fake_run(command, **kwargs):
+    def fake_run(command):
         calls.append(command)
         return SimpleNamespace(returncode=0, stdout="", stderr="")
 
-    monkeypatch.setattr("external_data_tools.benchmark_setup.subprocess.run", fake_run)
+    monkeypatch.setattr("external_data_tools.benchmark_setup.run_install_command", fake_run)
 
     run_setup(setup, check=True, install_python_deps=False)
     assert calls == []
@@ -52,7 +52,8 @@ def test_install_python_deps_is_not_run_unless_flag_is_passed(tmp_path, monkeypa
     report, exit_code = run_setup(setup, install_python_deps=True)
     assert exit_code == 0
     assert len(calls) == 1
-    assert "-m" in calls[0] and "pip" in calls[0]
+    assert "-m" in calls[0]
+    assert "pip" in calls[0]
     assert report["summary"]["python_optional_dependencies_installed"] is True
 
 

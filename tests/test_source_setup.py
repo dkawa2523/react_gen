@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import yaml
 
-from external_data_tools.source_setup import run_source_setup, validate_access_profile
+from external_data_tools.source_setup import main, run_source_setup, validate_access_profile
 
 
 def test_default_source_setup_profile_checks_and_writes_report(tmp_path: Path) -> None:
@@ -19,9 +19,12 @@ def test_default_source_setup_profile_checks_and_writes_report(tmp_path: Path) -
     )
 
     assert exit_code == 0
+    assert report["schema_version"] == 2
     assert report["summary"]["valid"] is True
     assert report["summary"]["n_sources"] >= 5
     assert report["summary"]["downloads_ran"] is False
+    assert "downloads_requested" not in report["summary"]
+    assert "chemicals_install_requested" not in report["summary"]
     assert report_path.exists()
 
 
@@ -31,16 +34,24 @@ def test_chemicals_install_is_not_run_unless_flag_is_passed(tmp_path: Path, monk
     config = _write_config(
         tmp_path,
         optional_python_dependencies={"chemicals": {"requirements": str(requirements)}},
-        sources=[_source("chemicals_optional", enabled=True, access_mode="optional_python_package")],
+        sources=[
+            _source("chemicals_optional", enabled=True, access_mode="optional_python_package")
+        ],
     )
     calls = []
 
-    def fake_run(command, **kwargs):
+    def fake_run(command):
         calls.append(command)
         return SimpleNamespace(returncode=0, stdout="", stderr="")
 
-    monkeypatch.setattr("external_data_tools.source_setup.subprocess.run", fake_run)
-    monkeypatch.setattr("external_data_tools.source_setup.importlib.util.find_spec", lambda name: None)
+    monkeypatch.setattr(
+        "external_data_tools.source_setup_actions.run_install_command",
+        fake_run,
+    )
+    monkeypatch.setattr(
+        "external_data_tools.source_setup_actions.importlib.util.find_spec",
+        lambda name: None,
+    )
 
     report, exit_code = run_source_setup(config, check=True, install_chemicals=False)
     assert exit_code == 0
@@ -50,7 +61,8 @@ def test_chemicals_install_is_not_run_unless_flag_is_passed(tmp_path: Path, monk
     report, exit_code = run_source_setup(config, install_chemicals=True)
     assert exit_code == 0
     assert len(calls) == 1
-    assert "-m" in calls[0] and "pip" in calls[0]
+    assert "-m" in calls[0]
+    assert "pip" in calls[0]
     assert report["chemicals"]["installed"] is True
 
 
@@ -95,7 +107,10 @@ def test_explicit_downloads_require_flag_and_policy(tmp_path: Path, monkeypatch)
             "records": [{"id": "example"}],
         }
 
-    monkeypatch.setattr("external_data_tools.source_setup.download_many", fake_download_many)
+    monkeypatch.setattr(
+        "external_data_tools.source_setup_actions.download_many",
+        fake_download_many,
+    )
 
     report, exit_code = run_source_setup(config, check=True, download_explicit_data=False)
     assert exit_code == 0
@@ -150,6 +165,73 @@ def test_access_profile_rejects_core_generate_and_scraping() -> None:
     assert not report["valid"]
     assert any("core generate" in error for error in report["errors"])
     assert any("unsupported automation_level" in error for error in report["errors"])
+
+
+def test_access_profile_reports_shape_duplicates_and_actionable_warnings(
+    tmp_path: Path,
+) -> None:
+    source = _source(
+        "duplicate",
+        enabled=True,
+        access_mode="public_api",
+        download_manifest="missing-downloads.yaml",
+    )
+    source.update(
+        {
+            "requires_license_review": True,
+            "license_note": "",
+            "requires_api_key": True,
+            "api_key_env": "",
+        }
+    )
+    payload = {
+        "schema_version": 1,
+        "sources": [source, {"source_id": "duplicate"}, "not-a-record"],
+    }
+
+    report = validate_access_profile(
+        payload,
+        config_path=tmp_path / "source_access_profiles.yaml",
+    )
+
+    assert report["summary"] == {"n_errors": 5, "n_warnings": 3}
+    assert "duplicate: duplicate source_id" in report["errors"]
+    assert "sources[2] must be a mapping" in report["errors"]
+    assert any("license_note" in warning for warning in report["warnings"])
+    assert any("api_key_env" in warning for warning in report["warnings"])
+    assert any("download manifest not found" in warning for warning in report["warnings"])
+
+
+def test_chemicals_install_requires_existing_requirements_file(tmp_path: Path) -> None:
+    config = _write_config(
+        tmp_path,
+        optional_python_dependencies={"chemicals": {"requirements": str(tmp_path / "missing.txt")}},
+    )
+
+    report, exit_code = run_source_setup(config, install_chemicals=True)
+
+    assert exit_code == 1
+    assert report["chemicals"]["installed"] is False
+    assert report["chemicals"]["error"] == "requirements file not found"
+
+
+def test_source_setup_cli_prints_summary_and_writes_report(tmp_path: Path, capsys) -> None:
+    config = _write_config(tmp_path)
+    report_path = tmp_path / "cli-report.yaml"
+
+    exit_code = main(
+        [
+            "--config",
+            str(config),
+            "--check",
+            "--write-report",
+            str(report_path),
+        ]
+    )
+
+    assert exit_code == 0
+    assert report_path.exists()
+    assert "enabled_sources: 0/0" in capsys.readouterr().out
 
 
 def _write_config(

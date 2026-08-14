@@ -28,13 +28,17 @@ def test_openadas_raw_file_copied_and_sha256_recorded(tmp_path):
     report = import_openadas_manifest(manifest, workspace=workspace)
 
     cached = workspace / "source_cache" / report["files"][0]["cached_path"]
-    source_manifest = yaml.safe_load((workspace / "source_cache" / "manifest.yaml").read_text(encoding="utf-8"))
-    report_payload = yaml.safe_load((workspace / "openadas_import_report.yaml").read_text(encoding="utf-8"))
+    source_manifest_path = workspace / "source_cache" / "manifest.yaml"
+    source_manifest = yaml.safe_load(source_manifest_path.read_text(encoding="utf-8"))
+    report_path = workspace / "openadas_import_report.yaml"
+    report_payload = yaml.safe_load(report_path.read_text(encoding="utf-8"))
 
     assert cached.exists()
     assert cached.read_text(encoding="utf-8") == raw_file.read_text(encoding="utf-8")
     assert report["files"][0]["sha256"] == sha256_file(raw_file)
     assert report["files"][0]["adf_class"] == "ADF07"
+    assert report["schema_version"] == 2
+    assert "registry_mutated" not in report
     assert source_manifest["source_files"][0]["id"] == "adf07_example"
     assert source_manifest["source_files"][0]["cached_path"].startswith("openadas/adf07_example/")
     assert report_payload["summary"]["n_cached"] == 1
@@ -122,8 +126,7 @@ def test_openadas_import_does_not_mutate_curated_registry(tmp_path):
         {"schema_version": 1, "channels": [{"id": "curated"}]},
     )
     original_registry = {
-        path: path.read_text(encoding="utf-8")
-        for path in registry_root.rglob("*.yaml")
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
     }
     manifest = _write_manifest(
         tmp_path / "openadas_manifest.yaml",
@@ -143,7 +146,10 @@ def test_openadas_import_does_not_mutate_curated_registry(tmp_path):
 
     import_openadas_manifest(manifest, workspace=tmp_path / "workspace")
 
-    assert {path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")} == original_registry
+    current_registry = {
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
+    }
+    assert current_registry == original_registry
 
 
 def test_openadas_cli_and_no_network_access(tmp_path, monkeypatch):

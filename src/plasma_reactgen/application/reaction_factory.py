@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from plasma_reactgen.application.channel_compat import legacy_cross_section
-from plasma_reactgen.application.channel_policy import has_available_cross_section
 from plasma_reactgen.application.reaction_catalog import AssetExists
+from plasma_reactgen.application.reaction_data_status import reaction_data_status
 from plasma_reactgen.domain.equations import format_equation
 from plasma_reactgen.domain.models import (
     CollisionPair,
@@ -49,31 +48,4 @@ def build_generated_reaction(
     )
 
 
-def reaction_data_status(
-    channel: ReactionChannel,
-    family: str,
-    asset_exists: AssetExists | None = None,
-) -> dict[str, str]:
-    """Summarize compatibility data status without hiding normalized datasets."""
-
-    status = {"reaction": channel.status}
-    if family == "electron":
-        legacy = legacy_cross_section(channel)
-        datasets = [item for item in channel.datasets if item.kind == "cross_section"]
-        if not legacy and not datasets:
-            status["cross_section"] = "missing"
-        elif has_available_cross_section(channel, asset_exists):
-            status["cross_section"] = "local_file_registered"
-        elif (isinstance(legacy, dict) and legacy.get("path")) or any(
-            item.asset and item.asset.path for item in datasets
-        ):
-            status["cross_section"] = "path_registered_but_missing"
-        else:
-            status["cross_section"] = (
-                legacy.get("status", "reference_only_needs_import")
-                if isinstance(legacy, dict)
-                else "reference_only_needs_import"
-            )
-    elif family == "ion_neutral":
-        status["dnt_class"] = "inferred" if channel.status == "inferred" else "registered"
-    return status
+__all__ = ["build_generated_reaction", "reaction_data_status"]

@@ -457,7 +457,7 @@ raw dataはsource header、citation、hash、redistribution statusを保持す�
 flowchart TB
     subgraph Interface[インターフェース層]
       CLI[interface/cli.py]
-      MCLI[maintenance_cli.py]
+      MCLI[maintenance_parser.py / maintenance_commands.py]
     end
     subgraph Application[アプリケーション層]
       NB[network_builder]
@@ -505,7 +505,8 @@ flowchart TB
 
 | 処理 | 責務 | 意図的に行わないこと |
 |---|---|---|
-| `FileRegistry` | species/channel読込み、index、asset存在確認 | 外部取得、registry自動書換え |
+| `FileRegistry` | indexed species/channel読込み、rule・asset参照 | 外部取得、registry自動書換え |
+| `registry_index` | registry YAML読込み、ID重複検査、species-to-pair index構築 | domain判定、外部取得 |
 | `registry_pack` | gasに基づくpack選択とread-only overlay | userへpack選択を要求 |
 | `network_builder` | frontier反復とlimit適用 | serializer、外部API、solver実行 |
 | `network_state` | active/frontier/species node管理 | reaction data解釈 |
@@ -515,7 +516,8 @@ flowchart TB
 | `dnt_task_builder` | pair物性、dataset、readiness整理 | DNT計算・結果取込み |
 | `diagnostics` | network由来の不足データ作成 | 独立した反応再探索 |
 | writer | 決定論的serialization | domain判断 |
-| `visualization/reaction_pathway` | 反応式nodeとprecursor edgeのSVG作成 | 経路探索、反応の推定 |
+| `visualization/reaction_pathway_layout` | depth別のcard配置、canvas寸法 | SVG表現、経路探索 |
+| `visualization/reaction_pathway` | 反応式nodeとprecursor edgeのSVG表現・保存 | layout計算、経路探索、反応の推定 |
 | `external_data_tools` | raw/snapshot import、pack build | core generateへの依存追加 |
 
 ### 6.3 一連の処理

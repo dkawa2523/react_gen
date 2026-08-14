@@ -32,8 +32,10 @@ py -m external_data_tools.benchmark_report benchmarks/results/summary.yaml --out
 - `warning`: the workflow ran, but data coverage, provenance, or DNT readiness
   needs attention.
 - `failed`: setup, generation, or validation failed.
-- `needs domain review`: fixture or imported data must be reviewed before
-  scientific use.
+
+Fixture and imported data still require domain review before scientific use;
+this invariant limitation is stated once for the suite instead of repeated as a
+status for every case.
 
 ## Evaluation Rules
 
@@ -48,7 +50,8 @@ py -m external_data_tools.benchmark_report benchmarks/results/summary.yaml --out
 
 The structural enrichment gate counts unavailable configured sources,
 non-missing-property unresolved records (for example unsupported units),
-unresolved product species or reactions, and invalid/skipped reaction channels.
+unresolved reaction channels, and invalid/skipped reaction channels. Product
+species details are retained without counting the same failed channel twice.
 Missing physical-property values are measured and reported, but do not by
 themselves fail the workflow.
 

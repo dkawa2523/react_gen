@@ -73,6 +73,38 @@ def test_optional_package_must_not_be_core_dependency(tmp_path: Path) -> None:
     assert any("core pyproject dependencies" in error for error in report["errors"])
 
 
+def test_catalog_reports_record_shape_value_and_advisory_problems(tmp_path: Path) -> None:
+    valid_source = _catalog_with({})["sources"][0]
+    invalid_source = {
+        **valid_source,
+        "category": "unsupported",
+        "redistribution_risk": "critical",
+        "default_status": "unknown",
+        "allowed_in_enrich": "yes",
+    }
+    bundled_source = {
+        **valid_source,
+        "source_id": "bundled_with_key",
+        "category": "bundled",
+        "requires_api_key": True,
+    }
+
+    report = validate_catalog_payload(
+        {
+            "schema_version": 2,
+            "sources": [valid_source, invalid_source, bundled_source, "not-a-record"],
+        },
+        project_root=tmp_path,
+    )
+
+    assert report["valid"] is False
+    assert report["summary"] == {"n_sources": 4, "n_errors": 7, "n_warnings": 1}
+    assert "schema_version must be 1" in report["errors"]
+    assert "example: duplicate source_id" in report["errors"]
+    assert "example: allowed_in_enrich must be boolean" in report["errors"]
+    assert report["warnings"] == ["bundled_with_key: bundled sources should not require API keys"]
+
+
 def _catalog_with(overrides: dict) -> dict:
     source = {
         "source_id": "example",

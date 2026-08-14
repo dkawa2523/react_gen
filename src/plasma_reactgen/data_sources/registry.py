@@ -2,21 +2,15 @@ from __future__ import annotations
 
 from typing import Any
 
-from plasma_reactgen.data_sources.base import (
-    CrossSectionProvider,
-    PropertyProvider,
-    ReactionProvider,
-    SpeciesProvider,
-)
 _PROVIDERS: dict[str, dict[str, Any]] = {}
 
 
-class _EmptySpeciesProvider(SpeciesProvider):
+class _EmptySpeciesProvider:
     def find_species(self, query: Any) -> list[dict[str, Any]]:
         return []
 
 
-class _EmptyPropertyProvider(PropertyProvider):
+class _EmptyPropertyProvider:
     def find_properties(
         self,
         species_id: str,
@@ -25,12 +19,12 @@ class _EmptyPropertyProvider(PropertyProvider):
         return []
 
 
-class _EmptyReactionProvider(ReactionProvider):
+class _EmptyReactionProvider:
     def find_channels(self, pair: Any) -> list[dict[str, Any]]:
         return []
 
 
-class _EmptyCrossSectionProvider(CrossSectionProvider):
+class _EmptyCrossSectionProvider:
     def find_cross_sections(self, pair: Any) -> list[dict[str, Any]]:
         return []
 
@@ -121,27 +115,39 @@ def register_nist_snapshot_provider(root: Any) -> None:
 
 
 def register_argonne_atct_snapshot_provider(files: Any) -> None:
-    from plasma_reactgen.data_sources.argonne_atct_snapshot import ArgonneAtctSnapshotPropertyProvider
+    from plasma_reactgen.data_sources.argonne_atct_snapshot import (
+        ArgonneAtctSnapshotPropertyProvider,
+    )
 
-    register_provider("properties", "argonne_atct_snapshot", ArgonneAtctSnapshotPropertyProvider(files))
+    register_provider(
+        "properties", "argonne_atct_snapshot", ArgonneAtctSnapshotPropertyProvider(files)
+    )
 
 
 def register_chemical_identity_snapshot_provider(snapshot: Any) -> None:
-    from plasma_reactgen.data_sources.chemical_identity_snapshot import ChemicalIdentitySnapshotProvider
+    from plasma_reactgen.data_sources.chemical_identity_snapshot import (
+        ChemicalIdentitySnapshotProvider,
+    )
 
-    register_provider("species_identity", "chemical_identity_snapshot", ChemicalIdentitySnapshotProvider(snapshot))
+    register_provider(
+        "species_identity", "chemical_identity_snapshot", ChemicalIdentitySnapshotProvider(snapshot)
+    )
 
 
 def register_lxcat_offline_provider(root: Any) -> None:
     from plasma_reactgen.data_sources.lxcat_offline import LxcatOfflineCrossSectionProvider
 
-    register_provider("electron_cross_sections", "lxcat_offline", LxcatOfflineCrossSectionProvider(root))
+    register_provider(
+        "electron_cross_sections", "lxcat_offline", LxcatOfflineCrossSectionProvider(root)
+    )
 
 
 def register_ion_reaction_table_provider(files: Any) -> None:
     from plasma_reactgen.data_sources.ion_reaction_table import IonReactionTableProvider
 
-    register_provider("ion_neutral_reactions", "ion_reaction_table", IonReactionTableProvider(files))
+    register_provider(
+        "ion_neutral_reactions", "ion_reaction_table", IonReactionTableProvider(files)
+    )
 
 
 def _register_builtin_placeholders() -> None:
@@ -172,7 +178,12 @@ def _register_builtin_placeholders() -> None:
     for name in ("local_assets", "internal_cross_section_db", "lxcat_offline"):
         register_provider("electron_cross_sections", name, cross_sections)
 
-    for name in ("local_registry", "internal_reaction_db", "ion_reaction_table", "literature_candidates"):
+    for name in (
+        "local_registry",
+        "internal_reaction_db",
+        "ion_reaction_table",
+        "literature_candidates",
+    ):
         register_provider("ion_neutral_reactions", name, reactions)
 
 

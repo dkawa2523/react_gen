@@ -1,16 +1,15 @@
 from __future__ import annotations
 
 import argparse
+import shutil
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
-import shutil
 
 import yaml
 
 from .cache import safe_filename, sha256_file
-
 
 SUPPORTED_ADF_CLASSES = {"ADF01", "ADF07"}
 
@@ -28,10 +27,9 @@ def import_openadas_manifest(manifest_path: Path, *, workspace: Path) -> dict[st
         source = {}
 
     report: dict[str, Any] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "manifest": str(manifest_path),
         "workspace": str(workspace),
-        "registry_mutated": False,
         "source": {
             "database": source.get("database", "OpenADAS"),
             "access_mode": source.get("access_mode", "manual_download"),
@@ -193,7 +191,9 @@ def _ion_reaction_record(mapping: dict[str, Any], file_record: dict[str, Any]) -
     target = str(mapping.get("target") or "")
     reaction_type = str(mapping.get("type") or "charge_transfer")
     reaction_id = mapping.get("id") or "_".join(
-        safe_filename(part) for part in (file_record["id"], projectile, target, reaction_type) if part
+        safe_filename(part)
+        for part in (file_record["id"], projectile, target, reaction_type)
+        if part
     )
     return {
         "id": reaction_id,
@@ -259,10 +259,18 @@ def _append_source_manifest(path: Path, source_file: dict[str, Any]) -> None:
     if not isinstance(source_files, list):
         source_files = []
     record = dict(source_file)
-    if any(item.get("sha256") == source_file["sha256"] for item in source_files if isinstance(item, dict)):
+    duplicate = any(
+        item.get("sha256") == source_file["sha256"]
+        for item in source_files
+        if isinstance(item, dict)
+    )
+    if duplicate:
         record["notes"] = ["A source file with the same sha256 was already recorded."]
     source_files.append(record)
-    payload = {"schema_version": int(payload.get("schema_version", 1)), "source_files": source_files}
+    payload = {
+        "schema_version": int(payload.get("schema_version", 1)),
+        "source_files": source_files,
+    }
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         yaml.safe_dump(payload, sort_keys=False, allow_unicode=True),
@@ -278,7 +286,7 @@ def _read_yaml(path: Path) -> dict[str, Any]:
 
 
 def _utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 if __name__ == "__main__":

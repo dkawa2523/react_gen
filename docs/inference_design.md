@@ -239,6 +239,7 @@ src/plasma_reactgen/inference/
   reaction_templates.py
   screening.py
   scoring.py
+  reaction_candidate_builder.py
   candidate_writer.py
 ```
 
@@ -295,8 +296,11 @@ candidate_registry/
   summary.yaml
 ```
 
-`summary.yaml` includes `registry_mutated: false` to make the review-only
-contract explicit.
+`summary.yaml` schema version 2 contains candidate counts only. The fixed
+`registry_mutated: false` field was removed because this command always writes
+to a separate output directory and never receives a registry-write capability.
+That safety property is enforced by the command structure and regression test,
+not repeated as a constant report field.
 
 Developer command:
 

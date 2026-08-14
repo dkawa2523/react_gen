@@ -1,83 +1,39 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import argparse
+import sys
 from pathlib import Path
 from typing import Any
-import argparse
-import shutil
-import sys
 
-import yaml
-
-from external_data_tools.benchmark_expectations import evaluate_expectations
-from external_data_tools.benchmark_metrics import collect_metrics
+from external_data_tools.benchmark_io import (
+    now,
+    read_yaml,
+    resolve_path,
+    write_yaml,
+)
+from external_data_tools.benchmark_quality_gate import (
+    enrichment_quality_gate as _enrichment_quality_gate,
+)
 from external_data_tools.benchmark_setup import run_setup
-
-_LOCAL_SRC = Path(__file__).resolve().parents[1] / "src"
-if _LOCAL_SRC.exists() and str(_LOCAL_SRC) not in sys.path:
-    sys.path.insert(0, str(_LOCAL_SRC))
-
-from plasma_reactgen.interface.cli import main as reactgen_main
+from external_data_tools.benchmark_workflow import run_benchmark
 
 
 def run_benchmarks(config_path: str | Path, only: str | None = None) -> dict[str, Any]:
     config_path = Path(config_path)
-    config = _read_yaml(config_path)
-    benchmarks = config.get("benchmarks", [])
-    if not isinstance(benchmarks, list):
-        raise ValueError("benchmark config must contain a benchmarks list")
-
+    config = read_yaml(config_path)
+    benchmarks = _select_benchmarks(config.get("benchmarks"), only)
     results_root = (config_path.parent / "results").resolve()
-
-    setup_report = None
-    setup_config = config.get("setup") if isinstance(config.get("setup"), dict) else {}
-    if setup_config:
-        setup_path = _resolve_path(setup_config.get("config"), config_path)
-        if setup_path is not None:
-            setup_report, setup_rc = run_setup(
-                setup_path,
-                check=True,
-                write_report=results_root / "setup_report.yaml",
-            )
-            if setup_rc != 0:
-                message = f"benchmark setup check failed: {setup_path}; report: {results_root / 'setup_report.yaml'}"
-                if setup_config.get("require_success", True):
-                    raise RuntimeError(message)
-
-    selected = [item for item in benchmarks if isinstance(item, dict) and (only is None or item.get("id") == only)]
-    if only is not None and not selected:
-        raise ValueError(f"benchmark id not found: {only}")
-
-    reports = []
-    for benchmark in selected:
-        reports.append(_run_one_benchmark(benchmark, config_path=config_path, results_root=results_root))
-
-    summary = {
-        "schema_version": 1,
-        "generated_at": _now(),
-        "config": str(config_path),
-        "summary": {
-            "n_benchmarks": len(reports),
-            "n_passed": sum(1 for report in reports if report["passed"]),
-            "n_failed": sum(1 for report in reports if not report["passed"]),
-        },
-        "benchmarks": [
-            {
-                "id": report["id"],
-                "passed": report["passed"],
-                "score": report["expectations"]["score"],
-                "report": report["report_path"],
-                "metrics": report["metrics_path"],
-            }
-            for report in reports
-        ],
-    }
-    if setup_report is not None:
-        summary["setup"] = {
-            "report": str(results_root / "setup_report.yaml"),
-            "required_data_ready": setup_report["summary"]["required_data_ready"],
-        }
-    _write_yaml(results_root / "summary.yaml", summary)
+    setup_report = _run_setup(config.get("setup"), config_path, results_root)
+    reports = [
+        run_benchmark(
+            benchmark,
+            config_path=config_path,
+            results_root=results_root,
+        )
+        for benchmark in benchmarks
+    ]
+    summary = _build_summary(config_path, reports, setup_report, results_root)
+    write_yaml(results_root / "summary.yaml", summary)
     return summary
 
 
@@ -92,258 +48,73 @@ def main(argv: list[str] | None = None) -> int:
     return 0 if summary["summary"]["n_failed"] == 0 else 1
 
 
-def _run_one_benchmark(benchmark: dict[str, Any], *, config_path: Path, results_root: Path) -> dict[str, Any]:
-    benchmark_id = str(benchmark.get("id") or "")
-    if not benchmark_id:
-        raise ValueError("benchmark entry missing id")
+def _select_benchmarks(value: Any, only: str | None) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        raise ValueError("benchmark config must contain a benchmarks list")
+    selected = [
+        item
+        for item in value
+        if isinstance(item, dict) and (only is None or item.get("id") == only)
+    ]
+    if only is not None and not selected:
+        raise ValueError(f"benchmark id not found: {only}")
+    return selected
 
-    case = _resolve_path(benchmark["case"], config_path)
-    registry = _resolve_path(benchmark.get("registry", "registry"), config_path)
-    source_profile = _resolve_path(benchmark.get("source_profile", "local_only"), config_path)
-    workspace = _resolve_path(benchmark["workspace"], config_path)
-    output = _resolve_path(benchmark["output"], config_path)
-    expectation = benchmark.get("expectation")
-    expectation_path = _resolve_path(expectation, config_path) if expectation else None
-    prepared_registry = workspace / "prepared_registry"
-    result_dir = output.parent
-    missing_plan_path = workspace / "missing_plan.yaml"
-    manual_input_dir = workspace / "manual_inputs"
 
-    _ensure_under(workspace, results_root, "workspace")
-    _ensure_under(output, results_root, "output")
-    _safe_clear(workspace, results_root)
-    _safe_clear(output, results_root)
-    result_dir.mkdir(parents=True, exist_ok=True)
-
-    steps = []
-    steps.append(
-        _run_reactgen(
-            [
-                "enrich",
-                str(case),
-                "--registry",
-                str(registry),
-                "--workspace",
-                str(workspace),
-                "--fresh",
-                "--source-profile",
-                str(source_profile),
-            ]
-        )
+def _run_setup(
+    value: Any,
+    config_path: Path,
+    results_root: Path,
+) -> dict[str, Any] | None:
+    if not isinstance(value, dict) or not value:
+        return None
+    setup_path = resolve_path(value.get("config"), config_path)
+    if setup_path is None:
+        return None
+    report_path = results_root / "setup_report.yaml"
+    report, return_code = run_setup(
+        setup_path,
+        check=True,
+        write_report=report_path,
     )
-    for import_item in _as_list(benchmark.get("cross_section_imports")):
-        if not isinstance(import_item, dict):
-            continue
-        import_args = [
-            "import-cross-sections",
-            str(_resolve_path(import_item["file"], config_path)),
-            "--workspace",
-            str(workspace),
-            "--source",
-            str(import_item.get("source", "local_file")),
-        ]
-        if import_item.get("reaction_id"):
-            import_args.extend(["--reaction-id", str(import_item["reaction_id"])])
-        if import_item.get("target"):
-            import_args.extend(["--target", str(import_item["target"])])
-        if import_item.get("license_note"):
-            import_args.extend(["--license-note", str(import_item["license_note"])])
-        steps.append(_run_reactgen(import_args))
-
-    if benchmark.get("cross_section_mapping"):
-        steps.append(
-            _run_reactgen(
-                [
-                    "apply-cross-section-mapping",
-                    str(_resolve_path(benchmark["cross_section_mapping"], config_path)),
-                    "--workspace",
-                    str(workspace),
-                ]
-            )
-        )
-
-    steps.append(
-        _run_reactgen(
-            [
-                "generate",
-                str(case),
-                "--registry",
-                str(prepared_registry),
-                "--output",
-                str(output),
-            ]
-        )
-    )
-    steps.append(
-        _run_reactgen(
-            [
-                "plan-missing",
-                str(output),
-                "--output",
-                str(missing_plan_path),
-            ]
-        )
-    )
-    steps.append(
-        _run_reactgen(
-            [
-                "template-missing",
-                str(output),
-                "--output-dir",
-                str(manual_input_dir),
-            ]
-        )
-    )
-
-    quality_gate = _enrichment_quality_gate(workspace / "prepare_report.yaml")
-    expectations = evaluate_expectations(output, expectation_path)
-    metrics = collect_metrics(
-        output,
-        prepared_registry,
-        missing_plan=missing_plan_path,
-        expectation_score=expectations["score"],
-        structural_enrichment_unresolved_count=quality_gate["structural_unresolved_count"],
-    )
-    metrics_path = result_dir / "benchmark_metrics.yaml"
-    report_path = result_dir / "benchmark_report.yaml"
-    _write_yaml(metrics_path, metrics)
-    report = {
-        "schema_version": 1,
-        "id": benchmark_id,
-        "case": str(case),
-        "registry": str(registry),
-        "source_profile": str(source_profile),
-        "workspace": str(workspace),
-        "output": str(output),
-        "generated_at": _now(),
-        "steps": steps,
-        "metrics": metrics,
-        "metrics_path": str(metrics_path),
-        "expectations": expectations,
-        "quality_gate": quality_gate,
-        "missing_plan": str(missing_plan_path),
-        "manual_input_templates": str(manual_input_dir),
-        "passed": bool(
-            expectations["passed"]
-            and quality_gate["passed"]
-            and metrics["generation_complete"]
-            and all(step["return_code"] == 0 for step in steps)
-        ),
-        "report_path": str(report_path),
-        "constraints": {
-            "network_access": "not_used",
-            "curated_registry_mutated": False,
-        },
-    }
-    _write_yaml(report_path, report)
+    if return_code != 0 and value.get("require_success", True):
+        raise RuntimeError(f"benchmark setup check failed: {setup_path}; report: {report_path}")
     return report
 
 
-def _run_reactgen(args: list[str]) -> dict[str, Any]:
-    rc = reactgen_main(args)
-    step = {
-        "command": "reactgen " + " ".join(args),
-        "return_code": rc,
+def _build_summary(
+    config_path: Path,
+    reports: list[dict[str, Any]],
+    setup_report: dict[str, Any] | None,
+    results_root: Path,
+) -> dict[str, Any]:
+    summary: dict[str, Any] = {
+        "schema_version": 1,
+        "generated_at": now(),
+        "config": str(config_path),
+        "summary": {
+            "n_benchmarks": len(reports),
+            "n_passed": sum(1 for report in reports if report["passed"]),
+            "n_failed": sum(1 for report in reports if not report["passed"]),
+        },
+        "benchmarks": [_summary_row(report) for report in reports],
     }
-    if rc != 0:
-        raise RuntimeError(f"benchmark command failed: {step['command']}")
-    return step
-
-
-def _enrichment_quality_gate(prepare_report_path: Path) -> dict[str, Any]:
-    """Fail only on structural enrichment defects, not ordinary data gaps."""
-
-    if not prepare_report_path.exists():
-        return {
-            "passed": False,
-            "prepare_report": str(prepare_report_path),
-            "structural_unresolved_count": 1,
-            "normal_missing_property_count": 0,
-            "by_category": {"missing_prepare_report": 1},
+    if setup_report is not None:
+        summary["setup"] = {
+            "report": str(results_root / "setup_report.yaml"),
+            "required_data_ready": setup_report["summary"]["required_data_ready"],
         }
+    return summary
 
-    report = _read_yaml(prepare_report_path)
-    unresolved = _as_list(report.get("unresolved"))
-    unresolved_properties = [
-        item
-        for item in unresolved
-        if isinstance(item, dict) and item.get("kind") == "missing_property"
-    ]
-    invalid_property_candidates = [
-        item
-        for item in unresolved
-        if not isinstance(item, dict) or item.get("kind") != "missing_property"
-    ]
-    unavailable_sources = _as_list(report.get("unavailable_sources"))
-    unresolved_products = _as_list(report.get("unresolved_product_species"))
-    unresolved_reactions = _as_list(report.get("unresolved_reactions"))
-    invalid_channels = [
-        item
-        for item in _as_list(report.get("reaction_channels_skipped"))
-        if isinstance(item, dict) and item.get("reason") not in {"duplicate_channel"}
-    ]
-    by_category = {
-        "non_missing_property_unresolved": len(invalid_property_candidates),
-        "unavailable_sources": len(unavailable_sources),
-        "unresolved_product_species": len(unresolved_products),
-        "unresolved_reactions": len(unresolved_reactions),
-        "invalid_or_skipped_reaction_channels": len(invalid_channels),
-    }
-    structural_count = sum(by_category.values())
+
+def _summary_row(report: dict[str, Any]) -> dict[str, Any]:
     return {
-        "passed": structural_count == 0,
-        "prepare_report": str(prepare_report_path),
-        "structural_unresolved_count": structural_count,
-        "normal_missing_property_count": len(unresolved_properties),
-        "by_category": by_category,
+        "id": report["id"],
+        "passed": report["passed"],
+        "score": report["expectations"]["score"],
+        "report": report["report_path"],
+        "metrics": report["metrics_path"],
     }
-
-
-def _resolve_path(value: Any, config_path: Path) -> Path:
-    if value is None:
-        return None
-    path = Path(str(value))
-    if path.is_absolute():
-        return path
-    cwd_candidate = (Path.cwd() / path).resolve()
-    if cwd_candidate.exists() or path.parts[:1] in {("cases",), ("registry",), ("benchmarks",), ("external_data",)}:
-        return cwd_candidate
-    return (config_path.parent / path).resolve()
-
-
-def _ensure_under(path: Path, root: Path, label: str) -> None:
-    resolved = path.resolve()
-    root = root.resolve()
-    try:
-        resolved.relative_to(root)
-    except ValueError as exc:
-        raise ValueError(f"benchmark {label} must be under {root}: {path}") from exc
-
-
-def _safe_clear(path: Path, root: Path) -> None:
-    _ensure_under(path, root, "output path")
-    if path.exists():
-        shutil.rmtree(path)
-
-
-def _read_yaml(path: Path) -> dict[str, Any]:
-    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(payload, dict):
-        raise ValueError(f"YAML file must contain a mapping: {path}")
-    return payload
-
-
-def _write_yaml(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8")
-
-
-def _now() -> str:
-    return datetime.now(timezone.utc).isoformat()
-
-
-def _as_list(value: Any) -> list[Any]:
-    return value if isinstance(value, list) else []
 
 
 def _print_summary(summary: dict[str, Any]) -> None:
@@ -353,6 +124,9 @@ def _print_summary(summary: dict[str, Any]) -> None:
         f"{counts['n_passed']} passed, {counts['n_failed']} failed"
     )
     print(f"summary: {Path(summary['config']).parent / 'results' / 'summary.yaml'}")
+
+
+__all__ = ["_enrichment_quality_gate", "run_benchmarks"]
 
 
 if __name__ == "__main__":

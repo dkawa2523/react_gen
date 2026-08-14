@@ -45,7 +45,7 @@ def test_prepare_case_does_not_requery_local_registry_as_enrichment(tmp_path):
         preserve_local_overlays=True,
     )
 
-    assert report["summary"]["n_properties_written"] == 0
+    assert report["summary"]["n_properties_filled"] == 0
     assert not report.get("unresolved")
 
 

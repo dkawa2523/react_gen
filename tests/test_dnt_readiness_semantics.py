@@ -8,7 +8,10 @@ from external_data_tools.benchmark_metrics import collect_metrics
 from external_data_tools.benchmark_runner import _enrichment_quality_gate
 from plasma_reactgen.application.diagnostics import build_missing_data
 from plasma_reactgen.application.dnt_input_builder import build_dnt_inputs
-from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks
+from plasma_reactgen.application.dnt_task_builder import (
+    build_complete_dnt_readiness,
+    build_dnt_tasks,
+)
 from plasma_reactgen.domain.models import (
     GeneratedReaction,
     PropertyValue,
@@ -47,16 +50,29 @@ def test_diagnostics_reports_nonelastic_dnt_channel_gaps_but_not_elastic_thresho
     network = _network_with_complete_properties_and_incomplete_channel()
     missing = build_missing_data(network, states=[])
 
-    fields_by_reaction = {
-        (item.subject_id, item.field)
-        for item in missing
-    }
+    fields_by_reaction = {(item.subject_id, item.field) for item in missing}
     assert ("Arp_O2_charge_transfer", "threshold_eV") in fields_by_reaction
     assert (
         "Arp_O2_charge_transfer",
         "deltaE_products_minus_reactants_eV",
     ) in fields_by_reaction
     assert ("Arp_O2_elastic", "threshold_eV") not in fields_by_reaction
+
+
+def test_complete_dnt_readiness_prioritizes_properties_then_channel_presence():
+    missing_properties = build_complete_dnt_readiness(
+        {"missing": {"ion": ["mass_amu"], "neutral": []}},
+        [],
+    )
+    no_dnt_channels = build_complete_dnt_readiness(
+        {"missing": {"ion": [], "neutral": []}},
+        [{"reaction_id": "reference", "dnt_class": None}],
+    )
+
+    assert missing_properties["status"] == "missing_required_data"
+    assert missing_properties["missing_required_properties"] == ["ion.mass_amu"]
+    assert no_dnt_channels["status"] == "no_dnt_channels"
+    assert no_dnt_channels["channel_warnings"] == []
 
 
 def test_metrics_name_property_and_complete_readiness_explicitly(tmp_path: Path):
@@ -172,9 +188,20 @@ def test_enrichment_quality_gate_ignores_property_gaps_and_fails_structural_gaps
         report,
         {
             "unresolved": [],
-            "unresolved_product_species": [],
+            "unresolved_product_species": [
+                {
+                    "pair": "electron|e|O2",
+                    "channel": "e_O2_dissociation",
+                    "species": "O",
+                    "reason": "unresolved_product_species",
+                }
+            ],
             "unresolved_reactions": [
-                {"pair": "electron|e|O2", "id": None, "reason": "missing_channel_id"}
+                {
+                    "pair": "electron|e|O2",
+                    "id": "e_O2_dissociation",
+                    "reason": "unresolved_product_species",
+                }
             ],
             "reaction_channels_skipped": [],
         },
@@ -183,6 +210,7 @@ def test_enrichment_quality_gate_ignores_property_gaps_and_fails_structural_gaps
     structural = _enrichment_quality_gate(report)
     assert structural["passed"] is False
     assert structural["structural_unresolved_count"] == 1
+    assert "unresolved_product_species" not in structural["by_category"]
 
 
 def _network_with_complete_properties_and_incomplete_channel() -> ReactionNetwork:

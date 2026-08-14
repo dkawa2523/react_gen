@@ -1,25 +1,29 @@
 from __future__ import annotations
 
-from collections import defaultdict
 from pathlib import Path
-from typing import Any
-import yaml
 
 from plasma_reactgen.application.ports import ReactionRepository, RuleRepository, SpeciesRepository
 from plasma_reactgen.domain.datasets import reaction_datasets_from_channel
-from plasma_reactgen.domain.models import CollisionPair, PropertyValue, ReactionChannel, Species, SpeciesAmount
+from plasma_reactgen.domain.models import (
+    CollisionPair,
+    PropertyValue,
+    ReactionChannel,
+    Species,
+    SpeciesAmount,
+)
+from plasma_reactgen.infrastructure.registry_index import build_registry_index, load_registry_yaml
 from plasma_reactgen.infrastructure.registry_paths import registry_asset_exists
 
 
 class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
     def __init__(self, root: str | Path):
         self.root = Path(root)
-        self._species_index: dict[str, Path] = {}
-        self._reaction_index: dict[str, Path] = {}
-        self._pair_index: dict[str, CollisionPair] = {}
-        self._species_pair_index: dict[str, set[str]] = defaultdict(set)
+        index = build_registry_index(self.iter_species_files(), self.iter_reaction_files())
+        self._species_index = index.species
+        self._reaction_index = index.reactions
+        self._pair_index = index.pairs
+        self._species_pair_index = index.species_pairs
         self._species_cache: dict[str, Species] = {}
-        self._scan_registry()
 
     def get_species(self, species_id: str) -> Species | None:
         if species_id in self._species_cache:
@@ -29,7 +33,7 @@ class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
         if path is None:
             return None
 
-        data = self._read_yaml(path)
+        data = load_registry_yaml(path)
         properties = {
             name: PropertyValue(
                 value=(payload or {}).get("value"),
@@ -61,7 +65,7 @@ class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
         if path is None:
             return []
 
-        data = self._read_yaml(path)
+        data = load_registry_yaml(path)
         channels: list[ReactionChannel] = []
         for ch in data.get("channels", []):
             channel_data = ch.get("data", {}) if isinstance(ch.get("data", {}), dict) else {}
@@ -113,13 +117,13 @@ class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
 
     def get_reaction_type_catalog(self) -> dict:
         path = self.root / "rules" / "reaction_type_catalog.yaml"
-        data = self._read_yaml(path)
+        data = load_registry_yaml(path)
         data.pop("schema_version", None)
         return data
 
     def get_role_required_properties(self) -> dict:
         path = self.root / "rules" / "role_required_properties.yaml"
-        return self._read_yaml(path)
+        return load_registry_yaml(path)
 
     def asset_exists(self, relative_path: str | None) -> bool:
         return registry_asset_exists(self.root, relative_path)
@@ -133,61 +137,3 @@ class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
         if not reaction_root.exists():
             return []
         return sorted(reaction_root.glob("*/*.yaml"))
-
-    def _scan_registry(self) -> None:
-        self._species_index.clear()
-        self._reaction_index.clear()
-        self._pair_index.clear()
-        self._species_pair_index.clear()
-
-        species_paths: dict[str, Path] = {}
-        for path in self.iter_species_files():
-            data = self._read_yaml(path)
-            sid = data.get("id")
-            if sid:
-                if sid in species_paths:
-                    raise ValueError(
-                        f"duplicate species id '{sid}': {species_paths[sid]} and {path}"
-                    )
-                species_paths[sid] = path
-                self._species_index[sid] = path
-
-        pair_paths: dict[str, Path] = {}
-        channel_paths: dict[str, Path] = {}
-        for path in self.iter_reaction_files():
-            data = self._read_yaml(path)
-            pair_data = data.get("pair", {})
-            if not pair_data:
-                continue
-            family = pair_data.get("family")
-            projectile = pair_data.get("projectile")
-            target = pair_data.get("target")
-            if not all(isinstance(value, str) and value for value in (family, projectile, target)):
-                continue
-            pair = CollisionPair(family=family, projectile=projectile, target=target)
-            key = pair.key
-            if key in pair_paths:
-                raise ValueError(
-                    f"duplicate reaction pair '{key}': {pair_paths[key]} and {path}"
-                )
-            pair_paths[key] = path
-            for channel in data.get("channels", []):
-                channel_id = channel.get("id") if isinstance(channel, dict) else None
-                if not channel_id:
-                    continue
-                channel_id = str(channel_id)
-                if channel_id in channel_paths:
-                    raise ValueError(
-                        f"duplicate reaction channel id '{channel_id}': "
-                        f"{channel_paths[channel_id]} and {path}"
-                    )
-                channel_paths[channel_id] = path
-            self._reaction_index[key] = path
-            self._pair_index[key] = pair
-            self._species_pair_index[projectile].add(key)
-            self._species_pair_index[target].add(key)
-
-    @staticmethod
-    def _read_yaml(path: Path) -> dict[str, Any]:
-        data = yaml.safe_load(path.read_text(encoding="utf-8"))
-        return data or {}

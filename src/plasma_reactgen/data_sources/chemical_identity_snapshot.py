@@ -3,9 +3,10 @@ from __future__ import annotations
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
-import re
 
 import yaml
+
+from plasma_reactgen.data_sources.chemical_identity_merge import merge_identity_candidate
 
 
 class ChemicalIdentitySnapshotProvider:
@@ -31,7 +32,9 @@ class ChemicalIdentitySnapshotProvider:
         }
 
 
-def enrich_species_identity_metadata(prepared_registry: Path, provider: ChemicalIdentitySnapshotProvider) -> dict[str, Any]:
+def enrich_species_identity_metadata(
+    prepared_registry: Path, provider: ChemicalIdentitySnapshotProvider
+) -> dict[str, Any]:
     prepared_registry = Path(prepared_registry)
     report: dict[str, Any] = {
         "schema_version": 1,
@@ -51,7 +54,8 @@ def enrich_species_identity_metadata(prepared_registry: Path, provider: Chemical
         if not candidates:
             continue
         candidate = candidates[0]
-        changed = _apply_identity_candidate(species, candidate, report)
+        changed, conflicts = merge_identity_candidate(species, candidate)
+        report["conflicts"].extend(conflicts)
         if changed:
             path.write_text(
                 yaml.safe_dump(species, sort_keys=False, allow_unicode=True),
@@ -62,65 +66,6 @@ def enrich_species_identity_metadata(prepared_registry: Path, provider: Chemical
     report["summary"]["n_updated_species"] = len(report["updated_species"])
     report["summary"]["n_conflicts"] = len(report["conflicts"])
     return report
-
-
-def _apply_identity_candidate(species: dict[str, Any], candidate: dict[str, Any], report: dict[str, Any]) -> bool:
-    changed = False
-    metadata = species.setdefault("metadata", {})
-
-    aliases = _unique([*metadata.get("aliases", []), *candidate.get("aliases", [])])
-    if aliases != metadata.get("aliases", []):
-        metadata["aliases"] = aliases
-        changed = True
-
-    identifiers = metadata.setdefault("identifiers", {})
-    for key, value in (candidate.get("identifiers") or {}).items():
-        if value is not None and identifiers.get(key) in (None, ""):
-            identifiers[key] = value
-            changed = True
-
-    ontology_tags = _unique([*metadata.get("ontology_tags", []), *candidate.get("ontology_tags", [])])
-    if ontology_tags != metadata.get("ontology_tags", []):
-        metadata["ontology_tags"] = ontology_tags
-        changed = True
-
-    source_records = metadata.setdefault("identity_source_records", [])
-    for source_record in candidate.get("source_records", []):
-        if isinstance(source_record, dict) and source_record not in source_records:
-            source_records.append(deepcopy(source_record))
-            changed = True
-
-    formula = candidate.get("formula")
-    if formula:
-        existing_formula = species.get("formula")
-        if existing_formula in (None, ""):
-            species["formula"] = formula
-            changed = True
-        elif existing_formula != formula:
-            report["conflicts"].append(
-                {
-                    "kind": "formula_conflict",
-                    "species": species.get("id"),
-                    "existing_formula": existing_formula,
-                    "candidate_formula": formula,
-                    "action": "manual_review",
-                }
-            )
-
-        candidate_composition = _composition_from_formula(formula)
-        existing_composition = species.get("composition")
-        if candidate_composition and existing_composition and existing_composition != candidate_composition:
-            report["conflicts"].append(
-                {
-                    "kind": "composition_conflict",
-                    "species": species.get("id"),
-                    "existing_composition": existing_composition,
-                    "candidate_composition": candidate_composition,
-                    "action": "manual_review",
-                }
-            )
-
-    return changed
 
 
 def _load_records(snapshot: Path) -> list[dict[str, Any]]:
@@ -138,21 +83,3 @@ def _load_records(snapshot: Path) -> list[dict[str, Any]]:
 def _matches(record: dict[str, Any], species_id: str) -> bool:
     aliases = [str(alias) for alias in record.get("aliases", [])]
     return species_id == record.get("species") or species_id in aliases
-
-
-def _unique(values: list[Any]) -> list[str]:
-    result = []
-    seen = set()
-    for value in values:
-        item = str(value)
-        if item and item not in seen:
-            result.append(item)
-            seen.add(item)
-    return result
-
-
-def _composition_from_formula(formula: str) -> dict[str, int]:
-    composition: dict[str, int] = {}
-    for element, count_text in re.findall(r"([A-Z][a-z]?)(\d*)", formula):
-        composition[element] = composition.get(element, 0) + int(count_text or "1")
-    return composition

@@ -1,13 +1,11 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import yaml
-
-from plasma_reactgen.data_sources.base import PropertyProvider
-
 
 SUPPORTED_PROPERTIES = {
     "enthalpy_formation_eV",
@@ -18,11 +16,11 @@ SUPPORTED_PROPERTIES = {
 }
 
 
-class ArgonneAtctSnapshotPropertyProvider(PropertyProvider):
+class ArgonneAtctSnapshotPropertyProvider:
     """Read reviewed local Argonne/ATcT-style thermochemistry snapshots."""
 
     def __init__(self, files: str | Path | Iterable[str | Path]):
-        if isinstance(files, (str, Path)):
+        if isinstance(files, str | Path):
             self.files = [Path(files)]
         else:
             self.files = [Path(path) for path in files]

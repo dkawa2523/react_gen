@@ -83,8 +83,7 @@ def test_prepare_case_uses_nist_snapshot_without_mutating_registry(tmp_path):
         encoding="utf-8",
     )
     original_registry = {
-        path: path.read_text(encoding="utf-8")
-        for path in registry_root.rglob("*.yaml")
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
     }
 
     report = prepare_case(
@@ -99,14 +98,21 @@ def test_prepare_case_uses_nist_snapshot_without_mutating_registry(tmp_path):
     )
 
     prepared_cf4 = yaml.safe_load((output_dir / "species" / "CF4.yaml").read_text(encoding="utf-8"))
-    report_payload = yaml.safe_load((output_dir / "prepare_report.yaml").read_text(encoding="utf-8"))
+    report_payload = yaml.safe_load(
+        (output_dir / "prepare_report.yaml").read_text(encoding="utf-8")
+    )
 
     assert prepared_cf4["properties"]["ionization_energy_eV"]["value"] == 14.7
     assert prepared_cf4["properties"]["enthalpy_formation_eV"]["value"] == -9.6719
-    assert prepared_cf4["properties"]["ionization_energy_eV"]["source_record"]["source_type"] == "public_database_snapshot"
-    assert report["registry_mutated"] is False
-    assert report_payload["summary"]["n_properties_written"] == 2
-    assert {path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")} == original_registry
+    assert (
+        prepared_cf4["properties"]["ionization_energy_eV"]["source_record"]["source_type"]
+        == "public_database_snapshot"
+    )
+    assert report["schema_version"] == 2
+    assert report_payload["summary"]["n_properties_filled"] == 2
+    assert {
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
+    } == original_registry
 
 
 def _make_nist_snapshot(root: Path) -> Path:

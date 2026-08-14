@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from pathlib import Path
 import socket
+from pathlib import Path
 
 import yaml
 
@@ -64,6 +64,66 @@ def test_metrics_and_expectations_can_be_collected_from_benchmark_outputs(tmp_pa
     assert evaluation["missing_outputs"] == []
 
 
+def test_expectations_report_each_missing_and_forbidden_category(tmp_path):
+    output = tmp_path / "outputs"
+    output.mkdir()
+    (output / "network.states.yaml").write_text(
+        yaml.safe_dump({"species": [{"id": "Ar"}]}),
+        encoding="utf-8",
+    )
+    (output / "network.reactions.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "reactions": [
+                    {
+                        "id": "bad_elastic",
+                        "family": "electron",
+                        "type": "elastic",
+                        "validation": {
+                            "charge_balance": "failed",
+                            "element_balance": "ok",
+                        },
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    expectation = tmp_path / "expectation.yaml"
+    expectation.write_text(
+        yaml.safe_dump(
+            {
+                "required_species": ["Ar", "Ar+"],
+                "required_reaction_families": ["electron", "ion_neutral"],
+                "required_reaction_types": {
+                    "electron": ["elastic", "ionization"],
+                },
+                "required_outputs": [
+                    "network.states.yaml",
+                    "dnt_tasks.yaml",
+                ],
+                "forbidden": {"reactions_with_failed_balance": True},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    evaluation = evaluate_expectations(output, expectation)
+
+    assert evaluation["passed"] is False
+    assert evaluation["score"] == 0.444444
+    assert evaluation["missing_species"] == ["Ar+"]
+    assert evaluation["missing_reaction_families"] == ["ion_neutral"]
+    assert evaluation["missing_reaction_types"] == {"electron": ["ionization"]}
+    assert evaluation["missing_outputs"] == ["dnt_tasks.yaml"]
+    assert evaluation["forbidden_violations"] == [
+        {
+            "reaction_id": "bad_elastic",
+            "validation": {"charge_balance": "failed"},
+        }
+    ]
+
+
 def _write_benchmark_config(path: Path, repo_root: Path) -> Path:
     payload = {
         "schema_version": 1,
@@ -72,10 +132,14 @@ def _write_benchmark_config(path: Path, repo_root: Path) -> Path:
                 "id": "ar_cf4_db_smoke",
                 "case": str(repo_root / "cases" / "ar_cf4_db_smoke" / "input.yaml"),
                 "registry": str(repo_root / "registry"),
-                "source_profile": str(repo_root / "cases" / "ar_cf4_db_smoke" / "source_profile.yaml"),
+                "source_profile": str(
+                    repo_root / "cases" / "ar_cf4_db_smoke" / "source_profile.yaml"
+                ),
                 "workspace": str(path.parent / "results" / "ar_cf4_db_smoke" / "work"),
                 "output": str(path.parent / "results" / "ar_cf4_db_smoke" / "outputs"),
-                "expectation": str(repo_root / "benchmarks" / "expectations" / "ar_cf4_expectations.yaml"),
+                "expectation": str(
+                    repo_root / "benchmarks" / "expectations" / "ar_cf4_expectations.yaml"
+                ),
             }
         ],
     }

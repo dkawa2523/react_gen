@@ -15,7 +15,16 @@ def test_cli_promote_defaults_to_dry_run_and_does_not_mutate_registry(tmp_path):
         [{"kind": "species", "id": "CF3", "action": "promote"}],
     )
 
-    rc = main(["promote", str(prepared_registry), "--registry", str(registry), "--decision", str(decision)])
+    rc = main(
+        [
+            "promote",
+            str(prepared_registry),
+            "--registry",
+            str(registry),
+            "--decision",
+            str(decision),
+        ]
+    )
 
     report = _read_yaml(tmp_path / "workspace" / "promote_report.yaml")
     assert rc == 0
@@ -31,7 +40,11 @@ def test_apply_promotes_new_species_with_status_notes_and_provenance(tmp_path):
     _make_prepared_species(
         prepared_registry,
         "CF3",
-        metadata={"status": "imported", "source_record": {"source_type": "internal_file_db"}, "notes": ["seeded"]},
+        metadata={
+            "status": "imported",
+            "source_record": {"source_type": "internal_file_db"},
+            "notes": ["seeded"],
+        },
         extra={"confidence": {"score": 0.9}, "inference": {"rule": "reviewed_seed"}},
     )
     decision = _make_decision(
@@ -148,6 +161,68 @@ def test_reject_action_is_reported_and_not_copied(tmp_path):
     assert not (registry / "species" / "speculative_fragment.yaml").exists()
 
 
+def test_invalid_promotion_decisions_report_specific_conflicts(tmp_path):
+    prepared_registry = tmp_path / "workspace" / "prepared_registry"
+    decision = tmp_path / "review_decisions.yaml"
+    _write_yaml(
+        decision,
+        {
+            "schema_version": 1,
+            "decisions": [
+                "not-a-mapping",
+                {"kind": "species", "id": "CF3", "action": "archive"},
+                {"kind": "dataset", "id": "dataset-1", "action": "promote"},
+                {"kind": "species", "action": "promote"},
+                {"kind": "reaction_channel", "id": "channel-1", "action": "promote"},
+            ],
+        },
+    )
+
+    report = promote_reviewed_registry(
+        prepared_registry,
+        tmp_path / "registry",
+        decision,
+    )
+
+    assert [item["reason"] for item in report["conflicts"]] == [
+        "invalid_decision",
+        "unsupported_action",
+        "unsupported_kind",
+        "missing_species_id",
+        "missing_pair",
+    ]
+    assert report["registry_mutated"] is False
+
+
+def test_apply_promotes_channel_into_new_pair_file(tmp_path):
+    prepared_registry = tmp_path / "workspace" / "prepared_registry"
+    registry = tmp_path / "registry"
+    _make_prepared_reaction(prepared_registry, "e_CF4_new", threshold=12.5)
+    decision = _make_decision(
+        tmp_path / "review_decisions.yaml",
+        [
+            {
+                "kind": "reaction_channel",
+                "id": "e_CF4_new",
+                "pair": {"family": "electron", "projectile": "e", "target": "CF4"},
+                "action": "promote",
+            }
+        ],
+    )
+
+    report = promote_reviewed_registry(prepared_registry, registry, decision, apply=True)
+
+    payload = _read_yaml(registry / "reactions" / "electron" / "e__CF4.yaml")
+    assert report["registry_mutated"] is True
+    assert payload["pair"] == {
+        "family": "electron",
+        "projectile": "e",
+        "target": "CF4",
+    }
+    assert payload["metadata"]["status"] == "curated"
+    assert [channel["id"] for channel in payload["channels"]] == ["e_CF4_new"]
+
+
 def _make_prepared_species(
     prepared_registry: Path,
     species_id: str,
@@ -178,7 +253,11 @@ def _make_prepared_reaction(prepared_registry: Path, channel_id: str, *, thresho
                 {
                     "id": channel_id,
                     "type": "dissociation",
-                    "products": [{"species": "e", "n": 1}, {"species": "CF3", "n": 1}, {"species": "F", "n": 1}],
+                    "products": [
+                        {"species": "e", "n": 1},
+                        {"species": "CF3", "n": 1},
+                        {"species": "F", "n": 1},
+                    ],
                     "threshold_eV": threshold,
                     "status": "imported",
                     "data": {"source_record": {"source_type": "internal_file_db"}},

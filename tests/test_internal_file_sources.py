@@ -122,8 +122,7 @@ def test_prepare_case_writes_internal_data_to_prepared_registry_without_mutating
         encoding="utf-8",
     )
     original_registry = {
-        path: path.read_text(encoding="utf-8")
-        for path in registry_root.rglob("*.yaml")
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
     }
 
     report = prepare_case(
@@ -144,7 +143,9 @@ def test_prepare_case_writes_internal_data_to_prepared_registry_without_mutating
     prepared_reactions = yaml.safe_load(
         (output_dir / "reactions" / "electron" / "e__Xe.yaml").read_text(encoding="utf-8")
     )
-    report_payload = yaml.safe_load((output_dir / "prepare_report.yaml").read_text(encoding="utf-8"))
+    report_payload = yaml.safe_load(
+        (output_dir / "prepare_report.yaml").read_text(encoding="utf-8")
+    )
 
     assert prepared_xe["metadata"]["source_record"] == {
         "source_type": "internal_file_db",
@@ -157,11 +158,13 @@ def test_prepare_case_writes_internal_data_to_prepared_registry_without_mutating
     }
     assert prepared_reactions["channels"][0]["id"] == "e_Xe_elastic"
     assert prepared_reactions["channels"][0]["source_record"]["source_type"] == "internal_file_db"
-    assert report["registry_mutated"] is False
+    assert report["schema_version"] == 2
     assert report_payload["summary"]["n_species_written"] == 1
-    assert report_payload["summary"]["n_properties_written"] == 1
-    assert report_payload["summary"]["n_reaction_files_written"] == 1
-    assert {path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")} == original_registry
+    assert report_payload["summary"]["n_properties_filled"] == 1
+    assert report_payload["summary"]["n_reaction_pairs_imported"] == 1
+    assert {
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
+    } == original_registry
 
 
 def _make_internal_data(root: Path) -> Path:
@@ -251,9 +254,7 @@ def _make_registry_with_missing_cf4_property(root: Path) -> Path:
             "charge": 0,
             "classes": ["neutral", "molecule"],
             "state": {"kind": "ground", "label": "X", "excitation_energy_eV": 0.0},
-            "properties": {
-                "polarizability_A3": {"value": None, "unit": "A3", "source": None}
-            },
+            "properties": {"polarizability_A3": {"value": None, "unit": "A3", "source": None}},
             "metadata": {"status": "curated", "notes": []},
         },
     )

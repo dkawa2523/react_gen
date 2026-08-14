@@ -4,29 +4,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 from plasma_reactgen.domain.models import CollisionPair, ReactionChannel, Species
 from plasma_reactgen.infrastructure.file_registry import FileRegistry
-
-
-@dataclass(frozen=True)
-class RegistryPackInfo:
-    id: str
-    version: str
-    root: Path
-    seed_gases: tuple[str, ...]
-    recommended_max_depth: int | None
-    redistribution_status: str
-
-    def summary(self) -> dict[str, Any]:
-        return {
-            "id": self.id,
-            "version": self.version,
-            "seed_gases": list(self.seed_gases),
-            "recommended_max_depth": self.recommended_max_depth,
-            "redistribution_status": self.redistribution_status,
-        }
+from plasma_reactgen.infrastructure.registry_pack_selection import (
+    RegistryPackInfo,
+    select_registry_pack,
+)
 
 
 @dataclass(frozen=True)
@@ -145,65 +128,3 @@ def resolve_registry(
             "coverage_gap": False,
         },
     )
-
-
-def select_registry_pack(gases: list[str], packs_root: str | Path) -> RegistryPackInfo | None:
-    packs_root = Path(packs_root)
-    index_path = packs_root / "index.yaml"
-    if not index_path.is_file():
-        return None
-    index = _read_yaml(index_path)
-    candidates: list[RegistryPackInfo] = []
-    required = set(gases)
-    for entry in index.get("packs", []):
-        if not isinstance(entry, dict) or not entry.get("id"):
-            continue
-        pack_root = packs_root / str(entry.get("path") or entry["id"])
-        manifest_path = pack_root / "pack.yaml"
-        if not manifest_path.is_file():
-            continue
-        manifest = {**entry, **_read_yaml(manifest_path)}
-        seed_gases = tuple(str(value) for value in manifest.get("seed_gases", []))
-        if not required.issubset(set(seed_gases)):
-            continue
-        candidates.append(
-            RegistryPackInfo(
-                id=str(manifest["id"]),
-                version=str(manifest.get("version") or "0"),
-                root=pack_root,
-                seed_gases=seed_gases,
-                recommended_max_depth=_optional_int(manifest.get("recommended_max_depth")),
-                redistribution_status=str(manifest.get("redistribution_status") or "site-local"),
-            )
-        )
-    if not candidates:
-        return None
-    candidates.sort(
-        key=lambda pack: (
-            len(set(pack.seed_gases) - required),
-            tuple(-value for value in _version_key(pack.version)),
-            pack.id,
-        )
-    )
-    return candidates[0]
-
-
-def _version_key(version: str) -> tuple[int, ...]:
-    parts = []
-    for value in version.split("."):
-        try:
-            parts.append(int(value))
-        except ValueError:
-            parts.append(0)
-    return tuple((parts + [0, 0, 0, 0])[:4])
-
-
-def _optional_int(value: Any) -> int | None:
-    try:
-        return None if value is None else int(value)
-    except (TypeError, ValueError):
-        return None
-
-
-def _read_yaml(path: Path) -> dict[str, Any]:
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}

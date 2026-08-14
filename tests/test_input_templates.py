@@ -12,8 +12,16 @@ def test_templates_generated_from_missing_data(tmp_path):
     _write_missing_data(
         outputs / "missing_data.yaml",
         [
-            _missing("dnt_task", "Ar+__CF4", "target.collision_radius_A", "dnt_plus", "missing radius"),
-            _missing("reaction", "e_CF4_elastic", "data.cross_section.path", "electron_collision", "missing xsec"),
+            _missing(
+                "dnt_task", "Ar+__CF4", "target.collision_radius_A", "dnt_plus", "missing radius"
+            ),
+            _missing(
+                "reaction",
+                "e_CF4_elastic",
+                "data.cross_section.path",
+                "electron_collision",
+                "missing xsec",
+            ),
             _missing(
                 "reaction",
                 "Arp_CF4_dct_CF3p",
@@ -34,14 +42,58 @@ def test_templates_generated_from_missing_data(tmp_path):
     assert (out / "reaction_energetics.yaml").exists()
     assert (out / "manual_review.yaml").exists()
     assert (out / "README.md").exists()
+    assert report["schema_version"] == 2
     assert report["summary"]["n_missing_items"] == 4
+
+
+def test_templates_deduplicate_the_same_canonical_missing_item(tmp_path):
+    item = _missing(
+        "reaction",
+        "e_CF4_elastic",
+        "data.cross_section.path",
+        "electron_collision",
+        "missing xsec",
+    )
+    missing_file = _write_missing_data(tmp_path / "missing_data.yaml", [item, item])
+
+    report = generate_missing_input_templates(missing_file, tmp_path / "manual_inputs")
+
+    mappings = _read_yaml(tmp_path / "manual_inputs" / "cross_section_mapping.yaml")["mappings"]
+    assert report["summary"]["n_missing_items"] == 1
+    assert len(mappings) == 1
+
+
+def test_prepare_diagnostics_are_not_reclassified_as_manual_inputs(tmp_path):
+    outputs = tmp_path / "outputs"
+    _write_missing_data(outputs / "missing_data.yaml", [])
+    _write_yaml(
+        outputs / "prepare_report.yaml",
+        {
+            "unresolved_reactions": [
+                {
+                    "pair": "electron|e|CF4",
+                    "id": "e_CF4_invalid",
+                    "reason": "validation_failed",
+                }
+            ]
+        },
+    )
+
+    report = generate_missing_input_templates(outputs, tmp_path / "manual_inputs")
+
+    manual_review = _read_yaml(tmp_path / "manual_inputs" / "manual_review.yaml")
+    assert report["prepare_report"] == str(outputs / "prepare_report.yaml")
+    assert report["summary"]["n_missing_items"] == 0
+    assert manual_review["items"] == []
 
 
 def test_templates_include_units_and_no_fake_values(tmp_path):
     missing_file = _write_missing_data(
         tmp_path / "missing_data.yaml",
         [
-            _missing("dnt_task", "Ar+__CF4", "target.collision_radius_A", "dnt_plus", "missing radius"),
+            _missing(
+                "dnt_task", "Ar+__CF4", "target.collision_radius_A", "dnt_plus", "missing radius"
+            ),
             _missing("species", "CF4", "polarizability_A3", "dnt_plus", "missing polarizability"),
         ],
     )
@@ -65,8 +117,20 @@ def test_cross_section_and_energetics_templates_have_blank_values(tmp_path):
     missing_file = _write_missing_data(
         tmp_path / "missing_data.yaml",
         [
-            _missing("reaction", "e_CF4_elastic", "data.cross_section", "electron_collision", "missing xsec"),
-            _missing("reaction", "Arp_CF4_dct_CF3p", "deltaE_products_minus_reactants_eV", "dnt", "missing energy"),
+            _missing(
+                "reaction",
+                "e_CF4_elastic",
+                "data.cross_section",
+                "electron_collision",
+                "missing xsec",
+            ),
+            _missing(
+                "reaction",
+                "Arp_CF4_dct_CF3p",
+                "deltaE_products_minus_reactants_eV",
+                "dnt",
+                "missing energy",
+            ),
         ],
     )
 
@@ -85,7 +149,15 @@ def test_cross_section_and_energetics_templates_have_blank_values(tmp_path):
 def test_threshold_energy_template_has_blank_threshold(tmp_path):
     missing_file = _write_missing_data(
         tmp_path / "missing_data.yaml",
-        [_missing("reaction", "e_O2_ionization", "threshold_eV", "electron_collision", "missing threshold")],
+        [
+            _missing(
+                "reaction",
+                "e_O2_ionization",
+                "threshold_eV",
+                "electron_collision",
+                "missing threshold",
+            )
+        ],
     )
 
     generate_missing_input_templates(missing_file, tmp_path / "manual_inputs")
@@ -150,7 +222,7 @@ def test_templates_generated_from_all_semiconductor_benchmark_outputs_if_availab
     if not all((root / "missing_data.yaml").exists() for root in output_roots):
         pytest.skip("benchmark outputs are not available in this checkout")
 
-    for case_id, output_root in zip(case_ids, output_roots):
+    for case_id, output_root in zip(case_ids, output_roots, strict=False):
         destination = tmp_path / case_id
         report = generate_missing_input_templates(output_root, destination)
         assert (destination / "README.md").exists()
@@ -158,7 +230,10 @@ def test_templates_generated_from_all_semiconductor_benchmark_outputs_if_availab
         assert (destination / "reaction_energetics.yaml").exists()
         assert (destination / "reaction_channels.yaml").exists()
         assert (destination / "cross_section_mapping.yaml").exists()
-        assert "cl2_bcl3" not in yaml.safe_dump(_read_yaml(destination / "cross_section_mapping.yaml")).lower()
+        assert (
+            "cl2_bcl3"
+            not in yaml.safe_dump(_read_yaml(destination / "cross_section_mapping.yaml")).lower()
+        )
         assert "Cl2/BCl3" not in (destination / "README.md").read_text(encoding="utf-8")
         assert report["summary"]["n_missing_items"] >= 0
 
@@ -167,14 +242,25 @@ def test_template_missing_cli_writes_templates(tmp_path):
     outputs = tmp_path / "outputs"
     _write_missing_data(
         outputs / "missing_data.yaml",
-        [_missing("reaction", "e_CF4_elastic", "data.cross_section.path", "electron_collision", "missing xsec")],
+        [
+            _missing(
+                "reaction",
+                "e_CF4_elastic",
+                "data.cross_section.path",
+                "electron_collision",
+                "missing xsec",
+            )
+        ],
     )
     output_dir = tmp_path / "manual_inputs"
 
     rc = main(["template-missing", str(outputs), "--output-dir", str(output_dir)])
 
     assert rc == 0
-    assert _read_yaml(output_dir / "cross_section_mapping.yaml")["mappings"][0]["reaction_id"] == "e_CF4_elastic"
+    assert (
+        _read_yaml(output_dir / "cross_section_mapping.yaml")["mappings"][0]["reaction_id"]
+        == "e_CF4_elastic"
+    )
 
 
 def _missing(kind: str, subject: str, field: str, required_by: str, message: str) -> dict:

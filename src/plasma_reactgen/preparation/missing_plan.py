@@ -11,19 +11,24 @@ from plasma_reactgen.application.missing_actions import (
     action_for_missing_item,
     priority_for_action,
 )
+from plasma_reactgen.preparation.input_report_reader import load_missing_data
 
 COMMAND_HINTS = {
     "seed_species": "Add reviewed species YAML under prepared_registry/species/.",
     "enrich_properties": "Run prepare/enrich with configured local property providers.",
-    "import_cross_sections": "reactgen import-cross-sections INPUT_FILE --workspace WORKSPACE --reaction-id REACTION_ID --target TARGET",
-    "review_reaction_energetics": "Review deltaE_products_minus_reactants_eV in prepared_registry reaction channels.",
+    "import_cross_sections": (
+        "reactgen import-cross-sections INPUT_FILE --workspace WORKSPACE "
+        "--reaction-id REACTION_ID --target TARGET"
+    ),
+    "review_reaction_energetics": (
+        "Review deltaE_products_minus_reactants_eV in prepared_registry reaction channels."
+    ),
     "manual_review": "Inspect missing_data.yaml and decide the next reviewed action.",
 }
 
+
 def build_missing_plan(outputs_or_missing_data: Path) -> dict[str, Any]:
-    missing_path = resolve_missing_data_path(outputs_or_missing_data)
-    payload = _read_yaml(missing_path)
-    missing_items = _missing_items(payload)
+    _, _, missing_items = load_missing_data(outputs_or_missing_data)
 
     actions = _group_actions(missing_items)
     return {
@@ -44,36 +49,6 @@ def write_missing_plan(outputs_or_missing_data: Path, output: Path) -> dict[str,
         encoding="utf-8",
     )
     return plan
-
-
-def resolve_missing_data_path(outputs_or_missing_data: Path) -> Path:
-    path = Path(outputs_or_missing_data)
-    if path.is_dir():
-        path = path / "missing_data.yaml"
-    if not path.exists():
-        raise FileNotFoundError(f"missing_data.yaml not found: {path}")
-    return path
-
-
-def _read_yaml(path: Path) -> Any:
-    try:
-        return yaml.safe_load(path.read_text(encoding="utf-8"))
-    except yaml.YAMLError as exc:
-        raise ValueError(f"malformed missing-data YAML: {path}") from exc
-
-
-def _missing_items(payload: Any) -> list[dict[str, Any]]:
-    if payload is None:
-        return []
-    if isinstance(payload, list):
-        items = payload
-    elif isinstance(payload, dict):
-        items = payload.get("missing_data", [])
-    else:
-        raise ValueError("missing-data payload must be a mapping or a list")
-    if not isinstance(items, list):
-        raise ValueError("missing_data must be a list")
-    return [item for item in items if isinstance(item, dict)]
 
 
 def _group_actions(missing_items: list[dict[str, Any]]) -> list[dict[str, Any]]:

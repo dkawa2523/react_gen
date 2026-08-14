@@ -26,15 +26,18 @@ Provider outputs should be YAML-compatible dictionaries. Include provenance with
 
 ## Registering A Provider In The Factory
 
-Add provider construction to
-`src/plasma_reactgen/data_sources/provider_factory.py`.
+Keep each part in its focused module:
+
+- supported public names: `data_sources/provider_catalog.py`
+- source-profile and alias interpretation: `data_sources/provider_profile.py`
+- lazy adapter construction: `data_sources/provider_builders.py`
+- section order and alias-to-builder mapping: `data_sources/provider_factory.py`
 
 Recommended pattern:
 
-1. Add the provider name to `available_provider_names()`.
-2. Add a small builder method that checks whether the source profile lists the
-   provider.
-3. If required configuration is missing, call the factory warning path and
+1. Add the provider name to the catalog.
+2. Add a small lazy builder method and map the name in the factory facade.
+3. If required configuration is missing, call the builder warning path and
    return no provider.
 4. Import the concrete provider inside the builder method, not at module top
    level.

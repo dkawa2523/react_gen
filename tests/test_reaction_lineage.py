@@ -32,6 +32,21 @@ def test_same_depth_producer_cannot_create_a_cycle():
     assert by_id["same_depth"].precursor_reaction_ids == []
 
 
+def test_input_species_never_creates_a_precursor_dependency():
+    network = _network()
+    network.reactions.extend(
+        [
+            _reaction("produces_input", 0, "X", "A"),
+            _reaction("consumes_input", 1, "A", "E"),
+        ]
+    )
+
+    attach_reaction_lineage(network)
+
+    by_id = {reaction.id: reaction for reaction in network.reactions}
+    assert by_id["consumes_input"].precursor_reaction_ids == []
+
+
 def _network() -> ReactionNetwork:
     reactions = [
         _reaction("r0_b", 0, "A", "B"),

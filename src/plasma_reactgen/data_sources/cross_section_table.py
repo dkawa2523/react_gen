@@ -1,20 +1,18 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Any
 import csv
 import hashlib
+from dataclasses import dataclass
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
 
 import yaml
 
 from plasma_reactgen.data_sources.cache import record_source_file
 from plasma_reactgen.domain.identifiers import to_file_key
 
-
 REQUIRED_COLUMNS = ("energy_eV", "cross_section_m2")
-OPTIONAL_NAME_COLUMNS = ("reaction_id", "target", "process")
 
 
 @dataclass
@@ -177,7 +175,7 @@ def _write_metadata(
         "source_type": "public_database_snapshot" if source == "lxcat_offline" else "local_file",
         "database": "LXCat" if source == "lxcat_offline" else "user_provided",
         "original_file": str(input_path),
-        "imported_at": datetime.now(timezone.utc).isoformat(),
+        "imported_at": datetime.now(UTC).isoformat(),
         "columns": columns,
         "units": {
             "energy": "eV",

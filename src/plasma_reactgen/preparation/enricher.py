@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
 from typing import Any
-import shutil
 
 import yaml
 
@@ -118,15 +118,8 @@ def _enrichment_report(
     identity_report: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     summary = prepare_report.get("summary", {})
-    unresolved_items = (
-        len(prepare_report.get("unresolved", []))
-        + len(prepare_report.get("unresolved_product_species", []))
-        + len(prepare_report.get("unresolved_reactions", []))
-        + len(prepare_report.get("reaction_channels_skipped", []))
-        + (identity_report or {}).get("summary", {}).get("n_conflicts", 0)
-    )
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "case": {"name": case_name},
         "source_profile": source_profile_name,
         "prepared_registry": str(prepared_registry),
@@ -134,20 +127,23 @@ def _enrichment_report(
             "mode": workspace_mode,
             "reused_existing_prepared_registry": reused_existing_workspace,
         },
-        "registry_mutated": False,
-        "auto_promoted": False,
         "summary": {
             "species_seeded": int(summary.get("n_species_written", 0)),
             "species_seeded_from_reactions": int(summary.get("n_species_seeded_from_reactions", 0)),
-            "properties_filled": int(summary.get("n_properties_filled", summary.get("n_properties_written", 0))),
-            "properties_filled_for_seeded_species": int(summary.get("n_properties_filled_for_seeded_species", 0)),
+            "properties_filled": int(summary.get("n_properties_filled", 0)),
+            "properties_filled_for_seeded_species": int(
+                summary.get("n_properties_filled_for_seeded_species", 0)
+            ),
             "property_conflicts": int(summary.get("n_property_conflicts", 0)),
             "reaction_channels_imported": int(summary.get("n_reaction_channels_imported", 0)),
             "cross_section_assets_registered": _count_cross_section_assets(prepared_registry),
-            "unresolved_items": unresolved_items,
             "unresolved_product_species": int(summary.get("n_unresolved_product_species", 0)),
-            "identity_species_updated": int((identity_report or {}).get("summary", {}).get("n_updated_species", 0)),
-            "identity_conflicts": int((identity_report or {}).get("summary", {}).get("n_conflicts", 0)),
+            "identity_species_updated": int(
+                (identity_report or {}).get("summary", {}).get("n_updated_species", 0)
+            ),
+            "identity_conflicts": int(
+                (identity_report or {}).get("summary", {}).get("n_conflicts", 0)
+            ),
         },
         "prepare_report": str(prepared_registry.parent / "prepare_report.yaml"),
         "source_cache": prepare_report.get("source_cache", []),
@@ -157,7 +153,9 @@ def _enrichment_report(
     return report
 
 
-def _run_identity_enrichment(prepared_registry: Path, profile: dict[str, Any]) -> dict[str, Any] | None:
+def _run_identity_enrichment(
+    prepared_registry: Path, profile: dict[str, Any]
+) -> dict[str, Any] | None:
     providers = profile.get("species_identity", [])
     if not isinstance(providers, list) or "chemical_identity_snapshot" not in providers:
         return None

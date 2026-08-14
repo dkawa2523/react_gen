@@ -17,6 +17,12 @@ If no pack matches, generation continues with the base registry and adds a
 `--registry PATH` keeps the existing explicit-registry behavior and disables
 automatic pack selection.
 
+Selection has a separate validation boundary in
+`infrastructure/registry_pack_selection.py`: malformed index entries and
+missing manifests are ignored, manifest paths must remain inside
+`registry_packs/`, and otherwise equivalent packs are ranked deterministically.
+`infrastructure/registry_pack.py` only resolves and overlays the selected pack.
+
 ## Pack structure
 
 ```text

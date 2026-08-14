@@ -81,9 +81,32 @@ def test_provider_factory_builds_internal_and_nist_providers(tmp_path: Path) -> 
         }
     )
 
-    assert [candidate["value"] for candidate in properties.providers[0].find_properties("CF4", ["polarizability_A3"])] == [2.824]
-    assert [candidate["value"] for candidate in properties.providers[1].find_properties("CF4", ["ionization_energy_eV"])] == [14.7]
-    assert reactions.providers[0].find_channels(_pair("electron", "e", "Xe"))[0]["id"] == "e_Xe_elastic"
+    assert [
+        candidate["value"]
+        for candidate in properties.providers[0].find_properties("CF4", ["polarizability_A3"])
+    ] == [2.824]
+    assert [
+        candidate["value"]
+        for candidate in properties.providers[1].find_properties("CF4", ["ionization_energy_eV"])
+    ] == [14.7]
+    assert (
+        reactions.providers[0].find_channels(_pair("electron", "e", "Xe"))[0]["id"]
+        == "e_Xe_elastic"
+    )
+
+
+def test_provider_factory_deduplicates_aliases_and_honors_disabled_sources(
+    tmp_path: Path,
+) -> None:
+    internal_root = _make_internal_data(tmp_path / "internal_data")
+    profile = {
+        "properties": ["internal_file", "internal_property_db"],
+        "internal_file": {"root": str(internal_root)},
+    }
+
+    assert len(build_property_providers(profile).providers) == 1
+    profile["disabled_sources"] = ["internal_file"]
+    assert build_property_providers(profile).providers == []
 
 
 def test_prepare_case_still_uses_internal_file_and_nist_sources(tmp_path: Path) -> None:
@@ -96,10 +119,10 @@ def test_prepare_case_still_uses_internal_file_and_nist_sources(tmp_path: Path) 
     report = prepare_case(
         input_path=case,
         registry_root=registry,
-            source_profile={
-                "name": "factory_prepare_equivalence",
-                "species_identity": ["internal_species_db"],
-                "properties": ["internal_property_db", "nist_snapshot"],
+        source_profile={
+            "name": "factory_prepare_equivalence",
+            "species_identity": ["internal_species_db"],
+            "properties": ["internal_property_db", "nist_snapshot"],
             "ion_neutral_reactions": ["internal_reaction_db"],
             "internal_file": {"root": str(internal_root)},
             "nist_snapshot": {"root": str(nist_root)},
@@ -112,7 +135,7 @@ def test_prepare_case_still_uses_internal_file_and_nist_sources(tmp_path: Path) 
     assert species["properties"]["polarizability_A3"]["value"] == 2.824
     assert species["properties"]["ionization_energy_eV"]["value"] == 14.7
     assert reactions["channels"][0]["id"] == "e_Xe_elastic"
-    assert report["registry_mutated"] is False
+    assert report["schema_version"] == 2
 
 
 def _pair(family: str, projectile: str, target: str):
@@ -151,7 +174,10 @@ def _make_registry(root: Path) -> Path:
             "metadata": {"status": "curated"},
         },
     )
-    _write_yaml(root / "rules" / "reaction_type_catalog.yaml", {"schema_version": 1, "electron": {"elastic": {}}})
+    _write_yaml(
+        root / "rules" / "reaction_type_catalog.yaml",
+        {"schema_version": 1, "electron": {"elastic": {}}},
+    )
     return root
 
 
@@ -165,7 +191,10 @@ def _make_internal_data(root: Path) -> Path:
                 "value": 2.824,
                 "unit": "A3",
                 "status": "curated",
-                "source_record": {"source_type": "internal_file_db", "source_id": "internal_property:CF4:polarizability_A3"},
+                "source_record": {
+                    "source_type": "internal_file_db",
+                    "source_id": "internal_property:CF4:polarizability_A3",
+                },
             }
         ],
     )
@@ -195,7 +224,10 @@ def _make_internal_data(root: Path) -> Path:
                 "charge": 0,
                 "classes": ["neutral", "atom"],
                 "status": "curated",
-                "source_record": {"source_type": "internal_file_db", "source_id": "internal_species:Xe"},
+                "source_record": {
+                    "source_type": "internal_file_db",
+                    "source_id": "internal_species:Xe",
+                },
             }
         ],
     )
@@ -212,7 +244,11 @@ def _make_nist_snapshot(root: Path) -> Path:
                 "value": 14.7,
                 "unit": "eV",
                 "status": "literature_supported",
-                "source_record": {"source_type": "public_database_snapshot", "database": "NIST", "source_id": "nist:CF4:IE"},
+                "source_record": {
+                    "source_type": "public_database_snapshot",
+                    "database": "NIST",
+                    "source_id": "nist:CF4:IE",
+                },
             }
         ],
     )

@@ -32,6 +32,13 @@ python -m external_data_tools.source_setup --config external_data/source_access_
 The setup report is written to
 `external_data/manifests/source_setup_report.yaml` by default.
 
+Setup reports use schema version 2. Requested actions are recorded once under
+`mode`; the summary contains outcomes only. OpenADAS and LXCat import reports
+also use schema version 2 and omit the former constant
+`registry_mutated: false` field. These tools receive only workspace/prepared
+registry destinations, so curated-registry safety is structural rather than a
+repeated diagnostic value.
+
 ## Source Policies
 
 - NIST: local snapshot or explicit user URL only. No scraping or automatic NIST

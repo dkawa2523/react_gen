@@ -1,23 +1,17 @@
 from __future__ import annotations
 
+import csv
+import json
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
-import csv
-import json
 
 import yaml
 
-from plasma_reactgen.data_sources.base import (
-    CrossSectionProvider,
-    PropertyProvider,
-    ReactionProvider,
-    SpeciesProvider,
-)
 from plasma_reactgen.domain.models import CollisionPair
 
 
-class InternalFileSpeciesProvider(SpeciesProvider):
+class InternalFileSpeciesProvider:
     def __init__(self, root: str | Path):
         self.root = Path(root)
         self._records = _load_records(self.root / "species" / "species")
@@ -31,7 +25,7 @@ class InternalFileSpeciesProvider(SpeciesProvider):
         return matches
 
 
-class InternalFilePropertyProvider(PropertyProvider):
+class InternalFilePropertyProvider:
     def __init__(self, root: str | Path):
         self.root = Path(root)
         self._records = _load_records(self.root / "properties" / "properties")
@@ -49,11 +43,13 @@ class InternalFilePropertyProvider(PropertyProvider):
                 continue
             if requested is not None and property_name not in requested:
                 continue
-            matches.append(_with_source_record(record, "internal_property", f"{species_id}:{property_name}"))
+            matches.append(
+                _with_source_record(record, "internal_property", f"{species_id}:{property_name}")
+            )
         return matches
 
 
-class InternalFileReactionProvider(ReactionProvider):
+class InternalFileReactionProvider:
     def __init__(self, root: str | Path):
         self.root = Path(root)
         self._records = [
@@ -69,17 +65,21 @@ class InternalFileReactionProvider(ReactionProvider):
                 continue
             channel = deepcopy(record)
             source_id = channel.get("id") or _pair_key(pair)
-            channel["source_record"] = _source_record("internal_file_db", f"internal_reaction:{source_id}")
+            channel["source_record"] = _source_record(
+                "internal_file_db", f"internal_reaction:{source_id}"
+            )
             matches.append(channel)
         return matches
 
 
-class InternalFileCrossSectionProvider(CrossSectionProvider):
+class InternalFileCrossSectionProvider:
     def __init__(self, root: str | Path):
         self.root = Path(root)
         self._records = _load_records(self.root / "cross_sections" / "index")
 
-    def find_cross_sections(self, pair: CollisionPair | str | dict[str, Any]) -> list[dict[str, Any]]:
+    def find_cross_sections(
+        self, pair: CollisionPair | str | dict[str, Any]
+    ) -> list[dict[str, Any]]:
         matches: list[dict[str, Any]] = []
         for record in self._records:
             if not _cross_section_matches(record, pair):
@@ -178,7 +178,9 @@ def _with_source_record(
     return candidate
 
 
-def _cross_section_matches(record: dict[str, Any], query: CollisionPair | str | dict[str, Any]) -> bool:
+def _cross_section_matches(
+    record: dict[str, Any], query: CollisionPair | str | dict[str, Any]
+) -> bool:
     if isinstance(query, str):
         return query in {record.get("channel_id"), record.get("reaction_id")}
     if isinstance(query, CollisionPair):
@@ -186,10 +188,8 @@ def _cross_section_matches(record: dict[str, Any], query: CollisionPair | str | 
         if pair is None:
             return False
         return _normalize_pair(pair, query.family) == _pair_payload(query)
-    if isinstance(query, dict):
-        pair = record.get("pair")
-        return pair is not None and _normalize_pair(pair, str(query.get("family", ""))) == query
-    return False
+    pair = record.get("pair")
+    return pair is not None and _normalize_pair(pair, str(query.get("family", ""))) == query
 
 
 def _pair_payload(pair: CollisionPair) -> dict[str, str]:

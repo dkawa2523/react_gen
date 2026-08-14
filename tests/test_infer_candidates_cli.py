@@ -1,10 +1,12 @@
 from pathlib import Path
 
-import yaml
 import pytest
+import yaml
 
+from plasma_reactgen.application.config import load_case_config
+from plasma_reactgen.inference.candidate_writer import build_candidate_registry
+from plasma_reactgen.infrastructure.file_registry import FileRegistry
 from plasma_reactgen.interface.cli import main
-
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -48,7 +50,8 @@ def test_infer_candidates_writes_candidate_registry_only(tmp_path):
     assert not (output_dir / "species" / "Ar_p.yaml").exists()
 
     summary = yaml.safe_load((output_dir / "summary.yaml").read_text(encoding="utf-8"))
-    assert summary["registry_mutated"] is False
+    assert summary["schema_version"] == 2
+    assert "registry_mutated" not in summary
     assert summary["summary"]["n_species_candidates"] > 0
     assert summary["summary"]["n_reaction_candidates"] > 0
 
@@ -80,6 +83,26 @@ def test_generate_does_not_write_candidate_registry_by_default(tmp_path):
     assert not (output_dir / "candidate_registry").exists()
     network = yaml.safe_load((output_dir / "network.reactions.yaml").read_text(encoding="utf-8"))
     assert all(
-        reaction["data_status"]["reaction"] != "inferred"
-        for reaction in network["reactions"]
+        reaction["data_status"]["reaction"] != "inferred" for reaction in network["reactions"]
     )
+
+
+def test_candidate_registry_builds_unique_reactions_without_mutating_source_registry():
+    registry_root = ROOT / "registry"
+    before = {path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")}
+    candidates = build_candidate_registry(
+        load_case_config(ROOT / "cases" / "ar_cf4" / "input.yaml", registry_root),
+        FileRegistry(registry_root),
+    )
+
+    reactions = candidates["reactions"]
+    reaction_ids = [reaction["id"] for reaction in reactions]
+    assert len(reaction_ids) == len(set(reaction_ids))
+    assert {reaction["pair"]["family"] for reaction in reactions} == {
+        "electron",
+        "ion_neutral",
+    }
+    assert all(reaction["status"] == "inferred" for reaction in reactions)
+    assert {
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
+    } == before

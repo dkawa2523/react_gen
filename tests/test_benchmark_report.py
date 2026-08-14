@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 
-from external_data_tools.benchmark_report import generate_benchmark_report
+from external_data_tools.benchmark_report import generate_benchmark_report, main
 
 
 def test_benchmark_report_generated_from_summary_fixture(tmp_path):
@@ -79,6 +79,19 @@ def test_truncated_generation_prevents_workflow_pass(tmp_path):
     assert result["statuses"]["failed"] >= 1
     assert "FAIL_GENERATION" in text
     assert "Generation was truncated by a configured limit" in text
+
+
+def test_benchmark_report_cli_prints_supported_statuses(tmp_path, capsys):
+    output = tmp_path / "report.md"
+
+    result = main([str(_write_summary_fixture(tmp_path)), "--output", str(output)])
+
+    stdout = capsys.readouterr().out
+    assert result == 0
+    assert "passed:" in stdout
+    assert "warnings:" in stdout
+    assert "failed:" in stdout
+    assert "skipped:" not in stdout
 
 
 def _write_summary_fixture(
@@ -210,16 +223,58 @@ def _states(case_id: str) -> list[dict]:
 def _reactions(case_id: str) -> list[dict]:
     if case_id == "ar_o2_simple":
         return [
-            {"id": "e_O2_elastic", "family": "electron", "type": "elastic", "equation": "e + O2 -> e + O2", "validation": {"charge_balance": "ok", "element_balance": "ok"}},
-            {"id": "e_O2_ionization", "family": "electron", "type": "ionization", "equation": "e + O2 -> 2e + O2+", "validation": {"charge_balance": "ok", "element_balance": "ok"}},
-            {"id": "e_O2_dissociation_O_O", "family": "electron", "type": "dissociation", "equation": "e + O2 -> e + O + O", "validation": {"charge_balance": "ok", "element_balance": "ok"}},
-            {"id": "e_O2_attachment_Om_O", "family": "electron", "type": "attachment", "equation": "e + O2 -> O- + O", "validation": {"charge_balance": "ok", "element_balance": "ok"}},
-            {"id": "Arp_O2_elastic", "family": "ion_neutral", "type": "elastic", "equation": "Ar+ + O2 -> Ar+ + O2", "validation": {"charge_balance": "ok", "element_balance": "ok"}},
+            {
+                "id": "e_O2_elastic",
+                "family": "electron",
+                "type": "elastic",
+                "equation": "e + O2 -> e + O2",
+                "validation": {"charge_balance": "ok", "element_balance": "ok"},
+            },
+            {
+                "id": "e_O2_ionization",
+                "family": "electron",
+                "type": "ionization",
+                "equation": "e + O2 -> 2e + O2+",
+                "validation": {"charge_balance": "ok", "element_balance": "ok"},
+            },
+            {
+                "id": "e_O2_dissociation_O_O",
+                "family": "electron",
+                "type": "dissociation",
+                "equation": "e + O2 -> e + O + O",
+                "validation": {"charge_balance": "ok", "element_balance": "ok"},
+            },
+            {
+                "id": "e_O2_attachment_Om_O",
+                "family": "electron",
+                "type": "attachment",
+                "equation": "e + O2 -> O- + O",
+                "validation": {"charge_balance": "ok", "element_balance": "ok"},
+            },
+            {
+                "id": "Arp_O2_elastic",
+                "family": "ion_neutral",
+                "type": "elastic",
+                "equation": "Ar+ + O2 -> Ar+ + O2",
+                "validation": {"charge_balance": "ok", "element_balance": "ok"},
+            },
         ]
     target = "CF4" if case_id == "ar_cf4_fluorocarbon" else "SF6"
     return [
-        {"id": f"e_{target}_elastic", "family": "electron", "type": "elastic", "equation": f"e + {target} -> e + {target}", "validation": {"charge_balance": "ok", "element_balance": "ok"}},
-        {"id": f"Arp_{target}_elastic", "family": "ion_neutral", "type": "elastic", "equation": f"Ar+ + {target} -> Ar+ + {target}", "validation": {"charge_balance": "ok", "element_balance": "ok"}},
+        {
+            "id": f"e_{target}_elastic",
+            "family": "electron",
+            "type": "elastic",
+            "equation": f"e + {target} -> e + {target}",
+            "validation": {"charge_balance": "ok", "element_balance": "ok"},
+        },
+        {
+            "id": f"Arp_{target}_elastic",
+            "family": "ion_neutral",
+            "type": "elastic",
+            "equation": f"Ar+ + {target} -> Ar+ + {target}",
+            "validation": {"charge_balance": "ok", "element_balance": "ok"},
+        },
     ]
 
 

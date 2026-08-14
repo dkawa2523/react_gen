@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import argparse
 from collections import OrderedDict
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 import yaml
-
 
 ENERGETICS_REASON = "needed_for_deltaE_products_minus_reactants_eV"
 PROPERTY_FIELDS = {
@@ -87,11 +86,17 @@ def _input_files(path: Path) -> list[Path]:
     ]
     found = [candidate for candidate in candidates if candidate.exists()]
     if not found:
-        raise FileNotFoundError(f"no prepare_report.yaml, missing_data.yaml, or network.reactions.yaml found under {path}")
+        raise FileNotFoundError(
+            "no prepare_report.yaml, missing_data.yaml, or network.reactions.yaml "
+            f"found under {path}"
+        )
     return found
 
 
-def _collect_from_network_reactions(payload: dict[str, Any], grouped: OrderedDict[str, dict[str, Any]]) -> None:
+def _collect_from_network_reactions(
+    payload: dict[str, Any],
+    grouped: OrderedDict[str, dict[str, Any]],
+) -> None:
     reactions = payload.get("reactions", [])
     if not isinstance(reactions, list):
         return
@@ -106,8 +111,21 @@ def _collect_from_network_reactions(payload: dict[str, Any], grouped: OrderedDic
             _add_requirement(grouped, species, "enthalpy_formation_eV", ENERGETICS_REASON)
 
 
-def _collect_from_prepare_report(payload: dict[str, Any], grouped: OrderedDict[str, dict[str, Any]]) -> None:
-    for item in payload.get("unresolved", []):
+def _collect_from_prepare_report(
+    payload: dict[str, Any],
+    grouped: OrderedDict[str, dict[str, Any]],
+) -> None:
+    _collect_unresolved_properties(payload.get("unresolved"), grouped)
+    _collect_unresolved_reactions(payload.get("unresolved_reactions"), grouped)
+
+
+def _collect_unresolved_properties(
+    unresolved: Any,
+    grouped: OrderedDict[str, dict[str, Any]],
+) -> None:
+    if not isinstance(unresolved, list):
+        return
+    for item in unresolved:
         if not isinstance(item, dict):
             continue
         species = item.get("species") or item.get("subject_id")
@@ -115,15 +133,36 @@ def _collect_from_prepare_report(payload: dict[str, Any], grouped: OrderedDict[s
         if species and prop in PROPERTY_FIELDS:
             _add_requirement(grouped, str(species), prop, "missing_property")
 
-    for item in payload.get("unresolved_reactions", []):
+
+def _collect_unresolved_reactions(
+    unresolved: Any,
+    grouped: OrderedDict[str, dict[str, Any]],
+) -> None:
+    if not isinstance(unresolved, list):
+        return
+    for item in unresolved:
         if not isinstance(item, dict):
             continue
-        if item.get("reason") in {"missing_deltaE_products_minus_reactants_eV", "missing_reaction_energetics"}:
-            for species in item.get("species", []):
-                _add_requirement(grouped, str(species), "enthalpy_formation_eV", ENERGETICS_REASON)
+        if item.get("reason") not in {
+            "missing_deltaE_products_minus_reactants_eV",
+            "missing_reaction_energetics",
+        }:
+            continue
+        species_ids = item.get("species", [])
+        if isinstance(species_ids, list):
+            for species in species_ids:
+                _add_requirement(
+                    grouped,
+                    str(species),
+                    "enthalpy_formation_eV",
+                    ENERGETICS_REASON,
+                )
 
 
-def _collect_from_missing_data(payload: dict[str, Any], grouped: OrderedDict[str, dict[str, Any]]) -> None:
+def _collect_from_missing_data(
+    payload: dict[str, Any],
+    grouped: OrderedDict[str, dict[str, Any]],
+) -> None:
     for item in payload.get("missing_data", []):
         if not isinstance(item, dict):
             continue
@@ -135,7 +174,12 @@ def _collect_from_missing_data(payload: dict[str, Any], grouped: OrderedDict[str
             _add_requirement(grouped, str(species), field, "missing_property")
         if item.get("field") == "deltaE_products_minus_reactants_eV":
             for species_id in item.get("species", []):
-                _add_requirement(grouped, str(species_id), "enthalpy_formation_eV", ENERGETICS_REASON)
+                _add_requirement(
+                    grouped,
+                    str(species_id),
+                    "enthalpy_formation_eV",
+                    ENERGETICS_REASON,
+                )
 
 
 def _reaction_species(reaction: dict[str, Any]) -> list[str]:
@@ -187,7 +231,7 @@ def _read_yaml(path: Path) -> dict[str, Any]:
 
 
 def _utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 if __name__ == "__main__":

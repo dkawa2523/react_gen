@@ -2,11 +2,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
 import yaml
 
-from external_data_tools.nist_snapshot_plan import build_nist_snapshot_plan, main as plan_main
+from external_data_tools.nist_snapshot_plan import build_nist_snapshot_plan
+from external_data_tools.nist_snapshot_plan import main as plan_main
 from external_data_tools.nist_snapshot_validate import (
     main as validate_main,
+)
+from external_data_tools.nist_snapshot_validate import (
     validate_nist_snapshot,
 )
 
@@ -136,6 +140,52 @@ def test_nist_snapshot_validator_rejects_unsupported_unit(tmp_path):
         }
     ]
     assert validate_main([str(snapshot)]) == 1
+
+
+def test_nist_snapshot_validator_reports_record_and_source_contract_errors(tmp_path):
+    snapshot = _write_yaml(
+        tmp_path / "nist_species_properties.yaml",
+        {
+            "records": [
+                "not-a-record",
+                {
+                    "species": "CF4",
+                    "property": "ionization_energy_eV",
+                    "value": "unknown",
+                    "unit": "eV",
+                    "status": "literature_supported",
+                    "evidence_type": "evaluated",
+                    "source_record": "NIST",
+                },
+                {
+                    **_valid_record(),
+                    "source_record": {"database": "other database"},
+                },
+            ]
+        },
+    )
+
+    report = validate_nist_snapshot(snapshot)
+
+    reasons = [error["reason"] for error in report["errors"]]
+    assert reasons == [
+        "record_not_mapping",
+        "non_numeric_value",
+        "invalid_source_record",
+        "missing_source_key",
+        "missing_source_key",
+        "missing_source_key",
+        "missing_source_key",
+        "non_nist_database",
+    ]
+    assert report["summary"] == {"records": 3, "errors": len(reasons)}
+
+
+def test_nist_snapshot_validator_rejects_non_list_records(tmp_path):
+    snapshot = _write_yaml(tmp_path / "nist_species_properties.yaml", {"records": {}})
+
+    with pytest.raises(ValueError, match="records list"):
+        validate_nist_snapshot(snapshot)
 
 
 def test_collision_radius_is_not_assigned_to_nist_by_default(tmp_path):

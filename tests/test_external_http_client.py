@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-from pathlib import Path
 import hashlib
 
 import pytest
 import yaml
 
-from external_data_tools import download_manifest
-from external_data_tools import http_client
+from external_data_tools import download_manifest, http_client
 from external_data_tools.http_client import download_many, download_url
 
 
@@ -31,7 +29,7 @@ def test_download_url_dry_run_does_not_create_output(tmp_path, monkeypatch):
     def fail_urlopen(*args, **kwargs):
         raise AssertionError("urlopen should not run during dry-run")
 
-    monkeypatch.setattr(http_client.urllib.request, "urlopen", fail_urlopen)
+    monkeypatch.setattr(http_client, "_open_http_request", fail_urlopen)
 
     record = download_url("https://example.invalid/table.csv", output, dry_run=True)
 
@@ -45,6 +43,20 @@ def test_download_url_dry_run_does_not_create_output(tmp_path, monkeypatch):
     assert not output.exists()
 
 
+@pytest.mark.parametrize(
+    "url",
+    [
+        "file:///etc/passwd",
+        "ftp://example.invalid/table.csv",
+        "https:///missing-host.csv",
+        "https://user" + chr(58) + "password@example.invalid/table.csv",
+    ],
+)
+def test_download_url_rejects_unsafe_or_ambiguous_urls(tmp_path, url):
+    with pytest.raises(ValueError, match=r"HTTP\(S\) URL"):
+        download_url(url, tmp_path / "download.csv", dry_run=True)
+
+
 def test_download_url_writes_bytes_and_records_sha256(tmp_path, monkeypatch):
     payload = b"energy_eV,cross_section_m2\n0,0\n1,1e-20\n"
     output = tmp_path / "raw" / "download.csv"
@@ -56,7 +68,7 @@ def test_download_url_writes_bytes_and_records_sha256(tmp_path, monkeypatch):
         seen["timeout"] = timeout
         return _FakeResponse(payload)
 
-    monkeypatch.setattr(http_client.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(http_client, "_open_http_request", fake_urlopen)
 
     record = download_url(
         "https://example.invalid/download.csv",
@@ -87,7 +99,7 @@ def test_download_many_preserves_manifest_metadata_and_summary(tmp_path, monkeyp
     def fake_urlopen(request, timeout):
         return _FakeResponse(payloads[request.full_url])
 
-    monkeypatch.setattr(http_client.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(http_client, "_open_http_request", fake_urlopen)
     monkeypatch.setattr(http_client.time, "sleep", lambda seconds: slept.append(seconds))
 
     manifest = {

@@ -2,13 +2,22 @@ from pathlib import Path
 
 import yaml
 
-from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks, build_required_properties
 from plasma_reactgen.application.dnt_input_builder import build_dnt_inputs
+from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks, build_required_properties
 from plasma_reactgen.application.reaction_catalog import reaction_available_data
-from plasma_reactgen.domain.datasets import DatasetAsset, ReactionDataset, reaction_datasets_from_channel
-from plasma_reactgen.domain.models import GeneratedReaction, PropertyValue, ReactionNetwork, Species, SpeciesAmount
+from plasma_reactgen.domain.datasets import (
+    DatasetAsset,
+    ReactionDataset,
+    reaction_datasets_from_channel,
+)
+from plasma_reactgen.domain.models import (
+    GeneratedReaction,
+    PropertyValue,
+    ReactionNetwork,
+    Species,
+    SpeciesAmount,
+)
 from plasma_reactgen.interface.cli import main
-
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -34,6 +43,60 @@ def test_legacy_cross_section_is_emitted_in_available_data():
     assert payload[0]["available"] is True
 
 
+def test_dataset_mapping_normalizes_aliases_and_avoids_duplicate_legacy_asset():
+    datasets = reaction_datasets_from_channel(
+        {
+            "id": "electron_impact",
+            "datasets": [
+                {
+                    "kind": "cross_section",
+                    "asset": {
+                        "path": "assets/cross_sections/electron.csv",
+                        "sha256": "abc123",
+                        "delimiter": ",",
+                    },
+                    "provenance": {
+                        "type": "lxcat",
+                        "id": "dataset-1",
+                        "retrieved_at": "2026-08-14",
+                        "license_note": "research use",
+                        "database": "LXCat",
+                    },
+                    "validity_range": {
+                        "min": "0.1",
+                        "max": "100",
+                        "unit": "eV",
+                        "temperature_K": 300,
+                    },
+                    "notes": ["normalized fixture"],
+                }
+            ],
+            "data": {"cross_section": {"path": "assets/cross_sections/electron.csv"}},
+        }
+    )
+
+    assert len(datasets) == 1
+    dataset = datasets[0]
+    assert dataset.id == "ds_electron_impact_cross_section_001"
+    assert dataset.representation == "table"
+    assert dataset.asset == DatasetAsset(
+        path="assets/cross_sections/electron.csv",
+        checksum="abc123",
+        metadata={"delimiter": ","},
+    )
+    assert dataset.source is not None
+    assert dataset.source.source_type == "lxcat"
+    assert dataset.source.source_id == "dataset-1"
+    assert dataset.source.accessed_date == "2026-08-14"
+    assert dataset.source.license == "research use"
+    assert dataset.source.metadata == {"database": "LXCat"}
+    assert dataset.validity is not None
+    assert dataset.validity.minimum == 0.1
+    assert dataset.validity.maximum == 100.0
+    assert dataset.validity.conditions == {"temperature_K": 300}
+    assert dataset.notes == ["normalized fixture"]
+
+
 def test_dnt_task_contains_properties_datasets_and_mass_fallback():
     network = _ion_neutral_network()
     task = build_dnt_tasks(network)[0]
@@ -41,8 +104,12 @@ def test_dnt_task_contains_properties_datasets_and_mass_fallback():
     assert task["reaction_ids"] == ["Arp_O2_ct"]
     assert task["required_properties"]["ion"]["mass_amu"]["source"] == "computed_from_composition"
     assert task["required_properties"]["neutral"]["polarizability_A3"]["value"] == 1.58
-    assert [item["id"] for item in task["existing_datasets"]["cross_sections"]] == ["ds_ion_cross_section"]
-    assert [item["id"] for item in task["existing_datasets"]["rate_coefficients"]] == ["ds_ion_rate"]
+    assert [item["id"] for item in task["existing_datasets"]["cross_sections"]] == [
+        "ds_ion_cross_section"
+    ]
+    assert [item["id"] for item in task["existing_datasets"]["rate_coefficients"]] == [
+        "ds_ion_rate"
+    ]
     assert task["data_choice"]["status"] == "existing_cross_section_available"
 
 
@@ -64,9 +131,7 @@ def test_dnt_input_reuses_mass_computed_by_task_builder():
 
     assert pair["projectile"]["mass_amu"] == 39.948
     assert pair["target"]["mass_amu"] == 31.998
-    assert pair["projectile"]["properties"]["mass_amu"]["source"] == (
-        "computed_from_composition"
-    )
+    assert pair["projectile"]["properties"]["mass_amu"]["source"] == ("computed_from_composition")
 
 
 def test_sf6_mass_can_be_computed_without_user_property_input():
@@ -82,12 +147,22 @@ def test_sf6_mass_can_be_computed_without_user_property_input():
 def test_ar_cf4_existing_outputs_are_enhanced_and_deterministic(tmp_path):
     first = tmp_path / "first"
     second = tmp_path / "second"
-    args = ["generate", str(ROOT / "cases" / "ar_cf4" / "input.yaml"), "--registry", str(ROOT / "registry")]
+    args = [
+        "generate",
+        str(ROOT / "cases" / "ar_cf4" / "input.yaml"),
+        "--registry",
+        str(ROOT / "registry"),
+    ]
 
     assert main([*args, "--output", str(first)]) == 0
     assert main([*args, "--output", str(second)]) == 0
 
-    for name in ("network.reactions.yaml", "network.reactions.csv", "dnt_tasks.yaml", "missing_data.yaml"):
+    for name in (
+        "network.reactions.yaml",
+        "network.reactions.csv",
+        "dnt_tasks.yaml",
+        "missing_data.yaml",
+    ):
         assert (first / name).read_bytes() == (second / name).read_bytes()
     assert not (first / "reaction_list.yaml").exists()
 
@@ -102,7 +177,10 @@ def test_ar_cf4_existing_outputs_are_enhanced_and_deterministic(tmp_path):
 def _ion_neutral_network() -> ReactionNetwork:
     ion = Species(id="Ar+", composition={"Ar": 1}, charge=1, classes={"positive_ion"})
     neutral = Species(
-        id="O2", composition={"O": 2}, charge=0, classes={"neutral"},
+        id="O2",
+        composition={"O": 2},
+        charge=0,
+        classes={"neutral"},
         properties={
             "polarizability_A3": PropertyValue(1.58, "A3", "test"),
             "dipole_moment_D": PropertyValue(0.0, "D", "test"),
@@ -110,15 +188,40 @@ def _ion_neutral_network() -> ReactionNetwork:
         },
     )
     reaction = GeneratedReaction(
-        id="Arp_O2_ct", depth=0, family="ion_neutral", type="charge_transfer",
-        equation="Ar+ + O2 -> Ar + O2+", reactants=[SpeciesAmount("Ar+"), SpeciesAmount("O2")],
-        products=[SpeciesAmount("Ar"), SpeciesAmount("O2+")], source_pair_key="ion_neutral|Ar+|O2",
-        source_pair_label="Ar+ + O2", introduced_species=["Ar", "O2+"],
-        validation={"charge_balance": "ok", "element_balance": "ok"}, data_status={"reaction": "curated"},
-        threshold_eV=0.2, deltaE_products_minus_reactants_eV=0.1, dnt_class="charge_transfer",
+        id="Arp_O2_ct",
+        depth=0,
+        family="ion_neutral",
+        type="charge_transfer",
+        equation="Ar+ + O2 -> Ar + O2+",
+        reactants=[SpeciesAmount("Ar+"), SpeciesAmount("O2")],
+        products=[SpeciesAmount("Ar"), SpeciesAmount("O2+")],
+        source_pair_key="ion_neutral|Ar+|O2",
+        source_pair_label="Ar+ + O2",
+        introduced_species=["Ar", "O2+"],
+        validation={"charge_balance": "ok", "element_balance": "ok"},
+        data_status={"reaction": "curated"},
+        threshold_eV=0.2,
+        deltaE_products_minus_reactants_eV=0.1,
+        dnt_class="charge_transfer",
         datasets=[
-            ReactionDataset(id="ds_ion_cross_section", reaction_id="Arp_O2_ct", kind="cross_section", representation="table", asset=DatasetAsset(path="assets/cross_sections/x.csv"), status="imported"),
-            ReactionDataset(id="ds_ion_rate", reaction_id="Arp_O2_ct", kind="rate_coefficient", representation="constant", parameters={"k": 1e-15}, status="literature_supported"),
+            ReactionDataset(
+                id="ds_ion_cross_section",
+                reaction_id="Arp_O2_ct",
+                kind="cross_section",
+                representation="table",
+                asset=DatasetAsset(path="assets/cross_sections/x.csv"),
+                status="imported",
+            ),
+            ReactionDataset(
+                id="ds_ion_rate",
+                reaction_id="Arp_O2_ct",
+                kind="rate_coefficient",
+                representation="constant",
+                parameters={"k": 1e-15},
+                status="literature_supported",
+            ),
         ],
     )
-    return ReactionNetwork(species={"Ar+": ion, "O2": neutral}, species_nodes={}, reactions=[reaction], coverage=[])
+    return ReactionNetwork(
+        species={"Ar+": ion, "O2": neutral}, species_nodes={}, reactions=[reaction], coverage=[]
+    )

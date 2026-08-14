@@ -1,41 +1,24 @@
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timezone
 import json
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote
 
 import yaml
 
-from .cache import safe_filename
 from .http_client import download_url
-from .pubchem_normalize import extract_cid, extract_properties, normalize_species_record
-
-
-PUBCHEM_BASE_URL = "https://pubchem.ncbi.nlm.nih.gov/rest/pug"
-
-
-def build_cid_url(query: str) -> str:
-    return f"{PUBCHEM_BASE_URL}/compound/name/{quote(query, safe='')}/cids/JSON"
-
-
-def build_property_url(cid: int) -> str:
-    properties = ",".join(
-        [
-            "MolecularFormula",
-            "MolecularWeight",
-            "CanonicalSMILES",
-            "IsomericSMILES",
-            "InChIKey",
-        ]
-    )
-    return f"{PUBCHEM_BASE_URL}/compound/cid/{cid}/property/{properties}/JSON"
-
-
-def build_synonym_url(cid: int) -> str:
-    return f"{PUBCHEM_BASE_URL}/compound/cid/{cid}/synonyms/JSON"
+from .pubchem_species_fetch import fetch_species_record
+from .pubchem_urls import (
+    build_cid_url as build_cid_url,
+)
+from .pubchem_urls import (
+    build_property_url as build_property_url,
+)
+from .pubchem_urls import (
+    build_synonym_url as build_synonym_url,
+)
 
 
 def fetch_pubchem_snapshot(
@@ -54,97 +37,21 @@ def fetch_pubchem_snapshot(
         raise FileExistsError(f"snapshot already exists: {snapshot_path}")
 
     if dry_run:
-        planned = [
-            {
-                "species": entry["id"],
-                "query": entry["query"],
-                "urls": {
-                    "cid_lookup": build_cid_url(entry["query"]),
-                    "properties": "requires CID lookup",
-                    "synonyms": "requires CID lookup",
-                },
-            }
-            for entry in species_entries
-        ]
-        return {
-            "schema_version": 1,
-            "dry_run": True,
-            "summary": {
-                "total_species": len(species_entries),
-                "planned_species": len(species_entries),
-                "records": 0,
-                "unresolved": 0,
-            },
-            "planned": planned,
-        }
+        return _dry_run_plan(species_entries)
 
     run_root = output_root / f"run_{_timestamp_for_path()}"
     records = []
     unresolved = []
 
     for entry in species_entries:
-        species_id = entry["id"]
-        query = entry["query"]
-        species_root = run_root / safe_filename(species_id)
-        raw_files: list[str] = []
-
-        try:
-            cid_payload = _download_json(
-                build_cid_url(query),
-                species_root / "cid_lookup.json",
-                raw_files,
-            )
-            cid = extract_cid(cid_payload)
-            if cid is None:
-                unresolved.append(
-                    _unresolved(species_id, query, "cid_lookup", "no PubChem CID found", raw_files)
-                )
-                continue
-        except Exception as exc:
-            unresolved.append(_unresolved(species_id, query, "cid_lookup", str(exc), raw_files))
-            continue
-
-        try:
-            property_payload = _download_json(
-                build_property_url(cid),
-                species_root / "properties.json",
-                raw_files,
-            )
-            if not extract_properties(property_payload):
-                unresolved.append(
-                    _unresolved(
-                        species_id,
-                        query,
-                        "properties",
-                        "no PubChem property record found",
-                        raw_files,
-                    )
-                )
-                continue
-        except Exception as exc:
-            unresolved.append(_unresolved(species_id, query, "properties", str(exc), raw_files))
-            continue
-
-        synonym_payload: dict[str, Any] = {}
-        try:
-            synonym_payload = _download_json(
-                build_synonym_url(cid),
-                species_root / "synonyms.json",
-                raw_files,
-            )
-        except Exception as exc:
-            unresolved.append(_unresolved(species_id, query, "synonyms", str(exc), raw_files))
-
-        records.append(
-            normalize_species_record(
-                species_id=species_id,
-                query=query,
-                cid_payload=cid_payload,
-                property_payload=property_payload,
-                synonym_payload=synonym_payload,
-                raw_files=raw_files,
-            )
+        record, errors = fetch_species_record(
+            entry,
+            run_root=run_root,
+            download_json=_download_json,
         )
+        unresolved.extend(errors)
+        if record is not None:
+            records.append(record)
 
     snapshot = {
         "schema_version": 1,
@@ -219,6 +126,32 @@ def _download_json(url: str, output_path: Path, raw_files: list[str]) -> dict[st
     return payload
 
 
+def _dry_run_plan(species_entries: list[dict[str, str]]) -> dict[str, Any]:
+    planned = [
+        {
+            "species": entry["id"],
+            "query": entry["query"],
+            "urls": {
+                "cid_lookup": build_cid_url(entry["query"]),
+                "properties": "requires CID lookup",
+                "synonyms": "requires CID lookup",
+            },
+        }
+        for entry in species_entries
+    ]
+    return {
+        "schema_version": 1,
+        "dry_run": True,
+        "summary": {
+            "total_species": len(species_entries),
+            "planned_species": len(species_entries),
+            "records": 0,
+            "unresolved": 0,
+        },
+        "planned": planned,
+    }
+
+
 def _load_species_entries(path: Path) -> list[dict[str, str]]:
     payload = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
     if not isinstance(payload, dict):
@@ -239,28 +172,12 @@ def _load_species_entries(path: Path) -> list[dict[str, str]]:
     return normalized
 
 
-def _unresolved(
-    species_id: str,
-    query: str,
-    stage: str,
-    reason: str,
-    raw_files: list[str],
-) -> dict[str, Any]:
-    return {
-        "species": species_id,
-        "query": query,
-        "stage": stage,
-        "reason": reason,
-        "raw_files": list(raw_files),
-    }
-
-
 def _utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 def _timestamp_for_path() -> str:
-    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    return datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
 
 
 if __name__ == "__main__":

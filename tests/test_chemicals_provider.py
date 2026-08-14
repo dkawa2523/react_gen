@@ -4,7 +4,7 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from plasma_reactgen.data_sources import chemicals_provider
+from plasma_reactgen.data_sources import chemicals_adapter
 from plasma_reactgen.data_sources.chemicals_provider import (
     ChemicalsPropertyProvider,
     ChemicalsSpeciesProvider,
@@ -58,13 +58,13 @@ def test_chemicals_species_and_property_candidates_with_fake_package(monkeypatch
     assert by_name["mass_amu"]["value"] == 88.0043
     assert by_name["mass_amu"]["source_name"] == "chemicals_optional"
     assert by_name["dipole_moment_D"]["value"] == 0.0
-    assert by_name["enthalpy_formation_eV"]["value"] == pytest.approx(
-        j_per_mol_to_ev(-933200.0)
-    )
+    assert by_name["enthalpy_formation_eV"]["value"] == pytest.approx(j_per_mol_to_ev(-933200.0))
     assert "collision_radius_A" not in by_name
     assert all(item["source_record"]["source_type"] == "python_package" for item in properties)
     assert all(item["source_record"]["database"] == "chemicals" for item in properties)
-    assert all(item["source_record"]["evidence_type"] == "local_package_databank" for item in properties)
+    assert all(
+        item["source_record"]["evidence_type"] == "local_package_databank" for item in properties
+    )
 
 
 def test_chemicals_optional_and_local_are_registered_for_profile_lookup():
@@ -88,6 +88,39 @@ def test_chemicals_unit_conversion_helpers():
     assert kj_per_mol_to_ev(96.48533212331002) == pytest.approx(1.0)
 
 
+def test_chemicals_property_adapter_supports_positional_optional_apis(monkeypatch):
+    chemical = SimpleNamespace(MW=28.0, CASs="test-cas")
+
+    def positional_value(cas=None, **kwargs):
+        if kwargs:
+            raise TypeError("keyword form unavailable")
+        assert cas == "test-cas"
+        return 1.25
+
+    def fake_import(name, package=None):
+        if name == "chemicals.identifiers":
+            return SimpleNamespace(search_chemical=lambda query: chemical)
+        if name == "chemicals.dipole":
+            return SimpleNamespace(dipole_moment=positional_value)
+        if name == "chemicals.reaction":
+            return SimpleNamespace(Hfg=positional_value)
+        if name == "chemicals.lennard_jones":
+            return SimpleNamespace(sigma_A=positional_value)
+        raise ImportError(name)
+
+    monkeypatch.setattr(chemicals_adapter.importlib, "import_module", fake_import)
+
+    properties = ChemicalsPropertyProvider().find_properties(
+        "test",
+        ["dipole_moment_D", "enthalpy_formation_eV", "collision_radius_A"],
+    )
+    values = {item["property"]: item["value"] for item in properties}
+
+    assert values["dipole_moment_D"] == 1.25
+    assert values["enthalpy_formation_eV"] == pytest.approx(j_per_mol_to_ev(1.25))
+    assert values["collision_radius_A"] == 1.25
+
+
 def test_prepare_case_does_not_crash_when_chemicals_unavailable(tmp_path, monkeypatch):
     _force_chemicals_unavailable(monkeypatch)
     registry_root = _make_minimal_registry(tmp_path / "registry")
@@ -104,8 +137,7 @@ def test_prepare_case_does_not_crash_when_chemicals_unavailable(tmp_path, monkey
         encoding="utf-8",
     )
     original_registry = {
-        path: path.read_text(encoding="utf-8")
-        for path in registry_root.rglob("*.yaml")
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
     }
 
     report = prepare_case(
@@ -119,14 +151,18 @@ def test_prepare_case_does_not_crash_when_chemicals_unavailable(tmp_path, monkey
         output_dir=output_dir,
     )
 
-    assert report["registry_mutated"] is False
+    assert report["schema_version"] == 2
     assert report["source_profile"]["chemicals_optional"] is True
     assert (output_dir / "prepare_report.yaml").exists()
     assert not (output_dir / "species" / "CF4.yaml").exists()
-    assert {path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")} == original_registry
+    assert {
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
+    } == original_registry
 
 
-def test_chemicals_enrichment_does_not_overwrite_existing_value_and_reports_conflict(tmp_path, monkeypatch):
+def test_chemicals_enrichment_does_not_overwrite_existing_value_and_reports_conflict(
+    tmp_path, monkeypatch
+):
     _fake_chemicals(monkeypatch)
     prepared_registry = tmp_path / "prepared_registry"
     _write_yaml(
@@ -151,7 +187,9 @@ def test_chemicals_enrichment_does_not_overwrite_existing_value_and_reports_conf
         {"name": "chemicals_test", "properties": ["chemicals_optional"]},
     )
 
-    payload = yaml.safe_load((prepared_registry / "species" / "CF4.yaml").read_text(encoding="utf-8"))
+    payload = yaml.safe_load(
+        (prepared_registry / "species" / "CF4.yaml").read_text(encoding="utf-8")
+    )
     assert payload["properties"]["mass_amu"]["value"] == 87.0
     assert {
         "kind": "property_conflict",
@@ -189,7 +227,9 @@ def test_chemicals_enrichment_fills_missing_property_with_metadata_source(tmp_pa
         {"name": "chemicals_test", "properties": ["chemicals_local"]},
     )
 
-    payload = yaml.safe_load((prepared_registry / "species" / "CF4.yaml").read_text(encoding="utf-8"))
+    payload = yaml.safe_load(
+        (prepared_registry / "species" / "CF4.yaml").read_text(encoding="utf-8")
+    )
     source_record = payload["metadata"]["property_sources"]["mass_amu"]
     assert report["summary"]["n_properties_filled"] >= 1
     assert payload["properties"]["mass_amu"]["value"] == 88.0043
@@ -199,14 +239,14 @@ def test_chemicals_enrichment_fills_missing_property_with_metadata_source(tmp_pa
 
 
 def _force_chemicals_unavailable(monkeypatch) -> None:
-    real_import = chemicals_provider.importlib.import_module
+    real_import = chemicals_adapter.importlib.import_module
 
     def fake_import(name, package=None):
         if name.startswith("chemicals"):
             raise ImportError("chemicals unavailable for test")
         return real_import(name, package)
 
-    monkeypatch.setattr(chemicals_provider.importlib, "import_module", fake_import)
+    monkeypatch.setattr(chemicals_adapter.importlib, "import_module", fake_import)
 
 
 def _fake_chemicals(monkeypatch) -> None:
@@ -229,7 +269,7 @@ def _fake_chemicals(monkeypatch) -> None:
             return SimpleNamespace()
         raise ImportError(name)
 
-    monkeypatch.setattr(chemicals_provider.importlib, "import_module", fake_import)
+    monkeypatch.setattr(chemicals_adapter.importlib, "import_module", fake_import)
 
 
 def _make_minimal_registry(root: Path) -> Path:
@@ -243,9 +283,7 @@ def _make_minimal_registry(root: Path) -> Path:
             "charge": 0,
             "classes": ["neutral", "molecule"],
             "state": {"kind": "ground", "label": "X", "excitation_energy_eV": 0.0},
-            "properties": {
-                "polarizability_A3": {"value": None, "unit": "A3", "source": None}
-            },
+            "properties": {"polarizability_A3": {"value": None, "unit": "A3", "source": None}},
             "metadata": {"status": "curated", "notes": []},
         },
     )

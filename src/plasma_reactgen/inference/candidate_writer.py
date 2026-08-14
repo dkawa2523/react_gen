@@ -7,12 +7,13 @@ from typing import Any
 import yaml
 
 from plasma_reactgen.application.config import CaseConfig
-from plasma_reactgen.domain.models import CollisionPair, ReactionChannel, Species, SpeciesAmount
+from plasma_reactgen.domain.models import Species
 from plasma_reactgen.inference.provider import (
     CompositeReactionProvider,
     InferredReactionProvider,
     RegisteredReactionProvider,
 )
+from plasma_reactgen.inference.reaction_candidate_builder import build_reaction_candidates
 from plasma_reactgen.inference.species_candidates import (
     make_basic_fragment_candidates,
     make_parent_ion_candidates,
@@ -35,13 +36,12 @@ def build_candidate_registry(config: CaseConfig, registry: Any) -> dict[str, Any
     ]
 
     species_candidates = _species_candidates(input_species, candidate_config, registry)
-    reaction_candidates = _reaction_candidates(input_species, provider)
+    reaction_candidates = build_reaction_candidates(input_species, provider)
 
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "species": species_candidates,
         "reactions": reaction_candidates,
-        "registry_mutated": False,
         "summary": {
             "n_input_species": len(input_species),
             "n_species_candidates": len(species_candidates),
@@ -67,8 +67,7 @@ def write_candidate_registry(output_dir: str | Path, candidates: dict[str, Any])
     _write_yaml(
         output_dir / "summary.yaml",
         {
-            "schema_version": candidates.get("schema_version", 1),
-            "registry_mutated": bool(candidates.get("registry_mutated", False)),
+            "schema_version": candidates.get("schema_version", 2),
             "summary": candidates.get("summary", {}),
         },
     )
@@ -104,7 +103,11 @@ def _species_candidates(
             ),
         ]:
             candidate_id = candidate.get("id")
-            if not candidate_id or candidate_id in seen_ids or _is_registered_species(candidate, registry):
+            if (
+                not candidate_id
+                or candidate_id in seen_ids
+                or _is_registered_species(candidate, registry)
+            ):
                 continue
             seen_ids.add(candidate_id)
             candidates.append(candidate)
@@ -118,103 +121,6 @@ def _is_registered_species(candidate: dict[str, Any], registry: Any) -> bool:
         if species_id and registry.has_species(species_id):
             return True
     return False
-
-
-def _reaction_candidates(
-    species: list[Species],
-    provider: CompositeReactionProvider,
-) -> list[dict[str, Any]]:
-    candidates: list[dict[str, Any]] = []
-    seen_ids: set[str] = set()
-
-    neutral_species = [item for item in species if item.charge == 0]
-    for target in neutral_species:
-        _append_inferred_channels(
-            candidates,
-            seen_ids,
-            provider,
-            CollisionPair("electron", "e", target.id),
-        )
-
-    projectiles = sorted(
-        {
-            channel.products[1].species
-            for candidate in candidates
-            for channel in [_channel_from_candidate(candidate)]
-            if channel is not None and channel.type == "ionization" and len(channel.products) > 1
-        }
-    )
-    for projectile in projectiles:
-        for target in neutral_species:
-            if projectile == target.id:
-                continue
-            _append_inferred_channels(
-                candidates,
-                seen_ids,
-                provider,
-                CollisionPair("ion_neutral", projectile, target.id),
-            )
-
-    return candidates
-
-
-def _append_inferred_channels(
-    candidates: list[dict[str, Any]],
-    seen_ids: set[str],
-    provider: CompositeReactionProvider,
-    pair: CollisionPair,
-) -> None:
-    for channel in provider.get_channels(pair):
-        if channel.status != "inferred" or channel.id in seen_ids:
-            continue
-        seen_ids.add(channel.id)
-        candidates.append(_reaction_candidate_payload(pair, channel))
-
-
-def _reaction_candidate_payload(pair: CollisionPair, channel: ReactionChannel) -> dict[str, Any]:
-    return {
-        "schema_version": 1,
-        "kind": "reaction_channel_candidate",
-        "id": channel.id,
-        "status": channel.status,
-        "pair": {
-            "family": pair.family,
-            "projectile": pair.projectile,
-            "target": pair.target,
-        },
-        "type": channel.type,
-        "products": [_amount_payload(amount) for amount in channel.products],
-        "threshold_eV": channel.threshold_eV,
-        "deltaE_products_minus_reactants_eV": channel.deltaE_products_minus_reactants_eV,
-        "dnt_class": channel.dnt_class,
-        "data": channel.data,
-    }
-
-
-def _channel_from_candidate(candidate: dict[str, Any]) -> ReactionChannel | None:
-    try:
-        return ReactionChannel(
-            id=candidate["id"],
-            type=candidate["type"],
-            products=[
-                SpeciesAmount(species=item["species"], n=float(item.get("n", 1.0)))
-                for item in candidate.get("products", [])
-            ],
-            threshold_eV=candidate.get("threshold_eV"),
-            deltaE_products_minus_reactants_eV=candidate.get("deltaE_products_minus_reactants_eV"),
-            dnt_class=candidate.get("dnt_class"),
-            data=candidate.get("data", {}),
-            status=candidate.get("status", "inferred"),
-        )
-    except KeyError:
-        return None
-
-
-def _amount_payload(amount: SpeciesAmount) -> dict[str, Any]:
-    return {
-        "species": amount.species,
-        "n": amount.n,
-    }
 
 
 def _write_yaml(path: Path, payload: dict[str, Any]) -> None:

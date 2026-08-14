@@ -124,7 +124,10 @@ def test_enrichment_uses_source_profile_order_for_supported_candidates(tmp_path)
                 "unit": "amu",
                 "source": "internal",
                 "status": "imported",
-                "source_record": {"source_type": "internal_file_db", "source_id": "internal:CF4.mass_amu"},
+                "source_record": {
+                    "source_type": "internal_file_db",
+                    "source_id": "internal:CF4.mass_amu",
+                },
             },
         ]
     )
@@ -138,6 +141,51 @@ def test_enrichment_uses_source_profile_order_for_supported_candidates(tmp_path)
     species = _read_species(prepared_registry, "CF4")
     assert species["properties"]["mass_amu"]["value"] == 88.0043
     assert species["properties"]["mass_amu"]["source"] == "internal"
+
+
+def test_null_candidate_is_not_applied_and_matching_value_is_not_a_conflict(tmp_path):
+    prepared_registry = tmp_path / "prepared_registry"
+    _write_species(
+        prepared_registry,
+        "CF4",
+        {"mass_amu": {"value": 88.0043, "unit": "amu", "source": "curated"}},
+    )
+    provider = _MultiPropertyProvider(
+        [
+            {
+                "species": "CF4",
+                "property": "mass_amu",
+                "value": 88.0043,
+                "unit": "amu",
+                "source_record": _source_record("same-value"),
+            },
+            {
+                "species": "CF4",
+                "property": "collision_radius_A",
+                "value": None,
+                "unit": "A",
+                "source_record": _source_record("missing-value"),
+            },
+        ]
+    )
+
+    report = enrich_species_properties(
+        prepared_registry,
+        [object(), provider],
+        {"name": "test"},
+    )
+
+    species = _read_species(prepared_registry, "CF4")
+    assert species["properties"]["mass_amu"]["source"] == "curated"
+    assert "collision_radius_A" not in species["properties"]
+    assert report["property_conflicts"] == []
+    assert {
+        "kind": "missing_property",
+        "species": "CF4",
+        "property": "collision_radius_A",
+        "reason": "no_supported_candidate",
+        "required_by": "dnt_readiness",
+    } in report["unresolved"]
 
 
 def test_collision_radius_is_not_invented(tmp_path):

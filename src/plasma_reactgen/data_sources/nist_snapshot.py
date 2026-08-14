@@ -6,9 +6,6 @@ from typing import Any
 
 import yaml
 
-from plasma_reactgen.data_sources.base import PropertyProvider
-
-
 SUPPORTED_PROPERTIES = {
     "mass_amu",
     "ionization_energy_eV",
@@ -22,7 +19,7 @@ SUPPORTED_PROPERTIES = {
 SUPPORTED_UNITS = {"eV", "amu", "D", "A3"}
 
 
-class NistSnapshotPropertyProvider(PropertyProvider):
+class NistSnapshotPropertyProvider:
     def __init__(self, root: str | Path):
         self.root = Path(root)
         self.records = _load_records(self.root)

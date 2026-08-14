@@ -139,6 +139,16 @@ def test_duplicate_pair_is_rejected_during_registry_loading(tmp_path):
         FileRegistry(root)
 
 
+def test_duplicate_species_id_is_rejected_during_registry_loading(tmp_path):
+    root = tmp_path / "registry"
+    species = {"id": "A", "composition": {"A": 1}, "charge": 0}
+    _write_yaml(root / "species" / "first.yaml", species)
+    _write_yaml(root / "species" / "second.yaml", species)
+
+    with pytest.raises(ValueError, match="duplicate species id"):
+        FileRegistry(root)
+
+
 def test_duplicate_channel_id_is_rejected_during_registry_loading(tmp_path):
     root = tmp_path / "registry"
     for target in ("A", "B"):
@@ -146,14 +156,28 @@ def test_duplicate_channel_id_is_rejected_during_registry_loading(tmp_path):
             root / "reactions" / "electron" / f"{target}.yaml",
             {
                 "pair": {"family": "electron", "projectile": "e", "target": target},
-                "channels": [
-                    {"id": "duplicate", "type": "elastic", "products": []}
-                ],
+                "channels": [{"id": "duplicate", "type": "elastic", "products": []}],
             },
         )
 
     with pytest.raises(ValueError, match="duplicate reaction channel id"):
         FileRegistry(root)
+
+
+def test_incomplete_reaction_pair_is_not_indexed(tmp_path):
+    root = tmp_path / "registry"
+    _write_yaml(
+        root / "reactions" / "electron" / "incomplete.yaml",
+        {
+            "pair": {"family": "electron", "projectile": "e"},
+            "channels": [{"id": "ignored", "type": "elastic", "products": []}],
+        },
+    )
+
+    registry = FileRegistry(root)
+
+    assert registry.iter_reaction_files()
+    assert registry.find_pairs_involving({"e", "A"}, {"A"}) == []
 
 
 def _write_yaml(path: Path, payload: dict) -> None:

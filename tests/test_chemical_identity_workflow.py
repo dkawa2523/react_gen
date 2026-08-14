@@ -5,7 +5,8 @@ from pathlib import Path
 import yaml
 
 from external_data_tools import chemical_identity_fetch
-from external_data_tools.chemical_identity_fetch import fetch_chemical_identity
+from external_data_tools.chemical_identity_fetch import fetch_chemical_identity, main
+from external_data_tools.chemical_identity_normalize import normalize_identity_records
 from plasma_reactgen.data_sources.chemical_identity_snapshot import (
     ChemicalIdentitySnapshotProvider,
     enrich_species_identity_metadata,
@@ -59,7 +60,9 @@ def test_conflicting_formula_and_composition_are_reported(tmp_path):
     _write_species(prepared_registry, "CF4", formula="C2F6", composition={"C": 2, "F": 6})
     snapshot = _write_identity_snapshot(tmp_path / "chemical_identity.yaml")
 
-    report = enrich_species_identity_metadata(prepared_registry, ChemicalIdentitySnapshotProvider(snapshot))
+    report = enrich_species_identity_metadata(
+        prepared_registry, ChemicalIdentitySnapshotProvider(snapshot)
+    )
 
     assert {
         "kind": "formula_conflict",
@@ -75,6 +78,34 @@ def test_conflicting_formula_and_composition_are_reported(tmp_path):
         "candidate_composition": {"C": 1, "F": 4},
         "action": "manual_review",
     } in report["conflicts"]
+
+
+def test_identity_merge_fills_formula_and_deduplicates_source_records(tmp_path):
+    prepared_registry = tmp_path / "prepared_registry"
+    _write_species(
+        prepared_registry,
+        "CF4",
+        aliases=["tetrafluoromethane"],
+        formula=None,
+        composition={"C": 1, "F": 4},
+    )
+    source_record = {"database": "ChEBI", "raw_file": "chebi.yaml"}
+    species_path = prepared_registry / "species" / "CF4.yaml"
+    species = _read_yaml(species_path)
+    species["metadata"]["identity_source_records"] = [source_record]
+    _write_yaml(species_path, species)
+    snapshot = _write_identity_snapshot(tmp_path / "chemical_identity.yaml")
+
+    report = enrich_species_identity_metadata(
+        prepared_registry,
+        ChemicalIdentitySnapshotProvider(snapshot),
+    )
+
+    enriched = _read_yaml(species_path)
+    assert enriched["formula"] == "CF4"
+    assert enriched["metadata"]["identity_source_records"] == [source_record]
+    assert enriched["metadata"]["aliases"].count("tetrafluoromethane") == 1
+    assert report["conflicts"] == []
 
 
 def test_chemspider_skeleton_without_api_key_returns_unavailable(tmp_path, monkeypatch):
@@ -130,6 +161,63 @@ def test_chebi_local_snapshot_fetch_normalizes_and_records_sha256(tmp_path):
     assert len(manifest["source_files"][0]["sha256"]) == 64
 
 
+def test_chebi_fetch_without_local_snapshot_records_each_species_as_unresolved(tmp_path):
+    species_list = _write_species_list(tmp_path / "species.yaml")
+    output_root = tmp_path / "raw"
+    snapshot_path = tmp_path / "snapshot.yaml"
+
+    snapshot = fetch_chemical_identity(
+        species_list,
+        output_root=output_root,
+        snapshot_path=snapshot_path,
+        provider="chebi",
+    )
+
+    assert snapshot["records"] == []
+    assert snapshot["unresolved"] == [
+        {
+            "species": "CF4",
+            "query": "tetrafluoromethane",
+            "provider": "chebi",
+            "reason": "local_snapshot_required",
+        }
+    ]
+    assert _read_yaml(output_root / "manifest.yaml")["source_files"] == []
+
+
+def test_identity_normalizer_preserves_first_values_and_merges_evidence():
+    snapshot = normalize_identity_records(
+        [
+            {
+                "species": "CF4",
+                "query": "first query",
+                "aliases": ["tetrafluoromethane"],
+                "identifiers": {"inchikey": None},
+                "source_record": {"database": "first"},
+            },
+            {
+                "species": "CF4",
+                "query": "second query",
+                "formula": "CF4",
+                "aliases": ["tetrafluoromethane", "carbon tetrafluoride"],
+                "identifiers": {"inchikey": "TXEYQDLBPFQVAA-UHFFFAOYSA-N"},
+                "source_records": [{"database": "second"}],
+            },
+            {},
+        ]
+    )
+
+    record = snapshot["records"][0]
+    assert record["query"] == "first query"
+    assert record["formula"] == "CF4"
+    assert record["aliases"] == ["tetrafluoromethane", "carbon tetrafluoride"]
+    assert record["identifiers"]["inchikey"] == "TXEYQDLBPFQVAA-UHFFFAOYSA-N"
+    assert record["source_records"] == [
+        {"database": "first"},
+        {"database": "second"},
+    ]
+
+
 def test_identity_fetch_dry_run_does_not_call_network_or_write_files(tmp_path, monkeypatch):
     species_list = _write_species_list(tmp_path / "species.yaml")
 
@@ -152,11 +240,37 @@ def test_identity_fetch_dry_run_does_not_call_network_or_write_files(tmp_path, m
     assert not (tmp_path / "snapshot.yaml").exists()
 
 
+def test_identity_fetch_cli_reports_dry_run_and_existing_snapshot(tmp_path, capsys):
+    species_list = _write_species_list(tmp_path / "species.yaml")
+    snapshot = tmp_path / "snapshot.yaml"
+
+    exit_code = main(
+        [
+            str(species_list),
+            "--provider",
+            "chebi",
+            "--output-root",
+            str(tmp_path / "raw"),
+            "--snapshot",
+            str(snapshot),
+            "--dry-run",
+        ]
+    )
+
+    assert exit_code == 0
+    assert "provider=chebi planned=1" in capsys.readouterr().out
+    snapshot.write_text("schema_version: 1\n", encoding="utf-8")
+    assert main([str(species_list), "--snapshot", str(snapshot)]) == 1
+    assert "snapshot already exists" in capsys.readouterr().out
+
+
 def test_enrich_uses_chemical_identity_snapshot_when_profile_includes_it(tmp_path):
     registry_root = tmp_path / "registry"
     workspace = tmp_path / "workspace"
     case = tmp_path / "case.yaml"
-    snapshot = _write_identity_snapshot(tmp_path / "external_data" / "snapshots" / "chemical_identity.yaml")
+    snapshot = _write_identity_snapshot(
+        tmp_path / "external_data" / "snapshots" / "chemical_identity.yaml"
+    )
     _write_species(registry_root, "CF4", composition={"C": 1, "F": 4})
     case.write_text(
         yaml.safe_dump({"case": {"name": "identity"}, "gases": ["CF4"]}, sort_keys=False),

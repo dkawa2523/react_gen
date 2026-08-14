@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from pathlib import Path
 import csv
+from pathlib import Path
 
 import yaml
 
 from external_data_tools.astrochem_network_convert import convert_astrochem_network, main
-
 
 FIELDS = [
     "reactant1",
@@ -200,7 +199,8 @@ def test_cli_writes_output_and_report(tmp_path):
 
     exit_code = main([str(network), "--database", "UMIST", "--output", str(output)])
 
-    report = yaml.safe_load(output.with_suffix(".conversion_report.yaml").read_text(encoding="utf-8"))
+    report_path = output.with_suffix(".conversion_report.yaml")
+    report = yaml.safe_load(report_path.read_text(encoding="utf-8"))
     assert exit_code == 0
     assert output.exists()
     assert report["converted"] == 1

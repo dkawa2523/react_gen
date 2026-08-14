@@ -6,7 +6,6 @@ from typing import Any
 
 import yaml
 
-
 SUPPORTED_UNITS = {"eV", "amu", "D", "A3"}
 REQUIRED_RECORD_KEYS = {
     "species",
@@ -32,7 +31,7 @@ def validate_nist_snapshot(path: Path) -> dict[str, Any]:
     if not isinstance(records, list):
         raise ValueError("NIST snapshot must contain a records list")
 
-    errors = []
+    errors: list[dict[str, Any]] = []
     for index, record in enumerate(records):
         if not isinstance(record, dict):
             errors.append(_error(index, None, "record_not_mapping", "record must be a mapping"))
@@ -68,33 +67,66 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _validate_record(index: int, record: dict[str, Any]) -> list[dict[str, Any]]:
-    errors = []
     species = record.get("species")
-    missing = sorted(key for key in REQUIRED_RECORD_KEYS if key not in record)
-    for key in missing:
-        errors.append(_error(index, species, "missing_key", f"missing required key: {key}", key))
+    return [
+        *_missing_record_key_errors(index, species, record),
+        *_value_errors(index, species, record),
+        *_source_record_errors(index, species, record.get("source_record")),
+    ]
+
+
+def _missing_record_key_errors(
+    index: int,
+    species: Any,
+    record: dict[str, Any],
+) -> list[dict[str, Any]]:
+    return [
+        _error(index, species, "missing_key", f"missing required key: {key}", key)
+        for key in sorted(REQUIRED_RECORD_KEYS - record.keys())
+    ]
+
+
+def _value_errors(
+    index: int,
+    species: Any,
+    record: dict[str, Any],
+) -> list[dict[str, Any]]:
+    errors = []
 
     unit = record.get("unit")
     if unit is not None and unit not in SUPPORTED_UNITS:
-        errors.append(_error(index, species, "unsupported_unit", f"unsupported unit: {unit}", "unit"))
+        errors.append(
+            _error(index, species, "unsupported_unit", f"unsupported unit: {unit}", "unit")
+        )
 
     value = record.get("value")
-    if value is not None and not isinstance(value, (int, float)):
+    if value is not None and not isinstance(value, int | float):
         errors.append(_error(index, species, "non_numeric_value", "value must be numeric", "value"))
+    return errors
 
-    source_record = record.get("source_record")
+
+def _source_record_errors(
+    index: int,
+    species: Any,
+    source_record: Any,
+) -> list[dict[str, Any]]:
+    errors: list[dict[str, Any]] = []
     if source_record is not None and not isinstance(source_record, dict):
-        errors.append(
-            _error(index, species, "invalid_source_record", "source_record must be a mapping", "source_record")
-        )
-        return errors
+        return [
+            _error(
+                index,
+                species,
+                "invalid_source_record",
+                "source_record must be a mapping",
+                "source_record",
+            )
+        ]
 
     if isinstance(source_record, dict):
-        for key in sorted(REQUIRED_SOURCE_RECORD_KEYS):
-            if key not in source_record:
-                errors.append(
-                    _error(index, species, "missing_source_key", f"missing source_record key: {key}", key)
-                )
+        errors.extend(
+            _error(index, species, "missing_source_key", f"missing source_record key: {key}", key)
+            for key in sorted(REQUIRED_SOURCE_RECORD_KEYS - source_record.keys())
+        )
         database = source_record.get("database")
         if database is not None and not str(database).startswith("NIST"):
             errors.append(

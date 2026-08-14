@@ -7,6 +7,11 @@ import yaml
 
 from external_data_tools.cache import sha256_file
 
+REQUIREMENT_SECTIONS = (
+    "required_for_registry_benchmark",
+    "optional_for_registry_benchmark",
+)
+
 
 def check_data_requirements(path: Path) -> dict[str, Any]:
     path = Path(path)
@@ -14,26 +19,41 @@ def check_data_requirements(path: Path) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise ValueError("data requirements must be a YAML mapping")
 
-    records = []
-    for section in ("required_for_registry_benchmark", "optional_for_registry_benchmark"):
-        for item in payload.get(section, []) if isinstance(payload.get(section, []), list) else []:
-            if isinstance(item, dict):
-                records.append(_check_one_requirement(item, base_dir=path.parent, section=section))
-
-    required_missing = [item for item in records if item["status"] == "required_missing"]
-    optional_missing = [item for item in records if item["status"] == "optional_missing"]
+    records = _requirement_records(payload, path.parent)
     return {
         "schema_version": 1,
         "requirements_file": str(path),
         "data_status": records,
-        "summary": {
-            "n_records": len(records),
-            "n_ready": sum(1 for item in records if item["status"] == "ready"),
-            "n_required_missing": len(required_missing),
-            "n_optional_missing": len(optional_missing),
-            "required_data_ready": not required_missing,
-            "optional_data_ready": not optional_missing,
-        },
+        "summary": _requirements_summary(records),
+    }
+
+
+def _requirement_records(payload: dict[str, Any], base_dir: Path) -> list[dict[str, Any]]:
+    records: list[dict[str, Any]] = []
+    for section in REQUIREMENT_SECTIONS:
+        items = payload.get(section, [])
+        if not isinstance(items, list):
+            continue
+        records.extend(
+            _check_one_requirement(item, base_dir=base_dir, section=section)
+            for item in items
+            if isinstance(item, dict)
+        )
+    return records
+
+
+def _requirements_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
+    status_counts = {
+        status: sum(item["status"] == status for item in records)
+        for status in ("ready", "required_missing", "optional_missing")
+    }
+    return {
+        "n_records": len(records),
+        "n_ready": status_counts["ready"],
+        "n_required_missing": status_counts["required_missing"],
+        "n_optional_missing": status_counts["optional_missing"],
+        "required_data_ready": status_counts["required_missing"] == 0,
+        "optional_data_ready": status_counts["optional_missing"] == 0,
     }
 
 
@@ -63,7 +83,8 @@ def _resolve_path(value: Any, base_dir: Path) -> Path:
     if path.is_absolute():
         return path
     cwd_candidate = (Path.cwd() / path).resolve()
-    if cwd_candidate.exists() or path.parts[:1] in {("benchmarks",), ("cases",), ("external_data",)}:
+    repository_roots = {("benchmarks",), ("cases",), ("external_data",)}
+    if cwd_candidate.exists() or path.parts[:1] in repository_roots:
         return cwd_candidate
     return (base_dir / path).resolve()
 

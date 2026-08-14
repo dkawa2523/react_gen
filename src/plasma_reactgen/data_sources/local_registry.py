@@ -3,16 +3,15 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Any
 
-from plasma_reactgen.data_sources.base import (
-    CrossSectionProvider,
-    PropertyProvider,
-    ReactionProvider,
-    SpeciesProvider,
+from plasma_reactgen.domain.models import (
+    CollisionPair,
+    PropertyValue,
+    ReactionChannel,
+    SpeciesAmount,
 )
-from plasma_reactgen.domain.models import CollisionPair, PropertyValue, ReactionChannel, SpeciesAmount
 
 
-class LocalRegistrySpeciesProvider(SpeciesProvider):
+class LocalRegistrySpeciesProvider:
     def __init__(self, registry: Any):
         self.registry = registry
 
@@ -23,7 +22,7 @@ class LocalRegistrySpeciesProvider(SpeciesProvider):
         return [_species_payload(species)]
 
 
-class LocalRegistryPropertyProvider(PropertyProvider):
+class LocalRegistryPropertyProvider:
     def __init__(self, registry: Any):
         self.registry = registry
 
@@ -46,7 +45,7 @@ class LocalRegistryPropertyProvider(PropertyProvider):
         return candidates
 
 
-class LocalRegistryReactionProvider(ReactionProvider):
+class LocalRegistryReactionProvider:
     def __init__(self, registry: Any):
         self.registry = registry
 
@@ -54,7 +53,7 @@ class LocalRegistryReactionProvider(ReactionProvider):
         return [_reaction_payload(pair, channel) for channel in self.registry.get_channels(pair)]
 
 
-class LocalAssetCrossSectionProvider(CrossSectionProvider):
+class LocalAssetCrossSectionProvider:
     def __init__(self, registry: Any):
         self.registry = registry
 
@@ -75,8 +74,7 @@ def _species_payload(species) -> dict[str, Any]:
         "classes": sorted(species.classes),
         "state": deepcopy(species.state),
         "properties": {
-            name: _property_value_payload(prop)
-            for name, prop in sorted(species.properties.items())
+            name: _property_value_payload(prop) for name, prop in sorted(species.properties.items())
         },
         "status": species.status,
         "source_record": _source_record("local_registry", species.id),

@@ -138,6 +138,19 @@ interpreter or the Python launcher:
 py -m pytest
 ```
 
+Install the pinned quality toolchain and run the same gates as CI:
+
+```powershell
+python -m pip install -e ".[quality]"
+python -m nox -s quality-fast
+python -m nox -s quality-pr
+```
+
+Scheduled mutation and end-to-end checks use
+`python -m nox -s quality-nightly`. The existing-issue baseline is updated only
+through the explicit `python -m nox -s quality-baseline` command; normal checks
+and CI never rewrite it. See [Quality gates](docs/quality.md).
+
 Validate a registry before generation or promotion:
 
 ```powershell

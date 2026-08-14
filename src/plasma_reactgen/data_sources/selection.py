@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from plasma_reactgen.data_sources.source_identity import source_name_from_record
 
 DEFAULT_STATUS_ORDER = [
     "curated",
@@ -70,49 +71,13 @@ def _candidate_source_name(candidate: dict[str, Any], category: str, profile: di
         return str(candidate["source_name"])
 
     source = candidate.get("source")
-    if isinstance(source, str) and source in set(str(item) for item in profile.get(category, [])):
+    configured_sources = {str(item) for item in profile.get(category, [])}
+    if isinstance(source, str) and source in configured_sources:
         return source
-    if isinstance(source, dict):
-        mapped = _source_record_name(source, category)
+    for source_record in (source, candidate.get("source_record")):
+        if not isinstance(source_record, dict):
+            continue
+        mapped = source_name_from_record(source_record, category)
         if mapped:
             return mapped
-
-    source_record = candidate.get("source_record")
-    if isinstance(source_record, dict):
-        mapped = _source_record_name(source_record, category)
-        if mapped:
-            return mapped
-
     return ""
-
-
-def _source_record_name(source_record: dict[str, Any], category: str) -> str | None:
-    for key in ("source_name", "provider", "name"):
-        if source_record.get(key):
-            return str(source_record[key])
-
-    source_type = str(source_record.get("source_type") or "")
-    database = str(source_record.get("database") or "")
-    if source_type == "local_registry":
-        return "local_registry"
-    if source_type == "local_assets":
-        return "local_assets"
-    if source_type == "internal_file_db":
-        return {
-            "species_identity": "internal_species_db",
-            "properties": "internal_property_db",
-            "electron_cross_sections": "internal_cross_section_db",
-            "ion_neutral_reactions": "internal_reaction_db",
-            "electron_reactions": "internal_reaction_db",
-        }.get(category, "internal_file")
-    if source_type == "public_database_snapshot":
-        lowered = database.lower()
-        if "nist" in lowered:
-            return "nist_snapshot"
-        if "lxcat" in lowered:
-            return "lxcat_offline"
-    if source_type == "python_package" and database == "chemicals":
-        return str(source_record.get("source_name") or "chemicals_optional")
-    if source_type == "local_snapshot" and "ion" in database.lower():
-        return "ion_reaction_table"
-    return source_type or None

@@ -1,16 +1,16 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import argparse
+import sys
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
-import argparse
-import subprocess
-import sys
 
 import yaml
 
 from external_data_tools.benchmark_data_requirements import check_data_requirements
 from external_data_tools.http_client import download_many
+from external_data_tools.source_setup_actions import run_install_command
 
 
 def run_setup(
@@ -25,7 +25,12 @@ def run_setup(
     config = _read_yaml(config_path)
     policies = config.get("policies", {}) if isinstance(config.get("policies"), dict) else {}
 
-    data_config_path = _resolve_path(config.get("data_requirements", {}).get("config"), config_path)
+    data_config_path = _resolve_path(
+        config.get("data_requirements", {}).get("config"),
+        config_path,
+    )
+    if data_config_path is None:
+        raise ValueError("benchmark setup requires data_requirements.config")
 
     data_report = check_data_requirements(data_config_path)
     python_report = _python_dependency_report(config, config_path, install_python_deps)
@@ -47,12 +52,24 @@ def run_setup(
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Check local registry benchmark data and Python tooling.")
+    parser = argparse.ArgumentParser(
+        description="Check local registry benchmark data and Python tooling."
+    )
     parser.add_argument("--config", type=Path, required=True, help="benchmark setup YAML")
     parser.add_argument("--check", action="store_true", help="check benchmark data")
-    parser.add_argument("--install-python-deps", action="store_true", help="explicitly install listed Python requirements")
-    parser.add_argument("--download-explicit-data", action="store_true", help="download explicit user-provided URLs if policy allows it")
-    parser.add_argument("--write-report", type=Path, default=None, help="optional setup report YAML path")
+    parser.add_argument(
+        "--install-python-deps",
+        action="store_true",
+        help="explicitly install listed Python requirements",
+    )
+    parser.add_argument(
+        "--download-explicit-data",
+        action="store_true",
+        help="download explicit user-provided URLs if policy allows it",
+    )
+    parser.add_argument(
+        "--write-report", type=Path, default=None, help="optional setup report YAML path"
+    )
     args = parser.parse_args(argv)
 
     report, exit_code = run_setup(
@@ -66,18 +83,25 @@ def main(argv: list[str] | None = None) -> int:
     return exit_code
 
 
-def _python_dependency_report(config: dict[str, Any], config_path: Path, install: bool) -> dict[str, Any]:
+def _python_dependency_report(
+    config: dict[str, Any], config_path: Path, install: bool
+) -> dict[str, Any]:
     python_config = config.get("python", {}) if isinstance(config.get("python"), dict) else {}
-    requirements = [
-        _resolve_path(path, config_path)
-        for path in python_config.get("requirements", [])
-        if path
-    ] if isinstance(python_config.get("requirements", []), list) else []
+    configured_requirements = python_config.get("requirements", [])
+    requirements = (
+        [
+            resolved
+            for value in configured_requirements
+            if value and (resolved := _resolve_path(value, config_path)) is not None
+        ]
+        if isinstance(configured_requirements, list)
+        else []
+    )
 
     records = []
     installed = False
     for requirement in requirements:
-        record = {
+        record: dict[str, Any] = {
             "requirements": str(requirement),
             "exists": requirement.exists(),
             "installed": False,
@@ -87,11 +111,11 @@ def _python_dependency_report(config: dict[str, Any], config_path: Path, install
                 record["error"] = "requirements file not found"
             else:
                 command = [sys.executable, "-m", "pip", "install", "-r", str(requirement)]
-                result = subprocess.run(command, check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                result = run_install_command(command)
                 record["command"] = " ".join(command)
                 record["return_code"] = result.returncode
                 record["installed"] = result.returncode == 0
-                installed = installed or record["installed"]
+                installed = installed or bool(record["installed"])
         records.append(record)
 
     return {
@@ -145,7 +169,7 @@ def _setup_report(
 ) -> dict[str, Any]:
     return {
         "schema_version": 1,
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "config": str(config_path),
         "mode": {
             "check": bool(check),
@@ -155,8 +179,11 @@ def _setup_report(
         "summary": {
             "required_data_ready": bool(data_report["summary"]["required_data_ready"]),
             "optional_data_ready": bool(data_report["summary"]["optional_data_ready"]),
-            "python_optional_dependencies_installed": bool(python_report["python_optional_dependencies_installed"]),
-            "downloads_ready": not download_report.get("error") and download_report.get("summary", {}).get("failed", 0) == 0,
+            "python_optional_dependencies_installed": bool(
+                python_report["python_optional_dependencies_installed"]
+            ),
+            "downloads_ready": not download_report.get("error")
+            and download_report.get("summary", {}).get("failed", 0) == 0,
         },
         "policies": policies,
         "data_status": data_report["data_status"],
@@ -166,7 +193,10 @@ def _setup_report(
 
 
 def _exit_code(report: dict[str, Any], policies: dict[str, Any]) -> int:
-    if policies.get("fail_if_required_data_missing", True) and not report["summary"]["required_data_ready"]:
+    if (
+        policies.get("fail_if_required_data_missing", True)
+        and not report["summary"]["required_data_ready"]
+    ):
         return 1
     if report["downloads"].get("error"):
         return 1
@@ -180,7 +210,11 @@ def _resolve_path(value: Any, config_path: Path) -> Path | None:
     if path.is_absolute():
         return path
     cwd_candidate = (Path.cwd() / path).resolve()
-    if cwd_candidate.exists() or path.parts[:1] in {("benchmarks",), ("external_data",), ("external_data_tools",)}:
+    if cwd_candidate.exists() or path.parts[:1] in {
+        ("benchmarks",),
+        ("external_data",),
+        ("external_data_tools",),
+    }:
         return cwd_candidate
     return (config_path.parent / path).resolve()
 
@@ -202,7 +236,8 @@ def _print_summary(report: dict[str, Any]) -> None:
     print("benchmark setup:")
     print(f"  required_data_ready: {str(summary['required_data_ready']).lower()}")
     print(f"  optional_data_ready: {str(summary['optional_data_ready']).lower()}")
-    print(f"  python_optional_dependencies_installed: {str(summary['python_optional_dependencies_installed']).lower()}")
+    dependencies_installed = str(summary["python_optional_dependencies_installed"]).lower()
+    print(f"  python_optional_dependencies_installed: {dependencies_installed}")
     if report["downloads"].get("error"):
         print(f"  download_error: {report['downloads']['error']}")
 

@@ -10,9 +10,7 @@ from external_data_tools.lxcat_raw_import import import_lxcat_raw_file, main
 def test_simple_csv_imports_normalized_asset_and_metadata(tmp_path):
     raw_file = tmp_path / "cf4.csv"
     raw_file.write_text(
-        "energy_eV,cross_section_m2,process,target\n"
-        "2.0,2.0e-20,elastic,CF4\n"
-        "0.0,0.0,elastic,CF4\n",
+        "energy_eV,cross_section_m2,process,target\n2.0,2.0e-20,elastic,CF4\n0.0,0.0,elastic,CF4\n",
         encoding="utf-8",
     )
     workspace = tmp_path / "workspace"
@@ -25,6 +23,8 @@ def test_simple_csv_imports_normalized_asset_and_metadata(tmp_path):
 
     assert report["summary"]["n_assets_imported"] == 1
     assert report["summary"]["n_unmapped"] == 1
+    assert report["schema_version"] == 2
+    assert "registry_mutated" not in report
     assert report["unresolved"] == []
     assert asset_path.read_text(encoding="utf-8").splitlines() == [
         "energy_eV,cross_section_m2",
@@ -40,7 +40,10 @@ def test_simple_csv_imports_normalized_asset_and_metadata(tmp_path):
     assert metadata["energy_min_eV"] == 0.0
     assert metadata["energy_max_eV"] == 2.0
     assert len(metadata["sha256"]) == 64
-    assert metadata["license_note"] == "User must follow LXCat citation and redistribution requirements."
+    assert (
+        metadata["license_note"]
+        == "User must follow LXCat citation and redistribution requirements."
+    )
 
 
 def test_bolsig_like_minimal_fixture_imports(tmp_path):
@@ -61,7 +64,9 @@ def test_bolsig_like_minimal_fixture_imports(tmp_path):
         source="lxcat_manual",
     )
 
-    metadata_path = tmp_path / "workspace" / "prepared_registry" / report["assets"][0]["metadata_path"]
+    metadata_path = (
+        tmp_path / "workspace" / "prepared_registry" / report["assets"][0]["metadata_path"]
+    )
     metadata = yaml.safe_load(metadata_path.read_text(encoding="utf-8"))
 
     assert report["summary"]["n_assets_imported"] == 1
@@ -73,10 +78,7 @@ def test_bolsig_like_minimal_fixture_imports(tmp_path):
 def test_ambiguous_file_reports_unresolved_and_does_not_import(tmp_path):
     raw_file = tmp_path / "ambiguous.txt"
     raw_file.write_text(
-        "First process\n"
-        "Second process\n"
-        "0 0\n"
-        "1 1e-20\n",
+        "First process\nSecond process\n0 0\n1 1e-20\n",
         encoding="utf-8",
     )
     workspace = tmp_path / "workspace"
@@ -107,8 +109,7 @@ def test_mapping_updates_prepared_registry_only(tmp_path):
         },
     )
     original_registry = {
-        path: path.read_text(encoding="utf-8")
-        for path in registry_root.rglob("*.yaml")
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
     }
     mapping_file = tmp_path / "external_data" / "lxcat" / "mappings.yaml"
     _write_yaml(
@@ -142,9 +143,7 @@ def test_mapping_updates_prepared_registry_only(tmp_path):
     )
 
     prepared = yaml.safe_load(
-        (prepared_registry / "reactions" / "electron" / "e__CF4.yaml").read_text(
-            encoding="utf-8"
-        )
+        (prepared_registry / "reactions" / "electron" / "e__CF4.yaml").read_text(encoding="utf-8")
     )
     cross_section = prepared["channels"][0]["data"]["cross_section"]
 
@@ -156,15 +155,15 @@ def test_mapping_updates_prepared_registry_only(tmp_path):
     assert cross_section["source"] == "lxcat_manual"
     assert cross_section["mapping_status"] == "manual_review_required"
     assert cross_section["process_label_original"] == "DISSOCIATION"
-    assert {path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")} == original_registry
+    assert {
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
+    } == original_registry
 
 
 def test_cli_writes_import_report(tmp_path):
     raw_file = tmp_path / "cf4.csv"
     raw_file.write_text(
-        "energy_eV,cross_section_m2,process,target\n"
-        "0,0,elastic,CF4\n"
-        "1,1e-20,elastic,CF4\n",
+        "energy_eV,cross_section_m2,process,target\n0,0,elastic,CF4\n1,1e-20,elastic,CF4\n",
         encoding="utf-8",
     )
     workspace = tmp_path / "workspace"
@@ -196,15 +195,56 @@ def test_no_network_access_is_used(tmp_path, monkeypatch):
     monkeypatch.setattr(urllib.request, "urlopen", fail_urlopen)
     raw_file = tmp_path / "cf4.csv"
     raw_file.write_text(
-        "energy_eV,cross_section_m2\n"
-        "0,0\n"
-        "1,1e-20\n",
+        "energy_eV,cross_section_m2\n0,0\n1,1e-20\n",
         encoding="utf-8",
     )
 
     report = import_lxcat_raw_file(raw_file, workspace=tmp_path / "workspace", target="CF4")
 
     assert report["summary"]["n_assets_imported"] == 1
+
+
+def test_parsed_target_mismatch_is_unresolved_without_writing_assets(tmp_path):
+    raw_file = tmp_path / "cf4.csv"
+    raw_file.write_text(
+        "energy_eV,cross_section_m2,target\n0,0,CF4\n1,1e-20,CF4\n",
+        encoding="utf-8",
+    )
+    workspace = tmp_path / "workspace"
+
+    report = import_lxcat_raw_file(raw_file, workspace=workspace, target="O2")
+
+    assert report["assets"] == []
+    assert report["unresolved"] == [
+        {
+            "file": str(raw_file),
+            "reason": "target_mismatch",
+            "target": "O2",
+            "parsed_target": "CF4",
+        }
+    ]
+    assert not (workspace / "prepared_registry").exists()
+
+
+def test_dry_run_reports_asset_without_writing_registry(tmp_path):
+    raw_file = tmp_path / "cf4.csv"
+    raw_file.write_text(
+        "energy_eV,cross_section_m2\n0,0\n1,1e-20\n",
+        encoding="utf-8",
+    )
+    workspace = tmp_path / "workspace"
+
+    report = import_lxcat_raw_file(
+        raw_file,
+        workspace=workspace,
+        target="CF4",
+        dry_run=True,
+    )
+
+    assert report["summary"]["n_assets_imported"] == 0
+    assert report["assets"][0]["dry_run"] is True
+    assert report["summary"]["n_unmapped"] == 1
+    assert not (workspace / "prepared_registry").exists()
 
 
 def _write_prepared_reaction(prepared_registry: Path) -> None:

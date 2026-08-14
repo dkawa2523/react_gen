@@ -1,20 +1,20 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import yaml
 
-from plasma_reactgen.data_sources.base import ReactionProvider
 from plasma_reactgen.domain.models import CollisionPair
 
 
-class IonReactionTableProvider(ReactionProvider):
+class IonReactionTableProvider:
     """Read reviewed local ion-neutral reaction snapshots from simple YAML files."""
 
     def __init__(self, files: str | Path | Iterable[str | Path]):
-        if isinstance(files, (str, Path)):
+        if isinstance(files, str | Path):
             self.files = [Path(files)]
         else:
             self.files = [Path(path) for path in files]

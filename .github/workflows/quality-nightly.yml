@@ -1,0 +1,41 @@
+name: Quality Nightly
+
+on:
+  schedule:
+    - cron: "0 17 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality-nightly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install project and pinned quality tools
+        run: python -m pip install -e ".[quality]"
+
+      - name: Run nightly quality gate
+        run: python -m nox -s quality-nightly
+
+      - name: Upload nightly reports and mutation worktree
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-nightly-reports
+          path: |
+            build/quality
+            benchmarks/results/summary.yaml
+            benchmarks/results/*/benchmark_metrics.yaml
+            mutants
+          if-no-files-found: warn

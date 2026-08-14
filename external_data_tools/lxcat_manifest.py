@@ -53,36 +53,73 @@ def update_prepared_electron_channel(
 
     updated: list[Path] = []
     for path in sorted(reaction_root.glob("*.yaml")):
-        payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        changed = False
-        for channel in payload.get("channels", []):
-            if not isinstance(channel, dict) or channel.get("id") != reaction_id:
-                continue
-            data = channel.setdefault("data", {})
-            if not isinstance(data, dict):
-                channel["data"] = {}
-                data = channel["data"]
-            cross_section = data.setdefault("cross_section", {})
-            if not isinstance(cross_section, dict):
-                data["cross_section"] = {}
-                cross_section = data["cross_section"]
-            cross_section.update(
-                {
-                    "status": "local_file_registered",
-                    "path": asset_path,
-                    "format": "csv_energy_eV_sigma_m2",
-                    "source": source,
-                }
-            )
-            if mapping_status:
-                cross_section["mapping_status"] = mapping_status
-            if process_label_original:
-                cross_section["process_label_original"] = process_label_original
-            changed = True
-        if changed:
-            path.write_text(
-                yaml.safe_dump(payload, sort_keys=False, allow_unicode=True),
-                encoding="utf-8",
-            )
+        if _update_reaction_file(
+            path,
+            reaction_id=reaction_id,
+            asset_path=asset_path,
+            source=source,
+            process_label_original=process_label_original,
+            mapping_status=mapping_status,
+        ):
             updated.append(path)
     return updated
+
+
+def _update_reaction_file(
+    path: Path,
+    *,
+    reaction_id: str,
+    asset_path: str,
+    source: str,
+    process_label_original: str | None,
+    mapping_status: str | None,
+) -> bool:
+    payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    channels = payload.get("channels", [])
+    changed = False
+    for channel in channels if isinstance(channels, list) else []:
+        if isinstance(channel, dict) and channel.get("id") == reaction_id:
+            _register_cross_section(
+                channel,
+                asset_path=asset_path,
+                source=source,
+                process_label_original=process_label_original,
+                mapping_status=mapping_status,
+            )
+            changed = True
+    if changed:
+        path.write_text(
+            yaml.safe_dump(payload, sort_keys=False, allow_unicode=True),
+            encoding="utf-8",
+        )
+    return changed
+
+
+def _register_cross_section(
+    channel: dict[str, Any],
+    *,
+    asset_path: str,
+    source: str,
+    process_label_original: str | None,
+    mapping_status: str | None,
+) -> None:
+    data = channel.setdefault("data", {})
+    if not isinstance(data, dict):
+        data = {}
+        channel["data"] = data
+    cross_section = data.setdefault("cross_section", {})
+    if not isinstance(cross_section, dict):
+        cross_section = {}
+        data["cross_section"] = cross_section
+    cross_section.update(
+        {
+            "status": "local_file_registered",
+            "path": asset_path,
+            "format": "csv_energy_eV_sigma_m2",
+            "source": source,
+        }
+    )
+    if mapping_status:
+        cross_section["mapping_status"] = mapping_status
+    if process_label_original:
+        cross_section["process_label_original"] = process_label_original

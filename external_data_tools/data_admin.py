@@ -15,6 +15,15 @@ from .registry_admin import (
 
 
 def main(argv: list[str] | None = None) -> int:
+    args = _build_parser().parse_args(argv)
+    result = _run_command(args)
+    print(
+        yaml.safe_dump(result.get("summary", result), sort_keys=False, allow_unicode=True).rstrip()
+    )
+    return 0 if result.get("built", True) else 1
+
+
+def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="python -m external_data_tools.data_admin")
     commands = parser.add_subparsers(dest="command", required=True)
 
@@ -24,25 +33,15 @@ def main(argv: list[str] | None = None) -> int:
     plan.add_argument("--registry", type=Path, default=Path("registry"))
     plan.add_argument("--output", type=Path, default=Path("registry_pack_plan.yaml"))
 
-    lxcat = commands.add_parser("import_lxcat_raw")
-    lxcat.add_argument("input", type=Path)
-    lxcat.add_argument("--registry", type=Path, required=True)
-    lxcat.add_argument("--report-dir", type=Path, default=Path("data_admin_reports"))
+    lxcat = _add_import_parser(commands, "import_lxcat_raw")
     lxcat.add_argument(
         "--redistribution-status",
         choices=["permitted", "internal", "site-local"],
         default="site-local",
     )
 
-    properties = commands.add_parser("import_property_snapshot")
-    properties.add_argument("input", type=Path)
-    properties.add_argument("--registry", type=Path, required=True)
-    properties.add_argument("--report-dir", type=Path, default=Path("data_admin_reports"))
-
-    rates = commands.add_parser("import_rate_snapshot")
-    rates.add_argument("input", type=Path)
-    rates.add_argument("--registry", type=Path, required=True)
-    rates.add_argument("--report-dir", type=Path, default=Path("data_admin_reports"))
+    _add_import_parser(commands, "import_property_snapshot")
+    _add_import_parser(commands, "import_rate_snapshot")
 
     build = commands.add_parser("build_registry_pack")
     build.add_argument("--id", required=True)
@@ -57,7 +56,18 @@ def main(argv: list[str] | None = None) -> int:
         default="site-local",
     )
 
-    args = parser.parse_args(argv)
+    return parser
+
+
+def _add_import_parser(commands, name: str) -> argparse.ArgumentParser:
+    parser = commands.add_parser(name)
+    parser.add_argument("input", type=Path)
+    parser.add_argument("--registry", type=Path, required=True)
+    parser.add_argument("--report-dir", type=Path, default=Path("data_admin_reports"))
+    return parser
+
+
+def _run_command(args: argparse.Namespace) -> dict:
     if args.command == "plan_registry_pack":
         result = plan_registry_pack(
             seed_gases=args.seed_gases,
@@ -95,8 +105,7 @@ def main(argv: list[str] | None = None) -> int:
             redistribution_status=args.redistribution_status,
         )
 
-    print(yaml.safe_dump(result.get("summary", result), sort_keys=False, allow_unicode=True).rstrip())
-    return 0 if result.get("built", True) else 1
+    return result
 
 
 def _write(path: Path, payload: dict) -> None:

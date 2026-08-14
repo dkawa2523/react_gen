@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from collections import defaultdict
 
 from plasma_reactgen.domain.models import Species, SpeciesAmount
@@ -37,6 +38,8 @@ def check_charge_balance(
 ) -> str:
     if check_species_reference(reactants, products, species) != "ok":
         return "unknown_species"
+    if _has_invalid_stoichiometry(reactants, products):
+        return "failed"
 
     lhs = sum(amount.n * get_charge(amount.species, species) for amount in reactants)
     rhs = sum(amount.n * get_charge(amount.species, species) for amount in products)
@@ -50,21 +53,11 @@ def check_element_balance(
 ) -> str:
     if check_species_reference(reactants, products, species) != "ok":
         return "unknown_species"
+    if _has_invalid_stoichiometry(reactants, products):
+        return "failed"
 
-    lhs: dict[str, float] = defaultdict(float)
-    rhs: dict[str, float] = defaultdict(float)
-
-    for amount in reactants:
-        if amount.species == "e":
-            continue
-        for elem, count in species[amount.species].composition.items():
-            lhs[elem] += amount.n * count
-
-    for amount in products:
-        if amount.species == "e":
-            continue
-        for elem, count in species[amount.species].composition.items():
-            rhs[elem] += amount.n * count
+    lhs = _element_totals(reactants, species)
+    rhs = _element_totals(products, species)
 
     for elem in set(lhs) | set(rhs):
         if abs(lhs[elem] - rhs[elem]) > 1e-12:
@@ -76,3 +69,25 @@ def get_charge(species_id: str, species: dict[str, Species]) -> int:
     if species_id == "e":
         return -1
     return species[species_id].charge
+
+
+def _has_invalid_stoichiometry(
+    reactants: list[SpeciesAmount],
+    products: list[SpeciesAmount],
+) -> bool:
+    return any(
+        not math.isfinite(float(amount.n)) or amount.n <= 0 for amount in [*reactants, *products]
+    )
+
+
+def _element_totals(
+    amounts: list[SpeciesAmount],
+    species: dict[str, Species],
+) -> dict[str, float]:
+    totals: dict[str, float] = defaultdict(float)
+    for amount in amounts:
+        if amount.species == "e":
+            continue
+        for element, count in species[amount.species].composition.items():
+            totals[element] += amount.n * count
+    return totals

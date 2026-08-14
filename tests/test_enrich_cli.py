@@ -1,10 +1,9 @@
-from pathlib import Path
 import socket
+from pathlib import Path
 
 import yaml
 
 from plasma_reactgen.interface.cli import main
-
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -38,8 +37,7 @@ def test_enrich_command_works_with_local_profile_without_network(tmp_path, monke
     assert (workspace / "prepared_registry" / "rules" / "reaction_type_catalog.yaml").exists()
     assert (workspace / "prepare_report.yaml").exists()
     assert report["source_profile"] == "local_only"
-    assert report["registry_mutated"] is False
-    assert report["auto_promoted"] is False
+    assert report["schema_version"] == 2
     assert report["workspace"] == {
         "mode": "new",
         "reused_existing_prepared_registry": False,
@@ -105,23 +103,29 @@ def test_enrich_with_internal_file_adds_property_and_reaction_without_mutating_r
     )
 
     prepared_cf4 = _read_yaml(workspace / "prepared_registry" / "species" / "CF4.yaml")
-    prepared_reaction = _read_yaml(workspace / "prepared_registry" / "reactions" / "electron" / "e__Xe.yaml")
+    prepared_reaction = _read_yaml(
+        workspace / "prepared_registry" / "reactions" / "electron" / "e__Xe.yaml"
+    )
     report = _read_yaml(workspace / "enrichment_report.yaml")
 
     assert rc == 0
     assert prepared_cf4["properties"]["polarizability_A3"]["value"] == 2.824
-    assert prepared_cf4["properties"]["polarizability_A3"]["source_record"]["source_type"] == "internal_file_db"
+    assert (
+        prepared_cf4["properties"]["polarizability_A3"]["source_record"]["source_type"]
+        == "internal_file_db"
+    )
     assert prepared_reaction["channels"][0]["id"] == "e_Xe_elastic"
     assert report["summary"]["properties_filled"] == 1
     assert report["summary"]["reaction_channels_imported"] == 1
-    assert report["registry_mutated"] is False
     assert _snapshot_yaml(registry) == original_registry
 
 
 def test_enrich_seeds_reaction_product_species_and_fills_their_properties(tmp_path):
     registry = _make_registry(tmp_path / "registry")
     internal_root = _make_product_seed_internal_data(tmp_path / "internal_data")
-    profile = _make_product_seed_source_profile(tmp_path / "product_seed_profile.yaml", internal_root)
+    profile = _make_product_seed_source_profile(
+        tmp_path / "product_seed_profile.yaml", internal_root
+    )
     case = _make_case(tmp_path / "case.yaml", ["CF4"])
     workspace = tmp_path / "workspace"
     original_registry = _snapshot_yaml(registry)
@@ -140,19 +144,26 @@ def test_enrich_seeds_reaction_product_species_and_fills_their_properties(tmp_pa
     )
 
     prepared_cf3 = _read_yaml(workspace / "prepared_registry" / "species" / "CF3.yaml")
-    prepared_reaction = _read_yaml(workspace / "prepared_registry" / "reactions" / "electron" / "e__CF4.yaml")
+    prepared_reaction = _read_yaml(
+        workspace / "prepared_registry" / "reactions" / "electron" / "e__CF4.yaml"
+    )
     report = _read_yaml(workspace / "enrichment_report.yaml")
     prepare_report = _read_yaml(workspace / "prepare_report.yaml")
 
     assert rc == 0
     assert prepared_cf3["composition"] == {"C": 1, "F": 3}
     assert prepared_cf3["properties"]["mass_amu"]["value"] == 69.0
-    assert prepared_cf3["properties"]["mass_amu"]["source_record"]["source_type"] == "internal_file_db"
+    assert (
+        prepared_cf3["properties"]["mass_amu"]["source_record"]["source_type"] == "internal_file_db"
+    )
     assert prepared_reaction["channels"][0]["id"] == "e_CF4_dissociation_CF3_F"
     assert report["summary"]["species_seeded_from_reactions"] == 2
     assert report["summary"]["properties_filled_for_seeded_species"] == 1
     assert report["summary"]["unresolved_product_species"] == 0
-    assert {item["species"] for item in prepare_report["species_seeded_from_reactions"]} == {"CF3", "F"}
+    assert {item["species"] for item in prepare_report["species_seeded_from_reactions"]} == {
+        "CF3",
+        "F",
+    }
     assert prepare_report["properties_filled_for_seeded_species"][0]["species"] == "CF3"
     assert _snapshot_yaml(registry) == original_registry
 
@@ -164,18 +175,21 @@ def test_enriched_prepared_registry_can_be_used_with_generate(tmp_path):
     case = _make_case(tmp_path / "case.yaml", ["CF4", "Xe"])
     workspace = tmp_path / "workspace"
 
-    assert main(
-        [
-            "enrich",
-            str(case),
-            "--registry",
-            str(registry),
-            "--workspace",
-            str(workspace),
-            "--source-profile",
-            str(profile),
-        ]
-    ) == 0
+    assert (
+        main(
+            [
+                "enrich",
+                str(case),
+                "--registry",
+                str(registry),
+                "--workspace",
+                str(workspace),
+                "--source-profile",
+                str(profile),
+            ]
+        )
+        == 0
+    )
 
     output = tmp_path / "outputs"
     rc = main(

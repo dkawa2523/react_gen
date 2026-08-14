@@ -28,9 +28,7 @@ def test_mapping_updates_prepared_registry_channel_preserving_fields(tmp_path):
     report = apply_cross_section_mappings(prepared_registry, mapping_file)
 
     payload = yaml.safe_load(
-        (prepared_registry / "reactions" / "electron" / "e__CF4.yaml").read_text(
-            encoding="utf-8"
-        )
+        (prepared_registry / "reactions" / "electron" / "e__CF4.yaml").read_text(encoding="utf-8")
     )
     cross_section = payload["channels"][0]["data"]["cross_section"]
 
@@ -85,9 +83,7 @@ def test_missing_asset_is_reported_without_writing_dangling_reference(tmp_path):
 
     report = apply_cross_section_mappings(prepared_registry, mapping_file)
     payload = yaml.safe_load(
-        (prepared_registry / "reactions" / "electron" / "e__CF4.yaml").read_text(
-            encoding="utf-8"
-        )
+        (prepared_registry / "reactions" / "electron" / "e__CF4.yaml").read_text(encoding="utf-8")
     )
 
     assert report["summary"]["n_updated"] == 0
@@ -140,6 +136,31 @@ def test_invalid_mapping_entry_is_an_unresolved_error(tmp_path):
     ]
 
 
+def test_mapping_reports_each_missing_required_field(tmp_path):
+    prepared_registry = tmp_path / "workspace" / "prepared_registry"
+    _make_prepared_reaction(prepared_registry)
+    asset_path = _make_asset(prepared_registry, "assets/cross_sections/valid.csv")
+    mapping_file = _make_mapping(
+        tmp_path / "mapping.yaml",
+        [
+            {"asset_path": asset_path},
+            {"reaction_id": "e_CF4_elastic"},
+        ],
+    )
+
+    report = apply_cross_section_mappings(prepared_registry, mapping_file)
+
+    assert report["summary"] == {
+        "n_mappings": 2,
+        "n_updated": 0,
+        "n_unresolved": 2,
+    }
+    assert [item["reason"] for item in report["unresolved"]] == [
+        "missing_reaction_id",
+        "missing_asset_path",
+    ]
+
+
 def test_mapping_only_scans_electron_prepared_registry_and_registry_is_unchanged(tmp_path):
     workspace = tmp_path / "workspace"
     prepared_registry = workspace / "prepared_registry"
@@ -160,8 +181,7 @@ def test_mapping_only_scans_electron_prepared_registry_and_registry_is_unchanged
         },
     )
     original_registry = {
-        path: path.read_text(encoding="utf-8")
-        for path in registry_root.rglob("*.yaml")
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
     }
     _make_asset(prepared_registry, "assets/cross_sections/ion.csv")
     mapping_file = _make_mapping(
@@ -173,7 +193,9 @@ def test_mapping_only_scans_electron_prepared_registry_and_registry_is_unchanged
 
     assert report["summary"]["n_updated"] == 0
     assert report["unresolved"][0]["reason"] == "reaction_id_not_found"
-    assert {path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")} == original_registry
+    assert {
+        path: path.read_text(encoding="utf-8") for path in registry_root.rglob("*.yaml")
+    } == original_registry
 
 
 def test_cli_apply_cross_section_mapping(tmp_path):
@@ -202,13 +224,14 @@ def test_cli_apply_cross_section_mapping(tmp_path):
     )
 
     payload = yaml.safe_load(
-        (prepared_registry / "reactions" / "electron" / "e__CF4.yaml").read_text(
-            encoding="utf-8"
-        )
+        (prepared_registry / "reactions" / "electron" / "e__CF4.yaml").read_text(encoding="utf-8")
     )
     assert rc == 0
     assert (workspace / "cross_section_mapping_report.yaml").exists()
-    assert payload["channels"][0]["data"]["cross_section"]["path"] == "assets/cross_sections/e_CF4_elastic.csv"
+    assert (
+        payload["channels"][0]["data"]["cross_section"]["path"]
+        == "assets/cross_sections/e_CF4_elastic.csv"
+    )
 
 
 def test_cli_mapping_returns_failure_when_any_mapping_is_unresolved(tmp_path):

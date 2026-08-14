@@ -4,6 +4,12 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.import_linter_cache/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.json
+coverage.xml
 
 # Virtual environments
 .venv/
@@ -14,6 +20,7 @@ env/
 build/
 dist/
 *.egg-info/
+mutants/
 
 # Local editor and OS files
 .DS_Store

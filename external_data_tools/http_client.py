@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
-from pathlib import Path
 import time
+import urllib.parse
 import urllib.request
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
 
 from .cache import sha256_file
 from .config import load_config
@@ -18,6 +20,7 @@ def download_url(
     sleep_seconds: float | None = None,
     dry_run: bool = False,
 ) -> dict:
+    url = _validated_http_url(url)
     config = load_config()
     resolved_user_agent = user_agent or config.user_agent
     resolved_timeout = config.http_timeout if timeout is None else timeout
@@ -38,7 +41,7 @@ def download_url(
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     request = urllib.request.Request(url, headers={"User-Agent": resolved_user_agent})
-    with urllib.request.urlopen(request, timeout=resolved_timeout) as response:
+    with _open_http_request(request, resolved_timeout) as response:
         output_path.write_bytes(response.read())
 
     record.update(
@@ -126,4 +129,16 @@ def _resolve_output_path(output_root: Path, output: str) -> Path:
 
 
 def _utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
+
+
+def _validated_http_url(url: str) -> str:
+    parsed = urllib.parse.urlsplit(url)
+    has_credentials = parsed.username is not None or parsed.password is not None
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname or has_credentials:
+        raise ValueError("download URL must be an HTTP(S) URL with a host and no credentials")
+    return url
+
+
+def _open_http_request(request: urllib.request.Request, timeout: float) -> Any:
+    return urllib.request.build_opener().open(request, timeout=timeout)
