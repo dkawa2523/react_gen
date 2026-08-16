@@ -1,0 +1,27 @@
+schema_version: 1
+name: ar_cf4_db_smoke_local_fixture
+species_identity:
+  - local_registry
+  - internal_species_db
+properties:
+  - local_registry
+  - internal_property_db
+electron_cross_sections:
+  - local_assets
+ion_neutral_reactions:
+  - local_registry
+  - internal_reaction_db
+internal_file:
+  root: cases/ar_cf4_db_smoke/internal_data
+local_registry:
+  root: registry
+policy:
+  prefer_status:
+    - curated
+    - literature_supported
+    - imported
+    - estimated
+    - inferred
+  require_review_for:
+    - conflicting_values
+    - synthetic_fixture_values

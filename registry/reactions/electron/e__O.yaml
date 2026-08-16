@@ -1,0 +1,66 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: O
+channels:
+- id: e_O_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: O
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: NIST electron-impact cross-section references for atomic oxygen
+      status: needs_import
+      note: Import an evaluated elastic curve before transport or rate calculation.
+- id: e_O_excitation_O_1D
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: O_1D
+    n: 1
+  status: curated
+  threshold_eV: 1.967
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R17
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: NIST Atomic Spectra Database O I energy levels
+      status: needs_import
+      note: Import state-resolved O(1D) excitation data for kinetic use.
+  notes:
+  - O(1D) is explicit so its evaluated quenching reactions can be reached when excited-state propagation is enabled.
+- id: e_O_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: O+
+    n: 1
+  status: curated
+  threshold_eV: 13.618055
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: NIST Atomic Spectra Database O I ionization energy
+      status: needs_import
+      note: Import a numeric direct-ionization curve before rate calculation.
+metadata:
+  status: curated
+  notes:
+  - Atomic oxygen products generated from O2 can continue the runtime expansion through this pair.

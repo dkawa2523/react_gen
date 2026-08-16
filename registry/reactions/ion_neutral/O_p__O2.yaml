@@ -1,0 +1,52 @@
+schema_version: 1
+pair:
+  family: ion_neutral
+  projectile: O+
+  target: O2
+channels:
+- id: Op_O2_charge_transfer
+  type: charge_transfer
+  products:
+  - species: O
+    n: 1
+  - species: O2+
+    n: 1
+  status: literature_supported
+  dnt_class: long_range_charge_exchange
+  deltaE_products_minus_reactants_eV: -1.548355
+  data:
+    datasets:
+    - id: ds_Op_O2_charge_transfer_rate_300K
+      kind: rate_coefficient
+      representation: constant
+      independent_variable: gas_temperature
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 2.1e-17
+        uncertainty: 2.0e-18
+        source_value: 2.1e-11
+        source_uncertainty: 0.2e-11
+        source_unit: cm3/s
+      validity:
+        minimum: 300.0
+        maximum: 300.0
+        unit: K
+        conditions:
+          method: heated_drift_tube_mass_spectrometer
+      source:
+        source_type: literature
+        source_id: doi:10.1063/1.436917
+        citation: A. Chen, R. Johnsen, and M. A. Biondi, Journal of Chemical Physics 69, 2688 (1978).
+        url: https://doi.org/10.1063/1.436917
+      status: literature_supported
+      preferred: true
+      notes:
+      - Validated point value at 300 K; do not extrapolate as a temperature-independent rate.
+  notes:
+  - Thermal charge-transfer rate measured by Fehsenfeld et al., Planetary and Space Science 13 (1965), doi:10.1016/0032-0633(65)90176-5.
+  - Energy defect is derived from NIST O and O2 ionization energies.
+metadata:
+  status: curated
+  notes:
+  - Becomes reachable at later expansion depth after O+ is produced from oxygen chemistry.

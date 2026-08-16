@@ -1,0 +1,16 @@
+schema_version: 1
+species:
+  - id: Ar
+    query: argon
+  - id: O2
+    query: oxygen
+  - id: O
+    query: atomic oxygen
+  - id: CF4
+    query: tetrafluoromethane
+  - id: CF3
+    query: trifluoromethyl
+  - id: F
+    query: fluorine
+  - id: SF6
+    query: sulfur hexafluoride

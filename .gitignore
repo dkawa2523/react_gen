@@ -4,6 +4,12 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.import_linter_cache/
+.hypothesis/
+.coverage
+.coverage.*
+coverage.json
+coverage.xml
 
 # Virtual environments
 .venv/
@@ -14,9 +20,23 @@ env/
 build/
 dist/
 *.egg-info/
+mutants/
 
 # Local editor and OS files
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+
+# External data tooling outputs
+/external_data/raw/**
+/external_data/snapshots/**
+/external_data/manifests/**
+!/external_data/raw/.gitkeep
+!/external_data/snapshots/.gitkeep
+!/external_data/manifests/.gitkeep
+/benchmarks/results/*
+
+# Reproducible case outputs and preparation workspaces
+/cases/*/outputs/**
+/cases/*/work/**

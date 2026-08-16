@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from plasma_reactgen.domain.datasets import ReactionDataset
 
 SpeciesId = str
 ReactionId = str
@@ -20,6 +21,8 @@ class PropertyValue:
     value: Any | None = None
     unit: str | None = None
     source: str | None = None
+    source_record: dict[str, Any] | None = None
+    status: str | None = None
 
 
 @dataclass
@@ -45,6 +48,8 @@ class CollisionPair:
 
     @property
     def label(self) -> str:
+        if self.family == "unimolecular":
+            return self.projectile
         return f"{self.projectile} + {self.target}"
 
 
@@ -57,6 +62,11 @@ class ReactionChannel:
     deltaE_products_minus_reactants_eV: float | None = None
     dnt_class: str | None = None
     data: dict[str, Any] = field(default_factory=dict)
+    evidence: dict[str, Any] | None = None
+    provenance: dict[str, Any] | None = None
+    source_record: dict[str, Any] | None = None
+    confidence: Any | None = None
+    datasets: list[ReactionDataset] = field(default_factory=list)
     status: str = "draft"
     notes: list[str] = field(default_factory=list)
 
@@ -79,6 +89,12 @@ class GeneratedReaction:
     deltaE_products_minus_reactants_eV: float | None = None
     dnt_class: str | None = None
     data: dict[str, Any] = field(default_factory=dict)
+    evidence: dict[str, Any] | None = None
+    provenance: dict[str, Any] | None = None
+    source_record: dict[str, Any] | None = None
+    confidence: Any | None = None
+    datasets: list[ReactionDataset] = field(default_factory=list)
+    precursor_reaction_ids: list[ReactionId] = field(default_factory=list)
 
 
 @dataclass
@@ -112,9 +128,36 @@ class MissingDataItem:
 
 
 @dataclass
+class TruncationEvent:
+    """Machine-readable record of output omitted by a configured limit.
+
+    ``omitted_count`` may be ``None`` when generation stops at the first omitted
+    item and the total number of remaining items is intentionally not scanned.
+    ``details`` carries limit-specific identifiers without forcing every limit
+    into one rigid schema.
+    """
+
+    limit_name: str
+    scope: str
+    limit_value: int
+    depth: int | None
+    observed_count: int
+    retained_count: int
+    omitted_count: int | None
+    details: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
 class ReactionNetwork:
     species: dict[SpeciesId, Species]
     species_nodes: dict[SpeciesId, NetworkSpeciesNode]
     reactions: list[GeneratedReaction]
     coverage: list[CoverageItem]
     missing_data: list[MissingDataItem] = field(default_factory=list)
+    truncations: list[TruncationEvent] = field(default_factory=list)
+
+    @property
+    def generation_complete(self) -> bool:
+        """Whether no configured generation/reporting limit omitted data."""
+
+        return not self.truncations

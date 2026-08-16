@@ -1,0 +1,58 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: F2
+channels:
+- id: e_F2_dissociation_2F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: F
+    n: 2
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014),
+      Table 1.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R12
+  threshold_eV: 4.34
+- id: e_F2_ionization_F2p
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: F2+
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R28
+  threshold_eV: 15.69
+- id: e_F2_attachment_Fm_F
+  type: attachment
+  products:
+  - species: F-
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R37
+  threshold_eV: 0.0
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

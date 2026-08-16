@@ -1,0 +1,47 @@
+schema_version: 1
+pair:
+  family: ion_neutral
+  projectile: SF5+
+  target: SF6
+channels:
+- id: SF5p_SF6_to_SF3p_SF6_F2
+  type: reactive_scattering
+  products:
+  - species: SF3+
+    n: 1
+  - species: SF6
+    n: 1
+  - species: F2
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R49
+  data:
+    datasets:
+    - id: ds_SF5p_SF6_to_SF3p_SF6_F2_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 6.0e-18
+        source_value: 6.0e-12
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1116/1.4853675
+        citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+          (2014).
+        url: https://doi.org/10.1116/1.4853675
+        record_id: R49
+      status: literature_supported
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

@@ -1,0 +1,48 @@
+schema_version: 1
+id: O_1D
+display_name: O(1D)
+composition:
+  O: 1
+charge: 0
+classes:
+- neutral
+- radical
+- atom
+- metastable
+state:
+  kind: excited
+  label: 1D2
+  excitation_energy_eV: 1.967
+properties:
+  mass_amu:
+    value: 15.9994
+    unit: amu
+    source: NIST Atomic Data for Oxygen
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: 4.5496
+    unit: eV
+    source: NIST ground-state enthalpy plus NIST ASD O(1D2) excitation energy
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: curated
+  notes:
+  - State-specific record used only when excited-state propagation is enabled.

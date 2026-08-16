@@ -1,0 +1,47 @@
+schema_version: 1
+id: SF5+
+display_name: SF5+
+composition:
+  S: 1
+  F: 5
+charge: 1
+classes:
+- positive_ion
+- molecular_ion
+state:
+  kind: ground
+  label: ion
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 127.0564514
+    unit: amu
+    source: SF5 molecular mass minus electron mass
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: null
+    unit: D
+    source: null
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: null
+    unit: eV
+    source: null
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: literature_supported
+  notes:
+  - Dominant positive fragment from electron-impact ionization of SF6.

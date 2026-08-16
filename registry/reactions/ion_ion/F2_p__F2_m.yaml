@@ -1,0 +1,47 @@
+schema_version: 1
+pair:
+  family: ion_ion
+  projectile: F2+
+  target: F2-
+channels:
+- id: F2_p_F2_m_neutralization
+  type: mutual_neutralization
+  products:
+  - species: F2
+    n: 2
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R50
+  data:
+    datasets:
+    - id: ds_F2_p_F2_m_neutralization_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 1.0e-13
+        source_value: 1.0e-07
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1116/1.4853675
+        citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+          (2014).
+        url: https://doi.org/10.1116/1.4853675
+        record_id: R50
+      status: literature_supported
+      preferred: true
+      notes:
+      - Generic source-table rule expanded only over the species enumerated in its
+        footnote.
+metadata:
+  status: literature_supported
+  notes:
+  - Explicit expansion of a source-table generic reaction; no mixture pack or DNT
+    result is implied.

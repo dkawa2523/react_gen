@@ -1,0 +1,8 @@
+schema_version: 1
+id: He
+display_name: He
+composition: {He: 1}
+charge: 0
+classes: [neutral, atom, noble_gas, input_feedstock]
+state: {kind: ground, label: 1S, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported, notes: [Semiconductor buffer-gas identity; reaction acquisition remains explicit.]}

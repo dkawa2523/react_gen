@@ -6,12 +6,24 @@ The visualization layer is a post-processing module. It consumes generated outpu
 
 ```text
 src/plasma_reactgen/visualization/
-|-- loader.py        # Reads generated YAML/JSON outputs into VisualizationDataset
-|-- models.py        # Small data container for visualization inputs
-|-- svg_charts.py    # Dependency-free SVG chart primitives
-|-- stats.py         # Statistical chart definitions and chart registry
-|-- network.py       # Graphviz DOT generation and optional dot rendering
-`-- writer.py        # Orchestrates all visualization outputs and manifest.json
+|-- loader.py                  # Reads generated outputs into VisualizationDataset
+|-- models.py                  # Small data container for visualization inputs
+|-- svg_chart_scale.py         # Tick spacing and scale calculation
+|-- svg_chart_layout.py        # Input normalization and chart geometry
+|-- svg_chart_primitives.py    # Shared SVG text, colors, and presentation
+|-- svg_horizontal_bar.py      # Horizontal-bar SVG renderer
+|-- svg_grouped_bar.py         # Grouped-bar SVG renderer
+|-- svg_charts.py              # Stable statistical-chart facade
+|-- stats.py                   # Statistical chart definitions and registry
+|-- graphviz_options.py        # Graphviz rendering options
+|-- graphviz_dot.py            # Shared DOT escaping and node projection
+|-- graphviz_edges.py          # Shared reaction-edge selection
+|-- reaction_network_dot.py    # Full reaction-network DOT builder
+|-- species_lineage_dot.py     # Species-lineage DOT builder
+|-- network.py                 # Public facade and optional dot execution
+|-- reaction_pathway_layout.py # Reaction-card geometry by expansion depth
+|-- reaction_pathway.py        # Reaction-equation SVG presentation and writing
+`-- writer.py                  # Orchestrates outputs and manifest.json
 ```
 
 ## Statistical charts
@@ -31,6 +43,11 @@ Current charts:
 9. `missing_data_counts.svg`: missing-data severity and subject distribution
 
 To add a chart, implement a small builder function that receives `VisualizationDataset` and output directory, then append a `ChartSpec` to `default_chart_specs()`.
+
+`svg_charts.py` is intentionally limited to the two public chart entry points.
+Geometry is computed before rendering, common SVG presentation is shared once,
+and each chart type owns only its own elements. This keeps layout changes from
+expanding the public facade or duplicating scale and escaping rules.
 
 ## Graphviz network
 
@@ -76,6 +93,24 @@ CF4 -> F
 ```
 
 This keeps paths readable while preserving the original full reaction equation in edge tooltips.
+
+## Reaction-equation pathway
+
+`reaction_equation_network.svg` complements the species graphs with one card
+per reaction. Cards are grouped by expansion depth and show the reaction id,
+full equation, family, and type. Directed edges are built from
+`precursor_reaction_ids`, so the graph exposes which earlier reactions enabled
+each later reaction. It is generated without Graphviz and is therefore always
+available with the statistical SVG charts.
+
+`reaction_pathway_layout.py` owns sorting, depth grouping, canvas size, and card
+positions. `reaction_pathway.py` only renders headers, edges, cards, legends,
+and the final file. Geometry changes therefore do not require editing the
+reaction presentation rules.
+
+The pathway graph describes registered reachability, not reaction flux or
+kinetic importance. Use the species graphs for topology and the equation graph
+for reviewing the chemical meaning of a multistep path.
 
 ## CLI
 

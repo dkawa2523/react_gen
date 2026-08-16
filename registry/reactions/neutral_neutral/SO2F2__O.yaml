@@ -1,0 +1,45 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: SO2F2
+  target: O
+channels:
+- id: SO2F2_O_R137
+  type: reactive_scattering
+  products:
+  - species: SOF2
+    n: 1
+  - species: O2
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R137
+  data:
+    datasets:
+    - id: ds_SO2F2_O_R137_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 9.999999999999999e-19
+        source_value: 1.0e-12
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1116/1.4853675
+        citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+          (2014).
+        url: https://doi.org/10.1116/1.4853675
+        record_id: R137
+      status: literature_supported
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

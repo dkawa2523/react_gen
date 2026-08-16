@@ -1,0 +1,10 @@
+schema_version: 1
+id: C2F3
+display_name: C2F3
+composition: {C: 2, F: 3}
+charge: 0
+classes: [neutral, radical, molecule]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata:
+  status: literature_supported
+  notes: [Trifluorovinyl radical in the CF4/O2 volume mechanism.]

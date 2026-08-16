@@ -1,0 +1,55 @@
+schema_version: 1
+id: SF3
+display_name: SF3
+composition:
+  S: 1
+  F: 3
+charge: 0
+classes:
+- neutral
+- radical
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 89.061
+    unit: amu
+    source: standard atomic-weight sum; NIST SRD 107 lists SF3 ionization data
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: null
+    unit: D
+    source: null
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: null
+    unit: eV
+    source: null
+  ionization_energy_eV:
+    value: 8.18
+    unit: eV
+    source: NIST Chemistry WebBook SRD 69, Fischer, Kickel, et al. (1992), END
+    uncertainty_eV: 0.07
+    quality: curated
+  electron_affinity_eV:
+    value: 3.07
+    unit: eV
+    source: NIST Chemistry WebBook SRD 69, Compton, Reinhardt, et al. (1978),
+      from SF6
+    uncertainty_eV: 0.2
+    quality: literature_supported
+    note: NIST also lists determinations from 2.50 to 2.90 eV; retain the uncertainty
+      and review the method when higher precision is required.
+metadata:
+  status: literature_supported
+  notes:
+  - Registered only for the measured direct neutral SF6 dissociation branch.

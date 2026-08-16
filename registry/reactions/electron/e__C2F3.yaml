@@ -1,0 +1,28 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: C2F3
+channels:
+- id: e_C2F3_dissociation_CF2_CF
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: CF2
+    n: 1
+  - species: CF
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014),
+      Table 1.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R3
+  threshold_eV: 3.06
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

@@ -1,0 +1,80 @@
+- species: SF6
+  property: mass_amu
+  value: 145.965
+  unit: amu
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: sf6_o2_electronegative:property:SF6:mass_amu
+- species: SF6
+  property: polarizability_A3
+  value: 6.54
+  unit: A3
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: sf6_o2_electronegative:property:SF6:polarizability_A3
+- species: SF6
+  property: dipole_moment_D
+  value: 0.0
+  unit: D
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: sf6_o2_electronegative:property:SF6:dipole_moment_D
+- species: SF6
+  property: collision_radius_A
+  value: 2.75
+  unit: A
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: sf6_o2_electronegative:property:SF6:collision_radius_A
+- species: O2
+  property: mass_amu
+  value: 31.9988
+  unit: amu
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: sf6_o2_electronegative:property:O2:mass_amu
+- species: O2
+  property: polarizability_A3
+  value: 1.58
+  unit: A3
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: sf6_o2_electronegative:property:O2:polarizability_A3
+- species: O2
+  property: dipole_moment_D
+  value: 0.0
+  unit: D
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: sf6_o2_electronegative:property:O2:dipole_moment_D
+- species: O2
+  property: collision_radius_A
+  value: 1.73
+  unit: A
+  evidence_type: synthetic_workflow_fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: sf6_o2_electronegative:property:O2:collision_radius_A

@@ -1,0 +1,28 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: CF2O
+channels:
+- id: e_CF2O_dissociation_CFO_F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: CFO
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014),
+      Table 1.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R20
+  threshold_eV: 3.8
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

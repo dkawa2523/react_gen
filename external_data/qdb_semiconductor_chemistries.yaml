@@ -1,0 +1,40 @@
+schema_version: 1
+source:
+  source_id: doi:10.1088/1361-6595/aa6669
+  citation: J. Tennyson et al., Plasma Sources Science and Technology 26, 055014 (2017).
+  table: Table 7, QDB chemistry inventory as of November 2016
+  api_url: https://www.quantemoldb.com/reactions/api/
+notes:
+- This is a discovery and licensed-fetch inventory, not bundled reaction data.
+- QDB chemistry IDs and historical reaction counts come from the cited primary publication.
+- Downloaded responses remain site-local until license and row-level provenance are reviewed.
+chemistries:
+- {id: C3, chemistry_id: 3, gases: [N2, H2], n_reactions_2016: 146, validated_2016: false, priority: P2, use: reducing_and_nitrogen_plasma}
+- {id: C4, chemistry_id: 4, gases: [Ar, H2], n_reactions_2016: 63, validated_2016: false, priority: P2, use: hydrogen_plasma}
+- {id: C5, chemistry_id: 5, gases: [O2, H2], n_reactions_2016: 155, validated_2016: false, priority: P2, use: oxygen_hydrogen_plasma}
+- {id: C6, chemistry_id: 6, gases: [SF6, O2], n_reactions_2016: 194, validated_2016: true, priority: P0, use: silicon_etch_validation}
+- {id: C7, chemistry_id: 7, gases: [CF4, O2], n_reactions_2016: 208, validated_2016: true, priority: P0, use: oxide_etch_validation}
+- {id: C8, chemistry_id: 8, gases: [SF6], n_reactions_2016: 61, validated_2016: true, priority: P0, use: silicon_etch_validation}
+- {id: C9, chemistry_id: 9, gases: [CF4], n_reactions_2016: 81, validated_2016: true, priority: P0, use: fluorocarbon_etch_validation}
+- {id: C10, chemistry_id: 10, gases: [CF4, O2, H2, N2], n_reactions_2016: 409, validated_2016: false, priority: P1, use: fluorocarbon_process_extension}
+- {id: C11, chemistry_id: 11, gases: [C4F8], n_reactions_2016: 193, validated_2016: true, priority: P1, use: fluorocarbon_passivation}
+- {id: C13, chemistry_id: 13, gases: [SiH4], n_reactions_2016: 49, validated_2016: false, priority: P1, use: silicon_deposition}
+- {id: C14, chemistry_id: 14, gases: [SiH4, NH3], n_reactions_2016: 73, validated_2016: false, priority: P1, use: silicon_nitride_deposition}
+- {id: C15, chemistry_id: 15, gases: [Ar, O2], n_reactions_2016: 59, validated_2016: false, priority: P1, use: oxygen_plasma_validation}
+- {id: C16, chemistry_id: 16, gases: [Ar, O2, C4F8], n_reactions_2016: 412, validated_2016: true, priority: P1, use: oxide_etch_and_passivation}
+- {id: C17, chemistry_id: 17, gases: [SiH4, Ar, O2], n_reactions_2016: 207, validated_2016: false, priority: P1, use: silicon_oxide_deposition}
+- {id: C18, chemistry_id: 18, gases: [Ar, Cu], n_reactions_2016: 26, validated_2016: false, priority: P2, use: metal_plasma}
+- {id: C19, chemistry_id: 19, gases: [Cl2, O2, Ar], n_reactions_2016: 70, validated_2016: false, priority: P1, use: chlorine_etch}
+- {id: C20, chemistry_id: 20, gases: [Ar, BCl3, Cl2], n_reactions_2016: 55, validated_2016: false, priority: P1, use: metal_and_dielectric_etch}
+- {id: C21, chemistry_id: 21, gases: [Ar, NH3], n_reactions_2016: 238, validated_2016: false, priority: P2, use: ammonia_plasma}
+- {id: C22, chemistry_id: 22, gases: [CH4, H2], n_reactions_2016: 187, validated_2016: false, priority: P2, use: hydrocarbon_plasma}
+- {id: C23, chemistry_id: 23, gases: [C2H2, H2], n_reactions_2016: 81, validated_2016: false, priority: P2, use: hydrocarbon_plasma}
+- {id: C24, chemistry_id: 24, gases: [CH4, NH3], n_reactions_2016: 286, validated_2016: false, priority: P2, use: carbon_nitrogen_deposition}
+- {id: C25, chemistry_id: 25, gases: [C2H2, NH3], n_reactions_2016: 180, validated_2016: false, priority: P2, use: carbon_nitrogen_deposition}
+- {id: C26, chemistry_id: 26, gases: [He, O2], n_reactions_2016: 128, validated_2016: false, priority: P2, use: oxygen_plasma}
+- {id: C27, chemistry_id: 27, gases: [CF4, CHF3, H2, Cl2, O2, HBr], n_reactions_2016: 562, validated_2016: false, priority: P1, use: integrated_etch_chemistry}
+- {id: C28, chemistry_id: 28, gases: [CH4, N2], n_reactions_2016: 590, validated_2016: false, priority: P2, use: carbon_nitrogen_deposition}
+- {id: C29, chemistry_id: 29, gases: [SF6, CF4, O2], n_reactions_2016: 334, validated_2016: true, priority: P0, use: fluorine_etch_validation}
+- {id: C30, chemistry_id: 30, gases: [Ar, Cu, He], n_reactions_2016: 20, validated_2016: false, priority: P2, use: metal_plasma}
+- {id: C31, chemistry_id: 31, gases: [Ar, NF3], n_reactions_2016: 104, validated_2016: false, priority: P1, use: remote_chamber_clean}
+- {id: C32, chemistry_id: 32, gases: [SF6, CF4, N2, H2], n_reactions_2016: 192, validated_2016: true, priority: P1, use: integrated_etch_chemistry}

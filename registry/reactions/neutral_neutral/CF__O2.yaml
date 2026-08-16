@@ -1,0 +1,45 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: CF
+  target: O2
+channels:
+- id: CF_O2_to_CFO_O
+  type: reactive_scattering
+  products:
+  - species: CFO
+    n: 1
+  - species: O
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014),
+      Table 1.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R45
+  data:
+    datasets:
+    - id: ds_CF_O2_to_CFO_O_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 3.16e-17
+        source_value: 3.16e-11
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1007/s11090-013-9513-1
+        citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257
+          (2014), Table 1.
+        url: https://doi.org/10.1007/s11090-013-9513-1
+        record_id: R45
+      status: literature_supported
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

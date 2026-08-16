@@ -1,0 +1,44 @@
+schema_version: 1
+id: O+
+display_name: O+
+composition:
+  O: 1
+charge: 1
+classes:
+- positive_ion
+- atomic_ion
+state:
+  kind: ground
+  label: 4S
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 15.9988514
+    unit: amu
+    source: O atomic mass minus electron mass
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic-ion symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: 16.200655
+    unit: eV
+    source: derived from NIST O atom enthalpy and ionization energy
+  ionization_energy_eV:
+    value: 35.12112
+    unit: eV
+    source: NIST Atomic Spectra Database, O+ ionization energy
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: curated

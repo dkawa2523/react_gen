@@ -1,0 +1,43 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: CF2
+  target: F
+channels:
+- id: CF2_F_association_CF3
+  type: association
+  products:
+  - species: CF3
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014),
+      Table 1.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R35
+  data:
+    datasets:
+    - id: ds_CF2_F_association_CF3_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 4.17e-19
+        source_value: 4.17e-13
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1007/s11090-013-9513-1
+        citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257
+          (2014), Table 1.
+        url: https://doi.org/10.1007/s11090-013-9513-1
+        record_id: R35
+      status: literature_supported
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

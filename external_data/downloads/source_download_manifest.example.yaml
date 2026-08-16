@@ -1,0 +1,8 @@
+schema_version: 1
+downloads:
+  - id: example_reviewed_source_file
+    url: https://example.org/path/to/user-approved-source-file.yaml
+    output: reviewed_sources/example_reviewed_source_file.yaml
+    source_name: user_provided_explicit_url
+    license_note: Replace this example with a user-approved URL after reviewing source terms.
+    citation: Replace with the required source citation.

@@ -1,0 +1,79 @@
+schema_version: 1
+scope: O2 and SF6 reusable reaction records for low-pressure plasma network generation
+numeric_cross_sections: site_local_process_resolved_o2_and_total_ionization_imports_available
+thermochemistry_convention: enthalpy_formation_eV is eV per molecule; deltaE_products_minus_reactants_eV > 0 means endothermic.
+main_sources:
+  o2_collision_review:
+    citation: Y. Itikawa, Journal of Physical and Chemical Reference Data 38, 1-20 (2009).
+    doi: 10.1063/1.3025886
+    url: https://doi.org/10.1063/1.3025886
+    covers: elastic scattering, excitation, dissociation, ionization, and electron attachment to O2
+  o2_evaluated_dataset:
+    citation: M.-Y. Song et al., Cross Sections for Electron Collisions with Molecular and Atomic Oxygen, Journal of Physical and Chemical Reference Data (2026).
+    doi: 10.1063/5.0287254
+    dataset_doi: 10.60893/figshare.jpr.30850013
+    url: https://doi.org/10.60893/figshare.jpr.30850013
+    license: CC BY-NC 4.0
+    redistribution: site-local or internal use only
+    covers: evaluated O2 process-resolved cross sections and uncertainties
+  oxygen_nist:
+    citation: NIST Chemistry WebBook SRD 69 and NIST Atomic Spectra Database.
+    url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447
+    covers: molecular weights, thermochemistry, electron affinities, and ionization energies
+  sf6_collision_review:
+    citation: L. G. Christophorou and J. K. Olthoff, Journal of Physical and Chemical Reference Data 29, 267-330 (2000).
+    doi: 10.1063/1.1288407
+    url: https://srd.nist.gov/jpcrdreprint/1.1288407.pdf
+    covers: SF6 scattering, neutral dissociation, ionization, and negative-ion formation
+  sf_radical_ionization:
+    citation: M. A. Ali, K. K. Irikura, and Y.-K. Kim, International Journal of Mass Spectrometry 201 (2000).
+    covers: electron-impact ionization of SFx radicals
+    url: https://www.nist.gov/node/735991
+  sf5_thermal_attachment:
+    citation: N. S. Shuman et al., Journal of Chemical Physics 133, 234304 (2010).
+    doi: 10.1063/1.3520150
+    url: https://doi.org/10.1063/1.3520150
+    covers: thermal electron attachment to SF5 and product-resolved secondary kinetics
+  ar_o2_charge_transfer:
+    citation: G. D. Flesch, S. Nourbakhsh, and C. Y. Ng, Journal of Chemical Physics 92, 3590-3604 (1990).
+    doi: 10.1063/1.457867
+    url: https://doi.org/10.1063/1.457867
+  o_o2_charge_transfer:
+    citation: F. C. Fehsenfeld et al., Planetary and Space Science 13, 911-917 (1965).
+    doi: 10.1016/0032-0633(65)90176-5
+    url: https://doi.org/10.1016/0032-0633(65)90176-5
+  ar_sf6_charge_transfer:
+    citation: T. L. Williams, L. M. Babcock, and N. G. Adams, International Journal of Mass Spectrometry 185-187, 759-772 (1999).
+    doi: 10.1016/S1387-3806(98)14189-1
+    url: https://www.sciencedirect.com/science/article/pii/S1387380698141891
+  ar_o2_rate:
+    citation: P. Gaucherel and B. Rowe, International Journal of Mass Spectrometry and Ion Physics 25, 211-227 (1977).
+    doi: 10.1016/0020-7381(77)80050-8
+    url: https://doi.org/10.1016/0020-7381(77)80050-8
+    covers: Ar+ + O2 charge transfer and O2+ dissociative recombination rate coefficients
+  o_o2_rate:
+    citation: A. Chen, R. Johnsen, and M. A. Biondi, Journal of Chemical Physics 69, 2688 (1978).
+    doi: 10.1063/1.436917
+    url: https://doi.org/10.1063/1.436917
+  o1d_o2_quenching:
+    citation: NASA/JPL Evaluation 19-5, Chemical Kinetics and Photochemical Data for Use in Atmospheric Studies, Note A3.
+    url: https://jpldataeval.jpl.nasa.gov/pdf/NASA-JPL%20Evaluation%2019-5.pdf
+    covers: O(1D) disappearance rate, temperature validity, and O2(b1Sigma)/O2(a1Delta) product branching
+  o2_a1delta_self_quenching:
+    citation: Chemical Physics 122, 463-470 (1988).
+    doi: 10.1016/0301-0104(88)80027-2
+    url: https://doi.org/10.1016/0301-0104(88)80027-2
+    covers: room-temperature O2(a1Delta) self-quenching rate coefficient
+  nist_srd107:
+    citation: NIST Electron-Impact Cross Section Database, Version 3.0.
+    doi: 10.18434/T4KK5C
+    url: https://doi.org/10.18434/T4KK5C
+    redistribution: site-local pending explicit SRD license review
+accessed_date: '2026-08-14'
+curation_decisions:
+- Mixtures are not registered. Species and binary reaction pairs are reusable across all input-gas combinations.
+- Synthetic benchmark cross-section assets are not copied into the shared registry.
+- NIST SRD 107 total-ionization tables are imported only into an explicit site-local prepared registry.
+- The 2026 evaluated O2 workbook is imported only by an explicit command; CC BY-NC data are not bundled in the shared registry.
+- Thresholds are recorded only when an evaluated or measured value is available.
+- Collision radii are labeled estimated because they are half of literature kinetic diameters, not fundamental constants.

@@ -1,0 +1,8 @@
+schema_version: 1
+id: C2H2
+display_name: C2H2
+composition: {C: 2, H: 2}
+charge: 0
+classes: [neutral, molecule, input_feedstock]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported, notes: [Process feedstock identity; reaction acquisition remains explicit.]}

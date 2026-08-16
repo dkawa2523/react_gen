@@ -50,7 +50,11 @@ properties:
   electron_affinity_eV:
     value: null
     unit: eV
-    source: null
+    source: Bjarnason et al., Int. J. Mass Spectrom. 339-340, 45-53 (2013),
+      CF4 attachment proceeds through an unstable transient parent anion
+    status: unbound
+    note: Do not substitute fragment-anion appearance energy for the parent-molecule
+      electron affinity.
   vertical_ionization_energy_eV:
     value: 16.2
     unit: eV

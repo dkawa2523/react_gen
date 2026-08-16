@@ -1,301 +1,221 @@
 # plasma-reactgen
 
-`plasma-reactgen` は、登録済みの化学種データと衝突反応チャネルから、低圧プラズマ反応ネットワークを自動生成する Python ツールです。
+`react_gen` / `plasma-reactgen` is a local-registry-driven reaction-network
+generator for low-pressure plasma mechanism work. It is aimed at reviewable
+semiconductor plasma workflows where species, reaction channels, physical
+properties, and cross-section asset links are kept as readable YAML and local
+files.
 
-主に以下を行います。
+The normal generation path is deterministic: `reactgen generate` follows
+primary, secondary, and later products from the input gases until the registered
+reaction frontier closes, then writes a lineage-aware reaction list.
+`network.reactions.yaml` / `.csv` are the primary products. Reaction equations
+do not require DNT, a solver result, or a numerical cross section/rate.
 
-- 入力ガスから frontier 展開により反応ネットワークを生成
-- 電子衝突反応とイオン中性衝突反応のリストを生成
-- species 参照、電荷収支、元素収支の基本検証
-- 状態種リスト、DNT+/DNT+DM 計算準備タスク、coverage report、missing-data report の出力
-- 生成済み output から統計グラフと Graphviz ネットワーク図を作成
+## User Commands
 
-本コードの中核は、断面積・速度係数・DNT+ 断面積を数値計算するものではありません。反応チャネルと状態種の登録データをもとに、反応機構の構築、検証、欠損データ確認、可視化を再現可能にするための基盤です。
-
-## 1. 必要環境
-
-| 項目 | 必須/任意 | 内容 |
+| command | purpose | mutates curated `registry/`? |
 |---|---|---|
-| Python | 必須 | Python 3.11 以上 |
-| pip | 必須 | Python パッケージのインストールに使用 |
-| PyYAML | 必須 | YAML 入出力に使用。`pip install -e .` で入ります |
-| pytest | 任意 | テスト実行に使用 |
-| Graphviz | 任意 | `reaction_network.png/svg` などの画像レンダリングに使用 |
+| `generate` | Build a reaction network from a case YAML and local registry. | No |
+| `visualize` | Create statistics plots and Graphviz reaction-network views from generated outputs. | No |
+| `export-dnt` | Write solver-free pair-wise DNT+/DNT+DM input YAML from a case and registry. | No |
+| `dev-check` | Validate registry structure, uniqueness, references, and local asset links. Returns non-zero on errors. | No |
 
-Graphviz がない場合でも、統計グラフ SVG と Graphviz DOT ファイルは生成されます。ただし、`reaction_network.png` や `species_lineage.png` の自動レンダリングには Graphviz の `dot` コマンドが必要です。
+## Core Workflows
 
-## 2. 環境構築
-
-### Windows PowerShell
-
-リポジトリのルートで実行します。
+### Generate
 
 ```powershell
-cd C:\Users\user\Desktop\DNT\plasma-reaction-generator
+reactgen generate cases/ar_cf4/input.yaml --output cases/ar_cf4/outputs
+```
 
+The normal user supplies only the gases in the case YAML and runs `generate`;
+source profiles, workspaces, mappings, and property files are not required.
+Species and reusable reaction records come from the shared `registry/`; a gas
+mixture is never required as prebuilt data. When `--registry` is omitted, an
+optional versioned release pack may overlay the shared registry. No matching
+pack is not a data gap. Explicit `--registry` remains supported.
+Reaction discovery is driven entirely by files under `registry/reactions/*/*.yaml`:
+both reactants must already be active and at least one must be in the current
+frontier. Consequently, registered families such as `electron`, `ion_neutral`,
+`neutral_neutral`, `ion_ion`, and `electron_ion` need no CaseConfig switches,
+and unregistered species combinations are not invented. Binary families use two
+active reactants; `unimolecular` records use one physical reactant.
+Main outputs include:
+
+- `network.reactions.yaml` / `.csv` (primary reaction list)
+- `mechanism_coverage.yaml` (bounded primary-source table coverage)
+- `network.states.yaml` / `.csv`
+- `dnt_tasks.yaml`
+- `coverage_report.yaml`
+- `missing_data.yaml` / `.csv`
+- `summary.json`
+- `quality_summary.yaml`
+
+`generate` does not calculate electron cross sections, run DNT or Boltzmann
+solvers, download public data, scrape websites, or call online APIs.
+
+See [Reaction output contract](docs/reaction_output_contract.md) for lineage,
+dataset, and missing-data field definitions. `dnt_tasks.yaml` only inventories
+ion-neutral properties and existing datasets; no DNT runner or result importer
+is included.
+See [Shared registry coverage](docs/shared_registry_coverage.md) for the completed
+CF4/O2 and SF6/O2 bounded gas-phase mechanisms and prioritized scientific gaps.
+Pack creation and local snapshot imports are maintainer workflows documented in
+[Registry packs and data administration](docs/registry_packs.md).
+
+Configured limits are never silent. `summary.json` contains
+`generation_complete` and a machine-readable `truncations` list; the reaction,
+coverage, and quality YAML outputs repeat the relevant completeness data. Limit
+events identify the applied limit and record retained/omitted counts and
+context. A truncated run is not marked mechanism-ready for review in
+`quality_summary.yaml`.
+The default has no depth limit and propagates excited states; it follows the
+registered chemistry until the frontier closes. Set `expansion.max_depth` or
+disable `propagate_excited_states` only for a deliberately partial diagnostic
+network.
+
+## Data Maintainer Workflows
+
+Normal generation does not require enrichment, a workspace, mappings, or
+manual property input. Those operations are optional registry-maintenance
+workflows and are intentionally documented separately:
+
+- [Registry packs and data administration](docs/registry_packs.md) covers
+  versioned packs and exact-match local snapshot imports.
+- [Manual data input](docs/manual_data_input_guide.md) covers exceptional gaps
+  that cannot be filled from reviewed snapshots.
+- [Semiconductor maintainer workflow](docs/quickstart_semiconductor.md) covers
+  preparation, review, and explicit promotion.
+
+The compatibility commands `enrich`, `import-cross-sections`,
+`apply-cross-section-mapping`, `plan-missing`, and `promote` remain available,
+but they are not part of the normal user path.
+
+## External Data Tools
+
+`external_data_tools/` is separate from the core package. It contains optional
+local/external tooling for explicit URL downloads, raw file caching, snapshot
+planning/validation, PubChem identity snapshots, LXCat raw imports, OpenADAS raw
+file registration, VAMDC raw query capture, astrochemical network conversion,
+thermochemistry snapshot planning, a reviewed semiconductor-chemistry inventory,
+and a licensed QDB raw-response fetcher.
+
+These tools may access online resources only when explicitly invoked outside the
+core runtime. Their outputs are local files under `external_data/`,
+`workspaces/`, or `benchmarks/`. Generated snapshots and imported assets require
+human review before use and are never auto-promoted into curated `registry/`.
+For CF2, CF3, CF4, O2, SF3, SF4, SF5, and SF6,
+`python -m external_data_tools.data_admin import_nist_beb` imports NIST SRD 107
+total-ionization tables into an explicit prepared registry; it does not treat
+them as product-resolved channel cross sections.
+
+For O2 process rates, `python -m external_data_tools.data_admin
+import_oxygen_cross_sections` downloads the official evaluated workbook once,
+converts its seven reviewed tables to SI CSV assets, and maps them to exact
+reaction IDs in a prepared registry. The CC BY-NC source data are not bundled
+in the shared registry. Install the isolated importer dependency with
+`python -m pip install -e ".[external-data]"`; the core generator still depends
+only on PyYAML.
+Source/license governance is tracked in `external_data/source_catalog.yaml`; see
+[docs/source_license_policy.md](docs/source_license_policy.md). External source
+setup for NIST/ATcT/Chemicals/PubChem/LXCat workflows is described in
+[docs/external_source_setup.md](docs/external_source_setup.md).
+
+To turn arbitrary input gases into an actionable, DB-specific collection
+backlog without creating mixture packs, run:
+
+```powershell
+python -m external_data_tools.data_admin plan_data_acquisition `
+  --seed-gases Ar O2 CF4 SF6 `
+  --registry registry `
+  --output-dir external_data/acquisition_work
+```
+
+The generated manifests keep confirmed gaps, numerical dataset gaps, and
+unverified reaction-pair candidates separate. Downloads and registry promotion
+remain explicit follow-up operations.
+
+The QDB manifest is derived from the 29 chemistry sets in the cited QDB Table 7.
+Fetches require `QDB_API_KEY` from the environment, redact it from records, keep
+responses site-local, and never auto-promote reactions.
+
+The plan can download the official UMIST Rate22 file with
+`python -m external_data_tools.umist_rate22` and then match its native `.rates`
+records to exact registry pair targets. A zero-match result is recorded rather
+than being treated as coverage.
+
+Benchmark outputs under `benchmarks/results/` are reproducible artifacts and
+are intentionally not versioned. Benchmark fixtures remain under
+`benchmarks/fixtures/`.
+Case `outputs/` and `work/` directories are likewise reproducible local
+artifacts and are not versioned; case inputs and reviewed fixtures remain in
+the repository.
+
+## What It Does Not Do
+
+- `generate` does not access online databases or public APIs.
+- `generate` does not calculate cross sections or rate coefficients.
+- `generate` does not run DNT, DNT+DM, or Boltzmann solvers.
+- `enrich` does not mutate curated `registry/`; it writes to
+  `workspace/prepared_registry`.
+- Imported, inferred, or externally fetched data is not promoted automatically.
+- Public DB data must be supplied as reviewed local snapshots/assets or fetched
+  with external tools before prepare/enrich workflows use it.
+- Placeholder providers, such as the core PubChem provider, are not production
+  online adapters.
+
+## Install And Test
+
+```powershell
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-
 python -m pip install --upgrade pip
 python -m pip install -e .
-python -m pip install pytest
+python -m pytest
 ```
 
-`reactgen` コマンドが使えるか確認します。
+If `python` points to the Windows Store alias, use the active environment
+interpreter or the Python launcher:
 
 ```powershell
-reactgen --help
+py -m pytest
 ```
 
-### macOS / Linux
-
-```bash
-cd /path/to/plasma-reaction-generator
-
-python3.11 -m venv .venv
-source .venv/bin/activate
-
-python -m pip install --upgrade pip
-python -m pip install -e .
-python -m pip install pytest
-```
-
-確認:
-
-```bash
-reactgen --help
-```
-
-## 3. インストールせずに実行する方法
-
-開発中に editable install せず実行する場合は、`PYTHONPATH=src` を指定します。
-
-Windows PowerShell:
+Install the pinned quality toolchain and run the same gates as CI:
 
 ```powershell
-$env:PYTHONPATH = "src"
-python -m plasma_reactgen.interface.cli --help
+python -m pip install -e ".[quality]"
+python -m nox -s quality-fast
+python -m nox -s quality-pr
 ```
 
-macOS / Linux:
+Scheduled mutation and end-to-end checks use
+`python -m nox -s quality-nightly`. The existing-issue baseline is updated only
+through the explicit `python -m nox -s quality-baseline` command; normal checks
+and CI never rewrite it. See [Quality gates](docs/quality.md).
 
-```bash
-PYTHONPATH=src python -m plasma_reactgen.interface.cli --help
-```
-
-以降の説明では、環境構築済みとして `reactgen` コマンドを使います。インストールしない場合は、`reactgen` を `python -m plasma_reactgen.interface.cli` に置き換えてください。
-
-## 4. Ar/CF4 サンプルケースの実行
-
-入力ファイルは `cases/ar_cf4/input.yaml` です。登録データは `registry/` 以下にあります。
-
-```powershell
-reactgen generate cases/ar_cf4/input.yaml --registry registry --output cases/ar_cf4/outputs
-```
-
-正常に実行されると、標準出力に以下のような概要が表示されます。
-
-```text
-Generated outputs: cases\ar_cf4\outputs
-  species: 12
-  reactions: 42
-  dnt_tasks: 12
-  missing_data_items: 19
-```
-
-## 5. 出力ファイル
-
-`cases/ar_cf4/outputs/` に以下が生成されます。
-
-| ファイル | 内容 |
-|---|---|
-| `network.reactions.yaml` | 生成された反応ネットワーク |
-| `network.reactions.csv` | 反応ネットワークの CSV 版 |
-| `network.states.yaml` | 生成された状態種リスト |
-| `network.states.csv` | 状態種リストの CSV 版 |
-| `dnt_tasks.yaml` | DNT+/DNT+DM 計算準備タスク |
-| `coverage_report.yaml` | 登録済み pair / 未登録 pair の coverage |
-| `missing_data.yaml` | 不足している物性値・断面積 table などの一覧 |
-| `missing_data.csv` | missing data の CSV 版 |
-| `summary.json` | species 数、reaction 数などの概要 |
-
-結果を手早く確認する場合は、まず `summary.json`、次に `network.reactions.csv`、`network.states.csv`、`coverage_report.yaml` を見るのがおすすめです。
-
-## 6. 可視化の実行
-
-生成済み output から統計グラフと反応ネットワーク図を作成します。
-
-```powershell
-reactgen visualize cases/ar_cf4/outputs --output cases/ar_cf4/visualizations
-```
-
-生成と可視化を一度に行うこともできます。
-
-```powershell
-reactgen generate cases/ar_cf4/input.yaml `
-  --registry registry `
-  --output cases/ar_cf4/outputs `
-  --visualize `
-  --visualization-output cases/ar_cf4/visualizations
-```
-
-macOS / Linux では行継続記号を `\` にしてください。
-
-```bash
-reactgen generate cases/ar_cf4/input.yaml \
-  --registry registry \
-  --output cases/ar_cf4/outputs \
-  --visualize \
-  --visualization-output cases/ar_cf4/visualizations
-```
-
-## 7. 可視化出力
-
-`cases/ar_cf4/visualizations/` に以下が生成されます。
-
-| パス | 内容 |
-|---|---|
-| `statistics/*.svg` | reaction family、reaction type、coverage、missing data などの統計グラフ |
-| `network/reaction_network.dot` | 反応ネットワークの Graphviz DOT ソース |
-| `network/reaction_network.svg` | 反応ネットワーク図。Graphviz がある場合に生成 |
-| `network/reaction_network.png` | 反応ネットワーク図 PNG。Graphviz がある場合に生成 |
-| `network/species_lineage.dot` | species 生成経路の Graphviz DOT ソース |
-| `network/species_lineage.svg` | species lineage 図。Graphviz がある場合に生成 |
-| `network/species_lineage.png` | species lineage 図 PNG。Graphviz がある場合に生成 |
-| `manifest.json` | 生成された可視化ファイルの一覧 |
-
-Graphviz の描画形式を指定する場合:
-
-```powershell
-reactgen visualize cases/ar_cf4/outputs `
-  --output cases/ar_cf4/visualizations `
-  --formats svg,png,pdf
-```
-
-大きいネットワークで描画対象を制御したい場合:
-
-```powershell
-reactgen visualize cases/ar_cf4/outputs `
-  --output cases/ar_cf4/visualizations `
-  --max-reactions 100
-```
-
-すべての反応を描画したい場合:
-
-```powershell
-reactgen visualize cases/ar_cf4/outputs --max-reactions -1
-```
-
-## 8. 登録データの確認
-
-登録データの読み取りと基本参照を確認します。
-
-```powershell
-reactgen dev-check --registry registry
-```
-
-より厳密に確認する場合:
+Validate a registry before generation or promotion:
 
 ```powershell
 reactgen dev-check --registry registry --strict
 ```
 
-registry index を更新する場合:
+`dev-check` returns exit code `1` for a missing registry or any validation
+error, so it can be used directly as a CI gate. In non-strict mode, unresolved
+product references and missing cross-section files remain warnings; `--strict`
+promotes them to errors.
 
-```powershell
-reactgen dev-index --registry registry
-```
+## Documentation
 
-## 9. 登録テンプレートの作成
-
-新しい species や reaction pair を登録するための YAML テンプレートを標準出力に表示できます。
-
-species:
-
-```powershell
-reactgen template species CF3+
-```
-
-電子衝突 pair:
-
-```powershell
-reactgen template electron-pair e CF4
-```
-
-イオン中性衝突 pair:
-
-```powershell
-reactgen template ion-pair Ar+ CF4
-```
-
-表示されたテンプレートをもとに、`registry/species/` または `registry/reactions/` 以下へ YAML を追加します。
-
-## 10. テスト
-
-開発環境でテストを実行します。
-
-```powershell
-python -m pytest
-```
-
-主なテスト対象:
-
-- Ar/CF4 サンプルケースの smoke test
-- 反応式と元素・電荷収支の検証
-- pair selection の挙動
-- registry validation
-- 可視化ファイル生成
-
-## 11. ディレクトリ構成
-
-```text
-plasma-reaction-generator/
-├─ cases/
-│  └─ ar_cf4/
-│     ├─ input.yaml
-│     ├─ outputs/
-│     └─ visualizations/
-├─ registry/
-│  ├─ species/
-│  ├─ reactions/
-│  ├─ rules/
-│  ├─ sources/
-│  └─ data_notes/
-├─ src/plasma_reactgen/
-│  ├─ application/
-│  ├─ domain/
-│  ├─ infrastructure/
-│  ├─ interface/
-│  ├─ validation/
-│  └─ visualization/
-├─ tests/
-└─ docs/
-```
-
-| ディレクトリ | 役割 |
-|---|---|
-| `cases/` | 実行ケース。現在は Ar/CF4 ケースを同梱 |
-| `registry/species/` | 化学種の登録 YAML |
-| `registry/reactions/` | 電子衝突・イオン中性衝突 reaction pair の登録 YAML |
-| `registry/rules/` | 反応タイプ、role、必要物性などのルール |
-| `src/plasma_reactgen/application/` | ネットワーク生成、状態種生成、DNT task 生成 |
-| `src/plasma_reactgen/domain/` | 化学種、反応、式、識別子などのドメインモデル |
-| `src/plasma_reactgen/infrastructure/` | YAML/CSV 入出力、ファイル registry |
-| `src/plasma_reactgen/interface/` | CLI |
-| `src/plasma_reactgen/visualization/` | 統計グラフと Graphviz 図の生成 |
-| `docs/` | 技術報告書、可視化設計メモ |
-
-## 12. 注意点
-
-- 現時点では、数値電子衝突断面積 table の import は未実装です。
-- DNT+/DNT+DM 用の task は生成しますが、DNT+ 計算そのものはこのコード内では実行しません。
-- missing-data report に出る警告の多くは、断面積 table や一部物性値が registry に未登録であることを示します。
-- 反応ネットワーク図は読みやすさのため species graph として描画しており、厳密な hypergraph 表現ではありません。係数や完全な反応式は `network.reactions.yaml` または `network.reactions.csv` を確認してください。
-
-## 13. 関連ドキュメント
-
-- `docs/visualization_design.md`: 可視化設計の詳細
-- `docs/plasma_reactgen_ar_cf4_technical_report.md`: Ar/CF4 技術報告書 Markdown
-- `docs/plasma_reactgen_ar_cf4_technical_report.html`: 技術報告書 HTML
-- `docs/plasma_reactgen_ar_cf4_technical_report.pdf`: 技術報告書 PDF
-- `registry/README_ar_cf4_public_data.md`: Ar/CF4 登録データの出典整理
+- [物理・シミュレーション技術レポート](docs/plasma_reactgen_technical_report.md)
+- [Product architecture](docs/product_architecture.md)
+- [Data sources](docs/data_sources.md)
+- [Semiconductor quickstart](docs/quickstart_semiconductor.md)
+- [Source and license policy](docs/source_license_policy.md)
+- [External source setup](docs/external_source_setup.md)
+- [Provider extension guide](docs/provider_extension_guide.md)
+- [Registry data guide](docs/registry_data_guide.md)
+- [Inference design](docs/inference_design.md)
+- [DNT input export](docs/dnt_input_export.md)
+- [Visualization design](docs/visualization_design.md)

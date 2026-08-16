@@ -1,0 +1,11 @@
+schema_version: 1
+id: CF2O
+display_name: COF2
+aliases: [carbonyl fluoride, COF2]
+composition: {C: 1, F: 2, O: 1}
+charge: 0
+classes: [neutral, molecule]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata:
+  status: literature_supported
+  notes: [Stable oxygenated fluorocarbon product; canonical registry ID follows CF2O.]

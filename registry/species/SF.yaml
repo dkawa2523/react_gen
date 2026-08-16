@@ -1,0 +1,10 @@
+schema_version: 1
+id: SF
+display_name: SF
+composition: {S: 1, F: 1}
+charge: 0
+classes: [neutral, radical, molecule]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata:
+  status: literature_supported
+  notes: [Sulfur monofluoride fragment in the SF6/O2 volume mechanism.]

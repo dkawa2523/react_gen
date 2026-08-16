@@ -1,0 +1,31 @@
+schema_version: 1
+case: ar_cf4_fluorocarbon
+required_species:
+  - Ar
+  - CF4
+  - Ar+
+  - CF4+
+  - CF3
+  - F
+  - F-
+  - CF3+
+required_reaction_families:
+  - electron
+  - ion_neutral
+required_reaction_types:
+  electron:
+    - elastic
+    - ionization
+    - dissociation
+    - attachment
+  ion_neutral:
+    - elastic
+    - dissociative_charge_transfer
+required_outputs:
+  - network.reactions.yaml
+  - network.states.yaml
+  - dnt_tasks.yaml
+  - missing_data.yaml
+  - summary.json
+forbidden:
+  reactions_with_failed_balance: true

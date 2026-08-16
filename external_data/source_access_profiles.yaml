@@ -1,0 +1,143 @@
+schema_version: 1
+source_catalog: external_data/source_catalog.yaml
+policies:
+  allow_network_downloads: false
+  report_path: external_data/manifests/source_setup_report.yaml
+optional_python_dependencies:
+  chemicals:
+    requirements: external_data_tools/requirements-chemicals.txt
+sources:
+  - source_id: nist_snapshot
+    enabled: false
+    access_mode: manual_snapshot_or_explicit_url
+    automation_level: explicit_user_url_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    download_manifest: external_data/downloads/source_download_manifest.example.yaml
+    download_output_root: external_data/raw
+    snapshot_path: external_data/snapshots/nist_species_properties.yaml
+    validator: external_data_tools.nist_snapshot_validate
+    license_note: Review NIST source terms, citation, and redistribution limits before sharing snapshots.
+    notes:
+      - No NIST scraping or automatic online query is implemented.
+      - Prepare reviewed local YAML snapshots before use in enrich.
+
+  - source_id: argonne_atct_snapshot
+    enabled: false
+    access_mode: manual_snapshot_or_explicit_url
+    automation_level: explicit_user_url_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    download_manifest: external_data/downloads/source_download_manifest.example.yaml
+    download_output_root: external_data/raw
+    snapshot_path: external_data/snapshots/argonne_atct_species_thermochemistry.yaml
+    validator: external_data_tools.argonne_atct_snapshot_validate
+    license_note: Review ATcT/Argonne or internal thermochemistry use and redistribution terms.
+    notes:
+      - Explicit URLs or local files may be cached, but no website scraping is implemented.
+      - Use snapshots only after source and sign-convention review.
+
+  - source_id: chemicals_optional
+    enabled: true
+    access_mode: optional_python_package
+    automation_level: explicit_install_flag_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    license_note: Review the chemicals package license and source database citations before using exported values.
+    notes:
+      - Installed only with source_setup --install-chemicals.
+      - Core provider remains lazy and returns empty results when the package is unavailable.
+
+  - source_id: pubchem
+    enabled: false
+    access_mode: public_api_explicit_cli
+    automation_level: explicit_cli_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    raw_output_root: external_data/raw/pubchem
+    snapshot_path: external_data/snapshots/pubchem_species.yaml
+    cli: python -m external_data_tools.pubchem_fetch SPECIES_LIST.yaml --output-root external_data/raw/pubchem --snapshot external_data/snapshots/pubchem_species.yaml
+    license_note: PubChem snapshots should preserve citation/provenance and be reviewed before enrichment use.
+    notes:
+      - PubChem is for identity, formula, synonyms, and identifiers only.
+      - PubChem is not used as a plasma reaction or cross-section database.
+
+  - source_id: lxcat_offline
+    enabled: false
+    access_mode: manual_download_or_explicit_url
+    automation_level: manual_file_or_explicit_user_url_only
+    requires_registration: true
+    requires_license_review: true
+    requires_api_key: false
+    download_manifest: external_data/downloads/source_download_manifest.example.yaml
+    download_output_root: external_data/raw
+    snapshot_path: external_data/snapshots/lxcat_cross_sections_index.yaml
+    cli: python -m external_data_tools.lxcat_raw_import RAW_FILE --workspace WORKSPACE --target TARGET --source lxcat_manual
+    license_note: Follow LXCat citation, license, login, and redistribution requirements.
+    notes:
+      - No LXCat login/session automation or scraping is implemented.
+      - Users may import manually downloaded files or explicit URLs they are permitted to use.
+
+  - source_id: astrochem_kida_umist_converted
+    enabled: false
+    access_mode: official_umist_download_or_manual_kida_export
+    automation_level: explicit_local_cli_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    fetch_cli: python -m external_data_tools.umist_rate22 --output external_data/raw/umist/rate22_final.rates
+    convert_cli: python -m external_data_tools.astrochem_network_convert NETWORK_FILE --database UMIST --target-manifest ACQUISITION_TARGETS.yaml --output external_data/snapshots/umist_reaction_candidates.yaml
+    license_note: Review the selected KIDA or UMIST release terms and preserve row-level references.
+    notes:
+      - Conversion preserves alpha, beta, gamma, and the published temperature range.
+      - Native UMIST Rate22 downloads are checksummed and retained site-local.
+      - Converted rates remain candidates until their plasma applicability and exact reaction mapping are reviewed.
+
+  - source_id: vamdc
+    enabled: false
+    access_mode: explicit_tap_sync_query
+    automation_level: reviewed_endpoint_and_manifest_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    raw_output_root: external_data/raw/vamdc
+    query_cli: python -m external_data_tools.vamdc_query VAMDC_QUERIES.yaml --output-root external_data/raw/vamdc
+    inventory_cli: python -m external_data_tools.vamdc_xsams_inventory RESPONSE.xml --output external_data/snapshots/vamdc_inventory.yaml
+    license_note: Preserve node, dataset, and source-level rights and citations from each XSAMS response.
+    notes:
+      - A reviewed TAP endpoint is required; the repository does not guess a node.
+      - XSAMS inventory output is never promoted to registry reactions automatically.
+
+  - source_id: openadas
+    enabled: false
+    access_mode: manual_download
+    automation_level: explicit_local_manifest_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    raw_output_root: external_data/raw/openadas
+    cli: python -m external_data_tools.openadas_raw_import OPENADAS_MANIFEST.yaml --workspace external_data/workspaces/openadas
+    license_note: OpenADAS data may not be redistributed; keep cached files site-local and cite the originating ADAS data.
+    notes:
+      - Only manually obtained ADF01/ADF07 files are accepted by the current cache workflow.
+      - Reaction mappings require explicit species, products, process type, and output table.
+
+  - source_id: quantemol_qdb
+    enabled: false
+    access_mode: licensed_api_key
+    automation_level: explicit_chemistry_id_only
+    requires_registration: true
+    requires_license_review: true
+    requires_api_key: true
+    credential_environment_name: QDB_API_KEY
+    raw_output_root: external_data/raw/qdb
+    cli: python -m external_data_tools.qdb_chemistry --chemistry-id CHEMISTRY_ID --output external_data/raw/qdb/chemistry_CHEMISTRY_ID.txt
+    license_note: Keep API responses site-local unless QDB terms explicitly permit redistribution.
+    notes:
+      - Select chemistry IDs from external_data/qdb_semiconductor_chemistries.yaml.
+      - API keys are accepted only from the environment and are redacted from download records.
+      - Raw responses require reaction, state, dataset, source, and unit review before registry import.

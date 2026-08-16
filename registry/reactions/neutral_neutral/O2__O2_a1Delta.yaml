@@ -1,0 +1,43 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: O2
+  target: O2_a1Delta
+channels:
+- id: O2a_O2_self_quenching
+  type: reactive_scattering
+  products:
+  - species: O2
+    n: 2
+  status: literature_supported
+  deltaE_products_minus_reactants_eV: -0.977
+  data:
+    datasets:
+    - id: ds_O2a_O2_self_quenching_rate_1988
+      kind: rate_coefficient
+      representation: constant
+      independent_variable: null
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 1.5e-24
+        uncertainty: 2.0e-25
+        source_value: 1.5e-18
+        source_uncertainty: 0.2e-18
+        source_unit: cm3/s
+      validity:
+        conditions:
+          temperature: room_temperature
+      source:
+        source_type: literature
+        source_id: doi:10.1016/0301-0104(88)80027-2
+        citation: Chemical Physics 122, 463-470 (1988).
+        url: https://doi.org/10.1016/0301-0104(88)80027-2
+      status: literature_supported
+      preferred: true
+      notes:
+      - Point value only; no unsupported temperature dependence is assumed.
+metadata:
+  status: curated
+  notes:
+  - Gas-phase self-quenching closes one measured loss path; wall loss remains reactor-specific.

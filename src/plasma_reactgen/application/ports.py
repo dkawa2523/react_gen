@@ -14,6 +14,13 @@ class SpeciesRepository(Protocol):
 
 
 class ReactionRepository(Protocol):
+    def find_pairs_involving(
+        self,
+        active_species_ids: set[str],
+        frontier_species_ids: set[str],
+    ) -> list[CollisionPair]:
+        ...
+
     def get_channels(self, pair: CollisionPair) -> list[ReactionChannel]:
         ...
 
@@ -26,7 +33,4 @@ class RuleRepository(Protocol):
         ...
 
     def get_role_required_properties(self) -> dict:
-        ...
-
-    def get_profile(self, profile_name: str) -> dict:
         ...

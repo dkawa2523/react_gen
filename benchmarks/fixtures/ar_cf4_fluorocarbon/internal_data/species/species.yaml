@@ -1,0 +1,171 @@
+- id: CF4
+  aliases:
+    - tetrafluoromethane
+    - carbon tetrafluoride
+  formula: CF4
+  composition:
+    C: 1
+    F: 4
+  charge: 0
+  classes:
+    - neutral
+    - molecule
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 88.0043
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_cf4_fluorocarbon:species:CF4
+- id: CF4+
+  formula: CF4+
+  composition:
+    C: 1
+    F: 4
+  charge: 1
+  classes:
+    - ion
+    - molecular_ion
+  state:
+    electronic: ground
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_cf4_fluorocarbon:species:CF4p
+- id: CF3
+  formula: CF3
+  composition:
+    C: 1
+    F: 3
+  charge: 0
+  classes:
+    - neutral
+    - radical
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 69.0054
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_cf4_fluorocarbon:species:CF3
+- id: CF2
+  formula: CF2
+  composition:
+    C: 1
+    F: 2
+  charge: 0
+  classes:
+    - neutral
+    - radical
+  state:
+    electronic: ground
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_cf4_fluorocarbon:species:CF2
+- id: CF3+
+  formula: CF3+
+  composition:
+    C: 1
+    F: 3
+  charge: 1
+  classes:
+    - ion
+    - positive_ion
+    - molecular_ion
+  state:
+    electronic: ground
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_cf4_fluorocarbon:species:CF3p
+- id: CF
+  formula: CF
+  composition:
+    C: 1
+    F: 1
+  charge: 0
+  classes:
+    - neutral
+    - radical
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 31.0091
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_cf4_fluorocarbon:species:CF
+- id: C
+  formula: C
+  composition:
+    C: 1
+  charge: 0
+  classes:
+    - neutral
+    - atom
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 12.0107
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_cf4_fluorocarbon:species:C
+- id: F
+  formula: F
+  composition:
+    F: 1
+  charge: 0
+  classes:
+    - neutral
+    - atom
+  state:
+    electronic: ground
+  properties:
+    mass_amu:
+      value: 18.9984
+      unit: amu
+      source: synthetic workflow benchmark fixture
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_cf4_fluorocarbon:species:F
+- id: F-
+  formula: F-
+  composition:
+    F: 1
+  charge: -1
+  classes:
+    - ion
+    - negative_ion
+    - atomic_ion
+  state:
+    electronic: ground
+  status: imported
+  source_record:
+    source_type: benchmark_fixture
+    database: local_benchmark_fixture
+    source_id: ar_cf4_fluorocarbon:species:Fm

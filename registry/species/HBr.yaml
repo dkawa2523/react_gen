@@ -1,0 +1,8 @@
+schema_version: 1
+id: HBr
+display_name: HBr
+composition: {H: 1, Br: 1}
+charge: 0
+classes: [neutral, molecule, input_feedstock]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported, notes: [Semiconductor etch feedstock identity; reaction acquisition remains explicit.]}

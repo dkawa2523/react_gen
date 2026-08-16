@@ -1,0 +1,8 @@
+schema_version: 1
+id: Cu
+display_name: Cu
+composition: {Cu: 1}
+charge: 0
+classes: [neutral, atom, input_feedstock]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported, notes: [Atomic copper identity for metal-plasma acquisition.]}

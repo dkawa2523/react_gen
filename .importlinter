@@ -1,0 +1,36 @@
+[importlinter]
+root_package = plasma_reactgen
+include_external_packages = True
+
+[importlinter:contract:domain-independence]
+name = Domain does not depend on outer layers
+type = forbidden
+source_modules =
+    plasma_reactgen.domain
+forbidden_modules =
+    plasma_reactgen.application
+    plasma_reactgen.data_sources
+    plasma_reactgen.inference
+    plasma_reactgen.infrastructure
+    plasma_reactgen.interface
+    plasma_reactgen.preparation
+    plasma_reactgen.visualization
+
+[importlinter:contract:application-boundary]
+name = Application does not depend on delivery or infrastructure
+type = forbidden
+source_modules =
+    plasma_reactgen.application
+forbidden_modules =
+    plasma_reactgen.infrastructure
+    plasma_reactgen.interface
+    plasma_reactgen.preparation
+    plasma_reactgen.visualization
+
+[importlinter:contract:external-tools-boundary]
+name = Core package does not import external data tools
+type = forbidden
+source_modules =
+    plasma_reactgen
+forbidden_modules =
+    external_data_tools

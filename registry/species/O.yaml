@@ -1,0 +1,47 @@
+schema_version: 1
+id: O
+display_name: O
+composition:
+  O: 1
+charge: 0
+classes:
+- neutral
+- radical
+- atom
+state:
+  kind: ground
+  label: 3P2
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 15.9994
+    unit: amu
+    source: NIST Atomic Data for Oxygen
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: 2.5826
+    unit: eV
+    source: NIST Chemistry WebBook CODATA value 249.18 kJ/mol converted per molecule
+  ionization_energy_eV:
+    value: 13.618055
+    unit: eV
+    source: NIST Atomic Spectra Database
+  electron_affinity_eV:
+    value: 1.461112
+    unit: eV
+    source: NIST Chemistry WebBook evaluated atomic oxygen electron affinity
+metadata:
+  status: curated
+  notes:
+  - Ground-state atomic oxygen produced by O2 dissociation.

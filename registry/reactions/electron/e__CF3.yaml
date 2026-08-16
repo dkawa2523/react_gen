@@ -29,17 +29,23 @@ channels:
     n: 1
   - species: F
     n: 1
-  status: estimated
-  threshold_eV: 3.811
+  status: literature_supported
+  threshold_eV: 3.8
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014), Table 1, R8.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R8
   data:
     cross_section:
       path: null
       format: external_reference_pending_digitization
-      source: thermochemical threshold estimate from NIST WebBook Hf values
+      source: Son et al. (2014), Table 1, R8
       status: needs_import
       note: No curated cross-section imported.
 metadata:
-  status: estimated
+  status: literature_supported
   notes:
   - Radical electron-collision data are sparse; thresholds are seeds pending cross-section
     import.

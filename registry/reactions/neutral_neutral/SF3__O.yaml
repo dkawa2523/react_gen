@@ -1,0 +1,78 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: SF3
+  target: O
+channels:
+- id: SF3_O_R119
+  type: reactive_scattering
+  products:
+  - species: SOF2
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R119
+  data:
+    datasets:
+    - id: ds_SF3_O_R119_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 1.9999999999999998e-17
+        source_value: 2.0e-11
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1116/1.4853675
+        citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+          (2014).
+        url: https://doi.org/10.1116/1.4853675
+        record_id: R119
+      status: literature_supported
+      preferred: true
+- id: SF3_O_R134
+  type: reactive_scattering
+  products:
+  - species: SOF3
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R134
+  data:
+    datasets:
+    - id: ds_SF3_O_R134_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 1.0e-16
+        source_value: 1.0e-10
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1116/1.4853675
+        citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+          (2014).
+        url: https://doi.org/10.1116/1.4853675
+        record_id: R134
+      status: literature_supported
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

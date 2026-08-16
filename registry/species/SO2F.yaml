@@ -1,0 +1,8 @@
+schema_version: 1
+id: SO2F
+display_name: SO2F
+composition: {S: 1, O: 2, F: 1}
+charge: 0
+classes: [neutral, radical, molecule]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported}

@@ -1,0 +1,8 @@
+schema_version: 1
+id: C4F8
+display_name: C4F8
+composition: {C: 4, F: 8}
+charge: 0
+classes: [neutral, molecule, input_feedstock]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported, notes: [Feedstock identity does not select a cyclic or linear isomer; review before reaction import.]}
