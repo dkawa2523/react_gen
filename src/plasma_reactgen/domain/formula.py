@@ -2,9 +2,12 @@ from __future__ import annotations
 
 import re
 
-
 ATOMIC_MASS_AMU = {
+    "B": 10.81,
+    "Br": 79.904,
+    "Cu": 63.546,
     "H": 1.00784,
+    "He": 4.002602,
     "C": 12.011,
     "N": 14.0067,
     "O": 15.999,

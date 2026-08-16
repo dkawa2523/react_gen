@@ -6,8 +6,6 @@ case:
 gases:
 - Ar
 - CF4
-expansion:
-  max_depth: 2
 data_policy:
   include_incomplete_reactions: true
   include_reactions_without_cross_section: true

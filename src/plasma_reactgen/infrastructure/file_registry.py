@@ -40,6 +40,7 @@ class FileRegistry(SpeciesRepository, ReactionRepository, RuleRepository):
                 unit=(payload or {}).get("unit"),
                 source=(payload or {}).get("source"),
                 source_record=(payload or {}).get("source_record"),
+                status=(payload or {}).get("status"),
             )
             for name, payload in data.get("properties", {}).items()
         }

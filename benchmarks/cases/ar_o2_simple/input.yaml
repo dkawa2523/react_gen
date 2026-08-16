@@ -5,8 +5,6 @@ case:
 gases:
   - Ar
   - O2
-expansion:
-  max_depth: 3
 data_policy:
   allowed_status:
     - curated

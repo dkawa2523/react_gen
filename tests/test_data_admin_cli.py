@@ -43,6 +43,40 @@ def test_plan_command_writes_full_plan_and_prints_summary(tmp_path, monkeypatch,
     assert yaml.safe_load(capsys.readouterr().out) == {"species": 3}
 
 
+def test_data_acquisition_command_forwards_arbitrary_gases(tmp_path, monkeypatch, capsys):
+    captured: dict[str, Any] = {}
+
+    def plan_data_acquisition(**kwargs):
+        captured.update(kwargs)
+        return {"summary": {"n_electron_datasets": 2}, "built": True}
+
+    monkeypatch.setattr(data_admin, "plan_data_acquisition", plan_data_acquisition)
+    output_dir = tmp_path / "acquisition"
+
+    exit_code = data_admin.main(
+        [
+            "plan_data_acquisition",
+            "--seed-gases",
+            "Ar",
+            "O2",
+            "--registry",
+            str(tmp_path / "registry"),
+            "--output-dir",
+            str(output_dir),
+        ]
+    )
+
+    assert exit_code == 0
+    assert captured == {
+        "seed_gases": ["Ar", "O2"],
+        "max_depth": None,
+        "registry_root": tmp_path / "registry",
+        "output_dir": output_dir,
+        "vamdc_endpoint": None,
+    }
+    assert yaml.safe_load(capsys.readouterr().out) == {"n_electron_datasets": 2}
+
+
 def test_import_commands_forward_shared_paths(tmp_path, monkeypatch):
     calls: list[tuple[str, Path, dict[str, Any]]] = []
 
@@ -122,6 +156,76 @@ def test_import_commands_forward_shared_paths(tmp_path, monkeypatch):
             {"registry_root": registry, "report_dir": reports},
         ),
     ]
+
+
+def test_nist_beb_command_forwards_targets_to_site_local_registry(tmp_path, monkeypatch):
+    captured: dict[str, Any] = {}
+
+    def import_nist_beb(targets, **kwargs):
+        captured["targets"] = targets
+        captured.update(kwargs)
+        return {"summary": {"n_applied": 3}}
+
+    monkeypatch.setattr(data_admin, "import_nist_beb", import_nist_beb)
+    registry = tmp_path / "prepared_registry"
+    reports = tmp_path / "reports"
+
+    assert (
+        data_admin.main(
+            [
+                "import_nist_beb",
+                "--targets",
+                "O2",
+                "SF5",
+                "SF6",
+                "--registry",
+                str(registry),
+                "--report-dir",
+                str(reports),
+            ]
+        )
+        == 0
+    )
+    assert captured == {
+        "targets": ["O2", "SF5", "SF6"],
+        "registry_root": registry,
+        "report_dir": reports,
+        "redistribution_status": "site-local",
+    }
+
+
+def test_oxygen_command_uses_explicit_site_local_import(tmp_path, monkeypatch):
+    captured: dict[str, Any] = {}
+
+    def import_oxygen_cross_sections(**kwargs):
+        captured.update(kwargs)
+        return {"summary": {"n_applied": 7}}
+
+    monkeypatch.setattr(
+        data_admin,
+        "import_oxygen_cross_sections",
+        import_oxygen_cross_sections,
+    )
+    registry = tmp_path / "prepared_registry"
+    reports = tmp_path / "reports"
+
+    assert (
+        data_admin.main(
+            [
+                "import_oxygen_cross_sections",
+                "--registry",
+                str(registry),
+                "--report-dir",
+                str(reports),
+            ]
+        )
+        == 0
+    )
+    assert captured == {
+        "registry_root": registry,
+        "report_dir": reports,
+        "redistribution_status": "site-local",
+    }
 
 
 def test_build_command_returns_failure_when_pack_is_not_built(tmp_path, monkeypatch, capsys):

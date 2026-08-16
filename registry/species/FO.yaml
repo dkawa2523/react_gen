@@ -1,0 +1,10 @@
+schema_version: 1
+id: FO
+display_name: FO
+composition: {F: 1, O: 1}
+charge: 0
+classes: [neutral, radical, molecule]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata:
+  status: literature_supported
+  notes: [Fluorine monoxide radical in oxygenated fluorocarbon chemistry.]

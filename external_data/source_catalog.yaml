@@ -120,7 +120,7 @@ sources:
     requires_api_key: false
     redistribution_risk: medium
     default_status: imported
-    notes: "Local KIDA/UMIST-like network conversion for candidate discovery. Treat as review-required, not semiconductor-validated data."
+    notes: "Official UMIST Rate22 or local KIDA network conversion for exact-pair candidate discovery. Treat as review-required, not semiconductor-validated data."
 
   - source_id: ion_reaction_table
     category: user_provided_file
@@ -144,7 +144,7 @@ sources:
     default_status: literature_supported
     notes: "Reviewed literature-derived local candidates. Current built-in provider is a placeholder unless user supplies a concrete local table."
 
-  - source_id: qdb_or_commercial_export
+  - source_id: quantemol_qdb
     category: commercial_or_license_restricted
     allowed_in_core_generate: false
     allowed_in_enrich: false
@@ -153,7 +153,7 @@ sources:
     requires_api_key: true
     redistribution_risk: high
     default_status: imported
-    notes: "Placeholder governance entry for QDB/commercial exports if supplied by a user. Not an implemented adapter."
+    notes: "Implemented API-key fetch stores raw Q-VT-compatible responses site-locally. It never logs the key or auto-promotes reactions; QDB terms and row provenance require review."
 
   - source_id: user_provided_cross_section_csv
     category: user_provided_file

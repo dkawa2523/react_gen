@@ -1,0 +1,41 @@
+schema_version: 1
+pair:
+  family: electron_ion
+  projectile: e
+  target: O2+
+channels:
+- id: e_O2p_dissociative_recombination
+  type: dissociative_recombination
+  products:
+  - species: O
+    n: 2
+  status: literature_supported
+  deltaE_products_minus_reactants_eV: null
+  data:
+    datasets:
+    - id: ds_e_O2p_dissociative_recombination_rate_1977
+      kind: rate_coefficient
+      representation: constant
+      independent_variable: null
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 8.2e-15
+        source_value: 8.2e-9
+        source_unit: cm3/s
+      source:
+        source_type: literature
+        source_id: doi:10.1016/0020-7381(77)80050-8
+        citation: P. Gaucherel and B. Rowe, International Journal of Mass Spectrometry and Ion Physics 25, 211-227 (1977).
+        url: https://doi.org/10.1016/0020-7381(77)80050-8
+      status: literature_supported
+      preferred: true
+      notes:
+      - Measured rarefied-plasma-jet value; no unsupported electron-temperature dependence is assumed.
+  notes:
+  - This loss channel consumes O2+ produced by ionization or charge transfer.
+  - Product-state branching and temperature dependence remain unresolved.
+metadata:
+  status: curated
+  notes:
+  - This reusable electron-ion pair is discovered after O2+ enters the network.

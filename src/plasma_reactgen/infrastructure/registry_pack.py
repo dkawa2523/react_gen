@@ -89,7 +89,7 @@ def resolve_registry(
     packs_root: str | Path | None = None,
     explicit_registry: str | Path | None = None,
 ) -> RegistryResolution:
-    """Resolve an explicit registry or automatically overlay a matching pack."""
+    """Resolve the shared registry and an optional matching release overlay."""
 
     if explicit_registry is not None:
         root = Path(explicit_registry)
@@ -114,8 +114,7 @@ def resolve_registry(
                 "mode": "base_registry",
                 "base_registry": str(base_root),
                 "pack": None,
-                "coverage_gap": True,
-                "coverage_gap_reason": "no_registry_pack_for_input_gases",
+                "coverage_gap": False,
             },
         )
     return RegistryResolution(

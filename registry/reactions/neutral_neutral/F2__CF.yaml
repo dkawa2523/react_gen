@@ -1,0 +1,45 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: F2
+  target: CF
+channels:
+- id: F2_CF_to_CF2_F
+  type: reactive_scattering
+  products:
+  - species: CF2
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014),
+      Table 1.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R28
+  data:
+    datasets:
+    - id: ds_F2_CF_to_CF2_F_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 3.98e-18
+        source_value: 3.98e-12
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1007/s11090-013-9513-1
+        citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257
+          (2014), Table 1.
+        url: https://doi.org/10.1007/s11090-013-9513-1
+        record_id: R28
+      status: literature_supported
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

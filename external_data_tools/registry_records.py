@@ -88,12 +88,31 @@ def append_dataset(match: dict[str, Any], dataset: dict[str, Any]) -> bool:
     path = Path(match["path"])
     payload = read_yaml(path)
     channel = payload["channels"][match["channel_index"]]
-    datasets = channel.setdefault("data", {}).setdefault("datasets", [])
+    data = channel.setdefault("data", {})
+    datasets = data.setdefault("datasets", [])
     if any(item.get("id") == dataset["id"] for item in datasets if isinstance(item, dict)):
+        if _remove_replaced_cross_section_placeholder(data, dataset):
+            write_yaml(path, payload)
         return False
     datasets.append(dataset)
+    _remove_replaced_cross_section_placeholder(data, dataset)
     write_yaml(path, payload)
     return True
+
+
+def _remove_replaced_cross_section_placeholder(
+    data: dict[str, Any],
+    dataset: dict[str, Any],
+) -> bool:
+    placeholder = data.get("cross_section")
+    if (
+        dataset.get("kind") == "cross_section"
+        and isinstance(placeholder, dict)
+        and not placeholder.get("path")
+    ):
+        del data["cross_section"]
+        return True
+    return False
 
 
 def channel_sources(channel: dict[str, Any]) -> list[dict[str, Any]]:

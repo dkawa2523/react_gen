@@ -1,0 +1,340 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: SF6
+channels:
+- id: e_SF6_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: SF6
+    n: 1
+  status: curated
+  threshold_eV: 0.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Christophorou and Olthoff, JPCRD 29, 267-330 (2000), doi:10.1063/1.1288407
+      status: needs_import
+      note: Import the evaluated elastic/momentum-transfer data before kinetic use.
+- id: e_SF6_attachment_parent
+  type: attachment
+  products:
+  - species: SF6-
+    n: 1
+  status: curated
+  threshold_eV: 0.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Christophorou and Olthoff (2000), doi:10.1063/1.1288407
+      status: needs_import
+      note: Nondissociative attachment is important below about 0.1 eV; import energy-dependent data.
+- id: e_SF6_attachment_SF5m_F
+  type: attachment
+  products:
+  - species: SF5-
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Christophorou and Olthoff (2000), doi:10.1063/1.1288407
+      status: needs_import
+      note: The review reports near-zero and 0.38 eV SF5- structures; import the measured curve.
+- id: e_SF6_attachment_Fm_SF5
+  type: attachment
+  products:
+  - species: F-
+    n: 1
+  - species: SF5
+    n: 1
+  status: literature_supported
+  threshold_eV: 2.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Christophorou and Olthoff (2000), doi:10.1063/1.1288407
+      status: needs_import
+      note: Approximate onset region from the evaluated review; use the measured curve for rates.
+- id: e_SF6_dissociation_SF5_F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: SF5
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 9.6
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Christophorou and Olthoff (2000), Table 21, doi:10.1063/1.1288407
+      status: needs_import
+      note: Expected threshold is registered; channel-specific numeric data are still needed.
+- id: e_SF6_dissociation_SF4_2F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: SF4
+    n: 1
+  - species: F
+    n: 2
+  status: literature_supported
+  threshold_eV: 12.1
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Christophorou and Olthoff (2000), Table 21, doi:10.1063/1.1288407
+      status: needs_import
+      note: Expected threshold is registered; channel-specific numeric data are still needed.
+- id: e_SF6_dissociation_SF3_3F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: SF3
+    n: 1
+  - species: F
+    n: 3
+  status: literature_supported
+  threshold_eV: 15.9
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Christophorou and Olthoff (2000), Table 21, doi:10.1063/1.1288407
+      status: needs_import
+      note: The review lists a measured 16 eV threshold; import the product-resolved curve.
+- id: e_SF6_dissociation_SF2_F2_2F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: SF2
+    n: 1
+  - species: F2
+    n: 1
+  - species: F
+    n: 2
+  status: literature_supported
+  threshold_eV: 18.6
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R4
+- id: e_SF6_dissociation_SF_F2_3F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: SF
+    n: 1
+  - species: F2
+    n: 1
+  - species: F
+    n: 3
+  status: literature_supported
+  threshold_eV: 22.7
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R5
+- id: e_SF6_dissociative_ionization_SF5p_F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF5+
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 16.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Christophorou and Olthoff (2000), doi:10.1063/1.1288407
+      status: needs_import
+      note: SF5+ is the dominant positive fragment; 15.9 +/- 0.2 eV is the evaluated electron-impact appearance energy, not a fitted rate input.
+- id: e_SF6_dissociative_ionization_SF4p_2F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF4+
+    n: 1
+  - species: F
+    n: 2
+  status: literature_supported
+  threshold_eV: 20.0
+  source_record: &pateau_r13
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R13
+- id: e_SF6_dissociative_ionization_SF3p_3F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF3+
+    n: 1
+  - species: F
+    n: 3
+  status: literature_supported
+  threshold_eV: 20.5
+  source_record:
+    <<: *pateau_r13
+    record_id: R14
+- id: e_SF6_dissociative_ionization_SF2p_F2_2F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF2+
+    n: 1
+  - species: F2
+    n: 1
+  - species: F
+    n: 2
+  status: literature_supported
+  threshold_eV: 28.0
+  source_record:
+    <<: *pateau_r13
+    record_id: R15
+- id: e_SF6_dissociative_ionization_SFp_F2_3F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF+
+    n: 1
+  - species: F2
+    n: 1
+  - species: F
+    n: 3
+  status: literature_supported
+  threshold_eV: 37.5
+  source_record:
+    <<: *pateau_r13
+    record_id: R16
+- id: e_SF6_dissociative_ionization_Sp_F2_4F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: S+
+    n: 1
+  - species: F2
+    n: 1
+  - species: F
+    n: 4
+  status: literature_supported
+  threshold_eV: 18.0
+  source_record:
+    <<: *pateau_r13
+    record_id: R17
+- id: e_SF6_dissociative_ionization_Fp_SF4_F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: F+
+    n: 1
+  - species: SF4
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 23.0
+  source_record:
+    <<: *pateau_r13
+    record_id: R18
+- id: e_SF6_attachment_SF4m_2F
+  type: attachment
+  products:
+  - species: SF4-
+    n: 1
+  - species: F
+    n: 2
+  status: literature_supported
+  threshold_eV: 5.4
+  source_record:
+    <<: *pateau_r13
+    record_id: R31
+- id: e_SF6_attachment_SF3m_3F
+  type: attachment
+  products:
+  - species: SF3-
+    n: 1
+  - species: F
+    n: 3
+  status: literature_supported
+  threshold_eV: 11.2
+  source_record:
+    <<: *pateau_r13
+    record_id: R32
+- id: e_SF6_attachment_SF2m_4F
+  type: attachment
+  products:
+  - species: SF2-
+    n: 1
+  - species: F
+    n: 4
+  status: literature_supported
+  threshold_eV: 12.0
+  source_record:
+    <<: *pateau_r13
+    record_id: R33
+- id: e_SF6_attachment_Fm_SF4_F
+  type: attachment
+  products:
+  - species: F-
+    n: 1
+  - species: SF4
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 5.4
+  source_record:
+    <<: *pateau_r13
+    record_id: R35
+- id: e_SF6_attachment_F2m_SF4
+  type: attachment
+  products:
+  - species: F2-
+    n: 1
+  - species: SF4
+    n: 1
+  status: literature_supported
+  threshold_eV: 5.4
+  source_record:
+    <<: *pateau_r13
+    record_id: R36
+metadata:
+  status: curated
+  notes:
+  - Reusable SF6 electron-collision seed set; no Ar/SF6 or SF6/O2 mixture object is required.
+  - Product-resolved numeric cross sections are the principal remaining data gap.

@@ -1,0 +1,46 @@
+schema_version: 1
+id: O-
+display_name: O-
+composition:
+  O: 1
+charge: -1
+classes:
+- negative_ion
+- atomic_ion
+state:
+  kind: ground
+  label: 2P
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 15.9999486
+    unit: amu
+    source: O atomic mass plus electron mass
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic-ion symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: 1.1225
+    unit: eV
+    source: NIST Chemistry WebBook value 108.3 kJ/mol converted per molecule
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  electron_affinity_eV:
+    value: 1.461112
+    unit: eV
+    source: NIST Chemistry WebBook evaluated atomic oxygen electron affinity
+metadata:
+  status: curated
+  notes:
+  - Produced by dissociative attachment to O2.

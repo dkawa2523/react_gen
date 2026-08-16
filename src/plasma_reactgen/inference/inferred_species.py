@@ -73,6 +73,7 @@ def _properties_from_payload(payload: dict[str, Any]) -> dict[str, PropertyValue
             unit=value.get("unit"),
             source=value.get("source"),
             source_record=value.get("source_record"),
+            status=value.get("status"),
         )
     return properties
 

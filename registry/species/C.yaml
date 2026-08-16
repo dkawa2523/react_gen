@@ -1,0 +1,10 @@
+schema_version: 1
+id: C
+display_name: C
+composition: {C: 1}
+charge: 0
+classes: [neutral, radical, atom]
+state: {kind: ground, label: 3P, excitation_energy_eV: 0.0}
+metadata:
+  status: literature_supported
+  notes: [Ground-state carbon atom in the CF4/O2 volume mechanism.]

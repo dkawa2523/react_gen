@@ -1,0 +1,52 @@
+schema_version: 1
+mechanisms:
+- id: son_2014_cf4_o2_volume
+  required_seed_gases: [CF4, O2]
+  source:
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).
+    url: https://doi.org/10.1007/s11090-013-9513-1
+  scope:
+    phase: gas
+    description: Table 1, R1-R60 volume reactions for CF4/Ar/O2 neutral chemistry.
+    expected_record_ranges: [R1-R60]
+    excluded_records: [R61-R67]
+    exclusion_reason: Surface and wall reactions require explicit material and surface-state semantics.
+  equivalent_reaction_ids: {}
+- id: pateau_2014_sf6_volume
+  required_seed_gases: [SF6]
+  source:
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+  scope:
+    phase: gas
+    description: Tables II-III, R1-R50 mass-balance reactions for SFx and F species.
+    expected_record_ranges: [R1-R50]
+    excluded_records: [R51-R55]
+    exclusion_reason: Elastic and excitation rows affect the power balance but not chemical composition.
+  equivalent_reaction_ids:
+    R1: e_SF6_dissociation_SF5_F
+    R2: e_SF6_dissociation_SF4_2F
+    R3: e_SF6_dissociation_SF3_3F
+    R11: e_F2_dissociation_2F
+    R12: e_SF6_dissociative_ionization_SF5p_F
+    R19: e_SF5_ionization
+    R21: e_SF4_ionization
+    R23: e_SF3_ionization
+    R27: e_F_ionization
+    R29: e_SF6_attachment_parent
+    R30: e_SF6_attachment_SF5m_F
+    R34: e_SF6_attachment_Fm_SF5
+- id: pateau_2014_sf6_o2_cross_chemistry
+  required_seed_gases: [SF6, O2]
+  source:
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+  scope:
+    phase: gas
+    description: Table VII, R119-R138 cross-chemistry between SF6 and O2 fragments.
+    expected_record_ranges: [R119-R138]
+    excluded_records: []
+  equivalent_reaction_ids: {}

@@ -1,0 +1,59 @@
+schema_version: 1
+pair:
+  family: ion_neutral
+  projectile: Ar+
+  target: O2
+channels:
+- id: Arp_O2_charge_transfer
+  type: charge_transfer
+  products:
+  - species: Ar
+    n: 1
+  - species: O2+
+    n: 1
+  status: literature_supported
+  dnt_class: long_range_charge_exchange
+  deltaE_products_minus_reactants_eV: -3.68991
+  data:
+    datasets:
+    - id: ds_Arp_O2_charge_transfer_rate_1977
+      kind: rate_coefficient
+      representation: constant
+      independent_variable: null
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 6.3e-17
+        source_value: 6.3e-11
+        source_unit: cm3/s
+      source:
+        source_type: literature
+        source_id: doi:10.1016/0020-7381(77)80050-8
+        citation: P. Gaucherel and B. Rowe, International Journal of Mass Spectrometry and Ion Physics 25, 211-227 (1977).
+        url: https://doi.org/10.1016/0020-7381(77)80050-8
+      status: literature_supported
+      preferred: true
+      notes:
+      - Measured rarefied-plasma-jet value; no unsupported temperature extrapolation is applied.
+  notes:
+  - Products are measured by Flesch, Nourbakhsh, and Ng, JCP 92, 3590-3604 (1990), doi:10.1063/1.457867.
+  - Energy defect is derived from the NIST Ar and O2 ionization energies.
+- id: Arp_O2_dissociative_charge_transfer_Op_O
+  type: dissociative_charge_transfer
+  products:
+  - species: Ar
+    n: 1
+  - species: O+
+    n: 1
+  - species: O
+    n: 1
+  status: literature_supported
+  dnt_class: short_range_charge_exchange
+  deltaE_products_minus_reactants_eV: 3.023645
+  notes:
+  - Dissociative charge transfer product channel measured in doi:10.1063/1.457867.
+  - Energy defect is derived from registry thermochemistry; no collision cross section is embedded.
+metadata:
+  status: curated
+  notes:
+  - This reusable binary pair is discovered when a runtime gas input contains Ar and O2.

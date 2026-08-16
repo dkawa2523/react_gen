@@ -202,6 +202,7 @@ def _species_from_candidate(
                 unit=(payload or {}).get("unit"),
                 source=(payload or {}).get("source"),
                 source_record=deepcopy((payload or {}).get("source_record")),
+                status=(payload or {}).get("status"),
             )
             for name, payload in candidate.get("properties", {}).items()
         },

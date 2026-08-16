@@ -81,3 +81,63 @@ sources:
     notes:
       - No LXCat login/session automation or scraping is implemented.
       - Users may import manually downloaded files or explicit URLs they are permitted to use.
+
+  - source_id: astrochem_kida_umist_converted
+    enabled: false
+    access_mode: official_umist_download_or_manual_kida_export
+    automation_level: explicit_local_cli_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    fetch_cli: python -m external_data_tools.umist_rate22 --output external_data/raw/umist/rate22_final.rates
+    convert_cli: python -m external_data_tools.astrochem_network_convert NETWORK_FILE --database UMIST --target-manifest ACQUISITION_TARGETS.yaml --output external_data/snapshots/umist_reaction_candidates.yaml
+    license_note: Review the selected KIDA or UMIST release terms and preserve row-level references.
+    notes:
+      - Conversion preserves alpha, beta, gamma, and the published temperature range.
+      - Native UMIST Rate22 downloads are checksummed and retained site-local.
+      - Converted rates remain candidates until their plasma applicability and exact reaction mapping are reviewed.
+
+  - source_id: vamdc
+    enabled: false
+    access_mode: explicit_tap_sync_query
+    automation_level: reviewed_endpoint_and_manifest_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    raw_output_root: external_data/raw/vamdc
+    query_cli: python -m external_data_tools.vamdc_query VAMDC_QUERIES.yaml --output-root external_data/raw/vamdc
+    inventory_cli: python -m external_data_tools.vamdc_xsams_inventory RESPONSE.xml --output external_data/snapshots/vamdc_inventory.yaml
+    license_note: Preserve node, dataset, and source-level rights and citations from each XSAMS response.
+    notes:
+      - A reviewed TAP endpoint is required; the repository does not guess a node.
+      - XSAMS inventory output is never promoted to registry reactions automatically.
+
+  - source_id: openadas
+    enabled: false
+    access_mode: manual_download
+    automation_level: explicit_local_manifest_only
+    requires_registration: false
+    requires_license_review: true
+    requires_api_key: false
+    raw_output_root: external_data/raw/openadas
+    cli: python -m external_data_tools.openadas_raw_import OPENADAS_MANIFEST.yaml --workspace external_data/workspaces/openadas
+    license_note: OpenADAS data may not be redistributed; keep cached files site-local and cite the originating ADAS data.
+    notes:
+      - Only manually obtained ADF01/ADF07 files are accepted by the current cache workflow.
+      - Reaction mappings require explicit species, products, process type, and output table.
+
+  - source_id: quantemol_qdb
+    enabled: false
+    access_mode: licensed_api_key
+    automation_level: explicit_chemistry_id_only
+    requires_registration: true
+    requires_license_review: true
+    requires_api_key: true
+    credential_environment_name: QDB_API_KEY
+    raw_output_root: external_data/raw/qdb
+    cli: python -m external_data_tools.qdb_chemistry --chemistry-id CHEMISTRY_ID --output external_data/raw/qdb/chemistry_CHEMISTRY_ID.txt
+    license_note: Keep API responses site-local unless QDB terms explicitly permit redistribution.
+    notes:
+      - Select chemistry IDs from external_data/qdb_semiconductor_chemistries.yaml.
+      - API keys are accepted only from the environment and are redacted from download records.
+      - Raw responses require reaction, state, dataset, source, and unit review before registry import.

@@ -1,0 +1,134 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: O2
+channels:
+- id: e_O2_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: O2
+    n: 1
+  status: curated
+  threshold_eV: 0.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Y. Itikawa, JPCRD 38, 1-20 (2009), doi:10.1063/1.3025886
+      status: needs_import
+      note: Import the evaluated momentum-transfer/elastic data before rate calculation.
+- id: e_O2_excitation_O2_a1Delta
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: O2_a1Delta
+    n: 1
+  status: curated
+  threshold_eV: 0.977
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Y. Itikawa, JPCRD 38, 1-20 (2009), doi:10.1063/1.3025886
+      status: needs_import
+      note: Import state-resolved O2(a1Delta_g) excitation data for kinetic use.
+  notes:
+  - Numeric data are available through the explicit Song et al. workbook importer.
+- id: e_O2_excitation_O2_b1Sigma
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: O2_b1Sigma
+    n: 1
+  status: curated
+  threshold_eV: 1.627
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: M.-Y. Song et al., JPCRD (2026), doi:10.1063/5.0287254
+      status: needs_import
+      note: Import the evaluated O2(b1Sigma_g+) excitation table for kinetic use.
+  notes:
+  - Numeric data are available through the explicit Song et al. workbook importer.
+- id: e_O2_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: O2+
+    n: 1
+  status: curated
+  threshold_eV: 12.0697
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Y. Itikawa (2009) and NIST O2 ionization energy
+      status: needs_import
+      note: The evaluated threshold is registered; import a numeric ionization curve for rates.
+- id: e_O2_dissociation_O_O
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: O
+    n: 2
+  status: literature_supported
+  threshold_eV: 5.12
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R13
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Y. Itikawa, JPCRD 38, 1-20 (2009), doi:10.1063/1.3025886
+      status: needs_import
+      note: Threshold is the ground-state dissociation limit; import state-resolved data.
+- id: e_O2_dissociation_O_O1D
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: O
+    n: 1
+  - species: O_1D
+    n: 1
+  status: literature_supported
+  threshold_eV: 8.57
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R14
+- id: e_O2_attachment_Om_O
+  type: attachment
+  products:
+  - species: O-
+    n: 1
+  - species: O
+    n: 1
+  status: literature_supported
+  threshold_eV: 3.66
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Y. Itikawa, JPCRD 38, 1-20 (2009), doi:10.1063/1.3025886
+      status: needs_import
+      note: Thermochemical onset for dissociative attachment; import the resonant cross section.
+metadata:
+  status: curated
+  notes:
+  - Reusable O2 electron-collision seed set; mixtures are assembled only from case input gases.
+  - Numeric cross-section arrays are acquired only by an explicit site-local import.

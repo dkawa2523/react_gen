@@ -5,11 +5,13 @@ import yaml
 from plasma_reactgen.application.config import load_case_config
 from plasma_reactgen.application.dnt_input_builder import build_dnt_inputs
 from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks
-from plasma_reactgen.application.network_builder import NetworkBuilderDependencies, ReactionNetworkBuilder
+from plasma_reactgen.application.network_builder import (
+    NetworkBuilderDependencies,
+    ReactionNetworkBuilder,
+)
 from plasma_reactgen.infrastructure.dnt_writer import write_dnt_inputs
 from plasma_reactgen.infrastructure.file_registry import FileRegistry
 from plasma_reactgen.interface.cli import main
-
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -57,6 +59,7 @@ def test_build_dnt_inputs_uses_normalized_pair_schema():
 
 def test_missing_required_data_are_written_instead_of_raising():
     _, network = _sample_network()
+    network.species["CF4"].properties.pop("polarizability_A3")
     dnt_inputs = build_dnt_inputs(network)
 
     pair = next(item for item in dnt_inputs["pairs"] if item["status"] == "missing_required_data")

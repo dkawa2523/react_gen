@@ -7,10 +7,10 @@ properties, and cross-section asset links are kept as readable YAML and local
 files.
 
 The normal generation path is deterministic: `reactgen generate` follows
-primary, secondary, and later products from the input gases and writes a
-lineage-aware reaction list. `network.reactions.yaml` / `.csv` are the primary
-products. Generation also writes DNT-readiness, coverage, and
-missing-data views, and does not access online databases or run solvers.
+primary, secondary, and later products from the input gases until the registered
+reaction frontier closes, then writes a lineage-aware reaction list.
+`network.reactions.yaml` / `.csv` are the primary products. Reaction equations
+do not require DNT, a solver result, or a numerical cross section/rate.
 
 ## User Commands
 
@@ -31,18 +31,20 @@ reactgen generate cases/ar_cf4/input.yaml --output cases/ar_cf4/outputs
 
 The normal user supplies only the gases in the case YAML and runs `generate`;
 source profiles, workspaces, mappings, and property files are not required.
-When `--registry` is omitted, a versioned registry pack matching all input
-gases is selected automatically; if none is available, generation falls back
-to the base registry and reports the coverage gap. Explicit `--registry`
-remains supported.
-Pair discovery is driven entirely by files under `registry/reactions/*/*.yaml`:
+Species and reusable reaction records come from the shared `registry/`; a gas
+mixture is never required as prebuilt data. When `--registry` is omitted, an
+optional versioned release pack may overlay the shared registry. No matching
+pack is not a data gap. Explicit `--registry` remains supported.
+Reaction discovery is driven entirely by files under `registry/reactions/*/*.yaml`:
 both reactants must already be active and at least one must be in the current
 frontier. Consequently, registered families such as `electron`, `ion_neutral`,
 `neutral_neutral`, `ion_ion`, and `electron_ion` need no CaseConfig switches,
-and unregistered species combinations are not enumerated.
+and unregistered species combinations are not invented. Binary families use two
+active reactants; `unimolecular` records use one physical reactant.
 Main outputs include:
 
 - `network.reactions.yaml` / `.csv` (primary reaction list)
+- `mechanism_coverage.yaml` (bounded primary-source table coverage)
 - `network.states.yaml` / `.csv`
 - `dnt_tasks.yaml`
 - `coverage_report.yaml`
@@ -57,6 +59,8 @@ See [Reaction output contract](docs/reaction_output_contract.md) for lineage,
 dataset, and missing-data field definitions. `dnt_tasks.yaml` only inventories
 ion-neutral properties and existing datasets; no DNT runner or result importer
 is included.
+See [Shared registry coverage](docs/shared_registry_coverage.md) for the completed
+CF4/O2 and SF6/O2 bounded gas-phase mechanisms and prioritized scientific gaps.
 Pack creation and local snapshot imports are maintainer workflows documented in
 [Registry packs and data administration](docs/registry_packs.md).
 
@@ -66,6 +70,10 @@ coverage, and quality YAML outputs repeat the relevant completeness data. Limit
 events identify the applied limit and record retained/omitted counts and
 context. A truncated run is not marked mechanism-ready for review in
 `quality_summary.yaml`.
+The default has no depth limit and propagates excited states; it follows the
+registered chemistry until the frontier closes. Set `expansion.max_depth` or
+disable `propagate_excited_states` only for a deliberately partial diagnostic
+network.
 
 ## Data Maintainer Workflows
 
@@ -90,16 +98,52 @@ but they are not part of the normal user path.
 local/external tooling for explicit URL downloads, raw file caching, snapshot
 planning/validation, PubChem identity snapshots, LXCat raw imports, OpenADAS raw
 file registration, VAMDC raw query capture, astrochemical network conversion,
-and thermochemistry snapshot planning.
+thermochemistry snapshot planning, a reviewed semiconductor-chemistry inventory,
+and a licensed QDB raw-response fetcher.
 
 These tools may access online resources only when explicitly invoked outside the
 core runtime. Their outputs are local files under `external_data/`,
 `workspaces/`, or `benchmarks/`. Generated snapshots and imported assets require
 human review before use and are never auto-promoted into curated `registry/`.
+For CF2, CF3, CF4, O2, SF3, SF4, SF5, and SF6,
+`python -m external_data_tools.data_admin import_nist_beb` imports NIST SRD 107
+total-ionization tables into an explicit prepared registry; it does not treat
+them as product-resolved channel cross sections.
+
+For O2 process rates, `python -m external_data_tools.data_admin
+import_oxygen_cross_sections` downloads the official evaluated workbook once,
+converts its seven reviewed tables to SI CSV assets, and maps them to exact
+reaction IDs in a prepared registry. The CC BY-NC source data are not bundled
+in the shared registry. Install the isolated importer dependency with
+`python -m pip install -e ".[external-data]"`; the core generator still depends
+only on PyYAML.
 Source/license governance is tracked in `external_data/source_catalog.yaml`; see
 [docs/source_license_policy.md](docs/source_license_policy.md). External source
 setup for NIST/ATcT/Chemicals/PubChem/LXCat workflows is described in
 [docs/external_source_setup.md](docs/external_source_setup.md).
+
+To turn arbitrary input gases into an actionable, DB-specific collection
+backlog without creating mixture packs, run:
+
+```powershell
+python -m external_data_tools.data_admin plan_data_acquisition `
+  --seed-gases Ar O2 CF4 SF6 `
+  --registry registry `
+  --output-dir external_data/acquisition_work
+```
+
+The generated manifests keep confirmed gaps, numerical dataset gaps, and
+unverified reaction-pair candidates separate. Downloads and registry promotion
+remain explicit follow-up operations.
+
+The QDB manifest is derived from the 29 chemistry sets in the cited QDB Table 7.
+Fetches require `QDB_API_KEY` from the environment, redact it from records, keep
+responses site-local, and never auto-promote reactions.
+
+The plan can download the official UMIST Rate22 file with
+`python -m external_data_tools.umist_rate22` and then match its native `.rates`
+records to exact registry pair targets. A zero-match result is recorded rather
+than being treated as coverage.
 
 Benchmark outputs under `benchmarks/results/` are reproducible artifacts and
 are intentionally not versioned. Benchmark fixtures remain under

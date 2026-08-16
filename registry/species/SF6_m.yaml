@@ -1,0 +1,47 @@
+schema_version: 1
+id: SF6-
+display_name: SF6-
+composition:
+  S: 1
+  F: 6
+charge: -1
+classes:
+- negative_ion
+- molecular_ion
+state:
+  kind: ground
+  label: anion
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 146.0555486
+    unit: amu
+    source: SF6 molecular mass plus electron mass
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: molecular-ion symmetry approximation
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: null
+    unit: eV
+    source: null
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  electron_affinity_eV:
+    value: 1.03
+    unit: eV
+    source: NIST Chemistry WebBook SF6 electron affinity
+metadata:
+  status: literature_supported
+  notes:
+  - Nondissociative attachment product important below about 0.1 eV.

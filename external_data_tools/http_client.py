@@ -19,8 +19,10 @@ def download_url(
     timeout: float | None = None,
     sleep_seconds: float | None = None,
     dry_run: bool = False,
+    sensitive_query_keys: set[str] | None = None,
 ) -> dict:
     url = _validated_http_url(url)
+    public_url = _redacted_url(url, sensitive_query_keys or set())
     config = load_config()
     resolved_user_agent = user_agent or config.user_agent
     resolved_timeout = config.http_timeout if timeout is None else timeout
@@ -28,7 +30,7 @@ def download_url(
     output_path = Path(output_path)
 
     record = {
-        "url": url,
+        "url": public_url,
         "output_path": str(output_path),
         "user_agent": resolved_user_agent,
         "timeout": resolved_timeout,
@@ -41,8 +43,13 @@ def download_url(
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     request = urllib.request.Request(url, headers={"User-Agent": resolved_user_agent})
-    with _open_http_request(request, resolved_timeout) as response:
-        output_path.write_bytes(response.read())
+    try:
+        with _open_http_request(request, resolved_timeout) as response:
+            output_path.write_bytes(response.read())
+    except Exception as exc:
+        if sensitive_query_keys:
+            raise RuntimeError(f"Download failed for {public_url}: {type(exc).__name__}") from None
+        raise
 
     record.update(
         {
@@ -138,6 +145,15 @@ def _validated_http_url(url: str) -> str:
     if parsed.scheme not in {"http", "https"} or not parsed.hostname or has_credentials:
         raise ValueError("download URL must be an HTTP(S) URL with a host and no credentials")
     return url
+
+
+def _redacted_url(url: str, sensitive_query_keys: set[str]) -> str:
+    if not sensitive_query_keys:
+        return url
+    parsed = urllib.parse.urlsplit(url)
+    query = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+    redacted = [(key, "REDACTED" if key in sensitive_query_keys else value) for key, value in query]
+    return urllib.parse.urlunsplit((*parsed[:3], urllib.parse.urlencode(redacted), parsed.fragment))
 
 
 def _open_http_request(request: urllib.request.Request, timeout: float) -> Any:

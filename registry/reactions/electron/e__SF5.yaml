@@ -1,0 +1,99 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: SF5
+channels:
+- id: e_SF5_dissociation_SF4_F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: SF4
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 5.0
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R6
+- id: e_SF5_dissociative_ionization_SF4p_F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF4+
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 15.0
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R20
+- id: e_SF5_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF5+
+    n: 1
+  status: literature_supported
+  threshold_eV: 9.6
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: Ali, Irikura, and Kim, IJMS 201 (2000); NIST SF5 ionization energy
+      status: needs_import
+      note: Import the calculated/evaluated SF5 ionization curve before rate calculation.
+- id: e_SF5_dissociative_attachment_Fm_SF4
+  type: attachment
+  products:
+  - species: F-
+    n: 1
+  - species: SF4
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  data:
+    datasets:
+    - id: ds_e_SF5_dissociative_attachment_rate_300K
+      kind: rate_coefficient
+      representation: constant
+      independent_variable: electron_temperature
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 3.0e-15
+        source_value: 3.0e-9
+        source_unit: cm3/s
+        relative_uncertainty: 0.4
+      validity:
+        minimum: 300.0
+        maximum: 300.0
+        unit: K
+        conditions:
+          electron_regime: thermal
+          derivation: secondary-reaction kinetic analysis
+      source:
+        source_type: literature
+        source_id: doi:10.1063/1.3520150
+        citation: N. S. Shuman et al., Journal of Chemical Physics 133, 234304 (2010).
+        url: https://doi.org/10.1063/1.3520150
+      status: literature_supported
+      preferred: true
+      notes:
+      - Product-resolved dissociative attachment derived from the measured secondary kinetics.
+      - Use only for thermal electrons near 300 K; this point rate does not replace an energy-dependent cross section.
+metadata:
+  status: literature_supported
+  notes:
+  - Enables ionization and measured thermal attachment after SF5 is produced from SF6.

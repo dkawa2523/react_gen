@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Any
 
 from plasma_reactgen.application.dnt_readiness import dnt_channel_missing_fields
-from plasma_reactgen.application.reaction_catalog import DATASET_OUTPUT_KINDS
 from plasma_reactgen.domain.models import GeneratedReaction, MissingDataItem
 
 
@@ -121,12 +120,13 @@ def _dnt_property_items(task: dict[str, Any]) -> list[MissingDataItem]:
 
 
 def _dnt_dataset_item(task: dict[str, Any]) -> MissingDataItem | None:
-    missing_kinds = [
-        kind
-        for output_name, kind in DATASET_OUTPUT_KINDS.items()
-        if not any(dataset["available"] for dataset in task["existing_datasets"][output_name])
-    ]
-    if not missing_kinds:
+    datasets = task["existing_datasets"]
+    has_collision_data = any(
+        dataset["available"]
+        for output_name in ("cross_sections", "rate_coefficients")
+        for dataset in datasets[output_name]
+    )
+    if has_collision_data:
         return None
     return MissingDataItem(
         subject_kind="dnt_pair",
@@ -134,7 +134,10 @@ def _dnt_dataset_item(task: dict[str, Any]) -> MissingDataItem | None:
         field="data.datasets",
         required_by="reaction_data_review",
         severity="info",
-        message="No available dataset is registered for: " + ", ".join(missing_kinds) + ".",
+        message=(
+            "No measured cross-section or rate-coefficient dataset is registered; "
+            "review source data or use the DNT estimation path."
+        ),
     )
 
 

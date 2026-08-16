@@ -16,6 +16,7 @@ from plasma_reactgen.application.config import CaseConfig
 from plasma_reactgen.application.network_expansion_state import (
     ExpansionState,
     apply_pair_limit,
+    record_depth_truncation,
     record_missing_pair,
     record_reaction_limit,
     record_species_truncation,
@@ -58,7 +59,11 @@ def expand_reaction_network(
     asset_exists = _find_asset_exists(reaction_repo, species_repo, rule_repo)
     frontier = set(config.gases)
 
-    for depth in range(config.expansion.max_depth + 1):
+    depth_limit = config.expansion.max_depth
+    maximum_iterations = (
+        depth_limit + 1 if depth_limit is not None else config.limits.max_species + 1
+    )
+    for depth in range(maximum_iterations):
         frontier, stopped = _expand_depth(
             depth,
             frontier,
@@ -71,8 +76,53 @@ def expand_reaction_network(
         )
         if stopped or not frontier:
             break
+    else:
+        # The finite-depth loop ended while products were still entering the
+        # frontier. Only call this incomplete when an unvisited registered pair
+        # can actually use that frontier.
+        pending = [
+            pair
+            for pair in reaction_repo.find_pairs_involving(set(state.active_species), frontier)
+            if pair.key not in state.seen_pair_keys
+        ]
+        record_depth_truncation(pending, maximum_iterations, config, state)
 
+    _record_seed_electron_gaps(config, reaction_repo, state)
     return state.finish()
+
+
+def _record_seed_electron_gaps(
+    config: CaseConfig,
+    reaction_repo: ReactionRepository,
+    state: ExpansionState,
+) -> None:
+    """Expose unsupported feed gases instead of returning an apparently ready empty list."""
+
+    for gas in config.gases:
+        pair = CollisionPair("electron", "e", gas)
+        if reaction_repo.has_pair(pair):
+            continue
+        state.coverage.append(
+            CoverageItem(
+                pair_key=pair.key,
+                pair_label=pair.label,
+                family=pair.family,
+                depth=0,
+                status="missing",
+                reason="Input gas has no registered electron-collision reaction file",
+                n_channels=0,
+            )
+        )
+        state.missing_data.append(
+            MissingDataItem(
+                subject_kind="input_gas",
+                subject_id=gas,
+                field="electron_reaction_channels",
+                required_by="chemical_reaction_list",
+                severity="error",
+                message="Register source-backed electron reactions for this input gas.",
+            )
+        )
 
 
 def _validate_species_limit(config: CaseConfig) -> None:
@@ -160,7 +210,7 @@ def _process_pair(
             n_channels=len(eligible),
         )
     )
-    reactants = [SpeciesAmount(pair.projectile, 1.0), SpeciesAmount(pair.target, 1.0)]
+    reactants = _pair_reactants(pair)
     return any(
         _process_channel(
             channel,
@@ -176,6 +226,14 @@ def _process_pair(
         )
         for channel in eligible
     )
+
+
+def _pair_reactants(pair: CollisionPair) -> list[SpeciesAmount]:
+    """Translate the registry pair shape into physical reaction reactants."""
+
+    if pair.family == "unimolecular":
+        return [SpeciesAmount(pair.projectile, 1.0)]
+    return [SpeciesAmount(pair.projectile, 1.0), SpeciesAmount(pair.target, 1.0)]
 
 
 def _eligible_channels(

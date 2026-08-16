@@ -6,8 +6,6 @@ gases:
   - Ar
   - SF6
   - O2
-expansion:
-  max_depth: 3
 data_policy:
   allowed_status:
     - curated

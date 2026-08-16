@@ -1,0 +1,10 @@
+schema_version: 1
+id: C2F4
+display_name: C2F4
+composition: {C: 2, F: 4}
+charge: 0
+classes: [neutral, molecule]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata:
+  status: literature_supported
+  notes: [Tetrafluoroethylene formed by CF2 recombination.]

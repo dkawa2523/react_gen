@@ -5,7 +5,6 @@ from typing import Any
 
 from plasma_reactgen.domain.datasets import ReactionDataset
 
-
 SpeciesId = str
 ReactionId = str
 PairKey = str
@@ -23,6 +22,7 @@ class PropertyValue:
     unit: str | None = None
     source: str | None = None
     source_record: dict[str, Any] | None = None
+    status: str | None = None
 
 
 @dataclass
@@ -48,6 +48,8 @@ class CollisionPair:
 
     @property
     def label(self) -> str:
+        if self.family == "unimolecular":
+            return self.projectile
         return f"{self.projectile} + {self.target}"
 
 

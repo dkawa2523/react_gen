@@ -67,6 +67,7 @@ def test_dataset_mapping_normalizes_aliases_and_avoids_duplicate_legacy_asset():
                         "max": "100",
                         "unit": "eV",
                         "temperature_K": 300,
+                        "conditions": {"electron_regime": "thermal"},
                     },
                     "notes": ["normalized fixture"],
                 }
@@ -93,7 +94,10 @@ def test_dataset_mapping_normalizes_aliases_and_avoids_duplicate_legacy_asset():
     assert dataset.validity is not None
     assert dataset.validity.minimum == 0.1
     assert dataset.validity.maximum == 100.0
-    assert dataset.validity.conditions == {"temperature_K": 300}
+    assert dataset.validity.conditions == {
+        "electron_regime": "thermal",
+        "temperature_K": 300,
+    }
     assert dataset.notes == ["normalized fixture"]
 
 

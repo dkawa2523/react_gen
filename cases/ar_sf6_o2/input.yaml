@@ -1,0 +1,17 @@
+schema_version: 1
+case:
+  name: ar_sf6_o2
+  description: Runtime Ar/SF6/O2 example assembled without a mixture-specific registry pack
+gases:
+- Ar
+- SF6
+- O2
+expansion:
+  propagate_excited_states: true
+data_policy:
+  include_incomplete_reactions: true
+  include_reactions_without_cross_section: true
+  include_reactions_without_dnt_ready_properties: true
+  allowed_status:
+  - curated
+  - literature_supported

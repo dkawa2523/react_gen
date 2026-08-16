@@ -1,0 +1,54 @@
+schema_version: 1
+pair:
+  family: ion_neutral
+  projectile: Ar+
+  target: SF6
+channels:
+- id: Arp_SF6_dissociative_charge_transfer_SF5p_F
+  type: dissociative_charge_transfer
+  products:
+  - species: Ar
+    n: 1
+  - species: SF5+
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  dnt_class: short_range_charge_exchange
+  deltaE_products_minus_reactants_eV: -0.439612
+  data:
+    datasets:
+    - id: ds_Arp_SF6_dissociative_charge_transfer_rate_298K
+      kind: rate_coefficient
+      representation: constant
+      independent_variable: gas_temperature
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 1.54e-15
+        source_value: 1.54e-9
+        source_unit: cm3/s
+        product_branching_fraction_minimum: 0.99
+      validity:
+        minimum: 298.0
+        maximum: 298.0
+        unit: K
+        conditions:
+          method: selected_ion_flow_tube
+      source:
+        source_type: literature
+        source_id: doi:10.1016/S1387-3806(98)14189-1
+        citation: T. L. Williams, L. M. Babcock, and N. G. Adams, International Journal of Mass Spectrometry 185-187, 759-772 (1999).
+        url: https://doi.org/10.1016/S1387-3806(98)14189-1
+      status: literature_supported
+      preferred: true
+      notes:
+      - Site-temperature point value; the SF5+ product branching was reported above 0.99.
+  notes:
+  - Dissociative charge transfer of Ar+ with SF6 is reported by Williams, Babcock, and Adams, IJMS 185-187 (1999), doi:10.1016/S1387-3806(98)14189-1.
+  - The energy defect uses the evaluated 15.32 eV SF5+ + F formation limit minus the 15.7596119 eV Ar ionization energy; its negative sign denotes an exothermic channel.
+  - This formation-limit estimate is distinct from the 15.9 +/- 0.2 eV electron-impact appearance energy.
+metadata:
+  status: curated
+  notes:
+  - This is a reusable Ar+-SF6 binary channel, not an Ar/SF6 mixture pack.

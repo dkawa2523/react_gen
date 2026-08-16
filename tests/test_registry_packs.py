@@ -50,8 +50,8 @@ def test_explicit_registry_bypasses_pack_and_no_pack_falls_back(tmp_path, monkey
     assert main(["generate", str(case), "--output", "fallback"]) == 0
     fallback = _read_yaml(tmp_path / "fallback" / "summary.json")
     missing = _read_yaml(tmp_path / "fallback" / "missing_data.yaml")["missing_data"]
-    assert fallback["registry"]["coverage_gap"] is True
-    assert any(item["field"] == "registry_pack.coverage" for item in missing)
+    assert fallback["registry"]["coverage_gap"] is False
+    assert all(item["field"] != "registry_pack.coverage" for item in missing)
 
 
 def test_lxcat_exact_mapping_preserves_header_hash_and_deduplicates(tmp_path):

@@ -1,0 +1,8 @@
+schema_version: 1
+id: SOF4
+display_name: SOF4
+composition: {S: 1, O: 1, F: 4}
+charge: 0
+classes: [neutral, molecule]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported}

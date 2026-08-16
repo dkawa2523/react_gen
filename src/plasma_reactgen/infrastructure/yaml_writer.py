@@ -14,6 +14,7 @@ from plasma_reactgen.application.output_summary import (
 )
 from plasma_reactgen.application.reaction_catalog import (
     AssetExists,
+    available_dataset_ids,
     reaction_output,
 )
 from plasma_reactgen.domain.models import MissingDataItem, ReactionNetwork
@@ -29,6 +30,7 @@ def write_yaml_outputs(
     missing_data: list[MissingDataItem],
     registry_context: dict[str, Any] | None = None,
     asset_exists: AssetExists | None = None,
+    mechanism_coverage: dict[str, Any] | None = None,
 ) -> None:
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -41,6 +43,8 @@ def write_yaml_outputs(
     _write_yaml(output_dir / "dnt_tasks.yaml", _dnt_tasks_payload(case_config, dnt_tasks))
     _write_yaml(output_dir / "coverage_report.yaml", _coverage_payload(case_config, network))
     _write_yaml(output_dir / "missing_data.yaml", _missing_data_payload(case_config, missing_data))
+    if mechanism_coverage is not None:
+        _write_yaml(output_dir / "mechanism_coverage.yaml", mechanism_coverage)
 
     summary = build_summary(case_config, network, dnt_tasks, missing_data)
     if registry_context is not None:
@@ -67,29 +71,55 @@ def _reactions_payload(
     network: ReactionNetwork,
     asset_exists: AssetExists | None = None,
 ) -> dict:
+    family_counts = _reaction_family_counts(network)
+    numerical_data = _numerical_data_summary(network, asset_exists)
     return {
         "schema_version": 1,
         "case": {"name": case_config.case.name, "gases": case_config.gases},
         "summary": {
             "n_species": len(network.species_nodes),
             "n_reactions": len(network.reactions),
-            "n_electron_reactions": sum(
-                r.family == "electron" for r in network.reactions
-            ),
-            "n_ion_neutral_reactions": sum(
-                r.family == "ion_neutral" for r in network.reactions
-            ),
-            "max_depth_reached": max(
-                (r.depth for r in network.reactions), default=0
-            ),
+            "n_electron_reactions": sum(r.family == "electron" for r in network.reactions),
+            "n_ion_neutral_reactions": sum(r.family == "ion_neutral" for r in network.reactions),
+            "reactions_by_family": family_counts,
+            "numerical_data": numerical_data,
+            "max_depth_reached": max((r.depth for r in network.reactions), default=0),
             "generation_complete": network.generation_complete,
             "n_truncations": len(network.truncations),
         },
         "truncations": _truncations_payload(network),
-        "reactions": [
-            _reaction_payload(reaction, asset_exists)
+        "reactions": [_reaction_payload(reaction, asset_exists) for reaction in network.reactions],
+    }
+
+
+def _reaction_family_counts(network: ReactionNetwork) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for reaction in network.reactions:
+        counts[reaction.family] = counts.get(reaction.family, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def _numerical_data_summary(
+    network: ReactionNetwork,
+    asset_exists: AssetExists | None,
+) -> dict[str, Any]:
+    kinds = ("cross_section", "rate_coefficient", "mobility")
+    by_kind = {
+        kind: sum(
+            bool(available_dataset_ids(reaction, kind, asset_exists))
             for reaction in network.reactions
-        ],
+        )
+        for kind in kinds
+    }
+    with_data = sum(
+        any(available_dataset_ids(reaction, kind, asset_exists) for kind in kinds)
+        for reaction in network.reactions
+    )
+    return {
+        "n_reactions_with_available_data": with_data,
+        "n_reactions_without_available_data": len(network.reactions) - with_data,
+        "n_reactions_by_available_dataset_kind": by_kind,
+        "reaction_equations_require_numerical_data": False,
     }
 
 
@@ -106,9 +136,7 @@ def _states_payload(case_config: CaseConfig, states: list[dict]) -> dict:
 
 
 def _dnt_tasks_payload(case_config: CaseConfig, dnt_tasks: list[dict]) -> dict:
-    property_ready = count_dnt_status(
-        dnt_tasks, "pair_property_readiness", "ready"
-    )
+    property_ready = count_dnt_status(dnt_tasks, "pair_property_readiness", "ready")
     complete_ready = count_dnt_status(dnt_tasks, "complete_readiness", "ready")
     return {
         "schema_version": 1,
@@ -136,11 +164,7 @@ def _dnt_tasks_payload(case_config: CaseConfig, dnt_tasks: list[dict]) -> dict:
 def _coverage_payload(case_config: CaseConfig, network: ReactionNetwork) -> dict:
     found = [item for item in network.coverage if item.status == "found"]
     missing = [item for item in network.coverage if item.status == "missing"]
-    other = [
-        item
-        for item in network.coverage
-        if item.status not in {"found", "missing"}
-    ]
+    other = [item for item in network.coverage if item.status not in {"found", "missing"}]
     return {
         "schema_version": 1,
         "case": {"name": case_config.case.name},

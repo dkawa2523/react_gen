@@ -104,8 +104,10 @@ internal_data/
 
 ## Enabling Local NIST Snapshots
 
-NIST support is local snapshot only. Do not scrape NIST or call online services
-from core workflows.
+Core NIST property support is local snapshot only. Core generation and
+enrichment do not scrape NIST or call online services. A separate, explicitly
+invoked `external_data_tools.data_admin import_nist_beb` command can populate a
+site-local prepared registry with declared SRD 107 total-ionization endpoints.
 
 ```yaml
 properties:

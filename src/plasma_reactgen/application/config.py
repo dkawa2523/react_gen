@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
 import yaml
 
 from plasma_reactgen.application.legacy_config import (
@@ -11,13 +12,17 @@ from plasma_reactgen.application.legacy_config import (
     IonNeutralCollisionConfig,
 )
 
+
 @dataclass
 class ExpansionConfig:
-    max_depth: int = 2
+    # None walks the registered chemistry until no new species are produced.
+    # A finite value is an explicit reporting limit and is surfaced as a
+    # truncation when registered follow-up pairs still remain.
+    max_depth: int | None = None
     propagate_species_classes: list[str] = field(
         default_factory=lambda: ["neutral", "radical", "positive_ion", "negative_ion"]
     )
-    propagate_excited_states: bool = False
+    propagate_excited_states: bool = True
 
 
 @dataclass
@@ -45,7 +50,13 @@ class DataPolicyConfig:
     include_reactions_without_cross_section: bool = True
     include_reactions_without_dnt_ready_properties: bool = True
     allowed_status: list[str] = field(
-        default_factory=lambda: ["curated", "literature_supported", "imported", "estimated", "draft"]
+        default_factory=lambda: [
+            "curated",
+            "literature_supported",
+            "imported",
+            "estimated",
+            "draft",
+        ]
     )
 
 
@@ -108,16 +119,14 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
         ),
         gases=list(gases),
         expansion=ExpansionConfig(
-            max_depth=int(expansion_data.get("max_depth", 2)),
+            max_depth=_optional_int(expansion_data.get("max_depth")),
             propagate_species_classes=list(
                 expansion_data.get(
                     "propagate_species_classes",
                     ["neutral", "radical", "positive_ion", "negative_ion"],
                 )
             ),
-            propagate_excited_states=bool(
-                expansion_data.get("propagate_excited_states", False)
-            ),
+            propagate_excited_states=bool(expansion_data.get("propagate_excited_states", True)),
         ),
         collisions=CollisionConfig(
             electron=ElectronCollisionConfig(
@@ -126,9 +135,7 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
             ),
             ion_neutral=IonNeutralCollisionConfig(
                 enabled=bool(ion_data.get("enabled", True)),
-                projectiles=list(
-                    ion_data.get("projectiles", ["positive_ion", "negative_ion"])
-                ),
+                projectiles=list(ion_data.get("projectiles", ["positive_ion", "negative_ion"])),
                 targets=list(ion_data.get("targets", ["neutral", "radical"])),
             ),
         ),
@@ -136,9 +143,7 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
             max_species=int(limits_data.get("max_species", 150)),
             max_reactions=int(limits_data.get("max_reactions", 2000)),
             max_pairs_per_depth=int(limits_data.get("max_pairs_per_depth", 1000)),
-            max_missing_pairs_per_depth=int(
-                limits_data.get("max_missing_pairs_per_depth", 100)
-            ),
+            max_missing_pairs_per_depth=int(limits_data.get("max_missing_pairs_per_depth", 100)),
         ),
         data_policy=DataPolicyConfig(
             include_incomplete_reactions=bool(
@@ -163,7 +168,9 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
         inference=InferenceConfig(
             enabled=bool(inference_data.get("enabled", False)),
             include_inferred_species=bool(inference_data.get("include_inferred_species", True)),
-            include_inferred_reactions=bool(inference_data.get("include_inferred_reactions", False)),
+            include_inferred_reactions=bool(
+                inference_data.get("include_inferred_reactions", False)
+            ),
             min_confidence=float(inference_data.get("min_confidence", 0.4)),
             max_products=int(inference_data.get("max_products", 3)),
             max_fragment_depth=int(inference_data.get("max_fragment_depth", 1)),
@@ -174,3 +181,7 @@ def case_config_from_dict(data: dict[str, Any]) -> CaseConfig:
 def _read_yaml(path: Path) -> dict[str, Any]:
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
     return data or {}
+
+
+def _optional_int(value: Any) -> int | None:
+    return None if value is None else int(value)

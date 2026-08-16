@@ -1,0 +1,8 @@
+schema_version: 1
+id: SO
+display_name: SO
+composition: {S: 1, O: 1}
+charge: 0
+classes: [neutral, radical, molecule]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported}

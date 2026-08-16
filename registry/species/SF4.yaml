@@ -1,0 +1,47 @@
+schema_version: 1
+id: SF4
+display_name: SF4
+composition:
+  S: 1
+  F: 4
+charge: 0
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 108.059
+    unit: amu
+    source: NIST Chemistry WebBook SRD 69
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: null
+    unit: D
+    source: null
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: null
+    unit: eV
+    source: null
+  ionization_energy_eV:
+    value: 12.0
+    unit: eV
+    source: NIST Chemistry WebBook evaluated ionization energy
+  electron_affinity_eV:
+    value: 1.5
+    unit: eV
+    source: NIST Chemistry WebBook evaluated range
+metadata:
+  status: curated
+  notes:
+  - Registered as a direct neutral SF6 dissociation product.

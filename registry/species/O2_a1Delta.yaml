@@ -1,0 +1,47 @@
+schema_version: 1
+id: O2_a1Delta
+display_name: O2(a1Delta_g)
+composition:
+  O: 2
+charge: 0
+classes:
+- neutral
+- molecule
+- metastable
+state:
+  kind: excited
+  label: a1Delta_g
+  excitation_energy_eV: 0.977
+properties:
+  mass_amu:
+    value: 31.9988
+    unit: amu
+    source: NIST Chemistry WebBook SRD 69
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: homonuclear diatomic symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: 0.977
+    unit: eV
+    source: evaluated O2 a1Delta_g excitation energy
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: curated
+  notes:
+  - State-specific record; no ground-state transport property is silently reused.

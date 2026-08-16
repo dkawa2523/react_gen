@@ -42,7 +42,8 @@ properties:
   electron_affinity_eV:
     value: null
     unit: eV
-    source: null
+    source: Ground-state Ar does not form a stable bound atomic anion.
+    status: unbound
 metadata:
   status: curated
   notes:

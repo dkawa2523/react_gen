@@ -1,0 +1,86 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: O_1D
+  target: O2
+channels:
+- id: O1D_O2_quenching_O2_b1Sigma
+  type: reactive_scattering
+  products:
+  - species: O
+    n: 1
+  - species: O2_b1Sigma
+    n: 1
+  status: literature_supported
+  deltaE_products_minus_reactants_eV: -0.34
+  data:
+    datasets:
+    - id: ds_O1D_O2_quenching_b1Sigma_rate_jpl_19_5
+      kind: rate_coefficient
+      representation: arrhenius
+      independent_variable: gas_temperature
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        A: 2.64e-17
+        activation_temperature_K: -55.0
+        formula: k(T) = A * exp(-activation_temperature_K / T)
+        total_A: 3.3e-17
+        branching_fraction: 0.8
+        branching_fraction_uncertainty: 0.2
+      validity:
+        minimum: 104.0
+        maximum: 424.0
+        unit: K
+      source:
+        source_type: evaluated_kinetics
+        source_id: JPL-19-5:A3
+        citation: NASA/JPL Evaluation 19-5, O(1D) + O2, Note A3.
+        url: https://jpldataeval.jpl.nasa.gov/pdf/NASA-JPL%20Evaluation%2019-5.pdf
+      status: literature_supported
+      preferred: true
+      notes:
+      - Branch rate is the evaluated total disappearance rate multiplied by the recommended 0.80 yield.
+- id: O1D_O2_quenching_O2_a1Delta
+  type: reactive_scattering
+  products:
+  - species: O
+    n: 1
+  - species: O2_a1Delta
+    n: 1
+  status: literature_supported
+  deltaE_products_minus_reactants_eV: -0.99
+  data:
+    datasets:
+    - id: ds_O1D_O2_quenching_a1Delta_rate_jpl_19_5
+      kind: rate_coefficient
+      representation: arrhenius
+      independent_variable: gas_temperature
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        A: 6.6e-18
+        activation_temperature_K: -55.0
+        formula: k(T) = A * exp(-activation_temperature_K / T)
+        total_A: 3.3e-17
+        branching_fraction: 0.2
+        branching_fraction_range:
+        - 0.0
+        - 0.4
+      validity:
+        minimum: 104.0
+        maximum: 424.0
+        unit: K
+      source:
+        source_type: evaluated_kinetics
+        source_id: JPL-19-5:A3
+        citation: NASA/JPL Evaluation 19-5, O(1D) + O2, Note A3.
+        url: https://jpldataeval.jpl.nasa.gov/pdf/NASA-JPL%20Evaluation%2019-5.pdf
+      status: literature_supported
+      preferred: true
+      notes:
+      - The 0.20 branch is the balance of the evaluated b1Sigma yield and therefore has a 0.0-0.4 range.
+metadata:
+  status: curated
+  notes:
+  - Both product channels share one evaluated total loss rate and sum to unit branching at the recommended values.

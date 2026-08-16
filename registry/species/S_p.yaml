@@ -1,0 +1,8 @@
+schema_version: 1
+id: S+
+display_name: S+
+composition: {S: 1}
+charge: 1
+classes: [positive_ion, atomic_ion]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported}

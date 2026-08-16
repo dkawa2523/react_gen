@@ -196,7 +196,9 @@ def _secret_exclusion() -> str:
 def _collect_secrets() -> Counter[str]:
     result = _run(
         [
-            _tool("detect-secrets"),
+            sys.executable,
+            "-m",
+            "detect_secrets",
             "scan",
             "--all-files",
             "--exclude-files",

@@ -1,0 +1,55 @@
+schema_version: 1
+id: SF6
+display_name: SF6
+aliases:
+- sulfur hexafluoride
+composition:
+  S: 1
+  F: 6
+charge: 0
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  label: X1A1g
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 146.055
+    unit: amu
+    source: NIST Chemistry WebBook SRD 69
+  polarizability_A3:
+    value: 4.49
+    unit: A3
+    source: NIST CCCBDB experimental polarizability list
+    quality: curated
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: octahedral molecular symmetry, NIST CCCBDB
+  collision_radius_A:
+    value: 2.75
+    unit: A
+    source: half of the 5.50 A literature kinetic diameter tabulated in NIST publication 928548
+    quality: estimated
+  enthalpy_formation_eV:
+    value: -12.6492801873783
+    unit: eV
+    source: NIST Chemistry WebBook SRD 69, Delta_f H degrees gas=-1220.47 kJ/mol,
+      Chase (1998)
+    quality: curated
+    note: Converted with 1 eV per molecule = 96.48533212331002 kJ/mol.
+  ionization_energy_eV:
+    value: 15.32
+    unit: eV
+    source: NIST Chemistry WebBook evaluated ionization energy
+  electron_affinity_eV:
+    value: 1.03
+    unit: eV
+    source: NIST Chemistry WebBook recommended kinetic determination
+metadata:
+  status: curated
+  notes:
+  - Ground-state SF6 record shared by every gas mixture.
+  - Collision radius is a transparent DNT preprocessing estimate, not a fundamental constant.

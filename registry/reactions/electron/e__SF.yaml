@@ -1,0 +1,44 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: SF
+channels:
+- id: e_SF_dissociation_S_F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: S
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R10
+  threshold_eV: 7.9
+- id: e_SF_ionization_SFp
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF+
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R25
+  threshold_eV: 10.3
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

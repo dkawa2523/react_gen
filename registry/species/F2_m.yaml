@@ -1,0 +1,8 @@
+schema_version: 1
+id: F2-
+display_name: F2-
+composition: {F: 2}
+charge: -1
+classes: [negative_ion, molecular_ion]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported}

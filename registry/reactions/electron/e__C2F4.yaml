@@ -1,0 +1,44 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: C2F4
+channels:
+- id: e_C2F4_dissociation_2CF2
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: CF2
+    n: 2
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014),
+      Table 1.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R1
+  threshold_eV: 3.06
+- id: e_C2F4_dissociative_ionization_C2F3p_F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: C2F3+
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014),
+      Table 1.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R2
+  threshold_eV: 15.57
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

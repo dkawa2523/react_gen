@@ -5,6 +5,7 @@ from pathlib import Path
 from plasma_reactgen.application.config import load_case_config
 from plasma_reactgen.application.diagnostics import build_missing_data
 from plasma_reactgen.application.dnt_task_builder import build_dnt_tasks
+from plasma_reactgen.application.mechanism_coverage import build_mechanism_coverage
 from plasma_reactgen.application.network_builder import ReactionNetworkBuilder
 from plasma_reactgen.application.network_metrics import (
     count_dnt_status,
@@ -40,8 +41,13 @@ def run_generate(
     network = ReactionNetworkBuilder(build_network_dependencies(registry, config)).generate(config)
     states = build_state_list(network=network, rule_repo=registry)
     dnt_tasks = build_dnt_tasks(network=network, asset_exists=registry.asset_exists)
-    missing_data = build_missing_data(network=network, states=states, dnt_tasks=dnt_tasks)
-    _append_registry_pack_gap(missing_data, resolution.context, config.gases)
+    diagnostic_dnt_tasks = dnt_tasks if config.outputs.dnt_inputs else []
+    missing_data = build_missing_data(
+        network=network,
+        states=states,
+        dnt_tasks=diagnostic_dnt_tasks,
+    )
+    mechanism_coverage = build_mechanism_coverage(config.gases, network, registry.root)
     _write_generation_outputs(
         output_dir,
         config,
@@ -51,6 +57,7 @@ def run_generate(
         missing_data,
         resolution.context,
         registry.asset_exists,
+        mechanism_coverage,
     )
     dnt_inputs = (
         write_network_dnt_inputs(output_dir, network, dnt_tasks=dnt_tasks)
@@ -63,25 +70,6 @@ def run_generate(
     return 0
 
 
-def _append_registry_pack_gap(
-    missing_data: list[MissingDataItem],
-    registry_context: dict,
-    gases: list[str],
-) -> None:
-    if not registry_context.get("coverage_gap"):
-        return
-    missing_data.append(
-        MissingDataItem(
-            subject_kind="registry_pack",
-            subject_id="+".join(sorted(gases)),
-            field="registry_pack.coverage",
-            required_by="registry_pack_resolver",
-            severity="warning",
-            message="No matching registry pack was found; generation used the base registry only.",
-        )
-    )
-
-
 def _write_generation_outputs(
     output_dir: Path,
     config,
@@ -91,6 +79,7 @@ def _write_generation_outputs(
     missing_data: list[MissingDataItem],
     registry_context: dict,
     asset_exists,
+    mechanism_coverage: dict,
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     write_yaml_outputs(
@@ -102,6 +91,7 @@ def _write_generation_outputs(
         missing_data=missing_data,
         registry_context=registry_context,
         asset_exists=asset_exists,
+        mechanism_coverage=mechanism_coverage,
     )
     write_csv_outputs(
         output_dir=output_dir,
@@ -118,10 +108,9 @@ def _print_generation_summary(
     dnt_tasks: list[dict],
     missing_data: list[MissingDataItem],
 ) -> None:
-    reaction_counts = {
-        family: sum(reaction.family == family for reaction in network.reactions)
-        for family in ("electron", "ion_neutral")
-    }
+    reaction_counts: dict[str, int] = {}
+    for reaction in network.reactions:
+        reaction_counts[reaction.family] = reaction_counts.get(reaction.family, 0) + 1
     coverage_counts = {
         status: sum(item.status == status for item in network.coverage)
         for status in ("found", "missing")
@@ -129,8 +118,8 @@ def _print_generation_summary(
     print(f"Generated outputs: {output_dir}")
     print(f"  species: {len(network.species_nodes)}")
     print(f"  reactions: {len(network.reactions)}")
-    print(f"  electron_reactions: {reaction_counts['electron']}")
-    print(f"  ion_neutral_reactions: {reaction_counts['ion_neutral']}")
+    for family, count in sorted(reaction_counts.items()):
+        print(f"  {family}_reactions: {count}")
     print(f"  pairs_found: {coverage_counts['found']}")
     print(f"  pairs_missing: {coverage_counts['missing']}")
     print(f"  generation_complete: {str(network.generation_complete).lower()}")
@@ -151,4 +140,5 @@ def _print_generation_summary(
         f"{count_electron_reactions_missing_cross_section(network)}"
     )
     print(f"  missing_data_items: {len(missing_data)}")
+    print(f"  mechanism_coverage: {output_dir / 'mechanism_coverage.yaml'}")
     print(f"  quality_summary: {output_dir / 'quality_summary.yaml'}")

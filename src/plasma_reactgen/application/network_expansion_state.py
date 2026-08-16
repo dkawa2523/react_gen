@@ -134,6 +134,31 @@ def record_species_truncation(
     )
 
 
+def record_depth_truncation(
+    pending_pairs: list[CollisionPair],
+    depth: int,
+    config: CaseConfig,
+    state: ExpansionState,
+) -> None:
+    """Record registered follow-up chemistry omitted by an explicit depth limit."""
+
+    limit = config.expansion.max_depth
+    if limit is None or not pending_pairs:
+        return
+    state.truncations.append(
+        TruncationEvent(
+            limit_name="max_depth",
+            scope="reaction_frontier",
+            limit_value=limit,
+            depth=depth,
+            observed_count=len(state.seen_pair_keys) + len(pending_pairs),
+            retained_count=len(state.seen_pair_keys),
+            omitted_count=len(pending_pairs),
+            details={"pending_pair_keys": [pair.key for pair in pending_pairs]},
+        )
+    )
+
+
 def _record_missing_report_truncation(
     truncations: list[TruncationEvent],
     depth: int,

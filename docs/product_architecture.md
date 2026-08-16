@@ -85,8 +85,10 @@ Implemented external tools include:
 - NIST snapshot planning and validation
 - LXCat/manual raw cross-section import
 - OpenADAS raw file registration
-- VAMDC raw query capture
-- KIDA/UMIST-like local network conversion
+- VAMDC raw query capture and XSAMS review inventory
+- KIDA/UMIST local network conversion with native Rate22 parsing, pair-target
+  filtering, and rate-candidate projection
+- arbitrary-gas data-acquisition planning and DB-specific manifests
 - Argonne/ATcT-style thermochemistry snapshot planning and validation
 - chemical identity snapshot/fetch skeletons for ChEBI, ChemSpider, OPSIN, and
   NCI/Cactus
@@ -310,9 +312,18 @@ Before a real benchmark, record:
   `application/reaction_catalog.py`; adding an internal dataclass field must not
   silently extend the YAML contract.
 - Keep optional public-data workflows thin: VAMDC per-query validation and
-  capture lives in `vamdc_query_records.py`; astrochemical notation and record
-  projection in `astrochem_reaction.py`; PubChem URL construction and
-  per-species acquisition in `pubchem_urls.py` and `pubchem_species_fetch.py`.
+  capture lives in `vamdc_query_records.py`, while XSAMS review projection
+  lives in `vamdc_xsams_inventory.py`; astrochemical notation and record
+  projection live in `astrochem_reaction.py`; PubChem URL construction and
+  per-species acquisition live in `pubchem_urls.py` and
+  `pubchem_species_fetch.py`.
+- Keep acquisition planning split into target extraction
+  (`acquisition_targets.py`), source routing (`acquisition_manifests.py`), and
+  orchestration/persistence (`data_acquisition_plan.py`). A planning run scopes
+  arbitrary gas input; it must not create a mixture-specific data pack.
+- Keep the UMIST release format and fetch metadata in `umist_rate22.py`;
+  `astrochem_reaction.py` owns notation/family conversion, while
+  `astrochem_network_convert.py` only orchestrates filtering and artifacts.
 
 ## Compatibility boundary
 

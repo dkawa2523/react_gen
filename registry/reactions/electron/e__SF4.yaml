@@ -1,0 +1,61 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: SF4
+channels:
+- id: e_SF4_dissociation_SF3_F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: SF3
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 8.5
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R7
+- id: e_SF4_dissociative_ionization_SF3p_F
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF3+
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 14.5
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R22
+- id: e_SF4_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF4+
+    n: 1
+  status: literature_supported
+  threshold_eV: 12.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_import
+      source: NIST Chemistry WebBook IE and NIST Electron-Impact Cross Section Database SRD 107
+      status: needs_import
+      note: The NIST BEB curve begins at its 12.82 eV vertical binding-energy input;
+        it is total ionization and does not resolve product branching.
+metadata:
+  status: literature_supported
+  notes:
+  - Reusable parent-ionization channel for SF4 formed by SF6 dissociation.

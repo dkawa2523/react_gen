@@ -18,7 +18,7 @@ _SOURCE_FIELDS = {
     "license",
     "license_note",
 }
-_VALIDITY_FIELDS = {"minimum", "maximum", "min", "max", "unit"}
+_VALIDITY_FIELDS = {"minimum", "maximum", "min", "max", "unit", "conditions"}
 
 
 def normalized_datasets_from_channel(channel: dict[str, Any]) -> list[dict[str, Any]]:
@@ -119,11 +119,13 @@ def _asset_from(value: Any, payload: dict[str, Any]) -> dict[str, Any] | None:
 def _validity_from(value: Any) -> dict[str, Any] | None:
     if not isinstance(value, dict):
         return None
+    conditions = _mapping_or_empty(value.get("conditions"))
+    conditions.update(_without_fields(value, _VALIDITY_FIELDS))
     return {
         "minimum": _as_float(value.get("minimum", value.get("min"))),
         "maximum": _as_float(value.get("maximum", value.get("max"))),
         "unit": value.get("unit"),
-        "conditions": _without_fields(value, _VALIDITY_FIELDS),
+        "conditions": conditions,
     }
 
 

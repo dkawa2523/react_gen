@@ -6,16 +6,18 @@ Normal users continue to run only:
 reactgen generate case.yaml --output outputs
 ```
 
-When `--registry` is omitted, reactgen reads `registry_packs/index.yaml` and
-selects the most specific, newest pack whose `seed_gases` contain every input
-gas. The selected pack is overlaid read-only on the base `registry/`. Pack
-species and channels take precedence without modifying either source. The pack
-ID and version are recorded in `summary.json.registry`.
+The shared `registry/` contains reusable species and reaction-pair records.
+Input-gas mixtures are selected only at generation time and must not be modeled
+as separate packs. When `--registry` is omitted, reactgen may overlay a matching
+versioned pack, but packs are optional release artifacts rather than a required
+catalog of gas combinations. Pack species and channels take precedence without
+modifying either source. The pack ID and version are recorded in
+`summary.json.registry`.
 
-If no pack matches, generation continues with the base registry and adds a
-`registry_pack.coverage` warning to `missing_data.yaml`. Supplying
-`--registry PATH` keeps the existing explicit-registry behavior and disables
-automatic pack selection.
+If no pack matches, generation uses the shared registry without reporting a
+data gap. Actual gaps are missing input species or missing reaction pairs.
+Supplying `--registry PATH` keeps the existing explicit-registry behavior and
+disables automatic pack selection.
 
 Selection has a separate validation boundary in
 `infrastructure/registry_pack_selection.py`: malformed index entries and

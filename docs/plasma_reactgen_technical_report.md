@@ -762,7 +762,8 @@ flowchart LR
 | PubChem PUG REST | オンライン取得を実装済み | CID、分子式、分子量、SMILES、InChIKey、synonym。反応・断面積は対象外 | identity snapshotをreviewしてenrich |
 | VAMDC TAP/XSAMS | 明示queryのオンライン取得を実装済み | 利用者指定endpoint/queryのraw応答とhashを保存 | 現状はraw capture。汎用XSAMS反応変換は未実装 |
 | `chemicals` Python package | 明示install・local参照を実装済み | identity、質量、双極子、生成エンタルピー等の候補 | curated sourceより低い優先度でenrich |
-| NIST | plan・local snapshot validationを実装済み | 必要物性の計画、承認済みYAML snapshotの検証 | snapshot providerからenrich。Web自動照会・scrapingなし |
+| NIST | property snapshot validationと限定SRD 107 importerを実装済み | 承認済み物性YAMLの検証、O2・SF5・SF6のBEB全電離表の明示取得 | 物性はsnapshotからenrich。全電離表は明示commandでsite-local prepared registryだけを更新 |
+| Song et al. O2評価dataset | process別XLSX importerを実装済み | O2の弾性・運動量移行・a1Delta/b1Sigma励起・解離・O2+電離・解離性付着 | 明示commandで取得し、SI単位へ変換してprepared registryだけを更新。CC BY-NCのため数値を同梱しない |
 | Argonne/ATcT系 | plan・local snapshot validationを実装済み | 熱化学snapshotと生成エンタルピーによる反応エネルギー補完 | prepared registryだけを更新。オンライン取得なし |
 | LXCat | local raw parser/importerを実装済み | 利用者取得exportのprocess block分割、表の正規化、header・citation・hash保持 | 反応式の完全一致だけ自動link。login・crawler・自動downloadなし |
 | OpenADAS | local raw登録を実装済み | 手動取得ADF01/ADF07原本のcache、hash、mapping表 | raw metadataと明示mappingまで。全面的ADF parserなし |
@@ -984,7 +985,7 @@ machine-readable結果は次を参照する。
 
 優先順位は次の通りである。
 
-1. CF4、SF6、O2のreview済みelectron cross-section set。
+1. CF4、SF6、原子Oのreview済みelectron cross-section set。O2は2026年評価datasetの明示取込経路を実装済み。
 2. ion-neutral reactionのrate coefficientと温度validity。
 3. mobility dataset。
 4. CF2などfragmentのdipole、polarizability、collision radius。
@@ -1045,9 +1046,9 @@ machine-readable結果は次を参照する。
 
 本手法の価値は、反応機構の構造と数値データの充足状況を分離しながら、両者をreaction IDで結び付ける点にある。通常ユーザーはgasとgenerateだけを扱い、データ保守担当者はprepared registry、exact-match import、review、version付きpack buildという別の境界で作業する。
 
-外部データについては、PubChem、明示URL、VAMDCの限定的なオンライン取得と、LXCat、NIST/ATcT、OpenADAS等のローカル原本取込みを実装している。取得結果が無審査で通常生成へ混入することはない。また、現在の反応到達判定は登録反応、保存則、frontier条件に基づき、エントロピーとGibbs自由エネルギーは使用しない。これらを将来導入する場合は、平衡・逆反応の整合性診断として反応リスト生成から分離する。
+外部データについては、PubChem、明示URL、VAMDCの限定的なオンライン取得、NIST SRD 107の対象を限定した全電離表取得、Song et al.のO2 process別評価表取得と、LXCat、NIST/ATcT、OpenADAS等のローカル原本取込みを実装している。取得結果が無審査で通常生成へ混入することはない。また、現在の反応到達判定は登録反応、保存則、frontier条件に基づき、エントロピーとGibbs自由エネルギーは使用しない。これらを将来導入する場合は、平衡・逆反応の整合性診断として反応リスト生成から分離する。
 
-benchmarkでは多段生成、lineage、保存則、決定論性が確認された。一方、断面積、rate coefficient、mobility、reaction energetics、provenanceの不足も明確になった。したがって現段階は、**反応ネットワーク生成・レビュー製品としては有用であり、定量プラズマシミュレーションへ投入する前には対象gas系ごとのreview済みregistry pack整備が必要**と評価できる。
+benchmarkでは多段生成、lineage、保存則、決定論性が確認された。一方、process-resolved断面積、mobility、一部のreaction energeticsの不足も明確になった。したがって現段階は、**反応ネットワーク生成・レビュー製品としては有用であり、定量プラズマシミュレーションへ投入する前には化学種・二体反応単位のreview済み数値データ整備が必要**と評価できる。混合gasの組合せ自体を事前packとして固定する必要はない。
 
 ---
 

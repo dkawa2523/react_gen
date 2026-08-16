@@ -89,6 +89,25 @@ def test_download_url_writes_bytes_and_records_sha256(tmp_path, monkeypatch):
     }
 
 
+def test_download_url_redacts_sensitive_query_values(tmp_path, monkeypatch):
+    seen = {}
+
+    def fake_urlopen(request, timeout):
+        seen["request_url"] = request.full_url
+        return _FakeResponse(b"licensed response")
+
+    monkeypatch.setattr(http_client, "_open_http_request", fake_urlopen)
+    record = download_url(
+        "https://example.invalid/api/?key=secret&chemistry_id=31",
+        tmp_path / "response.txt",
+        sensitive_query_keys={"key"},
+    )
+
+    assert "key=secret" in seen["request_url"]
+    assert "secret" not in record["url"]
+    assert "key=REDACTED" in record["url"]
+
+
 def test_download_many_preserves_manifest_metadata_and_summary(tmp_path, monkeypatch):
     payloads = {
         "https://example.invalid/a.csv": b"a\n",

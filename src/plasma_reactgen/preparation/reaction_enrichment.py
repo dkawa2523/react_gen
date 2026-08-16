@@ -64,7 +64,11 @@ def enrich_reaction_channels(
     )
     frontier = set(config.gases)
     seen_pair_keys: set[str] = set()
-    for _depth in range(config.expansion.max_depth + 1):
+    depth_limit = config.expansion.max_depth
+    maximum_iterations = (
+        depth_limit + 1 if depth_limit is not None else config.limits.max_species + 1
+    )
+    for _depth in range(maximum_iterations):
         frontier = _expand_depth(context, frontier, seen_pair_keys)
         if not frontier:
             break

@@ -1,0 +1,8 @@
+schema_version: 1
+id: SiH4
+display_name: SiH4
+composition: {Si: 1, H: 4}
+charge: 0
+classes: [neutral, molecule, input_feedstock]
+state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+metadata: {status: literature_supported, notes: [Semiconductor deposition feedstock identity; reaction acquisition remains explicit.]}

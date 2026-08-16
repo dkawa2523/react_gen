@@ -1,0 +1,28 @@
+schema_version: 1
+pair:
+  family: unimolecular
+  projectile: SOF4
+  target: SOF4
+channels:
+- id: SOF4_dissociation_SOF3_F
+  type: dissociation
+  products:
+  - species: SOF3
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R138
+  notes:
+  - The source-table equation is retained independently of its numerical coefficient.
+  - Published secondary transcriptions disagree on the R138 coefficient exponent and units;
+    numerical use therefore requires review of the primary typeset table.
+metadata:
+  status: literature_supported
+  notes:
+  - The duplicated pair target is a registry-index compatibility field; generated chemistry has one SOF4 reactant.

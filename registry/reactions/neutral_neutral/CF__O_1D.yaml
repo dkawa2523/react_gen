@@ -1,0 +1,45 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: CF
+  target: O_1D
+channels:
+- id: CF_O1D_to_CO_F
+  type: reactive_scattering
+  products:
+  - species: CO
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014),
+      Table 1.
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R44
+  data:
+    datasets:
+    - id: ds_CF_O1D_to_CO_F_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 1.9999999999999998e-17
+        source_value: 2.0e-11
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1007/s11090-013-9513-1
+        citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257
+          (2014), Table 1.
+        url: https://doi.org/10.1007/s11090-013-9513-1
+        record_id: R44
+      status: literature_supported
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.

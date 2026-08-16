@@ -1,0 +1,10 @@
+schema_version: 1
+id: S
+display_name: S
+composition: {S: 1}
+charge: 0
+classes: [neutral, radical, atom]
+state: {kind: ground, label: 3P, excitation_energy_eV: 0.0}
+metadata:
+  status: literature_supported
+  notes: [Ground-state sulfur atom in the SF6 dissociation cascade.]

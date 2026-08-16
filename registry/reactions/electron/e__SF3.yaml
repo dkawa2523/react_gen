@@ -1,0 +1,45 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: SF3
+channels:
+- id: e_SF3_dissociation_SF2_F
+  type: dissociation
+  products:
+  - species: e
+    n: 1
+  - species: SF2
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  threshold_eV: 5.0
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R8
+- id: e_SF3_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: SF3+
+    n: 1
+  status: literature_supported
+  threshold_eV: 8.18
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_import
+      source: NIST Electron-Impact Cross Section Database SRD 107
+      status: needs_import
+      note: The experimental IE is 8.18 +/- 0.07 eV. The NIST BEB table begins
+        at its 11.08 eV calculated outer-orbital input, is total ionization, and
+        does not resolve product branching.
+metadata:
+  status: literature_supported
+  notes:
+  - Reusable parent-ionization channel for SF3 formed by SF6 dissociation.

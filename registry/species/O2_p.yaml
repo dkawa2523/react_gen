@@ -1,0 +1,46 @@
+schema_version: 1
+id: O2+
+display_name: O2+
+composition:
+  O: 2
+charge: 1
+classes:
+- positive_ion
+- molecular_ion
+state:
+  kind: ground
+  label: X2Pi_g
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 31.9982514
+    unit: amu
+    source: O2 molecular mass minus electron mass
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: homonuclear molecular-ion symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  enthalpy_formation_eV:
+    value: 12.0697
+    unit: eV
+    source: derived from O2 reference enthalpy and NIST evaluated ionization energy
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: curated
+  notes:
+  - Ground-state molecular oxygen cation produced by electron ionization and charge transfer.

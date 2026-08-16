@@ -1,0 +1,52 @@
+schema_version: 1
+id: O2
+display_name: O2
+aliases:
+- oxygen
+- molecular oxygen
+composition:
+  O: 2
+charge: 0
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  label: X3Sigma_g-
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 31.9988
+    unit: amu
+    source: NIST Chemistry WebBook SRD 69
+  polarizability_A3:
+    value: 1.562
+    unit: A3
+    source: NIST CCCBDB experimental polarizability list
+    quality: curated
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: homonuclear diatomic symmetry
+  collision_radius_A:
+    value: 1.73
+    unit: A
+    source: half of the 3.46 A literature kinetic diameter tabulated in NIST publication 928548
+    quality: estimated
+  enthalpy_formation_eV:
+    value: 0.0
+    unit: eV
+    source: elemental reference state, NIST Chemistry WebBook SRD 69
+  ionization_energy_eV:
+    value: 12.0697
+    unit: eV
+    source: NIST Chemistry WebBook SRD 69 evaluated ionization energy
+  electron_affinity_eV:
+    value: 0.448
+    unit: eV
+    source: NIST Chemistry WebBook SRD 69
+metadata:
+  status: curated
+  notes:
+  - Ground-state O2 record shared by every gas mixture.
+  - Collision radius is a transparent DNT preprocessing estimate, not a fundamental constant.

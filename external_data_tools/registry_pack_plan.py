@@ -1,4 +1,10 @@
-"""Analyze registry coverage for a requested portable pack."""
+"""Analyze registry coverage for a requested gas set.
+
+The historical public name still mentions a registry pack.  The analysis is
+also used by the data-acquisition planner and therefore reports reusable
+species/reaction gaps rather than assuming that a gas mixture must be stored
+as a pre-built pack.
+"""
 
 from __future__ import annotations
 
@@ -30,7 +36,7 @@ def plan_registry_pack(
 
 def analyze_registry_pack(
     seed_gases: list[str],
-    max_depth: int,
+    max_depth: int | None,
     registry_root: Path,
 ) -> tuple[dict[str, Any], ReactionNetwork, FileRegistry]:
     registry = FileRegistry(registry_root)
@@ -89,8 +95,19 @@ def _missing_datasets(
     return sorted(
         reaction.id
         for reaction in network.reactions
+        if _dataset_kind_applies(reaction.family, kind)
         if not available_dataset_ids(reaction, kind, registry.asset_exists)
     )
+
+
+def _dataset_kind_applies(family: str, kind: str) -> bool:
+    """Avoid requiring every numerical representation for every reaction."""
+
+    if kind == "cross_section":
+        return family == "electron"
+    if kind == "rate_coefficient":
+        return family != "electron"
+    return False
 
 
 def _missing_task_datasets(tasks: list[dict[str, Any]]) -> list[str]:
@@ -149,7 +166,8 @@ def _heavy_particle_pairs(species: dict[str, Any]) -> dict[str, CollisionPair]:
     for index, left_id in enumerate(ids):
         for right_id in ids[index + 1 :]:
             pair = _heavy_particle_pair(left_id, right_id, species)
-            pairs[pair.key] = pair
+            if pair is not None:
+                pairs[pair.key] = pair
     return pairs
 
 
@@ -157,12 +175,14 @@ def _heavy_particle_pair(
     left_id: str,
     right_id: str,
     species: dict[str, Any],
-) -> CollisionPair:
+) -> CollisionPair | None:
     left = species[left_id]
     right = species[right_id]
     if left.charge == 0 and right.charge == 0:
         return CollisionPair("neutral_neutral", left_id, right_id)
     if left.charge != 0 and right.charge != 0:
+        if left.charge * right.charge > 0:
+            return None
         return CollisionPair("ion_ion", left_id, right_id)
     ion_id, neutral_id = (left_id, right_id) if left.charge != 0 else (right_id, left_id)
     return CollisionPair("ion_neutral", ion_id, neutral_id)

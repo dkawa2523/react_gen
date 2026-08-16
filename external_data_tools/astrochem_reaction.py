@@ -15,24 +15,49 @@ def convert_reaction_row(
     reactants = _reactants(row)
     if reactants is None:
         raise ValueError("reactant notation could not be normalized")
-    projectile, target = _ion_neutral_pair(*reactants)
-    if projectile is None or target is None:
+    pair = _reaction_pair(*reactants)
+    if pair is None:
         return None
+    family, projectile, target = pair
     products = _products(row)
     if products is None:
         raise ValueError("product notation could not be normalized")
     reaction_id = _reaction_id(database, projectile, target, products, line_number)
-    reaction = _reaction_record(row, database, reaction_id, projectile, target, products)
-    dnt_class = _dnt_class_if_simple_charge_transfer(projectile, target, products)
+    reaction = _reaction_record(
+        row,
+        database,
+        reaction_id,
+        family,
+        projectile,
+        target,
+        products,
+    )
+    dnt_class = (
+        _dnt_class_if_simple_charge_transfer(projectile, target, products)
+        if family == "ion_neutral"
+        else None
+    )
     if dnt_class:
         reaction["dnt_class"] = dnt_class
     return reaction
+
+
+def reaction_pair_key(row: dict[str, str]) -> str | None:
+    """Return the normalized registry pair key without converting the full row."""
+
+    reactants = _reactants(row)
+    if reactants is None:
+        return None
+    pair = _reaction_pair(*reactants)
+    return "|".join(pair) if pair is not None else None
 
 
 def normalize_species(raw: str) -> str | None:
     text = str(raw or "").strip()
     if not text or any(token in text for token in (" ", "/", "?", "*")):
         return None
+    if text.lower() in {"e", "e-", "electron"}:
+        return "e"
     text = text.replace("(+)", "+").replace("(-)", "-")
     if text.endswith(("+", "-")):
         return text
@@ -49,17 +74,26 @@ def _reactants(row: dict[str, str]) -> tuple[str, str] | None:
     return (first, second) if first is not None and second is not None else None
 
 
-def _ion_neutral_pair(first: str, second: str) -> tuple[str | None, str | None]:
+def _reaction_pair(first: str, second: str) -> tuple[str, str, str] | None:
+    if "e" in {first, second}:
+        other = second if first == "e" else first
+        family = "electron" if _charge(other) == 0 else "electron_ion"
+        return family, "e", other
     first_charge = _charge(first)
     second_charge = _charge(second)
-    if (first_charge == 0) == (second_charge == 0):
-        return None, None
-    return (first, second) if first_charge else (second, first)
+    if first_charge == 0 and second_charge == 0:
+        return "neutral_neutral", first, second
+    if first_charge and second_charge:
+        if first_charge * second_charge > 0:
+            return None
+        return "ion_ion", first, second
+    projectile, target = (first, second) if first_charge else (second, first)
+    return "ion_neutral", projectile, target
 
 
 def _products(row: dict[str, str]) -> list[str] | None:
     products = []
-    for key in ("product1", "product2", "product3"):
+    for key in ("product1", "product2", "product3", "product4"):
         raw = str(row.get(key) or "").strip()
         if not raw:
             continue
@@ -74,6 +108,7 @@ def _reaction_record(
     row: dict[str, str],
     database: str,
     reaction_id: str,
+    family: str,
     projectile: str,
     target: str,
     products: list[str],
@@ -82,8 +117,8 @@ def _reaction_record(
         "id": reaction_id,
         "projectile": projectile,
         "target": target,
-        "family": "ion_neutral",
-        "type": "reactive_scattering",
+        "family": family,
+        "type": _reaction_type(family, projectile, target, products),
         "products": [{"species": product, "n": 1} for product in products],
         "status": "imported",
         "data": {
@@ -103,6 +138,31 @@ def _reaction_record(
             "review_required": True,
         },
     }
+
+
+def _reaction_type(
+    family: str,
+    projectile: str,
+    target: str,
+    products: list[str],
+) -> str:
+    if family == "electron_ion":
+        return "dissociative_recombination" if len(products) > 1 else "recombination"
+    if family == "ion_ion":
+        return "mutual_neutralization"
+    if family == "electron":
+        return _electron_reaction_type(products)
+    if family == "ion_neutral":
+        return "reactive_scattering"
+    return "reactive_scattering"
+
+
+def _electron_reaction_type(products: list[str]) -> str:
+    if any(_charge(product) < 0 for product in products):
+        return "attachment"
+    if len(products) > 1:
+        return "dissociation"
+    return "excitation"
 
 
 def _rate_form(row: dict[str, str]) -> dict[str, float | None]:
@@ -127,6 +187,8 @@ def _normalize_explicit_charge(text: str) -> str | None:
 
 
 def _charge(species: str) -> int:
+    if species == "e":
+        return -1
     if species.endswith("+"):
         return 1
     if species.endswith("-"):

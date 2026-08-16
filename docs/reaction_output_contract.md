@@ -21,6 +21,8 @@ both reactants are active and at least one is in the current frontier. Family
 names are registry data, not user configuration; new registered two-body
 families therefore participate automatically. Inference remains opt-in and is
 disabled by default.
+The `unimolecular` family uses one physical reactant even though the registry
+index retains a compatibility target field.
 
 Each YAML reaction retains the existing fields and adds:
 
@@ -37,11 +39,20 @@ them under `data.datasets`; legacy `data.cross_section` is normalized in memory
 as one cross-section dataset without rewriting the registry.
 For table representations, core generation marks a dataset available only when
 its asset path resolves to a real file inside the selected base/pack registry.
+The top-level summary reports counts by reaction family and separates reactions
+with usable numerical data from reactions whose equations are available without it.
+
+`mechanism_coverage.yaml` compares generated reactions with the bounded
+primary-source table scopes declared in
+`registry/sources/semiconductor_mechanisms.yaml`. Its `complete` flag is scoped
+to those rows and is never a claim of universal plasma-chemistry completeness.
 
 `dnt_tasks.yaml` groups ion-neutral reactions and reports required property
 values, units, provenance and availability, existing datasets, channel
 energetics, and `data_choice.status`. It does not run DNT+. `missing_data.yaml`
-adds dataset and DNT-property gaps, but gaps never stop reaction-list generation.
+adds reaction and dataset gaps. DNT-property gaps are added only when
+`outputs.dnt_inputs: true` explicitly puts DNT preparation in scope; they never
+stop reaction-list generation.
 Missing optional cross-section, rate-coefficient, and mobility datasets are
 grouped into one informational item per ion-neutral pair.
 No DNT result importer, Boltzmann solver, plasma solver, or external core API
@@ -49,5 +60,6 @@ call is part of generation.
 
 When automatic registry-pack resolution is used, `summary.json.registry`
 records the resolver mode and selected pack ID/version. A missing pack does not
-block generation; it produces a `registry_pack.coverage` warning and uses the
-base registry.
+block generation and is not reported as a chemistry gap; generation uses the
+shared base registry. Missing input species or reusable reaction pairs remain
+normal coverage findings.

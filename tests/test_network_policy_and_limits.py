@@ -19,7 +19,13 @@ from plasma_reactgen.application.network_builder import (
     ReactionNetworkBuilder,
 )
 from plasma_reactgen.domain.datasets import DatasetAsset, ReactionDataset
-from plasma_reactgen.domain.models import CollisionPair, PropertyValue, ReactionChannel, Species, SpeciesAmount
+from plasma_reactgen.domain.models import (
+    CollisionPair,
+    PropertyValue,
+    ReactionChannel,
+    Species,
+    SpeciesAmount,
+)
 from plasma_reactgen.infrastructure.yaml_writer import write_yaml_outputs
 
 
@@ -173,10 +179,7 @@ def test_permissive_dangling_cross_section_is_not_counted_as_an_asset(tmp_path):
     summary = json.loads((tmp_path / "summary.json").read_text(encoding="utf-8"))
 
     assert [reaction.id for reaction in network.reactions] == ["dangling"]
-    assert (
-        network.reactions[0].data_status["cross_section"]
-        == "path_registered_but_missing"
-    )
+    assert network.reactions[0].data_status["cross_section"] == "path_registered_but_missing"
     assert summary["n_reactions_with_cross_section_asset"] == 0
     assert summary["n_reactions_missing_cross_section"] == 1
 
@@ -315,6 +318,63 @@ def test_exact_reaction_limit_without_an_omitted_candidate_is_complete():
     assert [reaction.id for reaction in network.reactions] == ["only"]
     assert network.truncations == []
     assert network.generation_complete is True
+    assert ExpansionConfig().propagate_excited_states is True
+
+
+def test_default_depth_walks_registered_chemistry_until_frontier_is_empty():
+    species = {
+        "AB": _species("AB", {"A": 1, "B": 1}, 0, {"neutral"}),
+        "A": _species("A", {"A": 1}, 0, {"radical"}),
+        "B": _species("B", {"B": 1}, 0, {"radical"}),
+    }
+    channels = {
+        "electron|e|AB": [
+            ReactionChannel(
+                id="e_AB_dissociation",
+                type="dissociation",
+                products=[SpeciesAmount("e"), SpeciesAmount("A"), SpeciesAmount("B")],
+                status="curated",
+            )
+        ],
+        "electron|e|A": [_elastic_channel_for("e_A_elastic", "A")],
+    }
+
+    network = _generate(
+        MemoryRegistry(species, channels),
+        CaseConfig(case=CaseInfo(name="exhaustive"), gases=["AB"]),
+    )
+
+    assert {reaction.id for reaction in network.reactions} == {
+        "e_AB_dissociation",
+        "e_A_elastic",
+    }
+    assert network.generation_complete is True
+
+
+def test_explicit_depth_limit_reports_pending_registered_pairs():
+    species = {
+        "AB": _species("AB", {"A": 1, "B": 1}, 0, {"neutral"}),
+        "A": _species("A", {"A": 1}, 0, {"radical"}),
+        "B": _species("B", {"B": 1}, 0, {"radical"}),
+    }
+    channels = {
+        "electron|e|AB": [
+            ReactionChannel(
+                id="e_AB_dissociation",
+                type="dissociation",
+                products=[SpeciesAmount("e"), SpeciesAmount("A"), SpeciesAmount("B")],
+                status="curated",
+            )
+        ],
+        "electron|e|A": [_elastic_channel_for("e_A_elastic", "A")],
+    }
+
+    network = _generate(MemoryRegistry(species, channels), _config(["AB"]))
+
+    event = _event(network, "max_depth")
+    assert event.omitted_count == 1
+    assert event.details == {"pending_pair_keys": ["electron|e|A"]}
+    assert network.generation_complete is False
 
 
 def test_species_limit_skips_expansion_atomically_and_records_species():
@@ -410,6 +470,15 @@ def _elastic_channel(channel_id, data=None):
         type="elastic",
         products=[SpeciesAmount("e"), SpeciesAmount("A")],
         data=data or {},
+        status="curated",
+    )
+
+
+def _elastic_channel_for(channel_id, species_id):
+    return ReactionChannel(
+        id=channel_id,
+        type="elastic",
+        products=[SpeciesAmount("e"), SpeciesAmount(species_id)],
         status="curated",
     )
 

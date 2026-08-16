@@ -54,6 +54,12 @@ channels:
     n: 1
   status: curated
   threshold_eV: 12.5
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R4
   data:
     cross_section:
       path: null
@@ -72,6 +78,12 @@ channels:
     n: 2
   status: curated
   threshold_eV: 15.0
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R5
   data:
     cross_section:
       path: null
@@ -130,6 +142,12 @@ channels:
   - species: F
     n: 1
   status: curated
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R6
   data:
     cross_section:
       path: null
@@ -142,6 +160,23 @@ channels:
   notes:
   - Threshold/appearance-energy seed from NIST gas-phase ion energetics; partial ionization
     products from Sieglaff/Rejoub/Lindsay/Stebbings.
+- id: e_CF4_dissociative_ionization_Fp_CF3
+  type: dissociative_ionization
+  products:
+  - species: e
+    n: 2
+  - species: CF3
+    n: 1
+  - species: F+
+    n: 1
+  status: literature_supported
+  threshold_eV: 23.1
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1007/s11090-013-9513-1
+    citation: J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).
+    url: https://doi.org/10.1007/s11090-013-9513-1
+    record_id: R7
 - id: e_CF4_dissociative_ionization_CF2p
   type: dissociative_ionization
   products:

@@ -48,6 +48,11 @@ python -m external_data_tools.source_catalog_check external_data/source_catalog.
 Sources with public API access, commercial terms, high redistribution risk, or
 unknown redistribution risk must not be treated as bundled production data.
 
+The reviewed QDB discovery inventory is stored in
+`external_data/qdb_semiconductor_chemistries.yaml`. It records all 29 chemistry
+sets from the cited QDB Table 7 and their historical validation status; it does
+not bundle their reactions.
+
 External acquisition setup is configured separately in:
 
 ```text
@@ -118,12 +123,36 @@ Use this for company/local curated data without SQL, REST, or network access.
 
 ### NIST Snapshot Files
 
-`nist_snapshot` reads manually prepared local snapshot YAML. It does not scrape
-NIST websites, call NIST services, or download NIST data.
+`nist_snapshot` reads manually prepared local property snapshot YAML and does
+not access the network. Separately, the explicitly invoked maintainer command
+`python -m external_data_tools.data_admin import_nist_beb` downloads only the
+listed NIST SRD 107 ASCII total-ionization endpoints for CF2, CF3, CF4, O2,
+SF3, SF4, SF5, and SF6 into an explicit prepared registry. It is not part of
+generation or enrichment.
 
 Accepted property units are intentionally narrow: `eV`, `amu`, `D`, and `A3`.
 Users are responsible for licensing, citation, and redistribution requirements
 for any NIST-derived local snapshots.
+
+### Evaluated O2 Process Tables
+
+The official workbook accompanying Song et al. (2026) supplies reviewed O2
+elastic, momentum-transfer, O2(a1Delta) excitation, dissociation, O2+
+ionization, and dissociative-attachment tables. The importer also reads the
+separate O2(b1Sigma) excitation columns, for seven tables in total. Import them into an explicit
+prepared registry:
+
+```powershell
+python -m external_data_tools.data_admin import_oxygen_cross_sections `
+  --registry workspace/prepared_registry `
+  --report-dir workspace/data_admin_reports
+```
+
+The command converts `10^-16 cm2` to `m2`, retains source uncertainties when
+provided, and does not extrapolate beyond the tabulated energy range. Integral
+elastic and momentum-transfer data remain separate datasets; momentum transfer
+is preferred for transport use. Because the dataset is CC BY-NC 4.0, the
+default is site-local and the numeric assets are not committed to `registry/`.
 
 ### Argonne/ATcT-Style Thermochemistry Snapshots
 
@@ -157,6 +186,13 @@ not overwrite conflicting composition/formula data; conflicts are reported.
 for internally reviewed literature tables or converted local snapshots. Reaction
 enrichment validates species references, charge balance, and element balance
 before writing channels into `prepared_registry`.
+
+### Quantemol-DB Raw Chemistry Responses
+
+The explicit `external_data_tools.qdb_chemistry` command fetches one licensed
+chemistry ID through the documented QDB API. `QDB_API_KEY` is read only from the
+environment and redacted from download metadata and errors. Raw Q-VT-compatible
+responses and SHA-256 metadata remain site-local and are not auto-promoted.
 
 ## Cross-Section Assets
 
@@ -271,6 +307,47 @@ The output groups missing items into actions such as `seed_species`,
 `enrich_properties`, `import_cross_sections`,
 `review_reaction_energetics`, and `manual_review`. It does not fetch data.
 
+### Plan collection for arbitrary input gases
+
+Use the external planner when the gases are known but the required source data
+has not yet been collected:
+
+```powershell
+python -m external_data_tools.data_admin plan_data_acquisition `
+  --seed-gases Ar SF6 O2 `
+  --registry registry `
+  --output-dir external_data/acquisition_work
+```
+
+This command generates one acquisition plan plus source-specific request files
+for PubChem, NIST/ATcT, transport properties, electron cross sections,
+QDB, KIDA/UMIST, VAMDC, and OpenADAS. It analyzes the shared species/reaction
+registry; it does not create or require a mixture-specific registry pack.
+With no `--max-depth`, expansion continues until the registered reaction
+frontier closes, including excited-state follow-up chemistry. A finite depth or
+disabled excited-state propagation is appropriate only for an explicitly
+bounded diagnostic run.
+
+The plan separates three different states that must not be conflated:
+
+- source-backed reaction equations not yet registered (P0);
+- registered reactions and species missing numerical data (P1);
+- unregistered collision pairs that are only discovery candidates (P1-P3).
+
+DNT and other calculated-result ingestion are outside this collection plan.
+Their availability never determines whether a chemical reaction equation can
+be emitted.
+
+Candidate pairs are not treated as physical reactions until a source provides
+balanced products, a process assignment, an applicability range, and a
+traceable reference. Same-sign ion-ion pairs are not proposed by the discovery
+inventory. Normal generation and the planner do not fetch or promote data.
+
+If a reviewed VAMDC node endpoint is available, pass `--vamdc-endpoint` to
+produce executable VSS2 query records. Without it, `vamdc_queries.yaml` keeps
+the atomic targets but contains no executable queries. This prevents the tool
+from guessing which VAMDC node owns the relevant dataset.
+
 ## Promotion Workflow
 
 `reactgen promote` copies only explicitly reviewed prepared or candidate records
@@ -292,8 +369,9 @@ Implemented external tools include:
 - NIST snapshot plan/validate
 - LXCat/manual raw cross-section import
 - OpenADAS raw file registration
-- VAMDC raw query capture
-- KIDA/UMIST-like local network conversion
+- VAMDC raw query capture and XSAMS review inventory
+- KIDA/UMIST local network conversion, including native UMIST Rate22 `.rates`,
+  with target-pair filtering and a separate importable rate-candidate file
 - Argonne/ATcT-style thermochemistry plan/validate
 - chemical identity fetch/normalize skeletons
 
@@ -306,8 +384,9 @@ These are not production-ready core adapters:
 - ChemSpider online fetch: skeleton only; requires explicit credentials before
   any future implementation.
 - OPSIN and NCI/Cactus online resolvers: disabled external skeletons.
-- VAMDC conversion into registry-ready chemistry: raw query capture exists, but
-  full XSAMS parsing/conversion is future work.
+- VAMDC conversion into registry-ready chemistry: identifier/state/process
+  inventory is implemented, but explicit state, units, source, and reaction
+  mapping review remains required before registry import.
 - Full OpenADAS parsing: raw file registration and mapping skeletons exist, but
   broad ADF parsing is future work.
 - Automatic LXCat login/download/scraping: intentionally not implemented.

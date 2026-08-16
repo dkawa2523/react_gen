@@ -5,11 +5,15 @@ from pathlib import Path
 
 import yaml
 
+from .nist_beb import TARGETS as NIST_BEB_TARGETS
 from .registry_admin import (
     build_registry_pack,
     import_lxcat_raw,
+    import_nist_beb,
+    import_oxygen_cross_sections,
     import_property_snapshot,
     import_rate_snapshot,
+    plan_data_acquisition,
     plan_registry_pack,
 )
 
@@ -33,6 +37,28 @@ def _build_parser() -> argparse.ArgumentParser:
     plan.add_argument("--registry", type=Path, default=Path("registry"))
     plan.add_argument("--output", type=Path, default=Path("registry_pack_plan.yaml"))
 
+    acquisition = commands.add_parser(
+        "plan_data_acquisition",
+        help="Create DB-specific manifests for arbitrary input gases.",
+    )
+    acquisition.add_argument("--seed-gases", nargs="+", required=True)
+    acquisition.add_argument(
+        "--max-depth",
+        type=int,
+        default=None,
+        help="Optional explicit truncation depth; omitted means exhaustive registered expansion.",
+    )
+    acquisition.add_argument("--registry", type=Path, default=Path("registry"))
+    acquisition.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("external_data/acquisition_plan"),
+    )
+    acquisition.add_argument(
+        "--vamdc-endpoint",
+        help="Optional reviewed VAMDC TAP sync endpoint; omitted by default.",
+    )
+
     lxcat = _add_import_parser(commands, "import_lxcat_raw")
     lxcat.add_argument(
         "--redistribution-status",
@@ -42,6 +68,30 @@ def _build_parser() -> argparse.ArgumentParser:
 
     _add_import_parser(commands, "import_property_snapshot")
     _add_import_parser(commands, "import_rate_snapshot")
+
+    nist_beb = commands.add_parser("import_nist_beb")
+    nist_beb.add_argument(
+        "--targets",
+        nargs="+",
+        choices=sorted(NIST_BEB_TARGETS),
+        required=True,
+    )
+    nist_beb.add_argument("--registry", type=Path, required=True)
+    nist_beb.add_argument("--report-dir", type=Path, required=True)
+    nist_beb.add_argument(
+        "--redistribution-status",
+        choices=["internal", "site-local"],
+        default="site-local",
+    )
+
+    oxygen = commands.add_parser("import_oxygen_cross_sections")
+    oxygen.add_argument("--registry", type=Path, required=True)
+    oxygen.add_argument("--report-dir", type=Path, required=True)
+    oxygen.add_argument(
+        "--redistribution-status",
+        choices=["internal", "site-local"],
+        default="site-local",
+    )
 
     build = commands.add_parser("build_registry_pack")
     build.add_argument("--id", required=True)
@@ -75,6 +125,14 @@ def _run_command(args: argparse.Namespace) -> dict:
             registry_root=args.registry,
         )
         _write(args.output, result)
+    elif args.command == "plan_data_acquisition":
+        result = plan_data_acquisition(
+            seed_gases=args.seed_gases,
+            max_depth=args.max_depth,
+            registry_root=args.registry,
+            output_dir=args.output_dir,
+            vamdc_endpoint=args.vamdc_endpoint,
+        )
     elif args.command == "import_lxcat_raw":
         result = import_lxcat_raw(
             args.input,
@@ -93,6 +151,19 @@ def _run_command(args: argparse.Namespace) -> dict:
             args.input,
             registry_root=args.registry,
             report_dir=args.report_dir,
+        )
+    elif args.command == "import_nist_beb":
+        result = import_nist_beb(
+            args.targets,
+            registry_root=args.registry,
+            report_dir=args.report_dir,
+            redistribution_status=args.redistribution_status,
+        )
+    elif args.command == "import_oxygen_cross_sections":
+        result = import_oxygen_cross_sections(
+            registry_root=args.registry,
+            report_dir=args.report_dir,
+            redistribution_status=args.redistribution_status,
         )
     else:
         result = build_registry_pack(

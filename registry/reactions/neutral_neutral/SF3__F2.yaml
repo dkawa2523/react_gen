@@ -1,0 +1,45 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: SF3
+  target: F2
+channels:
+- id: SF3_F2_to_SF4_F
+  type: reactive_scattering
+  products:
+  - species: SF4
+    n: 1
+  - species: F
+    n: 1
+  status: literature_supported
+  source_record:
+    source_type: literature_mechanism
+    source_id: doi:10.1116/1.4853675
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
+    url: https://doi.org/10.1116/1.4853675
+    record_id: R48
+  data:
+    datasets:
+    - id: ds_SF3_F2_to_SF4_F_rate
+      kind: rate_coefficient
+      representation: constant
+      dependent_variable: rate_coefficient
+      unit: m3/s
+      parameters:
+        value: 6.999999999999999e-21
+        source_value: 7.0e-15
+        source_unit: cm3/s
+      source:
+        source_type: literature_mechanism
+        source_id: doi:10.1116/1.4853675
+        citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+          (2014).
+        url: https://doi.org/10.1116/1.4853675
+        record_id: R48
+      status: literature_supported
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Source-table reaction retained independently of numerical solver readiness.
