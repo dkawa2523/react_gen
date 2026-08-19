@@ -305,6 +305,34 @@ def _pathway_graph(shown: list[dict], index: dict):
     return graph, columns
 
 
+def _ordered(columns: dict[float, list[str]], graph, sweeps: int = 6) -> dict[float, list[str]]:
+    """Order each column to cut edge crossings, the way a layered drawer does.
+
+    Barycentre sweeps: a node is placed at the mean position of its neighbours
+    in the column just drawn, alternating forward and back until it settles.
+    Ordering a column alphabetically instead guarantees crossings, which is
+    what made the pathway unreadable — the layout was right and the sequence
+    inside it was arbitrary.
+    """
+
+    order = {key: list(names) for key, names in columns.items()}
+    keys = sorted(order)
+    for sweep in range(sweeps):
+        forward = sweep % 2 == 0
+        walk = keys[1:] if forward else keys[-2::-1]
+        for key in walk:
+            other = keys[keys.index(key) - 1] if forward else keys[keys.index(key) + 1]
+            place = {name: position for position, name in enumerate(order[other])}
+            linked = graph.predecessors if forward else graph.successors
+
+            def centre(name: str, place=place, linked=linked) -> float:
+                seats = [place[n] for n in linked(name) if n in place]
+                return sum(seats) / len(seats) if seats else len(place) / 2
+
+            order[key] = sorted(order[key], key=centre)
+    return order
+
+
 def pathway(
     species: list[dict], reactions: list[dict], out: Path, title: str, limit: int = 90
 ) -> None:
@@ -327,13 +355,18 @@ def pathway(
     graph, columns = _pathway_graph(shown, index)
 
     placed: set[str] = set()
-    layout = {}
-    tallest = max(len(names) for names in columns.values())
+    unique: dict[float, list[str]] = {}
     for column in sorted(columns):
         names = [name for name in columns[column] if name not in placed]
         placed.update(names)
+        unique[column] = names
+    unique = _ordered(unique, graph)
+
+    tallest = max((len(names) for names in unique.values()), default=1)
+    layout = {}
+    for column, names in unique.items():
         step = tallest / max(len(names), 1)
-        for row, name in enumerate(sorted(names)):
+        for row, name in enumerate(names):
             layout[name] = (column * 3.4, -(row - (len(names) - 1) / 2) * step)
     for name in graph:
         layout.setdefault(name, (0.0, 0.0))
@@ -345,11 +378,12 @@ def pathway(
         graph,
         layout,
         ax=axes,
-        edge_color="#8A8A8A",
-        width=0.7,
-        alpha=0.7,
-        arrowsize=7,
-        node_size=520,
+        edge_color="#7A7A7A",
+        width=0.8,
+        alpha=0.75,
+        arrowsize=8,
+        node_size=560,
+        connectionstyle="arc3,rad=0.0",
     )
     kinds = nx.get_node_attributes(graph, "kind")
     heavy = [name for name in graph if kinds.get(name) == "species"]
@@ -565,6 +599,79 @@ def _readiness(bundle: Path) -> Counter:
         for tier in pair.get("runnable") or ["blocked"]:
             counts[tier] += 1
     return counts
+
+
+def single(out: Path, title: str, draw) -> None:
+    """One chart, one file. The sheet is for scanning; a file is for citing."""
+
+    figure, axes = plt.subplots(figsize=(6.4, 4.2))
+    draw(axes)
+    figure.suptitle(title, fontsize=10, color=INK, x=0.01, ha="left")
+    figure.tight_layout()
+    figure.savefig(out, format="svg", bbox_inches="tight")
+    plt.close(figure)
+
+
+def charts(
+    bundle: Path,
+    species: list[dict],
+    reactions: list[dict],
+    gaps: list[dict],
+    out: Path,
+    title: str,
+) -> None:
+    """The nine panels again, each as its own file.
+
+    The sheet answers "how does this list divide" at a glance; a separate file
+    is what goes into a report or a review comment, which is why both exist.
+    """
+
+    out.mkdir(parents=True, exist_ok=True)
+    heavy = [item for item in species if item["id"] != ELECTRON]
+
+    by_family: dict[str, Counter] = defaultdict(Counter)
+    for reaction in reactions:
+        by_family[reaction.get("family", "?")][reaction.get("status", "?")] += 1
+    by_depth: dict[str, Counter] = defaultdict(Counter)
+    for reaction in reactions:
+        by_depth[f"depth {reaction.get('depth', 0)}"][reaction.get("family", "?")] += 1
+    layered: dict[str, Counter] = defaultdict(Counter)
+    for reaction in reactions:
+        for layer, verdict in (reaction.get("evidence") or {}).items():
+            layered[layer][str(verdict).split(" by ")[0]] += 1
+
+    panels = {
+        "reaction_family_counts": lambda ax: stacked(
+            ax, dict(by_family), STATUS, "reactions by family and status"
+        ),
+        "reaction_type_counts": lambda ax: bars(
+            ax, Counter(r.get("type", "?") for r in reactions), "process"
+        ),
+        "reaction_depth_by_family": lambda ax: stacked(
+            ax, dict(sorted(by_depth.items())), FAMILY, "where the chemistry appears"
+        ),
+        "species_charge_counts": lambda ax: bars(
+            ax,
+            Counter(charge_name(item.get("charge", 0)) for item in heavy),
+            "species by charge",
+            CHARGE_NAME,
+        ),
+        "missing_property_counts": lambda ax: bars(
+            ax, _lacking_properties(species), "properties nobody has yet"
+        ),
+        "evidence_by_layer": lambda ax: stacked(ax, dict(layered), VERDICT, "evidence by layer"),
+        "species_reactivity": lambda ax: bars(
+            ax, _reactivity(reactions), "species that react the most"
+        ),
+        "missing_data_counts": lambda ax: bars(
+            ax,
+            Counter(f"{gap['severity']}: {gap['kind']}" for gap in gaps),
+            "what the list still lacks",
+        ),
+        "dnt_readiness_counts": lambda ax: bars(ax, _readiness(bundle), "DNT+ readiness by tier"),
+    }
+    for name, draw in panels.items():
+        single(out / f"{name}.svg", title, draw)
 
 
 def statistics(
@@ -1006,6 +1113,7 @@ def main(argv: list[str]) -> int:
         pathway(species, reactions, target / "pathway.svg", label)
         reaction_network(species, reactions, target / "reaction_network.svg", label)
         statistics(bundle, species, reactions, gaps, target / "statistics.svg", label)
+        charts(bundle, species, reactions, gaps, target / "charts", label)
         named = per_layer(species, reactions, conditions, bundle / "layers", label)
         print(f"  {label:26} {len(species):3d} species {len(reactions):5d} reactions  {named}")
     return 0
