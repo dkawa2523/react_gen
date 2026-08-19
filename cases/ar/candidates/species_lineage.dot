@@ -1,0 +1,18 @@
+digraph reactions {
+  graph [rankdir=LR, splines=true, overlap=false, label="species lineage", labelloc=t, fontsize=18, fontname="Helvetica", bgcolor="transparent"];
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10, margin=0.08];
+  edge [fontname="Helvetica", fontsize=8, arrowsize=0.7];
+  subgraph cluster_legend {
+    label="legend"; fontsize=11; color="#DDDDDD";
+    l_n [label="neutral", fillcolor="#E8F5E9"];
+    l_p [label="positive ion", fillcolor="#E3F2FD"];
+    l_m [label="negative ion", fillcolor="#FFF8E1"];
+    l_c [label="proposed", fillcolor="#F7F7F7", style="rounded,filled,dashed"];
+    l_x [label="missing property", fillcolor="#F7F7F7", color="#D62728", penwidth=2.0];
+  }
+  "Ar" [label="Ar\nq=+0 | depth=0\natom,neutral", fillcolor="#E8F5E9", style="rounded,filled", color="#666666", penwidth=1.0, tooltip="Ar"];
+  "Ar+" [label="Ar+\nq=+1 | depth=1\natom,positive_ion\nmissing=2", fillcolor="#E3F2FD", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="Ar+ | missing=electron_affinity_eV,polarizability_A3"];
+  "Ar_4s" [label="Ar_4s\nq=+0 | depth=1\natom,excited,metastable\nmissing=2", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="Ar_4s | missing=collision_radius_A,polarizability_A3"];
+  "Ar" -> "Ar_4s" [label="excitation\nd0 | e_Ar_excitation_4s_lumped", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + Ar -> e + Ar_4s"];
+  "Ar" -> "Ar+" [label="ionization\nd0 | e_Ar_ionization", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + Ar -> 2 e + Ar+"];
+}

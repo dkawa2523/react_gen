@@ -64,7 +64,8 @@ def write(
     _yaml(outdir / "gaps.yaml", _gaps_doc(case, gaps))
     _yaml(outdir / "summary.yaml", _summary_doc(case, network, gaps, ranking, mechanism_id))
     _reactions_csv(outdir / "reactions.csv", records)
-    graph.write(outdir / "network.dot", network)
+    graph.write(outdir / "reaction_network.dot", network)
+    graph.write(outdir / "species_lineage.dot", network, lineage=True)
 
     datasets = outdir / "datasets"
     _yaml(datasets / "rates.yaml", _rates_doc(case, network, rates, ranking))

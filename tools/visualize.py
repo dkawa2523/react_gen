@@ -36,6 +36,11 @@ import networkx as nx
 import yaml
 
 ELECTRON = "e"
+# Charge is what a reader sorts a plasma species list by, so it picks the fill.
+CHARGE = {0: "#CDE7D0", 1: "#C4DDF5", -1: "#F7E7B8"}
+LACKING = "#D62728"
+CHARGE_KEY = "charge"
+DEPTH_KEY = "depth"
 NEWLINE = chr(10)
 # Depth reads as distance from the feed gas, so it gets a sequential ramp.
 DEPTH = ["#1B3A5C", "#2E6E8E", "#4FA3A5", "#8FC7A8", "#CBE3C3", "#E8EFD9"]
@@ -122,18 +127,15 @@ def network(
         arrowsize=8,
         connectionstyle="arc3,rad=0.10",
     )
-    nx.draw_networkx_nodes(
-        graph,
-        layout,
-        ax=axes,
-        node_color=[DEPTH[min(depth.get(n, 0), len(DEPTH) - 1)] for n in graph],
-        node_size=600,
-        linewidths=0,
-    )
-    nx.draw_networkx_labels(graph, layout, ax=axes, font_size=7, font_color="white")
+    _draw_nodes(graph, layout, axes, species)
 
     handles = [
-        plt.Line2D([], [], color=c, lw=6, label=f"depth {i}") for i, c in enumerate(DEPTH[:span])
+        plt.Line2D([], [], marker="s", ls="", color=c, label=n, markersize=9)
+        for n, c in (
+            ("neutral", CHARGE[0]),
+            ("positive ion", CHARGE[1]),
+            ("negative ion", CHARGE[-1]),
+        )
     ]
     handles += [
         plt.Line2D([], [], color=colour, lw=2, label=name)
@@ -299,6 +301,41 @@ QUESTIONS = {
 }
 
 
+def _draw_nodes(graph, layout, axes, species: list[dict]) -> None:
+    """Charge picks the fill, a red rim marks a species still missing data.
+
+    The label carries what a reviewer checks against — charge and the depth it
+    first appeared at — so an arrow can be read without going back to the YAML.
+    """
+
+    index = {item["id"]: item for item in species}
+    fills, rims, widths = [], [], []
+    for name in graph:
+        item = index.get(name, {})
+        lacking = sum(1 for p in (item.get("properties") or {}).values() if p.get("value") is None)
+        fills.append(CHARGE.get(item.get("charge", 0), "#EDEFF2"))
+        rims.append(LACKING if lacking else "#7A8090")
+        widths.append(1.6 if lacking else 0.6)
+    nx.draw_networkx_nodes(
+        graph,
+        layout,
+        ax=axes,
+        node_color=fills,
+        edgecolors=rims,
+        linewidths=widths,
+        node_size=1500,
+        node_shape="s",
+    )
+    labels = {}
+    for name in graph:
+        item = index.get(name, {})
+        charge = item.get(CHARGE_KEY, 0)
+        labels[name] = NEWLINE.join([name, f"q{charge:+d} d{item.get(DEPTH_KEY, 0)}"])
+    nx.draw_networkx_labels(
+        graph, layout, labels=labels, ax=axes, font_size=6, font_color="#161A25"
+    )
+
+
 def _layer_network(
     species: list[dict],
     reactions: list[dict],
@@ -337,10 +374,7 @@ def _layer_network(
         arrowsize=8,
         connectionstyle="arc3,rad=0.10",
     )
-    nx.draw_networkx_nodes(
-        graph, layout, ax=axes, node_color="#4A4F5C", node_size=560, linewidths=0
-    )
-    nx.draw_networkx_labels(graph, layout, ax=axes, font_size=7, font_color="white")
+    _draw_nodes(graph, layout, axes, species)
     axes.legend(
         handles=[plt.Line2D([], [], color=c, lw=3, label=n) for n, c in palette.items()],
         loc="upper left",
