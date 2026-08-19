@@ -333,7 +333,7 @@ acquire asd Ar O F  →  rgen ingest  →  --overlay work/levels   # 外部デ�
   <code>undeclared_reverse</code> / <code>out_of_scope</code> があります。
 </p>
 
-<h2><span class="n">04</span>出力</h2>
+<h2><span class="n">04</span>出力ファイル</h2>
 <div class="scroll">
 <table>
   <thead><tr><th>ファイル</th><th>中身</th></tr></thead>
@@ -369,7 +369,164 @@ exit 1  blocking が1件でもある     exit 0  それ以外</pre>
   <strong>blocking は必ず個別に列挙</strong>します。集約しないと機構の誤りが埋もれます。
 </p>
 
-<h2><span class="n">05</span>DNT+ への引き渡し</h2>
+<h2><span class="n">05</span>判定レイヤー</h2>
+<p class="lede">
+  何を根拠にその反応がリストにあるのかを、<strong>4つの別々の問い</strong>として記録します。
+  1つの「信頼度」にまとめると、熱化学的に確実だが誰も述べていない反応と、
+  出典はあるが速度が未測定の反応が区別できなくなります。
+</p>
+
+<div class="scroll">
+<table>
+  <thead><tr><th>レイヤー</th><th>問い</th><th>答えの種類</th></tr></thead>
+  <tbody>
+    <tr><td class="k">structure</td><td>この種は存在しうるか、式は保存するか</td>
+        <td>conserved / conserved, species proposed</td></tr>
+    <tr><td class="k">thermochemistry</td><td>エネルギー的に開いているか</td>
+        <td>exothermic by N eV / endothermic by N eV / unknown</td></tr>
+    <tr><td class="k">kinetics</td><td>この条件で効くほど速いか</td>
+        <td>fast / comparable / slow / negligible / unknown</td></tr>
+    <tr><td class="k">attestation</td><td>出典がこの反応を述べているか</td>
+        <td>出典名 / unattested</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note">
+  <strong><code>not_run</code> と <code>unknown</code> は別の答えです。</strong>
+  前者は「そのレイヤーを評価していない」、後者は「評価したが判定できない」。
+  <code>--layers structure,thermochemistry</code> のように選ぶと、残りは <code>not_run</code> になります。
+</div>
+
+<h3>レイヤーごとの判定基準と式</h3>
+
+<h4 style="font-size:.9rem;margin:1.4rem 0 .4rem">structure</h4>
+<pre>① 未登録の種が式に含まれる                      → 棄却
+② |Σq(反応物) − Σq(生成物)| &gt; 1e-9              → 棄却  ※表面反応は免除
+③ 各元素で Σ n·count が一致しない                → 棄却
+④ 配位子数 &gt; Σvalence(骨格) − 2(骨格数 − 1)      → 棄却  ※重粒子衝突のみ
+⑤ 3個以上の配位子は原子として離脱(F3 を防ぐ)</pre>
+<p>
+  ①〜③は <strong>例外なく全反応</strong>に適用され、破れば <code>rejected_reaction</code>(blocking)。
+  質量は別途見ません — 元素が合えば質量は合うためです。
+  ④は現在 <code>collide.py</code> にのみあり、電子衝突には適用されていません。
+</p>
+
+<h4 style="font-size:.9rem;margin:1.4rem 0 .4rem">thermochemistry</h4>
+<pre>ΔH = Σ Hf(生成物) − Σ Hf(反応物)
+     Hf(A⁺) = Hf(A) + IE(A)        Hf(A⁻) = Hf(A) − EA(A)
+
+両辺に同数ある骨格は値を引かずに相殺する
+  → 電荷交換は ΔH = IE(B) − IE(A) となり、Hf が無くても解ける</pre>
+<div class="scroll">
+<table>
+  <thead><tr><th>反応型</th><th>篩の基準</th><th>由来</th></tr></thead>
+  <tbody>
+    <tr><td class="k">charge_transfer<br>dissociative_charge_transfer<br>reactive_scattering</td>
+        <td><code>ΔH ≤ 2.0 eV</code>(<code>--max-endothermic</code>)</td>
+        <td>400 K の kT は 0.034 eV。バルクでは 2 eV 上は走らず、届くのはプレシースで加速されたイオン</td></tr>
+    <tr><td class="k">penning_ionization</td><td><code>ΔE = IE(X) − E_exc &lt; −0.25 eV</code></td>
+        <td>数 kT。見えない活性化障壁の代わり</td></tr>
+    <tr><td class="k">dissociation(励起断片)</td><td>篩なし。<code>ΔE = D0 + E(準位)</code> を記録</td>
+        <td>熱力学的下限。実測閾値はこれ以上(O2 で計算 7.13 / 実測 8.57)</td></tr>
+    <tr><td class="k">電子衝突すべて</td><td><strong>篩なし</strong></td>
+        <td>電子は必要なエネルギーを持ち込めるので、可否ではなく閾値の問題</td></tr>
+    <tr><td class="k">vibrational_relaxation</td><td>篩なし(発熱が自明)</td><td>ΔE = −E_vib</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4 style="font-size:.9rem;margin:1.4rem 0 .4rem">kinetics</h4>
+<pre>Langevin 捕獲   k_L = 2.342e-15 · √(α[Å³]/μ[amu])   m³/s
+電子速度        v_e = 5.9309e5 · √E[eV]              m/s
+壁損失          ν = γ · v̄/4 · (A/V)
+関連度          頻度の片側上限を、滞留時間または最速反応と比べる</pre>
+<p>
+  存在量と条件が要ります。現在はほぼ全件 <code>unknown</code> で、
+  <code>electron_density_m3</code> が未設定だと順位付け自体が成立しません。
+</p>
+
+<h4 style="font-size:.9rem;margin:1.4rem 0 .4rem">attestation</h4>
+<pre>--known で渡したスナップショットの化学反応式と照合し、述べている出典名を記録する</pre>
+<p>
+  <strong>ラベルであってフィルタではありません。</strong>
+  出典の沈黙は反応の否定ではないので、何も除きません。レジストリ自身も1つの出典として数えます。
+</p>
+
+<h3>出力</h3>
+<pre>cases/{name}/{outputs,candidates}/
+  layers/
+    structure/       reactions.csv  summary.yaml  network.svg
+    thermochemistry/ 同上
+    kinetics/        同上
+    attestation/     同上</pre>
+<p>
+  レイヤーは反応の部分集合ではなく<strong>全反応への判定</strong>なので、
+  各ディレクトリにはリスト全体が入り、そのレイヤーの答えが付きます。
+  <code>network.svg</code> はその判定で辺を色分けした網です。
+</p>
+
+<h2><span class="n">06</span>データの出どころ</h2>
+<p class="lede">
+  判定に使う物性が、いまどこから来ているか。レジストリ102種の実測です。
+  <strong>値を持つプロパティで出典が記録されていないものはゼロ件</strong>です。
+</p>
+
+<div class="scroll">
+<table>
+  <thead><tr><th>物性</th><th>使う判定</th><th>出どころ(件数)</th></tr></thead>
+  <tbody>
+    <tr><td class="k">ionization_energy_eV</td><td>thermochemistry</td>
+        <td>mendeleev 18 / NIST WebBook(手動)6 / NIST ASD 2 / 文献 8 / 導出 1</td></tr>
+    <tr><td class="k">electron_affinity_eV</td><td>thermochemistry, 付着の可否</td>
+        <td>mendeleev 16 / NIST WebBook(手動)8 / CCCBDB 1 / NIST ASD 1 / 文献 2</td></tr>
+    <tr><td class="k">enthalpy_formation_eV</td><td>thermochemistry</td>
+        <td>chemicals 46 / <strong>導出 22</strong> / pyromat 3 / NIST 手動 5 / 文献 2</td></tr>
+    <tr><td class="k">mass_amu</td><td>kinetics(換算質量)</td>
+        <td><strong>組成から導出 75</strong> / mendeleev 11 / NIST 手動 13 / ASD 2</td></tr>
+    <tr><td class="k">polarizability_A3</td><td>kinetics(Langevin), DNT+</td>
+        <td>NIST CCCBDB(手動)5 のみ</td></tr>
+    <tr><td class="k">dipole_moment_D</td><td>kinetics, DNT+</td>
+        <td>対称性から 42 / CCCBDB 2 / 文献 2</td></tr>
+    <tr><td class="k">collision_radius_A</td><td>DNT+ の full 段階</td>
+        <td>NIST 手動 2 / 文献 1 のみ</td></tr>
+    <tr><td class="k">励起準位</td><td>structure(励起種の存在), thermochemistry</td>
+        <td>NIST ASD(API、キー不要)</td></tr>
+    <tr><td class="k">断面積</td><td>attestation のみ</td>
+        <td>LXCat(手動エクスポート)。<strong>判定には使いません</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note">
+  <strong>断面積は判定に使っていません。</strong> 生成と篩は熱化学だけで行い、
+  断面積との照合は <code>attestation</code> レイヤーのラベルとして後段に置きます。
+  <br><br>
+  <strong>導出が多いのは意図的です。</strong> Hf の22件はイオン(中性+IE)と励起状態(基底+準位)で、
+  恒等式であって推定ではありません。質量75件も組成の和です。
+</div>
+
+<h3>取得経路</h3>
+<div class="scroll">
+<table>
+  <thead><tr><th>データ源</th><th>接続</th><th>覆うもの</th></tr></thead>
+  <tbody>
+    <tr><td class="k">mendeleev</td><td>pip、オフライン</td><td>原子の IE / EA / 質量</td></tr>
+    <tr><td class="k">chemicals</td><td>pip、オフライン</td><td>生成エンタルピー、エントロピー</td></tr>
+    <tr><td class="k">pyromat</td><td>pip、オフライン</td><td>NASA Glenn の生成エンタルピー</td></tr>
+    <tr><td class="k">NIST ASD</td><td><strong>API、キー不要</strong>(<code>energy1.pl</code>)</td><td>原子の準位</td></tr>
+    <tr><td class="k">NIST WebBook / CCCBDB</td><td>手動</td><td>分子の IE / EA / 分極率 / 双極子</td></tr>
+    <tr><td class="k">LXCat</td><td>手動エクスポート</td><td>断面積と閾値</td></tr>
+  </tbody>
+</table>
+</div>
+<p>
+  <code>acquire</code> だけがネットワークに触れます。<code>reactgen</code> は
+  <code>http</code> / <code>urllib</code> / <code>socket</code> を import できず、
+  import-linter が契約として検査しています。
+</p>
+
+<h2><span class="n">07</span>DNT+ への引き渡し</h2>
 <p class="lede">
   イオン衝突の断面積は外部データベースにありません。だから DNT+ が計算します。
   本コードの役割は<strong>何を計算すべきかを決めること</strong>です。
@@ -400,7 +557,7 @@ exit 1  blocking が1件でもある     exit 0  それ以外</pre>
   足りないことを言うところまでです。
 </p>
 
-<h2><span class="n">06</span>いま埋まっていないもの</h2>
+<h2><span class="n">08</span>いま埋まっていないもの</h2>
 <p class="lede">リストの内容として欠けているものはありません。残りはすべて数値です。</p>
 <ul>
   <li><strong>振動量子</strong> — V-T の ΔH と振動励起の閾値。振動定数があれば埋まります。</li>
