@@ -1,0 +1,20 @@
+id,equation,family,type,depth,status,verdict,decided
+e_CF4_dissociation_CF3_F,e + CF4 -> e + CF3 + F,electron,dissociation,0,curated,doi:10.1007/s11090-013-9513-1,yes
+e_CF4_dissociation_CF2_2F,e + CF4 -> e + CF2 + 2 F,electron,dissociation,0,curated,doi:10.1007/s11090-013-9513-1,yes
+e_CF4_dissociative_ionization_CF3p,e + CF4 -> 2 e + CF3+ + F,electron,dissociative_ionization,0,curated,doi:10.1007/s11090-013-9513-1,yes
+e_CF4_dissociative_ionization_Fp_CF3,e + CF4 -> 2 e + CF3 + F+,electron,dissociative_ionization,0,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_CF2_dissociation_CF_F,e + CF2 -> e + CF + F,electron,dissociation,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_CF2_dissociation_C_2F,e + CF2 -> e + C + 2 F,electron,dissociation,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_CF3_dissociation_CF2_F,e + CF3 -> e + CF2 + F,electron,dissociation,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_F2_dissociation_2F,e + F2 -> e + 2 F,electron,dissociation,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_F2_ionization_F2p,e + F2 -> 2 e + F2+,electron,ionization,1,literature_supported,doi:10.1116/1.4853675,yes
+F2_CF2_to_CF3_F,F2 + CF2 -> CF3 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+F2_CF3_to_CF4_F,F2 + CF3 -> CF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_C_excitation_C_1D,e + C -> e + C_1D,electron,excitation,2,literature_supported,nist_asd,yes
+e_C_excitation_C_1S,e + C -> e + C_1S,electron,excitation,2,literature_supported,nist_asd,yes
+e_CF_dissociation_C_F,e + CF -> e + C + F,electron,dissociation,2,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_C_1D_elastic,e + C_1D -> e + C_1D,electron,elastic,2,literature_supported,nist_asd,yes
+e_C_1D_superelastic,e + C_1D -> e + C,electron,deexcitation,2,literature_supported,nist_asd,yes
+e_C_1S_elastic,e + C_1S -> e + C_1S,electron,elastic,2,literature_supported,nist_asd,yes
+e_C_1S_superelastic,e + C_1S -> e + C,electron,deexcitation,2,literature_supported,nist_asd,yes
+F2_CF_to_CF2_F,F2 + CF -> CF2 + F,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1007/s11090-013-9513-1,yes

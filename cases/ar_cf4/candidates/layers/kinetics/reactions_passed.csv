@@ -1,0 +1,22 @@
+id,equation,family,type,depth,status,verdict,decided
+F2_CF2_to_CF3_F,F2 + CF2 -> CF3 + F,neutral_neutral,reactive_scattering,1,literature_supported,slow,yes
+F2_CF3_to_CF4_F,F2 + CF3 -> CF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,slow,yes
+cand_Arp_CF4_char_Ar_CF4p,Ar+ + CF4 -> Ar + CF4+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_Arp_CF4_diss_Ar_CF3p_F,Ar+ + CF4 -> Ar + CF3+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,comparable,yes
+cand_Arp_F_char_Ar_Fp,Ar+ + F -> Ar + F+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_CF2p_CF4_diss_CF3p_CF3,CF2+ + CF4 -> CF3+ + CF3,ion_neutral,dissociative_charge_transfer,1,candidate,comparable,yes
+cand_Fp_Ar_char_F_Arp,F+ + Ar -> F + Ar+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_Fp_CF4_char_F_CF4p,F+ + CF4 -> F + CF4+,ion_neutral,charge_transfer,1,candidate,fast,yes
+cand_Fp_CF4_diss_F_CF3p_F,F+ + CF4 -> F + CF3+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+cand_Fp_CF4_diss_F_CF2p_F2,F+ + CF4 -> F + CF2+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+F2_CF_to_CF2_F,F2 + CF -> CF2 + F,neutral_neutral,reactive_scattering,2,literature_supported,comparable,yes
+cand_CF4p_Ar_char_CF4_Arp,CF4+ + Ar -> CF4 + Ar+,ion_neutral,charge_transfer,2,candidate,comparable,yes
+cand_CF4p_Ar_diss_CF3p_F_Ar,CF4+ + Ar -> CF3+ + F + Ar,ion_neutral,dissociative_charge_transfer,2,candidate,comparable,yes
+cand_CF4p_CF4_diss_CF3p_F_CF4,CF4+ + CF4 -> CF3+ + F + CF4,ion_neutral,dissociative_charge_transfer,2,candidate,comparable,yes
+cand_CF4p_F_diss_CF3p_F_F,CF4+ + F -> CF3+ + F + F,ion_neutral,dissociative_charge_transfer,2,candidate,comparable,yes
+cand_F2p_Ar_char_F2_Arp,F2+ + Ar -> F2 + Ar+,ion_neutral,charge_transfer,2,candidate,comparable,yes
+cand_F2p_Ar_diss_F_F_Arp,F2+ + Ar -> F + F + Ar+,ion_neutral,dissociative_charge_transfer,2,candidate,comparable,yes
+cand_F2p_CF4_char_F2_CF4p,F2+ + CF4 -> F2 + CF4+,ion_neutral,charge_transfer,2,candidate,comparable,yes
+cand_F2p_CF4_diss_F_F_CF4p,F2+ + CF4 -> F + F + CF4+,ion_neutral,dissociative_charge_transfer,2,candidate,comparable,yes
+cand_F2p_CF4_diss_F2_CF3p_F,F2+ + CF4 -> F2 + CF3+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,comparable,yes
+cand_F2p_F_char_F2_Fp,F2+ + F -> F2 + F+,ion_neutral,charge_transfer,2,candidate,comparable,yes

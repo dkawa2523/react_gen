@@ -1,0 +1,750 @@
+id,equation,family,type,depth,status,verdict,decided
+cand_O2_diss_O_1S,e + O2 -> e + O + O_1S,electron,dissociation,0,candidate,endothermic by 9.36 eV,yes
+e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,exothermic by 11.60 eV,yes
+e_O2_a1Delta_superelastic,e + O2_a1Delta -> e + O2,electron,deexcitation,1,literature_supported,exothermic by 0.98 eV,yes
+e_O2_b1Sigma_superelastic,e + O2_b1Sigma -> e + O2,electron,deexcitation,1,literature_supported,exothermic by 1.63 eV,yes
+e_O_1D_superelastic,e + O_1D -> e + O,electron,deexcitation,1,literature_supported,exothermic by 1.97 eV,yes
+Arp_O2_charge_transfer,Ar+ + O2 -> Ar + O2+,ion_neutral,charge_transfer,1,literature_supported,exothermic by 3.69 eV,yes
+Arp_SF6_dissociative_charge_transfer_SF5p_F,Ar+ + SF6 -> Ar + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,literature_supported,exothermic by 0.44 eV,yes
+Op_O2_charge_transfer,O+ + O2 -> O + O2+,ion_neutral,charge_transfer,1,literature_supported,exothermic by 1.55 eV,yes
+O2a_O2_self_quenching,O2 + O2_a1Delta -> 2 O2,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 0.98 eV,yes
+O1D_O2_quenching_O2_b1Sigma,O_1D + O2 -> O + O2_b1Sigma,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 0.34 eV,yes
+O1D_O2_quenching_O2_a1Delta,O_1D + O2 -> O + O2_a1Delta,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 0.99 eV,yes
+cand_SF2_diss_S_1D,e + SF2 -> e + F2 + S_1D,electron,dissociation,1,candidate,endothermic by 7.09 eV,yes
+cand_SF2_diss_S_1S,e + SF2 -> e + F2 + S_1S,electron,dissociation,1,candidate,endothermic by 8.70 eV,yes
+cand_Arp_F_char_Ar_Fp,Ar+ + F -> Ar + F+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.66 eV,yes
+cand_Arp_F2_char_Ar_F2p,Ar+ + F2 -> Ar + F2+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.07 eV,yes
+cand_Arp_F2_reac_Arp_F_F,Ar+ + F2 -> Ar+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_Arp_O_char_Ar_Op,Ar+ + O -> Ar + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.14 eV,yes
+cand_Arp_O2_a1Delta_char_Ar_O2p,Ar+ + O2_a1Delta -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.67 eV,yes
+cand_Arp_O2_b1Sigma_char_Ar_O2p,Ar+ + O2_b1Sigma -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.32 eV,yes
+cand_Arp_O2_b1Sigma_diss_Ar_Op_O,Ar+ + O2_b1Sigma -> Ar + O+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.40 eV,yes
+cand_Arp_O2_v_char_Ar_O2p,Ar+ + O2_v -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.69 eV,yes
+cand_Arp_O_1D_char_Ar_Op,Ar+ + O_1D -> Ar + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.11 eV,yes
+cand_Arp_O_1S_char_Ar_Op,Ar+ + O_1S -> Ar + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 6.33 eV,yes
+cand_Arp_SF_char_Ar_SFp,Ar+ + SF -> Ar + SF+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.46 eV,yes
+cand_Arp_SF2_char_Ar_SF2p,Ar+ + SF2 -> Ar + SF2+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.96 eV,yes
+cand_Arp_SF2_diss_Ar_Sp_F2,Ar+ + SF2 -> Ar + S+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.55 eV,yes
+cand_Arp_SF3_char_Ar_SF3p,Ar+ + SF3 -> Ar + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 7.58 eV,yes
+cand_Arp_SF4_char_Ar_SF4p,Ar+ + SF4 -> Ar + SF4+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.76 eV,yes
+cand_Arp_SF4_diss_Ar_SF2p_F2,Ar+ + SF4 -> Ar + SF2+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.12 eV,yes
+cand_Arp_SF5_char_Ar_SF5p,Ar+ + SF5 -> Ar + SF5+,ion_neutral,charge_transfer,1,candidate,exothermic by 6.16 eV,yes
+cand_Arp_SF5_diss_Ar_SF4p_F,Ar+ + SF5 -> Ar + SF4+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.43 eV,yes
+cand_Arp_SF6_char_Ar_SF6p,Ar+ + SF6 -> Ar + SF6+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.44 eV,yes
+cand_Arp_SF6_diss_Ar_SF4p_F2,Ar+ + SF6 -> Ar + SF4+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.98 eV,yes
+cand_Arp_SF6*_char_Ar_SF6p,Ar+ + SF6* -> Ar + SF6+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.44 eV,yes
+cand_Arp_SF6*_diss_Ar_SF5p_F,Ar+ + SF6* -> Ar + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 2.10 eV,yes
+cand_Arp_SF6*_diss_Ar_SF4p_F2,Ar+ + SF6* -> Ar + SF4+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.98 eV,yes
+cand_Arp_SF6_v_char_Ar_SF6p,Ar+ + SF6_v -> Ar + SF6+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.44 eV,yes
+cand_Arp_SF6_v_diss_Ar_SF5p_F,Ar+ + SF6_v -> Ar + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 2.10 eV,yes
+cand_Arp_SF6_v_diss_Ar_SF4p_F2,Ar+ + SF6_v -> Ar + SF4+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.98 eV,yes
+cand_Fp_Ar_char_F_Arp,F+ + Ar -> F + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_Fp_Ar_4s_char_F_Arp,F+ + Ar_4s -> F + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 13.26 eV,yes
+cand_Fp_F2_char_F_F2p,F+ + F2 -> F + F2+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.73 eV,yes
+cand_Fp_F2_reac_Fp_F_F,F+ + F2 -> F+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_Fp_O_char_F_Op,F+ + O -> F + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.80 eV,yes
+cand_Fp_O2_char_F_O2p,F+ + O2 -> F + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.35 eV,yes
+cand_Fp_O2_diss_F_Op_O,F+ + O2 -> F + O+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.36 eV,yes
+cand_Fp_O2_a1Delta_char_F_O2p,F+ + O2_a1Delta -> F + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 6.33 eV,yes
+cand_Fp_O2_a1Delta_diss_F_Op_O,F+ + O2_a1Delta -> F + O+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.38 eV,yes
+cand_Fp_O2_b1Sigma_char_F_O2p,F+ + O2_b1Sigma -> F + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 6.98 eV,yes
+cand_Fp_O2_b1Sigma_diss_F_Op_O,F+ + O2_b1Sigma -> F + O+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.27 eV,yes
+cand_Fp_O2_v_char_F_O2p,F+ + O2_v -> F + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.35 eV,yes
+cand_Fp_O2_v_diss_F_Op_O,F+ + O2_v -> F + O+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.36 eV,yes
+cand_Fp_O_1D_char_F_Op,F+ + O_1D -> F + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.77 eV,yes
+cand_Fp_O_1S_char_F_Op,F+ + O_1S -> F + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 7.99 eV,yes
+cand_Fp_SF_char_F_SFp,F+ + SF -> F + SF+,ion_neutral,charge_transfer,1,candidate,exothermic by 7.12 eV,yes
+cand_Fp_SF2_char_F_SF2p,F+ + SF2 -> F + SF2+,ion_neutral,charge_transfer,1,candidate,exothermic by 6.62 eV,yes
+cand_Fp_SF2_diss_F_Sp_F2,F+ + SF2 -> F + S+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.12 eV,yes
+cand_Fp_SF3_char_F_SF3p,F+ + SF3 -> F + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 9.24 eV,yes
+cand_Fp_SF4_char_F_SF4p,F+ + SF4 -> F + SF4+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.42 eV,yes
+cand_Fp_SF4_diss_F_SF2p_F2,F+ + SF4 -> F + SF2+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.79 eV,yes
+cand_Fp_SF5_char_F_SF5p,F+ + SF5 -> F + SF5+,ion_neutral,charge_transfer,1,candidate,exothermic by 7.82 eV,yes
+cand_Fp_SF5_diss_F_SF4p_F,F+ + SF5 -> F + SF4+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.09 eV,yes
+cand_Fp_SF6_char_F_SF6p,F+ + SF6 -> F + SF6+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.10 eV,yes
+cand_Fp_SF6_diss_F_SF5p_F,F+ + SF6 -> F + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.77 eV,yes
+cand_Fp_SF6_diss_F_SF4p_F2,F+ + SF6 -> F + SF4+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.68 eV,yes
+cand_Fp_SF6*_char_F_SF6p,F+ + SF6* -> F + SF6+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.10 eV,yes
+cand_Fp_SF6*_diss_F_SF5p_F,F+ + SF6* -> F + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.77 eV,yes
+cand_Fp_SF6*_diss_F_SF4p_F2,F+ + SF6* -> F + SF4+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.68 eV,yes
+cand_Fp_SF6_v_char_F_SF6p,F+ + SF6_v -> F + SF6+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.10 eV,yes
+cand_Fp_SF6_v_diss_F_SF5p_F,F+ + SF6_v -> F + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.77 eV,yes
+cand_Fp_SF6_v_diss_F_SF4p_F2,F+ + SF6_v -> F + SF4+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.68 eV,yes
+cand_Op_Ar_4s_char_O_Arp,O+ + Ar_4s -> O + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 9.46 eV,yes
+cand_Op_F2_reac_Op_F_F,O+ + F2 -> O+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_Op_O2_a1Delta_char_O_O2p,O+ + O2_a1Delta -> O + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.52 eV,yes
+cand_Op_O2_b1Sigma_char_O_O2p,O+ + O2_b1Sigma -> O + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.17 eV,yes
+cand_Op_O2_v_char_O_O2p,O+ + O2_v -> O + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.55 eV,yes
+cand_Op_SF_char_O_SFp,O+ + SF -> O + SF+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.32 eV,yes
+cand_Op_SF2_char_O_SF2p,O+ + SF2 -> O + SF2+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.82 eV,yes
+cand_Op_SF3_char_O_SF3p,O+ + SF3 -> O + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.44 eV,yes
+cand_Op_SF4_char_O_SF4p,O+ + SF4 -> O + SF4+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.62 eV,yes
+cand_Op_SF5_char_O_SF5p,O+ + SF5 -> O + SF5+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.02 eV,yes
+cand_Op_SF5_diss_O_SF4p_F,O+ + SF5 -> O + SF4+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.71 eV,yes
+cand_Op_SF6_char_O_SF6p,O+ + SF6 -> O + SF6+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.70 eV,yes
+cand_Op_SF6_diss_O_SF5p_F,O+ + SF6 -> O + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.04 eV,yes
+cand_Op_SF6*_char_O_SF6p,O+ + SF6* -> O + SF6+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.70 eV,yes
+cand_Op_SF6*_diss_O_SF5p_F,O+ + SF6* -> O + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.04 eV,yes
+cand_Op_SF6_v_char_O_SF6p,O+ + SF6_v -> O + SF6+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.70 eV,yes
+cand_Op_SF6_v_diss_O_SF5p_F,O+ + SF6_v -> O + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.04 eV,yes
+cand_O2p_Ar_4s_char_O2_Arp,O2+ + Ar_4s -> O2 + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 7.91 eV,yes
+cand_O2p_Ar_4s_diss_Op_O_Ar,O2+ + Ar_4s -> O+ + O + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 4.89 eV,yes
+cand_O2p_Ar_4s_diss_O_O_Arp,O2+ + Ar_4s -> O + O + Ar+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 2.74 eV,yes
+cand_O2p_F2_reac_O2p_F_F,O2+ + F2 -> O2+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_O2p_O_char_O2_Op,O2+ + O -> O2 + O+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.55 eV,yes
+cand_O2p_O_1D_char_O2_Op,O2+ + O_1D -> O2 + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.42 eV,yes
+cand_O2p_O_1S_char_O2_Op,O2+ + O_1S -> O2 + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.64 eV,yes
+cand_O2p_SF_char_O2_SFp,O2+ + SF -> O2 + SF+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.77 eV,yes
+cand_O2p_SF2_char_O2_SF2p,O2+ + SF2 -> O2 + SF2+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.27 eV,yes
+cand_O2p_SF3_char_O2_SF3p,O2+ + SF3 -> O2 + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.89 eV,yes
+cand_O2p_SF3_diss_O_O_SF3p,O2+ + SF3 -> O + O + SF3+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.28 eV,yes
+cand_O2p_SF4_char_O2_SF4p,O2+ + SF4 -> O2 + SF4+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.07 eV,yes
+cand_O2p_SF5_char_O2_SF5p,O2+ + SF5 -> O2 + SF5+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.47 eV,yes
+cand_O2p_SF6_diss_O2_SF5p_F,O2+ + SF6 -> O2 + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.59 eV,yes
+cand_O2p_SF6*_diss_O2_SF5p_F,O2+ + SF6* -> O2 + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.59 eV,yes
+cand_O2p_SF6_v_diss_O2_SF5p_F,O2+ + SF6_v -> O2 + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.59 eV,yes
+cand_Sp_Ar_4s_char_S_Arp,S+ + Ar_4s -> S + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 6.20 eV,yes
+cand_Sp_F2_reac_Sp_F_F,S+ + F2 -> S+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_Sp_O2_char_S_O2p,S+ + O2 -> S + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.71 eV,yes
+cand_Sp_O2_a1Delta_char_S_O2p,S+ + O2_a1Delta -> S + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.73 eV,yes
+cand_Sp_O2_b1Sigma_char_S_O2p,S+ + O2_b1Sigma -> S + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.08 eV,yes
+cand_Sp_O2_v_char_S_O2p,S+ + O2_v -> S + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.71 eV,yes
+cand_Sp_O_1D_char_S_Op,S+ + O_1D -> S + O+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.29 eV,yes
+cand_Sp_O_1S_char_S_Op,S+ + O_1S -> S + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.93 eV,yes
+cand_Sp_SF_char_S_SFp,S+ + SF -> S + SF+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.06 eV,yes
+cand_Sp_SF2_char_S_SF2p,S+ + SF2 -> S + SF2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.44 eV,yes
+cand_Sp_SF3_char_S_SF3p,S+ + SF3 -> S + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.18 eV,yes
+cand_Sp_SF4_char_S_SF4p,S+ + SF4 -> S + SF4+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.64 eV,yes
+cand_Sp_SF5_char_S_SF5p,S+ + SF5 -> S + SF5+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.76 eV,yes
+cand_SFp_Ar_4s_char_SF_Arp,SF+ + Ar_4s -> SF + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 6.14 eV,yes
+cand_SFp_F2_reac_SFp_F_F,SF+ + F2 -> SF+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_SFp_O2_char_SF_O2p,SF+ + O2 -> SF + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.77 eV,yes
+cand_SFp_O2_a1Delta_char_SF_O2p,SF+ + O2_a1Delta -> SF + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.79 eV,yes
+cand_SFp_O2_b1Sigma_char_SF_O2p,SF+ + O2_b1Sigma -> SF + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.14 eV,yes
+cand_SFp_O2_v_char_SF_O2p,SF+ + O2_v -> SF + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.77 eV,yes
+cand_SFp_O_1D_char_SF_Op,SF+ + O_1D -> SF + O+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.35 eV,yes
+cand_SFp_O_1S_char_SF_Op,SF+ + O_1S -> SF + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.87 eV,yes
+cand_SFp_SF2_char_SF_SF2p,SF+ + SF2 -> SF + SF2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.50 eV,yes
+cand_SFp_SF3_char_SF_SF3p,SF+ + SF3 -> SF + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.12 eV,yes
+cand_SFp_SF4_char_SF_SF4p,SF+ + SF4 -> SF + SF4+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.70 eV,yes
+cand_SFp_SF5_char_SF_SF5p,SF+ + SF5 -> SF + SF5+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.70 eV,yes
+cand_SF2p_Ar_4s_char_SF2_Arp,SF2+ + Ar_4s -> SF2 + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 6.64 eV,yes
+cand_SF2p_Ar_4s_diss_Sp_F2_Ar,SF2+ + Ar_4s -> S+ + F2 + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 6.09 eV,yes
+cand_SF2p_Ar_4s_diss_S_F2p_Ar,SF2+ + Ar_4s -> S + F2+ + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.76 eV,yes
+cand_SF2p_Ar_4s_diss_S_F2_Arp,SF2+ + Ar_4s -> S + F2 + Ar+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.69 eV,yes
+cand_SF2p_F2_reac_SF2p_F_F,SF2+ + F2 -> SF2+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_SF2p_O2_char_SF2_O2p,SF2+ + O2 -> SF2 + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.27 eV,yes
+cand_SF2p_O2_a1Delta_char_SF2_O2p,SF2+ + O2_a1Delta -> SF2 + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.29 eV,yes
+cand_SF2p_O2_b1Sigma_char_SF2_O2p,SF2+ + O2_b1Sigma -> SF2 + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.36 eV,yes
+cand_SF2p_O2_v_char_SF2_O2p,SF2+ + O2_v -> SF2 + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.27 eV,yes
+cand_SF2p_O_1D_char_SF2_Op,SF2+ + O_1D -> SF2 + O+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.85 eV,yes
+cand_SF2p_O_1S_char_SF2_Op,SF2+ + O_1S -> SF2 + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.37 eV,yes
+cand_SF2p_O_1S_diss_Sp_F2_O,SF2+ + O_1S -> S+ + F2 + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.32 eV,yes
+cand_SF2p_SF_char_SF2_SFp,SF2+ + SF -> SF2 + SF+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.50 eV,yes
+cand_SF2p_SF3_char_SF2_SF3p,SF2+ + SF3 -> SF2 + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.62 eV,yes
+cand_SF2p_SF4_char_SF2_SF4p,SF2+ + SF4 -> SF2 + SF4+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.20 eV,yes
+cand_SF2p_SF5_char_SF2_SF5p,SF2+ + SF5 -> SF2 + SF5+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.20 eV,yes
+cand_SF3p_Ar_4s_char_SF3_Arp,SF3+ + Ar_4s -> SF3 + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.02 eV,yes
+cand_SF3p_F2_reac_SF3p_F_F,SF3+ + F2 -> SF3+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_SF3p_O_1S_char_SF3_Op,SF3+ + O_1S -> SF3 + O+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.25 eV,yes
+cand_SF3p_SF5_char_SF3_SF5p,SF3+ + SF5 -> SF3 + SF5+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF4p_Ar_4s_char_SF4_Arp,SF4+ + Ar_4s -> SF4 + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 7.84 eV,yes
+cand_SF4p_Ar_4s_diss_SF2p_F2_Ar,SF4+ + Ar_4s -> SF2+ + F2 + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 7.96 eV,yes
+cand_SF4p_Ar_4s_diss_SF2_F2p_Ar,SF4+ + Ar_4s -> SF2 + F2+ + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.07 eV,yes
+cand_SF4p_Ar_4s_diss_SF2_F2_Arp,SF4+ + Ar_4s -> SF2 + F2 + Ar+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.00 eV,yes
+cand_SF4p_F2_reac_SF4p_F_F,SF4+ + F2 -> SF4+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_SF4p_O_char_SF4_Op,SF4+ + O -> SF4 + O+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.62 eV,yes
+cand_SF4p_O2_char_SF4_O2p,SF4+ + O2 -> SF4 + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.07 eV,yes
+cand_SF4p_O2_a1Delta_char_SF4_O2p,SF4+ + O2_a1Delta -> SF4 + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.91 eV,yes
+cand_SF4p_O2_b1Sigma_char_SF4_O2p,SF4+ + O2_b1Sigma -> SF4 + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.56 eV,yes
+cand_SF4p_O2_v_char_SF4_O2p,SF4+ + O2_v -> SF4 + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.07 eV,yes
+cand_SF4p_O_1D_char_SF4_Op,SF4+ + O_1D -> SF4 + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.35 eV,yes
+cand_SF4p_O_1D_diss_SF2p_F2_O,SF4+ + O_1D -> SF2+ + F2 + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.67 eV,yes
+cand_SF4p_O_1S_char_SF4_Op,SF4+ + O_1S -> SF4 + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.57 eV,yes
+cand_SF4p_O_1S_diss_SF2p_F2_O,SF4+ + O_1S -> SF2+ + F2 + O,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.55 eV,yes
+cand_SF4p_SF_char_SF4_SFp,SF4+ + SF -> SF4 + SF+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.70 eV,yes
+cand_SF4p_SF2_char_SF4_SF2p,SF4+ + SF2 -> SF4 + SF2+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.20 eV,yes
+cand_SF4p_SF3_char_SF4_SF3p,SF4+ + SF3 -> SF4 + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.82 eV,yes
+cand_SF4p_SF3_diss_SF2_F2_SF3p,SF4+ + SF3 -> SF2 + F2 + SF3+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.02 eV,yes
+cand_SF4p_SF5_char_SF4_SF5p,SF4+ + SF5 -> SF4 + SF5+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.40 eV,yes
+cand_SF4p_SF6_diss_SF4_SF5p_F,SF4+ + SF6 -> SF4 + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.66 eV,yes
+cand_SF4p_SF6_diss_SF5p_SF5,SF4+ + SF6 -> SF5+ + SF5,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.67 eV,yes
+cand_SF4p_SF6*_diss_SF4_SF5p_F,SF4+ + SF6* -> SF4 + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.66 eV,yes
+cand_SF4p_SF6*_diss_SF5p_SF5,SF4+ + SF6* -> SF5+ + SF5,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.67 eV,yes
+cand_SF4p_SF6_v_diss_SF4_SF5p_F,SF4+ + SF6_v -> SF4 + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.66 eV,yes
+cand_SF4p_SF6_v_diss_SF5p_SF5,SF4+ + SF6_v -> SF5+ + SF5,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.67 eV,yes
+cand_SF5p_Ar_4s_char_SF5_Arp,SF5+ + Ar_4s -> SF5 + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.44 eV,yes
+cand_SF5p_Ar_4s_diss_SF4p_F_Ar,SF5+ + Ar_4s -> SF4+ + F + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 6.87 eV,yes
+cand_SF5p_Ar_4s_diss_SF4_Fp_Ar,SF5+ + Ar_4s -> SF4 + F+ + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.45 eV,yes
+cand_SF5p_Ar_4s_diss_SF4_F_Arp,SF5+ + Ar_4s -> SF4 + F + Ar+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.11 eV,yes
+cand_SF5p_F2_reac_SF5p_F_F,SF5+ + F2 -> SF5+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_SF5p_O2_a1Delta_char_SF5_O2p,SF5+ + O2_a1Delta -> SF5 + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.49 eV,yes
+cand_SF5p_O2_b1Sigma_char_SF5_O2p,SF5+ + O2_b1Sigma -> SF5 + O2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.84 eV,yes
+cand_SF5p_O_1S_char_SF5_Op,SF5+ + O_1S -> SF5 + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 0.17 eV,yes
+cand_SF5p_O_1S_diss_SF4p_F_O,SF5+ + O_1S -> SF4+ + F + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.54 eV,yes
+cand_SF5p_SF_char_SF5_SFp,SF5+ + SF -> SF5 + SF+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.70 eV,yes
+cand_SF5p_SF2_char_SF5_SF2p,SF5+ + SF2 -> SF5 + SF2+,ion_neutral,charge_transfer,1,candidate,endothermic by 1.20 eV,yes
+cand_SF5p_SF3_char_SF5_SF3p,SF5+ + SF3 -> SF5 + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.42 eV,yes
+cand_SF5p_SF3_diss_SF4_F_SF3p,SF5+ + SF3 -> SF4 + F + SF3+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.91 eV,yes
+cand_SF5p_SF5_diss_SF6_SF4p,SF5+ + SF5 -> SF6 + SF4+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.67 eV,yes
+cand_SF6p_Ar_char_SF6_Arp,SF6+ + Ar -> SF6 + Ar+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.44 eV,yes
+cand_SF6p_Ar_diss_SF5p_F_Ar,SF6+ + Ar -> SF5+ + F + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_Ar_diss_SF4p_F2_Ar,SF6+ + Ar -> SF4+ + F2 + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_Ar_4s_char_SF6_Arp,SF6+ + Ar_4s -> SF6 + Ar+,ion_neutral,charge_transfer,1,candidate,exothermic by 11.16 eV,yes
+cand_SF6p_Ar_4s_diss_SF5p_F_Ar,SF6+ + Ar_4s -> SF5+ + F + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 13.26 eV,yes
+cand_SF6p_Ar_4s_diss_SF5_Fp_Ar,SF6+ + Ar_4s -> SF5 + F+ + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 5.44 eV,yes
+cand_SF6p_Ar_4s_diss_SF5_F_Arp,SF6+ + Ar_4s -> SF5 + F + Ar+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 7.10 eV,yes
+cand_SF6p_Ar_4s_diss_SF4p_F2_Ar,SF6+ + Ar_4s -> SF4+ + F2 + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 10.18 eV,yes
+cand_SF6p_Ar_4s_diss_SF4_F2p_Ar,SF6+ + Ar_4s -> SF4 + F2+ + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 6.49 eV,yes
+cand_SF6p_Ar_4s_diss_SF4_F2_Arp,SF6+ + Ar_4s -> SF4 + F2 + Ar+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 6.42 eV,yes
+cand_SF6p_F_diss_SF5p_F_F,SF6+ + F -> SF5+ + F + F,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_F_diss_SF4p_F2_F,SF6+ + F -> SF4+ + F2 + F,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_F2_char_SF6_F2p,SF6+ + F2 -> SF6 + F2+,ion_neutral,charge_transfer,1,candidate,endothermic by 0.37 eV,yes
+cand_SF6p_F2_diss_SF5p_F_F2,SF6+ + F2 -> SF5+ + F + F2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_F2_diss_SF4p_F2_F2,SF6+ + F2 -> SF4+ + F2 + F2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_F2_reac_SF6p_F_F,SF6+ + F2 -> SF6+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
+cand_SF6p_O_char_SF6_Op,SF6+ + O -> SF6 + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.70 eV,yes
+cand_SF6p_O_diss_SF5p_F_O,SF6+ + O -> SF5+ + F + O,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_O_diss_SF4p_F2_O,SF6+ + O -> SF4+ + F2 + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_O2_char_SF6_O2p,SF6+ + O2 -> SF6 + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.25 eV,yes
+cand_SF6p_O2_diss_SF5p_F_O2,SF6+ + O2 -> SF5+ + F + O2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_O2_diss_SF5_F_O2p,SF6+ + O2 -> SF5 + F + O2+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.81 eV,yes
+cand_SF6p_O2_diss_SF4p_F2_O2,SF6+ + O2 -> SF4+ + F2 + O2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_O2_diss_SF4_F2_O2p,SF6+ + O2 -> SF4 + F2 + O2+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.49 eV,yes
+cand_SF6p_O2_a1Delta_char_SF6_O2p,SF6+ + O2_a1Delta -> SF6 + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.23 eV,yes
+cand_SF6p_O2_a1Delta_diss_SF5p_F_O2,SF6+ + O2_a1Delta -> SF5+ + F + O2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 2.64 eV,yes
+cand_SF6p_O2_a1Delta_diss_SF5_F_O2p,SF6+ + O2_a1Delta -> SF5 + F + O2+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.17 eV,yes
+cand_SF6p_O2_a1Delta_diss_SF4p_F2_O2,SF6+ + O2_a1Delta -> SF4+ + F2 + O2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.44 eV,yes
+cand_SF6p_O2_a1Delta_diss_SF4_F2_O2p,SF6+ + O2_a1Delta -> SF4 + F2 + O2+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.51 eV,yes
+cand_SF6p_O2_b1Sigma_char_SF6_O2p,SF6+ + O2_b1Sigma -> SF6 + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.88 eV,yes
+cand_SF6p_O2_b1Sigma_diss_SF5p_F_O2,SF6+ + O2_b1Sigma -> SF5+ + F + O2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.29 eV,yes
+cand_SF6p_O2_b1Sigma_diss_SF5_F_O2p,SF6+ + O2_b1Sigma -> SF5 + F + O2+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.82 eV,yes
+cand_SF6p_O2_b1Sigma_diss_SF4p_F2_O2,SF6+ + O2_b1Sigma -> SF4+ + F2 + O2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.21 eV,yes
+cand_SF6p_O2_b1Sigma_diss_SF4_F2_O2p,SF6+ + O2_b1Sigma -> SF4 + F2 + O2+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.14 eV,yes
+cand_SF6p_O2_b1Sigma_diss_SF6_Op_O,SF6+ + O2_b1Sigma -> SF6 + O+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.84 eV,yes
+cand_SF6p_O2_v_char_SF6_O2p,SF6+ + O2_v -> SF6 + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.25 eV,yes
+cand_SF6p_O2_v_diss_SF5p_F_O2,SF6+ + O2_v -> SF5+ + F + O2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_O2_v_diss_SF5_F_O2p,SF6+ + O2_v -> SF5 + F + O2+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.81 eV,yes
+cand_SF6p_O2_v_diss_SF4p_F2_O2,SF6+ + O2_v -> SF4+ + F2 + O2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_O2_v_diss_SF4_F2_O2p,SF6+ + O2_v -> SF4 + F2 + O2+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.49 eV,yes
+cand_SF6p_O_1D_char_SF6_Op,SF6+ + O_1D -> SF6 + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.67 eV,yes
+cand_SF6p_O_1D_diss_SF5p_F_O,SF6+ + O_1D -> SF5+ + F + O,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.63 eV,yes
+cand_SF6p_O_1D_diss_SF5_F_Op,SF6+ + O_1D -> SF5 + F + O+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.39 eV,yes
+cand_SF6p_O_1D_diss_SF4p_F2_O,SF6+ + O_1D -> SF4+ + F2 + O,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.55 eV,yes
+cand_SF6p_O_1D_diss_SF4_F2_Op,SF6+ + O_1D -> SF4 + F2 + O+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.07 eV,yes
+cand_SF6p_O_1S_char_SF6_Op,SF6+ + O_1S -> SF6 + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.89 eV,yes
+cand_SF6p_O_1S_diss_SF5p_F_O,SF6+ + O_1S -> SF5+ + F + O,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 5.85 eV,yes
+cand_SF6p_O_1S_diss_SF5_Fp_O,SF6+ + O_1S -> SF5 + F+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.97 eV,yes
+cand_SF6p_O_1S_diss_SF5_F_Op,SF6+ + O_1S -> SF5 + F + O+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.83 eV,yes
+cand_SF6p_O_1S_diss_SF4p_F2_O,SF6+ + O_1S -> SF4+ + F2 + O,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 2.77 eV,yes
+cand_SF6p_O_1S_diss_SF4_F2p_O,SF6+ + O_1S -> SF4 + F2+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.92 eV,yes
+cand_SF6p_O_1S_diss_SF4_F2_Op,SF6+ + O_1S -> SF4 + F2 + O+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.15 eV,yes
+cand_SF6p_SF_char_SF6_SFp,SF6+ + SF -> SF6 + SF+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.02 eV,yes
+cand_SF6p_SF_diss_SF5p_F_SF,SF6+ + SF -> SF5+ + F + SF,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF_diss_SF5_F_SFp,SF6+ + SF -> SF5 + F + SF+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.96 eV,yes
+cand_SF6p_SF_diss_SF4p_F2_SF,SF6+ + SF -> SF4+ + F2 + SF,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF_diss_SF4_F2_SFp,SF6+ + SF -> SF4 + F2 + SF+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.28 eV,yes
+cand_SF6p_SF2_char_SF6_SF2p,SF6+ + SF2 -> SF6 + SF2+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.52 eV,yes
+cand_SF6p_SF2_diss_SF5p_F_SF2,SF6+ + SF2 -> SF5+ + F + SF2,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF2_diss_SF5_F_SF2p,SF6+ + SF2 -> SF5 + F + SF2+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.46 eV,yes
+cand_SF6p_SF2_diss_SF4p_F2_SF2,SF6+ + SF2 -> SF4+ + F2 + SF2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF2_diss_SF4_F2_SF2p,SF6+ + SF2 -> SF4 + F2 + SF2+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.22 eV,yes
+cand_SF6p_SF2_diss_SF6_Sp_F2,SF6+ + SF2 -> SF6 + S+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.99 eV,yes
+cand_SF6p_SF3_char_SF6_SF3p,SF6+ + SF3 -> SF6 + SF3+,ion_neutral,charge_transfer,1,candidate,exothermic by 7.14 eV,yes
+cand_SF6p_SF3_diss_SF5p_F_SF3,SF6+ + SF3 -> SF5+ + F + SF3,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF3_diss_SF5_F_SF3p,SF6+ + SF3 -> SF5 + F + SF3+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.08 eV,yes
+cand_SF6p_SF3_diss_SF4p_F2_SF3,SF6+ + SF3 -> SF4+ + F2 + SF3,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF3_diss_SF4_F2_SF3p,SF6+ + SF3 -> SF4 + F2 + SF3+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 2.40 eV,yes
+cand_SF6p_SF4_char_SF6_SF4p,SF6+ + SF4 -> SF6 + SF4+,ion_neutral,charge_transfer,1,candidate,exothermic by 3.32 eV,yes
+cand_SF6p_SF4_diss_SF5p_F_SF4,SF6+ + SF4 -> SF5+ + F + SF4,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF4_diss_SF5_F_SF4p,SF6+ + SF4 -> SF5 + F + SF4+,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.74 eV,yes
+cand_SF6p_SF4_diss_SF4p_F2_SF4,SF6+ + SF4 -> SF4+ + F2 + SF4,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF4_diss_SF6_SF2p_F2,SF6+ + SF4 -> SF6 + SF2+ + F2,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 0.32 eV,yes
+cand_SF6p_SF4_diss_SF5p_SF5,SF6+ + SF4 -> SF5+ + SF5,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 3.99 eV,yes
+cand_SF6p_SF5_char_SF6_SF5p,SF6+ + SF5 -> SF6 + SF5+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.72 eV,yes
+cand_SF6p_SF5_diss_SF5p_F_SF5,SF6+ + SF5 -> SF5+ + F + SF5,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF5_diss_SF4p_F2_SF5,SF6+ + SF5 -> SF4+ + F2 + SF5,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF5_diss_SF4_F2_SF5p,SF6+ + SF5 -> SF4 + F2 + SF5+,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.98 eV,yes
+cand_SF6p_SF5_diss_SF6_SF4p_F,SF6+ + SF5 -> SF6 + SF4+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 0.99 eV,yes
+cand_SF6p_SF6_diss_SF5p_F_SF6,SF6+ + SF6 -> SF5+ + F + SF6,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF6_diss_SF4p_F2_SF6,SF6+ + SF6 -> SF4+ + F2 + SF6,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF6*_diss_SF5p_F_SF6,SF6+ + SF6* -> SF5+ + F + SF6,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF6*_diss_SF4p_F2_SF6,SF6+ + SF6* -> SF4+ + F2 + SF6,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF6_v_diss_SF5p_F_SF6,SF6+ + SF6_v -> SF5+ + F + SF6,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF6_v_diss_SF4p_F2_SF6,SF6+ + SF6_v -> SF4+ + F2 + SF6,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.42 eV,yes
+cand_Ar_4s_SF_penning,Ar_4s + SF -> Ar + SF+ + e,neutral_neutral,penning_ionization,1,candidate,exothermic by 1.30 eV,yes
+cand_Ar_4s_SF2_penning,Ar_4s + SF2 -> Ar + SF2+ + e,neutral_neutral,penning_ionization,1,candidate,exothermic by 0.80 eV,yes
+cand_Ar_4s_SF3_penning,Ar_4s + SF3 -> Ar + SF3+ + e,neutral_neutral,penning_ionization,1,candidate,exothermic by 3.42 eV,yes
+cand_Ar_4s_SF5_penning,Ar_4s + SF5 -> Ar + SF5+ + e,neutral_neutral,penning_ionization,1,candidate,exothermic by 2.00 eV,yes
+cand_FO_diss_O_1D,e + FO -> e + F + O_1D,electron,dissociation,2,candidate,endothermic by 4.24 eV,yes
+cand_FO_diss_O_1S,e + FO -> e + F + O_1S,electron,dissociation,2,candidate,endothermic by 6.47 eV,yes
+cand_SO_diss_O_1D,e + SO -> e + S + O_1D,electron,dissociation,2,candidate,endothermic by 7.36 eV,yes
+cand_SO_diss_O_1S,e + SO -> e + S + O_1S,electron,dissociation,2,candidate,endothermic by 9.58 eV,yes
+cand_SO_diss_S_1D,e + SO -> e + O + S_1D,electron,dissociation,2,candidate,endothermic by 6.54 eV,yes
+cand_SO_diss_S_1S,e + SO -> e + O + S_1S,electron,dissociation,2,candidate,endothermic by 8.14 eV,yes
+cand_Arp_F*_char_Ar_Fp,Ar+ + F* -> Ar + F+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.66 eV,yes
+cand_Arp_F2*_char_Ar_F2p,Ar+ + F2* -> Ar + F2+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.07 eV,yes
+cand_Arp_F2*_reac_Arp_F_F,Ar+ + F2* -> Ar+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_Arp_F2_v_char_Ar_F2p,Ar+ + F2_v -> Ar + F2+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.07 eV,yes
+cand_Arp_F2_v_reac_Arp_F_F,Ar+ + F2_v -> Ar+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_Arp_FO_diss_Ar_F_Op,Ar+ + FO -> Ar + F + O+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.14 eV,yes
+cand_Arp_S_char_Ar_Sp,Ar+ + S -> Ar + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.40 eV,yes
+cand_Arp_SF*_char_Ar_SFp,Ar+ + SF* -> Ar + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.46 eV,yes
+cand_Arp_SF2*_char_Ar_SF2p,Ar+ + SF2* -> Ar + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.96 eV,yes
+cand_Arp_SF2*_diss_Ar_Sp_F2,Ar+ + SF2* -> Ar + S+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.55 eV,yes
+cand_Arp_SF2_v_char_Ar_SF2p,Ar+ + SF2_v -> Ar + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.96 eV,yes
+cand_Arp_SF2_v_diss_Ar_Sp_F2,Ar+ + SF2_v -> Ar + S+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.55 eV,yes
+cand_Arp_SF3*_char_Ar_SF3p,Ar+ + SF3* -> Ar + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.58 eV,yes
+cand_Arp_SF3_v_char_Ar_SF3p,Ar+ + SF3_v -> Ar + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.58 eV,yes
+cand_Arp_SF4*_char_Ar_SF4p,Ar+ + SF4* -> Ar + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.76 eV,yes
+cand_Arp_SF4*_diss_Ar_SF2p_F2,Ar+ + SF4* -> Ar + SF2+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.12 eV,yes
+cand_Arp_SF4_v_char_Ar_SF4p,Ar+ + SF4_v -> Ar + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.76 eV,yes
+cand_Arp_SF4_v_diss_Ar_SF2p_F2,Ar+ + SF4_v -> Ar + SF2+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.12 eV,yes
+cand_Arp_SF5*_char_Ar_SF5p,Ar+ + SF5* -> Ar + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.16 eV,yes
+cand_Arp_SF5*_diss_Ar_SF4p_F,Ar+ + SF5* -> Ar + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.43 eV,yes
+cand_Arp_SF5_v_char_Ar_SF5p,Ar+ + SF5_v -> Ar + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.16 eV,yes
+cand_Arp_SF5_v_diss_Ar_SF4p_F,Ar+ + SF5_v -> Ar + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.43 eV,yes
+cand_Arp_SF_v_char_Ar_SFp,Ar+ + SF_v -> Ar + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.46 eV,yes
+cand_Arp_SO_diss_Ar_O_Sp,Ar+ + SO -> Ar + O + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.01 eV,yes
+cand_Arp_S_1D_char_Ar_Sp,Ar+ + S_1D -> Ar + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.55 eV,yes
+cand_Arp_S_1S_char_Ar_Sp,Ar+ + S_1S -> Ar + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 8.15 eV,yes
+cand_Fp_F2*_char_F_F2p,F+ + F2* -> F + F2+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.73 eV,yes
+cand_Fp_F2*_reac_Fp_F_F,F+ + F2* -> F+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_Fp_F2_v_char_F_F2p,F+ + F2_v -> F + F2+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.73 eV,yes
+cand_Fp_F2_v_reac_Fp_F_F,F+ + F2_v -> F+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_Fp_FO_diss_F_F_Op,F+ + FO -> F + F + O+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.53 eV,yes
+cand_Fp_S_char_F_Sp,F+ + S -> F + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.06 eV,yes
+cand_Fp_SF*_char_F_SFp,F+ + SF* -> F + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.12 eV,yes
+cand_Fp_SF2*_char_F_SF2p,F+ + SF2* -> F + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.62 eV,yes
+cand_Fp_SF2*_diss_F_Sp_F2,F+ + SF2* -> F + S+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.12 eV,yes
+cand_Fp_SF2_v_char_F_SF2p,F+ + SF2_v -> F + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.62 eV,yes
+cand_Fp_SF2_v_diss_F_Sp_F2,F+ + SF2_v -> F + S+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.12 eV,yes
+cand_Fp_SF3*_char_F_SF3p,F+ + SF3* -> F + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 9.24 eV,yes
+cand_Fp_SF3_v_char_F_SF3p,F+ + SF3_v -> F + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 9.24 eV,yes
+cand_Fp_SF4*_char_F_SF4p,F+ + SF4* -> F + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.42 eV,yes
+cand_Fp_SF4*_diss_F_SF2p_F2,F+ + SF4* -> F + SF2+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.79 eV,yes
+cand_Fp_SF4_v_char_F_SF4p,F+ + SF4_v -> F + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.42 eV,yes
+cand_Fp_SF4_v_diss_F_SF2p_F2,F+ + SF4_v -> F + SF2+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.79 eV,yes
+cand_Fp_SF5*_char_F_SF5p,F+ + SF5* -> F + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.82 eV,yes
+cand_Fp_SF5*_diss_F_SF4p_F,F+ + SF5* -> F + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.09 eV,yes
+cand_Fp_SF5_v_char_F_SF5p,F+ + SF5_v -> F + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.82 eV,yes
+cand_Fp_SF5_v_diss_F_SF4p_F,F+ + SF5_v -> F + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.09 eV,yes
+cand_Fp_SF_v_char_F_SFp,F+ + SF_v -> F + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.12 eV,yes
+cand_Fp_SO_diss_F_Op_S,F+ + SO -> F + O+ + S,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.59 eV,yes
+cand_Fp_SO_diss_F_O_Sp,F+ + SO -> F + O + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.67 eV,yes
+cand_Fp_S_1D_char_F_Sp,F+ + S_1D -> F + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 8.21 eV,yes
+cand_Fp_S_1S_char_F_Sp,F+ + S_1S -> F + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 9.81 eV,yes
+cand_F2p_Ar_char_F2_Arp,F2+ + Ar -> F2 + Ar+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.07 eV,yes
+cand_F2p_Ar_diss_F_F_Arp,F2+ + Ar -> F + F + Ar+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.71 eV,yes
+cand_F2p_Ar_4s_char_F2_Arp,F2+ + Ar_4s -> F2 + Ar+,ion_neutral,charge_transfer,2,candidate,exothermic by 11.53 eV,yes
+cand_F2p_Ar_4s_diss_Fp_F_Ar,F2+ + Ar_4s -> F+ + F + Ar,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 8.22 eV,yes
+cand_F2p_Ar_4s_diss_F_F_Arp,F2+ + Ar_4s -> F + F + Ar+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 9.89 eV,yes
+cand_F2p_F_char_F2_Fp,F2+ + F -> F2 + F+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.73 eV,yes
+cand_F2p_F*_char_F2_Fp,F2+ + F* -> F2 + F+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.73 eV,yes
+cand_F2p_F2_reac_F_F_F2p,F2+ + F2 -> F + F + F2+,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_F2p_F2*_reac_F_F_F2p,F2+ + F2* -> F + F + F2+,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_F2p_F2_v_reac_F_F_F2p,F2+ + F2_v -> F + F + F2+,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_F2p_FO_diss_F2_F_Op,F2+ + FO -> F2 + F + O+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.21 eV,yes
+cand_F2p_O_char_F2_Op,F2+ + O -> F2 + O+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.07 eV,yes
+cand_F2p_O_diss_F_F_Op,F2+ + O -> F + F + O+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.43 eV,yes
+cand_F2p_O2_char_F2_O2p,F2+ + O2 -> F2 + O2+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.62 eV,yes
+cand_F2p_O2_diss_F_F_O2p,F2+ + O2 -> F + F + O2+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.97 eV,yes
+cand_F2p_O2_a1Delta_char_F2_O2p,F2+ + O2_a1Delta -> F2 + O2+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.60 eV,yes
+cand_F2p_O2_a1Delta_diss_F_F_O2p,F2+ + O2_a1Delta -> F + F + O2+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.95 eV,yes
+cand_F2p_O2_b1Sigma_char_F2_O2p,F2+ + O2_b1Sigma -> F2 + O2+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.25 eV,yes
+cand_F2p_O2_b1Sigma_diss_Fp_F_O2,F2+ + O2_b1Sigma -> F+ + F + O2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.75 eV,yes
+cand_F2p_O2_b1Sigma_diss_F_F_O2p,F2+ + O2_b1Sigma -> F + F + O2+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.60 eV,yes
+cand_F2p_O2_b1Sigma_diss_F2_Op_O,F2+ + O2_b1Sigma -> F2 + O+ + O,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.47 eV,yes
+cand_F2p_O2_v_char_F2_O2p,F2+ + O2_v -> F2 + O2+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.62 eV,yes
+cand_F2p_O2_v_diss_F_F_O2p,F2+ + O2_v -> F + F + O2+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.97 eV,yes
+cand_F2p_O_1D_char_F2_Op,F2+ + O_1D -> F2 + O+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.04 eV,yes
+cand_F2p_O_1D_diss_Fp_F_O,F2+ + O_1D -> F+ + F + O,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.41 eV,yes
+cand_F2p_O_1D_diss_F_F_Op,F2+ + O_1D -> F + F + O+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.39 eV,yes
+cand_F2p_O_1S_char_F2_Op,F2+ + O_1S -> F2 + O+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.26 eV,yes
+cand_F2p_O_1S_diss_Fp_F_O,F2+ + O_1S -> F+ + F + O,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.81 eV,yes
+cand_F2p_O_1S_diss_F_F_Op,F2+ + O_1S -> F + F + O+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 4.62 eV,yes
+cand_F2p_S_char_F2_Sp,F2+ + S -> F2 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.33 eV,yes
+cand_F2p_S_diss_F_F_Sp,F2+ + S -> F + F + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.68 eV,yes
+cand_F2p_SF_char_F2_SFp,F2+ + SF -> F2 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.39 eV,yes
+cand_F2p_SF_diss_F_F_SFp,F2+ + SF -> F + F + SF+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.74 eV,yes
+cand_F2p_SF*_char_F2_SFp,F2+ + SF* -> F2 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.39 eV,yes
+cand_F2p_SF*_diss_F_F_SFp,F2+ + SF* -> F + F + SF+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.74 eV,yes
+cand_F2p_SF2_char_F2_SF2p,F2+ + SF2 -> F2 + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.89 eV,yes
+cand_F2p_SF2_diss_F_F_SF2p,F2+ + SF2 -> F + F + SF2+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.24 eV,yes
+cand_F2p_SF2_diss_F2_Sp_F2,F2+ + SF2 -> F2 + S+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.62 eV,yes
+cand_F2p_SF2*_char_F2_SF2p,F2+ + SF2* -> F2 + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.89 eV,yes
+cand_F2p_SF2*_diss_F_F_SF2p,F2+ + SF2* -> F + F + SF2+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.24 eV,yes
+cand_F2p_SF2*_diss_F2_Sp_F2,F2+ + SF2* -> F2 + S+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.62 eV,yes
+cand_F2p_SF2_v_char_F2_SF2p,F2+ + SF2_v -> F2 + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.89 eV,yes
+cand_F2p_SF2_v_diss_F_F_SF2p,F2+ + SF2_v -> F + F + SF2+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.24 eV,yes
+cand_F2p_SF2_v_diss_F2_Sp_F2,F2+ + SF2_v -> F2 + S+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.62 eV,yes
+cand_F2p_SF3_char_F2_SF3p,F2+ + SF3 -> F2 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.51 eV,yes
+cand_F2p_SF3_diss_F_F_SF3p,F2+ + SF3 -> F + F + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 5.86 eV,yes
+cand_F2p_SF3*_char_F2_SF3p,F2+ + SF3* -> F2 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.51 eV,yes
+cand_F2p_SF3*_diss_F_F_SF3p,F2+ + SF3* -> F + F + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 5.86 eV,yes
+cand_F2p_SF3_v_char_F2_SF3p,F2+ + SF3_v -> F2 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.51 eV,yes
+cand_F2p_SF3_v_diss_F_F_SF3p,F2+ + SF3_v -> F + F + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 5.86 eV,yes
+cand_F2p_SF4_char_F2_SF4p,F2+ + SF4 -> F2 + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.69 eV,yes
+cand_F2p_SF4_diss_F_F_SF4p,F2+ + SF4 -> F + F + SF4+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.04 eV,yes
+cand_F2p_SF4_diss_F2_SF2p_F2,F2+ + SF4 -> F2 + SF2+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.05 eV,yes
+cand_F2p_SF4*_char_F2_SF4p,F2+ + SF4* -> F2 + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.69 eV,yes
+cand_F2p_SF4*_diss_F_F_SF4p,F2+ + SF4* -> F + F + SF4+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.04 eV,yes
+cand_F2p_SF4*_diss_F2_SF2p_F2,F2+ + SF4* -> F2 + SF2+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.05 eV,yes
+cand_F2p_SF4_v_char_F2_SF4p,F2+ + SF4_v -> F2 + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.69 eV,yes
+cand_F2p_SF4_v_diss_F_F_SF4p,F2+ + SF4_v -> F + F + SF4+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.04 eV,yes
+cand_F2p_SF4_v_diss_F2_SF2p_F2,F2+ + SF4_v -> F2 + SF2+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.05 eV,yes
+cand_F2p_SF5_char_F2_SF5p,F2+ + SF5 -> F2 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.09 eV,yes
+cand_F2p_SF5_diss_F_F_SF5p,F2+ + SF5 -> F + F + SF5+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 4.44 eV,yes
+cand_F2p_SF5_diss_F2_SF4p_F,F2+ + SF5 -> F2 + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.36 eV,yes
+cand_F2p_SF5*_char_F2_SF5p,F2+ + SF5* -> F2 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.09 eV,yes
+cand_F2p_SF5*_diss_F_F_SF5p,F2+ + SF5* -> F + F + SF5+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 4.44 eV,yes
+cand_F2p_SF5*_diss_F2_SF4p_F,F2+ + SF5* -> F2 + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.36 eV,yes
+cand_F2p_SF5_v_char_F2_SF5p,F2+ + SF5_v -> F2 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.09 eV,yes
+cand_F2p_SF5_v_diss_F_F_SF5p,F2+ + SF5_v -> F + F + SF5+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 4.44 eV,yes
+cand_F2p_SF5_v_diss_F2_SF4p_F,F2+ + SF5_v -> F2 + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.36 eV,yes
+cand_F2p_SF6_char_F2_SF6p,F2+ + SF6 -> F2 + SF6+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.37 eV,yes
+cand_F2p_SF6_diss_F_F_SF6p,F2+ + SF6 -> F + F + SF6+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.28 eV,yes
+cand_F2p_SF6_diss_F2_SF5p_F,F2+ + SF6 -> F2 + SF5+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.03 eV,yes
+cand_F2p_SF6_diss_F2_SF4p_F2,F2+ + SF6 -> F2 + SF4+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.05 eV,yes
+cand_F2p_SF6*_char_F2_SF6p,F2+ + SF6* -> F2 + SF6+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.37 eV,yes
+cand_F2p_SF6*_diss_F_F_SF6p,F2+ + SF6* -> F + F + SF6+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.28 eV,yes
+cand_F2p_SF6*_diss_F2_SF5p_F,F2+ + SF6* -> F2 + SF5+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.03 eV,yes
+cand_F2p_SF6*_diss_F2_SF4p_F2,F2+ + SF6* -> F2 + SF4+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.05 eV,yes
+cand_F2p_SF6_v_char_F2_SF6p,F2+ + SF6_v -> F2 + SF6+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.37 eV,yes
+cand_F2p_SF6_v_diss_F_F_SF6p,F2+ + SF6_v -> F + F + SF6+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.28 eV,yes
+cand_F2p_SF6_v_diss_F2_SF5p_F,F2+ + SF6_v -> F2 + SF5+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.03 eV,yes
+cand_F2p_SF6_v_diss_F2_SF4p_F2,F2+ + SF6_v -> F2 + SF4+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.05 eV,yes
+cand_F2p_SF_v_char_F2_SFp,F2+ + SF_v -> F2 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.39 eV,yes
+cand_F2p_SF_v_diss_F_F_SFp,F2+ + SF_v -> F + F + SF+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.74 eV,yes
+cand_F2p_SO_diss_F2_O_Sp,F2+ + SO -> F2 + O + S+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.06 eV,yes
+cand_F2p_S_1D_char_F2_Sp,F2+ + S_1D -> F2 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.48 eV,yes
+cand_F2p_S_1D_diss_F_F_Sp,F2+ + S_1D -> F + F + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 4.83 eV,yes
+cand_F2p_S_1S_char_F2_Sp,F2+ + S_1S -> F2 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 8.08 eV,yes
+cand_F2p_S_1S_diss_Fp_F_S,F2+ + S_1S -> F+ + F + S,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.63 eV,yes
+cand_F2p_S_1S_diss_F_F_Sp,F2+ + S_1S -> F + F + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 6.43 eV,yes
+cand_Op_F2*_reac_Op_F_F,O+ + F2* -> O+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_Op_F2_v_reac_Op_F_F,O+ + F2_v -> O+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_Op_S_char_O_Sp,O+ + S -> O + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.26 eV,yes
+cand_Op_SF*_char_O_SFp,O+ + SF* -> O + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.32 eV,yes
+cand_Op_SF2*_char_O_SF2p,O+ + SF2* -> O + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.82 eV,yes
+cand_Op_SF2_v_char_O_SF2p,O+ + SF2_v -> O + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.82 eV,yes
+cand_Op_SF3*_char_O_SF3p,O+ + SF3* -> O + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.44 eV,yes
+cand_Op_SF3_v_char_O_SF3p,O+ + SF3_v -> O + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.44 eV,yes
+cand_Op_SF4*_char_O_SF4p,O+ + SF4* -> O + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.62 eV,yes
+cand_Op_SF4_v_char_O_SF4p,O+ + SF4_v -> O + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.62 eV,yes
+cand_Op_SF5*_char_O_SF5p,O+ + SF5* -> O + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.02 eV,yes
+cand_Op_SF5*_diss_O_SF4p_F,O+ + SF5* -> O + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.71 eV,yes
+cand_Op_SF5_v_char_O_SF5p,O+ + SF5_v -> O + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.02 eV,yes
+cand_Op_SF5_v_diss_O_SF4p_F,O+ + SF5_v -> O + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.71 eV,yes
+cand_Op_SF_v_char_O_SFp,O+ + SF_v -> O + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.32 eV,yes
+cand_Op_S_1D_char_O_Sp,O+ + S_1D -> O + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.40 eV,yes
+cand_Op_S_1S_char_O_Sp,O+ + S_1S -> O + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.01 eV,yes
+cand_O2p_F2*_reac_O2p_F_F,O2+ + F2* -> O2+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_O2p_F2_v_reac_O2p_F_F,O2+ + F2_v -> O2+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_O2p_S_char_O2_Sp,O2+ + S -> O2 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.71 eV,yes
+cand_O2p_SF*_char_O2_SFp,O2+ + SF* -> O2 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.77 eV,yes
+cand_O2p_SF2*_char_O2_SF2p,O2+ + SF2* -> O2 + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.27 eV,yes
+cand_O2p_SF2_v_char_O2_SF2p,O2+ + SF2_v -> O2 + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.27 eV,yes
+cand_O2p_SF3*_char_O2_SF3p,O2+ + SF3* -> O2 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.89 eV,yes
+cand_O2p_SF3*_diss_O_O_SF3p,O2+ + SF3* -> O + O + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.28 eV,yes
+cand_O2p_SF3_v_char_O2_SF3p,O2+ + SF3_v -> O2 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.89 eV,yes
+cand_O2p_SF3_v_diss_O_O_SF3p,O2+ + SF3_v -> O + O + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.28 eV,yes
+cand_O2p_SF4*_char_O2_SF4p,O2+ + SF4* -> O2 + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.07 eV,yes
+cand_O2p_SF4_v_char_O2_SF4p,O2+ + SF4_v -> O2 + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.07 eV,yes
+cand_O2p_SF5*_char_O2_SF5p,O2+ + SF5* -> O2 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.47 eV,yes
+cand_O2p_SF5_v_char_O2_SF5p,O2+ + SF5_v -> O2 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.47 eV,yes
+cand_O2p_SF_v_char_O2_SFp,O2+ + SF_v -> O2 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.77 eV,yes
+cand_O2p_S_1D_char_O2_Sp,O2+ + S_1D -> O2 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.86 eV,yes
+cand_O2p_S_1S_char_O2_Sp,O2+ + S_1S -> O2 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.46 eV,yes
+cand_O2p_S_1S_diss_O_O_Sp,O2+ + S_1S -> O + O + S+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.71 eV,yes
+cand_Sp_F2*_reac_Sp_F_F,S+ + F2* -> S+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_Sp_F2_v_reac_Sp_F_F,S+ + F2_v -> S+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_Sp_SF*_char_S_SFp,S+ + SF* -> S + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.06 eV,yes
+cand_Sp_SF2*_char_S_SF2p,S+ + SF2* -> S + SF2+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.44 eV,yes
+cand_Sp_SF2_v_char_S_SF2p,S+ + SF2_v -> S + SF2+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.44 eV,yes
+cand_Sp_SF3*_char_S_SF3p,S+ + SF3* -> S + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.18 eV,yes
+cand_Sp_SF3_v_char_S_SF3p,S+ + SF3_v -> S + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.18 eV,yes
+cand_Sp_SF4*_char_S_SF4p,S+ + SF4* -> S + SF4+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.64 eV,yes
+cand_Sp_SF4_v_char_S_SF4p,S+ + SF4_v -> S + SF4+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.64 eV,yes
+cand_Sp_SF5*_char_S_SF5p,S+ + SF5* -> S + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.76 eV,yes
+cand_Sp_SF5_v_char_S_SF5p,S+ + SF5_v -> S + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.76 eV,yes
+cand_Sp_SF_v_char_S_SFp,S+ + SF_v -> S + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.06 eV,yes
+cand_SFp_F2*_reac_SFp_F_F,SF+ + F2* -> SF+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SFp_F2_v_reac_SFp_F_F,SF+ + F2_v -> SF+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SFp_S_char_SF_Sp,SF+ + S -> SF + S+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.06 eV,yes
+cand_SFp_SF2*_char_SF_SF2p,SF+ + SF2* -> SF + SF2+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.50 eV,yes
+cand_SFp_SF2_v_char_SF_SF2p,SF+ + SF2_v -> SF + SF2+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.50 eV,yes
+cand_SFp_SF3*_char_SF_SF3p,SF+ + SF3* -> SF + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.12 eV,yes
+cand_SFp_SF3_v_char_SF_SF3p,SF+ + SF3_v -> SF + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.12 eV,yes
+cand_SFp_SF4*_char_SF_SF4p,SF+ + SF4* -> SF + SF4+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.70 eV,yes
+cand_SFp_SF4_v_char_SF_SF4p,SF+ + SF4_v -> SF + SF4+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.70 eV,yes
+cand_SFp_SF5*_char_SF_SF5p,SF+ + SF5* -> SF + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.70 eV,yes
+cand_SFp_SF5_v_char_SF_SF5p,SF+ + SF5_v -> SF + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.70 eV,yes
+cand_SFp_S_1D_char_SF_Sp,SF+ + S_1D -> SF + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.09 eV,yes
+cand_SFp_S_1S_char_SF_Sp,SF+ + S_1S -> SF + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.69 eV,yes
+cand_SF2p_F2*_reac_SF2p_F_F,SF2+ + F2* -> SF2+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF2p_F2_v_reac_SF2p_F_F,SF2+ + F2_v -> SF2+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF2p_S_char_SF2_Sp,SF2+ + S -> SF2 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.44 eV,yes
+cand_SF2p_SF*_char_SF2_SFp,SF2+ + SF* -> SF2 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.50 eV,yes
+cand_SF2p_SF3*_char_SF2_SF3p,SF2+ + SF3* -> SF2 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.62 eV,yes
+cand_SF2p_SF3_v_char_SF2_SF3p,SF2+ + SF3_v -> SF2 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.62 eV,yes
+cand_SF2p_SF4*_char_SF2_SF4p,SF2+ + SF4* -> SF2 + SF4+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.20 eV,yes
+cand_SF2p_SF4_v_char_SF2_SF4p,SF2+ + SF4_v -> SF2 + SF4+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.20 eV,yes
+cand_SF2p_SF5*_char_SF2_SF5p,SF2+ + SF5* -> SF2 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.20 eV,yes
+cand_SF2p_SF5_v_char_SF2_SF5p,SF2+ + SF5_v -> SF2 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.20 eV,yes
+cand_SF2p_SF_v_char_SF2_SFp,SF2+ + SF_v -> SF2 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.50 eV,yes
+cand_SF2p_S_1D_char_SF2_Sp,SF2+ + S_1D -> SF2 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.59 eV,yes
+cand_SF2p_S_1S_char_SF2_Sp,SF2+ + S_1S -> SF2 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.19 eV,yes
+cand_SF3p_F2*_reac_SF3p_F_F,SF3+ + F2* -> SF3+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF3p_F2_v_reac_SF3p_F_F,SF3+ + F2_v -> SF3+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF3p_SF5*_char_SF3_SF5p,SF3+ + SF5* -> SF3 + SF5+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF3p_SF5_v_char_SF3_SF5p,SF3+ + SF5_v -> SF3 + SF5+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF3p_S_1D_char_SF3_Sp,SF3+ + S_1D -> SF3 + S+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.03 eV,yes
+cand_SF3p_S_1S_char_SF3_Sp,SF3+ + S_1S -> SF3 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.57 eV,yes
+cand_SF4p_F2*_reac_SF4p_F_F,SF4+ + F2* -> SF4+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF4p_F2_v_reac_SF4p_F_F,SF4+ + F2_v -> SF4+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF4p_S_char_SF4_Sp,SF4+ + S -> SF4 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.64 eV,yes
+cand_SF4p_SF*_char_SF4_SFp,SF4+ + SF* -> SF4 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.70 eV,yes
+cand_SF4p_SF2*_char_SF4_SF2p,SF4+ + SF2* -> SF4 + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.20 eV,yes
+cand_SF4p_SF2_v_char_SF4_SF2p,SF4+ + SF2_v -> SF4 + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.20 eV,yes
+cand_SF4p_SF3*_char_SF4_SF3p,SF4+ + SF3* -> SF4 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.82 eV,yes
+cand_SF4p_SF3*_diss_SF2_F2_SF3p,SF4+ + SF3* -> SF2 + F2 + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.02 eV,yes
+cand_SF4p_SF3_v_char_SF4_SF3p,SF4+ + SF3_v -> SF4 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.82 eV,yes
+cand_SF4p_SF3_v_diss_SF2_F2_SF3p,SF4+ + SF3_v -> SF2 + F2 + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.02 eV,yes
+cand_SF4p_SF5*_char_SF4_SF5p,SF4+ + SF5* -> SF4 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.40 eV,yes
+cand_SF4p_SF5_v_char_SF4_SF5p,SF4+ + SF5_v -> SF4 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.40 eV,yes
+cand_SF4p_SF_v_char_SF4_SFp,SF4+ + SF_v -> SF4 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.70 eV,yes
+cand_SF4p_S_1D_char_SF4_Sp,SF4+ + S_1D -> SF4 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 2.79 eV,yes
+cand_SF4p_S_1S_char_SF4_Sp,SF4+ + S_1S -> SF4 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.39 eV,yes
+cand_SF4p_S_1S_diss_SF2p_F2_S,SF4+ + S_1S -> SF2+ + F2 + S,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.89 eV,yes
+cand_SF4p_S_1S_diss_SF2_F2_Sp,SF4+ + S_1S -> SF2 + F2 + S+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.45 eV,yes
+cand_SF5p_F2*_reac_SF5p_F_F,SF5+ + F2* -> SF5+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF5p_F2_v_reac_SF5p_F_F,SF5+ + F2_v -> SF5+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF5p_S_char_SF5_Sp,SF5+ + S -> SF5 + S+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.76 eV,yes
+cand_SF5p_SF*_char_SF5_SFp,SF5+ + SF* -> SF5 + SF+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.70 eV,yes
+cand_SF5p_SF2*_char_SF5_SF2p,SF5+ + SF2* -> SF5 + SF2+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.20 eV,yes
+cand_SF5p_SF2_v_char_SF5_SF2p,SF5+ + SF2_v -> SF5 + SF2+,ion_neutral,charge_transfer,2,candidate,endothermic by 1.20 eV,yes
+cand_SF5p_SF3*_char_SF5_SF3p,SF5+ + SF3* -> SF5 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.42 eV,yes
+cand_SF5p_SF3*_diss_SF4_F_SF3p,SF5+ + SF3* -> SF4 + F + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.91 eV,yes
+cand_SF5p_SF3_v_char_SF5_SF3p,SF5+ + SF3_v -> SF5 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.42 eV,yes
+cand_SF5p_SF3_v_diss_SF4_F_SF3p,SF5+ + SF3_v -> SF4 + F + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.91 eV,yes
+cand_SF5p_SF5*_diss_SF6_SF4p,SF5+ + SF5* -> SF6 + SF4+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.67 eV,yes
+cand_SF5p_SF5_v_diss_SF6_SF4p,SF5+ + SF5_v -> SF6 + SF4+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.67 eV,yes
+cand_SF5p_SF_v_char_SF5_SFp,SF5+ + SF_v -> SF5 + SF+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.70 eV,yes
+cand_SF5p_S_1D_char_SF5_Sp,SF5+ + S_1D -> SF5 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 0.39 eV,yes
+cand_SF5p_S_1D_diss_SF4_F_Sp,SF5+ + S_1D -> SF4 + F + S+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.94 eV,yes
+cand_SF5p_S_1S_char_SF5_Sp,SF5+ + S_1S -> SF5 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 1.99 eV,yes
+cand_SF5p_S_1S_diss_SF4p_F_S,SF5+ + S_1S -> SF4+ + F + S,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.98 eV,yes
+cand_SF5p_S_1S_diss_SF4_F_Sp,SF5+ + S_1S -> SF4 + F + S+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.34 eV,yes
+cand_SF6p_F*_diss_SF5p_F_F,SF6+ + F* -> SF5+ + F + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_F*_diss_SF4p_F2_F,SF6+ + F* -> SF4+ + F2 + F,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_F2*_char_SF6_F2p,SF6+ + F2* -> SF6 + F2+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.37 eV,yes
+cand_SF6p_F2*_diss_SF5p_F_F2,SF6+ + F2* -> SF5+ + F + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_F2*_diss_SF4p_F2_F2,SF6+ + F2* -> SF4+ + F2 + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_F2*_reac_SF6p_F_F,SF6+ + F2* -> SF6+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF6p_F2_v_char_SF6_F2p,SF6+ + F2_v -> SF6 + F2+,ion_neutral,charge_transfer,2,candidate,endothermic by 0.37 eV,yes
+cand_SF6p_F2_v_diss_SF5p_F_F2,SF6+ + F2_v -> SF5+ + F + F2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_F2_v_diss_SF4p_F2_F2,SF6+ + F2_v -> SF4+ + F2 + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_F2_v_reac_SF6p_F_F,SF6+ + F2_v -> SF6+ + F + F,ion_neutral,reactive_scattering,2,candidate,endothermic by 1.65 eV,yes
+cand_SF6p_FO_diss_SF5p_F_FO,SF6+ + FO -> SF5+ + F + FO,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_FO_diss_SF4p_F2_FO,SF6+ + FO -> SF4+ + F2 + FO,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_FO_diss_SF6_F_Op,SF6+ + FO -> SF6 + F + O+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.58 eV,yes
+cand_SF6p_S_char_SF6_Sp,SF6+ + S -> SF6 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.96 eV,yes
+cand_SF6p_S_diss_SF5p_F_S,SF6+ + S -> SF5+ + F + S,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_S_diss_SF5_F_Sp,SF6+ + S -> SF5 + F + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.90 eV,yes
+cand_SF6p_S_diss_SF4p_F2_S,SF6+ + S -> SF4+ + F2 + S,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_S_diss_SF4_F2_Sp,SF6+ + S -> SF4 + F2 + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.22 eV,yes
+cand_SF6p_SF*_char_SF6_SFp,SF6+ + SF* -> SF6 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.02 eV,yes
+cand_SF6p_SF*_diss_SF5p_F_SF,SF6+ + SF* -> SF5+ + F + SF,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF*_diss_SF5_F_SFp,SF6+ + SF* -> SF5 + F + SF+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.96 eV,yes
+cand_SF6p_SF*_diss_SF4p_F2_SF,SF6+ + SF* -> SF4+ + F2 + SF,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF*_diss_SF4_F2_SFp,SF6+ + SF* -> SF4 + F2 + SF+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.28 eV,yes
+cand_SF6p_SF2*_char_SF6_SF2p,SF6+ + SF2* -> SF6 + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.52 eV,yes
+cand_SF6p_SF2*_diss_SF5p_F_SF2,SF6+ + SF2* -> SF5+ + F + SF2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF2*_diss_SF5_F_SF2p,SF6+ + SF2* -> SF5 + F + SF2+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.46 eV,yes
+cand_SF6p_SF2*_diss_SF4p_F2_SF2,SF6+ + SF2* -> SF4+ + F2 + SF2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF2*_diss_SF4_F2_SF2p,SF6+ + SF2* -> SF4 + F2 + SF2+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.22 eV,yes
+cand_SF6p_SF2*_diss_SF6_Sp_F2,SF6+ + SF2* -> SF6 + S+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.99 eV,yes
+cand_SF6p_SF2_v_char_SF6_SF2p,SF6+ + SF2_v -> SF6 + SF2+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.52 eV,yes
+cand_SF6p_SF2_v_diss_SF5p_F_SF2,SF6+ + SF2_v -> SF5+ + F + SF2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF2_v_diss_SF5_F_SF2p,SF6+ + SF2_v -> SF5 + F + SF2+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.46 eV,yes
+cand_SF6p_SF2_v_diss_SF4p_F2_SF2,SF6+ + SF2_v -> SF4+ + F2 + SF2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF2_v_diss_SF4_F2_SF2p,SF6+ + SF2_v -> SF4 + F2 + SF2+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.22 eV,yes
+cand_SF6p_SF2_v_diss_SF6_Sp_F2,SF6+ + SF2_v -> SF6 + S+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.99 eV,yes
+cand_SF6p_SF3*_char_SF6_SF3p,SF6+ + SF3* -> SF6 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.14 eV,yes
+cand_SF6p_SF3*_diss_SF5p_F_SF3,SF6+ + SF3* -> SF5+ + F + SF3,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF3*_diss_SF5_F_SF3p,SF6+ + SF3* -> SF5 + F + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.08 eV,yes
+cand_SF6p_SF3*_diss_SF4p_F2_SF3,SF6+ + SF3* -> SF4+ + F2 + SF3,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF3*_diss_SF4_F2_SF3p,SF6+ + SF3* -> SF4 + F2 + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.40 eV,yes
+cand_SF6p_SF3_v_char_SF6_SF3p,SF6+ + SF3_v -> SF6 + SF3+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.14 eV,yes
+cand_SF6p_SF3_v_diss_SF5p_F_SF3,SF6+ + SF3_v -> SF5+ + F + SF3,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF3_v_diss_SF5_F_SF3p,SF6+ + SF3_v -> SF5 + F + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.08 eV,yes
+cand_SF6p_SF3_v_diss_SF4p_F2_SF3,SF6+ + SF3_v -> SF4+ + F2 + SF3,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF3_v_diss_SF4_F2_SF3p,SF6+ + SF3_v -> SF4 + F2 + SF3+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.40 eV,yes
+cand_SF6p_SF4*_char_SF6_SF4p,SF6+ + SF4* -> SF6 + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.32 eV,yes
+cand_SF6p_SF4*_diss_SF5p_F_SF4,SF6+ + SF4* -> SF5+ + F + SF4,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF4*_diss_SF5_F_SF4p,SF6+ + SF4* -> SF5 + F + SF4+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.74 eV,yes
+cand_SF6p_SF4*_diss_SF4p_F2_SF4,SF6+ + SF4* -> SF4+ + F2 + SF4,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF4*_diss_SF6_SF2p_F2,SF6+ + SF4* -> SF6 + SF2+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.32 eV,yes
+cand_SF6p_SF4*_diss_SF5p_SF5,SF6+ + SF4* -> SF5+ + SF5,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.99 eV,yes
+cand_SF6p_SF4_v_char_SF6_SF4p,SF6+ + SF4_v -> SF6 + SF4+,ion_neutral,charge_transfer,2,candidate,exothermic by 3.32 eV,yes
+cand_SF6p_SF4_v_diss_SF5p_F_SF4,SF6+ + SF4_v -> SF5+ + F + SF4,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF4_v_diss_SF5_F_SF4p,SF6+ + SF4_v -> SF5 + F + SF4+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.74 eV,yes
+cand_SF6p_SF4_v_diss_SF4p_F2_SF4,SF6+ + SF4_v -> SF4+ + F2 + SF4,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF4_v_diss_SF6_SF2p_F2,SF6+ + SF4_v -> SF6 + SF2+ + F2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.32 eV,yes
+cand_SF6p_SF4_v_diss_SF5p_SF5,SF6+ + SF4_v -> SF5+ + SF5,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.99 eV,yes
+cand_SF6p_SF5*_char_SF6_SF5p,SF6+ + SF5* -> SF6 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.72 eV,yes
+cand_SF6p_SF5*_diss_SF5p_F_SF5,SF6+ + SF5* -> SF5+ + F + SF5,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF5*_diss_SF4p_F2_SF5,SF6+ + SF5* -> SF4+ + F2 + SF5,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF5*_diss_SF4_F2_SF5p,SF6+ + SF5* -> SF4 + F2 + SF5+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.98 eV,yes
+cand_SF6p_SF5*_diss_SF6_SF4p_F,SF6+ + SF5* -> SF6 + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.99 eV,yes
+cand_SF6p_SF5_v_char_SF6_SF5p,SF6+ + SF5_v -> SF6 + SF5+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.72 eV,yes
+cand_SF6p_SF5_v_diss_SF5p_F_SF5,SF6+ + SF5_v -> SF5+ + F + SF5,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF5_v_diss_SF4p_F2_SF5,SF6+ + SF5_v -> SF4+ + F2 + SF5,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF5_v_diss_SF4_F2_SF5p,SF6+ + SF5_v -> SF4 + F2 + SF5+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.98 eV,yes
+cand_SF6p_SF5_v_diss_SF6_SF4p_F,SF6+ + SF5_v -> SF6 + SF4+ + F,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.99 eV,yes
+cand_SF6p_SF_v_char_SF6_SFp,SF6+ + SF_v -> SF6 + SF+,ion_neutral,charge_transfer,2,candidate,exothermic by 5.02 eV,yes
+cand_SF6p_SF_v_diss_SF5p_F_SF,SF6+ + SF_v -> SF5+ + F + SF,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SF_v_diss_SF5_F_SFp,SF6+ + SF_v -> SF5 + F + SF+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.96 eV,yes
+cand_SF6p_SF_v_diss_SF4p_F2_SF,SF6+ + SF_v -> SF4+ + F2 + SF,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SF_v_diss_SF4_F2_SFp,SF6+ + SF_v -> SF4 + F2 + SF+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 0.28 eV,yes
+cand_SF6p_SO_diss_SF5p_F_SO,SF6+ + SO -> SF5+ + F + SO,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SO_diss_SF4p_F2_SO,SF6+ + SO -> SF4+ + F2 + SO,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO_diss_SF6_O_Sp,SF6+ + SO -> SF6 + O + S+,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.43 eV,yes
+cand_SF6p_SOF_diss_SF5p_F_SOF,SF6+ + SOF -> SF5+ + F + SOF,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF_diss_SF4p_F2_SOF,SF6+ + SOF -> SF4+ + F2 + SOF,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF2_diss_SF5p_F_SOF2,SF6+ + SOF2 -> SF5+ + F + SOF2,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF2_diss_SF4p_F2_SOF2,SF6+ + SOF2 -> SF4+ + F2 + SOF2,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF3_diss_SF5p_F_SOF3,SF6+ + SOF3 -> SF5+ + F + SOF3,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF3_diss_SF4p_F2_SOF3,SF6+ + SOF3 -> SF4+ + F2 + SOF3,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF4_diss_SF5p_F_SOF4,SF6+ + SOF4 -> SF5+ + F + SOF4,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF4_diss_SF4p_F2_SOF4,SF6+ + SOF4 -> SF4+ + F2 + SOF4,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_S_1D_char_SF6_Sp,SF6+ + S_1D -> SF6 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 6.11 eV,yes
+cand_SF6p_S_1D_diss_SF5p_F_S,SF6+ + S_1D -> SF5+ + F + S,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.81 eV,yes
+cand_SF6p_S_1D_diss_SF5_F_Sp,SF6+ + S_1D -> SF5 + F + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.05 eV,yes
+cand_SF6p_S_1D_diss_SF4p_F2_S,SF6+ + S_1D -> SF4+ + F2 + S,ion_neutral,dissociative_charge_transfer,2,candidate,endothermic by 0.27 eV,yes
+cand_SF6p_S_1D_diss_SF4_F2_Sp,SF6+ + S_1D -> SF4 + F2 + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.37 eV,yes
+cand_SF6p_S_1S_char_SF6_Sp,SF6+ + S_1S -> SF6 + S+,ion_neutral,charge_transfer,2,candidate,exothermic by 7.71 eV,yes
+cand_SF6p_S_1S_diss_SF5p_F_S,SF6+ + S_1S -> SF5+ + F + S,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 4.41 eV,yes
+cand_SF6p_S_1S_diss_SF5_F_Sp,SF6+ + S_1S -> SF5 + F + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 3.65 eV,yes
+cand_SF6p_S_1S_diss_SF4p_F2_S,SF6+ + S_1S -> SF4+ + F2 + S,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.33 eV,yes
+cand_SF6p_S_1S_diss_SF4_F2_Sp,SF6+ + S_1S -> SF4 + F2 + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.97 eV,yes
+cand_Ar_4s_S_penning,Ar_4s + S -> Ar + S+ + e,neutral_neutral,penning_ionization,2,candidate,exothermic by 1.24 eV,yes
+cand_SO2_diss_O_1D,e + SO2 -> e + SO + O_1D,electron,dissociation,3,candidate,endothermic by 7.69 eV,yes
+cand_SO2_diss_O_1S,e + SO2 -> e + SO + O_1S,electron,dissociation,3,candidate,endothermic by 9.91 eV,yes
+cand_SO2_diss_S_1D,e + SO2 -> e + O2 + S_1D,electron,dissociation,3,candidate,endothermic by 7.09 eV,yes
+cand_SO2_diss_S_1S,e + SO2 -> e + O2 + S_1S,electron,dissociation,3,candidate,endothermic by 8.70 eV,yes
+cand_SO2_diss_O2_a1Delta,e + SO2 -> e + S + O2_a1Delta,electron,dissociation,3,candidate,endothermic by 6.93 eV,yes
+cand_SO2_diss_O2_b1Sigma,e + SO2 -> e + S + O2_b1Sigma,electron,dissociation,3,candidate,endothermic by 7.58 eV,yes
+cand_SO2F2_diss_O_1D,e + SO2F2 -> e + SOF2 + O_1D,electron,dissociation,3,candidate,endothermic by 6.77 eV,yes
+cand_SO2F2_diss_O_1S,e + SO2F2 -> e + SOF2 + O_1S,electron,dissociation,3,candidate,endothermic by 9.00 eV,yes
+cand_SO2F2_diss_O2_a1Delta,e + SO2F2 -> e + SF2 + O2_a1Delta,electron,dissociation,3,candidate,endothermic by 5.76 eV,yes
+cand_SO2F2_diss_O2_b1Sigma,e + SO2F2 -> e + SF2 + O2_b1Sigma,electron,dissociation,3,candidate,endothermic by 6.41 eV,yes
+cand_Arp_FO*_diss_Ar_F_Op,Ar+ + FO* -> Ar + F + O+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.14 eV,yes
+cand_Arp_FO_v_diss_Ar_F_Op,Ar+ + FO_v -> Ar + F + O+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.14 eV,yes
+cand_Arp_SO*_diss_Ar_O_Sp,Ar+ + SO* -> Ar + O + S+,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 0.01 eV,yes
+cand_Arp_SO2_diss_Ar_Sp_O2,Ar+ + SO2 -> Ar + S+ + O2,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.55 eV,yes
+cand_Arp_SO2F2_diss_Ar_SF2p_O2,Ar+ + SO2F2 -> Ar + SF2+ + O2,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 0.17 eV,yes
+cand_Arp_SO2F2_diss_Ar_SF2_O2p,Ar+ + SO2F2 -> Ar + SF2 + O2+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.10 eV,yes
+cand_Arp_SO_v_diss_Ar_O_Sp,Ar+ + SO_v -> Ar + O + S+,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 0.01 eV,yes
+cand_Fp_FO*_diss_F_F_Op,F+ + FO* -> F + F + O+,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.53 eV,yes
+cand_Fp_FO_v_diss_F_F_Op,F+ + FO_v -> F + F + O+,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.53 eV,yes
+cand_Fp_SO*_diss_F_Op_S,F+ + SO* -> F + O+ + S,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.59 eV,yes
+cand_Fp_SO*_diss_F_O_Sp,F+ + SO* -> F + O + S+,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.67 eV,yes
+cand_Fp_SO2_diss_F_SO_Op,F+ + SO2 -> F + SO + O+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.92 eV,yes
+cand_Fp_SO2_diss_F_Sp_O2,F+ + SO2 -> F + S+ + O2,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.11 eV,yes
+cand_Fp_SO2_diss_F_S_O2p,F+ + SO2 -> F + S + O2+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.60 eV,yes
+cand_Fp_SO2F2_diss_F_SOF2_Op,F+ + SO2F2 -> F + SOF2 + O+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.00 eV,yes
+cand_Fp_SO2F2_diss_F_SF2p_O2,F+ + SO2F2 -> F + SF2+ + O2,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.84 eV,yes
+cand_Fp_SO2F2_diss_F_SF2_O2p,F+ + SO2F2 -> F + SF2 + O2+,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 0.57 eV,yes
+cand_Fp_SO_v_diss_F_Op_S,F+ + SO_v -> F + O+ + S,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.59 eV,yes
+cand_Fp_SO_v_diss_F_O_Sp,F+ + SO_v -> F + O + S+,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.67 eV,yes
+cand_F2p_FO*_diss_F2_F_Op,F2+ + FO* -> F2 + F + O+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.21 eV,yes
+cand_F2p_FO_v_diss_F2_F_Op,F2+ + FO_v -> F2 + F + O+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.21 eV,yes
+cand_F2p_SO*_diss_F2_O_Sp,F2+ + SO* -> F2 + O + S+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.06 eV,yes
+cand_F2p_SO2_diss_F2_Sp_O2,F2+ + SO2 -> F2 + S+ + O2,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.62 eV,yes
+cand_F2p_SO2F2_diss_F2_SF2p_O2,F2+ + SO2F2 -> F2 + SF2+ + O2,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 0.10 eV,yes
+cand_F2p_SO2F2_diss_F2_SF2_O2p,F2+ + SO2F2 -> F2 + SF2 + O2+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.17 eV,yes
+cand_F2p_SO_v_diss_F2_O_Sp,F2+ + SO_v -> F2 + O + S+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.06 eV,yes
+cand_Op_SO2F2_diss_O_SF2p_O2,O+ + SO2F2 -> O + SF2+ + O2,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.97 eV,yes
+cand_SF2p_SO2F2_diss_SO2_SF4p,SF2+ + SO2F2 -> SO2 + SF4+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.15 eV,yes
+cand_SF4p_SO2_diss_SO2F2_SF2p,SF4+ + SO2 -> SO2F2 + SF2+,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.15 eV,yes
+cand_SF6p_FO*_diss_SF5p_F_FO,SF6+ + FO* -> SF5+ + F + FO,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_FO*_diss_SF4p_F2_FO,SF6+ + FO* -> SF4+ + F2 + FO,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_FO*_diss_SF6_F_Op,SF6+ + FO* -> SF6 + F + O+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.58 eV,yes
+cand_SF6p_FO_v_diss_SF5p_F_FO,SF6+ + FO_v -> SF5+ + F + FO,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_FO_v_diss_SF4p_F2_FO,SF6+ + FO_v -> SF4+ + F2 + FO,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_FO_v_diss_SF6_F_Op,SF6+ + FO_v -> SF6 + F + O+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.58 eV,yes
+cand_SF6p_SO*_diss_SF5p_F_SO,SF6+ + SO* -> SF5+ + F + SO,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SO*_diss_SF4p_F2_SO,SF6+ + SO* -> SF4+ + F2 + SO,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO*_diss_SF6_O_Sp,SF6+ + SO* -> SF6 + O + S+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.43 eV,yes
+cand_SF6p_SO2_diss_SF5p_F_SO2,SF6+ + SO2 -> SF5+ + F + SO2,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SO2_diss_SF4p_F2_SO2,SF6+ + SO2 -> SF4+ + F2 + SO2,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO2_diss_SF6_Sp_O2,SF6+ + SO2 -> SF6 + S+ + O2,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.99 eV,yes
+cand_SF6p_SO2F2_diss_SF5p_F_SO2F2,SF6+ + SO2F2 -> SF5+ + F + SO2F2,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SO2F2_diss_SF4p_F2_SO2F2,SF6+ + SO2F2 -> SF4+ + F2 + SO2F2,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO2F2_diss_SF6_SF2p_O2,SF6+ + SO2F2 -> SF6 + SF2+ + O2,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.27 eV,yes
+cand_SF6p_SO2F2_diss_SF6_SF2_O2p,SF6+ + SO2F2 -> SF6 + SF2 + O2+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.54 eV,yes
+cand_SF6p_SOF*_diss_SF5p_F_SOF,SF6+ + SOF* -> SF5+ + F + SOF,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF*_diss_SF4p_F2_SOF,SF6+ + SOF* -> SF4+ + F2 + SOF,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF2*_diss_SF5p_F_SOF2,SF6+ + SOF2* -> SF5+ + F + SOF2,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF2*_diss_SF4p_F2_SOF2,SF6+ + SOF2* -> SF4+ + F2 + SOF2,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF2_v_diss_SF5p_F_SOF2,SF6+ + SOF2_v -> SF5+ + F + SOF2,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF2_v_diss_SF4p_F2_SOF2,SF6+ + SOF2_v -> SF4+ + F2 + SOF2,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF3*_diss_SF5p_F_SOF3,SF6+ + SOF3* -> SF5+ + F + SOF3,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF3*_diss_SF4p_F2_SOF3,SF6+ + SOF3* -> SF4+ + F2 + SOF3,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF3_v_diss_SF5p_F_SOF3,SF6+ + SOF3_v -> SF5+ + F + SOF3,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF3_v_diss_SF4p_F2_SOF3,SF6+ + SOF3_v -> SF4+ + F2 + SOF3,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF4*_diss_SF5p_F_SOF4,SF6+ + SOF4* -> SF5+ + F + SOF4,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF4*_diss_SF4p_F2_SOF4,SF6+ + SOF4* -> SF4+ + F2 + SOF4,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF4_v_diss_SF5p_F_SOF4,SF6+ + SOF4_v -> SF5+ + F + SOF4,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF4_v_diss_SF4p_F2_SOF4,SF6+ + SOF4_v -> SF4+ + F2 + SOF4,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SOF_v_diss_SF5p_F_SOF,SF6+ + SOF_v -> SF5+ + F + SOF,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SOF_v_diss_SF4p_F2_SOF,SF6+ + SOF_v -> SF4+ + F2 + SOF,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO_v_diss_SF5p_F_SO,SF6+ + SO_v -> SF5+ + F + SO,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SO_v_diss_SF4p_F2_SO,SF6+ + SO_v -> SF4+ + F2 + SO,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO_v_diss_SF6_O_Sp,SF6+ + SO_v -> SF6 + O + S+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.43 eV,yes
+cand_Arp_SO2*_diss_Ar_Sp_O2,Ar+ + SO2* -> Ar + S+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.55 eV,yes
+cand_Arp_SO2F2*_diss_Ar_SF2p_O2,Ar+ + SO2F2* -> Ar + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 0.17 eV,yes
+cand_Arp_SO2F2*_diss_Ar_SF2_O2p,Ar+ + SO2F2* -> Ar + SF2 + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.10 eV,yes
+cand_Arp_SO2F2_v_diss_Ar_SF2p_O2,Ar+ + SO2F2_v -> Ar + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 0.17 eV,yes
+cand_Arp_SO2F2_v_diss_Ar_SF2_O2p,Ar+ + SO2F2_v -> Ar + SF2 + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.10 eV,yes
+cand_Arp_SO2_v_diss_Ar_Sp_O2,Ar+ + SO2_v -> Ar + S+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.55 eV,yes
+cand_Fp_SO2*_diss_F_SO_Op,F+ + SO2* -> F + SO + O+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.92 eV,yes
+cand_Fp_SO2*_diss_F_Sp_O2,F+ + SO2* -> F + S+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.11 eV,yes
+cand_Fp_SO2*_diss_F_S_O2p,F+ + SO2* -> F + S + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.60 eV,yes
+cand_Fp_SO2F2*_diss_F_SOF2_Op,F+ + SO2F2* -> F + SOF2 + O+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.00 eV,yes
+cand_Fp_SO2F2*_diss_F_SF2p_O2,F+ + SO2F2* -> F + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.84 eV,yes
+cand_Fp_SO2F2*_diss_F_SF2_O2p,F+ + SO2F2* -> F + SF2 + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 0.57 eV,yes
+cand_Fp_SO2F2_v_diss_F_SOF2_Op,F+ + SO2F2_v -> F + SOF2 + O+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.00 eV,yes
+cand_Fp_SO2F2_v_diss_F_SF2p_O2,F+ + SO2F2_v -> F + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.84 eV,yes
+cand_Fp_SO2F2_v_diss_F_SF2_O2p,F+ + SO2F2_v -> F + SF2 + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 0.57 eV,yes
+cand_Fp_SO2_v_diss_F_SO_Op,F+ + SO2_v -> F + SO + O+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.92 eV,yes
+cand_Fp_SO2_v_diss_F_Sp_O2,F+ + SO2_v -> F + S+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.11 eV,yes
+cand_Fp_SO2_v_diss_F_S_O2p,F+ + SO2_v -> F + S + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.60 eV,yes
+cand_F2p_SO2*_diss_F2_Sp_O2,F2+ + SO2* -> F2 + S+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.62 eV,yes
+cand_F2p_SO2F2*_diss_F2_SF2p_O2,F2+ + SO2F2* -> F2 + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 0.10 eV,yes
+cand_F2p_SO2F2*_diss_F2_SF2_O2p,F2+ + SO2F2* -> F2 + SF2 + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.17 eV,yes
+cand_F2p_SO2F2_v_diss_F2_SF2p_O2,F2+ + SO2F2_v -> F2 + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 0.10 eV,yes
+cand_F2p_SO2F2_v_diss_F2_SF2_O2p,F2+ + SO2F2_v -> F2 + SF2 + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.17 eV,yes
+cand_F2p_SO2_v_diss_F2_Sp_O2,F2+ + SO2_v -> F2 + S+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.62 eV,yes
+cand_Op_SO2F2*_diss_O_SF2p_O2,O+ + SO2F2* -> O + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.97 eV,yes
+cand_Op_SO2F2_v_diss_O_SF2p_O2,O+ + SO2F2_v -> O + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.97 eV,yes
+cand_SF2p_SO2F2*_diss_SO2_SF4p,SF2+ + SO2F2* -> SO2 + SF4+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.15 eV,yes
+cand_SF2p_SO2F2_v_diss_SO2_SF4p,SF2+ + SO2F2_v -> SO2 + SF4+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.15 eV,yes
+cand_SF4p_SO2*_diss_SO2F2_SF2p,SF4+ + SO2* -> SO2F2 + SF2+,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.15 eV,yes
+cand_SF4p_SO2_v_diss_SO2F2_SF2p,SF4+ + SO2_v -> SO2F2 + SF2+,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.15 eV,yes
+cand_SF6p_SO2*_diss_SF5p_F_SO2,SF6+ + SO2* -> SF5+ + F + SO2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SO2*_diss_SF4p_F2_SO2,SF6+ + SO2* -> SF4+ + F2 + SO2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO2*_diss_SF6_Sp_O2,SF6+ + SO2* -> SF6 + S+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.99 eV,yes
+cand_SF6p_SO2F2*_diss_SF5p_F_SO2F2,SF6+ + SO2F2* -> SF5+ + F + SO2F2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SO2F2*_diss_SF4p_F2_SO2F2,SF6+ + SO2F2* -> SF4+ + F2 + SO2F2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO2F2*_diss_SF6_SF2p_O2,SF6+ + SO2F2* -> SF6 + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.27 eV,yes
+cand_SF6p_SO2F2*_diss_SF6_SF2_O2p,SF6+ + SO2F2* -> SF6 + SF2 + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.54 eV,yes
+cand_SF6p_SO2F2_v_diss_SF5p_F_SO2F2,SF6+ + SO2F2_v -> SF5+ + F + SO2F2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SO2F2_v_diss_SF4p_F2_SO2F2,SF6+ + SO2F2_v -> SF4+ + F2 + SO2F2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO2F2_v_diss_SF6_SF2p_O2,SF6+ + SO2F2_v -> SF6 + SF2+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.27 eV,yes
+cand_SF6p_SO2F2_v_diss_SF6_SF2_O2p,SF6+ + SO2F2_v -> SF6 + SF2 + O2+,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.54 eV,yes
+cand_SF6p_SO2_v_diss_SF5p_F_SO2,SF6+ + SO2_v -> SF5+ + F + SO2,ion_neutral,dissociative_charge_transfer,4,candidate,exothermic by 1.66 eV,yes
+cand_SF6p_SO2_v_diss_SF4p_F2_SO2,SF6+ + SO2_v -> SF4+ + F2 + SO2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 1.42 eV,yes
+cand_SF6p_SO2_v_diss_SF6_Sp_O2,SF6+ + SO2_v -> SF6 + S+ + O2,ion_neutral,dissociative_charge_transfer,4,candidate,endothermic by 0.99 eV,yes

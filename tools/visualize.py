@@ -29,6 +29,7 @@ each side of it.
 
 from __future__ import annotations
 
+import csv
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -866,6 +867,21 @@ def _species_rows(layer: str, species: list[dict], reactions: list[dict]) -> lis
     return rows
 
 
+def _passed(rows: list[str]) -> list[str]:
+    """The header, and the rows whose flag says the layer settled it.
+
+    Parsed as CSV rather than split on commas: a verdict like "conserved,
+    species proposed" is one quoted field, and counting columns by comma put
+    four hundred and forty-six settled reactions at thirty-one.
+    """
+
+    header = next(csv.reader([rows[0]]))
+    flag = "decided" if "decided" in header else "ready"
+    position = header.index(flag)
+    kept = [row for row in rows[1:] if next(csv.reader([row]))[position] == "yes"]
+    return [rows[0], *kept]
+
+
 def _tally(verdicts: dict[str, str]) -> dict:
     """Decided, undecided, never asked. A count of verdicts hides the middle."""
 
@@ -909,8 +925,15 @@ def per_layer(
             ]
             rows.append(",".join(f'"{f}"' if "," in str(f) else str(f) for f in fields))
         (target / "reactions.csv").write_text(NEWLINE.join(rows) + NEWLINE, encoding="utf-8")
-        (target / "species.csv").write_text(
-            NEWLINE.join(_species_rows(layer, heavy, reactions)) + NEWLINE, encoding="utf-8"
+        # The subset the layer actually settled, so it can be handed on without
+        # anyone re-deriving which rows those were.
+        (target / "reactions_passed.csv").write_text(
+            NEWLINE.join(_passed(rows)) + NEWLINE, encoding="utf-8"
+        )
+        state = _species_rows(layer, heavy, reactions)
+        (target / "species.csv").write_text(NEWLINE.join(state) + NEWLINE, encoding="utf-8")
+        (target / "species_passed.csv").write_text(
+            NEWLINE.join(_passed(state)) + NEWLINE, encoding="utf-8"
         )
 
         blocked = [

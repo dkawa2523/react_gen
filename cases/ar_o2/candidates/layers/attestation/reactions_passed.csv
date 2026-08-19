@@ -1,0 +1,7 @@
+id,equation,family,type,depth,status,verdict,decided
+e_O2_dissociation_O_O,e + O2 -> e + 2 O,electron,dissociation,0,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_O2_dissociation_O_O1D,e + O2 -> e + O + O_1D,electron,dissociation,0,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_O_excitation_O_1D,e + O -> e + O_1D,electron,excitation,1,curated,doi:10.1007/s11090-013-9513-1,yes
+e_O_excitation_O_1S,e + O -> e + O_1S,electron,excitation,1,literature_supported,nist_asd,yes
+e_O_1S_elastic,e + O_1S -> e + O_1S,electron,elastic,1,literature_supported,nist_asd,yes
+e_O_1S_superelastic,e + O_1S -> e + O,electron,deexcitation,1,literature_supported,nist_asd,yes
