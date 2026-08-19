@@ -1,0 +1,7 @@
+id,equation,family,type,status,verdict
+e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,curated,unknown
+e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,curated,unknown
+e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,curated,unknown
+e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,literature_supported,unknown
+e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,literature_supported,unknown
+e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,literature_supported,unknown

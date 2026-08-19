@@ -36,6 +36,7 @@ import networkx as nx
 import yaml
 
 ELECTRON = "e"
+NEWLINE = chr(10)
 # Depth reads as distance from the feed gas, so it gets a sequential ramp.
 DEPTH = ["#1B3A5C", "#2E6E8E", "#4FA3A5", "#8FC7A8", "#CBE3C3", "#E8EFD9"]
 STATUS = {"curated": "#1B3A5C", "literature_supported": "#4FA3A5", "candidate": "#D9A441"}
@@ -238,6 +239,127 @@ def charts(
     plt.close(figure)
 
 
+# --------------------------------------------------------------------------- per layer
+
+
+def per_layer(species: list[dict], reactions: list[dict], out: Path, title: str) -> list[str]:
+    """One directory per layer of judgement: the same list, seen four ways.
+
+    A layer is a verdict on every reaction rather than a subset of them, so
+    each directory holds the whole list with that layer's answer attached, the
+    counts, and the network coloured by it. Reading them side by side is how a
+    reviewer sees that structure passes everywhere and attestation passes
+    almost nowhere, which one merged view flattens.
+    """
+
+    names = sorted({layer for r in reactions for layer in (r.get("evidence") or {})})
+    for layer in names:
+        target = out / layer
+        target.mkdir(parents=True, exist_ok=True)
+        verdicts = {r["id"]: (r.get("evidence") or {}).get(layer, "not_run") for r in reactions}
+        # Grouped by kind, not by value: "exothermic" is the answer, and the
+        # electronvolts belong beside each reaction rather than in a tally.
+        counts = Counter(v.split(" by ")[0] for v in verdicts.values())
+
+        rows = ["id,equation,family,type,status,verdict"]
+        for reaction in reactions:
+            fields = [
+                reaction["id"],
+                reaction["equation"],
+                reaction.get("family", ""),
+                reaction.get("type", ""),
+                reaction.get("status", ""),
+                verdicts[reaction["id"]],
+            ]
+            rows.append(",".join(f'"{f}"' if "," in str(f) else str(f) for f in fields))
+        (target / "reactions.csv").write_text(NEWLINE.join(rows) + NEWLINE, encoding="utf-8")
+
+        (target / "summary.yaml").write_text(
+            yaml.safe_dump(
+                {
+                    "layer": layer,
+                    "question": QUESTIONS[layer],
+                    "reactions": len(reactions),
+                    "verdicts": dict(counts.most_common()),
+                },
+                sort_keys=False,
+                allow_unicode=True,
+            ),
+            encoding="utf-8",
+        )
+        _layer_network(species, reactions, verdicts, target / "network.svg", title, layer)
+    return names
+
+
+QUESTIONS = {
+    "structure": "can these species exist, and does the equation balance?",
+    "thermochemistry": "do the energetics leave the channel open?",
+    "kinetics": "does it run fast enough to matter under these conditions?",
+    "attestation": "does any source state this reaction?",
+}
+
+
+def _layer_network(
+    species: list[dict],
+    reactions: list[dict],
+    verdicts: dict[str, str],
+    out: Path,
+    title: str,
+    layer: str,
+) -> None:
+    """The network with every edge coloured by what this one layer said."""
+
+    depth = {item["id"]: item.get("depth", 0) for item in species}
+    graph = nx.DiGraph()
+    for item in species:
+        if item["id"] != ELECTRON:
+            graph.add_node(item["id"], depth=item.get("depth", 0))
+    for source, target, reaction in _edges(reactions, lineage_only=False):
+        if graph.has_node(source) and graph.has_node(target):
+            graph.add_edge(source, target, verdict=verdicts.get(reaction["id"], "not_run"))
+    if not graph.number_of_nodes():
+        return
+
+    seen = sorted({d["verdict"].split(" by ")[0] for _, _, d in graph.edges(data=True)})
+    palette = {name: LAYER.get(name, _spread(index, len(seen))) for index, name in enumerate(seen)}
+    layout = nx.multipartite_layout(graph, subset_key="depth", align="vertical")
+    span = max(depth.values(), default=0) + 1
+    figure, axes = plt.subplots(
+        figsize=(max(9.0, 3.2 * span), max(6.0, 0.26 * graph.number_of_nodes() ** 0.95))
+    )
+    nx.draw_networkx_edges(
+        graph,
+        layout,
+        ax=axes,
+        edge_color=[palette[d["verdict"].split(" by ")[0]] for _, _, d in graph.edges(data=True)],
+        width=0.9,
+        alpha=0.6,
+        arrowsize=8,
+        connectionstyle="arc3,rad=0.10",
+    )
+    nx.draw_networkx_nodes(
+        graph, layout, ax=axes, node_color="#4A4F5C", node_size=560, linewidths=0
+    )
+    nx.draw_networkx_labels(graph, layout, ax=axes, font_size=7, font_color="white")
+    axes.legend(
+        handles=[plt.Line2D([], [], color=c, lw=3, label=n) for n, c in palette.items()],
+        loc="upper left",
+        fontsize=7,
+        frameon=False,
+    )
+    axes.set_title(f"{title}   {layer} — {QUESTIONS[layer]}", fontsize=11)
+    axes.axis("off")
+    figure.tight_layout()
+    figure.savefig(out, format="svg", bbox_inches="tight")
+    plt.close(figure)
+
+
+def _spread(index: int, total: int) -> str:
+    """A readable colour for a verdict the palette does not name."""
+
+    return plt.get_cmap("tab10")(index % 10)
+
+
 def main(argv: list[str]) -> int:
     if not argv:
         print("usage: python tools/visualize.py <bundle> [<bundle> ...]")
@@ -255,7 +377,11 @@ def main(argv: list[str]) -> int:
         network(species, reactions, target / "reaction_network.svg", label, lineage=False)
         network(species, reactions, target / "species_lineage.svg", label, lineage=True)
         charts(bundle, species, reactions, gaps, target / "statistics.svg", label)
-        print(f"  {label:26} {len(species):3d} species {len(reactions):5d} reactions -> {target}")
+        named = per_layer(species, reactions, bundle / "layers", label)
+        print(
+            f"  {label:26} {len(species):3d} species {len(reactions):5d} reactions"
+            f"  -> {target}, layers {named}"
+        )
     return 0
 
 

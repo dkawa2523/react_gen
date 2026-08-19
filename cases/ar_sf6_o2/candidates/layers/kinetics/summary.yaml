@@ -1,0 +1,9 @@
+layer: kinetics
+question: does it run fast enough to matter under these conditions?
+reactions: 2081
+verdicts:
+  unknown: 2006
+  fast: 62
+  comparable: 8
+  slow: 4
+  negligible: 1
