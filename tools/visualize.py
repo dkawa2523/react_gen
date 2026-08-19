@@ -1,25 +1,30 @@
-"""Render a generated bundle as pictures.
+"""Render a generated bundle the way a plasma chemist reads one.
 
-    python tools/visualize.py cases/ar/outputs
+    python tools/visualize.py cases/ar_cf4/candidates
 
-Reads the bundle the way anyone else would - the YAML files, nothing private -
-and writes SVGs into it. It lives in `tools/` rather than `src/` because the
-core has one dependency, PyYAML, and plotting is not worth adding to that: a
-bundle is complete without pictures.
+Reads the bundle's YAML and writes SVGs into it. It lives in `tools/` rather
+than `src/` because the core has one dependency, PyYAML, and plotting is not
+worth adding to that.
 
-Two network views and a sheet of charts, because they answer different
-questions.
+What gets drawn follows from what the reader is actually asking.
 
-`reaction_network` draws every reaction. `species_lineage` draws only the edges
-that introduce a species for the first time, which is the view for checking how
-the expansion actually recursed - the full graph is too dense to read that
-from. Both are laid out in columns by expansion depth, so distance from the
-feed gas is a position rather than something to trace.
+`energy_landscape` first. Electron-impact chemistry is decided by where a
+threshold sits against the electron temperature: a 15 eV channel in a 4 eV
+discharge runs on the tail and a 2 eV one runs on the bulk, and no amount of
+network topology shows that. Te and 3 Te are marked because that is the band
+the chemistry comes from.
 
-The charts say how the list divides and how far the evidence for it goes. The
-`evidence` panel is the one to read first: it shows each layer of judgement
-separately, so a channel that is thermochemically certain and wholly unattested
-does not average out into one confidence number.
+`fragmentation` next. The neutral skeleton breaking down - CF4 to CF3 to CF2
+to CF to C - is the spine of a fluorocarbon mechanism, and it is legible
+because it is sparse. The full reaction graph is not: past forty or so species
+a node-link diagram tells a reader nothing, so it degrades to an interaction
+matrix, which stays readable at any size.
+
+Each judgement layer gets the distribution of the quantity behind its verdict
+rather than a bar chart of the verdict itself - the enthalpy spread for
+thermochemistry, the threshold spread against Te for kinetics - because the
+question a reviewer has is where the boundary falls, not how many landed on
+each side of it.
 """
 
 from __future__ import annotations
@@ -33,38 +38,32 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import networkx as nx
+import numpy as np
 import yaml
 
 ELECTRON = "e"
-# Charge is what a reader sorts a plasma species list by, so it picks the fill.
-CHARGE = {0: "#CDE7D0", 1: "#C4DDF5", -1: "#F7E7B8"}
-LACKING = "#D62728"
-CHARGE_KEY = "charge"
-DEPTH_KEY = "depth"
-NEWLINE = chr(10)
-# Depth reads as distance from the feed gas, so it gets a sequential ramp.
-DEPTH = ["#1B3A5C", "#2E6E8E", "#4FA3A5", "#8FC7A8", "#CBE3C3", "#E8EFD9"]
+READABLE = 45  # species past which a node-link diagram stops being a picture
+
+INK = "#161A25"
+MUTED = "#5A6175"
+HAIR = "#D8DCE5"
+CHARGE = {0: "#4F8A5C", 1: "#2E6E8E", -1: "#C08A2E"}
+CHARGE_NAME = {"neutral": CHARGE[0], "cation": CHARGE[1], "anion": CHARGE[-1]}
 STATUS = {"curated": "#1B3A5C", "literature_supported": "#4FA3A5", "candidate": "#D9A441"}
 FAMILY = {
     "electron": "#2E6E8E",
+    "electron_ion": "#4A8FA8",
     "ion_neutral": "#B3541E",
     "ion_ion": "#8A3D6B",
     "neutral_neutral": "#4F8A5C",
-    "surface": "#7A6A55",
     "three_body": "#9A7BAE",
+    "unimolecular": "#7A7A7A",
+    "surface": "#7A6A55",
 }
-LAYER = {
-    "conserved": "#1B3A5C",
-    "conserved, species proposed": "#D9A441",
-    "exothermic": "#2E7D4F",
-    "endothermic": "#B3541E",
-    "unknown": "#B9BEC9",
-    "not_run": "#DDE1E8",
-    "unattested": "#C9A0A0",
-}
+LACKING = "#A93226"
 
 
-def read(bundle: Path, name: str, key: str) -> list[dict]:
+def read(bundle: Path, name: str, key: str) -> list:
     path = bundle / name
     if not path.is_file():
         return []
@@ -72,15 +71,80 @@ def read(bundle: Path, name: str, key: str) -> list[dict]:
     return document.get(key) or []
 
 
-# --------------------------------------------------------------------------- networks
+def frame(axes, title: str, subtitle: str = "") -> None:
+    axes.set_title(title, fontsize=11, color=INK, loc="left", pad=14 if subtitle else 6)
+    if subtitle:
+        axes.text(0, 1.02, subtitle, transform=axes.transAxes, fontsize=8, color=MUTED, va="bottom")
+    for side in ("top", "right"):
+        axes.spines[side].set_visible(False)
+    for side in ("left", "bottom"):
+        axes.spines[side].set_color(HAIR)
+    axes.tick_params(labelsize=8, colors=MUTED, length=3)
 
 
-def _edges(reactions: list[dict], lineage_only: bool) -> list[tuple[str, str, dict]]:
-    """Species-to-species edges. A reaction is a hyperedge; this projects it.
+def charge_name(charge: int) -> str:
+    return "neutral" if charge == 0 else "cation" if charge > 0 else "anion"
 
-    ``lineage_only`` keeps just the edge that first introduced each product,
-    which is the recursion the expansion actually walked.
-    """
+
+def lacking_count(item: dict) -> int:
+    return sum(1 for p in (item.get("properties") or {}).values() if p.get("value") is None)
+
+
+# --------------------------------------------------------------------------- energy
+
+
+def energy_landscape(reactions: list[dict], conditions: dict, out: Path, title: str) -> None:
+    """Where every channel opens, against the temperature that has to open it."""
+
+    kinds = sorted({r["type"] for r in reactions if r.get("threshold_eV") is not None})
+    if not kinds:
+        return
+    figure, axes = plt.subplots(figsize=(11, max(4.0, 0.42 * len(kinds) + 1.8)))
+    rows = {name: index for index, name in enumerate(kinds)}
+    rng = np.random.default_rng(7)
+
+    for status, colour in STATUS.items():
+        xs, ys = [], []
+        for reaction in reactions:
+            onset = reaction.get("threshold_eV")
+            if onset is None or reaction.get("status") != status:
+                continue
+            xs.append(onset)
+            ys.append(rows[reaction["type"]] + rng.uniform(-0.24, 0.24))
+        if xs:
+            axes.scatter(xs, ys, s=26, c=colour, alpha=0.75, linewidths=0, label=status)
+
+    temperature = (conditions or {}).get("electron_temperature_eV")
+    if temperature:
+        axes.axvspan(0, temperature, color=LACKING, alpha=0.05)
+        axes.axvline(temperature, color=LACKING, lw=1.2, ls="--")
+        axes.axvline(3 * temperature, color=LACKING, lw=0.8, ls=":")
+        top = len(kinds) - 0.4
+        axes.text(temperature, top, f"  Te = {temperature:g} eV", fontsize=8, color=LACKING)
+        axes.text(3 * temperature, top, "  3 Te", fontsize=8, color=LACKING)
+
+    axes.set_yticks(range(len(kinds)))
+    axes.set_yticklabels(kinds)
+    axes.set_xlabel("threshold [eV]", fontsize=9, color=MUTED)
+    axes.set_xlim(left=-0.5)
+    axes.grid(axis="x", color=HAIR, lw=0.5)
+    axes.set_axisbelow(True)
+    axes.legend(fontsize=8, frameon=False, loc="lower right")
+    frame(
+        axes,
+        f"{title}   energy landscape",
+        "a channel above 3 Te runs only on the tail of the distribution",
+    )
+    figure.tight_layout()
+    figure.savefig(out, format="svg", bbox_inches="tight")
+    plt.close(figure)
+
+
+# --------------------------------------------------------------------------- structure
+
+
+def _lineage(reactions: list[dict]) -> list[tuple[str, str, dict]]:
+    """The edge that first introduced each species: the recursion as walked."""
 
     seen: set[str] = set()
     out = []
@@ -90,32 +154,153 @@ def _edges(reactions: list[dict], lineage_only: bool) -> list[tuple[str, str, di
         fresh = [name for name in right if name not in seen]
         seen.update(right)
         for source in left:
-            for target in fresh if lineage_only else right:
+            for target in fresh:
                 if source != target:
                     out.append((source, target, reaction))
     return out
 
 
-def network(
-    species: list[dict], reactions: list[dict], out: Path, title: str, lineage: bool
-) -> None:
-    depth = {item["id"]: item.get("depth", 0) for item in species}
+def _nodes(graph, layout, axes, index: dict, size: int = 700) -> None:
+    """Charge picks the fill; a red rim marks a species still missing data."""
+
+    fills, rims, widths = [], [], []
+    for name in graph:
+        item = index.get(name, {})
+        fills.append(CHARGE.get(item.get("charge", 0), "#8A90A2"))
+        rims.append(LACKING if lacking_count(item) else "#FFFFFF")
+        widths.append(1.5 if lacking_count(item) else 0.8)
+    nx.draw_networkx_nodes(
+        graph,
+        layout,
+        ax=axes,
+        node_color=fills,
+        edgecolors=rims,
+        linewidths=widths,
+        node_size=size,
+        alpha=0.95,
+    )
+    nx.draw_networkx_labels(graph, layout, ax=axes, font_size=6.5, font_color="white")
+
+
+def fragmentation(species: list[dict], reactions: list[dict], out: Path, title: str) -> None:
+    """The skeleton coming apart, laid out by the depth it came apart at."""
+
+    index = {item["id"]: item for item in species}
     graph = nx.DiGraph()
     for item in species:
         if item["id"] != ELECTRON:
-            graph.add_node(item["id"], depth=item.get("depth", 0))
-    for source, target, reaction in _edges(reactions, lineage):
+            graph.add_node(item["id"])
+    for source, target, reaction in _lineage(reactions):
         if graph.has_node(source) and graph.has_node(target):
             graph.add_edge(source, target, family=reaction.get("family", "?"))
     if not graph.number_of_nodes():
         return
 
-    # Columns by depth: distance from the feed gas becomes a position.
-    layout = nx.multipartite_layout(graph, subset_key="depth", align="vertical")
-    span = max(depth.values(), default=0) + 1
-    height = max(6.0, 0.26 * graph.number_of_nodes() ** 0.95)
-    figure, axes = plt.subplots(figsize=(max(9.0, 3.2 * span), height))
+    columns: dict[int, list[str]] = defaultdict(list)
+    for name in graph:
+        columns[index.get(name, {}).get("depth", 0)].append(name)
+    tallest = max(len(names) for names in columns.values())
+    layout = {}
+    for depth, names in columns.items():
+        step = tallest / max(len(names), 1)
+        for row, name in enumerate(sorted(names)):
+            layout[name] = (depth * 2.8, -(row - (len(names) - 1) / 2) * step)
 
+    figure, axes = plt.subplots(
+        figsize=(max(8.0, 3.0 * len(columns)), max(5.0, 0.36 * tallest + 2.2))
+    )
+    families = [d["family"] for _, _, d in graph.edges(data=True)]
+    nx.draw_networkx_edges(
+        graph,
+        layout,
+        ax=axes,
+        edge_color=[FAMILY.get(name, "#B9BEC9") for name in families],
+        width=1.0,
+        alpha=0.55,
+        arrowsize=9,
+        connectionstyle="arc3,rad=0.06",
+        node_size=900,
+    )
+    _nodes(graph, layout, axes, index, size=900)
+    for depth in sorted(columns):
+        axes.text(
+            depth * 2.8, tallest / 1.6, f"depth {depth}", ha="center", fontsize=9, color=MUTED
+        )
+    handles = [
+        plt.Line2D([], [], color=colour, lw=2, label=name)
+        for name, colour in FAMILY.items()
+        if name in set(families)
+    ]
+    axes.legend(handles=handles, fontsize=8, frameon=False, loc="lower left")
+    axes.set_title(
+        f"{title}   fragmentation — the edge that first made each species",
+        fontsize=11,
+        color=INK,
+        loc="left",
+    )
+    axes.axis("off")
+    figure.tight_layout()
+    figure.savefig(out, format="svg", bbox_inches="tight")
+    plt.close(figure)
+
+
+def interaction_matrix(species: list[dict], reactions: list[dict], out: Path, title: str) -> None:
+    """Who turns into what, as a matrix. Readable where a graph is not."""
+
+    heavy = sorted(item["id"] for item in species if item["id"] != ELECTRON)
+    if not heavy:
+        return
+    place = {name: index for index, name in enumerate(heavy)}
+    grid = np.zeros((len(heavy), len(heavy)))
+    for reaction in reactions:
+        left = [t["species"] for t in reaction["reactants"] if t["species"] != ELECTRON]
+        right = [t["species"] for t in reaction["products"] if t["species"] != ELECTRON]
+        for source in left:
+            for target in right:
+                if source in place and target in place:
+                    grid[place[source], place[target]] += 1
+    size = max(7.0, 0.19 * len(heavy) + 3)
+    figure, axes = plt.subplots(figsize=(size, size))
+    shown = axes.imshow(np.log1p(grid), cmap="YlGnBu", interpolation="nearest")
+    axes.set_xticks(range(len(heavy)))
+    axes.set_yticks(range(len(heavy)))
+    axes.set_xticklabels(heavy, rotation=90, fontsize=5.5)
+    axes.set_yticklabels(heavy, fontsize=5.5)
+    axes.set_xlabel("product", fontsize=9, color=MUTED)
+    axes.set_ylabel("reactant", fontsize=9, color=MUTED)
+    figure.colorbar(shown, ax=axes, shrink=0.6, label="log(1 + reactions)")
+    axes.set_title(
+        f"{title}   who turns into what   {len(heavy)} species", fontsize=11, color=INK, loc="left"
+    )
+    figure.tight_layout()
+    figure.savefig(out, format="svg", bbox_inches="tight")
+    plt.close(figure)
+
+
+def reaction_network(species: list[dict], reactions: list[dict], out: Path, title: str) -> None:
+    """A node-link view where one is still a picture; a matrix where it is not."""
+
+    heavy = [item for item in species if item["id"] != ELECTRON]
+    if len(heavy) > READABLE:
+        interaction_matrix(species, reactions, out, title)
+        return
+
+    index = {item["id"]: item for item in heavy}
+    graph = nx.DiGraph()
+    for item in heavy:
+        graph.add_node(item["id"])
+    for reaction in reactions:
+        left = [t["species"] for t in reaction["reactants"] if t["species"] != ELECTRON]
+        right = [t["species"] for t in reaction["products"] if t["species"] != ELECTRON]
+        for source in left:
+            for target in right:
+                if source != target and graph.has_node(source) and graph.has_node(target):
+                    graph.add_edge(source, target, family=reaction.get("family", "?"))
+    if not graph.number_of_nodes():
+        return
+
+    layout = nx.kamada_kawai_layout(graph) if graph.number_of_edges() else nx.circular_layout(graph)
+    figure, axes = plt.subplots(figsize=(11, 8.5))
     families = [d["family"] for _, _, d in graph.edges(data=True)]
     nx.draw_networkx_edges(
         graph,
@@ -123,71 +308,99 @@ def network(
         ax=axes,
         edge_color=[FAMILY.get(name, "#B9BEC9") for name in families],
         width=0.8,
-        alpha=0.5,
+        alpha=0.4,
         arrowsize=8,
-        connectionstyle="arc3,rad=0.10",
+        connectionstyle="arc3,rad=0.1",
+        node_size=700,
     )
-    _draw_nodes(graph, layout, axes, species)
-
+    _nodes(graph, layout, axes, index)
     handles = [
-        plt.Line2D([], [], marker="s", ls="", color=c, label=n, markersize=9)
-        for n, c in (
-            ("neutral", CHARGE[0]),
-            ("positive ion", CHARGE[1]),
-            ("negative ion", CHARGE[-1]),
-        )
-    ]
-    handles += [
         plt.Line2D([], [], color=colour, lw=2, label=name)
         for name, colour in FAMILY.items()
         if name in set(families)
     ]
-    axes.legend(handles=handles, loc="upper left", fontsize=7, frameon=False, ncol=2)
-    kind = "species lineage - edges that introduce a species" if lineage else "every reaction"
-    axes.set_title(f"{title}   {kind}   {graph.number_of_nodes()} species", fontsize=11)
+    handles += [
+        plt.Line2D([], [], marker="o", ls="", color=colour, label=name, markersize=8)
+        for name, colour in CHARGE_NAME.items()
+    ]
+    axes.legend(handles=handles, fontsize=7, frameon=False, loc="upper left", ncol=2)
+    axes.set_title(f"{title}   every reaction", fontsize=11, color=INK, loc="left")
     axes.axis("off")
     figure.tight_layout()
     figure.savefig(out, format="svg", bbox_inches="tight")
     plt.close(figure)
 
 
-# --------------------------------------------------------------------------- charts
+# --------------------------------------------------------------------------- sheet
 
 
 def bars(axes, counts: Counter, title: str, colours: dict | None = None) -> None:
     if not counts:
-        axes.set_title(f"{title} - none", fontsize=10)
+        frame(axes, f"{title} — none")
         axes.axis("off")
         return
-    pairs = counts.most_common(14)
+    pairs = counts.most_common(12)
     labels = [str(key) for key, _ in pairs]
     values = [value for _, value in pairs]
-    axes.barh(labels, values, color=[(colours or {}).get(name, "#4FA3A5") for name in labels])
+    axes.barh(labels, values, color=[(colours or {}).get(n, "#4FA3A5") for n in labels], height=0.7)
     axes.invert_yaxis()
-    axes.set_title(title, fontsize=10)
-    axes.tick_params(labelsize=8)
-    for index, value in enumerate(values):
-        axes.text(value, index, f" {value}", va="center", fontsize=7)
+    for row, value in enumerate(values):
+        axes.text(value, row, f" {value}", va="center", fontsize=7, color=MUTED)
+    frame(axes, title)
 
 
 def stacked(axes, rows: dict[str, Counter], colours: dict, title: str) -> None:
-    names = list(rows)
-    if not names:
-        axes.set_title(f"{title} - none", fontsize=10)
+    if not rows:
+        frame(axes, f"{title} — none")
         axes.axis("off")
         return
+    names = list(rows)
     bottom = [0.0] * len(names)
     for key in sorted({k for row in rows.values() for k in row}):
         heights = [rows[name].get(key, 0) for name in names]
-        axes.barh(names, heights, left=bottom, color=colours.get(key, "#B9BEC9"), label=str(key))
+        axes.barh(
+            names,
+            heights,
+            left=bottom,
+            color=colours.get(key, "#B9BEC9"),
+            label=str(key),
+            height=0.7,
+        )
         bottom = [b + h for b, h in zip(bottom, heights, strict=False)]
     axes.invert_yaxis()
-    axes.set_title(title, fontsize=10)
     axes.legend(fontsize=6, frameon=False)
-    axes.tick_params(labelsize=8)
+    frame(axes, title)
 
 
-def charts(
+def _lacking_properties(species: list[dict]) -> Counter:
+    counts: Counter = Counter()
+    for item in species:
+        for name, prop in (item.get("properties") or {}).items():
+            if prop.get("value") is None:
+                counts[name] += 1
+    return counts
+
+
+def _reactivity(reactions: list[dict]) -> Counter:
+    """How often each heavy species is struck. Hubs carry the mechanism."""
+
+    counts: Counter = Counter()
+    for reaction in reactions:
+        for term in reaction["reactants"]:
+            if term["species"] != ELECTRON:
+                counts[term["species"]] += 1
+    return counts
+
+
+def _readiness(bundle: Path) -> Counter:
+    counts: Counter = Counter()
+    for pair in read(bundle / "datasets" / "dnt", "index.yaml", "pairs"):
+        for tier in pair.get("runnable") or ["blocked"]:
+            counts[tier] += 1
+    return counts
+
+
+def statistics(
     bundle: Path,
     species: list[dict],
     reactions: list[dict],
@@ -202,40 +415,34 @@ def charts(
     for reaction in reactions:
         by_family[reaction.get("family", "?")][reaction.get("status", "?")] += 1
     stacked(a, dict(by_family), STATUS, "reactions by family and status")
-
-    bars(b, Counter(r.get("type", "?") for r in reactions), "reaction type")
+    bars(b, Counter(r.get("type", "?") for r in reactions), "process")
 
     by_depth: dict[str, Counter] = defaultdict(Counter)
     for reaction in reactions:
-        by_depth[str(reaction.get("depth", 0))][reaction.get("family", "?")] += 1
-    stacked(c, dict(sorted(by_depth.items())), FAMILY, "expansion depth by family")
+        by_depth[f"depth {reaction.get('depth', 0)}"][reaction.get("family", "?")] += 1
+    stacked(c, dict(sorted(by_depth.items())), FAMILY, "where the chemistry appears")
 
-    bars(d, Counter(str(s.get("charge", 0)) for s in species), "species charge")
-    bars(e, Counter(str(s.get("depth", 0)) for s in species), "species first-seen depth")
-    bars(f, Counter(k for s in species for k in (s.get("classes") or [])), "species class")
+    bars(
+        d,
+        Counter(charge_name(item.get("charge", 0)) for item in species if item["id"] != ELECTRON),
+        "species by charge",
+        CHARGE_NAME,
+    )
+
+    bars(e, _lacking_properties(species), "properties nobody has yet")
 
     layered: dict[str, Counter] = defaultdict(Counter)
     for reaction in reactions:
         for layer, verdict in (reaction.get("evidence") or {}).items():
             layered[layer][str(verdict).split(" by ")[0]] += 1
-    stacked(g, dict(layered), LAYER, "evidence by layer")
+    stacked(f, dict(layered), {}, "evidence by layer")
 
-    bars(
-        h,
-        Counter(f"{gap['severity']}: {gap['kind']}" for gap in gaps),
-        "what the list still lacks",
-    )
+    bars(g, _reactivity(reactions), "species that react the most")
+    bars(h, Counter(f"{gap['severity']}: {gap['kind']}" for gap in gaps), "what the list lacks")
 
-    index = bundle / "datasets" / "dnt" / "index.yaml"
-    readiness: Counter = Counter()
-    if index.is_file():
-        document = yaml.safe_load(index.read_text(encoding="utf-8")) or {}
-        for pair in document.get("pairs") or []:
-            for tier in pair.get("runnable") or ["blocked"]:
-                readiness[tier] += 1
-    bars(i, readiness, "DNT+ readiness by tier")
+    bars(i, _readiness(bundle), "DNT+ readiness by tier")
 
-    figure.suptitle(title, fontsize=12)
+    figure.suptitle(title, fontsize=12, color=INK, x=0.01, ha="left")
     figure.tight_layout()
     figure.savefig(out, format="svg", bbox_inches="tight")
     plt.close(figure)
@@ -244,24 +451,119 @@ def charts(
 # --------------------------------------------------------------------------- per layer
 
 
-def per_layer(species: list[dict], reactions: list[dict], out: Path, title: str) -> list[str]:
-    """One directory per layer of judgement: the same list, seen four ways.
+QUESTIONS = {
+    "structure": "can these species exist, and does the equation balance?",
+    "thermochemistry": "do the energetics leave the channel open?",
+    "kinetics": "does it run fast enough to matter under these conditions?",
+    "attestation": "does any source state this reaction?",
+}
 
-    A layer is a verdict on every reaction rather than a subset of them, so
-    each directory holds the whole list with that layer's answer attached, the
-    counts, and the network coloured by it. Reading them side by side is how a
-    reviewer sees that structure passes everywhere and attestation passes
-    almost nowhere, which one merged view flattens.
+
+def _enthalpy(axes, reactions: list[dict]) -> None:
+    values = [r["delta_e_eV"] for r in reactions if r.get("delta_e_eV") is not None]
+    if not values:
+        frame(axes, "reaction enthalpy — none computed")
+        axes.axis("off")
+        return
+    axes.hist(values, bins=32, color="#4FA3A5", edgecolor="white", linewidth=0.4)
+    axes.axvline(0, color=LACKING, lw=1.2)
+    axes.text(0, axes.get_ylim()[1] * 0.95, "  thermoneutral", fontsize=8, color=LACKING, va="top")
+    axes.set_xlabel("ΔH [eV]   negative is downhill", fontsize=9, color=MUTED)
+    frame(axes, "reaction enthalpy", f"{len(values)} of {len(reactions)} could be computed")
+
+
+def _accessibility(axes, reactions: list[dict], conditions: dict) -> None:
+    values = [r["threshold_eV"] for r in reactions if r.get("threshold_eV") is not None]
+    if not values:
+        frame(axes, "threshold — none recorded")
+        axes.axis("off")
+        return
+    axes.hist(values, bins=32, color="#2E6E8E", edgecolor="white", linewidth=0.4)
+    temperature = (conditions or {}).get("electron_temperature_eV")
+    if temperature:
+        top = axes.get_ylim()[1]
+        axes.axvline(temperature, color=LACKING, lw=1.2, ls="--")
+        axes.axvline(3 * temperature, color=LACKING, lw=0.8, ls=":")
+        axes.text(temperature, top * 0.95, "  Te", fontsize=8, color=LACKING, va="top")
+        axes.text(3 * temperature, top * 0.80, "  3 Te", fontsize=8, color=LACKING, va="top")
+    axes.set_xlabel("threshold [eV]", fontsize=9, color=MUTED)
+    frame(axes, "what the electrons can reach", f"{len(values)} of {len(reactions)} have an onset")
+
+
+def _proposed_by_depth(axes, species: list[dict]) -> None:
+    rows: dict[str, Counter] = defaultdict(Counter)
+    for item in species:
+        if item["id"] != ELECTRON:
+            rows[f"depth {item.get('depth', 0)}"][charge_name(item.get("charge", 0))] += 1
+    stacked(
+        axes, dict(sorted(rows.items())), CHARGE_NAME, "species introduced, by depth and charge"
+    )
+
+
+def _attested_by_family(axes, reactions: list[dict]) -> None:
+    rows: dict[str, Counter] = defaultdict(Counter)
+    for reaction in reactions:
+        verdict = str((reaction.get("evidence") or {}).get("attestation", "not_run"))
+        key = verdict if verdict in {"unattested", "not_run"} else "attested"
+        rows[reaction.get("family", "?")][key] += 1
+    stacked(
+        axes,
+        dict(rows),
+        {"attested": "#1B3A5C", "unattested": "#C9A0A0", "not_run": "#DDE1E8"},
+        "who is stated by a source, by family",
+    )
+
+
+def layer_figure(
+    layer: str,
+    reactions: list[dict],
+    species: list[dict],
+    conditions: dict,
+    out: Path,
+    title: str,
+) -> None:
+    """The verdict, and the quantity the verdict was made on.
+
+    A count of verdicts says how many fell each side of a line. What a reviewer
+    asks is where the line falls and how much sits near it, which is a
+    distribution, so each layer draws the quantity behind its own answer.
     """
+
+    figure, (left, right) = plt.subplots(1, 2, figsize=(13, 4.8))
+    verdicts = Counter(
+        str((r.get("evidence") or {}).get(layer, "not_run")).split(" by ")[0] for r in reactions
+    )
+    bars(left, verdicts, "verdict")
+
+    if layer == "thermochemistry":
+        _enthalpy(right, reactions)
+    elif layer == "kinetics":
+        _accessibility(right, reactions, conditions)
+    elif layer == "structure":
+        _proposed_by_depth(right, species)
+    else:
+        _attested_by_family(right, reactions)
+
+    figure.suptitle(
+        f"{title}   {layer} — {QUESTIONS[layer]}", fontsize=11, color=INK, x=0.01, ha="left"
+    )
+    figure.tight_layout()
+    figure.savefig(out, format="svg", bbox_inches="tight")
+    plt.close(figure)
+
+
+def per_layer(
+    species: list[dict], reactions: list[dict], conditions: dict, out: Path, title: str
+) -> list[str]:
+    """One directory per layer: the whole list with that layer's answer attached."""
 
     names = sorted({layer for r in reactions for layer in (r.get("evidence") or {})})
     for layer in names:
         target = out / layer
         target.mkdir(parents=True, exist_ok=True)
-        verdicts = {r["id"]: (r.get("evidence") or {}).get(layer, "not_run") for r in reactions}
-        # Grouped by kind, not by value: "exothermic" is the answer, and the
-        # electronvolts belong beside each reaction rather than in a tally.
-        counts = Counter(v.split(" by ")[0] for v in verdicts.values())
+        verdicts = {
+            r["id"]: str((r.get("evidence") or {}).get(layer, "not_run")) for r in reactions
+        }
 
         rows = ["id,equation,family,type,status,verdict"]
         for reaction in reactions:
@@ -274,7 +576,7 @@ def per_layer(species: list[dict], reactions: list[dict], out: Path, title: str)
                 verdicts[reaction["id"]],
             ]
             rows.append(",".join(f'"{f}"' if "," in str(f) else str(f) for f in fields))
-        (target / "reactions.csv").write_text(NEWLINE.join(rows) + NEWLINE, encoding="utf-8")
+        (target / "reactions.csv").write_text("\n".join(rows) + "\n", encoding="utf-8")
 
         (target / "summary.yaml").write_text(
             yaml.safe_dump(
@@ -282,116 +584,17 @@ def per_layer(species: list[dict], reactions: list[dict], out: Path, title: str)
                     "layer": layer,
                     "question": QUESTIONS[layer],
                     "reactions": len(reactions),
-                    "verdicts": dict(counts.most_common()),
+                    # Grouped by kind: "exothermic" is the answer, and the
+                    # electronvolts belong beside each reaction, not in a tally.
+                    "verdicts": dict(Counter(v.split(" by ")[0] for v in verdicts.values())),
                 },
                 sort_keys=False,
                 allow_unicode=True,
             ),
             encoding="utf-8",
         )
-        _layer_network(species, reactions, verdicts, target / "network.svg", title, layer)
+        layer_figure(layer, reactions, species, conditions, target / "verdict.svg", title)
     return names
-
-
-QUESTIONS = {
-    "structure": "can these species exist, and does the equation balance?",
-    "thermochemistry": "do the energetics leave the channel open?",
-    "kinetics": "does it run fast enough to matter under these conditions?",
-    "attestation": "does any source state this reaction?",
-}
-
-
-def _draw_nodes(graph, layout, axes, species: list[dict]) -> None:
-    """Charge picks the fill, a red rim marks a species still missing data.
-
-    The label carries what a reviewer checks against — charge and the depth it
-    first appeared at — so an arrow can be read without going back to the YAML.
-    """
-
-    index = {item["id"]: item for item in species}
-    fills, rims, widths = [], [], []
-    for name in graph:
-        item = index.get(name, {})
-        lacking = sum(1 for p in (item.get("properties") or {}).values() if p.get("value") is None)
-        fills.append(CHARGE.get(item.get("charge", 0), "#EDEFF2"))
-        rims.append(LACKING if lacking else "#7A8090")
-        widths.append(1.6 if lacking else 0.6)
-    nx.draw_networkx_nodes(
-        graph,
-        layout,
-        ax=axes,
-        node_color=fills,
-        edgecolors=rims,
-        linewidths=widths,
-        node_size=1500,
-        node_shape="s",
-    )
-    labels = {}
-    for name in graph:
-        item = index.get(name, {})
-        charge = item.get(CHARGE_KEY, 0)
-        labels[name] = NEWLINE.join([name, f"q{charge:+d} d{item.get(DEPTH_KEY, 0)}"])
-    nx.draw_networkx_labels(
-        graph, layout, labels=labels, ax=axes, font_size=6, font_color="#161A25"
-    )
-
-
-def _layer_network(
-    species: list[dict],
-    reactions: list[dict],
-    verdicts: dict[str, str],
-    out: Path,
-    title: str,
-    layer: str,
-) -> None:
-    """The network with every edge coloured by what this one layer said."""
-
-    depth = {item["id"]: item.get("depth", 0) for item in species}
-    graph = nx.DiGraph()
-    for item in species:
-        if item["id"] != ELECTRON:
-            graph.add_node(item["id"], depth=item.get("depth", 0))
-    for source, target, reaction in _edges(reactions, lineage_only=False):
-        if graph.has_node(source) and graph.has_node(target):
-            graph.add_edge(source, target, verdict=verdicts.get(reaction["id"], "not_run"))
-    if not graph.number_of_nodes():
-        return
-
-    seen = sorted({d["verdict"].split(" by ")[0] for _, _, d in graph.edges(data=True)})
-    palette = {name: LAYER.get(name, _spread(index, len(seen))) for index, name in enumerate(seen)}
-    layout = nx.multipartite_layout(graph, subset_key="depth", align="vertical")
-    span = max(depth.values(), default=0) + 1
-    figure, axes = plt.subplots(
-        figsize=(max(9.0, 3.2 * span), max(6.0, 0.26 * graph.number_of_nodes() ** 0.95))
-    )
-    nx.draw_networkx_edges(
-        graph,
-        layout,
-        ax=axes,
-        edge_color=[palette[d["verdict"].split(" by ")[0]] for _, _, d in graph.edges(data=True)],
-        width=0.9,
-        alpha=0.6,
-        arrowsize=8,
-        connectionstyle="arc3,rad=0.10",
-    )
-    _draw_nodes(graph, layout, axes, species)
-    axes.legend(
-        handles=[plt.Line2D([], [], color=c, lw=3, label=n) for n, c in palette.items()],
-        loc="upper left",
-        fontsize=7,
-        frameon=False,
-    )
-    axes.set_title(f"{title}   {layer} — {QUESTIONS[layer]}", fontsize=11)
-    axes.axis("off")
-    figure.tight_layout()
-    figure.savefig(out, format="svg", bbox_inches="tight")
-    plt.close(figure)
-
-
-def _spread(index: int, total: int) -> str:
-    """A readable colour for a verdict the palette does not name."""
-
-    return plt.get_cmap("tab10")(index % 10)
 
 
 def main(argv: list[str]) -> int:
@@ -403,19 +606,18 @@ def main(argv: list[str]) -> int:
         species = read(bundle, "species.yaml", "species")
         reactions = read(bundle, "reactions.yaml", "reactions")
         gaps = read(bundle, "gaps.yaml", "gaps")
-        # Inside the bundle: a case has more than one, and they must not
-        # overwrite each other's pictures.
+        summary = yaml.safe_load((bundle / "summary.yaml").read_text(encoding="utf-8")) or {}
+        conditions = summary.get("conditions") or {}
+
         target = bundle / "visualizations"
         target.mkdir(parents=True, exist_ok=True)
         label = f"{bundle.parent.name} / {bundle.name}"
-        network(species, reactions, target / "reaction_network.svg", label, lineage=False)
-        network(species, reactions, target / "species_lineage.svg", label, lineage=True)
-        charts(bundle, species, reactions, gaps, target / "statistics.svg", label)
-        named = per_layer(species, reactions, bundle / "layers", label)
-        print(
-            f"  {label:26} {len(species):3d} species {len(reactions):5d} reactions"
-            f"  -> {target}, layers {named}"
-        )
+        energy_landscape(reactions, conditions, target / "energy_landscape.svg", label)
+        fragmentation(species, reactions, target / "fragmentation.svg", label)
+        reaction_network(species, reactions, target / "reaction_network.svg", label)
+        statistics(bundle, species, reactions, gaps, target / "statistics.svg", label)
+        named = per_layer(species, reactions, conditions, bundle / "layers", label)
+        print(f"  {label:26} {len(species):3d} species {len(reactions):5d} reactions  {named}")
     return 0
 
 
