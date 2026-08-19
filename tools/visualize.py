@@ -963,6 +963,26 @@ def per_layer(
         )
         layer_figure(layer, reactions, heavy, conditions, target / "verdict.svg", title, tally)
         _layer_network(species, reactions, verdicts, target / "network.svg", title, layer)
+
+        # The same pathway view, restricted to what this layer settled: the
+        # part of the mechanism it can stand behind, followed left to right.
+        settled = [
+            reaction
+            for reaction in reactions
+            if verdicts[reaction["id"]].split(" by ")[0] not in UNDECIDED | {"not_run"}
+        ]
+        if settled:
+            taking_part = {
+                term["species"]
+                for reaction in settled
+                for term in reaction["reactants"] + reaction["products"]
+            }
+            pathway(
+                [item for item in heavy if item["id"] in taking_part],
+                settled,
+                target / "pathway.svg",
+                f"{title}   {layer} — settled only",
+            )
     return names
 
 
