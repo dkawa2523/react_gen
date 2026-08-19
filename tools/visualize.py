@@ -41,6 +41,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import yaml
+from matplotlib.patches import FancyBboxPatch
 
 ELECTRON = "e"
 NEWLINE = chr(10)
@@ -305,6 +306,72 @@ def _pathway_graph(shown: list[dict], index: dict):
     return graph, columns
 
 
+# A layered drawing is boxes you can read, not dots you have to hover. These are
+# in axis units: one column is COLUMN wide, one row ROW tall, and a box is sized
+# to its own label inside that.
+COLUMN = 3.6
+ROW = 1.0
+CHAR = 0.085  # width of a character at the label size, in axis units
+
+
+def _box(axes, position, lines: list[str], fill: str, rim: str, width: float = 1.0) -> tuple:
+    """One rounded, labelled node. Returns the box's half-extent for routing."""
+
+    x, y = position
+    half_w = max(0.42, (max(len(line) for line in lines) * CHAR) / 2 + 0.14)
+    half_h = 0.13 + 0.115 * len(lines)
+    axes.add_patch(
+        FancyBboxPatch(
+            (x - half_w, y - half_h),
+            2 * half_w,
+            2 * half_h,
+            boxstyle="round,pad=0.02,rounding_size=0.09",
+            facecolor=fill,
+            edgecolor=rim,
+            linewidth=width,
+            zorder=3,
+        )
+    )
+    axes.text(
+        x,
+        y,
+        NEWLINE.join(lines),
+        ha="center",
+        va="center",
+        fontsize=7,
+        color=INK,
+        zorder=4,
+        linespacing=1.25,
+    )
+    return half_w, half_h
+
+
+def _arrow(axes, start, end, extent: dict, colour: str, style: str = "-") -> None:
+    """An edge that stops at the boxes rather than under them."""
+
+    (x0, y0), (x1, y1) = start[1], end[1]
+    left = x0 + extent[start[0]][0]
+    right = x1 - extent[end[0]][0]
+    if right <= left:
+        left, right = x0, x1
+    axes.annotate(
+        "",
+        xy=(right, y1),
+        xytext=(left, y0),
+        arrowprops={
+            "arrowstyle": "-|>",
+            "color": colour,
+            "linewidth": 0.9,
+            "alpha": 0.8,
+            "linestyle": style,
+            "shrinkA": 0,
+            "shrinkB": 0,
+            "connectionstyle": "arc3,rad=0.06",
+        },
+        zorder=2,
+    )
+
+
 def _ordered(columns: dict[float, list[str]], graph, sweeps: int = 6) -> dict[float, list[str]]:
     """Order each column to cut edge crossings, the way a layered drawer does.
 
@@ -333,18 +400,52 @@ def _ordered(columns: dict[float, list[str]], graph, sweeps: int = 6) -> dict[fl
     return order
 
 
+def _draw_boxes(axes, layout: dict, detail: dict, index: dict) -> dict:
+    """A card for every reaction and a chip for every species, sized to its label."""
+
+    extent = {}
+    for name, position in layout.items():
+        if name in detail:
+            reaction = detail[name]
+            onset = reaction.get("threshold_eV")
+            lines = [reaction["type"]]
+            if onset is not None:
+                lines.append(f"{onset:.2f} eV")
+            extent[name] = _box(
+                axes,
+                position,
+                lines,
+                fill="#FFFFFF",
+                rim=FAMILY.get(reaction.get("family", "?"), GREY),
+                width=1.3,
+            )
+        else:
+            item = index.get(name, {})
+            short = lacking_count(item)
+            extent[name] = _box(
+                axes,
+                position,
+                [name],
+                fill=CHARGE.get(item.get("charge", 0), GREY),
+                rim=LACKING if short else "#FFFFFF",
+                width=1.6 if short else 0.8,
+            )
+    return extent
+
+
 def pathway(
     species: list[dict], reactions: list[dict], out: Path, title: str, limit: int = 90
 ) -> None:
-    """Reactions as cards, laid out left to right by the depth they appear at.
+    """Reactions as labelled cards, laid out left to right by the depth they open at.
 
     A species graph collapses a reaction into an arrow and loses which products
-    came out together: `CF4 -> CF3` and `CF4 -> F` are one channel, not two.
-    Here each reaction is a node of its own, so reactants converge on it and
-    products leave it, and the whole equation is one object on the page.
+    came out together: CF4 to CF3 and CF4 to F are one channel, not two. Here
+    each reaction is a card of its own carrying its process and onset, so a
+    route reads as a sequence of steps rather than a bundle of arrows.
 
-    Only the first `limit` reactions are drawn, in depth order. Past that a
-    page of cards is not a diagram, and the tabular views carry the rest.
+    Columns are ordered at the barycentre of their neighbours, which is the step
+    that makes a layered drawing legible; ordering them by name instead crossed
+    three times as many edges.
     """
 
     index = {item["id"]: item for item in species if item["id"] != ELECTRON}
@@ -353,6 +454,7 @@ def pathway(
         return
 
     graph, columns = _pathway_graph(shown, index)
+    detail = {r["id"]: r for r in shown}
 
     placed: set[str] = set()
     unique: dict[float, list[str]] = {}
@@ -367,79 +469,45 @@ def pathway(
     for column, names in unique.items():
         step = tallest / max(len(names), 1)
         for row, name in enumerate(names):
-            layout[name] = (column * 3.4, -(row - (len(names) - 1) / 2) * step)
+            layout[name] = (column * COLUMN, -(row - (len(names) - 1) / 2) * step * ROW)
     for name in graph:
         layout.setdefault(name, (0.0, 0.0))
 
     figure, axes = plt.subplots(
-        figsize=(max(11.0, 2.6 * len(columns)), max(6.0, 0.42 * tallest + 2.4))
+        figsize=(max(11.0, 2.6 * len(unique)), max(6.0, 0.40 * tallest + 2.6))
     )
-    nx.draw_networkx_edges(
-        graph,
-        layout,
-        ax=axes,
-        edge_color="#7A7A7A",
-        width=0.8,
-        alpha=0.75,
-        arrowsize=8,
-        node_size=560,
-        connectionstyle="arc3,rad=0.0",
-    )
-    kinds = nx.get_node_attributes(graph, "kind")
-    heavy = [name for name in graph if kinds.get(name) == "species"]
-    cards = [name for name in graph if kinds.get(name) == "reaction"]
-    nx.draw_networkx_nodes(
-        graph,
-        layout,
-        ax=axes,
-        nodelist=heavy,
-        node_shape="o",
-        node_size=620,
-        node_color=[CHARGE.get(index.get(n, {}).get("charge", 0), GREY) for n in heavy],
-        edgecolors="white",
-        linewidths=0.8,
-    )
-    families = nx.get_node_attributes(graph, "family")
-    nx.draw_networkx_nodes(
-        graph,
-        layout,
-        ax=axes,
-        nodelist=cards,
-        node_shape="s",
-        node_size=110,
-        node_color=[FAMILY.get(families.get(n, "?"), GREY) for n in cards],
-        edgecolors="white",
-        linewidths=0.5,
-    )
-    nx.draw_networkx_labels(
-        graph,
-        layout,
-        labels={n: n for n in heavy},
-        ax=axes,
-        font_size=6.5,
-        font_color="white",
-        font_weight="bold",
-    )
-    for column in sorted(columns):
-        axes.text(column * 3.4, tallest / 1.55, f"{column:g}", ha="center", fontsize=8, color=MUTED)
+    extent = _draw_boxes(axes, layout, detail, index)
 
+    for source, target in graph.edges():
+        colour = FAMILY.get(detail.get(source, detail.get(target, {})).get("family", "?"), GREY)
+        _arrow(axes, (source, layout[source]), (target, layout[target]), extent, colour)
+
+    for column in sorted(unique):
+        axes.text(
+            column * COLUMN,
+            tallest / 1.6 + 0.5,
+            f"depth {column:g}" if column == int(column) else "reaction",
+            ha="center",
+            fontsize=8.5,
+            color=MUTED,
+        )
     handles = [
-        plt.Line2D([], [], marker="o", ls="", color=colour, label=name, markersize=8)
+        plt.Line2D([], [], marker="s", ls="", color=colour, label=name, markersize=9)
         for name, colour in CHARGE_NAME.items()
     ] + [
-        plt.Line2D([], [], marker="s", ls="", color=colour, label=name, markersize=6)
+        plt.Line2D([], [], color=colour, lw=2, label=name)
         for name, colour in FAMILY.items()
-        if colour in {FAMILY.get(f) for f in families.values()}
+        if name in {r.get("family") for r in shown}
     ]
     axes.legend(handles=handles, fontsize=7.5, frameon=False, loc="lower left", ncol=2)
     axes.set_title(
-        f"{title}   reaction pathway — squares are reactions, "
-        f"{len(shown)} of {len(reactions)} by depth",
+        f"{title}   reaction pathway — {len(shown)} of {len(reactions)} by depth",
         fontsize=11,
         color=INK,
         loc="left",
     )
-    axes.axis("off")
+    axes.margins(0.06)
+    axes.set_axis_off()
     figure.tight_layout()
     figure.savefig(out, format="svg", bbox_inches="tight")
     plt.close(figure)
