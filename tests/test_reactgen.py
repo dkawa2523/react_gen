@@ -644,3 +644,17 @@ def test_a_layer_not_asked_for_says_so(registry):
 
     with pytest.raises(ValueError, match="unknown layers"):
         layers.select("bogus")
+
+
+def test_a_curated_reaction_is_attested_by_its_own_record(registry):
+    """A channel read from a paper carries the paper; no index is needed."""
+
+    from reactgen import layers
+
+    elastic = registry.channels[("electron", "e", "Ar")][0]
+    cited = replace(elastic, source={"source_type": "literature_mechanism", "source_id": "doi:x"})
+    assert layers.verdicts(cited, [], None, layers.LAYERS)["attestation"] == "doi:x"
+
+    # What this repository worked out for itself is not evidence about itself.
+    derived = replace(elastic, source={"source_type": "formation_enthalpy"})
+    assert layers.verdicts(derived, [], None, layers.LAYERS)["attestation"] == "unattested"

@@ -2,11 +2,14 @@ layer: attestation
 question: does any source state this reaction?
 reactions:
   total: 446
-  judged: 0
-  undecided: 446
+  judged: 19
+  undecided: 427
   not_run: 0
   by_verdict:
-    unattested: 446
+    unattested: 427
+    doi:10.1007/s11090-013-9513-1: 12
+    nist_asd: 6
+    doi:10.1116/1.4853675: 1
 species:
   total: 30
   needs: []

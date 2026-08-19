@@ -280,6 +280,136 @@ def fragmentation(species: list[dict], reactions: list[dict], out: Path, title: 
     plt.close(figure)
 
 
+def _pathway_graph(shown: list[dict], index: dict):
+    """Species and reactions as one graph, and which column each belongs in."""
+
+    graph = nx.DiGraph()
+    columns: dict[float, list[str]] = defaultdict(list)
+    for reaction in shown:
+        depth = reaction.get("depth", 0)
+        node = reaction["id"]
+        graph.add_node(node, kind="reaction", family=reaction.get("family", "?"))
+        columns[depth + 0.5].append(node)
+        for term, column, forward in (
+            *[(t, depth, True) for t in reaction["reactants"]],
+            *[(t, depth + 1, False) for t in reaction["products"]],
+        ):
+            name = term["species"]
+            if name not in index:
+                continue
+            graph.add_node(name, kind="species")
+            graph.add_edge(*((name, node) if forward else (node, name)))
+            if name not in columns[column]:
+                columns[column].append(name)
+    return graph, columns
+
+
+def pathway(
+    species: list[dict], reactions: list[dict], out: Path, title: str, limit: int = 90
+) -> None:
+    """Reactions as cards, laid out left to right by the depth they appear at.
+
+    A species graph collapses a reaction into an arrow and loses which products
+    came out together: `CF4 -> CF3` and `CF4 -> F` are one channel, not two.
+    Here each reaction is a node of its own, so reactants converge on it and
+    products leave it, and the whole equation is one object on the page.
+
+    Only the first `limit` reactions are drawn, in depth order. Past that a
+    page of cards is not a diagram, and the tabular views carry the rest.
+    """
+
+    index = {item["id"]: item for item in species if item["id"] != ELECTRON}
+    shown = sorted(reactions, key=lambda item: (item.get("depth", 0), item["id"]))[:limit]
+    if not shown:
+        return
+
+    graph, columns = _pathway_graph(shown, index)
+
+    placed: set[str] = set()
+    layout = {}
+    tallest = max(len(names) for names in columns.values())
+    for column in sorted(columns):
+        names = [name for name in columns[column] if name not in placed]
+        placed.update(names)
+        step = tallest / max(len(names), 1)
+        for row, name in enumerate(sorted(names)):
+            layout[name] = (column * 3.4, -(row - (len(names) - 1) / 2) * step)
+    for name in graph:
+        layout.setdefault(name, (0.0, 0.0))
+
+    figure, axes = plt.subplots(
+        figsize=(max(11.0, 2.6 * len(columns)), max(6.0, 0.42 * tallest + 2.4))
+    )
+    nx.draw_networkx_edges(
+        graph,
+        layout,
+        ax=axes,
+        edge_color="#8A8A8A",
+        width=0.7,
+        alpha=0.7,
+        arrowsize=7,
+        node_size=520,
+    )
+    kinds = nx.get_node_attributes(graph, "kind")
+    heavy = [name for name in graph if kinds.get(name) == "species"]
+    cards = [name for name in graph if kinds.get(name) == "reaction"]
+    nx.draw_networkx_nodes(
+        graph,
+        layout,
+        ax=axes,
+        nodelist=heavy,
+        node_shape="o",
+        node_size=620,
+        node_color=[CHARGE.get(index.get(n, {}).get("charge", 0), GREY) for n in heavy],
+        edgecolors="white",
+        linewidths=0.8,
+    )
+    families = nx.get_node_attributes(graph, "family")
+    nx.draw_networkx_nodes(
+        graph,
+        layout,
+        ax=axes,
+        nodelist=cards,
+        node_shape="s",
+        node_size=110,
+        node_color=[FAMILY.get(families.get(n, "?"), GREY) for n in cards],
+        edgecolors="white",
+        linewidths=0.5,
+    )
+    nx.draw_networkx_labels(
+        graph,
+        layout,
+        labels={n: n for n in heavy},
+        ax=axes,
+        font_size=6.5,
+        font_color="white",
+        font_weight="bold",
+    )
+    for column in sorted(columns):
+        axes.text(column * 3.4, tallest / 1.55, f"{column:g}", ha="center", fontsize=8, color=MUTED)
+
+    handles = [
+        plt.Line2D([], [], marker="o", ls="", color=colour, label=name, markersize=8)
+        for name, colour in CHARGE_NAME.items()
+    ] + [
+        plt.Line2D([], [], marker="s", ls="", color=colour, label=name, markersize=6)
+        for name, colour in FAMILY.items()
+        if colour in {FAMILY.get(f) for f in families.values()}
+    ]
+    axes.legend(handles=handles, fontsize=7.5, frameon=False, loc="lower left", ncol=2)
+    axes.set_title(
+        f"{title}   reaction pathway — squares are reactions, "
+        f"{len(shown)} of {len(reactions)} by depth",
+        fontsize=11,
+        color=INK,
+        loc="left",
+    )
+    axes.axis("off")
+    figure.tight_layout()
+    figure.savefig(out, format="svg", bbox_inches="tight")
+    plt.close(figure)
+
+
 def interaction_matrix(species: list[dict], reactions: list[dict], out: Path, title: str) -> None:
     """Who turns into what, as a matrix. Readable where a graph is not."""
 
@@ -830,6 +960,7 @@ def main(argv: list[str]) -> int:
         label = f"{bundle.parent.name} / {bundle.name}"
         energy_landscape(reactions, conditions, target / "energy_landscape.svg", label)
         fragmentation(species, reactions, target / "fragmentation.svg", label)
+        pathway(species, reactions, target / "pathway.svg", label)
         reaction_network(species, reactions, target / "reaction_network.svg", label)
         statistics(bundle, species, reactions, gaps, target / "statistics.svg", label)
         named = per_layer(species, reactions, conditions, bundle / "layers", label)

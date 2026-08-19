@@ -24,6 +24,21 @@ from reactgen.model import Reaction
 
 LAYERS = ("structure", "thermochemistry", "kinetics", "attestation")
 
+# What this repository writes when it worked a channel out for itself. Anything
+# else in `source_type` came from a paper or a database, and a reaction that
+# carries one is attested whether or not a separate index was handed in.
+DERIVED = frozenset(
+    {
+        "bond_breaking",
+        "formation_enthalpy",
+        "dissociation_limit",
+        "ionization_and_bond_energy",
+        "excitation_versus_ionization_energy",
+        "vibrational_manifold",
+        "structural",
+    }
+)
+
 # What the screens record when they decided a channel on energy alone.
 SCREENED = frozenset(
     {
@@ -44,9 +59,24 @@ def verdicts(
         "structure": _structure(reaction),
         "thermochemistry": _thermochemistry(reaction),
         "kinetics": relevance or "unknown",
-        "attestation": ", ".join(listed) if listed else "unattested",
+        "attestation": _attestation(reaction, listed),
     }
     return {name: answers[name] if name in selected else "not_run" for name in LAYERS}
+
+
+def _attestation(reaction: Reaction, listed: list[str]) -> str:
+    """Who states this reaction: an index handed in, or its own record.
+
+    A curated channel already carries the paper it was read from, so requiring
+    a separate index to call it attested reported two hundred and fifty DOIs as
+    unattested. The index adds to that rather than replacing it.
+    """
+
+    sources = list(listed)
+    own = reaction.source.get("source_id") or reaction.source.get("source_type")
+    if own and reaction.source.get("source_type") not in DERIVED:
+        sources.append(str(own))
+    return ", ".join(dict.fromkeys(sources)) if sources else "unattested"
 
 
 def _structure(reaction: Reaction) -> str:
