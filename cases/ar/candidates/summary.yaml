@@ -1,0 +1,26 @@
+mechanism_id: ar.Ar.677f0001
+case: ar
+gases:
+- Ar
+conditions:
+  pressure_Pa: 1.3
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 5.0e+16
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+species: 4
+reactions: 6
+by_family:
+  electron: 6
+max_depth: 1
+complete: true
+truncated_by: []
+data_coverage:
+  cross_section: 0/6
+relevance:
+  unknown: 6
+gaps:
+  blocking: 0
+  data: 4
+  info: 3

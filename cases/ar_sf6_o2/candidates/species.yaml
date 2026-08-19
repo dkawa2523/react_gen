@@ -1,0 +1,6999 @@
+case: ar_sf6_o2
+species:
+- id: Ar
+  charge: 0
+  composition:
+    Ar: 1
+  classes:
+  - atom
+  - neutral
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 0
+  introduced_by:
+  - Arp_O2_charge_transfer
+  - Arp_SF6_dissociative_charge_transfer_SF5p_F
+  - cand_Ar_4s_SF2_penning
+  - cand_Ar_4s_SF3_penning
+  - cand_Ar_4s_SF5_penning
+  - cand_Ar_4s_SF_penning
+  - cand_Ar_4s_S_penning
+  - cand_Arp_F*_char_Ar_Fp
+  - cand_Arp_F2*_char_Ar_F2p
+  - cand_Arp_F2_char_Ar_F2p
+  - cand_Arp_F2_v_char_Ar_F2p
+  - cand_Arp_FO*_diss_Ar_F_Op
+  - cand_Arp_FO_diss_Ar_F_Op
+  - cand_Arp_FO_v_diss_Ar_F_Op
+  - cand_Arp_F_char_Ar_Fp
+  - cand_Arp_O2_a1Delta_char_Ar_O2p
+  - cand_Arp_O2_b1Sigma_char_Ar_O2p
+  - cand_Arp_O2_b1Sigma_diss_Ar_Op_O
+  - cand_Arp_O2_v_char_Ar_O2p
+  - cand_Arp_O_1D_char_Ar_Op
+  - cand_Arp_O_1S_char_Ar_Op
+  - cand_Arp_O_char_Ar_Op
+  - cand_Arp_SF*_char_Ar_SFp
+  - cand_Arp_SF2*_char_Ar_SF2p
+  - cand_Arp_SF2*_diss_Ar_Sp_F2
+  - cand_Arp_SF2_char_Ar_SF2p
+  - cand_Arp_SF2_diss_Ar_Sp_F2
+  - cand_Arp_SF2_v_char_Ar_SF2p
+  - cand_Arp_SF2_v_diss_Ar_Sp_F2
+  - cand_Arp_SF3*_char_Ar_SF3p
+  - cand_Arp_SF3_char_Ar_SF3p
+  - cand_Arp_SF3_v_char_Ar_SF3p
+  - cand_Arp_SF4*_char_Ar_SF4p
+  - cand_Arp_SF4*_diss_Ar_SF2p_F2
+  - cand_Arp_SF4_char_Ar_SF4p
+  - cand_Arp_SF4_diss_Ar_SF2p_F2
+  - cand_Arp_SF4_v_char_Ar_SF4p
+  - cand_Arp_SF4_v_diss_Ar_SF2p_F2
+  - cand_Arp_SF5*_char_Ar_SF5p
+  - cand_Arp_SF5*_diss_Ar_SF4p_F
+  - cand_Arp_SF5_char_Ar_SF5p
+  - cand_Arp_SF5_diss_Ar_SF4p_F
+  - cand_Arp_SF5_v_char_Ar_SF5p
+  - cand_Arp_SF5_v_diss_Ar_SF4p_F
+  - cand_Arp_SF6*_char_Ar_SF6p
+  - cand_Arp_SF6*_diss_Ar_SF4p_F2
+  - cand_Arp_SF6*_diss_Ar_SF5p_F
+  - cand_Arp_SF6_char_Ar_SF6p
+  - cand_Arp_SF6_diss_Ar_SF4p_F2
+  - cand_Arp_SF6_v_char_Ar_SF6p
+  - cand_Arp_SF6_v_diss_Ar_SF4p_F2
+  - cand_Arp_SF6_v_diss_Ar_SF5p_F
+  - cand_Arp_SF_char_Ar_SFp
+  - cand_Arp_SF_v_char_Ar_SFp
+  - cand_Arp_SO*_diss_Ar_O_Sp
+  - cand_Arp_SO2*_diss_Ar_Sp_O2
+  - cand_Arp_SO2F2*_diss_Ar_SF2_O2p
+  - cand_Arp_SO2F2*_diss_Ar_SF2p_O2
+  - cand_Arp_SO2F2_diss_Ar_SF2_O2p
+  - cand_Arp_SO2F2_diss_Ar_SF2p_O2
+  - cand_Arp_SO2F2_v_diss_Ar_SF2_O2p
+  - cand_Arp_SO2F2_v_diss_Ar_SF2p_O2
+  - cand_Arp_SO2_diss_Ar_Sp_O2
+  - cand_Arp_SO2_v_diss_Ar_Sp_O2
+  - cand_Arp_SO_diss_Ar_O_Sp
+  - cand_Arp_SO_v_diss_Ar_O_Sp
+  - cand_Arp_S_1D_char_Ar_Sp
+  - cand_Arp_S_1S_char_Ar_Sp
+  - cand_Arp_S_char_Ar_Sp
+  - cand_F2_v_Ar_vt
+  - cand_F2p_Ar_4s_diss_Fp_F_Ar
+  - cand_FO_v_Ar_vt
+  - cand_O2_v_Ar_vt
+  - cand_O2p_Ar_4s_diss_Op_O_Ar
+  - cand_SF2_v_Ar_vt
+  - cand_SF2p_Ar_4s_diss_S_F2p_Ar
+  - cand_SF2p_Ar_4s_diss_Sp_F2_Ar
+  - cand_SF3_v_Ar_vt
+  - cand_SF4_v_Ar_vt
+  - cand_SF4p_Ar_4s_diss_SF2_F2p_Ar
+  - cand_SF4p_Ar_4s_diss_SF2p_F2_Ar
+  - cand_SF5_v_Ar_vt
+  - cand_SF5p_Ar_4s_diss_SF4_Fp_Ar
+  - cand_SF5p_Ar_4s_diss_SF4p_F_Ar
+  - cand_SF6_v_Ar_vt
+  - cand_SF6p_Ar_4s_diss_SF4_F2p_Ar
+  - cand_SF6p_Ar_4s_diss_SF4p_F2_Ar
+  - cand_SF6p_Ar_4s_diss_SF5_Fp_Ar
+  - cand_SF6p_Ar_4s_diss_SF5p_F_Ar
+  - cand_SF6p_Ar_diss_SF4p_F2_Ar
+  - cand_SF6p_Ar_diss_SF5p_F_Ar
+  - cand_SF_v_Ar_vt
+  - cand_SO2F2_v_Ar_vt
+  - cand_SO2_v_Ar_vt
+  - cand_SOF2_v_Ar_vt
+  - cand_SOF3_v_Ar_vt
+  - cand_SOF4_v_Ar_vt
+  - cand_SOF_v_Ar_vt
+  - cand_SO_v_Ar_vt
+  - e_Ar4s_superelastic
+  - e_Ar_elastic
+  properties:
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic symmetry
+    electron_affinity_eV:
+      value: -11.5
+      unit: eV
+      source: mendeleev package, bundled periodic table
+    enthalpy_formation_eV:
+      value: 0.0
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 154.8
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula
+        verified against the registry
+    ionization_energy_eV:
+      value: 15.759612
+      unit: eV
+      source: mendeleev package, bundled periodic table
+    mass_amu:
+      value: 39.948
+      unit: amu
+      source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+    polarizability_A3:
+      value: 1.6411
+      unit: A3
+      source: Experimental/static polarizability literature seed; CCCBDB/NIST polarizability
+        tables for review
+  thermo: null
+  status: curated
+- id: Ar+
+  charge: 1
+  composition:
+    Ar: 1
+  classes:
+  - atom
+  - positive_ion
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_Arp_F2*_reac_Arp_F_F
+  - cand_Arp_F2_reac_Arp_F_F
+  - cand_Arp_F2_v_reac_Arp_F_F
+  - cand_F2p_Ar_4s_char_F2_Arp
+  - cand_F2p_Ar_4s_diss_F_F_Arp
+  - cand_F2p_Ar_char_F2_Arp
+  - cand_F2p_Ar_diss_F_F_Arp
+  - cand_Fp_Ar_4s_char_F_Arp
+  - cand_Fp_Ar_char_F_Arp
+  - cand_O2p_Ar_4s_char_O2_Arp
+  - cand_O2p_Ar_4s_diss_O_O_Arp
+  - cand_Op_Ar_4s_char_O_Arp
+  - cand_SF2p_Ar_4s_char_SF2_Arp
+  - cand_SF2p_Ar_4s_diss_S_F2_Arp
+  - cand_SF3p_Ar_4s_char_SF3_Arp
+  - cand_SF4p_Ar_4s_char_SF4_Arp
+  - cand_SF4p_Ar_4s_diss_SF2_F2_Arp
+  - cand_SF5p_Ar_4s_char_SF5_Arp
+  - cand_SF5p_Ar_4s_diss_SF4_F_Arp
+  - cand_SF6p_Ar_4s_char_SF6_Arp
+  - cand_SF6p_Ar_4s_diss_SF4_F2_Arp
+  - cand_SF6p_Ar_4s_diss_SF5_F_Arp
+  - cand_SF6p_Ar_char_SF6_Arp
+  - cand_SFp_Ar_4s_char_SF_Arp
+  - cand_Sp_Ar_4s_char_S_Arp
+  - e_Ar4s_stepwise_ionization
+  - e_Ar_ionization
+  properties:
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic-ion symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 15.75961
+      unit: eV
+      source: derived from Ar IE, NIST Atomic Spectra Database / Basic Atomic Spectroscopic
+        Data
+    ionization_energy_eV:
+      value: 27.62966
+      unit: eV
+      source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+    mass_amu:
+      value: 39.94745
+      unit: amu
+      source: Ar atomic mass minus electron mass
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: Ar_4s
+  charge: 0
+  composition:
+    Ar: 1
+  classes:
+  - atom
+  - excited
+  - metastable
+  - neutral
+  state:
+    kind: excited
+    label: 3p5 4s manifold
+    energy_eV: 11.6
+    resolution: lumped
+    members:
+    - Ar_1s5
+    - Ar_1s4
+    - Ar_1s3
+    - Ar_1s2
+  depth: 1
+  introduced_by:
+  - cand_F2_v_Ar_4s_vt
+  - cand_FO_v_Ar_4s_vt
+  - cand_O2_v_Ar_4s_vt
+  - cand_SF2_v_Ar_4s_vt
+  - cand_SF3_v_Ar_4s_vt
+  - cand_SF4_v_Ar_4s_vt
+  - cand_SF5_v_Ar_4s_vt
+  - cand_SF6_v_Ar_4s_vt
+  - cand_SF_v_Ar_4s_vt
+  - cand_SO2F2_v_Ar_4s_vt
+  - cand_SO2_v_Ar_4s_vt
+  - cand_SOF2_v_Ar_4s_vt
+  - cand_SOF3_v_Ar_4s_vt
+  - cand_SOF4_v_Ar_4s_vt
+  - cand_SOF_v_Ar_4s_vt
+  - cand_SO_v_Ar_4s_vt
+  - e_Ar4s_elastic
+  - e_Ar_excitation_4s_lumped
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic species
+    ionization_energy_eV:
+      value: 4.16
+      unit: eV
+      source: 15.7596 eV Ar ionization limit minus the 11.6 eV manifold energy
+    mass_amu:
+      value: 39.948
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: literature_supported
+- id: F
+  charge: 0
+  composition:
+    F: 1
+  classes:
+  - atom
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - Arp_SF6_dissociative_charge_transfer_SF5p_F
+  - F2_O1D_to_FO_F
+  - F2_O_to_FO_F
+  - FO_FO_to_2F_O2
+  - FO_O1D_to_F_O2
+  - FO_O_to_F_O2
+  - SF2_F2_to_SF3_F
+  - SF2_O1D_R120
+  - SF2_O_R120
+  - SF3_F2_to_SF4_F
+  - SF3_O1D_R119
+  - SF3_O_R119
+  - SF4_F2_to_SF5_F
+  - SF5_F2_to_SF6_F
+  - SF5_O1D_R132
+  - SF5_O_R132
+  - SF_F2_to_SF2_F
+  - SF_O1D_R121
+  - SF_O_R121
+  - SOF3_O1D_R123
+  - SOF3_O_R123
+  - SOF4_dissociation_SOF3_F
+  - SOF_O1D_R122
+  - SOF_O_R122
+  - S_F2_to_SF_F
+  - cand_Arp_F2*_reac_Arp_F_F
+  - cand_Arp_F2_reac_Arp_F_F
+  - cand_Arp_F2_v_reac_Arp_F_F
+  - cand_Arp_FO*_diss_Ar_F_Op
+  - cand_Arp_FO_diss_Ar_F_Op
+  - cand_Arp_FO_v_diss_Ar_F_Op
+  - cand_Arp_SF5*_diss_Ar_SF4p_F
+  - cand_Arp_SF5_diss_Ar_SF4p_F
+  - cand_Arp_SF5_v_diss_Ar_SF4p_F
+  - cand_Arp_SF6*_diss_Ar_SF5p_F
+  - cand_Arp_SF6_v_diss_Ar_SF5p_F
+  - cand_F2_v_F_vt
+  - cand_F2p_Ar_4s_diss_F_F_Arp
+  - cand_F2p_Ar_4s_diss_Fp_F_Ar
+  - cand_F2p_Ar_diss_F_F_Arp
+  - cand_F2p_F2*_reac_F_F_F2p
+  - cand_F2p_F2_reac_F_F_F2p
+  - cand_F2p_F2_v_reac_F_F_F2p
+  - cand_F2p_FO*_diss_F2_F_Op
+  - cand_F2p_FO_diss_F2_F_Op
+  - cand_F2p_FO_v_diss_F2_F_Op
+  - cand_F2p_O2_a1Delta_diss_F_F_O2p
+  - cand_F2p_O2_b1Sigma_diss_F_F_O2p
+  - cand_F2p_O2_b1Sigma_diss_Fp_F_O2
+  - cand_F2p_O2_diss_F_F_O2p
+  - cand_F2p_O2_v_diss_F_F_O2p
+  - cand_F2p_O_1D_diss_F_F_Op
+  - cand_F2p_O_1D_diss_Fp_F_O
+  - cand_F2p_O_1S_diss_F_F_Op
+  - cand_F2p_O_1S_diss_Fp_F_O
+  - cand_F2p_O_diss_F_F_Op
+  - cand_F2p_SF*_diss_F_F_SFp
+  - cand_F2p_SF2*_diss_F_F_SF2p
+  - cand_F2p_SF2_diss_F_F_SF2p
+  - cand_F2p_SF2_v_diss_F_F_SF2p
+  - cand_F2p_SF3*_diss_F_F_SF3p
+  - cand_F2p_SF3_diss_F_F_SF3p
+  - cand_F2p_SF3_v_diss_F_F_SF3p
+  - cand_F2p_SF4*_diss_F_F_SF4p
+  - cand_F2p_SF4_diss_F_F_SF4p
+  - cand_F2p_SF4_v_diss_F_F_SF4p
+  - cand_F2p_SF5*_diss_F2_SF4p_F
+  - cand_F2p_SF5*_diss_F_F_SF5p
+  - cand_F2p_SF5_diss_F2_SF4p_F
+  - cand_F2p_SF5_diss_F_F_SF5p
+  - cand_F2p_SF5_v_diss_F2_SF4p_F
+  - cand_F2p_SF5_v_diss_F_F_SF5p
+  - cand_F2p_SF6*_diss_F2_SF5p_F
+  - cand_F2p_SF6*_diss_F_F_SF6p
+  - cand_F2p_SF6_diss_F2_SF5p_F
+  - cand_F2p_SF6_diss_F_F_SF6p
+  - cand_F2p_SF6_v_diss_F2_SF5p_F
+  - cand_F2p_SF6_v_diss_F_F_SF6p
+  - cand_F2p_SF_diss_F_F_SFp
+  - cand_F2p_SF_v_diss_F_F_SFp
+  - cand_F2p_S_1D_diss_F_F_Sp
+  - cand_F2p_S_1S_diss_F_F_Sp
+  - cand_F2p_S_1S_diss_Fp_F_S
+  - cand_F2p_S_diss_F_F_Sp
+  - cand_FO_diss_O_1D
+  - cand_FO_diss_O_1S
+  - cand_FO_v_F_vt
+  - cand_Fp_Ar_4s_char_F_Arp
+  - cand_Fp_Ar_char_F_Arp
+  - cand_Fp_F2*_char_F_F2p
+  - cand_Fp_F2*_reac_Fp_F_F
+  - cand_Fp_F2_char_F_F2p
+  - cand_Fp_F2_reac_Fp_F_F
+  - cand_Fp_F2_v_char_F_F2p
+  - cand_Fp_F2_v_reac_Fp_F_F
+  - cand_Fp_FO*_diss_F_F_Op
+  - cand_Fp_FO_diss_F_F_Op
+  - cand_Fp_FO_v_diss_F_F_Op
+  - cand_Fp_O2_a1Delta_char_F_O2p
+  - cand_Fp_O2_a1Delta_diss_F_Op_O
+  - cand_Fp_O2_b1Sigma_char_F_O2p
+  - cand_Fp_O2_b1Sigma_diss_F_Op_O
+  - cand_Fp_O2_char_F_O2p
+  - cand_Fp_O2_diss_F_Op_O
+  - cand_Fp_O2_v_char_F_O2p
+  - cand_Fp_O2_v_diss_F_Op_O
+  - cand_Fp_O_1D_char_F_Op
+  - cand_Fp_O_1S_char_F_Op
+  - cand_Fp_O_char_F_Op
+  - cand_Fp_SF*_char_F_SFp
+  - cand_Fp_SF2*_char_F_SF2p
+  - cand_Fp_SF2*_diss_F_Sp_F2
+  - cand_Fp_SF2_char_F_SF2p
+  - cand_Fp_SF2_diss_F_Sp_F2
+  - cand_Fp_SF2_v_char_F_SF2p
+  - cand_Fp_SF2_v_diss_F_Sp_F2
+  - cand_Fp_SF3*_char_F_SF3p
+  - cand_Fp_SF3_char_F_SF3p
+  - cand_Fp_SF3_v_char_F_SF3p
+  - cand_Fp_SF4*_char_F_SF4p
+  - cand_Fp_SF4*_diss_F_SF2p_F2
+  - cand_Fp_SF4_char_F_SF4p
+  - cand_Fp_SF4_diss_F_SF2p_F2
+  - cand_Fp_SF4_v_char_F_SF4p
+  - cand_Fp_SF4_v_diss_F_SF2p_F2
+  - cand_Fp_SF5*_char_F_SF5p
+  - cand_Fp_SF5*_diss_F_SF4p_F
+  - cand_Fp_SF5_char_F_SF5p
+  - cand_Fp_SF5_diss_F_SF4p_F
+  - cand_Fp_SF5_v_char_F_SF5p
+  - cand_Fp_SF5_v_diss_F_SF4p_F
+  - cand_Fp_SF6*_char_F_SF6p
+  - cand_Fp_SF6*_diss_F_SF4p_F2
+  - cand_Fp_SF6*_diss_F_SF5p_F
+  - cand_Fp_SF6_char_F_SF6p
+  - cand_Fp_SF6_diss_F_SF4p_F2
+  - cand_Fp_SF6_diss_F_SF5p_F
+  - cand_Fp_SF6_v_char_F_SF6p
+  - cand_Fp_SF6_v_diss_F_SF4p_F2
+  - cand_Fp_SF6_v_diss_F_SF5p_F
+  - cand_Fp_SF_char_F_SFp
+  - cand_Fp_SF_v_char_F_SFp
+  - cand_Fp_SO*_diss_F_O_Sp
+  - cand_Fp_SO*_diss_F_Op_S
+  - cand_Fp_SO2*_diss_F_SO_Op
+  - cand_Fp_SO2*_diss_F_S_O2p
+  - cand_Fp_SO2*_diss_F_Sp_O2
+  - cand_Fp_SO2F2*_diss_F_SF2_O2p
+  - cand_Fp_SO2F2*_diss_F_SF2p_O2
+  - cand_Fp_SO2F2*_diss_F_SOF2_Op
+  - cand_Fp_SO2F2_diss_F_SF2_O2p
+  - cand_Fp_SO2F2_diss_F_SF2p_O2
+  - cand_Fp_SO2F2_diss_F_SOF2_Op
+  - cand_Fp_SO2F2_v_diss_F_SF2_O2p
+  - cand_Fp_SO2F2_v_diss_F_SF2p_O2
+  - cand_Fp_SO2F2_v_diss_F_SOF2_Op
+  - cand_Fp_SO2_diss_F_SO_Op
+  - cand_Fp_SO2_diss_F_S_O2p
+  - cand_Fp_SO2_diss_F_Sp_O2
+  - cand_Fp_SO2_v_diss_F_SO_Op
+  - cand_Fp_SO2_v_diss_F_S_O2p
+  - cand_Fp_SO2_v_diss_F_Sp_O2
+  - cand_Fp_SO_diss_F_O_Sp
+  - cand_Fp_SO_diss_F_Op_S
+  - cand_Fp_SO_v_diss_F_O_Sp
+  - cand_Fp_SO_v_diss_F_Op_S
+  - cand_Fp_S_1D_char_F_Sp
+  - cand_Fp_S_1S_char_F_Sp
+  - cand_Fp_S_char_F_Sp
+  - cand_O2_v_F_vt
+  - cand_O2p_F2*_reac_O2p_F_F
+  - cand_O2p_F2_reac_O2p_F_F
+  - cand_O2p_F2_v_reac_O2p_F_F
+  - cand_O2p_SF6*_diss_O2_SF5p_F
+  - cand_O2p_SF6_diss_O2_SF5p_F
+  - cand_O2p_SF6_v_diss_O2_SF5p_F
+  - cand_Op_F2*_reac_Op_F_F
+  - cand_Op_F2_reac_Op_F_F
+  - cand_Op_F2_v_reac_Op_F_F
+  - cand_Op_SF5*_diss_O_SF4p_F
+  - cand_Op_SF5_diss_O_SF4p_F
+  - cand_Op_SF5_v_diss_O_SF4p_F
+  - cand_Op_SF6*_diss_O_SF5p_F
+  - cand_Op_SF6_diss_O_SF5p_F
+  - cand_Op_SF6_v_diss_O_SF5p_F
+  - cand_SF2_v_F_vt
+  - cand_SF2p_F2*_reac_SF2p_F_F
+  - cand_SF2p_F2_reac_SF2p_F_F
+  - cand_SF2p_F2_v_reac_SF2p_F_F
+  - cand_SF3_v_F_vt
+  - cand_SF3p_F2*_reac_SF3p_F_F
+  - cand_SF3p_F2_reac_SF3p_F_F
+  - cand_SF3p_F2_v_reac_SF3p_F_F
+  - cand_SF4_v_F_vt
+  - cand_SF4p_F2*_reac_SF4p_F_F
+  - cand_SF4p_F2_reac_SF4p_F_F
+  - cand_SF4p_F2_v_reac_SF4p_F_F
+  - cand_SF4p_SF6*_diss_SF4_SF5p_F
+  - cand_SF4p_SF6_diss_SF4_SF5p_F
+  - cand_SF4p_SF6_v_diss_SF4_SF5p_F
+  - cand_SF5_v_F_vt
+  - cand_SF5p_Ar_4s_diss_SF4_F_Arp
+  - cand_SF5p_Ar_4s_diss_SF4p_F_Ar
+  - cand_SF5p_F2*_reac_SF5p_F_F
+  - cand_SF5p_F2_reac_SF5p_F_F
+  - cand_SF5p_F2_v_reac_SF5p_F_F
+  - cand_SF5p_O_1S_diss_SF4p_F_O
+  - cand_SF5p_SF3*_diss_SF4_F_SF3p
+  - cand_SF5p_SF3_diss_SF4_F_SF3p
+  - cand_SF5p_SF3_v_diss_SF4_F_SF3p
+  - cand_SF5p_S_1D_diss_SF4_F_Sp
+  - cand_SF5p_S_1S_diss_SF4_F_Sp
+  - cand_SF5p_S_1S_diss_SF4p_F_S
+  - cand_SF6_v_F_vt
+  - cand_SF6p_Ar_4s_diss_SF5_F_Arp
+  - cand_SF6p_Ar_4s_diss_SF5p_F_Ar
+  - cand_SF6p_Ar_diss_SF5p_F_Ar
+  - cand_SF6p_F*_diss_SF4p_F2_F
+  - cand_SF6p_F*_diss_SF5p_F_F
+  - cand_SF6p_F2*_diss_SF5p_F_F2
+  - cand_SF6p_F2*_reac_SF6p_F_F
+  - cand_SF6p_F2_diss_SF5p_F_F2
+  - cand_SF6p_F2_reac_SF6p_F_F
+  - cand_SF6p_F2_v_diss_SF5p_F_F2
+  - cand_SF6p_F2_v_reac_SF6p_F_F
+  - cand_SF6p_FO*_diss_SF5p_F_FO
+  - cand_SF6p_FO*_diss_SF6_F_Op
+  - cand_SF6p_FO_diss_SF5p_F_FO
+  - cand_SF6p_FO_diss_SF6_F_Op
+  - cand_SF6p_FO_v_diss_SF5p_F_FO
+  - cand_SF6p_FO_v_diss_SF6_F_Op
+  - cand_SF6p_F_diss_SF4p_F2_F
+  - cand_SF6p_F_diss_SF5p_F_F
+  - cand_SF6p_O2_a1Delta_diss_SF5_F_O2p
+  - cand_SF6p_O2_a1Delta_diss_SF5p_F_O2
+  - cand_SF6p_O2_b1Sigma_diss_SF5_F_O2p
+  - cand_SF6p_O2_b1Sigma_diss_SF5p_F_O2
+  - cand_SF6p_O2_diss_SF5_F_O2p
+  - cand_SF6p_O2_diss_SF5p_F_O2
+  - cand_SF6p_O2_v_diss_SF5_F_O2p
+  - cand_SF6p_O2_v_diss_SF5p_F_O2
+  - cand_SF6p_O_1D_diss_SF5_F_Op
+  - cand_SF6p_O_1D_diss_SF5p_F_O
+  - cand_SF6p_O_1S_diss_SF5_F_Op
+  - cand_SF6p_O_1S_diss_SF5p_F_O
+  - cand_SF6p_O_diss_SF5p_F_O
+  - cand_SF6p_SF*_diss_SF5_F_SFp
+  - cand_SF6p_SF*_diss_SF5p_F_SF
+  - cand_SF6p_SF2*_diss_SF5_F_SF2p
+  - cand_SF6p_SF2*_diss_SF5p_F_SF2
+  - cand_SF6p_SF2_diss_SF5_F_SF2p
+  - cand_SF6p_SF2_diss_SF5p_F_SF2
+  - cand_SF6p_SF2_v_diss_SF5_F_SF2p
+  - cand_SF6p_SF2_v_diss_SF5p_F_SF2
+  - cand_SF6p_SF3*_diss_SF5_F_SF3p
+  - cand_SF6p_SF3*_diss_SF5p_F_SF3
+  - cand_SF6p_SF3_diss_SF5_F_SF3p
+  - cand_SF6p_SF3_diss_SF5p_F_SF3
+  - cand_SF6p_SF3_v_diss_SF5_F_SF3p
+  - cand_SF6p_SF3_v_diss_SF5p_F_SF3
+  - cand_SF6p_SF4*_diss_SF5_F_SF4p
+  - cand_SF6p_SF4*_diss_SF5p_F_SF4
+  - cand_SF6p_SF4_diss_SF5_F_SF4p
+  - cand_SF6p_SF4_diss_SF5p_F_SF4
+  - cand_SF6p_SF4_v_diss_SF5_F_SF4p
+  - cand_SF6p_SF4_v_diss_SF5p_F_SF4
+  - cand_SF6p_SF5*_diss_SF5p_F_SF5
+  - cand_SF6p_SF5*_diss_SF6_SF4p_F
+  - cand_SF6p_SF5_diss_SF5p_F_SF5
+  - cand_SF6p_SF5_diss_SF6_SF4p_F
+  - cand_SF6p_SF5_v_diss_SF5p_F_SF5
+  - cand_SF6p_SF5_v_diss_SF6_SF4p_F
+  - cand_SF6p_SF6*_diss_SF5p_F_SF6
+  - cand_SF6p_SF6_diss_SF5p_F_SF6
+  - cand_SF6p_SF6_v_diss_SF5p_F_SF6
+  - cand_SF6p_SF_diss_SF5_F_SFp
+  - cand_SF6p_SF_diss_SF5p_F_SF
+  - cand_SF6p_SF_v_diss_SF5_F_SFp
+  - cand_SF6p_SF_v_diss_SF5p_F_SF
+  - cand_SF6p_SO*_diss_SF5p_F_SO
+  - cand_SF6p_SO2*_diss_SF5p_F_SO2
+  - cand_SF6p_SO2F2*_diss_SF5p_F_SO2F2
+  - cand_SF6p_SO2F2_diss_SF5p_F_SO2F2
+  - cand_SF6p_SO2F2_v_diss_SF5p_F_SO2F2
+  - cand_SF6p_SO2_diss_SF5p_F_SO2
+  - cand_SF6p_SO2_v_diss_SF5p_F_SO2
+  - cand_SF6p_SOF*_diss_SF5p_F_SOF
+  - cand_SF6p_SOF2*_diss_SF5p_F_SOF2
+  - cand_SF6p_SOF2_diss_SF5p_F_SOF2
+  - cand_SF6p_SOF2_v_diss_SF5p_F_SOF2
+  - cand_SF6p_SOF3*_diss_SF5p_F_SOF3
+  - cand_SF6p_SOF3_diss_SF5p_F_SOF3
+  - cand_SF6p_SOF3_v_diss_SF5p_F_SOF3
+  - cand_SF6p_SOF4*_diss_SF5p_F_SOF4
+  - cand_SF6p_SOF4_diss_SF5p_F_SOF4
+  - cand_SF6p_SOF4_v_diss_SF5p_F_SOF4
+  - cand_SF6p_SOF_diss_SF5p_F_SOF
+  - cand_SF6p_SOF_v_diss_SF5p_F_SOF
+  - cand_SF6p_SO_diss_SF5p_F_SO
+  - cand_SF6p_SO_v_diss_SF5p_F_SO
+  - cand_SF6p_S_1D_diss_SF5_F_Sp
+  - cand_SF6p_S_1D_diss_SF5p_F_S
+  - cand_SF6p_S_1S_diss_SF5_F_Sp
+  - cand_SF6p_S_1S_diss_SF5p_F_S
+  - cand_SF6p_S_diss_SF5_F_Sp
+  - cand_SF6p_S_diss_SF5p_F_S
+  - cand_SF_v_F_vt
+  - cand_SFp_F2*_reac_SFp_F_F
+  - cand_SFp_F2_reac_SFp_F_F
+  - cand_SFp_F2_v_reac_SFp_F_F
+  - cand_SO2F2_v_F_vt
+  - cand_SO2_v_F_vt
+  - cand_SOF2_v_F_vt
+  - cand_SOF3_v_F_vt
+  - cand_SOF4_v_F_vt
+  - cand_SOF_v_F_vt
+  - cand_SO_v_F_vt
+  - cand_Sp_F2*_reac_Sp_F_F
+  - cand_Sp_F2_reac_Sp_F_F
+  - cand_Sp_F2_v_reac_Sp_F_F
+  - cand_e_F*_to_e_F
+  - cand_e_F2*_to_e_F_F
+  - cand_e_F2*_to_e_e_Fp_F
+  - cand_e_F2_to_e_e_Fp_F
+  - cand_e_F2_v_to_e_F_F
+  - cand_e_F2_v_to_e_e_Fp_F
+  - cand_e_FO*_to_e_F_O
+  - cand_e_FO_v_to_e_F_O
+  - cand_e_SF*_to_e_F_S
+  - cand_e_SF2*_to_e_SF_F
+  - cand_e_SF2*_to_e_e_SFp_F
+  - cand_e_SF2_to_e_e_SFp_F
+  - cand_e_SF2_v_to_e_SF_F
+  - cand_e_SF2_v_to_e_e_SFp_F
+  - cand_e_SF3*_to_e_SF2_F
+  - cand_e_SF3*_to_e_e_SF2p_F
+  - cand_e_SF3_to_e_e_SF2p_F
+  - cand_e_SF3_v_to_e_SF2_F
+  - cand_e_SF3_v_to_e_e_SF2p_F
+  - cand_e_SF4*_to_e_SF3_F
+  - cand_e_SF4*_to_e_e_SF3p_F
+  - cand_e_SF4_v_to_e_SF3_F
+  - cand_e_SF4_v_to_e_e_SF3p_F
+  - cand_e_SF5*_to_e_SF4_F
+  - cand_e_SF5*_to_e_e_SF4p_F
+  - cand_e_SF5_v_to_e_SF4_F
+  - cand_e_SF5_v_to_e_e_SF4p_F
+  - cand_e_SF6*_to_e_SF5_F
+  - cand_e_SF6*_to_e_e_SF5p_F
+  - cand_e_SF6_v_to_e_SF5_F
+  - cand_e_SF6_v_to_e_e_SF5p_F
+  - cand_e_SF_v_to_e_F_S
+  - cand_e_SOF2*_to_e_SOF_F
+  - cand_e_SOF2*_to_e_e_SOFp_F
+  - cand_e_SOF2_to_e_SOF_F
+  - cand_e_SOF2_to_e_e_SOFp_F
+  - cand_e_SOF2_v_to_e_SOF_F
+  - cand_e_SOF2_v_to_e_e_SOFp_F
+  - cand_e_SOF3*_to_e_SOF2_F
+  - cand_e_SOF3*_to_e_e_SOF2p_F
+  - cand_e_SOF3_to_e_SOF2_F
+  - cand_e_SOF3_to_e_e_SOF2p_F
+  - cand_e_SOF3_v_to_e_SOF2_F
+  - cand_e_SOF3_v_to_e_e_SOF2p_F
+  - cand_e_SOF4*_to_e_SOF3_F
+  - cand_e_SOF4*_to_e_e_SOF3p_F
+  - cand_e_SOF4_to_e_SOF3_F
+  - cand_e_SOF4_to_e_e_SOF3p_F
+  - cand_e_SOF4_v_to_e_SOF3_F
+  - cand_e_SOF4_v_to_e_e_SOF3p_F
+  - e_F2_dissociation_2F
+  - e_FO_dissociation_F_O
+  - e_F_elastic
+  - e_SF2_dissociation_SF_F
+  - e_SF3_dissociation_SF2_F
+  - e_SF4_dissociation_SF3_F
+  - e_SF4_dissociative_ionization_SF3p_F
+  - e_SF5_dissociation_SF4_F
+  - e_SF5_dissociative_ionization_SF4p_F
+  - e_SF6_dissociation_SF2_F2_2F
+  - e_SF6_dissociation_SF3_3F
+  - e_SF6_dissociation_SF4_2F
+  - e_SF6_dissociation_SF5_F
+  - e_SF6_dissociation_SF_F2_3F
+  - e_SF6_dissociative_ionization_Fp_SF4_F
+  - e_SF6_dissociative_ionization_SF2p_F2_2F
+  - e_SF6_dissociative_ionization_SF3p_3F
+  - e_SF6_dissociative_ionization_SF4p_2F
+  - e_SF6_dissociative_ionization_SF5p_F
+  - e_SF6_dissociative_ionization_SFp_F2_3F
+  - e_SF6_dissociative_ionization_Sp_F2_4F
+  - e_SF_dissociation_S_F
+  properties:
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic symmetry
+    electron_affinity_eV:
+      value: 3.40119
+      unit: eV
+      source: mendeleev package, bundled periodic table
+    enthalpy_formation_eV:
+      value: 0.822654
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 14762-94-8, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 158.8
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 14762-94-8, formula
+        verified against the registry
+    ionization_energy_eV:
+      value: 17.42282
+      unit: eV
+      source: mendeleev package, bundled periodic table
+    mass_amu:
+      value: 18.9984032
+      unit: amu
+      source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+    polarizability_A3:
+      value: 0.557
+      unit: A3
+      source: NIST CCCBDB experimental polarizability table
+  thermo: null
+  status: curated
+- id: F*
+  charge: 0
+  composition:
+    F: 1
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_F*_vt
+  - cand_FO_v_F*_vt
+  - cand_O2_v_F*_vt
+  - cand_SF2_v_F*_vt
+  - cand_SF3_v_F*_vt
+  - cand_SF4_v_F*_vt
+  - cand_SF5_v_F*_vt
+  - cand_SF6_v_F*_vt
+  - cand_SF_v_F*_vt
+  - cand_SO2F2_v_F*_vt
+  - cand_SO2_v_F*_vt
+  - cand_SOF2_v_F*_vt
+  - cand_SOF3_v_F*_vt
+  - cand_SOF4_v_F*_vt
+  - cand_SOF_v_F*_vt
+  - cand_SO_v_F*_vt
+  - cand_e_F*_to_e_F*
+  - cand_e_F_to_e_F*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: F+
+  charge: 1
+  composition:
+    F: 1
+  classes:
+  - atom
+  - positive_ion
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_Arp_F*_char_Ar_Fp
+  - cand_Arp_F_char_Ar_Fp
+  - cand_F2p_Ar_4s_diss_Fp_F_Ar
+  - cand_F2p_F*_char_F2_Fp
+  - cand_F2p_F_char_F2_Fp
+  - cand_F2p_O2_b1Sigma_diss_Fp_F_O2
+  - cand_F2p_O_1D_diss_Fp_F_O
+  - cand_F2p_O_1S_diss_Fp_F_O
+  - cand_F2p_S_1S_diss_Fp_F_S
+  - cand_Fp_F2*_reac_Fp_F_F
+  - cand_Fp_F2_reac_Fp_F_F
+  - cand_Fp_F2_v_reac_Fp_F_F
+  - cand_SF5p_Ar_4s_diss_SF4_Fp_Ar
+  - cand_SF6p_Ar_4s_diss_SF5_Fp_Ar
+  - cand_SF6p_O_1S_diss_SF5_Fp_O
+  - cand_e_F*_to_e_e_Fp
+  - cand_e_F2*_to_e_e_Fp_F
+  - cand_e_F2_to_e_e_Fp_F
+  - cand_e_F2_v_to_e_e_Fp_F
+  - cand_e_FO*_to_e_e_Fp_O
+  - cand_e_FO_to_e_e_Fp_O
+  - cand_e_FO_v_to_e_e_Fp_O
+  - cand_e_SF*_to_e_e_Fp_S
+  - cand_e_SF_to_e_e_Fp_S
+  - cand_e_SF_v_to_e_e_Fp_S
+  - e_F_ionization
+  - e_SF6_dissociative_ionization_Fp_SF4_F
+  properties:
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic-ion symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 18.245535725314177
+      unit: eV
+      source: derived from F atom ΔfH° and F IE
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 18.9978546
+      unit: amu
+      source: F atomic mass minus electron mass
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: F2
+  charge: 0
+  composition:
+    F: 2
+  classes:
+  - molecule
+  - neutral
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - FO_FO_to_F2_O2
+  - SF5p_SF6_to_SF3p_SF6_F2
+  - cand_Arp_SF2*_diss_Ar_Sp_F2
+  - cand_Arp_SF2_diss_Ar_Sp_F2
+  - cand_Arp_SF2_v_diss_Ar_Sp_F2
+  - cand_Arp_SF4*_diss_Ar_SF2p_F2
+  - cand_Arp_SF4_diss_Ar_SF2p_F2
+  - cand_Arp_SF4_v_diss_Ar_SF2p_F2
+  - cand_Arp_SF6*_diss_Ar_SF4p_F2
+  - cand_Arp_SF6_diss_Ar_SF4p_F2
+  - cand_Arp_SF6_v_diss_Ar_SF4p_F2
+  - cand_F2_v_Ar_4s_vt
+  - cand_F2_v_Ar_vt
+  - cand_F2_v_F*_vt
+  - cand_F2_v_F2*_vt
+  - cand_F2_v_F2_vt
+  - cand_F2_v_FO*_vt
+  - cand_F2_v_FO_v_vt
+  - cand_F2_v_FO_vt
+  - cand_F2_v_F_vt
+  - cand_F2_v_O2_a1Delta_vt
+  - cand_F2_v_O2_b1Sigma_vt
+  - cand_F2_v_O2_v_vt
+  - cand_F2_v_O2_vt
+  - cand_F2_v_O_1D_vt
+  - cand_F2_v_O_1S_vt
+  - cand_F2_v_O_vt
+  - cand_F2_v_SF*_vt
+  - cand_F2_v_SF2*_vt
+  - cand_F2_v_SF2_v_vt
+  - cand_F2_v_SF2_vt
+  - cand_F2_v_SF3*_vt
+  - cand_F2_v_SF3_v_vt
+  - cand_F2_v_SF3_vt
+  - cand_F2_v_SF4*_vt
+  - cand_F2_v_SF4_v_vt
+  - cand_F2_v_SF4_vt
+  - cand_F2_v_SF5*_vt
+  - cand_F2_v_SF5_v_vt
+  - cand_F2_v_SF5_vt
+  - cand_F2_v_SF6*_vt
+  - cand_F2_v_SF6_v_vt
+  - cand_F2_v_SF6_vt
+  - cand_F2_v_SF_v_vt
+  - cand_F2_v_SF_vt
+  - cand_F2_v_SO*_vt
+  - cand_F2_v_SO2*_vt
+  - cand_F2_v_SO2F2*_vt
+  - cand_F2_v_SO2F2_v_vt
+  - cand_F2_v_SO2F2_vt
+  - cand_F2_v_SO2_v_vt
+  - cand_F2_v_SO2_vt
+  - cand_F2_v_SOF*_vt
+  - cand_F2_v_SOF2*_vt
+  - cand_F2_v_SOF2_v_vt
+  - cand_F2_v_SOF2_vt
+  - cand_F2_v_SOF3*_vt
+  - cand_F2_v_SOF3_v_vt
+  - cand_F2_v_SOF3_vt
+  - cand_F2_v_SOF4*_vt
+  - cand_F2_v_SOF4_v_vt
+  - cand_F2_v_SOF4_vt
+  - cand_F2_v_SOF_v_vt
+  - cand_F2_v_SOF_vt
+  - cand_F2_v_SO_v_vt
+  - cand_F2_v_SO_vt
+  - cand_F2_v_S_1D_vt
+  - cand_F2_v_S_1S_vt
+  - cand_F2_v_S_vt
+  - cand_F2p_Ar_4s_char_F2_Arp
+  - cand_F2p_Ar_char_F2_Arp
+  - cand_F2p_F*_char_F2_Fp
+  - cand_F2p_FO*_diss_F2_F_Op
+  - cand_F2p_FO_diss_F2_F_Op
+  - cand_F2p_FO_v_diss_F2_F_Op
+  - cand_F2p_F_char_F2_Fp
+  - cand_F2p_O2_a1Delta_char_F2_O2p
+  - cand_F2p_O2_b1Sigma_char_F2_O2p
+  - cand_F2p_O2_b1Sigma_diss_F2_Op_O
+  - cand_F2p_O2_char_F2_O2p
+  - cand_F2p_O2_v_char_F2_O2p
+  - cand_F2p_O_1D_char_F2_Op
+  - cand_F2p_O_1S_char_F2_Op
+  - cand_F2p_O_char_F2_Op
+  - cand_F2p_SF*_char_F2_SFp
+  - cand_F2p_SF2*_char_F2_SF2p
+  - cand_F2p_SF2*_diss_F2_Sp_F2
+  - cand_F2p_SF2_char_F2_SF2p
+  - cand_F2p_SF2_diss_F2_Sp_F2
+  - cand_F2p_SF2_v_char_F2_SF2p
+  - cand_F2p_SF2_v_diss_F2_Sp_F2
+  - cand_F2p_SF3*_char_F2_SF3p
+  - cand_F2p_SF3_char_F2_SF3p
+  - cand_F2p_SF3_v_char_F2_SF3p
+  - cand_F2p_SF4*_char_F2_SF4p
+  - cand_F2p_SF4*_diss_F2_SF2p_F2
+  - cand_F2p_SF4_char_F2_SF4p
+  - cand_F2p_SF4_diss_F2_SF2p_F2
+  - cand_F2p_SF4_v_char_F2_SF4p
+  - cand_F2p_SF4_v_diss_F2_SF2p_F2
+  - cand_F2p_SF5*_char_F2_SF5p
+  - cand_F2p_SF5*_diss_F2_SF4p_F
+  - cand_F2p_SF5_char_F2_SF5p
+  - cand_F2p_SF5_diss_F2_SF4p_F
+  - cand_F2p_SF5_v_char_F2_SF5p
+  - cand_F2p_SF5_v_diss_F2_SF4p_F
+  - cand_F2p_SF6*_char_F2_SF6p
+  - cand_F2p_SF6*_diss_F2_SF4p_F2
+  - cand_F2p_SF6*_diss_F2_SF5p_F
+  - cand_F2p_SF6_char_F2_SF6p
+  - cand_F2p_SF6_diss_F2_SF4p_F2
+  - cand_F2p_SF6_diss_F2_SF5p_F
+  - cand_F2p_SF6_v_char_F2_SF6p
+  - cand_F2p_SF6_v_diss_F2_SF4p_F2
+  - cand_F2p_SF6_v_diss_F2_SF5p_F
+  - cand_F2p_SF_char_F2_SFp
+  - cand_F2p_SF_v_char_F2_SFp
+  - cand_F2p_SO*_diss_F2_O_Sp
+  - cand_F2p_SO2*_diss_F2_Sp_O2
+  - cand_F2p_SO2F2*_diss_F2_SF2_O2p
+  - cand_F2p_SO2F2*_diss_F2_SF2p_O2
+  - cand_F2p_SO2F2_diss_F2_SF2_O2p
+  - cand_F2p_SO2F2_diss_F2_SF2p_O2
+  - cand_F2p_SO2F2_v_diss_F2_SF2_O2p
+  - cand_F2p_SO2F2_v_diss_F2_SF2p_O2
+  - cand_F2p_SO2_diss_F2_Sp_O2
+  - cand_F2p_SO2_v_diss_F2_Sp_O2
+  - cand_F2p_SO_diss_F2_O_Sp
+  - cand_F2p_SO_v_diss_F2_O_Sp
+  - cand_F2p_S_1D_char_F2_Sp
+  - cand_F2p_S_1S_char_F2_Sp
+  - cand_F2p_S_char_F2_Sp
+  - cand_FO_v_F2_vt
+  - cand_Fp_SF2*_diss_F_Sp_F2
+  - cand_Fp_SF2_diss_F_Sp_F2
+  - cand_Fp_SF2_v_diss_F_Sp_F2
+  - cand_Fp_SF4*_diss_F_SF2p_F2
+  - cand_Fp_SF4_diss_F_SF2p_F2
+  - cand_Fp_SF4_v_diss_F_SF2p_F2
+  - cand_Fp_SF6*_diss_F_SF4p_F2
+  - cand_Fp_SF6_diss_F_SF4p_F2
+  - cand_Fp_SF6_v_diss_F_SF4p_F2
+  - cand_O2_v_F2_vt
+  - cand_SF2_diss_S_1D
+  - cand_SF2_diss_S_1S
+  - cand_SF2_v_F2_vt
+  - cand_SF2p_Ar_4s_diss_S_F2_Arp
+  - cand_SF2p_Ar_4s_diss_Sp_F2_Ar
+  - cand_SF2p_O_1S_diss_Sp_F2_O
+  - cand_SF3_v_F2_vt
+  - cand_SF4_v_F2_vt
+  - cand_SF4p_Ar_4s_diss_SF2_F2_Arp
+  - cand_SF4p_Ar_4s_diss_SF2p_F2_Ar
+  - cand_SF4p_O_1D_diss_SF2p_F2_O
+  - cand_SF4p_O_1S_diss_SF2p_F2_O
+  - cand_SF4p_SF3*_diss_SF2_F2_SF3p
+  - cand_SF4p_SF3_diss_SF2_F2_SF3p
+  - cand_SF4p_SF3_v_diss_SF2_F2_SF3p
+  - cand_SF4p_S_1S_diss_SF2_F2_Sp
+  - cand_SF4p_S_1S_diss_SF2p_F2_S
+  - cand_SF5_v_F2_vt
+  - cand_SF6_v_F2_vt
+  - cand_SF6p_Ar_4s_diss_SF4_F2_Arp
+  - cand_SF6p_Ar_4s_diss_SF4p_F2_Ar
+  - cand_SF6p_Ar_diss_SF4p_F2_Ar
+  - cand_SF6p_F*_diss_SF4p_F2_F
+  - cand_SF6p_F2*_diss_SF4p_F2_F2
+  - cand_SF6p_F2*_diss_SF5p_F_F2
+  - cand_SF6p_F2_diss_SF4p_F2_F2
+  - cand_SF6p_F2_diss_SF5p_F_F2
+  - cand_SF6p_F2_v_diss_SF4p_F2_F2
+  - cand_SF6p_F2_v_diss_SF5p_F_F2
+  - cand_SF6p_FO*_diss_SF4p_F2_FO
+  - cand_SF6p_FO_diss_SF4p_F2_FO
+  - cand_SF6p_FO_v_diss_SF4p_F2_FO
+  - cand_SF6p_F_diss_SF4p_F2_F
+  - cand_SF6p_O2_a1Delta_diss_SF4_F2_O2p
+  - cand_SF6p_O2_a1Delta_diss_SF4p_F2_O2
+  - cand_SF6p_O2_b1Sigma_diss_SF4_F2_O2p
+  - cand_SF6p_O2_b1Sigma_diss_SF4p_F2_O2
+  - cand_SF6p_O2_diss_SF4_F2_O2p
+  - cand_SF6p_O2_diss_SF4p_F2_O2
+  - cand_SF6p_O2_v_diss_SF4_F2_O2p
+  - cand_SF6p_O2_v_diss_SF4p_F2_O2
+  - cand_SF6p_O_1D_diss_SF4_F2_Op
+  - cand_SF6p_O_1D_diss_SF4p_F2_O
+  - cand_SF6p_O_1S_diss_SF4_F2_Op
+  - cand_SF6p_O_1S_diss_SF4p_F2_O
+  - cand_SF6p_O_diss_SF4p_F2_O
+  - cand_SF6p_SF*_diss_SF4_F2_SFp
+  - cand_SF6p_SF*_diss_SF4p_F2_SF
+  - cand_SF6p_SF2*_diss_SF4_F2_SF2p
+  - cand_SF6p_SF2*_diss_SF4p_F2_SF2
+  - cand_SF6p_SF2*_diss_SF6_Sp_F2
+  - cand_SF6p_SF2_diss_SF4_F2_SF2p
+  - cand_SF6p_SF2_diss_SF4p_F2_SF2
+  - cand_SF6p_SF2_diss_SF6_Sp_F2
+  - cand_SF6p_SF2_v_diss_SF4_F2_SF2p
+  - cand_SF6p_SF2_v_diss_SF4p_F2_SF2
+  - cand_SF6p_SF2_v_diss_SF6_Sp_F2
+  - cand_SF6p_SF3*_diss_SF4_F2_SF3p
+  - cand_SF6p_SF3*_diss_SF4p_F2_SF3
+  - cand_SF6p_SF3_diss_SF4_F2_SF3p
+  - cand_SF6p_SF3_diss_SF4p_F2_SF3
+  - cand_SF6p_SF3_v_diss_SF4_F2_SF3p
+  - cand_SF6p_SF3_v_diss_SF4p_F2_SF3
+  - cand_SF6p_SF4*_diss_SF4p_F2_SF4
+  - cand_SF6p_SF4*_diss_SF6_SF2p_F2
+  - cand_SF6p_SF4_diss_SF4p_F2_SF4
+  - cand_SF6p_SF4_diss_SF6_SF2p_F2
+  - cand_SF6p_SF4_v_diss_SF4p_F2_SF4
+  - cand_SF6p_SF4_v_diss_SF6_SF2p_F2
+  - cand_SF6p_SF5*_diss_SF4_F2_SF5p
+  - cand_SF6p_SF5*_diss_SF4p_F2_SF5
+  - cand_SF6p_SF5_diss_SF4_F2_SF5p
+  - cand_SF6p_SF5_diss_SF4p_F2_SF5
+  - cand_SF6p_SF5_v_diss_SF4_F2_SF5p
+  - cand_SF6p_SF5_v_diss_SF4p_F2_SF5
+  - cand_SF6p_SF6*_diss_SF4p_F2_SF6
+  - cand_SF6p_SF6_diss_SF4p_F2_SF6
+  - cand_SF6p_SF6_v_diss_SF4p_F2_SF6
+  - cand_SF6p_SF_diss_SF4_F2_SFp
+  - cand_SF6p_SF_diss_SF4p_F2_SF
+  - cand_SF6p_SF_v_diss_SF4_F2_SFp
+  - cand_SF6p_SF_v_diss_SF4p_F2_SF
+  - cand_SF6p_SO*_diss_SF4p_F2_SO
+  - cand_SF6p_SO2*_diss_SF4p_F2_SO2
+  - cand_SF6p_SO2F2*_diss_SF4p_F2_SO2F2
+  - cand_SF6p_SO2F2_diss_SF4p_F2_SO2F2
+  - cand_SF6p_SO2F2_v_diss_SF4p_F2_SO2F2
+  - cand_SF6p_SO2_diss_SF4p_F2_SO2
+  - cand_SF6p_SO2_v_diss_SF4p_F2_SO2
+  - cand_SF6p_SOF*_diss_SF4p_F2_SOF
+  - cand_SF6p_SOF2*_diss_SF4p_F2_SOF2
+  - cand_SF6p_SOF2_diss_SF4p_F2_SOF2
+  - cand_SF6p_SOF2_v_diss_SF4p_F2_SOF2
+  - cand_SF6p_SOF3*_diss_SF4p_F2_SOF3
+  - cand_SF6p_SOF3_diss_SF4p_F2_SOF3
+  - cand_SF6p_SOF3_v_diss_SF4p_F2_SOF3
+  - cand_SF6p_SOF4*_diss_SF4p_F2_SOF4
+  - cand_SF6p_SOF4_diss_SF4p_F2_SOF4
+  - cand_SF6p_SOF4_v_diss_SF4p_F2_SOF4
+  - cand_SF6p_SOF_diss_SF4p_F2_SOF
+  - cand_SF6p_SOF_v_diss_SF4p_F2_SOF
+  - cand_SF6p_SO_diss_SF4p_F2_SO
+  - cand_SF6p_SO_v_diss_SF4p_F2_SO
+  - cand_SF6p_S_1D_diss_SF4_F2_Sp
+  - cand_SF6p_S_1D_diss_SF4p_F2_S
+  - cand_SF6p_S_1S_diss_SF4_F2_Sp
+  - cand_SF6p_S_1S_diss_SF4p_F2_S
+  - cand_SF6p_S_diss_SF4_F2_Sp
+  - cand_SF6p_S_diss_SF4p_F2_S
+  - cand_SF_v_F2_vt
+  - cand_SO2F2_v_F2_vt
+  - cand_SO2_v_F2_vt
+  - cand_SOF2_v_F2_vt
+  - cand_SOF3_v_F2_vt
+  - cand_SOF4_v_F2_vt
+  - cand_SOF_v_F2_vt
+  - cand_SO_v_F2_vt
+  - cand_e_F2*_to_e_F2
+  - cand_e_F2_to_e_F2
+  - cand_e_F2_v_to_e_F2
+  - cand_e_SF2*_to_e_S_F2
+  - cand_e_SF2*_to_e_e_Sp_F2
+  - cand_e_SF2_to_e_S_F2
+  - cand_e_SF2_to_e_e_Sp_F2
+  - cand_e_SF2_v_to_e_S_F2
+  - cand_e_SF2_v_to_e_e_Sp_F2
+  - cand_e_SF3*_to_e_SF_F2
+  - cand_e_SF3*_to_e_e_SFp_F2
+  - cand_e_SF3_to_e_SF_F2
+  - cand_e_SF3_to_e_e_SFp_F2
+  - cand_e_SF3_v_to_e_SF_F2
+  - cand_e_SF3_v_to_e_e_SFp_F2
+  - cand_e_SF4*_to_e_SF2_F2
+  - cand_e_SF4*_to_e_e_SF2p_F2
+  - cand_e_SF4_to_e_SF2_F2
+  - cand_e_SF4_to_e_e_SF2p_F2
+  - cand_e_SF4_v_to_e_SF2_F2
+  - cand_e_SF4_v_to_e_e_SF2p_F2
+  - cand_e_SF5*_to_e_SF3_F2
+  - cand_e_SF5*_to_e_e_SF3p_F2
+  - cand_e_SF5_to_e_SF3_F2
+  - cand_e_SF5_to_e_e_SF3p_F2
+  - cand_e_SF5_v_to_e_SF3_F2
+  - cand_e_SF5_v_to_e_e_SF3p_F2
+  - cand_e_SF6*_to_e_SF4_F2
+  - cand_e_SF6*_to_e_e_SF4p_F2
+  - cand_e_SF6_to_e_SF4_F2
+  - cand_e_SF6_to_e_e_SF4p_F2
+  - cand_e_SF6_v_to_e_SF4_F2
+  - cand_e_SF6_v_to_e_e_SF4p_F2
+  - cand_e_SOF2*_to_e_SO_F2
+  - cand_e_SOF2*_to_e_e_SOp_F2
+  - cand_e_SOF2_to_e_SO_F2
+  - cand_e_SOF2_to_e_e_SOp_F2
+  - cand_e_SOF2_v_to_e_SO_F2
+  - cand_e_SOF2_v_to_e_e_SOp_F2
+  - cand_e_SOF3*_to_e_SOF_F2
+  - cand_e_SOF3*_to_e_e_SOFp_F2
+  - cand_e_SOF3_to_e_SOF_F2
+  - cand_e_SOF3_to_e_e_SOFp_F2
+  - cand_e_SOF3_v_to_e_SOF_F2
+  - cand_e_SOF3_v_to_e_e_SOFp_F2
+  - cand_e_SOF4*_to_e_SOF2_F2
+  - cand_e_SOF4*_to_e_e_SOF2p_F2
+  - cand_e_SOF4_to_e_SOF2_F2
+  - cand_e_SOF4_to_e_e_SOF2p_F2
+  - cand_e_SOF4_v_to_e_SOF2_F2
+  - cand_e_SOF4_v_to_e_e_SOF2p_F2
+  - e_SF6_dissociation_SF2_F2_2F
+  - e_SF6_dissociation_SF_F2_3F
+  - e_SF6_dissociative_ionization_SF2p_F2_2F
+  - e_SF6_dissociative_ionization_SFp_F2_3F
+  - e_SF6_dissociative_ionization_Sp_F2_4F
+  properties:
+    enthalpy_formation_eV:
+      value: 0.0
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 7782-41-4, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 202.8
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 7782-41-4, formula
+        verified against the registry
+    mass_amu:
+      value: 37.996
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: F2*
+  charge: 0
+  composition:
+    F: 2
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_F2*_vt
+  - cand_FO_v_F2*_vt
+  - cand_O2_v_F2*_vt
+  - cand_SF2_v_F2*_vt
+  - cand_SF3_v_F2*_vt
+  - cand_SF4_v_F2*_vt
+  - cand_SF5_v_F2*_vt
+  - cand_SF6_v_F2*_vt
+  - cand_SF_v_F2*_vt
+  - cand_SO2F2_v_F2*_vt
+  - cand_SO2_v_F2*_vt
+  - cand_SOF2_v_F2*_vt
+  - cand_SOF3_v_F2*_vt
+  - cand_SOF4_v_F2*_vt
+  - cand_SOF_v_F2*_vt
+  - cand_SO_v_F2*_vt
+  - cand_e_F2*_to_e_F2*
+  - cand_e_F2_to_e_F2*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: F2+
+  charge: 1
+  composition:
+    F: 2
+  classes:
+  - molecular_ion
+  - positive_ion
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_Arp_F2*_char_Ar_F2p
+  - cand_Arp_F2_char_Ar_F2p
+  - cand_Arp_F2_v_char_Ar_F2p
+  - cand_F2p_F2*_reac_F_F_F2p
+  - cand_F2p_F2_reac_F_F_F2p
+  - cand_F2p_F2_v_reac_F_F_F2p
+  - cand_Fp_F2*_char_F_F2p
+  - cand_Fp_F2_char_F_F2p
+  - cand_Fp_F2_v_char_F_F2p
+  - cand_SF2p_Ar_4s_diss_S_F2p_Ar
+  - cand_SF4p_Ar_4s_diss_SF2_F2p_Ar
+  - cand_SF6p_Ar_4s_diss_SF4_F2p_Ar
+  - cand_SF6p_F2*_char_SF6_F2p
+  - cand_SF6p_F2_char_SF6_F2p
+  - cand_SF6p_F2_v_char_SF6_F2p
+  - cand_SF6p_O_1S_diss_SF4_F2p_O
+  - cand_e_F2*_to_e_e_F2p
+  - cand_e_F2_v_to_e_e_F2p
+  - e_F2_ionization_F2p
+  properties:
+    mass_amu:
+      value: 37.99545142
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: F2_v
+  charge: 0
+  composition:
+    F: 2
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_FO_v_F2_v_vt
+  - cand_O2_v_F2_v_vt
+  - cand_SF2_v_F2_v_vt
+  - cand_SF3_v_F2_v_vt
+  - cand_SF4_v_F2_v_vt
+  - cand_SF5_v_F2_v_vt
+  - cand_SF6_v_F2_v_vt
+  - cand_SF_v_F2_v_vt
+  - cand_SO2F2_v_F2_v_vt
+  - cand_SO2_v_F2_v_vt
+  - cand_SOF2_v_F2_v_vt
+  - cand_SOF3_v_F2_v_vt
+  - cand_SOF4_v_F2_v_vt
+  - cand_SOF_v_F2_v_vt
+  - cand_SO_v_F2_v_vt
+  - cand_e_F2_to_e_F2_v
+  - cand_e_F2_v_to_e_F2_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: FO
+  charge: 0
+  composition:
+    F: 1
+    O: 1
+  classes:
+  - molecule
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - F2_O1D_to_FO_F
+  - F2_O_to_FO_F
+  - cand_F2_v_FO_vt
+  - cand_FO_v_Ar_4s_vt
+  - cand_FO_v_Ar_vt
+  - cand_FO_v_F*_vt
+  - cand_FO_v_F2*_vt
+  - cand_FO_v_F2_v_vt
+  - cand_FO_v_F2_vt
+  - cand_FO_v_FO*_vt
+  - cand_FO_v_FO_vt
+  - cand_FO_v_F_vt
+  - cand_FO_v_O2_a1Delta_vt
+  - cand_FO_v_O2_b1Sigma_vt
+  - cand_FO_v_O2_v_vt
+  - cand_FO_v_O2_vt
+  - cand_FO_v_O_1D_vt
+  - cand_FO_v_O_1S_vt
+  - cand_FO_v_O_vt
+  - cand_FO_v_SF*_vt
+  - cand_FO_v_SF2*_vt
+  - cand_FO_v_SF2_v_vt
+  - cand_FO_v_SF2_vt
+  - cand_FO_v_SF3*_vt
+  - cand_FO_v_SF3_v_vt
+  - cand_FO_v_SF3_vt
+  - cand_FO_v_SF4*_vt
+  - cand_FO_v_SF4_v_vt
+  - cand_FO_v_SF4_vt
+  - cand_FO_v_SF5*_vt
+  - cand_FO_v_SF5_v_vt
+  - cand_FO_v_SF5_vt
+  - cand_FO_v_SF6*_vt
+  - cand_FO_v_SF6_v_vt
+  - cand_FO_v_SF6_vt
+  - cand_FO_v_SF_v_vt
+  - cand_FO_v_SF_vt
+  - cand_FO_v_SO*_vt
+  - cand_FO_v_SO2*_vt
+  - cand_FO_v_SO2F2*_vt
+  - cand_FO_v_SO2F2_v_vt
+  - cand_FO_v_SO2F2_vt
+  - cand_FO_v_SO2_v_vt
+  - cand_FO_v_SO2_vt
+  - cand_FO_v_SOF*_vt
+  - cand_FO_v_SOF2*_vt
+  - cand_FO_v_SOF2_v_vt
+  - cand_FO_v_SOF2_vt
+  - cand_FO_v_SOF3*_vt
+  - cand_FO_v_SOF3_v_vt
+  - cand_FO_v_SOF3_vt
+  - cand_FO_v_SOF4*_vt
+  - cand_FO_v_SOF4_v_vt
+  - cand_FO_v_SOF4_vt
+  - cand_FO_v_SOF_v_vt
+  - cand_FO_v_SOF_vt
+  - cand_FO_v_SO_v_vt
+  - cand_FO_v_SO_vt
+  - cand_FO_v_S_1D_vt
+  - cand_FO_v_S_1S_vt
+  - cand_FO_v_S_vt
+  - cand_O2_v_FO_vt
+  - cand_SF2_v_FO_vt
+  - cand_SF3_v_FO_vt
+  - cand_SF4_v_FO_vt
+  - cand_SF5_v_FO_vt
+  - cand_SF6_v_FO_vt
+  - cand_SF6p_FO*_diss_SF4p_F2_FO
+  - cand_SF6p_FO*_diss_SF5p_F_FO
+  - cand_SF6p_FO_diss_SF4p_F2_FO
+  - cand_SF6p_FO_diss_SF5p_F_FO
+  - cand_SF6p_FO_v_diss_SF4p_F2_FO
+  - cand_SF6p_FO_v_diss_SF5p_F_FO
+  - cand_SF_v_FO_vt
+  - cand_SO2F2_v_FO_vt
+  - cand_SO2_v_FO_vt
+  - cand_SOF2_v_FO_vt
+  - cand_SOF3_v_FO_vt
+  - cand_SOF4_v_FO_vt
+  - cand_SOF_v_FO_vt
+  - cand_SO_v_FO_vt
+  - cand_e_FO*_to_e_FO
+  - cand_e_FO_to_e_FO
+  - cand_e_FO_v_to_e_FO
+  - cand_e_SOF*_to_e_FO_S
+  - cand_e_SOF_to_e_FO_S
+  - cand_e_SOF_v_to_e_FO_S
+  properties:
+    enthalpy_formation_eV:
+      value: 1.128071
+      unit: eV
+      source: pyromat NASA Glenn ideal-gas tables, read at 300 K, formula verified
+    mass_amu:
+      value: 34.997
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: FO*
+  charge: 0
+  composition:
+    F: 1
+    O: 1
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_FO*_vt
+  - cand_FO_v_FO*_vt
+  - cand_O2_v_FO*_vt
+  - cand_SF2_v_FO*_vt
+  - cand_SF3_v_FO*_vt
+  - cand_SF4_v_FO*_vt
+  - cand_SF5_v_FO*_vt
+  - cand_SF6_v_FO*_vt
+  - cand_SF_v_FO*_vt
+  - cand_SO2F2_v_FO*_vt
+  - cand_SO2_v_FO*_vt
+  - cand_SOF2_v_FO*_vt
+  - cand_SOF3_v_FO*_vt
+  - cand_SOF4_v_FO*_vt
+  - cand_SOF_v_FO*_vt
+  - cand_SO_v_FO*_vt
+  - cand_e_FO*_to_e_FO*
+  - cand_e_FO_to_e_FO*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: FO_v
+  charge: 0
+  composition:
+    F: 1
+    O: 1
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_FO_v_vt
+  - cand_O2_v_FO_v_vt
+  - cand_SF2_v_FO_v_vt
+  - cand_SF3_v_FO_v_vt
+  - cand_SF4_v_FO_v_vt
+  - cand_SF5_v_FO_v_vt
+  - cand_SF6_v_FO_v_vt
+  - cand_SF_v_FO_v_vt
+  - cand_SO2F2_v_FO_v_vt
+  - cand_SO2_v_FO_v_vt
+  - cand_SOF2_v_FO_v_vt
+  - cand_SOF3_v_FO_v_vt
+  - cand_SOF4_v_FO_v_vt
+  - cand_SOF_v_FO_v_vt
+  - cand_SO_v_FO_v_vt
+  - cand_e_FO_to_e_FO_v
+  - cand_e_FO_v_to_e_FO_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: O
+  charge: 0
+  composition:
+    O: 1
+  classes:
+  - atom
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: 3P2
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - O1D_O2_quenching_O2_a1Delta
+  - O1D_O2_quenching_O2_b1Sigma
+  - Op_O2_charge_transfer
+  - cand_Arp_O2_b1Sigma_diss_Ar_Op_O
+  - cand_Arp_SO*_diss_Ar_O_Sp
+  - cand_Arp_SO_diss_Ar_O_Sp
+  - cand_Arp_SO_v_diss_Ar_O_Sp
+  - cand_F2_v_O_vt
+  - cand_F2p_O2_b1Sigma_diss_F2_Op_O
+  - cand_F2p_O_1D_diss_Fp_F_O
+  - cand_F2p_O_1S_diss_Fp_F_O
+  - cand_F2p_SO*_diss_F2_O_Sp
+  - cand_F2p_SO_diss_F2_O_Sp
+  - cand_F2p_SO_v_diss_F2_O_Sp
+  - cand_FO_v_O_vt
+  - cand_Fp_O2_a1Delta_diss_F_Op_O
+  - cand_Fp_O2_b1Sigma_diss_F_Op_O
+  - cand_Fp_O2_diss_F_Op_O
+  - cand_Fp_O2_v_diss_F_Op_O
+  - cand_Fp_SO*_diss_F_O_Sp
+  - cand_Fp_SO_diss_F_O_Sp
+  - cand_Fp_SO_v_diss_F_O_Sp
+  - cand_O2_diss_O_1S
+  - cand_O2_v_O_vt
+  - cand_O2p_Ar_4s_diss_O_O_Arp
+  - cand_O2p_Ar_4s_diss_Op_O_Ar
+  - cand_O2p_SF3*_diss_O_O_SF3p
+  - cand_O2p_SF3_diss_O_O_SF3p
+  - cand_O2p_SF3_v_diss_O_O_SF3p
+  - cand_O2p_S_1S_diss_O_O_Sp
+  - cand_Op_Ar_4s_char_O_Arp
+  - cand_Op_O2_a1Delta_char_O_O2p
+  - cand_Op_O2_b1Sigma_char_O_O2p
+  - cand_Op_O2_v_char_O_O2p
+  - cand_Op_SF*_char_O_SFp
+  - cand_Op_SF2*_char_O_SF2p
+  - cand_Op_SF2_char_O_SF2p
+  - cand_Op_SF2_v_char_O_SF2p
+  - cand_Op_SF3*_char_O_SF3p
+  - cand_Op_SF3_char_O_SF3p
+  - cand_Op_SF3_v_char_O_SF3p
+  - cand_Op_SF4*_char_O_SF4p
+  - cand_Op_SF4_char_O_SF4p
+  - cand_Op_SF4_v_char_O_SF4p
+  - cand_Op_SF5*_char_O_SF5p
+  - cand_Op_SF5*_diss_O_SF4p_F
+  - cand_Op_SF5_char_O_SF5p
+  - cand_Op_SF5_diss_O_SF4p_F
+  - cand_Op_SF5_v_char_O_SF5p
+  - cand_Op_SF5_v_diss_O_SF4p_F
+  - cand_Op_SF6*_char_O_SF6p
+  - cand_Op_SF6*_diss_O_SF5p_F
+  - cand_Op_SF6_char_O_SF6p
+  - cand_Op_SF6_diss_O_SF5p_F
+  - cand_Op_SF6_v_char_O_SF6p
+  - cand_Op_SF6_v_diss_O_SF5p_F
+  - cand_Op_SF_char_O_SFp
+  - cand_Op_SF_v_char_O_SFp
+  - cand_Op_SO2F2*_diss_O_SF2p_O2
+  - cand_Op_SO2F2_diss_O_SF2p_O2
+  - cand_Op_SO2F2_v_diss_O_SF2p_O2
+  - cand_Op_S_1D_char_O_Sp
+  - cand_Op_S_1S_char_O_Sp
+  - cand_Op_S_char_O_Sp
+  - cand_SF2_v_O_vt
+  - cand_SF2p_O_1S_diss_Sp_F2_O
+  - cand_SF3_v_O_vt
+  - cand_SF4_v_O_vt
+  - cand_SF4p_O_1D_diss_SF2p_F2_O
+  - cand_SF4p_O_1S_diss_SF2p_F2_O
+  - cand_SF5_v_O_vt
+  - cand_SF5p_O_1S_diss_SF4p_F_O
+  - cand_SF6_v_O_vt
+  - cand_SF6p_O2_b1Sigma_diss_SF6_Op_O
+  - cand_SF6p_O_1D_diss_SF4p_F2_O
+  - cand_SF6p_O_1D_diss_SF5p_F_O
+  - cand_SF6p_O_1S_diss_SF4_F2p_O
+  - cand_SF6p_O_1S_diss_SF4p_F2_O
+  - cand_SF6p_O_1S_diss_SF5_Fp_O
+  - cand_SF6p_O_1S_diss_SF5p_F_O
+  - cand_SF6p_O_diss_SF4p_F2_O
+  - cand_SF6p_O_diss_SF5p_F_O
+  - cand_SF6p_SO*_diss_SF6_O_Sp
+  - cand_SF6p_SO_diss_SF6_O_Sp
+  - cand_SF6p_SO_v_diss_SF6_O_Sp
+  - cand_SF_v_O_vt
+  - cand_SO2F2_v_O_vt
+  - cand_SO2_v_O_vt
+  - cand_SOF2_v_O_vt
+  - cand_SOF3_v_O_vt
+  - cand_SOF4_v_O_vt
+  - cand_SOF_v_O_vt
+  - cand_SO_diss_S_1D
+  - cand_SO_diss_S_1S
+  - cand_SO_v_O_vt
+  - cand_e_FO*_to_e_F_O
+  - cand_e_FO*_to_e_e_Fp_O
+  - cand_e_FO_to_e_e_Fp_O
+  - cand_e_FO_v_to_e_F_O
+  - cand_e_FO_v_to_e_e_Fp_O
+  - cand_e_O2_a1Delta_to_e_O_O
+  - cand_e_O2_a1Delta_to_e_e_Op_O
+  - cand_e_O2_b1Sigma_to_e_O_O
+  - cand_e_O2_b1Sigma_to_e_e_Op_O
+  - cand_e_O2_to_e_e_Op_O
+  - cand_e_O2_v_to_e_O_O
+  - cand_e_O2_v_to_e_e_Op_O
+  - cand_e_SO*_to_e_O_S
+  - cand_e_SO2*_to_e_SO_O
+  - cand_e_SO2*_to_e_e_SOp_O
+  - cand_e_SO2F2*_to_e_SOF2_O
+  - cand_e_SO2F2*_to_e_e_SOF2p_O
+  - cand_e_SO2F2_to_e_SOF2_O
+  - cand_e_SO2F2_to_e_e_SOF2p_O
+  - cand_e_SO2F2_v_to_e_SOF2_O
+  - cand_e_SO2F2_v_to_e_e_SOF2p_O
+  - cand_e_SO2_to_e_SO_O
+  - cand_e_SO2_to_e_e_SOp_O
+  - cand_e_SO2_v_to_e_SO_O
+  - cand_e_SO2_v_to_e_e_SOp_O
+  - cand_e_SO_to_e_O_S
+  - cand_e_SO_v_to_e_O_S
+  - e_FO_dissociation_F_O
+  - e_O2_dissociation_O_O
+  - e_O2_dissociation_O_O1D
+  - e_O_1D_superelastic
+  - e_O_1S_superelastic
+  - e_O_elastic
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic symmetry
+    electron_affinity_eV:
+      value: 1.461113
+      unit: eV
+      source: mendeleev package, bundled periodic table
+    enthalpy_formation_eV:
+      value: 2.583077
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 17778-80-2, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 161.1
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 17778-80-2, formula
+        verified against the registry
+    ionization_energy_eV:
+      value: 13.618055
+      unit: eV
+      source: mendeleev package, bundled periodic table
+    mass_amu:
+      value: 15.9994
+      unit: amu
+      source: NIST Atomic Data for Oxygen
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: O+
+  charge: 1
+  composition:
+    O: 1
+  classes:
+  - atomic_ion
+  - positive_ion
+  state:
+    kind: ground
+    label: 4S
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_Arp_FO*_diss_Ar_F_Op
+  - cand_Arp_FO_diss_Ar_F_Op
+  - cand_Arp_FO_v_diss_Ar_F_Op
+  - cand_Arp_O2_b1Sigma_diss_Ar_Op_O
+  - cand_Arp_O_1D_char_Ar_Op
+  - cand_Arp_O_1S_char_Ar_Op
+  - cand_Arp_O_char_Ar_Op
+  - cand_F2p_FO*_diss_F2_F_Op
+  - cand_F2p_FO_diss_F2_F_Op
+  - cand_F2p_FO_v_diss_F2_F_Op
+  - cand_F2p_O2_b1Sigma_diss_F2_Op_O
+  - cand_F2p_O_1D_char_F2_Op
+  - cand_F2p_O_1D_diss_F_F_Op
+  - cand_F2p_O_1S_char_F2_Op
+  - cand_F2p_O_1S_diss_F_F_Op
+  - cand_F2p_O_char_F2_Op
+  - cand_F2p_O_diss_F_F_Op
+  - cand_Fp_FO*_diss_F_F_Op
+  - cand_Fp_FO_diss_F_F_Op
+  - cand_Fp_FO_v_diss_F_F_Op
+  - cand_Fp_O2_a1Delta_diss_F_Op_O
+  - cand_Fp_O2_b1Sigma_diss_F_Op_O
+  - cand_Fp_O2_diss_F_Op_O
+  - cand_Fp_O2_v_diss_F_Op_O
+  - cand_Fp_O_1D_char_F_Op
+  - cand_Fp_O_1S_char_F_Op
+  - cand_Fp_O_char_F_Op
+  - cand_Fp_SO*_diss_F_Op_S
+  - cand_Fp_SO2*_diss_F_SO_Op
+  - cand_Fp_SO2F2*_diss_F_SOF2_Op
+  - cand_Fp_SO2F2_diss_F_SOF2_Op
+  - cand_Fp_SO2F2_v_diss_F_SOF2_Op
+  - cand_Fp_SO2_diss_F_SO_Op
+  - cand_Fp_SO2_v_diss_F_SO_Op
+  - cand_Fp_SO_diss_F_Op_S
+  - cand_Fp_SO_v_diss_F_Op_S
+  - cand_O2p_Ar_4s_diss_Op_O_Ar
+  - cand_O2p_O_1D_char_O2_Op
+  - cand_O2p_O_1S_char_O2_Op
+  - cand_O2p_O_char_O2_Op
+  - cand_Op_F2*_reac_Op_F_F
+  - cand_Op_F2_reac_Op_F_F
+  - cand_Op_F2_v_reac_Op_F_F
+  - cand_SF2p_O_1D_char_SF2_Op
+  - cand_SF2p_O_1S_char_SF2_Op
+  - cand_SF3p_O_1S_char_SF3_Op
+  - cand_SF4p_O_1D_char_SF4_Op
+  - cand_SF4p_O_1S_char_SF4_Op
+  - cand_SF4p_O_char_SF4_Op
+  - cand_SF5p_O_1S_char_SF5_Op
+  - cand_SF6p_FO*_diss_SF6_F_Op
+  - cand_SF6p_FO_diss_SF6_F_Op
+  - cand_SF6p_FO_v_diss_SF6_F_Op
+  - cand_SF6p_O2_b1Sigma_diss_SF6_Op_O
+  - cand_SF6p_O_1D_char_SF6_Op
+  - cand_SF6p_O_1D_diss_SF4_F2_Op
+  - cand_SF6p_O_1D_diss_SF5_F_Op
+  - cand_SF6p_O_1S_char_SF6_Op
+  - cand_SF6p_O_1S_diss_SF4_F2_Op
+  - cand_SF6p_O_1S_diss_SF5_F_Op
+  - cand_SF6p_O_char_SF6_Op
+  - cand_SFp_O_1D_char_SF_Op
+  - cand_SFp_O_1S_char_SF_Op
+  - cand_Sp_O_1D_char_S_Op
+  - cand_Sp_O_1S_char_S_Op
+  - cand_e_O2_a1Delta_to_e_e_Op_O
+  - cand_e_O2_b1Sigma_to_e_e_Op_O
+  - cand_e_O2_to_e_e_Op_O
+  - cand_e_O2_v_to_e_e_Op_O
+  - cand_e_O_1S_to_e_e_Op
+  - cand_e_SO*_to_e_e_Op_S
+  - cand_e_SO_to_e_e_Op_S
+  - cand_e_SO_v_to_e_e_Op_S
+  - e_O_1D_ionization
+  - e_O_ionization
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic-ion symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 16.200655
+      unit: eV
+      source: derived from NIST O atom enthalpy and ionization energy
+    ionization_energy_eV:
+      value: 35.12112
+      unit: eV
+      source: NIST Atomic Spectra Database, O+ ionization energy
+    mass_amu:
+      value: 15.9988514
+      unit: amu
+      source: O atomic mass minus electron mass
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: O2
+  charge: 0
+  composition:
+    O: 2
+  classes:
+  - molecule
+  - neutral
+  state:
+    kind: ground
+    label: X3Sigma_g-
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 0
+  introduced_by:
+  - FO_FO_to_2F_O2
+  - FO_FO_to_F2_O2
+  - FO_O1D_to_F_O2
+  - FO_O_to_F_O2
+  - O2a_O2_self_quenching
+  - SO2F2_O1D_R137
+  - SO2F2_O_R137
+  - cand_Arp_SO2*_diss_Ar_Sp_O2
+  - cand_Arp_SO2F2*_diss_Ar_SF2p_O2
+  - cand_Arp_SO2F2_diss_Ar_SF2p_O2
+  - cand_Arp_SO2F2_v_diss_Ar_SF2p_O2
+  - cand_Arp_SO2_diss_Ar_Sp_O2
+  - cand_Arp_SO2_v_diss_Ar_Sp_O2
+  - cand_F2_v_O2_vt
+  - cand_F2p_O2_b1Sigma_diss_Fp_F_O2
+  - cand_F2p_SO2*_diss_F2_Sp_O2
+  - cand_F2p_SO2F2*_diss_F2_SF2p_O2
+  - cand_F2p_SO2F2_diss_F2_SF2p_O2
+  - cand_F2p_SO2F2_v_diss_F2_SF2p_O2
+  - cand_F2p_SO2_diss_F2_Sp_O2
+  - cand_F2p_SO2_v_diss_F2_Sp_O2
+  - cand_FO_v_O2_vt
+  - cand_Fp_SO2*_diss_F_Sp_O2
+  - cand_Fp_SO2F2*_diss_F_SF2p_O2
+  - cand_Fp_SO2F2_diss_F_SF2p_O2
+  - cand_Fp_SO2F2_v_diss_F_SF2p_O2
+  - cand_Fp_SO2_diss_F_Sp_O2
+  - cand_Fp_SO2_v_diss_F_Sp_O2
+  - cand_O2_v_Ar_4s_vt
+  - cand_O2_v_Ar_vt
+  - cand_O2_v_F*_vt
+  - cand_O2_v_F2*_vt
+  - cand_O2_v_F2_v_vt
+  - cand_O2_v_F2_vt
+  - cand_O2_v_FO*_vt
+  - cand_O2_v_FO_v_vt
+  - cand_O2_v_FO_vt
+  - cand_O2_v_F_vt
+  - cand_O2_v_O2_a1Delta_vt
+  - cand_O2_v_O2_b1Sigma_vt
+  - cand_O2_v_O2_vt
+  - cand_O2_v_O_1D_vt
+  - cand_O2_v_O_1S_vt
+  - cand_O2_v_O_vt
+  - cand_O2_v_SF*_vt
+  - cand_O2_v_SF2*_vt
+  - cand_O2_v_SF2_v_vt
+  - cand_O2_v_SF2_vt
+  - cand_O2_v_SF3*_vt
+  - cand_O2_v_SF3_v_vt
+  - cand_O2_v_SF3_vt
+  - cand_O2_v_SF4*_vt
+  - cand_O2_v_SF4_v_vt
+  - cand_O2_v_SF4_vt
+  - cand_O2_v_SF5*_vt
+  - cand_O2_v_SF5_v_vt
+  - cand_O2_v_SF5_vt
+  - cand_O2_v_SF6*_vt
+  - cand_O2_v_SF6_v_vt
+  - cand_O2_v_SF6_vt
+  - cand_O2_v_SF_v_vt
+  - cand_O2_v_SF_vt
+  - cand_O2_v_SO*_vt
+  - cand_O2_v_SO2*_vt
+  - cand_O2_v_SO2F2*_vt
+  - cand_O2_v_SO2F2_v_vt
+  - cand_O2_v_SO2F2_vt
+  - cand_O2_v_SO2_v_vt
+  - cand_O2_v_SO2_vt
+  - cand_O2_v_SOF*_vt
+  - cand_O2_v_SOF2*_vt
+  - cand_O2_v_SOF2_v_vt
+  - cand_O2_v_SOF2_vt
+  - cand_O2_v_SOF3*_vt
+  - cand_O2_v_SOF3_v_vt
+  - cand_O2_v_SOF3_vt
+  - cand_O2_v_SOF4*_vt
+  - cand_O2_v_SOF4_v_vt
+  - cand_O2_v_SOF4_vt
+  - cand_O2_v_SOF_v_vt
+  - cand_O2_v_SOF_vt
+  - cand_O2_v_SO_v_vt
+  - cand_O2_v_SO_vt
+  - cand_O2_v_S_1D_vt
+  - cand_O2_v_S_1S_vt
+  - cand_O2_v_S_vt
+  - cand_O2p_Ar_4s_char_O2_Arp
+  - cand_O2p_O_1D_char_O2_Op
+  - cand_O2p_O_1S_char_O2_Op
+  - cand_O2p_O_char_O2_Op
+  - cand_O2p_SF*_char_O2_SFp
+  - cand_O2p_SF2*_char_O2_SF2p
+  - cand_O2p_SF2_char_O2_SF2p
+  - cand_O2p_SF2_v_char_O2_SF2p
+  - cand_O2p_SF3*_char_O2_SF3p
+  - cand_O2p_SF3_char_O2_SF3p
+  - cand_O2p_SF3_v_char_O2_SF3p
+  - cand_O2p_SF4*_char_O2_SF4p
+  - cand_O2p_SF4_char_O2_SF4p
+  - cand_O2p_SF4_v_char_O2_SF4p
+  - cand_O2p_SF5*_char_O2_SF5p
+  - cand_O2p_SF5_char_O2_SF5p
+  - cand_O2p_SF5_v_char_O2_SF5p
+  - cand_O2p_SF6*_diss_O2_SF5p_F
+  - cand_O2p_SF6_diss_O2_SF5p_F
+  - cand_O2p_SF6_v_diss_O2_SF5p_F
+  - cand_O2p_SF_char_O2_SFp
+  - cand_O2p_SF_v_char_O2_SFp
+  - cand_O2p_S_1D_char_O2_Sp
+  - cand_O2p_S_1S_char_O2_Sp
+  - cand_O2p_S_char_O2_Sp
+  - cand_Op_SO2F2*_diss_O_SF2p_O2
+  - cand_Op_SO2F2_diss_O_SF2p_O2
+  - cand_Op_SO2F2_v_diss_O_SF2p_O2
+  - cand_SF2_v_O2_vt
+  - cand_SF3_v_O2_vt
+  - cand_SF4_v_O2_vt
+  - cand_SF5_v_O2_vt
+  - cand_SF6_v_O2_vt
+  - cand_SF6p_O2_a1Delta_diss_SF4p_F2_O2
+  - cand_SF6p_O2_a1Delta_diss_SF5p_F_O2
+  - cand_SF6p_O2_b1Sigma_diss_SF4p_F2_O2
+  - cand_SF6p_O2_b1Sigma_diss_SF5p_F_O2
+  - cand_SF6p_O2_diss_SF4p_F2_O2
+  - cand_SF6p_O2_diss_SF5p_F_O2
+  - cand_SF6p_O2_v_diss_SF4p_F2_O2
+  - cand_SF6p_O2_v_diss_SF5p_F_O2
+  - cand_SF6p_SO2*_diss_SF6_Sp_O2
+  - cand_SF6p_SO2F2*_diss_SF6_SF2p_O2
+  - cand_SF6p_SO2F2_diss_SF6_SF2p_O2
+  - cand_SF6p_SO2F2_v_diss_SF6_SF2p_O2
+  - cand_SF6p_SO2_diss_SF6_Sp_O2
+  - cand_SF6p_SO2_v_diss_SF6_Sp_O2
+  - cand_SF_v_O2_vt
+  - cand_SO2F2_v_O2_vt
+  - cand_SO2_diss_S_1D
+  - cand_SO2_diss_S_1S
+  - cand_SO2_v_O2_vt
+  - cand_SOF2_v_O2_vt
+  - cand_SOF3_v_O2_vt
+  - cand_SOF4_v_O2_vt
+  - cand_SOF_v_O2_vt
+  - cand_SO_v_O2_vt
+  - cand_e_O2_v_to_e_O2
+  - cand_e_SO2*_to_e_S_O2
+  - cand_e_SO2*_to_e_e_Sp_O2
+  - cand_e_SO2F2*_to_e_SF2_O2
+  - cand_e_SO2F2*_to_e_e_SF2p_O2
+  - cand_e_SO2F2_to_e_SF2_O2
+  - cand_e_SO2F2_to_e_e_SF2p_O2
+  - cand_e_SO2F2_v_to_e_SF2_O2
+  - cand_e_SO2F2_v_to_e_e_SF2p_O2
+  - cand_e_SO2_to_e_S_O2
+  - cand_e_SO2_to_e_e_Sp_O2
+  - cand_e_SO2_v_to_e_S_O2
+  - cand_e_SO2_v_to_e_e_Sp_O2
+  - e_O2_a1Delta_superelastic
+  - e_O2_b1Sigma_superelastic
+  - e_O2_elastic
+  properties:
+    collision_radius_A:
+      value: 1.73
+      unit: A
+      source: half of the 3.46 A literature kinetic diameter tabulated in NIST publication
+        928548
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: homonuclear diatomic symmetry
+    electron_affinity_eV:
+      value: 0.448
+      unit: eV
+      source: NIST Chemistry WebBook SRD 69
+    enthalpy_formation_eV:
+      value: 0.0
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 7782-44-7, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 205.2
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 7782-44-7, formula
+        verified against the registry
+    ionization_energy_eV:
+      value: 12.0697
+      unit: eV
+      source: NIST Chemistry WebBook SRD 69 evaluated ionization energy
+    mass_amu:
+      value: 31.9988
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: 1.562
+      unit: A3
+      source: NIST CCCBDB experimental polarizability list
+  thermo: null
+  status: curated
+- id: O2+
+  charge: 1
+  composition:
+    O: 2
+  classes:
+  - molecular_ion
+  - positive_ion
+  state:
+    kind: ground
+    label: X2Pi_g
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - Arp_O2_charge_transfer
+  - Op_O2_charge_transfer
+  - cand_Arp_O2_a1Delta_char_Ar_O2p
+  - cand_Arp_O2_b1Sigma_char_Ar_O2p
+  - cand_Arp_O2_v_char_Ar_O2p
+  - cand_Arp_SO2F2*_diss_Ar_SF2_O2p
+  - cand_Arp_SO2F2_diss_Ar_SF2_O2p
+  - cand_Arp_SO2F2_v_diss_Ar_SF2_O2p
+  - cand_F2p_O2_a1Delta_char_F2_O2p
+  - cand_F2p_O2_a1Delta_diss_F_F_O2p
+  - cand_F2p_O2_b1Sigma_char_F2_O2p
+  - cand_F2p_O2_b1Sigma_diss_F_F_O2p
+  - cand_F2p_O2_char_F2_O2p
+  - cand_F2p_O2_diss_F_F_O2p
+  - cand_F2p_O2_v_char_F2_O2p
+  - cand_F2p_O2_v_diss_F_F_O2p
+  - cand_F2p_SO2F2*_diss_F2_SF2_O2p
+  - cand_F2p_SO2F2_diss_F2_SF2_O2p
+  - cand_F2p_SO2F2_v_diss_F2_SF2_O2p
+  - cand_Fp_O2_a1Delta_char_F_O2p
+  - cand_Fp_O2_b1Sigma_char_F_O2p
+  - cand_Fp_O2_char_F_O2p
+  - cand_Fp_O2_v_char_F_O2p
+  - cand_Fp_SO2*_diss_F_S_O2p
+  - cand_Fp_SO2F2*_diss_F_SF2_O2p
+  - cand_Fp_SO2F2_diss_F_SF2_O2p
+  - cand_Fp_SO2F2_v_diss_F_SF2_O2p
+  - cand_Fp_SO2_diss_F_S_O2p
+  - cand_Fp_SO2_v_diss_F_S_O2p
+  - cand_O2p_F2*_reac_O2p_F_F
+  - cand_O2p_F2_reac_O2p_F_F
+  - cand_O2p_F2_v_reac_O2p_F_F
+  - cand_Op_O2_a1Delta_char_O_O2p
+  - cand_Op_O2_b1Sigma_char_O_O2p
+  - cand_Op_O2_v_char_O_O2p
+  - cand_SF2p_O2_a1Delta_char_SF2_O2p
+  - cand_SF2p_O2_b1Sigma_char_SF2_O2p
+  - cand_SF2p_O2_char_SF2_O2p
+  - cand_SF2p_O2_v_char_SF2_O2p
+  - cand_SF4p_O2_a1Delta_char_SF4_O2p
+  - cand_SF4p_O2_b1Sigma_char_SF4_O2p
+  - cand_SF4p_O2_char_SF4_O2p
+  - cand_SF4p_O2_v_char_SF4_O2p
+  - cand_SF5p_O2_a1Delta_char_SF5_O2p
+  - cand_SF5p_O2_b1Sigma_char_SF5_O2p
+  - cand_SF6p_O2_a1Delta_char_SF6_O2p
+  - cand_SF6p_O2_a1Delta_diss_SF4_F2_O2p
+  - cand_SF6p_O2_a1Delta_diss_SF5_F_O2p
+  - cand_SF6p_O2_b1Sigma_char_SF6_O2p
+  - cand_SF6p_O2_b1Sigma_diss_SF4_F2_O2p
+  - cand_SF6p_O2_b1Sigma_diss_SF5_F_O2p
+  - cand_SF6p_O2_char_SF6_O2p
+  - cand_SF6p_O2_diss_SF4_F2_O2p
+  - cand_SF6p_O2_diss_SF5_F_O2p
+  - cand_SF6p_O2_v_char_SF6_O2p
+  - cand_SF6p_O2_v_diss_SF4_F2_O2p
+  - cand_SF6p_O2_v_diss_SF5_F_O2p
+  - cand_SF6p_SO2F2*_diss_SF6_SF2_O2p
+  - cand_SF6p_SO2F2_diss_SF6_SF2_O2p
+  - cand_SF6p_SO2F2_v_diss_SF6_SF2_O2p
+  - cand_SFp_O2_a1Delta_char_SF_O2p
+  - cand_SFp_O2_b1Sigma_char_SF_O2p
+  - cand_SFp_O2_char_SF_O2p
+  - cand_SFp_O2_v_char_SF_O2p
+  - cand_Sp_O2_a1Delta_char_S_O2p
+  - cand_Sp_O2_b1Sigma_char_S_O2p
+  - cand_Sp_O2_char_S_O2p
+  - cand_Sp_O2_v_char_S_O2p
+  - cand_e_O2_v_to_e_e_O2p
+  - e_O2_a1Delta_ionization
+  - e_O2_b1Sigma_ionization
+  - e_O2_ionization
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: homonuclear molecular-ion symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 12.0697
+      unit: eV
+      source: derived from O2 reference enthalpy and NIST evaluated ionization energy
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 31.9982514
+      unit: amu
+      source: O2 molecular mass minus electron mass
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: O2_a1Delta
+  charge: 0
+  composition:
+    O: 2
+  classes:
+  - metastable
+  - molecule
+  - neutral
+  state:
+    kind: excited
+    label: a1Delta_g
+    energy_eV: 0.977
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - O1D_O2_quenching_O2_a1Delta
+  - cand_F2_v_O2_a1Delta_vt
+  - cand_FO_v_O2_a1Delta_vt
+  - cand_O2_v_O2_a1Delta_vt
+  - cand_SF2_v_O2_a1Delta_vt
+  - cand_SF3_v_O2_a1Delta_vt
+  - cand_SF4_v_O2_a1Delta_vt
+  - cand_SF5_v_O2_a1Delta_vt
+  - cand_SF6_v_O2_a1Delta_vt
+  - cand_SF_v_O2_a1Delta_vt
+  - cand_SO2F2_diss_O2_a1Delta
+  - cand_SO2F2_v_O2_a1Delta_vt
+  - cand_SO2_diss_O2_a1Delta
+  - cand_SO2_v_O2_a1Delta_vt
+  - cand_SOF2_v_O2_a1Delta_vt
+  - cand_SOF3_v_O2_a1Delta_vt
+  - cand_SOF4_v_O2_a1Delta_vt
+  - cand_SOF_v_O2_a1Delta_vt
+  - cand_SO_v_O2_a1Delta_vt
+  - e_O2_a1Delta_elastic
+  - e_O2_excitation_O2_a1Delta
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: homonuclear diatomic symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 0.977
+      unit: eV
+      source: evaluated O2 a1Delta_g excitation energy
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 31.9988
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: O2_b1Sigma
+  charge: 0
+  composition:
+    O: 2
+  classes:
+  - metastable
+  - molecule
+  - neutral
+  state:
+    kind: excited
+    label: b1Sigma_g+
+    energy_eV: 1.627
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - O1D_O2_quenching_O2_b1Sigma
+  - cand_F2_v_O2_b1Sigma_vt
+  - cand_FO_v_O2_b1Sigma_vt
+  - cand_O2_v_O2_b1Sigma_vt
+  - cand_SF2_v_O2_b1Sigma_vt
+  - cand_SF3_v_O2_b1Sigma_vt
+  - cand_SF4_v_O2_b1Sigma_vt
+  - cand_SF5_v_O2_b1Sigma_vt
+  - cand_SF6_v_O2_b1Sigma_vt
+  - cand_SF_v_O2_b1Sigma_vt
+  - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_v_O2_b1Sigma_vt
+  - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_v_O2_b1Sigma_vt
+  - cand_SOF2_v_O2_b1Sigma_vt
+  - cand_SOF3_v_O2_b1Sigma_vt
+  - cand_SOF4_v_O2_b1Sigma_vt
+  - cand_SOF_v_O2_b1Sigma_vt
+  - cand_SO_v_O2_b1Sigma_vt
+  - e_O2_b1Sigma_elastic
+  - e_O2_excitation_O2_b1Sigma
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: homonuclear diatomic symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 1.627
+      unit: eV
+      source: evaluated O2 b1Sigma_g+ excitation energy
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 31.9988
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: O2_v
+  charge: 0
+  composition:
+    O: 2
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_F2_v_O2_v_vt
+  - cand_FO_v_O2_v_vt
+  - cand_SF2_v_O2_v_vt
+  - cand_SF3_v_O2_v_vt
+  - cand_SF4_v_O2_v_vt
+  - cand_SF5_v_O2_v_vt
+  - cand_SF6_v_O2_v_vt
+  - cand_SF_v_O2_v_vt
+  - cand_SO2F2_v_O2_v_vt
+  - cand_SO2_v_O2_v_vt
+  - cand_SOF2_v_O2_v_vt
+  - cand_SOF3_v_O2_v_vt
+  - cand_SOF4_v_O2_v_vt
+  - cand_SOF_v_O2_v_vt
+  - cand_SO_v_O2_v_vt
+  - cand_e_O2_to_e_O2_v
+  - cand_e_O2_v_to_e_O2_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: OF+
+  charge: 1
+  composition:
+    O: 1
+    F: 1
+  classes:
+  - candidate
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_e_FO*_to_e_e_OFp
+  - cand_e_FO_to_e_e_OFp
+  - cand_e_FO_v_to_e_e_OFp
+  - cand_e_SOF*_to_e_e_OFp_S
+  - cand_e_SOF_to_e_e_OFp_S
+  - cand_e_SOF_v_to_e_e_OFp_S
+  properties: {}
+  thermo: null
+  status: candidate
+- id: O_1D
+  charge: 0
+  composition:
+    O: 1
+  classes:
+  - atom
+  - metastable
+  - neutral
+  - radical
+  state:
+    kind: excited
+    label: 1D2
+    energy_eV: 1.967
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_F2_v_O_1D_vt
+  - cand_FO_diss_O_1D
+  - cand_FO_v_O_1D_vt
+  - cand_O2_v_O_1D_vt
+  - cand_SF2_v_O_1D_vt
+  - cand_SF3_v_O_1D_vt
+  - cand_SF4_v_O_1D_vt
+  - cand_SF5_v_O_1D_vt
+  - cand_SF6_v_O_1D_vt
+  - cand_SF_v_O_1D_vt
+  - cand_SO2F2_diss_O_1D
+  - cand_SO2F2_v_O_1D_vt
+  - cand_SO2_diss_O_1D
+  - cand_SO2_v_O_1D_vt
+  - cand_SOF2_v_O_1D_vt
+  - cand_SOF3_v_O_1D_vt
+  - cand_SOF4_v_O_1D_vt
+  - cand_SOF_v_O_1D_vt
+  - cand_SO_diss_O_1D
+  - cand_SO_v_O_1D_vt
+  - e_O2_dissociation_O_O1D
+  - e_O_1D_elastic
+  - e_O_excitation_O_1D
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 4.5496
+      unit: eV
+      source: NIST ground-state enthalpy plus NIST ASD O(1D2) excitation energy
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 15.9994
+      unit: amu
+      source: NIST Atomic Data for Oxygen
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: O_1S
+  charge: 0
+  composition:
+    O: 1
+  classes:
+  - atom
+  - metastable
+  - neutral
+  state:
+    kind: excited
+    label: 1S
+    energy_eV: 4.189746
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_F2_v_O_1S_vt
+  - cand_FO_diss_O_1S
+  - cand_FO_v_O_1S_vt
+  - cand_O2_diss_O_1S
+  - cand_O2_v_O_1S_vt
+  - cand_SF2_v_O_1S_vt
+  - cand_SF3_v_O_1S_vt
+  - cand_SF4_v_O_1S_vt
+  - cand_SF5_v_O_1S_vt
+  - cand_SF6_v_O_1S_vt
+  - cand_SF_v_O_1S_vt
+  - cand_SO2F2_diss_O_1S
+  - cand_SO2F2_v_O_1S_vt
+  - cand_SO2_diss_O_1S
+  - cand_SO2_v_O_1S_vt
+  - cand_SOF2_v_O_1S_vt
+  - cand_SOF3_v_O_1S_vt
+  - cand_SOF4_v_O_1S_vt
+  - cand_SOF_v_O_1S_vt
+  - cand_SO_diss_O_1S
+  - cand_SO_v_O_1S_vt
+  - e_O_1S_elastic
+  - e_O_excitation_O_1S
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 6.772823
+      unit: eV
+      source: O enthalpy plus the level energy
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 15.9994
+      unit: amu
+      source: same nucleus as O
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: literature_supported
+- id: S
+  charge: 0
+  composition:
+    S: 1
+  classes:
+  - atom
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: 3P
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - SF_SF_to_S_SF2
+  - cand_F2_v_S_vt
+  - cand_F2p_S_1S_diss_Fp_F_S
+  - cand_FO_v_S_vt
+  - cand_Fp_SO*_diss_F_Op_S
+  - cand_Fp_SO2*_diss_F_S_O2p
+  - cand_Fp_SO2_diss_F_S_O2p
+  - cand_Fp_SO2_v_diss_F_S_O2p
+  - cand_Fp_SO_diss_F_Op_S
+  - cand_Fp_SO_v_diss_F_Op_S
+  - cand_O2_v_S_vt
+  - cand_SF2_v_S_vt
+  - cand_SF2p_Ar_4s_diss_S_F2_Arp
+  - cand_SF2p_Ar_4s_diss_S_F2p_Ar
+  - cand_SF3_v_S_vt
+  - cand_SF4_v_S_vt
+  - cand_SF4p_S_1S_diss_SF2p_F2_S
+  - cand_SF5_v_S_vt
+  - cand_SF5p_S_1S_diss_SF4p_F_S
+  - cand_SF6_v_S_vt
+  - cand_SF6p_S_1D_diss_SF4p_F2_S
+  - cand_SF6p_S_1D_diss_SF5p_F_S
+  - cand_SF6p_S_1S_diss_SF4p_F2_S
+  - cand_SF6p_S_1S_diss_SF5p_F_S
+  - cand_SF6p_S_diss_SF4p_F2_S
+  - cand_SF6p_S_diss_SF5p_F_S
+  - cand_SF_v_S_vt
+  - cand_SO2F2_v_S_vt
+  - cand_SO2_diss_O2_a1Delta
+  - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_v_S_vt
+  - cand_SOF2_v_S_vt
+  - cand_SOF3_v_S_vt
+  - cand_SOF4_v_S_vt
+  - cand_SOF_v_S_vt
+  - cand_SO_diss_O_1D
+  - cand_SO_diss_O_1S
+  - cand_SO_v_S_vt
+  - cand_Sp_Ar_4s_char_S_Arp
+  - cand_Sp_O2_a1Delta_char_S_O2p
+  - cand_Sp_O2_b1Sigma_char_S_O2p
+  - cand_Sp_O2_char_S_O2p
+  - cand_Sp_O2_v_char_S_O2p
+  - cand_Sp_O_1D_char_S_Op
+  - cand_Sp_O_1S_char_S_Op
+  - cand_Sp_SF*_char_S_SFp
+  - cand_Sp_SF2*_char_S_SF2p
+  - cand_Sp_SF2_char_S_SF2p
+  - cand_Sp_SF2_v_char_S_SF2p
+  - cand_Sp_SF3*_char_S_SF3p
+  - cand_Sp_SF3_char_S_SF3p
+  - cand_Sp_SF3_v_char_S_SF3p
+  - cand_Sp_SF4*_char_S_SF4p
+  - cand_Sp_SF4_char_S_SF4p
+  - cand_Sp_SF4_v_char_S_SF4p
+  - cand_Sp_SF5*_char_S_SF5p
+  - cand_Sp_SF5_char_S_SF5p
+  - cand_Sp_SF5_v_char_S_SF5p
+  - cand_Sp_SF_char_S_SFp
+  - cand_Sp_SF_v_char_S_SFp
+  - cand_e_SF*_to_e_F_S
+  - cand_e_SF*_to_e_e_Fp_S
+  - cand_e_SF2*_to_e_S_F2
+  - cand_e_SF2_to_e_S_F2
+  - cand_e_SF2_v_to_e_S_F2
+  - cand_e_SF_to_e_e_Fp_S
+  - cand_e_SF_v_to_e_F_S
+  - cand_e_SF_v_to_e_e_Fp_S
+  - cand_e_SO*_to_e_O_S
+  - cand_e_SO*_to_e_e_Op_S
+  - cand_e_SO2*_to_e_S_O2
+  - cand_e_SO2_to_e_S_O2
+  - cand_e_SO2_v_to_e_S_O2
+  - cand_e_SOF*_to_e_FO_S
+  - cand_e_SOF*_to_e_e_OFp_S
+  - cand_e_SOF_to_e_FO_S
+  - cand_e_SOF_to_e_e_OFp_S
+  - cand_e_SOF_v_to_e_FO_S
+  - cand_e_SOF_v_to_e_e_OFp_S
+  - cand_e_SO_to_e_O_S
+  - cand_e_SO_to_e_e_Op_S
+  - cand_e_SO_v_to_e_O_S
+  - cand_e_SO_v_to_e_e_Op_S
+  - cand_e_S_to_e_S
+  - e_SF_dissociation_S_F
+  - e_S_1D_superelastic
+  - e_S_1S_superelastic
+  properties:
+    electron_affinity_eV:
+      value: 2.077104
+      unit: eV
+      source: mendeleev package, bundled periodic table
+    enthalpy_formation_eV:
+      value: 2.872976
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 7704-34-9, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 167.8
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 7704-34-9, formula
+        verified against the registry
+    ionization_energy_eV:
+      value: 10.36001
+      unit: eV
+      source: mendeleev package, bundled periodic table
+    mass_amu:
+      value: 32.06
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: S+
+  charge: 1
+  composition:
+    S: 1
+  classes:
+  - atomic_ion
+  - positive_ion
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_Ar_4s_S_penning
+  - cand_Arp_SF2*_diss_Ar_Sp_F2
+  - cand_Arp_SF2_diss_Ar_Sp_F2
+  - cand_Arp_SF2_v_diss_Ar_Sp_F2
+  - cand_Arp_SO*_diss_Ar_O_Sp
+  - cand_Arp_SO2*_diss_Ar_Sp_O2
+  - cand_Arp_SO2_diss_Ar_Sp_O2
+  - cand_Arp_SO2_v_diss_Ar_Sp_O2
+  - cand_Arp_SO_diss_Ar_O_Sp
+  - cand_Arp_SO_v_diss_Ar_O_Sp
+  - cand_Arp_S_1D_char_Ar_Sp
+  - cand_Arp_S_1S_char_Ar_Sp
+  - cand_Arp_S_char_Ar_Sp
+  - cand_F2p_SF2*_diss_F2_Sp_F2
+  - cand_F2p_SF2_diss_F2_Sp_F2
+  - cand_F2p_SF2_v_diss_F2_Sp_F2
+  - cand_F2p_SO*_diss_F2_O_Sp
+  - cand_F2p_SO2*_diss_F2_Sp_O2
+  - cand_F2p_SO2_diss_F2_Sp_O2
+  - cand_F2p_SO2_v_diss_F2_Sp_O2
+  - cand_F2p_SO_diss_F2_O_Sp
+  - cand_F2p_SO_v_diss_F2_O_Sp
+  - cand_F2p_S_1D_char_F2_Sp
+  - cand_F2p_S_1D_diss_F_F_Sp
+  - cand_F2p_S_1S_char_F2_Sp
+  - cand_F2p_S_1S_diss_F_F_Sp
+  - cand_F2p_S_char_F2_Sp
+  - cand_F2p_S_diss_F_F_Sp
+  - cand_Fp_SF2*_diss_F_Sp_F2
+  - cand_Fp_SF2_diss_F_Sp_F2
+  - cand_Fp_SF2_v_diss_F_Sp_F2
+  - cand_Fp_SO*_diss_F_O_Sp
+  - cand_Fp_SO2*_diss_F_Sp_O2
+  - cand_Fp_SO2_diss_F_Sp_O2
+  - cand_Fp_SO2_v_diss_F_Sp_O2
+  - cand_Fp_SO_diss_F_O_Sp
+  - cand_Fp_SO_v_diss_F_O_Sp
+  - cand_Fp_S_1D_char_F_Sp
+  - cand_Fp_S_1S_char_F_Sp
+  - cand_Fp_S_char_F_Sp
+  - cand_O2p_S_1D_char_O2_Sp
+  - cand_O2p_S_1S_char_O2_Sp
+  - cand_O2p_S_1S_diss_O_O_Sp
+  - cand_O2p_S_char_O2_Sp
+  - cand_Op_S_1D_char_O_Sp
+  - cand_Op_S_1S_char_O_Sp
+  - cand_Op_S_char_O_Sp
+  - cand_SF2p_Ar_4s_diss_Sp_F2_Ar
+  - cand_SF2p_O_1S_diss_Sp_F2_O
+  - cand_SF2p_S_1D_char_SF2_Sp
+  - cand_SF2p_S_1S_char_SF2_Sp
+  - cand_SF2p_S_char_SF2_Sp
+  - cand_SF3p_S_1D_char_SF3_Sp
+  - cand_SF3p_S_1S_char_SF3_Sp
+  - cand_SF4p_S_1D_char_SF4_Sp
+  - cand_SF4p_S_1S_char_SF4_Sp
+  - cand_SF4p_S_1S_diss_SF2_F2_Sp
+  - cand_SF4p_S_char_SF4_Sp
+  - cand_SF5p_S_1D_char_SF5_Sp
+  - cand_SF5p_S_1D_diss_SF4_F_Sp
+  - cand_SF5p_S_1S_char_SF5_Sp
+  - cand_SF5p_S_1S_diss_SF4_F_Sp
+  - cand_SF5p_S_char_SF5_Sp
+  - cand_SF6p_SF2*_diss_SF6_Sp_F2
+  - cand_SF6p_SF2_diss_SF6_Sp_F2
+  - cand_SF6p_SF2_v_diss_SF6_Sp_F2
+  - cand_SF6p_SO*_diss_SF6_O_Sp
+  - cand_SF6p_SO2*_diss_SF6_Sp_O2
+  - cand_SF6p_SO2_diss_SF6_Sp_O2
+  - cand_SF6p_SO2_v_diss_SF6_Sp_O2
+  - cand_SF6p_SO_diss_SF6_O_Sp
+  - cand_SF6p_SO_v_diss_SF6_O_Sp
+  - cand_SF6p_S_1D_char_SF6_Sp
+  - cand_SF6p_S_1D_diss_SF4_F2_Sp
+  - cand_SF6p_S_1D_diss_SF5_F_Sp
+  - cand_SF6p_S_1S_char_SF6_Sp
+  - cand_SF6p_S_1S_diss_SF4_F2_Sp
+  - cand_SF6p_S_1S_diss_SF5_F_Sp
+  - cand_SF6p_S_char_SF6_Sp
+  - cand_SF6p_S_diss_SF4_F2_Sp
+  - cand_SF6p_S_diss_SF5_F_Sp
+  - cand_SFp_S_1D_char_SF_Sp
+  - cand_SFp_S_1S_char_SF_Sp
+  - cand_SFp_S_char_SF_Sp
+  - cand_Sp_F2*_reac_Sp_F_F
+  - cand_Sp_F2_reac_Sp_F_F
+  - cand_Sp_F2_v_reac_Sp_F_F
+  - cand_e_SF2*_to_e_e_Sp_F2
+  - cand_e_SF2_to_e_e_Sp_F2
+  - cand_e_SF2_v_to_e_e_Sp_F2
+  - cand_e_SO2*_to_e_e_Sp_O2
+  - cand_e_SO2_to_e_e_Sp_O2
+  - cand_e_SO2_v_to_e_e_Sp_O2
+  - cand_e_S_1D_to_e_e_Sp
+  - cand_e_S_1S_to_e_e_Sp
+  - e_SF6_dissociative_ionization_Sp_F2_4F
+  - e_S_ionization_Sp
+  properties:
+    mass_amu:
+      value: 32.05945142
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SF
+  charge: 0
+  composition:
+    S: 1
+    F: 1
+  classes:
+  - molecule
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - S_F2_to_SF_F
+  - cand_F2_v_SF_vt
+  - cand_FO_v_SF_vt
+  - cand_O2_v_SF_vt
+  - cand_SF2_v_SF_vt
+  - cand_SF3_v_SF_vt
+  - cand_SF4_v_SF_vt
+  - cand_SF5_v_SF_vt
+  - cand_SF6_v_SF_vt
+  - cand_SF6p_SF*_diss_SF4p_F2_SF
+  - cand_SF6p_SF*_diss_SF5p_F_SF
+  - cand_SF6p_SF_diss_SF4p_F2_SF
+  - cand_SF6p_SF_diss_SF5p_F_SF
+  - cand_SF6p_SF_v_diss_SF4p_F2_SF
+  - cand_SF6p_SF_v_diss_SF5p_F_SF
+  - cand_SF_v_Ar_4s_vt
+  - cand_SF_v_Ar_vt
+  - cand_SF_v_F*_vt
+  - cand_SF_v_F2*_vt
+  - cand_SF_v_F2_v_vt
+  - cand_SF_v_F2_vt
+  - cand_SF_v_FO*_vt
+  - cand_SF_v_FO_v_vt
+  - cand_SF_v_FO_vt
+  - cand_SF_v_F_vt
+  - cand_SF_v_O2_a1Delta_vt
+  - cand_SF_v_O2_b1Sigma_vt
+  - cand_SF_v_O2_v_vt
+  - cand_SF_v_O2_vt
+  - cand_SF_v_O_1D_vt
+  - cand_SF_v_O_1S_vt
+  - cand_SF_v_O_vt
+  - cand_SF_v_SF*_vt
+  - cand_SF_v_SF2*_vt
+  - cand_SF_v_SF2_v_vt
+  - cand_SF_v_SF2_vt
+  - cand_SF_v_SF3*_vt
+  - cand_SF_v_SF3_v_vt
+  - cand_SF_v_SF3_vt
+  - cand_SF_v_SF4*_vt
+  - cand_SF_v_SF4_v_vt
+  - cand_SF_v_SF4_vt
+  - cand_SF_v_SF5*_vt
+  - cand_SF_v_SF5_v_vt
+  - cand_SF_v_SF5_vt
+  - cand_SF_v_SF6*_vt
+  - cand_SF_v_SF6_v_vt
+  - cand_SF_v_SF6_vt
+  - cand_SF_v_SF_vt
+  - cand_SF_v_SO*_vt
+  - cand_SF_v_SO2*_vt
+  - cand_SF_v_SO2F2*_vt
+  - cand_SF_v_SO2F2_v_vt
+  - cand_SF_v_SO2F2_vt
+  - cand_SF_v_SO2_v_vt
+  - cand_SF_v_SO2_vt
+  - cand_SF_v_SOF*_vt
+  - cand_SF_v_SOF2*_vt
+  - cand_SF_v_SOF2_v_vt
+  - cand_SF_v_SOF2_vt
+  - cand_SF_v_SOF3*_vt
+  - cand_SF_v_SOF3_v_vt
+  - cand_SF_v_SOF3_vt
+  - cand_SF_v_SOF4*_vt
+  - cand_SF_v_SOF4_v_vt
+  - cand_SF_v_SOF4_vt
+  - cand_SF_v_SOF_v_vt
+  - cand_SF_v_SOF_vt
+  - cand_SF_v_SO_v_vt
+  - cand_SF_v_SO_vt
+  - cand_SF_v_S_1D_vt
+  - cand_SF_v_S_1S_vt
+  - cand_SF_v_S_vt
+  - cand_SFp_Ar_4s_char_SF_Arp
+  - cand_SFp_O2_a1Delta_char_SF_O2p
+  - cand_SFp_O2_b1Sigma_char_SF_O2p
+  - cand_SFp_O2_char_SF_O2p
+  - cand_SFp_O2_v_char_SF_O2p
+  - cand_SFp_O_1D_char_SF_Op
+  - cand_SFp_O_1S_char_SF_Op
+  - cand_SFp_SF2*_char_SF_SF2p
+  - cand_SFp_SF2_char_SF_SF2p
+  - cand_SFp_SF2_v_char_SF_SF2p
+  - cand_SFp_SF3*_char_SF_SF3p
+  - cand_SFp_SF3_char_SF_SF3p
+  - cand_SFp_SF3_v_char_SF_SF3p
+  - cand_SFp_SF4*_char_SF_SF4p
+  - cand_SFp_SF4_char_SF_SF4p
+  - cand_SFp_SF4_v_char_SF_SF4p
+  - cand_SFp_SF5*_char_SF_SF5p
+  - cand_SFp_SF5_char_SF_SF5p
+  - cand_SFp_SF5_v_char_SF_SF5p
+  - cand_SFp_S_1D_char_SF_Sp
+  - cand_SFp_S_1S_char_SF_Sp
+  - cand_SFp_S_char_SF_Sp
+  - cand_SO2F2_v_SF_vt
+  - cand_SO2_v_SF_vt
+  - cand_SOF2_v_SF_vt
+  - cand_SOF3_v_SF_vt
+  - cand_SOF4_v_SF_vt
+  - cand_SOF_v_SF_vt
+  - cand_SO_v_SF_vt
+  - cand_e_SF*_to_e_SF
+  - cand_e_SF2*_to_e_SF_F
+  - cand_e_SF2_v_to_e_SF_F
+  - cand_e_SF3*_to_e_SF_F2
+  - cand_e_SF3_to_e_SF_F2
+  - cand_e_SF3_v_to_e_SF_F2
+  - cand_e_SF_to_e_SF
+  - cand_e_SF_v_to_e_SF
+  - e_SF2_dissociation_SF_F
+  - e_SF6_dissociation_SF_F2_3F
+  properties:
+    mass_amu:
+      value: 51.05800000000001
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SF*
+  charge: 0
+  composition:
+    S: 1
+    F: 1
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF*_vt
+  - cand_FO_v_SF*_vt
+  - cand_O2_v_SF*_vt
+  - cand_SF2_v_SF*_vt
+  - cand_SF3_v_SF*_vt
+  - cand_SF4_v_SF*_vt
+  - cand_SF5_v_SF*_vt
+  - cand_SF6_v_SF*_vt
+  - cand_SF_v_SF*_vt
+  - cand_SO2F2_v_SF*_vt
+  - cand_SO2_v_SF*_vt
+  - cand_SOF2_v_SF*_vt
+  - cand_SOF3_v_SF*_vt
+  - cand_SOF4_v_SF*_vt
+  - cand_SOF_v_SF*_vt
+  - cand_SO_v_SF*_vt
+  - cand_e_SF*_to_e_SF*
+  - cand_e_SF_to_e_SF*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF+
+  charge: 1
+  composition:
+    S: 1
+    F: 1
+  classes:
+  - molecular_ion
+  - positive_ion
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_Ar_4s_SF_penning
+  - cand_Arp_SF*_char_Ar_SFp
+  - cand_Arp_SF_char_Ar_SFp
+  - cand_Arp_SF_v_char_Ar_SFp
+  - cand_F2p_SF*_char_F2_SFp
+  - cand_F2p_SF*_diss_F_F_SFp
+  - cand_F2p_SF_char_F2_SFp
+  - cand_F2p_SF_diss_F_F_SFp
+  - cand_F2p_SF_v_char_F2_SFp
+  - cand_F2p_SF_v_diss_F_F_SFp
+  - cand_Fp_SF*_char_F_SFp
+  - cand_Fp_SF_char_F_SFp
+  - cand_Fp_SF_v_char_F_SFp
+  - cand_O2p_SF*_char_O2_SFp
+  - cand_O2p_SF_char_O2_SFp
+  - cand_O2p_SF_v_char_O2_SFp
+  - cand_Op_SF*_char_O_SFp
+  - cand_Op_SF_char_O_SFp
+  - cand_Op_SF_v_char_O_SFp
+  - cand_SF2p_SF*_char_SF2_SFp
+  - cand_SF2p_SF_char_SF2_SFp
+  - cand_SF2p_SF_v_char_SF2_SFp
+  - cand_SF4p_SF*_char_SF4_SFp
+  - cand_SF4p_SF_char_SF4_SFp
+  - cand_SF4p_SF_v_char_SF4_SFp
+  - cand_SF5p_SF*_char_SF5_SFp
+  - cand_SF5p_SF_char_SF5_SFp
+  - cand_SF5p_SF_v_char_SF5_SFp
+  - cand_SF6p_SF*_char_SF6_SFp
+  - cand_SF6p_SF*_diss_SF4_F2_SFp
+  - cand_SF6p_SF*_diss_SF5_F_SFp
+  - cand_SF6p_SF_char_SF6_SFp
+  - cand_SF6p_SF_diss_SF4_F2_SFp
+  - cand_SF6p_SF_diss_SF5_F_SFp
+  - cand_SF6p_SF_v_char_SF6_SFp
+  - cand_SF6p_SF_v_diss_SF4_F2_SFp
+  - cand_SF6p_SF_v_diss_SF5_F_SFp
+  - cand_SFp_F2*_reac_SFp_F_F
+  - cand_SFp_F2_reac_SFp_F_F
+  - cand_SFp_F2_v_reac_SFp_F_F
+  - cand_Sp_SF*_char_S_SFp
+  - cand_Sp_SF_char_S_SFp
+  - cand_Sp_SF_v_char_S_SFp
+  - cand_e_SF*_to_e_e_SFp
+  - cand_e_SF2*_to_e_e_SFp_F
+  - cand_e_SF2_to_e_e_SFp_F
+  - cand_e_SF2_v_to_e_e_SFp_F
+  - cand_e_SF3*_to_e_e_SFp_F2
+  - cand_e_SF3_to_e_e_SFp_F2
+  - cand_e_SF3_v_to_e_e_SFp_F2
+  - cand_e_SF_v_to_e_e_SFp
+  - e_SF6_dissociative_ionization_SFp_F2_3F
+  - e_SF_ionization_SFp
+  properties:
+    mass_amu:
+      value: 51.05745142000001
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SF2
+  charge: 0
+  composition:
+    S: 1
+    F: 2
+  classes:
+  - molecule
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - SF3_SF3_to_SF2_SF4
+  - SF_F2_to_SF2_F
+  - SF_SF_to_S_SF2
+  - cand_Arp_SO2F2*_diss_Ar_SF2_O2p
+  - cand_Arp_SO2F2_diss_Ar_SF2_O2p
+  - cand_Arp_SO2F2_v_diss_Ar_SF2_O2p
+  - cand_F2_v_SF2_vt
+  - cand_F2p_SO2F2*_diss_F2_SF2_O2p
+  - cand_F2p_SO2F2_diss_F2_SF2_O2p
+  - cand_F2p_SO2F2_v_diss_F2_SF2_O2p
+  - cand_FO_v_SF2_vt
+  - cand_Fp_SO2F2*_diss_F_SF2_O2p
+  - cand_Fp_SO2F2_diss_F_SF2_O2p
+  - cand_Fp_SO2F2_v_diss_F_SF2_O2p
+  - cand_O2_v_SF2_vt
+  - cand_SF2_v_Ar_4s_vt
+  - cand_SF2_v_Ar_vt
+  - cand_SF2_v_F*_vt
+  - cand_SF2_v_F2*_vt
+  - cand_SF2_v_F2_v_vt
+  - cand_SF2_v_F2_vt
+  - cand_SF2_v_FO*_vt
+  - cand_SF2_v_FO_v_vt
+  - cand_SF2_v_FO_vt
+  - cand_SF2_v_F_vt
+  - cand_SF2_v_O2_a1Delta_vt
+  - cand_SF2_v_O2_b1Sigma_vt
+  - cand_SF2_v_O2_v_vt
+  - cand_SF2_v_O2_vt
+  - cand_SF2_v_O_1D_vt
+  - cand_SF2_v_O_1S_vt
+  - cand_SF2_v_O_vt
+  - cand_SF2_v_SF*_vt
+  - cand_SF2_v_SF2*_vt
+  - cand_SF2_v_SF2_vt
+  - cand_SF2_v_SF3*_vt
+  - cand_SF2_v_SF3_v_vt
+  - cand_SF2_v_SF3_vt
+  - cand_SF2_v_SF4*_vt
+  - cand_SF2_v_SF4_v_vt
+  - cand_SF2_v_SF4_vt
+  - cand_SF2_v_SF5*_vt
+  - cand_SF2_v_SF5_v_vt
+  - cand_SF2_v_SF5_vt
+  - cand_SF2_v_SF6*_vt
+  - cand_SF2_v_SF6_v_vt
+  - cand_SF2_v_SF6_vt
+  - cand_SF2_v_SF_v_vt
+  - cand_SF2_v_SF_vt
+  - cand_SF2_v_SO*_vt
+  - cand_SF2_v_SO2*_vt
+  - cand_SF2_v_SO2F2*_vt
+  - cand_SF2_v_SO2F2_v_vt
+  - cand_SF2_v_SO2F2_vt
+  - cand_SF2_v_SO2_v_vt
+  - cand_SF2_v_SO2_vt
+  - cand_SF2_v_SOF*_vt
+  - cand_SF2_v_SOF2*_vt
+  - cand_SF2_v_SOF2_v_vt
+  - cand_SF2_v_SOF2_vt
+  - cand_SF2_v_SOF3*_vt
+  - cand_SF2_v_SOF3_v_vt
+  - cand_SF2_v_SOF3_vt
+  - cand_SF2_v_SOF4*_vt
+  - cand_SF2_v_SOF4_v_vt
+  - cand_SF2_v_SOF4_vt
+  - cand_SF2_v_SOF_v_vt
+  - cand_SF2_v_SOF_vt
+  - cand_SF2_v_SO_v_vt
+  - cand_SF2_v_SO_vt
+  - cand_SF2_v_S_1D_vt
+  - cand_SF2_v_S_1S_vt
+  - cand_SF2_v_S_vt
+  - cand_SF2p_Ar_4s_char_SF2_Arp
+  - cand_SF2p_O2_a1Delta_char_SF2_O2p
+  - cand_SF2p_O2_b1Sigma_char_SF2_O2p
+  - cand_SF2p_O2_char_SF2_O2p
+  - cand_SF2p_O2_v_char_SF2_O2p
+  - cand_SF2p_O_1D_char_SF2_Op
+  - cand_SF2p_O_1S_char_SF2_Op
+  - cand_SF2p_SF*_char_SF2_SFp
+  - cand_SF2p_SF3*_char_SF2_SF3p
+  - cand_SF2p_SF3_char_SF2_SF3p
+  - cand_SF2p_SF3_v_char_SF2_SF3p
+  - cand_SF2p_SF4*_char_SF2_SF4p
+  - cand_SF2p_SF4_char_SF2_SF4p
+  - cand_SF2p_SF4_v_char_SF2_SF4p
+  - cand_SF2p_SF5*_char_SF2_SF5p
+  - cand_SF2p_SF5_char_SF2_SF5p
+  - cand_SF2p_SF5_v_char_SF2_SF5p
+  - cand_SF2p_SF_char_SF2_SFp
+  - cand_SF2p_SF_v_char_SF2_SFp
+  - cand_SF2p_S_1D_char_SF2_Sp
+  - cand_SF2p_S_1S_char_SF2_Sp
+  - cand_SF2p_S_char_SF2_Sp
+  - cand_SF3_v_SF2_vt
+  - cand_SF4_v_SF2_vt
+  - cand_SF4p_Ar_4s_diss_SF2_F2_Arp
+  - cand_SF4p_Ar_4s_diss_SF2_F2p_Ar
+  - cand_SF4p_SF3*_diss_SF2_F2_SF3p
+  - cand_SF4p_SF3_diss_SF2_F2_SF3p
+  - cand_SF4p_SF3_v_diss_SF2_F2_SF3p
+  - cand_SF4p_S_1S_diss_SF2_F2_Sp
+  - cand_SF5_v_SF2_vt
+  - cand_SF6_v_SF2_vt
+  - cand_SF6p_SF2*_diss_SF4p_F2_SF2
+  - cand_SF6p_SF2*_diss_SF5p_F_SF2
+  - cand_SF6p_SF2_diss_SF4p_F2_SF2
+  - cand_SF6p_SF2_diss_SF5p_F_SF2
+  - cand_SF6p_SF2_v_diss_SF4p_F2_SF2
+  - cand_SF6p_SF2_v_diss_SF5p_F_SF2
+  - cand_SF6p_SO2F2*_diss_SF6_SF2_O2p
+  - cand_SF6p_SO2F2_diss_SF6_SF2_O2p
+  - cand_SF6p_SO2F2_v_diss_SF6_SF2_O2p
+  - cand_SF_v_SF2_vt
+  - cand_SO2F2_diss_O2_a1Delta
+  - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_v_SF2_vt
+  - cand_SO2_v_SF2_vt
+  - cand_SOF2_v_SF2_vt
+  - cand_SOF3_v_SF2_vt
+  - cand_SOF4_v_SF2_vt
+  - cand_SOF_v_SF2_vt
+  - cand_SO_v_SF2_vt
+  - cand_e_SF2*_to_e_SF2
+  - cand_e_SF2_to_e_SF2
+  - cand_e_SF2_v_to_e_SF2
+  - cand_e_SF3*_to_e_SF2_F
+  - cand_e_SF3_v_to_e_SF2_F
+  - cand_e_SF4*_to_e_SF2_F2
+  - cand_e_SF4_to_e_SF2_F2
+  - cand_e_SF4_v_to_e_SF2_F2
+  - cand_e_SO2F2*_to_e_SF2_O2
+  - cand_e_SO2F2_to_e_SF2_O2
+  - cand_e_SO2F2_v_to_e_SF2_O2
+  - e_SF3_dissociation_SF2_F
+  - e_SF6_dissociation_SF2_F2_2F
+  properties:
+    enthalpy_formation_eV:
+      value: -3.074561
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 13814-25-0, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 257.7
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 13814-25-0, formula
+        verified against the registry
+    mass_amu:
+      value: 70.05600000000001
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SF2*
+  charge: 0
+  composition:
+    S: 1
+    F: 2
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF2*_vt
+  - cand_FO_v_SF2*_vt
+  - cand_O2_v_SF2*_vt
+  - cand_SF2_v_SF2*_vt
+  - cand_SF3_v_SF2*_vt
+  - cand_SF4_v_SF2*_vt
+  - cand_SF5_v_SF2*_vt
+  - cand_SF6_v_SF2*_vt
+  - cand_SF_v_SF2*_vt
+  - cand_SO2F2_v_SF2*_vt
+  - cand_SO2_v_SF2*_vt
+  - cand_SOF2_v_SF2*_vt
+  - cand_SOF3_v_SF2*_vt
+  - cand_SOF4_v_SF2*_vt
+  - cand_SOF_v_SF2*_vt
+  - cand_SO_v_SF2*_vt
+  - cand_e_SF2*_to_e_SF2*
+  - cand_e_SF2_to_e_SF2*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF2+
+  charge: 1
+  composition:
+    S: 1
+    F: 2
+  classes:
+  - molecular_ion
+  - positive_ion
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_Ar_4s_SF2_penning
+  - cand_Arp_SF2*_char_Ar_SF2p
+  - cand_Arp_SF2_char_Ar_SF2p
+  - cand_Arp_SF2_v_char_Ar_SF2p
+  - cand_Arp_SF4*_diss_Ar_SF2p_F2
+  - cand_Arp_SF4_diss_Ar_SF2p_F2
+  - cand_Arp_SF4_v_diss_Ar_SF2p_F2
+  - cand_Arp_SO2F2*_diss_Ar_SF2p_O2
+  - cand_Arp_SO2F2_diss_Ar_SF2p_O2
+  - cand_Arp_SO2F2_v_diss_Ar_SF2p_O2
+  - cand_F2p_SF2*_char_F2_SF2p
+  - cand_F2p_SF2*_diss_F_F_SF2p
+  - cand_F2p_SF2_char_F2_SF2p
+  - cand_F2p_SF2_diss_F_F_SF2p
+  - cand_F2p_SF2_v_char_F2_SF2p
+  - cand_F2p_SF2_v_diss_F_F_SF2p
+  - cand_F2p_SF4*_diss_F2_SF2p_F2
+  - cand_F2p_SF4_diss_F2_SF2p_F2
+  - cand_F2p_SF4_v_diss_F2_SF2p_F2
+  - cand_F2p_SO2F2*_diss_F2_SF2p_O2
+  - cand_F2p_SO2F2_diss_F2_SF2p_O2
+  - cand_F2p_SO2F2_v_diss_F2_SF2p_O2
+  - cand_Fp_SF2*_char_F_SF2p
+  - cand_Fp_SF2_char_F_SF2p
+  - cand_Fp_SF2_v_char_F_SF2p
+  - cand_Fp_SF4*_diss_F_SF2p_F2
+  - cand_Fp_SF4_diss_F_SF2p_F2
+  - cand_Fp_SF4_v_diss_F_SF2p_F2
+  - cand_Fp_SO2F2*_diss_F_SF2p_O2
+  - cand_Fp_SO2F2_diss_F_SF2p_O2
+  - cand_Fp_SO2F2_v_diss_F_SF2p_O2
+  - cand_O2p_SF2*_char_O2_SF2p
+  - cand_O2p_SF2_char_O2_SF2p
+  - cand_O2p_SF2_v_char_O2_SF2p
+  - cand_Op_SF2*_char_O_SF2p
+  - cand_Op_SF2_char_O_SF2p
+  - cand_Op_SF2_v_char_O_SF2p
+  - cand_Op_SO2F2*_diss_O_SF2p_O2
+  - cand_Op_SO2F2_diss_O_SF2p_O2
+  - cand_Op_SO2F2_v_diss_O_SF2p_O2
+  - cand_SF2p_F2*_reac_SF2p_F_F
+  - cand_SF2p_F2_reac_SF2p_F_F
+  - cand_SF2p_F2_v_reac_SF2p_F_F
+  - cand_SF4p_Ar_4s_diss_SF2p_F2_Ar
+  - cand_SF4p_O_1D_diss_SF2p_F2_O
+  - cand_SF4p_O_1S_diss_SF2p_F2_O
+  - cand_SF4p_SF2*_char_SF4_SF2p
+  - cand_SF4p_SF2_char_SF4_SF2p
+  - cand_SF4p_SF2_v_char_SF4_SF2p
+  - cand_SF4p_SO2*_diss_SO2F2_SF2p
+  - cand_SF4p_SO2_diss_SO2F2_SF2p
+  - cand_SF4p_SO2_v_diss_SO2F2_SF2p
+  - cand_SF4p_S_1S_diss_SF2p_F2_S
+  - cand_SF5p_SF2*_char_SF5_SF2p
+  - cand_SF5p_SF2_char_SF5_SF2p
+  - cand_SF5p_SF2_v_char_SF5_SF2p
+  - cand_SF6p_SF2*_char_SF6_SF2p
+  - cand_SF6p_SF2*_diss_SF4_F2_SF2p
+  - cand_SF6p_SF2*_diss_SF5_F_SF2p
+  - cand_SF6p_SF2_char_SF6_SF2p
+  - cand_SF6p_SF2_diss_SF4_F2_SF2p
+  - cand_SF6p_SF2_diss_SF5_F_SF2p
+  - cand_SF6p_SF2_v_char_SF6_SF2p
+  - cand_SF6p_SF2_v_diss_SF4_F2_SF2p
+  - cand_SF6p_SF2_v_diss_SF5_F_SF2p
+  - cand_SF6p_SF4*_diss_SF6_SF2p_F2
+  - cand_SF6p_SF4_diss_SF6_SF2p_F2
+  - cand_SF6p_SF4_v_diss_SF6_SF2p_F2
+  - cand_SF6p_SO2F2*_diss_SF6_SF2p_O2
+  - cand_SF6p_SO2F2_diss_SF6_SF2p_O2
+  - cand_SF6p_SO2F2_v_diss_SF6_SF2p_O2
+  - cand_SFp_SF2*_char_SF_SF2p
+  - cand_SFp_SF2_char_SF_SF2p
+  - cand_SFp_SF2_v_char_SF_SF2p
+  - cand_Sp_SF2*_char_S_SF2p
+  - cand_Sp_SF2_char_S_SF2p
+  - cand_Sp_SF2_v_char_S_SF2p
+  - cand_e_SF2*_to_e_e_SF2p
+  - cand_e_SF2_v_to_e_e_SF2p
+  - cand_e_SF3*_to_e_e_SF2p_F
+  - cand_e_SF3_to_e_e_SF2p_F
+  - cand_e_SF3_v_to_e_e_SF2p_F
+  - cand_e_SF4*_to_e_e_SF2p_F2
+  - cand_e_SF4_to_e_e_SF2p_F2
+  - cand_e_SF4_v_to_e_e_SF2p_F2
+  - cand_e_SO2F2*_to_e_e_SF2p_O2
+  - cand_e_SO2F2_to_e_e_SF2p_O2
+  - cand_e_SO2F2_v_to_e_e_SF2p_O2
+  - e_SF2_ionization_SF2p
+  - e_SF6_dissociative_ionization_SF2p_F2_2F
+  properties:
+    mass_amu:
+      value: 70.05545142000001
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SF2_v
+  charge: 0
+  composition:
+    S: 1
+    F: 2
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF2_v_vt
+  - cand_FO_v_SF2_v_vt
+  - cand_O2_v_SF2_v_vt
+  - cand_SF3_v_SF2_v_vt
+  - cand_SF4_v_SF2_v_vt
+  - cand_SF5_v_SF2_v_vt
+  - cand_SF6_v_SF2_v_vt
+  - cand_SF_v_SF2_v_vt
+  - cand_SO2F2_v_SF2_v_vt
+  - cand_SO2_v_SF2_v_vt
+  - cand_SOF2_v_SF2_v_vt
+  - cand_SOF3_v_SF2_v_vt
+  - cand_SOF4_v_SF2_v_vt
+  - cand_SOF_v_SF2_v_vt
+  - cand_SO_v_SF2_v_vt
+  - cand_e_SF2_to_e_SF2_v
+  - cand_e_SF2_v_to_e_SF2_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF3
+  charge: 0
+  composition:
+    S: 1
+    F: 3
+  classes:
+  - molecule
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - SF2_F2_to_SF3_F
+  - cand_F2_v_SF3_vt
+  - cand_FO_v_SF3_vt
+  - cand_O2_v_SF3_vt
+  - cand_SF2_v_SF3_vt
+  - cand_SF3_v_Ar_4s_vt
+  - cand_SF3_v_Ar_vt
+  - cand_SF3_v_F*_vt
+  - cand_SF3_v_F2*_vt
+  - cand_SF3_v_F2_v_vt
+  - cand_SF3_v_F2_vt
+  - cand_SF3_v_FO*_vt
+  - cand_SF3_v_FO_v_vt
+  - cand_SF3_v_FO_vt
+  - cand_SF3_v_F_vt
+  - cand_SF3_v_O2_a1Delta_vt
+  - cand_SF3_v_O2_b1Sigma_vt
+  - cand_SF3_v_O2_v_vt
+  - cand_SF3_v_O2_vt
+  - cand_SF3_v_O_1D_vt
+  - cand_SF3_v_O_1S_vt
+  - cand_SF3_v_O_vt
+  - cand_SF3_v_SF*_vt
+  - cand_SF3_v_SF2*_vt
+  - cand_SF3_v_SF2_v_vt
+  - cand_SF3_v_SF2_vt
+  - cand_SF3_v_SF3*_vt
+  - cand_SF3_v_SF3_vt
+  - cand_SF3_v_SF4*_vt
+  - cand_SF3_v_SF4_v_vt
+  - cand_SF3_v_SF4_vt
+  - cand_SF3_v_SF5*_vt
+  - cand_SF3_v_SF5_v_vt
+  - cand_SF3_v_SF5_vt
+  - cand_SF3_v_SF6*_vt
+  - cand_SF3_v_SF6_v_vt
+  - cand_SF3_v_SF6_vt
+  - cand_SF3_v_SF_v_vt
+  - cand_SF3_v_SF_vt
+  - cand_SF3_v_SO*_vt
+  - cand_SF3_v_SO2*_vt
+  - cand_SF3_v_SO2F2*_vt
+  - cand_SF3_v_SO2F2_v_vt
+  - cand_SF3_v_SO2F2_vt
+  - cand_SF3_v_SO2_v_vt
+  - cand_SF3_v_SO2_vt
+  - cand_SF3_v_SOF*_vt
+  - cand_SF3_v_SOF2*_vt
+  - cand_SF3_v_SOF2_v_vt
+  - cand_SF3_v_SOF2_vt
+  - cand_SF3_v_SOF3*_vt
+  - cand_SF3_v_SOF3_v_vt
+  - cand_SF3_v_SOF3_vt
+  - cand_SF3_v_SOF4*_vt
+  - cand_SF3_v_SOF4_v_vt
+  - cand_SF3_v_SOF4_vt
+  - cand_SF3_v_SOF_v_vt
+  - cand_SF3_v_SOF_vt
+  - cand_SF3_v_SO_v_vt
+  - cand_SF3_v_SO_vt
+  - cand_SF3_v_S_1D_vt
+  - cand_SF3_v_S_1S_vt
+  - cand_SF3_v_S_vt
+  - cand_SF3p_Ar_4s_char_SF3_Arp
+  - cand_SF3p_O_1S_char_SF3_Op
+  - cand_SF3p_SF5*_char_SF3_SF5p
+  - cand_SF3p_SF5_char_SF3_SF5p
+  - cand_SF3p_SF5_v_char_SF3_SF5p
+  - cand_SF3p_S_1D_char_SF3_Sp
+  - cand_SF3p_S_1S_char_SF3_Sp
+  - cand_SF4_v_SF3_vt
+  - cand_SF5_v_SF3_vt
+  - cand_SF6_v_SF3_vt
+  - cand_SF6p_SF3*_diss_SF4p_F2_SF3
+  - cand_SF6p_SF3*_diss_SF5p_F_SF3
+  - cand_SF6p_SF3_diss_SF4p_F2_SF3
+  - cand_SF6p_SF3_diss_SF5p_F_SF3
+  - cand_SF6p_SF3_v_diss_SF4p_F2_SF3
+  - cand_SF6p_SF3_v_diss_SF5p_F_SF3
+  - cand_SF_v_SF3_vt
+  - cand_SO2F2_v_SF3_vt
+  - cand_SO2_v_SF3_vt
+  - cand_SOF2_v_SF3_vt
+  - cand_SOF3_v_SF3_vt
+  - cand_SOF4_v_SF3_vt
+  - cand_SOF_v_SF3_vt
+  - cand_SO_v_SF3_vt
+  - cand_e_SF3*_to_e_SF3
+  - cand_e_SF3_to_e_SF3
+  - cand_e_SF3_v_to_e_SF3
+  - cand_e_SF4*_to_e_SF3_F
+  - cand_e_SF4_v_to_e_SF3_F
+  - cand_e_SF5*_to_e_SF3_F2
+  - cand_e_SF5_to_e_SF3_F2
+  - cand_e_SF5_v_to_e_SF3_F2
+  - e_SF4_dissociation_SF3_F
+  - e_SF6_dissociation_SF3_3F
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: null
+      unit: D
+      source: null
+    electron_affinity_eV:
+      value: 3.07
+      unit: eV
+      source: NIST Chemistry WebBook SRD 69, Compton, Reinhardt, et al. (1978), from
+        SF6
+    enthalpy_formation_eV:
+      value: null
+      unit: eV
+      source: null
+    ionization_energy_eV:
+      value: 8.18
+      unit: eV
+      source: NIST Chemistry WebBook SRD 69, Fischer, Kickel, et al. (1992), END
+    mass_amu:
+      value: 89.061
+      unit: amu
+      source: standard atomic-weight sum; NIST SRD 107 lists SF3 ionization data
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: literature_supported
+- id: SF3*
+  charge: 0
+  composition:
+    S: 1
+    F: 3
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF3*_vt
+  - cand_FO_v_SF3*_vt
+  - cand_O2_v_SF3*_vt
+  - cand_SF2_v_SF3*_vt
+  - cand_SF3_v_SF3*_vt
+  - cand_SF4_v_SF3*_vt
+  - cand_SF5_v_SF3*_vt
+  - cand_SF6_v_SF3*_vt
+  - cand_SF_v_SF3*_vt
+  - cand_SO2F2_v_SF3*_vt
+  - cand_SO2_v_SF3*_vt
+  - cand_SOF2_v_SF3*_vt
+  - cand_SOF3_v_SF3*_vt
+  - cand_SOF4_v_SF3*_vt
+  - cand_SOF_v_SF3*_vt
+  - cand_SO_v_SF3*_vt
+  - cand_e_SF3*_to_e_SF3*
+  - cand_e_SF3_to_e_SF3*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF3+
+  charge: 1
+  composition:
+    S: 1
+    F: 3
+  classes:
+  - molecular_ion
+  - positive_ion
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - SF5p_SF6_to_SF3p_SF6_F2
+  - cand_Ar_4s_SF3_penning
+  - cand_Arp_SF3*_char_Ar_SF3p
+  - cand_Arp_SF3_char_Ar_SF3p
+  - cand_Arp_SF3_v_char_Ar_SF3p
+  - cand_F2p_SF3*_char_F2_SF3p
+  - cand_F2p_SF3*_diss_F_F_SF3p
+  - cand_F2p_SF3_char_F2_SF3p
+  - cand_F2p_SF3_diss_F_F_SF3p
+  - cand_F2p_SF3_v_char_F2_SF3p
+  - cand_F2p_SF3_v_diss_F_F_SF3p
+  - cand_Fp_SF3*_char_F_SF3p
+  - cand_Fp_SF3_char_F_SF3p
+  - cand_Fp_SF3_v_char_F_SF3p
+  - cand_O2p_SF3*_char_O2_SF3p
+  - cand_O2p_SF3*_diss_O_O_SF3p
+  - cand_O2p_SF3_char_O2_SF3p
+  - cand_O2p_SF3_diss_O_O_SF3p
+  - cand_O2p_SF3_v_char_O2_SF3p
+  - cand_O2p_SF3_v_diss_O_O_SF3p
+  - cand_Op_SF3*_char_O_SF3p
+  - cand_Op_SF3_char_O_SF3p
+  - cand_Op_SF3_v_char_O_SF3p
+  - cand_SF2p_SF3*_char_SF2_SF3p
+  - cand_SF2p_SF3_char_SF2_SF3p
+  - cand_SF2p_SF3_v_char_SF2_SF3p
+  - cand_SF3p_F2*_reac_SF3p_F_F
+  - cand_SF3p_F2_reac_SF3p_F_F
+  - cand_SF3p_F2_v_reac_SF3p_F_F
+  - cand_SF4p_SF3*_char_SF4_SF3p
+  - cand_SF4p_SF3*_diss_SF2_F2_SF3p
+  - cand_SF4p_SF3_char_SF4_SF3p
+  - cand_SF4p_SF3_diss_SF2_F2_SF3p
+  - cand_SF4p_SF3_v_char_SF4_SF3p
+  - cand_SF4p_SF3_v_diss_SF2_F2_SF3p
+  - cand_SF5p_SF3*_char_SF5_SF3p
+  - cand_SF5p_SF3*_diss_SF4_F_SF3p
+  - cand_SF5p_SF3_char_SF5_SF3p
+  - cand_SF5p_SF3_diss_SF4_F_SF3p
+  - cand_SF5p_SF3_v_char_SF5_SF3p
+  - cand_SF5p_SF3_v_diss_SF4_F_SF3p
+  - cand_SF6p_SF3*_char_SF6_SF3p
+  - cand_SF6p_SF3*_diss_SF4_F2_SF3p
+  - cand_SF6p_SF3*_diss_SF5_F_SF3p
+  - cand_SF6p_SF3_char_SF6_SF3p
+  - cand_SF6p_SF3_diss_SF4_F2_SF3p
+  - cand_SF6p_SF3_diss_SF5_F_SF3p
+  - cand_SF6p_SF3_v_char_SF6_SF3p
+  - cand_SF6p_SF3_v_diss_SF4_F2_SF3p
+  - cand_SF6p_SF3_v_diss_SF5_F_SF3p
+  - cand_SFp_SF3*_char_SF_SF3p
+  - cand_SFp_SF3_char_SF_SF3p
+  - cand_SFp_SF3_v_char_SF_SF3p
+  - cand_Sp_SF3*_char_S_SF3p
+  - cand_Sp_SF3_char_S_SF3p
+  - cand_Sp_SF3_v_char_S_SF3p
+  - cand_e_SF3*_to_e_e_SF3p
+  - cand_e_SF3_v_to_e_e_SF3p
+  - cand_e_SF4*_to_e_e_SF3p_F
+  - cand_e_SF4_v_to_e_e_SF3p_F
+  - cand_e_SF5*_to_e_e_SF3p_F2
+  - cand_e_SF5_to_e_e_SF3p_F2
+  - cand_e_SF5_v_to_e_e_SF3p_F2
+  - e_SF3_ionization
+  - e_SF4_dissociative_ionization_SF3p_F
+  - e_SF6_dissociative_ionization_SF3p_3F
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: null
+      unit: D
+      source: null
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: null
+      unit: eV
+      source: null
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 89.0604514
+      unit: amu
+      source: SF3 neutral mass minus electron mass
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: literature_supported
+- id: SF3_v
+  charge: 0
+  composition:
+    S: 1
+    F: 3
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF3_v_vt
+  - cand_FO_v_SF3_v_vt
+  - cand_O2_v_SF3_v_vt
+  - cand_SF2_v_SF3_v_vt
+  - cand_SF4_v_SF3_v_vt
+  - cand_SF5_v_SF3_v_vt
+  - cand_SF6_v_SF3_v_vt
+  - cand_SF_v_SF3_v_vt
+  - cand_SO2F2_v_SF3_v_vt
+  - cand_SO2_v_SF3_v_vt
+  - cand_SOF2_v_SF3_v_vt
+  - cand_SOF3_v_SF3_v_vt
+  - cand_SOF4_v_SF3_v_vt
+  - cand_SOF_v_SF3_v_vt
+  - cand_SO_v_SF3_v_vt
+  - cand_e_SF3_to_e_SF3_v
+  - cand_e_SF3_v_to_e_SF3_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF4
+  charge: 0
+  composition:
+    S: 1
+    F: 4
+  classes:
+  - molecule
+  - neutral
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - SF3_F2_to_SF4_F
+  - SF3_SF3_to_SF2_SF4
+  - SF5_SF5_to_SF4_SF6
+  - cand_F2_v_SF4_vt
+  - cand_FO_v_SF4_vt
+  - cand_O2_v_SF4_vt
+  - cand_SF2_v_SF4_vt
+  - cand_SF3_v_SF4_vt
+  - cand_SF4_v_Ar_4s_vt
+  - cand_SF4_v_Ar_vt
+  - cand_SF4_v_F*_vt
+  - cand_SF4_v_F2*_vt
+  - cand_SF4_v_F2_v_vt
+  - cand_SF4_v_F2_vt
+  - cand_SF4_v_FO*_vt
+  - cand_SF4_v_FO_v_vt
+  - cand_SF4_v_FO_vt
+  - cand_SF4_v_F_vt
+  - cand_SF4_v_O2_a1Delta_vt
+  - cand_SF4_v_O2_b1Sigma_vt
+  - cand_SF4_v_O2_v_vt
+  - cand_SF4_v_O2_vt
+  - cand_SF4_v_O_1D_vt
+  - cand_SF4_v_O_1S_vt
+  - cand_SF4_v_O_vt
+  - cand_SF4_v_SF*_vt
+  - cand_SF4_v_SF2*_vt
+  - cand_SF4_v_SF2_v_vt
+  - cand_SF4_v_SF2_vt
+  - cand_SF4_v_SF3*_vt
+  - cand_SF4_v_SF3_v_vt
+  - cand_SF4_v_SF3_vt
+  - cand_SF4_v_SF4*_vt
+  - cand_SF4_v_SF4_vt
+  - cand_SF4_v_SF5*_vt
+  - cand_SF4_v_SF5_v_vt
+  - cand_SF4_v_SF5_vt
+  - cand_SF4_v_SF6*_vt
+  - cand_SF4_v_SF6_v_vt
+  - cand_SF4_v_SF6_vt
+  - cand_SF4_v_SF_v_vt
+  - cand_SF4_v_SF_vt
+  - cand_SF4_v_SO*_vt
+  - cand_SF4_v_SO2*_vt
+  - cand_SF4_v_SO2F2*_vt
+  - cand_SF4_v_SO2F2_v_vt
+  - cand_SF4_v_SO2F2_vt
+  - cand_SF4_v_SO2_v_vt
+  - cand_SF4_v_SO2_vt
+  - cand_SF4_v_SOF*_vt
+  - cand_SF4_v_SOF2*_vt
+  - cand_SF4_v_SOF2_v_vt
+  - cand_SF4_v_SOF2_vt
+  - cand_SF4_v_SOF3*_vt
+  - cand_SF4_v_SOF3_v_vt
+  - cand_SF4_v_SOF3_vt
+  - cand_SF4_v_SOF4*_vt
+  - cand_SF4_v_SOF4_v_vt
+  - cand_SF4_v_SOF4_vt
+  - cand_SF4_v_SOF_v_vt
+  - cand_SF4_v_SOF_vt
+  - cand_SF4_v_SO_v_vt
+  - cand_SF4_v_SO_vt
+  - cand_SF4_v_S_1D_vt
+  - cand_SF4_v_S_1S_vt
+  - cand_SF4_v_S_vt
+  - cand_SF4p_Ar_4s_char_SF4_Arp
+  - cand_SF4p_O2_a1Delta_char_SF4_O2p
+  - cand_SF4p_O2_b1Sigma_char_SF4_O2p
+  - cand_SF4p_O2_char_SF4_O2p
+  - cand_SF4p_O2_v_char_SF4_O2p
+  - cand_SF4p_O_1D_char_SF4_Op
+  - cand_SF4p_O_1S_char_SF4_Op
+  - cand_SF4p_O_char_SF4_Op
+  - cand_SF4p_SF*_char_SF4_SFp
+  - cand_SF4p_SF2*_char_SF4_SF2p
+  - cand_SF4p_SF2_char_SF4_SF2p
+  - cand_SF4p_SF2_v_char_SF4_SF2p
+  - cand_SF4p_SF3*_char_SF4_SF3p
+  - cand_SF4p_SF3_char_SF4_SF3p
+  - cand_SF4p_SF3_v_char_SF4_SF3p
+  - cand_SF4p_SF5*_char_SF4_SF5p
+  - cand_SF4p_SF5_char_SF4_SF5p
+  - cand_SF4p_SF5_v_char_SF4_SF5p
+  - cand_SF4p_SF6*_diss_SF4_SF5p_F
+  - cand_SF4p_SF6_diss_SF4_SF5p_F
+  - cand_SF4p_SF6_v_diss_SF4_SF5p_F
+  - cand_SF4p_SF_char_SF4_SFp
+  - cand_SF4p_SF_v_char_SF4_SFp
+  - cand_SF4p_S_1D_char_SF4_Sp
+  - cand_SF4p_S_1S_char_SF4_Sp
+  - cand_SF4p_S_char_SF4_Sp
+  - cand_SF5_v_SF4_vt
+  - cand_SF5p_Ar_4s_diss_SF4_F_Arp
+  - cand_SF5p_Ar_4s_diss_SF4_Fp_Ar
+  - cand_SF5p_SF3*_diss_SF4_F_SF3p
+  - cand_SF5p_SF3_diss_SF4_F_SF3p
+  - cand_SF5p_SF3_v_diss_SF4_F_SF3p
+  - cand_SF5p_S_1D_diss_SF4_F_Sp
+  - cand_SF5p_S_1S_diss_SF4_F_Sp
+  - cand_SF6_v_SF4_vt
+  - cand_SF6p_Ar_4s_diss_SF4_F2_Arp
+  - cand_SF6p_Ar_4s_diss_SF4_F2p_Ar
+  - cand_SF6p_O2_a1Delta_diss_SF4_F2_O2p
+  - cand_SF6p_O2_b1Sigma_diss_SF4_F2_O2p
+  - cand_SF6p_O2_diss_SF4_F2_O2p
+  - cand_SF6p_O2_v_diss_SF4_F2_O2p
+  - cand_SF6p_O_1D_diss_SF4_F2_Op
+  - cand_SF6p_O_1S_diss_SF4_F2_Op
+  - cand_SF6p_O_1S_diss_SF4_F2p_O
+  - cand_SF6p_SF*_diss_SF4_F2_SFp
+  - cand_SF6p_SF2*_diss_SF4_F2_SF2p
+  - cand_SF6p_SF2_diss_SF4_F2_SF2p
+  - cand_SF6p_SF2_v_diss_SF4_F2_SF2p
+  - cand_SF6p_SF3*_diss_SF4_F2_SF3p
+  - cand_SF6p_SF3_diss_SF4_F2_SF3p
+  - cand_SF6p_SF3_v_diss_SF4_F2_SF3p
+  - cand_SF6p_SF4*_diss_SF4p_F2_SF4
+  - cand_SF6p_SF4*_diss_SF5p_F_SF4
+  - cand_SF6p_SF4_diss_SF4p_F2_SF4
+  - cand_SF6p_SF4_diss_SF5p_F_SF4
+  - cand_SF6p_SF4_v_diss_SF4p_F2_SF4
+  - cand_SF6p_SF4_v_diss_SF5p_F_SF4
+  - cand_SF6p_SF5*_diss_SF4_F2_SF5p
+  - cand_SF6p_SF5_diss_SF4_F2_SF5p
+  - cand_SF6p_SF5_v_diss_SF4_F2_SF5p
+  - cand_SF6p_SF_diss_SF4_F2_SFp
+  - cand_SF6p_SF_v_diss_SF4_F2_SFp
+  - cand_SF6p_S_1D_diss_SF4_F2_Sp
+  - cand_SF6p_S_1S_diss_SF4_F2_Sp
+  - cand_SF6p_S_diss_SF4_F2_Sp
+  - cand_SF_v_SF4_vt
+  - cand_SO2F2_v_SF4_vt
+  - cand_SO2_v_SF4_vt
+  - cand_SOF2_v_SF4_vt
+  - cand_SOF3_v_SF4_vt
+  - cand_SOF4_v_SF4_vt
+  - cand_SOF_v_SF4_vt
+  - cand_SO_v_SF4_vt
+  - cand_e_SF4*_to_e_SF4
+  - cand_e_SF4_to_e_SF4
+  - cand_e_SF4_v_to_e_SF4
+  - cand_e_SF5*_to_e_SF4_F
+  - cand_e_SF5_v_to_e_SF4_F
+  - cand_e_SF6*_to_e_SF4_F2
+  - cand_e_SF6_to_e_SF4_F2
+  - cand_e_SF6_v_to_e_SF4_F2
+  - e_SF5_dissociation_SF4_F
+  - e_SF6_dissociation_SF4_2F
+  - e_SF6_dissociative_ionization_Fp_SF4_F
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: null
+      unit: D
+      source: null
+    electron_affinity_eV:
+      value: 1.5
+      unit: eV
+      source: NIST Chemistry WebBook evaluated range
+    enthalpy_formation_eV:
+      value: -7.910011
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 7783-60-0, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 299.6
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 7783-60-0, formula
+        verified against the registry
+    ionization_energy_eV:
+      value: 12.0
+      unit: eV
+      source: NIST Chemistry WebBook evaluated ionization energy
+    mass_amu:
+      value: 108.059
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: SF4*
+  charge: 0
+  composition:
+    S: 1
+    F: 4
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF4*_vt
+  - cand_FO_v_SF4*_vt
+  - cand_O2_v_SF4*_vt
+  - cand_SF2_v_SF4*_vt
+  - cand_SF3_v_SF4*_vt
+  - cand_SF4_v_SF4*_vt
+  - cand_SF5_v_SF4*_vt
+  - cand_SF6_v_SF4*_vt
+  - cand_SF_v_SF4*_vt
+  - cand_SO2F2_v_SF4*_vt
+  - cand_SO2_v_SF4*_vt
+  - cand_SOF2_v_SF4*_vt
+  - cand_SOF3_v_SF4*_vt
+  - cand_SOF4_v_SF4*_vt
+  - cand_SOF_v_SF4*_vt
+  - cand_SO_v_SF4*_vt
+  - cand_e_SF4*_to_e_SF4*
+  - cand_e_SF4_to_e_SF4*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF4+
+  charge: 1
+  composition:
+    S: 1
+    F: 4
+  classes:
+  - molecular_ion
+  - positive_ion
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_Arp_SF4*_char_Ar_SF4p
+  - cand_Arp_SF4_char_Ar_SF4p
+  - cand_Arp_SF4_v_char_Ar_SF4p
+  - cand_Arp_SF5*_diss_Ar_SF4p_F
+  - cand_Arp_SF5_diss_Ar_SF4p_F
+  - cand_Arp_SF5_v_diss_Ar_SF4p_F
+  - cand_Arp_SF6*_diss_Ar_SF4p_F2
+  - cand_Arp_SF6_diss_Ar_SF4p_F2
+  - cand_Arp_SF6_v_diss_Ar_SF4p_F2
+  - cand_F2p_SF4*_char_F2_SF4p
+  - cand_F2p_SF4*_diss_F_F_SF4p
+  - cand_F2p_SF4_char_F2_SF4p
+  - cand_F2p_SF4_diss_F_F_SF4p
+  - cand_F2p_SF4_v_char_F2_SF4p
+  - cand_F2p_SF4_v_diss_F_F_SF4p
+  - cand_F2p_SF5*_diss_F2_SF4p_F
+  - cand_F2p_SF5_diss_F2_SF4p_F
+  - cand_F2p_SF5_v_diss_F2_SF4p_F
+  - cand_F2p_SF6*_diss_F2_SF4p_F2
+  - cand_F2p_SF6_diss_F2_SF4p_F2
+  - cand_F2p_SF6_v_diss_F2_SF4p_F2
+  - cand_Fp_SF4*_char_F_SF4p
+  - cand_Fp_SF4_char_F_SF4p
+  - cand_Fp_SF4_v_char_F_SF4p
+  - cand_Fp_SF5*_diss_F_SF4p_F
+  - cand_Fp_SF5_diss_F_SF4p_F
+  - cand_Fp_SF5_v_diss_F_SF4p_F
+  - cand_Fp_SF6*_diss_F_SF4p_F2
+  - cand_Fp_SF6_diss_F_SF4p_F2
+  - cand_Fp_SF6_v_diss_F_SF4p_F2
+  - cand_O2p_SF4*_char_O2_SF4p
+  - cand_O2p_SF4_char_O2_SF4p
+  - cand_O2p_SF4_v_char_O2_SF4p
+  - cand_Op_SF4*_char_O_SF4p
+  - cand_Op_SF4_char_O_SF4p
+  - cand_Op_SF4_v_char_O_SF4p
+  - cand_Op_SF5*_diss_O_SF4p_F
+  - cand_Op_SF5_diss_O_SF4p_F
+  - cand_Op_SF5_v_diss_O_SF4p_F
+  - cand_SF2p_SF4*_char_SF2_SF4p
+  - cand_SF2p_SF4_char_SF2_SF4p
+  - cand_SF2p_SF4_v_char_SF2_SF4p
+  - cand_SF2p_SO2F2*_diss_SO2_SF4p
+  - cand_SF2p_SO2F2_diss_SO2_SF4p
+  - cand_SF2p_SO2F2_v_diss_SO2_SF4p
+  - cand_SF4p_F2*_reac_SF4p_F_F
+  - cand_SF4p_F2_reac_SF4p_F_F
+  - cand_SF4p_F2_v_reac_SF4p_F_F
+  - cand_SF5p_Ar_4s_diss_SF4p_F_Ar
+  - cand_SF5p_O_1S_diss_SF4p_F_O
+  - cand_SF5p_SF5*_diss_SF6_SF4p
+  - cand_SF5p_SF5_diss_SF6_SF4p
+  - cand_SF5p_SF5_v_diss_SF6_SF4p
+  - cand_SF5p_S_1S_diss_SF4p_F_S
+  - cand_SF6p_Ar_4s_diss_SF4p_F2_Ar
+  - cand_SF6p_Ar_diss_SF4p_F2_Ar
+  - cand_SF6p_F*_diss_SF4p_F2_F
+  - cand_SF6p_F2*_diss_SF4p_F2_F2
+  - cand_SF6p_F2_diss_SF4p_F2_F2
+  - cand_SF6p_F2_v_diss_SF4p_F2_F2
+  - cand_SF6p_FO*_diss_SF4p_F2_FO
+  - cand_SF6p_FO_diss_SF4p_F2_FO
+  - cand_SF6p_FO_v_diss_SF4p_F2_FO
+  - cand_SF6p_F_diss_SF4p_F2_F
+  - cand_SF6p_O2_a1Delta_diss_SF4p_F2_O2
+  - cand_SF6p_O2_b1Sigma_diss_SF4p_F2_O2
+  - cand_SF6p_O2_diss_SF4p_F2_O2
+  - cand_SF6p_O2_v_diss_SF4p_F2_O2
+  - cand_SF6p_O_1D_diss_SF4p_F2_O
+  - cand_SF6p_O_1S_diss_SF4p_F2_O
+  - cand_SF6p_O_diss_SF4p_F2_O
+  - cand_SF6p_SF*_diss_SF4p_F2_SF
+  - cand_SF6p_SF2*_diss_SF4p_F2_SF2
+  - cand_SF6p_SF2_diss_SF4p_F2_SF2
+  - cand_SF6p_SF2_v_diss_SF4p_F2_SF2
+  - cand_SF6p_SF3*_diss_SF4p_F2_SF3
+  - cand_SF6p_SF3_diss_SF4p_F2_SF3
+  - cand_SF6p_SF3_v_diss_SF4p_F2_SF3
+  - cand_SF6p_SF4*_char_SF6_SF4p
+  - cand_SF6p_SF4*_diss_SF4p_F2_SF4
+  - cand_SF6p_SF4*_diss_SF5_F_SF4p
+  - cand_SF6p_SF4_char_SF6_SF4p
+  - cand_SF6p_SF4_diss_SF4p_F2_SF4
+  - cand_SF6p_SF4_diss_SF5_F_SF4p
+  - cand_SF6p_SF4_v_char_SF6_SF4p
+  - cand_SF6p_SF4_v_diss_SF4p_F2_SF4
+  - cand_SF6p_SF4_v_diss_SF5_F_SF4p
+  - cand_SF6p_SF5*_diss_SF4p_F2_SF5
+  - cand_SF6p_SF5*_diss_SF6_SF4p_F
+  - cand_SF6p_SF5_diss_SF4p_F2_SF5
+  - cand_SF6p_SF5_diss_SF6_SF4p_F
+  - cand_SF6p_SF5_v_diss_SF4p_F2_SF5
+  - cand_SF6p_SF5_v_diss_SF6_SF4p_F
+  - cand_SF6p_SF6*_diss_SF4p_F2_SF6
+  - cand_SF6p_SF6_diss_SF4p_F2_SF6
+  - cand_SF6p_SF6_v_diss_SF4p_F2_SF6
+  - cand_SF6p_SF_diss_SF4p_F2_SF
+  - cand_SF6p_SF_v_diss_SF4p_F2_SF
+  - cand_SF6p_SO*_diss_SF4p_F2_SO
+  - cand_SF6p_SO2*_diss_SF4p_F2_SO2
+  - cand_SF6p_SO2F2*_diss_SF4p_F2_SO2F2
+  - cand_SF6p_SO2F2_diss_SF4p_F2_SO2F2
+  - cand_SF6p_SO2F2_v_diss_SF4p_F2_SO2F2
+  - cand_SF6p_SO2_diss_SF4p_F2_SO2
+  - cand_SF6p_SO2_v_diss_SF4p_F2_SO2
+  - cand_SF6p_SOF*_diss_SF4p_F2_SOF
+  - cand_SF6p_SOF2*_diss_SF4p_F2_SOF2
+  - cand_SF6p_SOF2_diss_SF4p_F2_SOF2
+  - cand_SF6p_SOF2_v_diss_SF4p_F2_SOF2
+  - cand_SF6p_SOF3*_diss_SF4p_F2_SOF3
+  - cand_SF6p_SOF3_diss_SF4p_F2_SOF3
+  - cand_SF6p_SOF3_v_diss_SF4p_F2_SOF3
+  - cand_SF6p_SOF4*_diss_SF4p_F2_SOF4
+  - cand_SF6p_SOF4_diss_SF4p_F2_SOF4
+  - cand_SF6p_SOF4_v_diss_SF4p_F2_SOF4
+  - cand_SF6p_SOF_diss_SF4p_F2_SOF
+  - cand_SF6p_SOF_v_diss_SF4p_F2_SOF
+  - cand_SF6p_SO_diss_SF4p_F2_SO
+  - cand_SF6p_SO_v_diss_SF4p_F2_SO
+  - cand_SF6p_S_1D_diss_SF4p_F2_S
+  - cand_SF6p_S_1S_diss_SF4p_F2_S
+  - cand_SF6p_S_diss_SF4p_F2_S
+  - cand_SFp_SF4*_char_SF_SF4p
+  - cand_SFp_SF4_char_SF_SF4p
+  - cand_SFp_SF4_v_char_SF_SF4p
+  - cand_Sp_SF4*_char_S_SF4p
+  - cand_Sp_SF4_char_S_SF4p
+  - cand_Sp_SF4_v_char_S_SF4p
+  - cand_e_SF4*_to_e_e_SF4p
+  - cand_e_SF4_v_to_e_e_SF4p
+  - cand_e_SF5*_to_e_e_SF4p_F
+  - cand_e_SF5_v_to_e_e_SF4p_F
+  - cand_e_SF6*_to_e_e_SF4p_F2
+  - cand_e_SF6_to_e_e_SF4p_F2
+  - cand_e_SF6_v_to_e_e_SF4p_F2
+  - e_SF4_ionization
+  - e_SF5_dissociative_ionization_SF4p_F
+  - e_SF6_dissociative_ionization_SF4p_2F
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: null
+      unit: D
+      source: null
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: null
+      unit: eV
+      source: null
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 108.0584514
+      unit: amu
+      source: SF4 neutral mass minus electron mass
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: literature_supported
+- id: SF4_v
+  charge: 0
+  composition:
+    S: 1
+    F: 4
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF4_v_vt
+  - cand_FO_v_SF4_v_vt
+  - cand_O2_v_SF4_v_vt
+  - cand_SF2_v_SF4_v_vt
+  - cand_SF3_v_SF4_v_vt
+  - cand_SF5_v_SF4_v_vt
+  - cand_SF6_v_SF4_v_vt
+  - cand_SF_v_SF4_v_vt
+  - cand_SO2F2_v_SF4_v_vt
+  - cand_SO2_v_SF4_v_vt
+  - cand_SOF2_v_SF4_v_vt
+  - cand_SOF3_v_SF4_v_vt
+  - cand_SOF4_v_SF4_v_vt
+  - cand_SOF_v_SF4_v_vt
+  - cand_SO_v_SF4_v_vt
+  - cand_e_SF4_to_e_SF4_v
+  - cand_e_SF4_v_to_e_SF4_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF5
+  charge: 0
+  composition:
+    S: 1
+    F: 5
+  classes:
+  - molecule
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - SF4_F2_to_SF5_F
+  - cand_F2_v_SF5_vt
+  - cand_FO_v_SF5_vt
+  - cand_O2_v_SF5_vt
+  - cand_SF2_v_SF5_vt
+  - cand_SF3_v_SF5_vt
+  - cand_SF4_v_SF5_vt
+  - cand_SF4p_SF6*_diss_SF5p_SF5
+  - cand_SF4p_SF6_diss_SF5p_SF5
+  - cand_SF4p_SF6_v_diss_SF5p_SF5
+  - cand_SF5_v_Ar_4s_vt
+  - cand_SF5_v_Ar_vt
+  - cand_SF5_v_F*_vt
+  - cand_SF5_v_F2*_vt
+  - cand_SF5_v_F2_v_vt
+  - cand_SF5_v_F2_vt
+  - cand_SF5_v_FO*_vt
+  - cand_SF5_v_FO_v_vt
+  - cand_SF5_v_FO_vt
+  - cand_SF5_v_F_vt
+  - cand_SF5_v_O2_a1Delta_vt
+  - cand_SF5_v_O2_b1Sigma_vt
+  - cand_SF5_v_O2_v_vt
+  - cand_SF5_v_O2_vt
+  - cand_SF5_v_O_1D_vt
+  - cand_SF5_v_O_1S_vt
+  - cand_SF5_v_O_vt
+  - cand_SF5_v_SF*_vt
+  - cand_SF5_v_SF2*_vt
+  - cand_SF5_v_SF2_v_vt
+  - cand_SF5_v_SF2_vt
+  - cand_SF5_v_SF3*_vt
+  - cand_SF5_v_SF3_v_vt
+  - cand_SF5_v_SF3_vt
+  - cand_SF5_v_SF4*_vt
+  - cand_SF5_v_SF4_v_vt
+  - cand_SF5_v_SF4_vt
+  - cand_SF5_v_SF5*_vt
+  - cand_SF5_v_SF5_vt
+  - cand_SF5_v_SF6*_vt
+  - cand_SF5_v_SF6_v_vt
+  - cand_SF5_v_SF6_vt
+  - cand_SF5_v_SF_v_vt
+  - cand_SF5_v_SF_vt
+  - cand_SF5_v_SO*_vt
+  - cand_SF5_v_SO2*_vt
+  - cand_SF5_v_SO2F2*_vt
+  - cand_SF5_v_SO2F2_v_vt
+  - cand_SF5_v_SO2F2_vt
+  - cand_SF5_v_SO2_v_vt
+  - cand_SF5_v_SO2_vt
+  - cand_SF5_v_SOF*_vt
+  - cand_SF5_v_SOF2*_vt
+  - cand_SF5_v_SOF2_v_vt
+  - cand_SF5_v_SOF2_vt
+  - cand_SF5_v_SOF3*_vt
+  - cand_SF5_v_SOF3_v_vt
+  - cand_SF5_v_SOF3_vt
+  - cand_SF5_v_SOF4*_vt
+  - cand_SF5_v_SOF4_v_vt
+  - cand_SF5_v_SOF4_vt
+  - cand_SF5_v_SOF_v_vt
+  - cand_SF5_v_SOF_vt
+  - cand_SF5_v_SO_v_vt
+  - cand_SF5_v_SO_vt
+  - cand_SF5_v_S_1D_vt
+  - cand_SF5_v_S_1S_vt
+  - cand_SF5_v_S_vt
+  - cand_SF5p_Ar_4s_char_SF5_Arp
+  - cand_SF5p_O2_a1Delta_char_SF5_O2p
+  - cand_SF5p_O2_b1Sigma_char_SF5_O2p
+  - cand_SF5p_O_1S_char_SF5_Op
+  - cand_SF5p_SF*_char_SF5_SFp
+  - cand_SF5p_SF2*_char_SF5_SF2p
+  - cand_SF5p_SF2_char_SF5_SF2p
+  - cand_SF5p_SF2_v_char_SF5_SF2p
+  - cand_SF5p_SF3*_char_SF5_SF3p
+  - cand_SF5p_SF3_char_SF5_SF3p
+  - cand_SF5p_SF3_v_char_SF5_SF3p
+  - cand_SF5p_SF_char_SF5_SFp
+  - cand_SF5p_SF_v_char_SF5_SFp
+  - cand_SF5p_S_1D_char_SF5_Sp
+  - cand_SF5p_S_1S_char_SF5_Sp
+  - cand_SF5p_S_char_SF5_Sp
+  - cand_SF6_v_SF5_vt
+  - cand_SF6p_Ar_4s_diss_SF5_F_Arp
+  - cand_SF6p_Ar_4s_diss_SF5_Fp_Ar
+  - cand_SF6p_O2_a1Delta_diss_SF5_F_O2p
+  - cand_SF6p_O2_b1Sigma_diss_SF5_F_O2p
+  - cand_SF6p_O2_diss_SF5_F_O2p
+  - cand_SF6p_O2_v_diss_SF5_F_O2p
+  - cand_SF6p_O_1D_diss_SF5_F_Op
+  - cand_SF6p_O_1S_diss_SF5_F_Op
+  - cand_SF6p_O_1S_diss_SF5_Fp_O
+  - cand_SF6p_SF*_diss_SF5_F_SFp
+  - cand_SF6p_SF2*_diss_SF5_F_SF2p
+  - cand_SF6p_SF2_diss_SF5_F_SF2p
+  - cand_SF6p_SF2_v_diss_SF5_F_SF2p
+  - cand_SF6p_SF3*_diss_SF5_F_SF3p
+  - cand_SF6p_SF3_diss_SF5_F_SF3p
+  - cand_SF6p_SF3_v_diss_SF5_F_SF3p
+  - cand_SF6p_SF4*_diss_SF5_F_SF4p
+  - cand_SF6p_SF4*_diss_SF5p_SF5
+  - cand_SF6p_SF4_diss_SF5_F_SF4p
+  - cand_SF6p_SF4_diss_SF5p_SF5
+  - cand_SF6p_SF4_v_diss_SF5_F_SF4p
+  - cand_SF6p_SF4_v_diss_SF5p_SF5
+  - cand_SF6p_SF5*_diss_SF4p_F2_SF5
+  - cand_SF6p_SF5*_diss_SF5p_F_SF5
+  - cand_SF6p_SF5_diss_SF4p_F2_SF5
+  - cand_SF6p_SF5_diss_SF5p_F_SF5
+  - cand_SF6p_SF5_v_diss_SF4p_F2_SF5
+  - cand_SF6p_SF5_v_diss_SF5p_F_SF5
+  - cand_SF6p_SF_diss_SF5_F_SFp
+  - cand_SF6p_SF_v_diss_SF5_F_SFp
+  - cand_SF6p_S_1D_diss_SF5_F_Sp
+  - cand_SF6p_S_1S_diss_SF5_F_Sp
+  - cand_SF6p_S_diss_SF5_F_Sp
+  - cand_SF_v_SF5_vt
+  - cand_SO2F2_v_SF5_vt
+  - cand_SO2_v_SF5_vt
+  - cand_SOF2_v_SF5_vt
+  - cand_SOF3_v_SF5_vt
+  - cand_SOF4_v_SF5_vt
+  - cand_SOF_v_SF5_vt
+  - cand_SO_v_SF5_vt
+  - cand_e_SF5*_to_e_SF5
+  - cand_e_SF5_to_e_SF5
+  - cand_e_SF5_v_to_e_SF5
+  - cand_e_SF6*_to_e_SF5_F
+  - cand_e_SF6_v_to_e_SF5_F
+  - e_SF6_dissociation_SF5_F
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: null
+      unit: D
+      source: null
+    electron_affinity_eV:
+      value: 3.85
+      unit: eV
+      source: NIST Chemistry WebBook electron affinity determination
+    enthalpy_formation_eV:
+      value: -9.415421
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 10546-01-7, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 304.75
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 10546-01-7, formula
+        verified against the registry
+    ionization_energy_eV:
+      value: 9.6
+      unit: eV
+      source: NIST Chemistry WebBook evaluated ionization energy
+    mass_amu:
+      value: 127.057
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: curated
+- id: SF5*
+  charge: 0
+  composition:
+    S: 1
+    F: 5
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF5*_vt
+  - cand_FO_v_SF5*_vt
+  - cand_O2_v_SF5*_vt
+  - cand_SF2_v_SF5*_vt
+  - cand_SF3_v_SF5*_vt
+  - cand_SF4_v_SF5*_vt
+  - cand_SF5_v_SF5*_vt
+  - cand_SF6_v_SF5*_vt
+  - cand_SF_v_SF5*_vt
+  - cand_SO2F2_v_SF5*_vt
+  - cand_SO2_v_SF5*_vt
+  - cand_SOF2_v_SF5*_vt
+  - cand_SOF3_v_SF5*_vt
+  - cand_SOF4_v_SF5*_vt
+  - cand_SOF_v_SF5*_vt
+  - cand_SO_v_SF5*_vt
+  - cand_e_SF5*_to_e_SF5*
+  - cand_e_SF5_to_e_SF5*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF5+
+  charge: 1
+  composition:
+    S: 1
+    F: 5
+  classes:
+  - molecular_ion
+  - positive_ion
+  state:
+    kind: ground
+    label: ion
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - Arp_SF6_dissociative_charge_transfer_SF5p_F
+  - cand_Ar_4s_SF5_penning
+  - cand_Arp_SF5*_char_Ar_SF5p
+  - cand_Arp_SF5_char_Ar_SF5p
+  - cand_Arp_SF5_v_char_Ar_SF5p
+  - cand_Arp_SF6*_diss_Ar_SF5p_F
+  - cand_Arp_SF6_v_diss_Ar_SF5p_F
+  - cand_F2p_SF5*_char_F2_SF5p
+  - cand_F2p_SF5*_diss_F_F_SF5p
+  - cand_F2p_SF5_char_F2_SF5p
+  - cand_F2p_SF5_diss_F_F_SF5p
+  - cand_F2p_SF5_v_char_F2_SF5p
+  - cand_F2p_SF5_v_diss_F_F_SF5p
+  - cand_F2p_SF6*_diss_F2_SF5p_F
+  - cand_F2p_SF6_diss_F2_SF5p_F
+  - cand_F2p_SF6_v_diss_F2_SF5p_F
+  - cand_Fp_SF5*_char_F_SF5p
+  - cand_Fp_SF5_char_F_SF5p
+  - cand_Fp_SF5_v_char_F_SF5p
+  - cand_Fp_SF6*_diss_F_SF5p_F
+  - cand_Fp_SF6_diss_F_SF5p_F
+  - cand_Fp_SF6_v_diss_F_SF5p_F
+  - cand_O2p_SF5*_char_O2_SF5p
+  - cand_O2p_SF5_char_O2_SF5p
+  - cand_O2p_SF5_v_char_O2_SF5p
+  - cand_O2p_SF6*_diss_O2_SF5p_F
+  - cand_O2p_SF6_diss_O2_SF5p_F
+  - cand_O2p_SF6_v_diss_O2_SF5p_F
+  - cand_Op_SF5*_char_O_SF5p
+  - cand_Op_SF5_char_O_SF5p
+  - cand_Op_SF5_v_char_O_SF5p
+  - cand_Op_SF6*_diss_O_SF5p_F
+  - cand_Op_SF6_diss_O_SF5p_F
+  - cand_Op_SF6_v_diss_O_SF5p_F
+  - cand_SF2p_SF5*_char_SF2_SF5p
+  - cand_SF2p_SF5_char_SF2_SF5p
+  - cand_SF2p_SF5_v_char_SF2_SF5p
+  - cand_SF3p_SF5*_char_SF3_SF5p
+  - cand_SF3p_SF5_char_SF3_SF5p
+  - cand_SF3p_SF5_v_char_SF3_SF5p
+  - cand_SF4p_SF5*_char_SF4_SF5p
+  - cand_SF4p_SF5_char_SF4_SF5p
+  - cand_SF4p_SF5_v_char_SF4_SF5p
+  - cand_SF4p_SF6*_diss_SF4_SF5p_F
+  - cand_SF4p_SF6*_diss_SF5p_SF5
+  - cand_SF4p_SF6_diss_SF4_SF5p_F
+  - cand_SF4p_SF6_diss_SF5p_SF5
+  - cand_SF4p_SF6_v_diss_SF4_SF5p_F
+  - cand_SF4p_SF6_v_diss_SF5p_SF5
+  - cand_SF5p_F2*_reac_SF5p_F_F
+  - cand_SF5p_F2_reac_SF5p_F_F
+  - cand_SF5p_F2_v_reac_SF5p_F_F
+  - cand_SF6p_Ar_4s_diss_SF5p_F_Ar
+  - cand_SF6p_Ar_diss_SF5p_F_Ar
+  - cand_SF6p_F*_diss_SF5p_F_F
+  - cand_SF6p_F2*_diss_SF5p_F_F2
+  - cand_SF6p_F2_diss_SF5p_F_F2
+  - cand_SF6p_F2_v_diss_SF5p_F_F2
+  - cand_SF6p_FO*_diss_SF5p_F_FO
+  - cand_SF6p_FO_diss_SF5p_F_FO
+  - cand_SF6p_FO_v_diss_SF5p_F_FO
+  - cand_SF6p_F_diss_SF5p_F_F
+  - cand_SF6p_O2_a1Delta_diss_SF5p_F_O2
+  - cand_SF6p_O2_b1Sigma_diss_SF5p_F_O2
+  - cand_SF6p_O2_diss_SF5p_F_O2
+  - cand_SF6p_O2_v_diss_SF5p_F_O2
+  - cand_SF6p_O_1D_diss_SF5p_F_O
+  - cand_SF6p_O_1S_diss_SF5p_F_O
+  - cand_SF6p_O_diss_SF5p_F_O
+  - cand_SF6p_SF*_diss_SF5p_F_SF
+  - cand_SF6p_SF2*_diss_SF5p_F_SF2
+  - cand_SF6p_SF2_diss_SF5p_F_SF2
+  - cand_SF6p_SF2_v_diss_SF5p_F_SF2
+  - cand_SF6p_SF3*_diss_SF5p_F_SF3
+  - cand_SF6p_SF3_diss_SF5p_F_SF3
+  - cand_SF6p_SF3_v_diss_SF5p_F_SF3
+  - cand_SF6p_SF4*_diss_SF5p_F_SF4
+  - cand_SF6p_SF4*_diss_SF5p_SF5
+  - cand_SF6p_SF4_diss_SF5p_F_SF4
+  - cand_SF6p_SF4_diss_SF5p_SF5
+  - cand_SF6p_SF4_v_diss_SF5p_F_SF4
+  - cand_SF6p_SF4_v_diss_SF5p_SF5
+  - cand_SF6p_SF5*_char_SF6_SF5p
+  - cand_SF6p_SF5*_diss_SF4_F2_SF5p
+  - cand_SF6p_SF5*_diss_SF5p_F_SF5
+  - cand_SF6p_SF5_char_SF6_SF5p
+  - cand_SF6p_SF5_diss_SF4_F2_SF5p
+  - cand_SF6p_SF5_diss_SF5p_F_SF5
+  - cand_SF6p_SF5_v_char_SF6_SF5p
+  - cand_SF6p_SF5_v_diss_SF4_F2_SF5p
+  - cand_SF6p_SF5_v_diss_SF5p_F_SF5
+  - cand_SF6p_SF6*_diss_SF5p_F_SF6
+  - cand_SF6p_SF6_diss_SF5p_F_SF6
+  - cand_SF6p_SF6_v_diss_SF5p_F_SF6
+  - cand_SF6p_SF_diss_SF5p_F_SF
+  - cand_SF6p_SF_v_diss_SF5p_F_SF
+  - cand_SF6p_SO*_diss_SF5p_F_SO
+  - cand_SF6p_SO2*_diss_SF5p_F_SO2
+  - cand_SF6p_SO2F2*_diss_SF5p_F_SO2F2
+  - cand_SF6p_SO2F2_diss_SF5p_F_SO2F2
+  - cand_SF6p_SO2F2_v_diss_SF5p_F_SO2F2
+  - cand_SF6p_SO2_diss_SF5p_F_SO2
+  - cand_SF6p_SO2_v_diss_SF5p_F_SO2
+  - cand_SF6p_SOF*_diss_SF5p_F_SOF
+  - cand_SF6p_SOF2*_diss_SF5p_F_SOF2
+  - cand_SF6p_SOF2_diss_SF5p_F_SOF2
+  - cand_SF6p_SOF2_v_diss_SF5p_F_SOF2
+  - cand_SF6p_SOF3*_diss_SF5p_F_SOF3
+  - cand_SF6p_SOF3_diss_SF5p_F_SOF3
+  - cand_SF6p_SOF3_v_diss_SF5p_F_SOF3
+  - cand_SF6p_SOF4*_diss_SF5p_F_SOF4
+  - cand_SF6p_SOF4_diss_SF5p_F_SOF4
+  - cand_SF6p_SOF4_v_diss_SF5p_F_SOF4
+  - cand_SF6p_SOF_diss_SF5p_F_SOF
+  - cand_SF6p_SOF_v_diss_SF5p_F_SOF
+  - cand_SF6p_SO_diss_SF5p_F_SO
+  - cand_SF6p_SO_v_diss_SF5p_F_SO
+  - cand_SF6p_S_1D_diss_SF5p_F_S
+  - cand_SF6p_S_1S_diss_SF5p_F_S
+  - cand_SF6p_S_diss_SF5p_F_S
+  - cand_SFp_SF5*_char_SF_SF5p
+  - cand_SFp_SF5_char_SF_SF5p
+  - cand_SFp_SF5_v_char_SF_SF5p
+  - cand_Sp_SF5*_char_S_SF5p
+  - cand_Sp_SF5_char_S_SF5p
+  - cand_Sp_SF5_v_char_S_SF5p
+  - cand_e_SF5*_to_e_e_SF5p
+  - cand_e_SF5_v_to_e_e_SF5p
+  - cand_e_SF6*_to_e_e_SF5p_F
+  - cand_e_SF6_v_to_e_e_SF5p_F
+  - e_SF5_ionization
+  - e_SF6_dissociative_ionization_SF5p_F
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: null
+      unit: D
+      source: null
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: null
+      unit: eV
+      source: null
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 127.0564514
+      unit: amu
+      source: SF5 molecular mass minus electron mass
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: literature_supported
+- id: SF5_v
+  charge: 0
+  composition:
+    S: 1
+    F: 5
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF5_v_vt
+  - cand_FO_v_SF5_v_vt
+  - cand_O2_v_SF5_v_vt
+  - cand_SF2_v_SF5_v_vt
+  - cand_SF3_v_SF5_v_vt
+  - cand_SF4_v_SF5_v_vt
+  - cand_SF6_v_SF5_v_vt
+  - cand_SF_v_SF5_v_vt
+  - cand_SO2F2_v_SF5_v_vt
+  - cand_SO2_v_SF5_v_vt
+  - cand_SOF2_v_SF5_v_vt
+  - cand_SOF3_v_SF5_v_vt
+  - cand_SOF4_v_SF5_v_vt
+  - cand_SOF_v_SF5_v_vt
+  - cand_SO_v_SF5_v_vt
+  - cand_e_SF5_to_e_SF5_v
+  - cand_e_SF5_v_to_e_SF5_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF6
+  charge: 0
+  composition:
+    S: 1
+    F: 6
+  classes:
+  - molecule
+  - neutral
+  state:
+    kind: ground
+    label: X1A1g
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 0
+  introduced_by:
+  - SF5_F2_to_SF6_F
+  - SF5_SF5_to_SF4_SF6
+  - SF5p_SF6_to_SF3p_SF6_F2
+  - cand_F2_v_SF6_vt
+  - cand_FO_v_SF6_vt
+  - cand_O2_v_SF6_vt
+  - cand_SF2_v_SF6_vt
+  - cand_SF3_v_SF6_vt
+  - cand_SF4_v_SF6_vt
+  - cand_SF5_v_SF6_vt
+  - cand_SF5p_SF5*_diss_SF6_SF4p
+  - cand_SF5p_SF5_diss_SF6_SF4p
+  - cand_SF5p_SF5_v_diss_SF6_SF4p
+  - cand_SF6_v_Ar_4s_vt
+  - cand_SF6_v_Ar_vt
+  - cand_SF6_v_F*_vt
+  - cand_SF6_v_F2*_vt
+  - cand_SF6_v_F2_v_vt
+  - cand_SF6_v_F2_vt
+  - cand_SF6_v_FO*_vt
+  - cand_SF6_v_FO_v_vt
+  - cand_SF6_v_FO_vt
+  - cand_SF6_v_F_vt
+  - cand_SF6_v_O2_a1Delta_vt
+  - cand_SF6_v_O2_b1Sigma_vt
+  - cand_SF6_v_O2_v_vt
+  - cand_SF6_v_O2_vt
+  - cand_SF6_v_O_1D_vt
+  - cand_SF6_v_O_1S_vt
+  - cand_SF6_v_O_vt
+  - cand_SF6_v_SF*_vt
+  - cand_SF6_v_SF2*_vt
+  - cand_SF6_v_SF2_v_vt
+  - cand_SF6_v_SF2_vt
+  - cand_SF6_v_SF3*_vt
+  - cand_SF6_v_SF3_v_vt
+  - cand_SF6_v_SF3_vt
+  - cand_SF6_v_SF4*_vt
+  - cand_SF6_v_SF4_v_vt
+  - cand_SF6_v_SF4_vt
+  - cand_SF6_v_SF5*_vt
+  - cand_SF6_v_SF5_v_vt
+  - cand_SF6_v_SF5_vt
+  - cand_SF6_v_SF6*_vt
+  - cand_SF6_v_SF6_vt
+  - cand_SF6_v_SF_v_vt
+  - cand_SF6_v_SF_vt
+  - cand_SF6_v_SO*_vt
+  - cand_SF6_v_SO2*_vt
+  - cand_SF6_v_SO2F2*_vt
+  - cand_SF6_v_SO2F2_v_vt
+  - cand_SF6_v_SO2F2_vt
+  - cand_SF6_v_SO2_v_vt
+  - cand_SF6_v_SO2_vt
+  - cand_SF6_v_SOF*_vt
+  - cand_SF6_v_SOF2*_vt
+  - cand_SF6_v_SOF2_v_vt
+  - cand_SF6_v_SOF2_vt
+  - cand_SF6_v_SOF3*_vt
+  - cand_SF6_v_SOF3_v_vt
+  - cand_SF6_v_SOF3_vt
+  - cand_SF6_v_SOF4*_vt
+  - cand_SF6_v_SOF4_v_vt
+  - cand_SF6_v_SOF4_vt
+  - cand_SF6_v_SOF_v_vt
+  - cand_SF6_v_SOF_vt
+  - cand_SF6_v_SO_v_vt
+  - cand_SF6_v_SO_vt
+  - cand_SF6_v_S_1D_vt
+  - cand_SF6_v_S_1S_vt
+  - cand_SF6_v_S_vt
+  - cand_SF6p_Ar_4s_char_SF6_Arp
+  - cand_SF6p_Ar_char_SF6_Arp
+  - cand_SF6p_F2*_char_SF6_F2p
+  - cand_SF6p_F2_char_SF6_F2p
+  - cand_SF6p_F2_v_char_SF6_F2p
+  - cand_SF6p_FO*_diss_SF6_F_Op
+  - cand_SF6p_FO_diss_SF6_F_Op
+  - cand_SF6p_FO_v_diss_SF6_F_Op
+  - cand_SF6p_O2_a1Delta_char_SF6_O2p
+  - cand_SF6p_O2_b1Sigma_char_SF6_O2p
+  - cand_SF6p_O2_b1Sigma_diss_SF6_Op_O
+  - cand_SF6p_O2_char_SF6_O2p
+  - cand_SF6p_O2_v_char_SF6_O2p
+  - cand_SF6p_O_1D_char_SF6_Op
+  - cand_SF6p_O_1S_char_SF6_Op
+  - cand_SF6p_O_char_SF6_Op
+  - cand_SF6p_SF*_char_SF6_SFp
+  - cand_SF6p_SF2*_char_SF6_SF2p
+  - cand_SF6p_SF2*_diss_SF6_Sp_F2
+  - cand_SF6p_SF2_char_SF6_SF2p
+  - cand_SF6p_SF2_diss_SF6_Sp_F2
+  - cand_SF6p_SF2_v_char_SF6_SF2p
+  - cand_SF6p_SF2_v_diss_SF6_Sp_F2
+  - cand_SF6p_SF3*_char_SF6_SF3p
+  - cand_SF6p_SF3_char_SF6_SF3p
+  - cand_SF6p_SF3_v_char_SF6_SF3p
+  - cand_SF6p_SF4*_char_SF6_SF4p
+  - cand_SF6p_SF4*_diss_SF6_SF2p_F2
+  - cand_SF6p_SF4_char_SF6_SF4p
+  - cand_SF6p_SF4_diss_SF6_SF2p_F2
+  - cand_SF6p_SF4_v_char_SF6_SF4p
+  - cand_SF6p_SF4_v_diss_SF6_SF2p_F2
+  - cand_SF6p_SF5*_char_SF6_SF5p
+  - cand_SF6p_SF5*_diss_SF6_SF4p_F
+  - cand_SF6p_SF5_char_SF6_SF5p
+  - cand_SF6p_SF5_diss_SF6_SF4p_F
+  - cand_SF6p_SF5_v_char_SF6_SF5p
+  - cand_SF6p_SF5_v_diss_SF6_SF4p_F
+  - cand_SF6p_SF6*_diss_SF4p_F2_SF6
+  - cand_SF6p_SF6*_diss_SF5p_F_SF6
+  - cand_SF6p_SF6_diss_SF4p_F2_SF6
+  - cand_SF6p_SF6_diss_SF5p_F_SF6
+  - cand_SF6p_SF6_v_diss_SF4p_F2_SF6
+  - cand_SF6p_SF6_v_diss_SF5p_F_SF6
+  - cand_SF6p_SF_char_SF6_SFp
+  - cand_SF6p_SF_v_char_SF6_SFp
+  - cand_SF6p_SO*_diss_SF6_O_Sp
+  - cand_SF6p_SO2*_diss_SF6_Sp_O2
+  - cand_SF6p_SO2F2*_diss_SF6_SF2_O2p
+  - cand_SF6p_SO2F2*_diss_SF6_SF2p_O2
+  - cand_SF6p_SO2F2_diss_SF6_SF2_O2p
+  - cand_SF6p_SO2F2_diss_SF6_SF2p_O2
+  - cand_SF6p_SO2F2_v_diss_SF6_SF2_O2p
+  - cand_SF6p_SO2F2_v_diss_SF6_SF2p_O2
+  - cand_SF6p_SO2_diss_SF6_Sp_O2
+  - cand_SF6p_SO2_v_diss_SF6_Sp_O2
+  - cand_SF6p_SO_diss_SF6_O_Sp
+  - cand_SF6p_SO_v_diss_SF6_O_Sp
+  - cand_SF6p_S_1D_char_SF6_Sp
+  - cand_SF6p_S_1S_char_SF6_Sp
+  - cand_SF6p_S_char_SF6_Sp
+  - cand_SF_v_SF6_vt
+  - cand_SO2F2_v_SF6_vt
+  - cand_SO2_v_SF6_vt
+  - cand_SOF2_v_SF6_vt
+  - cand_SOF3_v_SF6_vt
+  - cand_SOF4_v_SF6_vt
+  - cand_SOF_v_SF6_vt
+  - cand_SO_v_SF6_vt
+  - cand_e_SF6*_to_e_SF6
+  - cand_e_SF6_v_to_e_SF6
+  - e_SF6_elastic
+  properties:
+    collision_radius_A:
+      value: 2.75
+      unit: A
+      source: half of the 5.50 A literature kinetic diameter tabulated in NIST publication
+        928548
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: octahedral molecular symmetry, NIST CCCBDB
+    electron_affinity_eV:
+      value: 1.03
+      unit: eV
+      source: NIST Chemistry WebBook recommended kinetic determination
+    enthalpy_formation_eV:
+      value: -12.649591
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 2551-62-4, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 291.5
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 2551-62-4, formula
+        verified against the registry
+    ionization_energy_eV:
+      value: 15.32
+      unit: eV
+      source: NIST Chemistry WebBook evaluated ionization energy
+    mass_amu:
+      value: 146.055
+      unit: amu
+      source: NIST Chemistry WebBook SRD 69
+    polarizability_A3:
+      value: 4.49
+      unit: A3
+      source: NIST CCCBDB experimental polarizability list
+  thermo: null
+  status: curated
+- id: SF6*
+  charge: 0
+  composition:
+    S: 1
+    F: 6
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_F2_v_SF6*_vt
+  - cand_FO_v_SF6*_vt
+  - cand_O2_v_SF6*_vt
+  - cand_SF2_v_SF6*_vt
+  - cand_SF3_v_SF6*_vt
+  - cand_SF4_v_SF6*_vt
+  - cand_SF5_v_SF6*_vt
+  - cand_SF6_v_SF6*_vt
+  - cand_SF_v_SF6*_vt
+  - cand_SO2F2_v_SF6*_vt
+  - cand_SO2_v_SF6*_vt
+  - cand_SOF2_v_SF6*_vt
+  - cand_SOF3_v_SF6*_vt
+  - cand_SOF4_v_SF6*_vt
+  - cand_SOF_v_SF6*_vt
+  - cand_SO_v_SF6*_vt
+  - cand_e_SF6*_to_e_SF6*
+  - cand_e_SF6_to_e_SF6*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF6+
+  charge: 1
+  composition:
+    S: 1
+    F: 6
+  classes:
+  - candidate
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_Arp_SF6*_char_Ar_SF6p
+  - cand_Arp_SF6_char_Ar_SF6p
+  - cand_Arp_SF6_v_char_Ar_SF6p
+  - cand_F2p_SF6*_char_F2_SF6p
+  - cand_F2p_SF6*_diss_F_F_SF6p
+  - cand_F2p_SF6_char_F2_SF6p
+  - cand_F2p_SF6_diss_F_F_SF6p
+  - cand_F2p_SF6_v_char_F2_SF6p
+  - cand_F2p_SF6_v_diss_F_F_SF6p
+  - cand_Fp_SF6*_char_F_SF6p
+  - cand_Fp_SF6_char_F_SF6p
+  - cand_Fp_SF6_v_char_F_SF6p
+  - cand_Op_SF6*_char_O_SF6p
+  - cand_Op_SF6_char_O_SF6p
+  - cand_Op_SF6_v_char_O_SF6p
+  - cand_SF6p_F2*_reac_SF6p_F_F
+  - cand_SF6p_F2_reac_SF6p_F_F
+  - cand_SF6p_F2_v_reac_SF6p_F_F
+  - cand_e_SF6*_to_e_e_SF6p
+  - cand_e_SF6_to_e_e_SF6p
+  - cand_e_SF6_v_to_e_e_SF6p
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF6_v
+  charge: 0
+  composition:
+    S: 1
+    F: 6
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 1
+  introduced_by:
+  - cand_F2_v_SF6_v_vt
+  - cand_FO_v_SF6_v_vt
+  - cand_O2_v_SF6_v_vt
+  - cand_SF2_v_SF6_v_vt
+  - cand_SF3_v_SF6_v_vt
+  - cand_SF4_v_SF6_v_vt
+  - cand_SF5_v_SF6_v_vt
+  - cand_SF_v_SF6_v_vt
+  - cand_SO2F2_v_SF6_v_vt
+  - cand_SO2_v_SF6_v_vt
+  - cand_SOF2_v_SF6_v_vt
+  - cand_SOF3_v_SF6_v_vt
+  - cand_SOF4_v_SF6_v_vt
+  - cand_SOF_v_SF6_v_vt
+  - cand_SO_v_SF6_v_vt
+  - cand_e_SF6_to_e_SF6_v
+  - cand_e_SF6_v_to_e_SF6_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SF_v
+  charge: 0
+  composition:
+    S: 1
+    F: 1
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_SF_v_vt
+  - cand_FO_v_SF_v_vt
+  - cand_O2_v_SF_v_vt
+  - cand_SF2_v_SF_v_vt
+  - cand_SF3_v_SF_v_vt
+  - cand_SF4_v_SF_v_vt
+  - cand_SF5_v_SF_v_vt
+  - cand_SF6_v_SF_v_vt
+  - cand_SO2F2_v_SF_v_vt
+  - cand_SO2_v_SF_v_vt
+  - cand_SOF2_v_SF_v_vt
+  - cand_SOF3_v_SF_v_vt
+  - cand_SOF4_v_SF_v_vt
+  - cand_SOF_v_SF_v_vt
+  - cand_SO_v_SF_v_vt
+  - cand_e_SF_to_e_SF_v
+  - cand_e_SF_v_to_e_SF_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SO
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+  classes:
+  - molecule
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - SF_O1D_R121
+  - SF_O_R121
+  - cand_F2_v_SO_vt
+  - cand_FO_v_SO_vt
+  - cand_Fp_SO2*_diss_F_SO_Op
+  - cand_Fp_SO2_diss_F_SO_Op
+  - cand_Fp_SO2_v_diss_F_SO_Op
+  - cand_O2_v_SO_vt
+  - cand_SF2_v_SO_vt
+  - cand_SF3_v_SO_vt
+  - cand_SF4_v_SO_vt
+  - cand_SF5_v_SO_vt
+  - cand_SF6_v_SO_vt
+  - cand_SF6p_SO*_diss_SF4p_F2_SO
+  - cand_SF6p_SO*_diss_SF5p_F_SO
+  - cand_SF6p_SO_diss_SF4p_F2_SO
+  - cand_SF6p_SO_diss_SF5p_F_SO
+  - cand_SF6p_SO_v_diss_SF4p_F2_SO
+  - cand_SF6p_SO_v_diss_SF5p_F_SO
+  - cand_SF_v_SO_vt
+  - cand_SO2F2_v_SO_vt
+  - cand_SO2_diss_O_1D
+  - cand_SO2_diss_O_1S
+  - cand_SO2_v_SO_vt
+  - cand_SOF2_v_SO_vt
+  - cand_SOF3_v_SO_vt
+  - cand_SOF4_v_SO_vt
+  - cand_SOF_v_SO_vt
+  - cand_SO_v_Ar_4s_vt
+  - cand_SO_v_Ar_vt
+  - cand_SO_v_F*_vt
+  - cand_SO_v_F2*_vt
+  - cand_SO_v_F2_v_vt
+  - cand_SO_v_F2_vt
+  - cand_SO_v_FO*_vt
+  - cand_SO_v_FO_v_vt
+  - cand_SO_v_FO_vt
+  - cand_SO_v_F_vt
+  - cand_SO_v_O2_a1Delta_vt
+  - cand_SO_v_O2_b1Sigma_vt
+  - cand_SO_v_O2_v_vt
+  - cand_SO_v_O2_vt
+  - cand_SO_v_O_1D_vt
+  - cand_SO_v_O_1S_vt
+  - cand_SO_v_O_vt
+  - cand_SO_v_SF*_vt
+  - cand_SO_v_SF2*_vt
+  - cand_SO_v_SF2_v_vt
+  - cand_SO_v_SF2_vt
+  - cand_SO_v_SF3*_vt
+  - cand_SO_v_SF3_v_vt
+  - cand_SO_v_SF3_vt
+  - cand_SO_v_SF4*_vt
+  - cand_SO_v_SF4_v_vt
+  - cand_SO_v_SF4_vt
+  - cand_SO_v_SF5*_vt
+  - cand_SO_v_SF5_v_vt
+  - cand_SO_v_SF5_vt
+  - cand_SO_v_SF6*_vt
+  - cand_SO_v_SF6_v_vt
+  - cand_SO_v_SF6_vt
+  - cand_SO_v_SF_v_vt
+  - cand_SO_v_SF_vt
+  - cand_SO_v_SO*_vt
+  - cand_SO_v_SO2*_vt
+  - cand_SO_v_SO2F2*_vt
+  - cand_SO_v_SO2F2_v_vt
+  - cand_SO_v_SO2F2_vt
+  - cand_SO_v_SO2_v_vt
+  - cand_SO_v_SO2_vt
+  - cand_SO_v_SOF*_vt
+  - cand_SO_v_SOF2*_vt
+  - cand_SO_v_SOF2_v_vt
+  - cand_SO_v_SOF2_vt
+  - cand_SO_v_SOF3*_vt
+  - cand_SO_v_SOF3_v_vt
+  - cand_SO_v_SOF3_vt
+  - cand_SO_v_SOF4*_vt
+  - cand_SO_v_SOF4_v_vt
+  - cand_SO_v_SOF4_vt
+  - cand_SO_v_SOF_v_vt
+  - cand_SO_v_SOF_vt
+  - cand_SO_v_SO_vt
+  - cand_SO_v_S_1D_vt
+  - cand_SO_v_S_1S_vt
+  - cand_SO_v_S_vt
+  - cand_e_SO*_to_e_SO
+  - cand_e_SO2*_to_e_SO_O
+  - cand_e_SO2_to_e_SO_O
+  - cand_e_SO2_v_to_e_SO_O
+  - cand_e_SOF2*_to_e_SO_F2
+  - cand_e_SOF2_to_e_SO_F2
+  - cand_e_SOF2_v_to_e_SO_F2
+  - cand_e_SO_to_e_SO
+  - cand_e_SO_v_to_e_SO
+  properties:
+    enthalpy_formation_eV:
+      value: 0.065295
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 13827-32-2, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 222.0
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 13827-32-2, formula
+        verified against the registry
+    mass_amu:
+      value: 48.059000000000005
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SO*
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SO*_vt
+  - cand_FO_v_SO*_vt
+  - cand_O2_v_SO*_vt
+  - cand_SF2_v_SO*_vt
+  - cand_SF3_v_SO*_vt
+  - cand_SF4_v_SO*_vt
+  - cand_SF5_v_SO*_vt
+  - cand_SF6_v_SO*_vt
+  - cand_SF_v_SO*_vt
+  - cand_SO2F2_v_SO*_vt
+  - cand_SO2_v_SO*_vt
+  - cand_SOF2_v_SO*_vt
+  - cand_SOF3_v_SO*_vt
+  - cand_SOF4_v_SO*_vt
+  - cand_SOF_v_SO*_vt
+  - cand_SO_v_SO*_vt
+  - cand_e_SO*_to_e_SO*
+  - cand_e_SO_to_e_SO*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SO+
+  charge: 1
+  composition:
+    S: 1
+    O: 1
+  classes:
+  - candidate
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_e_SO*_to_e_e_SOp
+  - cand_e_SO2*_to_e_e_SOp_O
+  - cand_e_SO2_to_e_e_SOp_O
+  - cand_e_SO2_v_to_e_e_SOp_O
+  - cand_e_SOF2*_to_e_e_SOp_F2
+  - cand_e_SOF2_to_e_e_SOp_F2
+  - cand_e_SOF2_v_to_e_e_SOp_F2
+  - cand_e_SO_to_e_e_SOp
+  - cand_e_SO_v_to_e_e_SOp
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SO2
+  charge: 0
+  composition:
+    S: 1
+    O: 2
+  classes:
+  - molecule
+  - neutral
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 3
+  introduced_by:
+  - SOF_O1D_R122
+  - SOF_O_R122
+  - SO_O1D_R130
+  - SO_O_R130
+  - cand_F2_v_SO2_vt
+  - cand_FO_v_SO2_vt
+  - cand_O2_v_SO2_vt
+  - cand_SF2_v_SO2_vt
+  - cand_SF2p_SO2F2*_diss_SO2_SF4p
+  - cand_SF2p_SO2F2_diss_SO2_SF4p
+  - cand_SF2p_SO2F2_v_diss_SO2_SF4p
+  - cand_SF3_v_SO2_vt
+  - cand_SF4_v_SO2_vt
+  - cand_SF5_v_SO2_vt
+  - cand_SF6_v_SO2_vt
+  - cand_SF6p_SO2*_diss_SF4p_F2_SO2
+  - cand_SF6p_SO2*_diss_SF5p_F_SO2
+  - cand_SF6p_SO2_diss_SF4p_F2_SO2
+  - cand_SF6p_SO2_diss_SF5p_F_SO2
+  - cand_SF6p_SO2_v_diss_SF4p_F2_SO2
+  - cand_SF6p_SO2_v_diss_SF5p_F_SO2
+  - cand_SF_v_SO2_vt
+  - cand_SO2F2_v_SO2_vt
+  - cand_SO2_v_Ar_4s_vt
+  - cand_SO2_v_Ar_vt
+  - cand_SO2_v_F*_vt
+  - cand_SO2_v_F2*_vt
+  - cand_SO2_v_F2_v_vt
+  - cand_SO2_v_F2_vt
+  - cand_SO2_v_FO*_vt
+  - cand_SO2_v_FO_v_vt
+  - cand_SO2_v_FO_vt
+  - cand_SO2_v_F_vt
+  - cand_SO2_v_O2_a1Delta_vt
+  - cand_SO2_v_O2_b1Sigma_vt
+  - cand_SO2_v_O2_v_vt
+  - cand_SO2_v_O2_vt
+  - cand_SO2_v_O_1D_vt
+  - cand_SO2_v_O_1S_vt
+  - cand_SO2_v_O_vt
+  - cand_SO2_v_SF*_vt
+  - cand_SO2_v_SF2*_vt
+  - cand_SO2_v_SF2_v_vt
+  - cand_SO2_v_SF2_vt
+  - cand_SO2_v_SF3*_vt
+  - cand_SO2_v_SF3_v_vt
+  - cand_SO2_v_SF3_vt
+  - cand_SO2_v_SF4*_vt
+  - cand_SO2_v_SF4_v_vt
+  - cand_SO2_v_SF4_vt
+  - cand_SO2_v_SF5*_vt
+  - cand_SO2_v_SF5_v_vt
+  - cand_SO2_v_SF5_vt
+  - cand_SO2_v_SF6*_vt
+  - cand_SO2_v_SF6_v_vt
+  - cand_SO2_v_SF6_vt
+  - cand_SO2_v_SF_v_vt
+  - cand_SO2_v_SF_vt
+  - cand_SO2_v_SO*_vt
+  - cand_SO2_v_SO2*_vt
+  - cand_SO2_v_SO2F2*_vt
+  - cand_SO2_v_SO2F2_v_vt
+  - cand_SO2_v_SO2F2_vt
+  - cand_SO2_v_SO2_vt
+  - cand_SO2_v_SOF*_vt
+  - cand_SO2_v_SOF2*_vt
+  - cand_SO2_v_SOF2_v_vt
+  - cand_SO2_v_SOF2_vt
+  - cand_SO2_v_SOF3*_vt
+  - cand_SO2_v_SOF3_v_vt
+  - cand_SO2_v_SOF3_vt
+  - cand_SO2_v_SOF4*_vt
+  - cand_SO2_v_SOF4_v_vt
+  - cand_SO2_v_SOF4_vt
+  - cand_SO2_v_SOF_v_vt
+  - cand_SO2_v_SOF_vt
+  - cand_SO2_v_SO_v_vt
+  - cand_SO2_v_SO_vt
+  - cand_SO2_v_S_1D_vt
+  - cand_SO2_v_S_1S_vt
+  - cand_SO2_v_S_vt
+  - cand_SOF2_v_SO2_vt
+  - cand_SOF3_v_SO2_vt
+  - cand_SOF4_v_SO2_vt
+  - cand_SOF_v_SO2_vt
+  - cand_SO_v_SO2_vt
+  - cand_e_SO2*_to_e_SO2
+  - cand_e_SO2_to_e_SO2
+  - cand_e_SO2_v_to_e_SO2
+  properties:
+    enthalpy_formation_eV:
+      value: -3.076115
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 7446-09-5, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 248.2
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 7446-09-5, formula
+        verified against the registry
+    mass_amu:
+      value: 64.058
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SO2*
+  charge: 0
+  composition:
+    S: 1
+    O: 2
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 4
+  introduced_by:
+  - cand_F2_v_SO2*_vt
+  - cand_FO_v_SO2*_vt
+  - cand_O2_v_SO2*_vt
+  - cand_SF2_v_SO2*_vt
+  - cand_SF3_v_SO2*_vt
+  - cand_SF4_v_SO2*_vt
+  - cand_SF5_v_SO2*_vt
+  - cand_SF6_v_SO2*_vt
+  - cand_SF_v_SO2*_vt
+  - cand_SO2F2_v_SO2*_vt
+  - cand_SO2_v_SO2*_vt
+  - cand_SOF2_v_SO2*_vt
+  - cand_SOF3_v_SO2*_vt
+  - cand_SOF4_v_SO2*_vt
+  - cand_SOF_v_SO2*_vt
+  - cand_SO_v_SO2*_vt
+  - cand_e_SO2*_to_e_SO2*
+  - cand_e_SO2_to_e_SO2*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SO2+
+  charge: 1
+  composition:
+    S: 1
+    O: 2
+  classes:
+  - candidate
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 4
+  introduced_by:
+  - cand_e_SO2*_to_e_e_SO2p
+  - cand_e_SO2_to_e_e_SO2p
+  - cand_e_SO2_v_to_e_e_SO2p
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SO2F2
+  charge: 0
+  composition:
+    S: 1
+    O: 2
+    F: 2
+  classes:
+  - molecule
+  - neutral
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 3
+  introduced_by:
+  - SOF2_O1D_R131
+  - SOF2_O_R131
+  - SOF3_O1D_R123
+  - SOF3_O_R123
+  - cand_F2_v_SO2F2_vt
+  - cand_FO_v_SO2F2_vt
+  - cand_O2_v_SO2F2_vt
+  - cand_SF2_v_SO2F2_vt
+  - cand_SF3_v_SO2F2_vt
+  - cand_SF4_v_SO2F2_vt
+  - cand_SF4p_SO2*_diss_SO2F2_SF2p
+  - cand_SF4p_SO2_diss_SO2F2_SF2p
+  - cand_SF4p_SO2_v_diss_SO2F2_SF2p
+  - cand_SF5_v_SO2F2_vt
+  - cand_SF6_v_SO2F2_vt
+  - cand_SF6p_SO2F2*_diss_SF4p_F2_SO2F2
+  - cand_SF6p_SO2F2*_diss_SF5p_F_SO2F2
+  - cand_SF6p_SO2F2_diss_SF4p_F2_SO2F2
+  - cand_SF6p_SO2F2_diss_SF5p_F_SO2F2
+  - cand_SF6p_SO2F2_v_diss_SF4p_F2_SO2F2
+  - cand_SF6p_SO2F2_v_diss_SF5p_F_SO2F2
+  - cand_SF_v_SO2F2_vt
+  - cand_SO2F2_v_Ar_4s_vt
+  - cand_SO2F2_v_Ar_vt
+  - cand_SO2F2_v_F*_vt
+  - cand_SO2F2_v_F2*_vt
+  - cand_SO2F2_v_F2_v_vt
+  - cand_SO2F2_v_F2_vt
+  - cand_SO2F2_v_FO*_vt
+  - cand_SO2F2_v_FO_v_vt
+  - cand_SO2F2_v_FO_vt
+  - cand_SO2F2_v_F_vt
+  - cand_SO2F2_v_O2_a1Delta_vt
+  - cand_SO2F2_v_O2_b1Sigma_vt
+  - cand_SO2F2_v_O2_v_vt
+  - cand_SO2F2_v_O2_vt
+  - cand_SO2F2_v_O_1D_vt
+  - cand_SO2F2_v_O_1S_vt
+  - cand_SO2F2_v_O_vt
+  - cand_SO2F2_v_SF*_vt
+  - cand_SO2F2_v_SF2*_vt
+  - cand_SO2F2_v_SF2_v_vt
+  - cand_SO2F2_v_SF2_vt
+  - cand_SO2F2_v_SF3*_vt
+  - cand_SO2F2_v_SF3_v_vt
+  - cand_SO2F2_v_SF3_vt
+  - cand_SO2F2_v_SF4*_vt
+  - cand_SO2F2_v_SF4_v_vt
+  - cand_SO2F2_v_SF4_vt
+  - cand_SO2F2_v_SF5*_vt
+  - cand_SO2F2_v_SF5_v_vt
+  - cand_SO2F2_v_SF5_vt
+  - cand_SO2F2_v_SF6*_vt
+  - cand_SO2F2_v_SF6_v_vt
+  - cand_SO2F2_v_SF6_vt
+  - cand_SO2F2_v_SF_v_vt
+  - cand_SO2F2_v_SF_vt
+  - cand_SO2F2_v_SO*_vt
+  - cand_SO2F2_v_SO2*_vt
+  - cand_SO2F2_v_SO2F2*_vt
+  - cand_SO2F2_v_SO2F2_vt
+  - cand_SO2F2_v_SO2_v_vt
+  - cand_SO2F2_v_SO2_vt
+  - cand_SO2F2_v_SOF*_vt
+  - cand_SO2F2_v_SOF2*_vt
+  - cand_SO2F2_v_SOF2_v_vt
+  - cand_SO2F2_v_SOF2_vt
+  - cand_SO2F2_v_SOF3*_vt
+  - cand_SO2F2_v_SOF3_v_vt
+  - cand_SO2F2_v_SOF3_vt
+  - cand_SO2F2_v_SOF4*_vt
+  - cand_SO2F2_v_SOF4_v_vt
+  - cand_SO2F2_v_SOF4_vt
+  - cand_SO2F2_v_SOF_v_vt
+  - cand_SO2F2_v_SOF_vt
+  - cand_SO2F2_v_SO_v_vt
+  - cand_SO2F2_v_SO_vt
+  - cand_SO2F2_v_S_1D_vt
+  - cand_SO2F2_v_S_1S_vt
+  - cand_SO2F2_v_S_vt
+  - cand_SO2_v_SO2F2_vt
+  - cand_SOF2_v_SO2F2_vt
+  - cand_SOF3_v_SO2F2_vt
+  - cand_SOF4_v_SO2F2_vt
+  - cand_SOF_v_SO2F2_vt
+  - cand_SO_v_SO2F2_vt
+  - cand_e_SO2F2*_to_e_SO2F2
+  - cand_e_SO2F2_to_e_SO2F2
+  - cand_e_SO2F2_v_to_e_SO2F2
+  properties:
+    enthalpy_formation_eV:
+      value: -7.86192
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 2699-79-8, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 284.0
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 2699-79-8, formula
+        verified against the registry
+    mass_amu:
+      value: 102.054
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SO2F2*
+  charge: 0
+  composition:
+    S: 1
+    O: 2
+    F: 2
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 4
+  introduced_by:
+  - cand_F2_v_SO2F2*_vt
+  - cand_FO_v_SO2F2*_vt
+  - cand_O2_v_SO2F2*_vt
+  - cand_SF2_v_SO2F2*_vt
+  - cand_SF3_v_SO2F2*_vt
+  - cand_SF4_v_SO2F2*_vt
+  - cand_SF5_v_SO2F2*_vt
+  - cand_SF6_v_SO2F2*_vt
+  - cand_SF_v_SO2F2*_vt
+  - cand_SO2F2_v_SO2F2*_vt
+  - cand_SO2_v_SO2F2*_vt
+  - cand_SOF2_v_SO2F2*_vt
+  - cand_SOF3_v_SO2F2*_vt
+  - cand_SOF4_v_SO2F2*_vt
+  - cand_SOF_v_SO2F2*_vt
+  - cand_SO_v_SO2F2*_vt
+  - cand_e_SO2F2*_to_e_SO2F2*
+  - cand_e_SO2F2_to_e_SO2F2*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SO2F2+
+  charge: 1
+  composition:
+    S: 1
+    O: 2
+    F: 2
+  classes:
+  - candidate
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 4
+  introduced_by:
+  - cand_e_SO2F2*_to_e_e_SO2F2p
+  - cand_e_SO2F2_to_e_e_SO2F2p
+  - cand_e_SO2F2_v_to_e_e_SO2F2p
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SO2F2_v
+  charge: 0
+  composition:
+    S: 1
+    O: 2
+    F: 2
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 4
+  introduced_by:
+  - cand_F2_v_SO2F2_v_vt
+  - cand_FO_v_SO2F2_v_vt
+  - cand_O2_v_SO2F2_v_vt
+  - cand_SF2_v_SO2F2_v_vt
+  - cand_SF3_v_SO2F2_v_vt
+  - cand_SF4_v_SO2F2_v_vt
+  - cand_SF5_v_SO2F2_v_vt
+  - cand_SF6_v_SO2F2_v_vt
+  - cand_SF_v_SO2F2_v_vt
+  - cand_SO2_v_SO2F2_v_vt
+  - cand_SOF2_v_SO2F2_v_vt
+  - cand_SOF3_v_SO2F2_v_vt
+  - cand_SOF4_v_SO2F2_v_vt
+  - cand_SOF_v_SO2F2_v_vt
+  - cand_SO_v_SO2F2_v_vt
+  - cand_e_SO2F2_to_e_SO2F2_v
+  - cand_e_SO2F2_v_to_e_SO2F2_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SO2_v
+  charge: 0
+  composition:
+    S: 1
+    O: 2
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 4
+  introduced_by:
+  - cand_F2_v_SO2_v_vt
+  - cand_FO_v_SO2_v_vt
+  - cand_O2_v_SO2_v_vt
+  - cand_SF2_v_SO2_v_vt
+  - cand_SF3_v_SO2_v_vt
+  - cand_SF4_v_SO2_v_vt
+  - cand_SF5_v_SO2_v_vt
+  - cand_SF6_v_SO2_v_vt
+  - cand_SF_v_SO2_v_vt
+  - cand_SO2F2_v_SO2_v_vt
+  - cand_SOF2_v_SO2_v_vt
+  - cand_SOF3_v_SO2_v_vt
+  - cand_SOF4_v_SO2_v_vt
+  - cand_SOF_v_SO2_v_vt
+  - cand_SO_v_SO2_v_vt
+  - cand_e_SO2_to_e_SO2_v
+  - cand_e_SO2_v_to_e_SO2_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 1
+  classes:
+  - molecule
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - SF2_O1D_R120
+  - SF2_O_R120
+  - SF_O1D_R136
+  - SF_O_R136
+  - cand_F2_v_SOF_vt
+  - cand_FO_v_SOF_vt
+  - cand_O2_v_SOF_vt
+  - cand_SF2_v_SOF_vt
+  - cand_SF3_v_SOF_vt
+  - cand_SF4_v_SOF_vt
+  - cand_SF5_v_SOF_vt
+  - cand_SF6_v_SOF_vt
+  - cand_SF6p_SOF*_diss_SF4p_F2_SOF
+  - cand_SF6p_SOF*_diss_SF5p_F_SOF
+  - cand_SF6p_SOF_diss_SF4p_F2_SOF
+  - cand_SF6p_SOF_diss_SF5p_F_SOF
+  - cand_SF6p_SOF_v_diss_SF4p_F2_SOF
+  - cand_SF6p_SOF_v_diss_SF5p_F_SOF
+  - cand_SF_v_SOF_vt
+  - cand_SO2F2_v_SOF_vt
+  - cand_SO2_v_SOF_vt
+  - cand_SOF2_v_SOF_vt
+  - cand_SOF3_v_SOF_vt
+  - cand_SOF4_v_SOF_vt
+  - cand_SOF_v_Ar_4s_vt
+  - cand_SOF_v_Ar_vt
+  - cand_SOF_v_F*_vt
+  - cand_SOF_v_F2*_vt
+  - cand_SOF_v_F2_v_vt
+  - cand_SOF_v_F2_vt
+  - cand_SOF_v_FO*_vt
+  - cand_SOF_v_FO_v_vt
+  - cand_SOF_v_FO_vt
+  - cand_SOF_v_F_vt
+  - cand_SOF_v_O2_a1Delta_vt
+  - cand_SOF_v_O2_b1Sigma_vt
+  - cand_SOF_v_O2_v_vt
+  - cand_SOF_v_O2_vt
+  - cand_SOF_v_O_1D_vt
+  - cand_SOF_v_O_1S_vt
+  - cand_SOF_v_O_vt
+  - cand_SOF_v_SF*_vt
+  - cand_SOF_v_SF2*_vt
+  - cand_SOF_v_SF2_v_vt
+  - cand_SOF_v_SF2_vt
+  - cand_SOF_v_SF3*_vt
+  - cand_SOF_v_SF3_v_vt
+  - cand_SOF_v_SF3_vt
+  - cand_SOF_v_SF4*_vt
+  - cand_SOF_v_SF4_v_vt
+  - cand_SOF_v_SF4_vt
+  - cand_SOF_v_SF5*_vt
+  - cand_SOF_v_SF5_v_vt
+  - cand_SOF_v_SF5_vt
+  - cand_SOF_v_SF6*_vt
+  - cand_SOF_v_SF6_v_vt
+  - cand_SOF_v_SF6_vt
+  - cand_SOF_v_SF_v_vt
+  - cand_SOF_v_SF_vt
+  - cand_SOF_v_SO*_vt
+  - cand_SOF_v_SO2*_vt
+  - cand_SOF_v_SO2F2*_vt
+  - cand_SOF_v_SO2F2_v_vt
+  - cand_SOF_v_SO2F2_vt
+  - cand_SOF_v_SO2_v_vt
+  - cand_SOF_v_SO2_vt
+  - cand_SOF_v_SOF*_vt
+  - cand_SOF_v_SOF2*_vt
+  - cand_SOF_v_SOF2_v_vt
+  - cand_SOF_v_SOF2_vt
+  - cand_SOF_v_SOF3*_vt
+  - cand_SOF_v_SOF3_v_vt
+  - cand_SOF_v_SOF3_vt
+  - cand_SOF_v_SOF4*_vt
+  - cand_SOF_v_SOF4_v_vt
+  - cand_SOF_v_SOF4_vt
+  - cand_SOF_v_SOF_vt
+  - cand_SOF_v_SO_v_vt
+  - cand_SOF_v_SO_vt
+  - cand_SOF_v_S_1D_vt
+  - cand_SOF_v_S_1S_vt
+  - cand_SOF_v_S_vt
+  - cand_SO_v_SOF_vt
+  - cand_e_SOF*_to_e_SOF
+  - cand_e_SOF2*_to_e_SOF_F
+  - cand_e_SOF2_to_e_SOF_F
+  - cand_e_SOF2_v_to_e_SOF_F
+  - cand_e_SOF3*_to_e_SOF_F2
+  - cand_e_SOF3_to_e_SOF_F2
+  - cand_e_SOF3_v_to_e_SOF_F2
+  - cand_e_SOF_to_e_SOF
+  - cand_e_SOF_v_to_e_SOF
+  properties:
+    mass_amu:
+      value: 67.057
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SOF*
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 1
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SOF*_vt
+  - cand_FO_v_SOF*_vt
+  - cand_O2_v_SOF*_vt
+  - cand_SF2_v_SOF*_vt
+  - cand_SF3_v_SOF*_vt
+  - cand_SF4_v_SOF*_vt
+  - cand_SF5_v_SOF*_vt
+  - cand_SF6_v_SOF*_vt
+  - cand_SF_v_SOF*_vt
+  - cand_SO2F2_v_SOF*_vt
+  - cand_SO2_v_SOF*_vt
+  - cand_SOF2_v_SOF*_vt
+  - cand_SOF3_v_SOF*_vt
+  - cand_SOF4_v_SOF*_vt
+  - cand_SOF_v_SOF*_vt
+  - cand_SO_v_SOF*_vt
+  - cand_e_SOF*_to_e_SOF*
+  - cand_e_SOF_to_e_SOF*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF+
+  charge: 1
+  composition:
+    S: 1
+    O: 1
+    F: 1
+  classes:
+  - candidate
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_e_SOF*_to_e_e_SOFp
+  - cand_e_SOF2*_to_e_e_SOFp_F
+  - cand_e_SOF2_to_e_e_SOFp_F
+  - cand_e_SOF2_v_to_e_e_SOFp_F
+  - cand_e_SOF3*_to_e_e_SOFp_F2
+  - cand_e_SOF3_to_e_e_SOFp_F2
+  - cand_e_SOF3_v_to_e_e_SOFp_F2
+  - cand_e_SOF_to_e_e_SOFp
+  - cand_e_SOF_v_to_e_e_SOFp
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF2
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 2
+  classes:
+  - molecule
+  - neutral
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - SF2_O1D_R135
+  - SF2_O_R135
+  - SF3_O1D_R119
+  - SF3_O_R119
+  - SO2F2_O1D_R137
+  - SO2F2_O_R137
+  - cand_F2_v_SOF2_vt
+  - cand_FO_v_SOF2_vt
+  - cand_Fp_SO2F2*_diss_F_SOF2_Op
+  - cand_Fp_SO2F2_diss_F_SOF2_Op
+  - cand_Fp_SO2F2_v_diss_F_SOF2_Op
+  - cand_O2_v_SOF2_vt
+  - cand_SF2_v_SOF2_vt
+  - cand_SF3_v_SOF2_vt
+  - cand_SF4_v_SOF2_vt
+  - cand_SF5_v_SOF2_vt
+  - cand_SF6_v_SOF2_vt
+  - cand_SF6p_SOF2*_diss_SF4p_F2_SOF2
+  - cand_SF6p_SOF2*_diss_SF5p_F_SOF2
+  - cand_SF6p_SOF2_diss_SF4p_F2_SOF2
+  - cand_SF6p_SOF2_diss_SF5p_F_SOF2
+  - cand_SF6p_SOF2_v_diss_SF4p_F2_SOF2
+  - cand_SF6p_SOF2_v_diss_SF5p_F_SOF2
+  - cand_SF_v_SOF2_vt
+  - cand_SO2F2_diss_O_1D
+  - cand_SO2F2_diss_O_1S
+  - cand_SO2F2_v_SOF2_vt
+  - cand_SO2_v_SOF2_vt
+  - cand_SOF2_v_Ar_4s_vt
+  - cand_SOF2_v_Ar_vt
+  - cand_SOF2_v_F*_vt
+  - cand_SOF2_v_F2*_vt
+  - cand_SOF2_v_F2_v_vt
+  - cand_SOF2_v_F2_vt
+  - cand_SOF2_v_FO*_vt
+  - cand_SOF2_v_FO_v_vt
+  - cand_SOF2_v_FO_vt
+  - cand_SOF2_v_F_vt
+  - cand_SOF2_v_O2_a1Delta_vt
+  - cand_SOF2_v_O2_b1Sigma_vt
+  - cand_SOF2_v_O2_v_vt
+  - cand_SOF2_v_O2_vt
+  - cand_SOF2_v_O_1D_vt
+  - cand_SOF2_v_O_1S_vt
+  - cand_SOF2_v_O_vt
+  - cand_SOF2_v_SF*_vt
+  - cand_SOF2_v_SF2*_vt
+  - cand_SOF2_v_SF2_v_vt
+  - cand_SOF2_v_SF2_vt
+  - cand_SOF2_v_SF3*_vt
+  - cand_SOF2_v_SF3_v_vt
+  - cand_SOF2_v_SF3_vt
+  - cand_SOF2_v_SF4*_vt
+  - cand_SOF2_v_SF4_v_vt
+  - cand_SOF2_v_SF4_vt
+  - cand_SOF2_v_SF5*_vt
+  - cand_SOF2_v_SF5_v_vt
+  - cand_SOF2_v_SF5_vt
+  - cand_SOF2_v_SF6*_vt
+  - cand_SOF2_v_SF6_v_vt
+  - cand_SOF2_v_SF6_vt
+  - cand_SOF2_v_SF_v_vt
+  - cand_SOF2_v_SF_vt
+  - cand_SOF2_v_SO*_vt
+  - cand_SOF2_v_SO2*_vt
+  - cand_SOF2_v_SO2F2*_vt
+  - cand_SOF2_v_SO2F2_v_vt
+  - cand_SOF2_v_SO2F2_vt
+  - cand_SOF2_v_SO2_v_vt
+  - cand_SOF2_v_SO2_vt
+  - cand_SOF2_v_SOF*_vt
+  - cand_SOF2_v_SOF2*_vt
+  - cand_SOF2_v_SOF2_vt
+  - cand_SOF2_v_SOF3*_vt
+  - cand_SOF2_v_SOF3_v_vt
+  - cand_SOF2_v_SOF3_vt
+  - cand_SOF2_v_SOF4*_vt
+  - cand_SOF2_v_SOF4_v_vt
+  - cand_SOF2_v_SOF4_vt
+  - cand_SOF2_v_SOF_v_vt
+  - cand_SOF2_v_SOF_vt
+  - cand_SOF2_v_SO_v_vt
+  - cand_SOF2_v_SO_vt
+  - cand_SOF2_v_S_1D_vt
+  - cand_SOF2_v_S_1S_vt
+  - cand_SOF2_v_S_vt
+  - cand_SOF3_v_SOF2_vt
+  - cand_SOF4_v_SOF2_vt
+  - cand_SOF_v_SOF2_vt
+  - cand_SO_v_SOF2_vt
+  - cand_e_SO2F2*_to_e_SOF2_O
+  - cand_e_SO2F2_to_e_SOF2_O
+  - cand_e_SO2F2_v_to_e_SOF2_O
+  - cand_e_SOF2*_to_e_SOF2
+  - cand_e_SOF2_to_e_SOF2
+  - cand_e_SOF2_v_to_e_SOF2
+  - cand_e_SOF3*_to_e_SOF2_F
+  - cand_e_SOF3_to_e_SOF2_F
+  - cand_e_SOF3_v_to_e_SOF2_F
+  - cand_e_SOF4*_to_e_SOF2_F2
+  - cand_e_SOF4_to_e_SOF2_F2
+  - cand_e_SOF4_v_to_e_SOF2_F2
+  properties:
+    enthalpy_formation_eV:
+      value: -5.637334
+      unit: eV
+      source: chemicals package bundled thermodynamic tables, CAS 7783-42-8, formula
+        verified against the registry
+    entropy_J_mol_K:
+      value: 278.7
+      unit: J/mol/K
+      source: chemicals package bundled thermodynamic tables, CAS 7783-42-8, formula
+        verified against the registry
+    mass_amu:
+      value: 86.055
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SOF2*
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 2
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SOF2*_vt
+  - cand_FO_v_SOF2*_vt
+  - cand_O2_v_SOF2*_vt
+  - cand_SF2_v_SOF2*_vt
+  - cand_SF3_v_SOF2*_vt
+  - cand_SF4_v_SOF2*_vt
+  - cand_SF5_v_SOF2*_vt
+  - cand_SF6_v_SOF2*_vt
+  - cand_SF_v_SOF2*_vt
+  - cand_SO2F2_v_SOF2*_vt
+  - cand_SO2_v_SOF2*_vt
+  - cand_SOF2_v_SOF2*_vt
+  - cand_SOF3_v_SOF2*_vt
+  - cand_SOF4_v_SOF2*_vt
+  - cand_SOF_v_SOF2*_vt
+  - cand_SO_v_SOF2*_vt
+  - cand_e_SOF2*_to_e_SOF2*
+  - cand_e_SOF2_to_e_SOF2*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF2+
+  charge: 1
+  composition:
+    S: 1
+    O: 1
+    F: 2
+  classes:
+  - candidate
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_e_SO2F2*_to_e_e_SOF2p_O
+  - cand_e_SO2F2_to_e_e_SOF2p_O
+  - cand_e_SO2F2_v_to_e_e_SOF2p_O
+  - cand_e_SOF2*_to_e_e_SOF2p
+  - cand_e_SOF2_to_e_e_SOF2p
+  - cand_e_SOF2_v_to_e_e_SOF2p
+  - cand_e_SOF3*_to_e_e_SOF2p_F
+  - cand_e_SOF3_to_e_e_SOF2p_F
+  - cand_e_SOF3_v_to_e_e_SOF2p_F
+  - cand_e_SOF4*_to_e_e_SOF2p_F2
+  - cand_e_SOF4_to_e_e_SOF2p_F2
+  - cand_e_SOF4_v_to_e_e_SOF2p_F2
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF2_v
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 2
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SOF2_v_vt
+  - cand_FO_v_SOF2_v_vt
+  - cand_O2_v_SOF2_v_vt
+  - cand_SF2_v_SOF2_v_vt
+  - cand_SF3_v_SOF2_v_vt
+  - cand_SF4_v_SOF2_v_vt
+  - cand_SF5_v_SOF2_v_vt
+  - cand_SF6_v_SOF2_v_vt
+  - cand_SF_v_SOF2_v_vt
+  - cand_SO2F2_v_SOF2_v_vt
+  - cand_SO2_v_SOF2_v_vt
+  - cand_SOF3_v_SOF2_v_vt
+  - cand_SOF4_v_SOF2_v_vt
+  - cand_SOF_v_SOF2_v_vt
+  - cand_SO_v_SOF2_v_vt
+  - cand_e_SOF2_to_e_SOF2_v
+  - cand_e_SOF2_v_to_e_SOF2_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF3
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 3
+  classes:
+  - molecule
+  - neutral
+  - radical
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - SF3_O1D_R134
+  - SF3_O_R134
+  - SOF4_dissociation_SOF3_F
+  - cand_F2_v_SOF3_vt
+  - cand_FO_v_SOF3_vt
+  - cand_O2_v_SOF3_vt
+  - cand_SF2_v_SOF3_vt
+  - cand_SF3_v_SOF3_vt
+  - cand_SF4_v_SOF3_vt
+  - cand_SF5_v_SOF3_vt
+  - cand_SF6_v_SOF3_vt
+  - cand_SF6p_SOF3*_diss_SF4p_F2_SOF3
+  - cand_SF6p_SOF3*_diss_SF5p_F_SOF3
+  - cand_SF6p_SOF3_diss_SF4p_F2_SOF3
+  - cand_SF6p_SOF3_diss_SF5p_F_SOF3
+  - cand_SF6p_SOF3_v_diss_SF4p_F2_SOF3
+  - cand_SF6p_SOF3_v_diss_SF5p_F_SOF3
+  - cand_SF_v_SOF3_vt
+  - cand_SO2F2_v_SOF3_vt
+  - cand_SO2_v_SOF3_vt
+  - cand_SOF2_v_SOF3_vt
+  - cand_SOF3_v_Ar_4s_vt
+  - cand_SOF3_v_Ar_vt
+  - cand_SOF3_v_F*_vt
+  - cand_SOF3_v_F2*_vt
+  - cand_SOF3_v_F2_v_vt
+  - cand_SOF3_v_F2_vt
+  - cand_SOF3_v_FO*_vt
+  - cand_SOF3_v_FO_v_vt
+  - cand_SOF3_v_FO_vt
+  - cand_SOF3_v_F_vt
+  - cand_SOF3_v_O2_a1Delta_vt
+  - cand_SOF3_v_O2_b1Sigma_vt
+  - cand_SOF3_v_O2_v_vt
+  - cand_SOF3_v_O2_vt
+  - cand_SOF3_v_O_1D_vt
+  - cand_SOF3_v_O_1S_vt
+  - cand_SOF3_v_O_vt
+  - cand_SOF3_v_SF*_vt
+  - cand_SOF3_v_SF2*_vt
+  - cand_SOF3_v_SF2_v_vt
+  - cand_SOF3_v_SF2_vt
+  - cand_SOF3_v_SF3*_vt
+  - cand_SOF3_v_SF3_v_vt
+  - cand_SOF3_v_SF3_vt
+  - cand_SOF3_v_SF4*_vt
+  - cand_SOF3_v_SF4_v_vt
+  - cand_SOF3_v_SF4_vt
+  - cand_SOF3_v_SF5*_vt
+  - cand_SOF3_v_SF5_v_vt
+  - cand_SOF3_v_SF5_vt
+  - cand_SOF3_v_SF6*_vt
+  - cand_SOF3_v_SF6_v_vt
+  - cand_SOF3_v_SF6_vt
+  - cand_SOF3_v_SF_v_vt
+  - cand_SOF3_v_SF_vt
+  - cand_SOF3_v_SO*_vt
+  - cand_SOF3_v_SO2*_vt
+  - cand_SOF3_v_SO2F2*_vt
+  - cand_SOF3_v_SO2F2_v_vt
+  - cand_SOF3_v_SO2F2_vt
+  - cand_SOF3_v_SO2_v_vt
+  - cand_SOF3_v_SO2_vt
+  - cand_SOF3_v_SOF*_vt
+  - cand_SOF3_v_SOF2*_vt
+  - cand_SOF3_v_SOF2_v_vt
+  - cand_SOF3_v_SOF2_vt
+  - cand_SOF3_v_SOF3*_vt
+  - cand_SOF3_v_SOF3_vt
+  - cand_SOF3_v_SOF4*_vt
+  - cand_SOF3_v_SOF4_v_vt
+  - cand_SOF3_v_SOF4_vt
+  - cand_SOF3_v_SOF_v_vt
+  - cand_SOF3_v_SOF_vt
+  - cand_SOF3_v_SO_v_vt
+  - cand_SOF3_v_SO_vt
+  - cand_SOF3_v_S_1D_vt
+  - cand_SOF3_v_S_1S_vt
+  - cand_SOF3_v_S_vt
+  - cand_SOF4_v_SOF3_vt
+  - cand_SOF_v_SOF3_vt
+  - cand_SO_v_SOF3_vt
+  - cand_e_SOF3*_to_e_SOF3
+  - cand_e_SOF3_to_e_SOF3
+  - cand_e_SOF3_v_to_e_SOF3
+  - cand_e_SOF4*_to_e_SOF3_F
+  - cand_e_SOF4_to_e_SOF3_F
+  - cand_e_SOF4_v_to_e_SOF3_F
+  properties:
+    mass_amu:
+      value: 105.053
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SOF3*
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 3
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SOF3*_vt
+  - cand_FO_v_SOF3*_vt
+  - cand_O2_v_SOF3*_vt
+  - cand_SF2_v_SOF3*_vt
+  - cand_SF3_v_SOF3*_vt
+  - cand_SF4_v_SOF3*_vt
+  - cand_SF5_v_SOF3*_vt
+  - cand_SF6_v_SOF3*_vt
+  - cand_SF_v_SOF3*_vt
+  - cand_SO2F2_v_SOF3*_vt
+  - cand_SO2_v_SOF3*_vt
+  - cand_SOF2_v_SOF3*_vt
+  - cand_SOF3_v_SOF3*_vt
+  - cand_SOF4_v_SOF3*_vt
+  - cand_SOF_v_SOF3*_vt
+  - cand_SO_v_SOF3*_vt
+  - cand_e_SOF3*_to_e_SOF3*
+  - cand_e_SOF3_to_e_SOF3*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF3+
+  charge: 1
+  composition:
+    S: 1
+    O: 1
+    F: 3
+  classes:
+  - candidate
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_e_SOF3*_to_e_e_SOF3p
+  - cand_e_SOF3_to_e_e_SOF3p
+  - cand_e_SOF3_v_to_e_e_SOF3p
+  - cand_e_SOF4*_to_e_e_SOF3p_F
+  - cand_e_SOF4_to_e_e_SOF3p_F
+  - cand_e_SOF4_v_to_e_e_SOF3p_F
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF3_v
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 3
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SOF3_v_vt
+  - cand_FO_v_SOF3_v_vt
+  - cand_O2_v_SOF3_v_vt
+  - cand_SF2_v_SOF3_v_vt
+  - cand_SF3_v_SOF3_v_vt
+  - cand_SF4_v_SOF3_v_vt
+  - cand_SF5_v_SOF3_v_vt
+  - cand_SF6_v_SOF3_v_vt
+  - cand_SF_v_SOF3_v_vt
+  - cand_SO2F2_v_SOF3_v_vt
+  - cand_SO2_v_SOF3_v_vt
+  - cand_SOF2_v_SOF3_v_vt
+  - cand_SOF4_v_SOF3_v_vt
+  - cand_SOF_v_SOF3_v_vt
+  - cand_SO_v_SOF3_v_vt
+  - cand_e_SOF3_to_e_SOF3_v
+  - cand_e_SOF3_v_to_e_SOF3_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF4
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 4
+  classes:
+  - molecule
+  - neutral
+  state:
+    kind: ground
+    label: X
+    energy_eV: 0.0
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - SF4_O1D_R133
+  - SF4_O_R133
+  - SF5_O1D_R132
+  - SF5_O_R132
+  - cand_F2_v_SOF4_vt
+  - cand_FO_v_SOF4_vt
+  - cand_O2_v_SOF4_vt
+  - cand_SF2_v_SOF4_vt
+  - cand_SF3_v_SOF4_vt
+  - cand_SF4_v_SOF4_vt
+  - cand_SF5_v_SOF4_vt
+  - cand_SF6_v_SOF4_vt
+  - cand_SF6p_SOF4*_diss_SF4p_F2_SOF4
+  - cand_SF6p_SOF4*_diss_SF5p_F_SOF4
+  - cand_SF6p_SOF4_diss_SF4p_F2_SOF4
+  - cand_SF6p_SOF4_diss_SF5p_F_SOF4
+  - cand_SF6p_SOF4_v_diss_SF4p_F2_SOF4
+  - cand_SF6p_SOF4_v_diss_SF5p_F_SOF4
+  - cand_SF_v_SOF4_vt
+  - cand_SO2F2_v_SOF4_vt
+  - cand_SO2_v_SOF4_vt
+  - cand_SOF2_v_SOF4_vt
+  - cand_SOF3_v_SOF4_vt
+  - cand_SOF4_v_Ar_4s_vt
+  - cand_SOF4_v_Ar_vt
+  - cand_SOF4_v_F*_vt
+  - cand_SOF4_v_F2*_vt
+  - cand_SOF4_v_F2_v_vt
+  - cand_SOF4_v_F2_vt
+  - cand_SOF4_v_FO*_vt
+  - cand_SOF4_v_FO_v_vt
+  - cand_SOF4_v_FO_vt
+  - cand_SOF4_v_F_vt
+  - cand_SOF4_v_O2_a1Delta_vt
+  - cand_SOF4_v_O2_b1Sigma_vt
+  - cand_SOF4_v_O2_v_vt
+  - cand_SOF4_v_O2_vt
+  - cand_SOF4_v_O_1D_vt
+  - cand_SOF4_v_O_1S_vt
+  - cand_SOF4_v_O_vt
+  - cand_SOF4_v_SF*_vt
+  - cand_SOF4_v_SF2*_vt
+  - cand_SOF4_v_SF2_v_vt
+  - cand_SOF4_v_SF2_vt
+  - cand_SOF4_v_SF3*_vt
+  - cand_SOF4_v_SF3_v_vt
+  - cand_SOF4_v_SF3_vt
+  - cand_SOF4_v_SF4*_vt
+  - cand_SOF4_v_SF4_v_vt
+  - cand_SOF4_v_SF4_vt
+  - cand_SOF4_v_SF5*_vt
+  - cand_SOF4_v_SF5_v_vt
+  - cand_SOF4_v_SF5_vt
+  - cand_SOF4_v_SF6*_vt
+  - cand_SOF4_v_SF6_v_vt
+  - cand_SOF4_v_SF6_vt
+  - cand_SOF4_v_SF_v_vt
+  - cand_SOF4_v_SF_vt
+  - cand_SOF4_v_SO*_vt
+  - cand_SOF4_v_SO2*_vt
+  - cand_SOF4_v_SO2F2*_vt
+  - cand_SOF4_v_SO2F2_v_vt
+  - cand_SOF4_v_SO2F2_vt
+  - cand_SOF4_v_SO2_v_vt
+  - cand_SOF4_v_SO2_vt
+  - cand_SOF4_v_SOF*_vt
+  - cand_SOF4_v_SOF2*_vt
+  - cand_SOF4_v_SOF2_v_vt
+  - cand_SOF4_v_SOF2_vt
+  - cand_SOF4_v_SOF3*_vt
+  - cand_SOF4_v_SOF3_v_vt
+  - cand_SOF4_v_SOF3_vt
+  - cand_SOF4_v_SOF4*_vt
+  - cand_SOF4_v_SOF4_vt
+  - cand_SOF4_v_SOF_v_vt
+  - cand_SOF4_v_SOF_vt
+  - cand_SOF4_v_SO_v_vt
+  - cand_SOF4_v_SO_vt
+  - cand_SOF4_v_S_1D_vt
+  - cand_SOF4_v_S_1S_vt
+  - cand_SOF4_v_S_vt
+  - cand_SOF_v_SOF4_vt
+  - cand_SO_v_SOF4_vt
+  - cand_e_SOF4*_to_e_SOF4
+  - cand_e_SOF4_to_e_SOF4
+  - cand_e_SOF4_v_to_e_SOF4
+  properties:
+    mass_amu:
+      value: 124.051
+      unit: amu
+      source: derived from composition
+  thermo: null
+  status: literature_supported
+- id: SOF4*
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 4
+  classes:
+  - candidate
+  - excited
+  - lumped
+  state:
+    kind: excited
+    label: lumped
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SOF4*_vt
+  - cand_FO_v_SOF4*_vt
+  - cand_O2_v_SOF4*_vt
+  - cand_SF2_v_SOF4*_vt
+  - cand_SF3_v_SOF4*_vt
+  - cand_SF4_v_SOF4*_vt
+  - cand_SF5_v_SOF4*_vt
+  - cand_SF6_v_SOF4*_vt
+  - cand_SF_v_SOF4*_vt
+  - cand_SO2F2_v_SOF4*_vt
+  - cand_SO2_v_SOF4*_vt
+  - cand_SOF2_v_SOF4*_vt
+  - cand_SOF3_v_SOF4*_vt
+  - cand_SOF4_v_SOF4*_vt
+  - cand_SOF_v_SOF4*_vt
+  - cand_SO_v_SOF4*_vt
+  - cand_e_SOF4*_to_e_SOF4*
+  - cand_e_SOF4_to_e_SOF4*
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF4+
+  charge: 1
+  composition:
+    S: 1
+    O: 1
+    F: 4
+  classes:
+  - candidate
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_e_SOF4*_to_e_e_SOF4p
+  - cand_e_SOF4_to_e_e_SOF4p
+  - cand_e_SOF4_v_to_e_e_SOF4p
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF4_v
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 4
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SOF4_v_vt
+  - cand_FO_v_SOF4_v_vt
+  - cand_O2_v_SOF4_v_vt
+  - cand_SF2_v_SOF4_v_vt
+  - cand_SF3_v_SOF4_v_vt
+  - cand_SF4_v_SOF4_v_vt
+  - cand_SF5_v_SOF4_v_vt
+  - cand_SF6_v_SOF4_v_vt
+  - cand_SF_v_SOF4_v_vt
+  - cand_SO2F2_v_SOF4_v_vt
+  - cand_SO2_v_SOF4_v_vt
+  - cand_SOF2_v_SOF4_v_vt
+  - cand_SOF3_v_SOF4_v_vt
+  - cand_SOF_v_SOF4_v_vt
+  - cand_SO_v_SOF4_v_vt
+  - cand_e_SOF4_to_e_SOF4_v
+  - cand_e_SOF4_v_to_e_SOF4_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SOF_v
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+    F: 1
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SOF_v_vt
+  - cand_FO_v_SOF_v_vt
+  - cand_O2_v_SOF_v_vt
+  - cand_SF2_v_SOF_v_vt
+  - cand_SF3_v_SOF_v_vt
+  - cand_SF4_v_SOF_v_vt
+  - cand_SF5_v_SOF_v_vt
+  - cand_SF6_v_SOF_v_vt
+  - cand_SF_v_SOF_v_vt
+  - cand_SO2F2_v_SOF_v_vt
+  - cand_SO2_v_SOF_v_vt
+  - cand_SOF2_v_SOF_v_vt
+  - cand_SOF3_v_SOF_v_vt
+  - cand_SOF4_v_SOF_v_vt
+  - cand_SO_v_SOF_v_vt
+  - cand_e_SOF_to_e_SOF_v
+  - cand_e_SOF_v_to_e_SOF_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: SO_v
+  charge: 0
+  composition:
+    S: 1
+    O: 1
+  classes:
+  - candidate
+  - excited
+  - vibrational
+  state:
+    kind: excited
+    label: vibrational
+    energy_eV: null
+    resolution: lumped
+    members: []
+  depth: 3
+  introduced_by:
+  - cand_F2_v_SO_v_vt
+  - cand_FO_v_SO_v_vt
+  - cand_O2_v_SO_v_vt
+  - cand_SF2_v_SO_v_vt
+  - cand_SF3_v_SO_v_vt
+  - cand_SF4_v_SO_v_vt
+  - cand_SF5_v_SO_v_vt
+  - cand_SF6_v_SO_v_vt
+  - cand_SF_v_SO_v_vt
+  - cand_SO2F2_v_SO_v_vt
+  - cand_SO2_v_SO_v_vt
+  - cand_SOF2_v_SO_v_vt
+  - cand_SOF3_v_SO_v_vt
+  - cand_SOF4_v_SO_v_vt
+  - cand_SOF_v_SO_v_vt
+  - cand_e_SO_to_e_SO_v
+  - cand_e_SO_v_to_e_SO_v
+  properties: {}
+  thermo: null
+  status: candidate
+- id: S_1D
+  charge: 0
+  composition:
+    S: 1
+  classes:
+  - atom
+  - metastable
+  - neutral
+  state:
+    kind: excited
+    label: 1D
+    energy_eV: 1.145442
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_S_1D_vt
+  - cand_FO_v_S_1D_vt
+  - cand_O2_v_S_1D_vt
+  - cand_SF2_diss_S_1D
+  - cand_SF2_v_S_1D_vt
+  - cand_SF3_v_S_1D_vt
+  - cand_SF4_v_S_1D_vt
+  - cand_SF5_v_S_1D_vt
+  - cand_SF6_v_S_1D_vt
+  - cand_SF_v_S_1D_vt
+  - cand_SO2F2_v_S_1D_vt
+  - cand_SO2_diss_S_1D
+  - cand_SO2_v_S_1D_vt
+  - cand_SOF2_v_S_1D_vt
+  - cand_SOF3_v_S_1D_vt
+  - cand_SOF4_v_S_1D_vt
+  - cand_SOF_v_S_1D_vt
+  - cand_SO_diss_S_1D
+  - cand_SO_v_S_1D_vt
+  - e_S_1D_elastic
+  - e_S_excitation_S_1D
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 4.018417
+      unit: eV
+      source: S enthalpy plus the level energy
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 32.06
+      unit: amu
+      source: same nucleus as S
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: literature_supported
+- id: S_1S
+  charge: 0
+  composition:
+    S: 1
+  classes:
+  - atom
+  - metastable
+  - neutral
+  state:
+    kind: excited
+    label: 1S
+    energy_eV: 2.749964
+    resolution: state_resolved
+    members: []
+  depth: 2
+  introduced_by:
+  - cand_F2_v_S_1S_vt
+  - cand_FO_v_S_1S_vt
+  - cand_O2_v_S_1S_vt
+  - cand_SF2_diss_S_1S
+  - cand_SF2_v_S_1S_vt
+  - cand_SF3_v_S_1S_vt
+  - cand_SF4_v_S_1S_vt
+  - cand_SF5_v_S_1S_vt
+  - cand_SF6_v_S_1S_vt
+  - cand_SF_v_S_1S_vt
+  - cand_SO2F2_v_S_1S_vt
+  - cand_SO2_diss_S_1S
+  - cand_SO2_v_S_1S_vt
+  - cand_SOF2_v_S_1S_vt
+  - cand_SOF3_v_S_1S_vt
+  - cand_SOF4_v_S_1S_vt
+  - cand_SOF_v_S_1S_vt
+  - cand_SO_diss_S_1S
+  - cand_SO_v_S_1S_vt
+  - e_S_1S_elastic
+  - e_S_excitation_S_1S
+  properties:
+    collision_radius_A:
+      value: null
+      unit: A
+      source: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      source: atomic symmetry
+    electron_affinity_eV:
+      value: null
+      unit: eV
+      source: null
+    enthalpy_formation_eV:
+      value: 5.62294
+      unit: eV
+      source: S enthalpy plus the level energy
+    ionization_energy_eV:
+      value: null
+      unit: eV
+      source: null
+    mass_amu:
+      value: 32.06
+      unit: amu
+      source: same nucleus as S
+    polarizability_A3:
+      value: null
+      unit: A3
+      source: null
+  thermo: null
+  status: literature_supported
+- id: e
+  charge: -1
+  composition: {}
+  classes:
+  - electron
+  state:
+    kind: ground
+    label: ''
+    energy_eV: null
+    resolution: state_resolved
+    members: []
+  depth: 0
+  introduced_by:
+  - cand_Ar_4s_SF2_penning
+  - cand_Ar_4s_SF3_penning
+  - cand_Ar_4s_SF5_penning
+  - cand_Ar_4s_SF_penning
+  - cand_Ar_4s_S_penning
+  - cand_FO_diss_O_1D
+  - cand_FO_diss_O_1S
+  - cand_O2_diss_O_1S
+  - cand_SF2_diss_S_1D
+  - cand_SF2_diss_S_1S
+  - cand_SO2F2_diss_O2_a1Delta
+  - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O_1D
+  - cand_SO2F2_diss_O_1S
+  - cand_SO2_diss_O2_a1Delta
+  - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O_1D
+  - cand_SO2_diss_O_1S
+  - cand_SO2_diss_S_1D
+  - cand_SO2_diss_S_1S
+  - cand_SO_diss_O_1D
+  - cand_SO_diss_O_1S
+  - cand_SO_diss_S_1D
+  - cand_SO_diss_S_1S
+  - cand_e_F*_to_e_F
+  - cand_e_F*_to_e_F*
+  - cand_e_F*_to_e_e_Fp
+  - cand_e_F2*_to_e_F2
+  - cand_e_F2*_to_e_F2*
+  - cand_e_F2*_to_e_F_F
+  - cand_e_F2*_to_e_e_F2p
+  - cand_e_F2*_to_e_e_Fp_F
+  - cand_e_F2_to_e_F2
+  - cand_e_F2_to_e_F2*
+  - cand_e_F2_to_e_F2_v
+  - cand_e_F2_to_e_e_Fp_F
+  - cand_e_F2_v_to_e_F2
+  - cand_e_F2_v_to_e_F2_v
+  - cand_e_F2_v_to_e_F_F
+  - cand_e_F2_v_to_e_e_F2p
+  - cand_e_F2_v_to_e_e_Fp_F
+  - cand_e_FO*_to_e_FO
+  - cand_e_FO*_to_e_FO*
+  - cand_e_FO*_to_e_F_O
+  - cand_e_FO*_to_e_e_Fp_O
+  - cand_e_FO*_to_e_e_OFp
+  - cand_e_FO_to_e_FO
+  - cand_e_FO_to_e_FO*
+  - cand_e_FO_to_e_FO_v
+  - cand_e_FO_to_e_e_Fp_O
+  - cand_e_FO_to_e_e_OFp
+  - cand_e_FO_v_to_e_FO
+  - cand_e_FO_v_to_e_FO_v
+  - cand_e_FO_v_to_e_F_O
+  - cand_e_FO_v_to_e_e_Fp_O
+  - cand_e_FO_v_to_e_e_OFp
+  - cand_e_F_to_e_F*
+  - cand_e_O2_a1Delta_to_e_O_O
+  - cand_e_O2_a1Delta_to_e_e_Op_O
+  - cand_e_O2_b1Sigma_to_e_O_O
+  - cand_e_O2_b1Sigma_to_e_e_Op_O
+  - cand_e_O2_to_e_O2_v
+  - cand_e_O2_to_e_e_Op_O
+  - cand_e_O2_v_to_e_O2
+  - cand_e_O2_v_to_e_O2_v
+  - cand_e_O2_v_to_e_O_O
+  - cand_e_O2_v_to_e_e_O2p
+  - cand_e_O2_v_to_e_e_Op_O
+  - cand_e_O_1S_to_e_e_Op
+  - cand_e_SF*_to_e_F_S
+  - cand_e_SF*_to_e_SF
+  - cand_e_SF*_to_e_SF*
+  - cand_e_SF*_to_e_e_Fp_S
+  - cand_e_SF*_to_e_e_SFp
+  - cand_e_SF2*_to_e_SF2
+  - cand_e_SF2*_to_e_SF2*
+  - cand_e_SF2*_to_e_SF_F
+  - cand_e_SF2*_to_e_S_F2
+  - cand_e_SF2*_to_e_e_SF2p
+  - cand_e_SF2*_to_e_e_SFp_F
+  - cand_e_SF2*_to_e_e_Sp_F2
+  - cand_e_SF2_to_e_SF2
+  - cand_e_SF2_to_e_SF2*
+  - cand_e_SF2_to_e_SF2_v
+  - cand_e_SF2_to_e_S_F2
+  - cand_e_SF2_to_e_e_SFp_F
+  - cand_e_SF2_to_e_e_Sp_F2
+  - cand_e_SF2_v_to_e_SF2
+  - cand_e_SF2_v_to_e_SF2_v
+  - cand_e_SF2_v_to_e_SF_F
+  - cand_e_SF2_v_to_e_S_F2
+  - cand_e_SF2_v_to_e_e_SF2p
+  - cand_e_SF2_v_to_e_e_SFp_F
+  - cand_e_SF2_v_to_e_e_Sp_F2
+  - cand_e_SF3*_to_e_SF2_F
+  - cand_e_SF3*_to_e_SF3
+  - cand_e_SF3*_to_e_SF3*
+  - cand_e_SF3*_to_e_SF_F2
+  - cand_e_SF3*_to_e_e_SF2p_F
+  - cand_e_SF3*_to_e_e_SF3p
+  - cand_e_SF3*_to_e_e_SFp_F2
+  - cand_e_SF3_to_e_SF3
+  - cand_e_SF3_to_e_SF3*
+  - cand_e_SF3_to_e_SF3_v
+  - cand_e_SF3_to_e_SF_F2
+  - cand_e_SF3_to_e_e_SF2p_F
+  - cand_e_SF3_to_e_e_SFp_F2
+  - cand_e_SF3_v_to_e_SF2_F
+  - cand_e_SF3_v_to_e_SF3
+  - cand_e_SF3_v_to_e_SF3_v
+  - cand_e_SF3_v_to_e_SF_F2
+  - cand_e_SF3_v_to_e_e_SF2p_F
+  - cand_e_SF3_v_to_e_e_SF3p
+  - cand_e_SF3_v_to_e_e_SFp_F2
+  - cand_e_SF4*_to_e_SF2_F2
+  - cand_e_SF4*_to_e_SF3_F
+  - cand_e_SF4*_to_e_SF4
+  - cand_e_SF4*_to_e_SF4*
+  - cand_e_SF4*_to_e_e_SF2p_F2
+  - cand_e_SF4*_to_e_e_SF3p_F
+  - cand_e_SF4*_to_e_e_SF4p
+  - cand_e_SF4_to_e_SF2_F2
+  - cand_e_SF4_to_e_SF4
+  - cand_e_SF4_to_e_SF4*
+  - cand_e_SF4_to_e_SF4_v
+  - cand_e_SF4_to_e_e_SF2p_F2
+  - cand_e_SF4_v_to_e_SF2_F2
+  - cand_e_SF4_v_to_e_SF3_F
+  - cand_e_SF4_v_to_e_SF4
+  - cand_e_SF4_v_to_e_SF4_v
+  - cand_e_SF4_v_to_e_e_SF2p_F2
+  - cand_e_SF4_v_to_e_e_SF3p_F
+  - cand_e_SF4_v_to_e_e_SF4p
+  - cand_e_SF5*_to_e_SF3_F2
+  - cand_e_SF5*_to_e_SF4_F
+  - cand_e_SF5*_to_e_SF5
+  - cand_e_SF5*_to_e_SF5*
+  - cand_e_SF5*_to_e_e_SF3p_F2
+  - cand_e_SF5*_to_e_e_SF4p_F
+  - cand_e_SF5*_to_e_e_SF5p
+  - cand_e_SF5_to_e_SF3_F2
+  - cand_e_SF5_to_e_SF5
+  - cand_e_SF5_to_e_SF5*
+  - cand_e_SF5_to_e_SF5_v
+  - cand_e_SF5_to_e_e_SF3p_F2
+  - cand_e_SF5_v_to_e_SF3_F2
+  - cand_e_SF5_v_to_e_SF4_F
+  - cand_e_SF5_v_to_e_SF5
+  - cand_e_SF5_v_to_e_SF5_v
+  - cand_e_SF5_v_to_e_e_SF3p_F2
+  - cand_e_SF5_v_to_e_e_SF4p_F
+  - cand_e_SF5_v_to_e_e_SF5p
+  - cand_e_SF6*_to_e_SF4_F2
+  - cand_e_SF6*_to_e_SF5_F
+  - cand_e_SF6*_to_e_SF6
+  - cand_e_SF6*_to_e_SF6*
+  - cand_e_SF6*_to_e_e_SF4p_F2
+  - cand_e_SF6*_to_e_e_SF5p_F
+  - cand_e_SF6*_to_e_e_SF6p
+  - cand_e_SF6_to_e_SF4_F2
+  - cand_e_SF6_to_e_SF6*
+  - cand_e_SF6_to_e_SF6_v
+  - cand_e_SF6_to_e_e_SF4p_F2
+  - cand_e_SF6_to_e_e_SF6p
+  - cand_e_SF6_v_to_e_SF4_F2
+  - cand_e_SF6_v_to_e_SF5_F
+  - cand_e_SF6_v_to_e_SF6
+  - cand_e_SF6_v_to_e_SF6_v
+  - cand_e_SF6_v_to_e_e_SF4p_F2
+  - cand_e_SF6_v_to_e_e_SF5p_F
+  - cand_e_SF6_v_to_e_e_SF6p
+  - cand_e_SF_to_e_SF
+  - cand_e_SF_to_e_SF*
+  - cand_e_SF_to_e_SF_v
+  - cand_e_SF_to_e_e_Fp_S
+  - cand_e_SF_v_to_e_F_S
+  - cand_e_SF_v_to_e_SF
+  - cand_e_SF_v_to_e_SF_v
+  - cand_e_SF_v_to_e_e_Fp_S
+  - cand_e_SF_v_to_e_e_SFp
+  - cand_e_SO*_to_e_O_S
+  - cand_e_SO*_to_e_SO
+  - cand_e_SO*_to_e_SO*
+  - cand_e_SO*_to_e_e_Op_S
+  - cand_e_SO*_to_e_e_SOp
+  - cand_e_SO2*_to_e_SO2
+  - cand_e_SO2*_to_e_SO2*
+  - cand_e_SO2*_to_e_SO_O
+  - cand_e_SO2*_to_e_S_O2
+  - cand_e_SO2*_to_e_e_SO2p
+  - cand_e_SO2*_to_e_e_SOp_O
+  - cand_e_SO2*_to_e_e_Sp_O2
+  - cand_e_SO2F2*_to_e_SF2_O2
+  - cand_e_SO2F2*_to_e_SO2F2
+  - cand_e_SO2F2*_to_e_SO2F2*
+  - cand_e_SO2F2*_to_e_SOF2_O
+  - cand_e_SO2F2*_to_e_e_SF2p_O2
+  - cand_e_SO2F2*_to_e_e_SO2F2p
+  - cand_e_SO2F2*_to_e_e_SOF2p_O
+  - cand_e_SO2F2_to_e_SF2_O2
+  - cand_e_SO2F2_to_e_SO2F2
+  - cand_e_SO2F2_to_e_SO2F2*
+  - cand_e_SO2F2_to_e_SO2F2_v
+  - cand_e_SO2F2_to_e_SOF2_O
+  - cand_e_SO2F2_to_e_e_SF2p_O2
+  - cand_e_SO2F2_to_e_e_SO2F2p
+  - cand_e_SO2F2_to_e_e_SOF2p_O
+  - cand_e_SO2F2_v_to_e_SF2_O2
+  - cand_e_SO2F2_v_to_e_SO2F2
+  - cand_e_SO2F2_v_to_e_SO2F2_v
+  - cand_e_SO2F2_v_to_e_SOF2_O
+  - cand_e_SO2F2_v_to_e_e_SF2p_O2
+  - cand_e_SO2F2_v_to_e_e_SO2F2p
+  - cand_e_SO2F2_v_to_e_e_SOF2p_O
+  - cand_e_SO2_to_e_SO2
+  - cand_e_SO2_to_e_SO2*
+  - cand_e_SO2_to_e_SO2_v
+  - cand_e_SO2_to_e_SO_O
+  - cand_e_SO2_to_e_S_O2
+  - cand_e_SO2_to_e_e_SO2p
+  - cand_e_SO2_to_e_e_SOp_O
+  - cand_e_SO2_to_e_e_Sp_O2
+  - cand_e_SO2_v_to_e_SO2
+  - cand_e_SO2_v_to_e_SO2_v
+  - cand_e_SO2_v_to_e_SO_O
+  - cand_e_SO2_v_to_e_S_O2
+  - cand_e_SO2_v_to_e_e_SO2p
+  - cand_e_SO2_v_to_e_e_SOp_O
+  - cand_e_SO2_v_to_e_e_Sp_O2
+  - cand_e_SOF*_to_e_FO_S
+  - cand_e_SOF*_to_e_SOF
+  - cand_e_SOF*_to_e_SOF*
+  - cand_e_SOF*_to_e_e_OFp_S
+  - cand_e_SOF*_to_e_e_SOFp
+  - cand_e_SOF2*_to_e_SOF2
+  - cand_e_SOF2*_to_e_SOF2*
+  - cand_e_SOF2*_to_e_SOF_F
+  - cand_e_SOF2*_to_e_SO_F2
+  - cand_e_SOF2*_to_e_e_SOF2p
+  - cand_e_SOF2*_to_e_e_SOFp_F
+  - cand_e_SOF2*_to_e_e_SOp_F2
+  - cand_e_SOF2_to_e_SOF2
+  - cand_e_SOF2_to_e_SOF2*
+  - cand_e_SOF2_to_e_SOF2_v
+  - cand_e_SOF2_to_e_SOF_F
+  - cand_e_SOF2_to_e_SO_F2
+  - cand_e_SOF2_to_e_e_SOF2p
+  - cand_e_SOF2_to_e_e_SOFp_F
+  - cand_e_SOF2_to_e_e_SOp_F2
+  - cand_e_SOF2_v_to_e_SOF2
+  - cand_e_SOF2_v_to_e_SOF2_v
+  - cand_e_SOF2_v_to_e_SOF_F
+  - cand_e_SOF2_v_to_e_SO_F2
+  - cand_e_SOF2_v_to_e_e_SOF2p
+  - cand_e_SOF2_v_to_e_e_SOFp_F
+  - cand_e_SOF2_v_to_e_e_SOp_F2
+  - cand_e_SOF3*_to_e_SOF2_F
+  - cand_e_SOF3*_to_e_SOF3
+  - cand_e_SOF3*_to_e_SOF3*
+  - cand_e_SOF3*_to_e_SOF_F2
+  - cand_e_SOF3*_to_e_e_SOF2p_F
+  - cand_e_SOF3*_to_e_e_SOF3p
+  - cand_e_SOF3*_to_e_e_SOFp_F2
+  - cand_e_SOF3_to_e_SOF2_F
+  - cand_e_SOF3_to_e_SOF3
+  - cand_e_SOF3_to_e_SOF3*
+  - cand_e_SOF3_to_e_SOF3_v
+  - cand_e_SOF3_to_e_SOF_F2
+  - cand_e_SOF3_to_e_e_SOF2p_F
+  - cand_e_SOF3_to_e_e_SOF3p
+  - cand_e_SOF3_to_e_e_SOFp_F2
+  - cand_e_SOF3_v_to_e_SOF2_F
+  - cand_e_SOF3_v_to_e_SOF3
+  - cand_e_SOF3_v_to_e_SOF3_v
+  - cand_e_SOF3_v_to_e_SOF_F2
+  - cand_e_SOF3_v_to_e_e_SOF2p_F
+  - cand_e_SOF3_v_to_e_e_SOF3p
+  - cand_e_SOF3_v_to_e_e_SOFp_F2
+  - cand_e_SOF4*_to_e_SOF2_F2
+  - cand_e_SOF4*_to_e_SOF3_F
+  - cand_e_SOF4*_to_e_SOF4
+  - cand_e_SOF4*_to_e_SOF4*
+  - cand_e_SOF4*_to_e_e_SOF2p_F2
+  - cand_e_SOF4*_to_e_e_SOF3p_F
+  - cand_e_SOF4*_to_e_e_SOF4p
+  - cand_e_SOF4_to_e_SOF2_F2
+  - cand_e_SOF4_to_e_SOF3_F
+  - cand_e_SOF4_to_e_SOF4
+  - cand_e_SOF4_to_e_SOF4*
+  - cand_e_SOF4_to_e_SOF4_v
+  - cand_e_SOF4_to_e_e_SOF2p_F2
+  - cand_e_SOF4_to_e_e_SOF3p_F
+  - cand_e_SOF4_to_e_e_SOF4p
+  - cand_e_SOF4_v_to_e_SOF2_F2
+  - cand_e_SOF4_v_to_e_SOF3_F
+  - cand_e_SOF4_v_to_e_SOF4
+  - cand_e_SOF4_v_to_e_SOF4_v
+  - cand_e_SOF4_v_to_e_e_SOF2p_F2
+  - cand_e_SOF4_v_to_e_e_SOF3p_F
+  - cand_e_SOF4_v_to_e_e_SOF4p
+  - cand_e_SOF_to_e_FO_S
+  - cand_e_SOF_to_e_SOF
+  - cand_e_SOF_to_e_SOF*
+  - cand_e_SOF_to_e_SOF_v
+  - cand_e_SOF_to_e_e_OFp_S
+  - cand_e_SOF_to_e_e_SOFp
+  - cand_e_SOF_v_to_e_FO_S
+  - cand_e_SOF_v_to_e_SOF
+  - cand_e_SOF_v_to_e_SOF_v
+  - cand_e_SOF_v_to_e_e_OFp_S
+  - cand_e_SOF_v_to_e_e_SOFp
+  - cand_e_SO_to_e_O_S
+  - cand_e_SO_to_e_SO
+  - cand_e_SO_to_e_SO*
+  - cand_e_SO_to_e_SO_v
+  - cand_e_SO_to_e_e_Op_S
+  - cand_e_SO_to_e_e_SOp
+  - cand_e_SO_v_to_e_O_S
+  - cand_e_SO_v_to_e_SO
+  - cand_e_SO_v_to_e_SO_v
+  - cand_e_SO_v_to_e_e_Op_S
+  - cand_e_SO_v_to_e_e_SOp
+  - cand_e_S_1D_to_e_e_Sp
+  - cand_e_S_1S_to_e_e_Sp
+  - cand_e_S_to_e_S
+  - e_Ar4s_elastic
+  - e_Ar4s_stepwise_ionization
+  - e_Ar4s_superelastic
+  - e_Ar_elastic
+  - e_Ar_excitation_4s_lumped
+  - e_Ar_ionization
+  - e_F2_dissociation_2F
+  - e_F2_ionization_F2p
+  - e_FO_dissociation_F_O
+  - e_F_elastic
+  - e_F_ionization
+  - e_O2_a1Delta_elastic
+  - e_O2_a1Delta_ionization
+  - e_O2_a1Delta_superelastic
+  - e_O2_b1Sigma_elastic
+  - e_O2_b1Sigma_ionization
+  - e_O2_b1Sigma_superelastic
+  - e_O2_dissociation_O_O
+  - e_O2_dissociation_O_O1D
+  - e_O2_elastic
+  - e_O2_excitation_O2_a1Delta
+  - e_O2_excitation_O2_b1Sigma
+  - e_O2_ionization
+  - e_O_1D_elastic
+  - e_O_1D_ionization
+  - e_O_1D_superelastic
+  - e_O_1S_elastic
+  - e_O_1S_superelastic
+  - e_O_elastic
+  - e_O_excitation_O_1D
+  - e_O_excitation_O_1S
+  - e_O_ionization
+  - e_SF2_dissociation_SF_F
+  - e_SF2_ionization_SF2p
+  - e_SF3_dissociation_SF2_F
+  - e_SF3_ionization
+  - e_SF4_dissociation_SF3_F
+  - e_SF4_dissociative_ionization_SF3p_F
+  - e_SF4_ionization
+  - e_SF5_dissociation_SF4_F
+  - e_SF5_dissociative_ionization_SF4p_F
+  - e_SF5_ionization
+  - e_SF6_dissociation_SF2_F2_2F
+  - e_SF6_dissociation_SF3_3F
+  - e_SF6_dissociation_SF4_2F
+  - e_SF6_dissociation_SF5_F
+  - e_SF6_dissociation_SF_F2_3F
+  - e_SF6_dissociative_ionization_Fp_SF4_F
+  - e_SF6_dissociative_ionization_SF2p_F2_2F
+  - e_SF6_dissociative_ionization_SF3p_3F
+  - e_SF6_dissociative_ionization_SF4p_2F
+  - e_SF6_dissociative_ionization_SF5p_F
+  - e_SF6_dissociative_ionization_SFp_F2_3F
+  - e_SF6_dissociative_ionization_Sp_F2_4F
+  - e_SF6_elastic
+  - e_SF_dissociation_S_F
+  - e_SF_ionization_SFp
+  - e_S_1D_elastic
+  - e_S_1D_superelastic
+  - e_S_1S_elastic
+  - e_S_1S_superelastic
+  - e_S_excitation_S_1D
+  - e_S_excitation_S_1S
+  - e_S_ionization_Sp
+  properties:
+    mass_amu:
+      value: 0.00054858
+      unit: amu
+      source: physical constant
+  thermo: null
+  status: curated

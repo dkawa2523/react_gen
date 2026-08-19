@@ -1,0 +1,48 @@
+schema_version: 1
+id: O_1S
+display_name: O(1S)
+composition:
+  O: 1
+charge: 0
+classes:
+- neutral
+- atom
+- metastable
+state:
+  kind: excited
+  label: 1S
+  excitation_energy_eV: 4.189746
+properties:
+  mass_amu:
+    value: 15.9994
+    unit: amu
+    source: same nucleus as O
+  enthalpy_formation_eV:
+    value: 6.772823
+    unit: eV
+    source: O enthalpy plus the level energy
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: literature_supported
+  notes:
+  - 'NIST Atomic Spectra Database, energy levels (energy1.pl). Metastable: no electric
+    dipole transition to any lower level is allowed, which is what lets it accumulate.'

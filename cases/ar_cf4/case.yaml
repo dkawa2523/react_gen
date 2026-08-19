@@ -1,0 +1,14 @@
+name: ar_cf4
+gases: [Ar, CF4]
+
+conditions:
+  pressure_Pa: 2.7
+  gas_temperature_K: 350.0
+  electron_temperature_eV: 4.0
+  electron_density_m3: 3.0e+16
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+
+surfaces: [SiO2, Si]
+
+accept_status: [curated, literature_supported]

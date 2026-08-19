@@ -1,0 +1,46 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: He
+channels:
+- id: e_He_excitation_He_3S
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: He_3S
+    n: 1
+  status: literature_supported
+  threshold_eV: 19.819615
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 3S level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: The level energy is exact; the cross section is not acquired.
+- id: e_He_excitation_He_1S
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: He_1S
+    n: 1
+  status: literature_supported
+  threshold_eV: 20.615775
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 1S level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: The level energy is exact; the cross section is not acquired.

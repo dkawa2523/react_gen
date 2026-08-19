@@ -1,0 +1,13 @@
+schema_version: 1
+pair: {family: electron, projectile: e, target: Ar}
+channels:
+- id: e_Ar_elastic
+  type: elastic
+  products: [{species: e, n: 1}, {species: Ar, n: 1}]
+  threshold_eV: 0.0
+  status: curated
+- id: e_Ar_ionization
+  type: ionization
+  products: [{species: e, n: 2}, {species: 'Ar+', n: 1}]
+  threshold_eV: 15.76
+  status: curated

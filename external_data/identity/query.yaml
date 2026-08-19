@@ -1,0 +1,166 @@
+species:
+- id: Ar
+  query: Ar
+  composition:
+    Ar: 1
+  mass_amu: 39.948
+- id: BCl3
+  query: BCl3
+  composition:
+    B: 1
+    Cl: 3
+  mass_amu: 117.16000000000001
+- id: C2F4
+  query: tetrafluoroethylene
+  composition:
+    C: 2
+    F: 4
+  mass_amu: 100.01400000000001
+- id: C2H2
+  query: acetylene
+  composition:
+    C: 2
+    H: 2
+  mass_amu: 26.037999999999997
+- id: C4F8
+  query: octafluorocyclobutane
+  composition:
+    C: 4
+    F: 8
+  mass_amu: 200.02800000000002
+- id: CF2O
+  query: carbonyl fluoride
+  composition:
+    C: 1
+    F: 2
+    O: 1
+  mass_amu: 66.006
+- id: CF4
+  query: CF4
+  composition:
+    C: 1
+    F: 4
+  mass_amu: 88.0043
+- id: CH4
+  query: CH4
+  composition:
+    C: 1
+    H: 4
+  mass_amu: 16.043
+- id: CHF3
+  query: CHF3
+  composition:
+    C: 1
+    H: 1
+    F: 3
+  mass_amu: 70.013
+- id: CO
+  query: carbon monoxide
+  composition:
+    C: 1
+    O: 1
+  mass_amu: 28.009999999999998
+- id: CO2
+  query: CO2
+  composition:
+    C: 1
+    O: 2
+  mass_amu: 44.009
+- id: Cl2
+  query: Cl2
+  composition:
+    Cl: 2
+  mass_amu: 70.9
+- id: Cu
+  query: Cu
+  composition:
+    Cu: 1
+  mass_amu: 63.546
+- id: F2
+  query: F2
+  composition:
+    F: 2
+  mass_amu: 37.996
+- id: H2
+  query: H2
+  composition:
+    H: 2
+  mass_amu: 2.016
+- id: HBr
+  query: HBr
+  composition:
+    H: 1
+    Br: 1
+  mass_amu: 80.91199999999999
+- id: He
+  query: He
+  composition:
+    He: 1
+  mass_amu: 4.0026
+- id: N2
+  query: N2
+  composition:
+    N: 2
+  mass_amu: 28.014
+- id: NF3
+  query: NF3
+  composition:
+    N: 1
+    F: 3
+  mass_amu: 71.001
+- id: NH3
+  query: NH3
+  composition:
+    N: 1
+    H: 3
+  mass_amu: 17.031
+- id: O2
+  query: O2
+  composition:
+    O: 2
+  mass_amu: 31.9988
+- id: SF4
+  query: SF4
+  composition:
+    S: 1
+    F: 4
+  mass_amu: 108.059
+- id: SF6
+  query: SF6
+  composition:
+    S: 1
+    F: 6
+  mass_amu: 146.055
+- id: SO2
+  query: SO2
+  composition:
+    S: 1
+    O: 2
+  mass_amu: 64.058
+- id: SO2F2
+  query: sulfuryl fluoride
+  composition:
+    S: 1
+    O: 2
+    F: 2
+  mass_amu: 102.054
+- id: SOF2
+  query: thionyl fluoride
+  composition:
+    S: 1
+    O: 1
+    F: 2
+  mass_amu: 86.055
+- id: SOF4
+  query: sulfur tetrafluoride oxide
+  composition:
+    S: 1
+    O: 1
+    F: 4
+  mass_amu: 124.051
+- id: SiH4
+  query: SiH4
+  composition:
+    Si: 1
+    H: 4
+  mass_amu: 32.117000000000004

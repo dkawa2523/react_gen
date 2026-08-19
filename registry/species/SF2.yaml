@@ -1,10 +1,30 @@
 schema_version: 1
 id: SF2
 display_name: SF2
-composition: {S: 1, F: 2}
+composition:
+  S: 1
+  F: 2
 charge: 0
-classes: [neutral, radical, molecule]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+classes:
+- neutral
+- radical
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
 metadata:
   status: literature_supported
-  notes: [Sulfur difluoride fragment in the SF6/O2 volume mechanism.]
+  notes:
+  - Sulfur difluoride fragment in the SF6/O2 volume mechanism.
+properties:
+  enthalpy_formation_eV:
+    value: -3.074561
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 13814-25-0, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 257.7
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 13814-25-0, formula
+      verified against the registry

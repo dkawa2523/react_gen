@@ -1,0 +1,38 @@
+mechanism_id: ar_sf6_o2.Ar-O2-SF6.677f0001
+case: ar_sf6_o2
+gases:
+- Ar
+- SF6
+- O2
+conditions:
+  pressure_Pa: 4.0
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 5.0e+16
+  reduced_field_Td: 50.0
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+  residence_time_s: 0.05
+species: 80
+reactions: 2081
+by_family:
+  electron: 384
+  ion_neutral: 719
+  neutral_neutral: 977
+  unimolecular: 1
+max_depth: 4
+complete: true
+truncated_by: []
+data_coverage:
+  cross_section: 0/384
+  rate_coefficient: 48/1697
+relevance:
+  comparable: 8
+  fast: 62
+  negligible: 1
+  slow: 4
+  unknown: 2006
+gaps:
+  blocking: 0
+  data: 545
+  info: 13

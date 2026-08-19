@@ -1,0 +1,46 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: C_1S
+channels:
+- id: e_C_1S_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: C_1S
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 1S level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: Momentum transfer for the metastable.
+- id: e_C_1S_superelastic
+  type: deexcitation
+  products:
+  - species: e
+    n: 1
+  - species: C
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 1S level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: 'Superelastic: the electron gains the level energy.'

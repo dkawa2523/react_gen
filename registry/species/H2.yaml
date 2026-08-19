@@ -1,8 +1,29 @@
 schema_version: 1
 id: H2
 display_name: H2
-composition: {H: 2}
+composition:
+  H: 2
 charge: 0
-classes: [neutral, molecule, input_feedstock]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
-metadata: {status: literature_supported, notes: [Semiconductor feedstock identity; reaction acquisition remains explicit.]}
+classes:
+- neutral
+- molecule
+- input_feedstock
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+metadata:
+  status: literature_supported
+  notes:
+  - Semiconductor feedstock identity; reaction acquisition remains explicit.
+properties:
+  enthalpy_formation_eV:
+    value: 0.0
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 1333-74-0, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 130.7
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 1333-74-0, formula
+      verified against the registry

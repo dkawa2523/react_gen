@@ -1,0 +1,21 @@
+schema_version: 1
+pair: {family: three_body, projectile: F, target: F}
+channels:
+- id: F_F_M_recombination
+  type: recombination
+  third_body: M
+  reverse: from_equilibrium
+  products: [{species: F2, n: 1}]
+  status: curated
+  data:
+    datasets:
+    - id: ds_F_F_M_recombination
+      kind: rate_coefficient
+      representation: arrhenius
+      unit: m6/s
+      parameters: {A: 1.0e-45, n: -1.0, T_ref: 300.0, Ea_eV: 0.0}
+      validity: {minimum: 200.0, maximum: 1000.0, unit: K}
+      uncertainty: {factor: 2.0}
+      source: {source_type: fixture, citation: synthetic test value}
+      status: curated
+      preferred: true

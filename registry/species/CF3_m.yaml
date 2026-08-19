@@ -25,11 +25,6 @@ properties:
     value: null
     unit: D
     source: null
-  collision_radius_A:
-    value: 2.2
-    unit: A
-    source: reuse CF3 radius estimate
-    quality: estimated
   enthalpy_formation_eV:
     value: -6.694108733947481
     unit: eV

@@ -1,11 +1,33 @@
 schema_version: 1
 id: CF2O
 display_name: COF2
-aliases: [carbonyl fluoride, COF2]
-composition: {C: 1, F: 2, O: 1}
+aliases:
+- carbonyl fluoride
+- COF2
+composition:
+  C: 1
+  F: 2
+  O: 1
 charge: 0
-classes: [neutral, molecule]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
 metadata:
   status: literature_supported
-  notes: [Stable oxygenated fluorocarbon product; canonical registry ID follows CF2O.]
+  notes:
+  - Stable oxygenated fluorocarbon product; canonical registry ID follows CF2O.
+properties:
+  enthalpy_formation_eV:
+    value: -6.287484
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 353-50-4, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 258.88
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 353-50-4, formula
+      verified against the registry

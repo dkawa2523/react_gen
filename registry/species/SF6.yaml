@@ -31,15 +31,14 @@ properties:
   collision_radius_A:
     value: 2.75
     unit: A
-    source: half of the 5.50 A literature kinetic diameter tabulated in NIST publication 928548
+    source: half of the 5.50 A literature kinetic diameter tabulated in NIST publication
+      928548
     quality: estimated
   enthalpy_formation_eV:
-    value: -12.6492801873783
+    value: -12.649591
     unit: eV
-    source: NIST Chemistry WebBook SRD 69, Delta_f H degrees gas=-1220.47 kJ/mol,
-      Chase (1998)
-    quality: curated
-    note: Converted with 1 eV per molecule = 96.48533212331002 kJ/mol.
+    source: chemicals package bundled thermodynamic tables, CAS 2551-62-4, formula
+      verified against the registry
   ionization_energy_eV:
     value: 15.32
     unit: eV
@@ -48,8 +47,14 @@ properties:
     value: 1.03
     unit: eV
     source: NIST Chemistry WebBook recommended kinetic determination
+  entropy_J_mol_K:
+    value: 291.5
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 2551-62-4, formula
+      verified against the registry
 metadata:
   status: curated
   notes:
   - Ground-state SF6 record shared by every gas mixture.
-  - Collision radius is a transparent DNT preprocessing estimate, not a fundamental constant.
+  - Collision radius is a transparent DNT preprocessing estimate, not a fundamental
+    constant.

@@ -1,10 +1,28 @@
 schema_version: 1
 id: F2
 display_name: F2
-composition: {F: 2}
+composition:
+  F: 2
 charge: 0
-classes: [neutral, molecule]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
 metadata:
   status: literature_supported
-  notes: [Molecular fluorine formed by fluorine recombination.]
+  notes:
+  - Molecular fluorine formed by fluorine recombination.
+properties:
+  enthalpy_formation_eV:
+    value: 0.0
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 7782-41-4, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 202.8
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 7782-41-4, formula
+      verified against the registry

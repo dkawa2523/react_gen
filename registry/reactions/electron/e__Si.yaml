@@ -1,0 +1,85 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: Si
+channels:
+- id: e_Si_excitation_Si_1D
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: Si_1D
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.780958
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 1D level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: The level energy is exact; the cross section is not acquired.
+- id: e_Si_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: Si
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the ground level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: Momentum transfer for the ground atom.
+- id: e_Si_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: Si+
+    n: 1
+  status: literature_supported
+  threshold_eV: 8.15168
+  source_record:
+    source_type: mendeleev
+    citation: mendeleev package, bundled periodic table
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: Ionization cross section not acquired.
+- id: e_Si_excitation_Si_1S
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: Si_1S
+    n: 1
+  status: literature_supported
+  threshold_eV: 1.908659
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 1S level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: The level energy is exact; the cross section is not acquired.

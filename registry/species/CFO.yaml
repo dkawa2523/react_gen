@@ -1,10 +1,25 @@
 schema_version: 1
 id: CFO
 display_name: CFO
-composition: {C: 1, F: 1, O: 1}
+composition:
+  C: 1
+  F: 1
+  O: 1
 charge: 0
-classes: [neutral, radical, molecule]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+classes:
+- neutral
+- radical
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
 metadata:
   status: literature_supported
-  notes: [Carbonyl fluoride radical in the CF4/O2 volume mechanism.]
+  notes:
+  - Carbonyl fluoride radical in the CF4/O2 volume mechanism.
+properties:
+  enthalpy_formation_eV:
+    value: -1.77712
+    unit: eV
+    source: pyromat NASA Glenn ideal-gas tables, read at 300 K, formula verified

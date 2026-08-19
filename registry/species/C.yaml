@@ -1,10 +1,37 @@
 schema_version: 1
 id: C
 display_name: C
-composition: {C: 1}
+composition:
+  C: 1
 charge: 0
-classes: [neutral, radical, atom]
-state: {kind: ground, label: 3P, excitation_energy_eV: 0.0}
+classes:
+- neutral
+- radical
+- atom
+state:
+  kind: ground
+  label: 3P
+  excitation_energy_eV: 0.0
 metadata:
   status: literature_supported
-  notes: [Ground-state carbon atom in the CF4/O2 volume mechanism.]
+  notes:
+  - Ground-state carbon atom in the CF4/O2 volume mechanism.
+properties:
+  enthalpy_formation_eV:
+    value: 7.429865
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 7440-44-0, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 158.1
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 7440-44-0, formula
+      verified against the registry
+  ionization_energy_eV:
+    value: 11.260288
+    unit: eV
+    source: mendeleev package, bundled periodic table
+  electron_affinity_eV:
+    value: 1.262119
+    unit: eV
+    source: mendeleev package, bundled periodic table

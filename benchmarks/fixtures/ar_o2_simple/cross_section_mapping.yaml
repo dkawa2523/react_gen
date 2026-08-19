@@ -1,9 +1,0 @@
-schema_version: 1
-mappings:
-  - reaction_id: e_O2_elastic
-    asset_path: assets/cross_sections/e_O2_elastic_6e4b8aa7fe.csv
-    source: local_file
-    mapping_status: reviewed_fixture
-    process_label_original: elastic
-    notes:
-      - Synthetic minimal workflow fixture for benchmark only.

@@ -1,0 +1,13 @@
+id: F2
+aliases: [fluorine]
+composition: {F: 2}
+charge: 0
+classes: [neutral, molecule]
+thermo:
+  t_min: 200.0
+  t_mid: 1000.0
+  t_max: 6000.0
+  source: fixture polynomial
+  low:  [3.5, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0]
+  high: [3.5, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0]
+metadata: {status: curated}

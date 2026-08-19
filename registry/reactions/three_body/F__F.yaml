@@ -1,0 +1,34 @@
+schema_version: 1
+pair:
+  family: three_body
+  projectile: F
+  target: F
+channels:
+- id: F_F_M_recombination
+  type: recombination
+  third_body: M
+  products:
+  - species: F2
+    n: 1
+  status: literature_supported
+  reverse: from_equilibrium
+  data:
+    datasets:
+    - id: ds_F_F_M_recombination
+      kind: rate_coefficient
+      representation: reference_only
+      unit: m6/s
+      source:
+        source_type: acquisition_target
+        citation: Termolecular fluorine recombination; acquire from an evaluated
+          kinetics compilation with third-body efficiencies.
+      status: needs_import
+      preferred: true
+  notes:
+  - Dominant F2 formation route above roughly 100 mTorr; negligible in the
+    millitorr regime. The pressure in the case decides which.
+metadata:
+  status: literature_supported
+  notes:
+  - Registered as an equation; the coefficient and third-body efficiencies are
+    explicit acquisition gaps.

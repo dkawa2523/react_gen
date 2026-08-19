@@ -30,17 +30,23 @@ properties:
     unit: A
     source: null
   enthalpy_formation_eV:
-    value: 2.5826
+    value: 2.583077
     unit: eV
-    source: NIST Chemistry WebBook CODATA value 249.18 kJ/mol converted per molecule
+    source: chemicals package bundled thermodynamic tables, CAS 17778-80-2, formula
+      verified against the registry
   ionization_energy_eV:
     value: 13.618055
     unit: eV
-    source: NIST Atomic Spectra Database
+    source: mendeleev package, bundled periodic table
   electron_affinity_eV:
-    value: 1.461112
+    value: 1.461113
     unit: eV
-    source: NIST Chemistry WebBook evaluated atomic oxygen electron affinity
+    source: mendeleev package, bundled periodic table
+  entropy_J_mol_K:
+    value: 161.1
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 17778-80-2, formula
+      verified against the registry
 metadata:
   status: curated
   notes:

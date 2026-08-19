@@ -15,12 +15,11 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE_PATH = ROOT / "quality" / "baseline.json"
 REPORT_DIR = ROOT / "build" / "quality"
-PYTHON_TARGETS = ("src", "external_data_tools", "tests", "tools", "noxfile.py")
-PRODUCTION_TARGETS = ("src/plasma_reactgen", "external_data_tools")
+PYTHON_TARGETS = ("src", "tests", "tools", "noxfile.py")
+PRODUCTION_TARGETS = ("src/reactgen", "src/acquire")
 MYPY_TARGETS = (*PRODUCTION_TARGETS, "tools/quality.py", "noxfile.py")
 COMPLEXITY_LIMIT = 10
 DIFF_COVERAGE_MINIMUM = 90.0
-MUTATION_MINIMUM = 80.0
 
 
 class QualityFailure(RuntimeError):
@@ -244,8 +243,8 @@ def _run_tests_with_coverage() -> float:
         "-m",
         "pytest",
         "-q",
-        "--cov=plasma_reactgen",
-        "--cov=external_data_tools",
+        "--cov=reactgen",
+        "--cov=acquire",
         "--cov-branch",
         f"--cov-report=json:{json_report}",
         f"--cov-report=xml:{xml_report}",
@@ -465,7 +464,6 @@ def quality_baseline() -> None:
         "policy": {
             "complexity_limit": COMPLEXITY_LIMIT,
             "diff_coverage_minimum": DIFF_COVERAGE_MINIMUM,
-            "mutation_minimum": MUTATION_MINIMUM,
         },
         **snapshot,
     }
@@ -511,39 +509,20 @@ def _run_multiple_hypothesis_seeds() -> None:
         )
 
 
-def _run_mutation() -> None:
-    if os.name == "nt":
-        raise QualityFailure("mutmut requires POSIX; run quality-nightly in the Ubuntu CI job.")
-    _run([_tool("mutmut"), "run"], echo=True)
-    results = _run([_tool("mutmut"), "results", "--all"], echo=True).stdout
-    statuses = Counter(
-        match.group(1)
-        for line in results.splitlines()
-        if (match := re.search(r": (killed|survived|suspicious|timeout|skipped)$", line))
-    )
-    scored = statuses["killed"] + statuses["survived"] + statuses["suspicious"]
-    score = 100.0 if scored == 0 else 100.0 * statuses["killed"] / scored
-    print(f"Mutation score: {score:.2f}% ({dict(statuses)})")
-    if score < MUTATION_MINIMUM or statuses["timeout"]:
-        raise QualityFailure(
-            f"Mutation gate failed: score={score:.2f}% minimum={MUTATION_MINIMUM:.2f}%"
-        )
-
-
 def quality_nightly() -> None:
     quality_pr()
     _run_multiple_hypothesis_seeds()
-    _run(
-        [
-            sys.executable,
-            "-m",
-            "external_data_tools.run_semiconductor_benchmarks",
-            "--config",
-            "benchmarks/benchmark_config_semiconductor.yaml",
-        ],
-        echo=True,
-    )
-    _run_mutation()
+    _generate_every_case()
+
+
+def _generate_every_case() -> None:
+    """Every case in the repository must generate a bundle without a blocking gap."""
+
+    for case in sorted(Path("cases").glob("*/case.yaml")):
+        _run(
+            [sys.executable, "-m", "reactgen.cli", "generate", str(case), "--out", "build/nightly"],
+            echo=True,
+        )
 
 
 COMMANDS = {

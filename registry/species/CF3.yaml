@@ -18,28 +18,16 @@ properties:
     value: 69.0059
     unit: amu
     source: NIST Chemistry WebBook SRD 69
-  polarizability_A3:
-    value: 2.25
-    unit: A3
-    source: engineering estimate for DNT pre-processing; replace with curated value
-      before production
-    note: Additivity/engineering seed for DNT task generation.
-    quality: estimated
   dipole_moment_D:
     value: 0.43
     unit: D
     source: Mass-spectrometric molecular-beam focusing measurement, Chem. Phys. Lett.
       63, 375-377 (1979)
-  collision_radius_A:
-    value: 2.2
-    unit: A
-    source: engineering estimate for DNT pre-processing; replace with curated value
-      before production
-    quality: estimated
   enthalpy_formation_eV:
-    value: -4.874108733947481
+    value: -4.852447
     unit: eV
-    source: NIST Chemistry WebBook SRD 69, ΔfH°gas=-470.28 kJ/mol
+    source: chemicals package bundled thermodynamic tables, CAS 2264-21-3, formula
+      verified against the registry
   ionization_energy_eV:
     value: 9.05
     unit: eV
@@ -50,6 +38,11 @@ properties:
     value: 1.82
     unit: eV
     source: Deyerl/Alconcel/Continetti, J. Phys. Chem. A 105, 552-557 (2001)
+  entropy_J_mol_K:
+    value: 264.5
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 2264-21-3, formula
+      verified against the registry
 metadata:
   status: estimated
   notes:

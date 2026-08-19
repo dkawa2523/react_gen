@@ -1,0 +1,698 @@
+case: ar_cf4
+counts:
+  blocking: 0
+  data: 169
+  info: 4
+gaps:
+- kind: missing_threshold
+  subject: cand_CF2_diss_C_1D
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_CF2_diss_C_1S
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_CF_diss_C_1D
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_CF_diss_C_1S
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF*_to_e_C_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF*_to_e_e_CFp
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF*_to_e_e_Cp_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2*_to_e_CF_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2*_to_e_C_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2*_to_e_e_CF2p
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2*_to_e_e_CFp_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2*_to_e_e_Cp_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_to_e_CF2*
+  detail: excitation energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_to_e_CF2_v
+  detail: vibrational quantum unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_to_e_C_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_to_e_e_CFp_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_to_e_e_Cp_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_v_to_e_CF_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_v_to_e_C_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_v_to_e_e_CF2p
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_v_to_e_e_CFp_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF2_v_to_e_e_Cp_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3*_to_e_CF2_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3*_to_e_CF_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3*_to_e_e_CF2p_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3*_to_e_e_CF3p
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3*_to_e_e_CFp_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_to_e_CF3*
+  detail: excitation energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_to_e_CF3_v
+  detail: vibrational quantum unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_to_e_CF_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_to_e_e_CF2p_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_to_e_e_CFp_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_v_to_e_CF2_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_v_to_e_CF_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_v_to_e_e_CF2p_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_v_to_e_e_CF3p
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF3_v_to_e_e_CFp_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4*_to_e_CF2_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4*_to_e_CF3_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4*_to_e_e_CF2p_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4*_to_e_e_CF3p_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4*_to_e_e_CF4p
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4_to_e_CF2_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4_to_e_CF4*
+  detail: excitation energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4_to_e_CF4_v
+  detail: vibrational quantum unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4_to_e_e_CF2p_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4_v_to_e_CF2_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4_v_to_e_CF3_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4_v_to_e_e_CF2p_F2
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4_v_to_e_e_CF3p_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF4_v_to_e_e_CF4p
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF_to_e_CF*
+  detail: excitation energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF_to_e_CF_v
+  detail: vibrational quantum unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF_to_e_e_CFp
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF_to_e_e_Cp_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF_v_to_e_C_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF_v_to_e_e_CFp
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_CF_v_to_e_e_Cp_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_C_1D_to_e_e_Cp
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_C_1S_to_e_e_Cp
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_C_to_e_e_Cp
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F*_to_e_e_Fp
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F2*_to_e_F_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F2*_to_e_e_F2p
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F2*_to_e_e_Fp_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F2_to_e_F2*
+  detail: excitation energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F2_to_e_F2_v
+  detail: vibrational quantum unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F2_to_e_e_Fp_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F2_v_to_e_F_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F2_v_to_e_e_F2p
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F2_v_to_e_e_Fp_F
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_F_to_e_F*
+  detail: excitation energy unknown; LXCat states it
+  severity: data
+- kind: no_loss_path
+  subject: CF+
+  detail: produced but never consumed
+  severity: info
+- kind: missing_property
+  subject: Ar
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: Ar_4s
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: Ar_4s
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: Ar_4s
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: C
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: C
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: C
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: C+
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: C+
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: CF
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: CF
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF*
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF*
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: CF*
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: CF*
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: CF*
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF*
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF+
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: CF+
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF2
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF2
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF2*
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF2*
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: CF2*
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: CF2*
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: CF2*
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF2*
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF2_v
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF2_v
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: CF2_v
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: CF2_v
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: CF2_v
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF2_v
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF3
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF3
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF3*
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF3*
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: CF3*
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: CF3*
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: CF3*
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF3*
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF3_v
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF3_v
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: CF3_v
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: CF3_v
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: CF3_v
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF3_v
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF4*
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF4*
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: CF4*
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: CF4*
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: CF4*
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF4*
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF4_v
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF4_v
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: CF4_v
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: CF4_v
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: CF4_v
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF4_v
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: CF_v
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: CF_v
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: CF_v
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: CF_v
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: CF_v
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: CF_v
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: C_1D
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: C_1D
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: C_1D
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: C_1S
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: C_1S
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: C_1S
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: F
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: F*
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: F*
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: F*
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: F*
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: F*
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: F*
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: F2
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: F2
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: F2
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: F2
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: F2*
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: F2*
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: F2*
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: F2*
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: F2*
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: F2*
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: F2+
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: F2_v
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: F2_v
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: F2_v
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: F2_v
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: F2_v
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: F2_v
+  detail: polarizability_A3
+  severity: data
+- kind: no_uncertainty
+  subject: datasets
+  detail: 3 of 3 usable datasets declare no uncertainty
+  severity: info
+- kind: out_of_scope
+  subject: cross_section
+  detail: electron cross sections are not in this registry yet
+  severity: info
+- kind: out_of_scope
+  subject: thermochemistry
+  detail: NASA polynomials and reverse rates are not in this registry yet
+  severity: info

@@ -1,8 +1,38 @@
 schema_version: 1
 id: He
 display_name: He
-composition: {He: 1}
+composition:
+  He: 1
 charge: 0
-classes: [neutral, atom, noble_gas, input_feedstock]
-state: {kind: ground, label: 1S, excitation_energy_eV: 0.0}
-metadata: {status: literature_supported, notes: [Semiconductor buffer-gas identity; reaction acquisition remains explicit.]}
+classes:
+- neutral
+- atom
+- noble_gas
+- input_feedstock
+state:
+  kind: ground
+  label: 1S
+  excitation_energy_eV: 0.0
+metadata:
+  status: literature_supported
+  notes:
+  - Semiconductor buffer-gas identity; reaction acquisition remains explicit.
+properties:
+  enthalpy_formation_eV:
+    value: 0.0
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 7440-59-7, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 126.2
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 7440-59-7, formula
+      verified against the registry
+  ionization_energy_eV:
+    value: 24.587389
+    unit: eV
+    source: mendeleev package, bundled periodic table
+  electron_affinity_eV:
+    value: -19.7
+    unit: eV
+    source: mendeleev package, bundled periodic table

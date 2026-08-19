@@ -1,0 +1,20 @@
+name: ar_sf6_o2
+gases: [Ar, SF6, O2]
+
+conditions:
+  pressure_Pa: 4.0
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 5.0e16
+  reduced_field_Td: 50.0
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+  residence_time_s: 0.05
+
+surfaces: [SiO2, Y2O3]
+
+dnt:
+  energy_max_eV: 300.0
+  points: 300
+
+accept_status: [curated, literature_supported]

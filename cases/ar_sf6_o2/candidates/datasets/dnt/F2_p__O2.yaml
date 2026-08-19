@@ -1,0 +1,59 @@
+pair: F2_p__O2
+models:
+- dnt_plus
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - short_range_potential
+runnable:
+- long_range
+projectile:
+  id: F2+
+  charge: 1
+  mass_amu: 37.99545142
+target:
+  id: O2
+  mass_amu: 31.9988
+  polarizability_A3: 1.562
+  dipole_moment_D: 0.0
+  collision_radius_A: 1.73
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 17.370124349253253
+long_range:
+  model: ion_induced_dipole
+  polarizability_A3: 1.562
+  dipole_moment_D: 0.0
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 300.0
+  points: 300
+  spacing: log
+conditions:
+  pressure_Pa: 4.0
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 5.0e+16
+  reduced_field_Td: 50.0
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+  residence_time_s: 0.05
+channels:
+- reaction_id: cand_F2p_O2_char_F2_O2p
+  equation: F2+ + O2 -> F2 + O2+
+  dnt_class: long_range_charge_exchange
+  tier: long_range
+  threshold_eV: 0.0
+  delta_e_eV: -3.6203000000000003
+- reaction_id: cand_F2p_O2_diss_F_F_O2p
+  equation: F2+ + O2 -> F + F + O2+
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.0
+  delta_e_eV: -1.9749920000000003

@@ -31,12 +31,14 @@ properties:
   collision_radius_A:
     value: 1.73
     unit: A
-    source: half of the 3.46 A literature kinetic diameter tabulated in NIST publication 928548
+    source: half of the 3.46 A literature kinetic diameter tabulated in NIST publication
+      928548
     quality: estimated
   enthalpy_formation_eV:
     value: 0.0
     unit: eV
-    source: elemental reference state, NIST Chemistry WebBook SRD 69
+    source: chemicals package bundled thermodynamic tables, CAS 7782-44-7, formula
+      verified against the registry
   ionization_energy_eV:
     value: 12.0697
     unit: eV
@@ -45,8 +47,14 @@ properties:
     value: 0.448
     unit: eV
     source: NIST Chemistry WebBook SRD 69
+  entropy_J_mol_K:
+    value: 205.2
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 7782-44-7, formula
+      verified against the registry
 metadata:
   status: curated
   notes:
   - Ground-state O2 record shared by every gas mixture.
-  - Collision radius is a transparent DNT preprocessing estimate, not a fundamental constant.
+  - Collision radius is a transparent DNT preprocessing estimate, not a fundamental
+    constant.

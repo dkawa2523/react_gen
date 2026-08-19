@@ -1,0 +1,48 @@
+schema_version: 1
+id: S_1D
+display_name: S(1D)
+composition:
+  S: 1
+charge: 0
+classes:
+- neutral
+- atom
+- metastable
+state:
+  kind: excited
+  label: 1D
+  excitation_energy_eV: 1.145442
+properties:
+  mass_amu:
+    value: 32.06
+    unit: amu
+    source: same nucleus as S
+  enthalpy_formation_eV:
+    value: 4.018417
+    unit: eV
+    source: S enthalpy plus the level energy
+  ionization_energy_eV:
+    value: null
+    unit: eV
+    source: null
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: literature_supported
+  notes:
+  - 'NIST Atomic Spectra Database, energy levels (energy1.pl). Metastable: no electric
+    dipole transition to any lower level is allowed, which is what lets it accumulate.'

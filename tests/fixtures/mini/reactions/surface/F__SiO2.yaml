@@ -1,0 +1,17 @@
+schema_version: 1
+pair: {family: surface, projectile: F, target: SiO2}
+channels:
+- id: F_SiO2_recombination
+  type: recombination
+  products: [{species: F2, n: 0.5}]
+  status: curated
+  data:
+    datasets:
+    - id: ds_F_SiO2_gamma
+      kind: sticking_coefficient
+      representation: constant
+      unit: dimensionless
+      parameters: {value: 0.02}
+      source: {source_type: fixture, citation: synthetic test value}
+      status: curated
+      preferred: true

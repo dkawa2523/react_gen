@@ -1,0 +1,56 @@
+pair: CF4_p__CF4
+models:
+- analytic_resonant_charge_exchange
+- dnt_plus
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - short_range_potential
+  analytic_resonant:
+    status: ready
+    missing: []
+runnable:
+- long_range
+- analytic_resonant
+projectile:
+  id: CF4+
+  charge: 1
+  mass_amu: 88.0037514
+target:
+  id: CF4
+  mass_amu: 88.0043
+  polarizability_A3: 2.824
+  dipole_moment_D: 0.0
+  collision_radius_A: 2.35
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 44.002012849572516
+long_range:
+  model: ion_induced_dipole
+  polarizability_A3: 2.824
+  dipole_moment_D: 0.0
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 100.0
+  points: 200
+  spacing: log
+conditions:
+  pressure_Pa: 2.7
+  gas_temperature_K: 350.0
+  electron_temperature_eV: 4.0
+  electron_density_m3: 3.0e+16
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+channels:
+- reaction_id: cand_CF4p_CF4_diss_CF3p_F_CF4
+  equation: CF4+ + CF4 -> CF3+ + F + CF4
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.0
+  delta_e_eV: -0.007856556775132972

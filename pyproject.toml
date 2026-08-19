@@ -13,18 +13,17 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-external-data = [
-  "defusedxml>=0.7.1",
-]
+thermo = ["chemicals>=1.3", "mendeleev>=0.15", "pyromat>=2.2"]
+# tools/visualize.py only. The core stays on PyYAML alone: a bundle is
+# complete without pictures, so plotting is not worth a runtime dependency.
+visualize = ["matplotlib>=3.8", "networkx>=3.2"]
 quality = [
   "bandit==1.8.6",
   "coverage==7.10.2",
   "detect-secrets==1.5.0",
   "diff-cover==9.6.0",
-  "defusedxml>=0.7.1",
   "hypothesis==6.138.2",
   "import-linter==2.3",
-  "mutmut==3.3.1; platform_system != 'Windows'",
   "mypy==1.17.1",
   "nox==2025.5.1",
   "pip-audit==2.9.0",
@@ -33,12 +32,13 @@ quality = [
   "radon==6.0.1",
   "ruff==0.12.7",
   "types-PyYAML==6.0.12.20260724",
-  "types-defusedxml==0.7.0.20260504",
   "vulture==2.14",
 ]
 
 [project.scripts]
-reactgen = "plasma_reactgen.interface.cli:main"
+rgen = "reactgen.cli:main"
+acquire = "acquire.cli:main"
+discover = "discover.cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
@@ -61,7 +61,6 @@ exclude = [
   ".pytest_cache",
   ".ruff_cache",
   ".venv",
-  "benchmarks/results",
   "build",
   "dist",
 ]
@@ -75,11 +74,10 @@ max-complexity = 10
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S101"]
 "tools/quality.py" = ["S603"]
-"external_data_tools/http_client.py" = ["S310"]
 
 [tool.mypy]
 python_version = "3.11"
-files = ["src/plasma_reactgen", "external_data_tools", "tools/quality.py", "noxfile.py"]
+files = ["src/reactgen", "src/acquire", "src/discover", "tools/quality.py", "noxfile.py"]
 exclude = ["build", "benchmarks/results"]
 check_untyped_defs = true
 no_implicit_optional = true
@@ -88,9 +86,19 @@ warn_redundant_casts = true
 warn_unreachable = true
 warn_unused_configs = true
 
+[[tool.mypy.overrides]]
+# These are optional, acquisition-only dependencies. numpy ships inline types
+# written for 3.12, which the 3.11 target above cannot parse, so their contents
+# are not analysed here — only the calls into them, which stay checked.
+module = ["chemicals.*", "numpy.*", "mendeleev.*", "pyromat.*"]
+follow_imports = "skip"
+follow_imports_for_stubs = true
+ignore_missing_imports = true
+ignore_errors = true
+
 [tool.coverage.run]
 branch = true
-source = ["plasma_reactgen", "external_data_tools"]
+source = ["reactgen", "acquire", "discover"]
 
 [tool.coverage.report]
 precision = 2
@@ -98,23 +106,11 @@ show_missing = true
 skip_covered = true
 
 [tool.bandit]
-exclude_dirs = ["build", "tests", ".venv", "benchmarks/results"]
-targets = ["src", "external_data_tools"]
+exclude_dirs = ["tests", ".venv"]
+targets = ["src"]
 
 [tool.vulture]
-paths = ["src", "external_data_tools"]
-exclude = ["build", ".venv", "benchmarks/results"]
+paths = ["src"]
+exclude = [".venv"]
 min_confidence = 60
 
-[tool.mutmut]
-paths_to_mutate = [
-  "src/plasma_reactgen/domain/equations.py",
-  "src/plasma_reactgen/domain/formula.py",
-  "src/plasma_reactgen/validation/validators.py",
-]
-tests_dir = [
-  "tests/test_equations.py",
-  "tests/test_validators.py",
-  "tests/test_species_candidates.py",
-  "tests/test_reaction_outputs.py",
-]

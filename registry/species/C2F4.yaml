@@ -1,10 +1,29 @@
 schema_version: 1
 id: C2F4
 display_name: C2F4
-composition: {C: 2, F: 4}
+composition:
+  C: 2
+  F: 4
 charge: 0
-classes: [neutral, molecule]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
 metadata:
   status: literature_supported
-  notes: [Tetrafluoroethylene formed by CF2 recombination.]
+  notes:
+  - Tetrafluoroethylene formed by CF2 recombination.
+properties:
+  enthalpy_formation_eV:
+    value: -6.998784
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 116-14-3, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 300.1
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 116-14-3, formula
+      verified against the registry

@@ -1,0 +1,162 @@
+case: ar_o2
+counts:
+  blocking: 0
+  data: 35
+  info: 4
+gaps:
+- kind: missing_threshold
+  subject: cand_O2_diss_O_1S
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O2_a1Delta_to_e_O_O
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O2_a1Delta_to_e_e_Op_O
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O2_b1Sigma_to_e_O_O
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O2_b1Sigma_to_e_e_Op_O
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O2_to_e_O2_v
+  detail: vibrational quantum unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O2_to_e_e_Op_O
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O2_v_to_e_O_O
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O2_v_to_e_e_O2p
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O2_v_to_e_e_Op_O
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_e_O_1S_to_e_e_Op
+  detail: ionization energy unknown; LXCat states it
+  severity: data
+- kind: missing_property
+  subject: Ar
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: Ar_4s
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: Ar_4s
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: Ar_4s
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: O
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: O
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: O2_a1Delta
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: O2_a1Delta
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: O2_a1Delta
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: O2_b1Sigma
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: O2_b1Sigma
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: O2_b1Sigma
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: O2_v
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: O2_v
+  detail: dipole_moment_D
+  severity: data
+- kind: missing_property
+  subject: O2_v
+  detail: enthalpy_formation_eV
+  severity: data
+- kind: missing_property
+  subject: O2_v
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: O2_v
+  detail: mass_amu
+  severity: data
+- kind: missing_property
+  subject: O2_v
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: O_1D
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: O_1D
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: O_1D
+  detail: polarizability_A3
+  severity: data
+- kind: missing_property
+  subject: O_1S
+  detail: collision_radius_A
+  severity: data
+- kind: missing_property
+  subject: O_1S
+  detail: ionization_energy_eV
+  severity: data
+- kind: missing_property
+  subject: O_1S
+  detail: polarizability_A3
+  severity: data
+- kind: no_uncertainty
+  subject: datasets
+  detail: 5 of 5 usable datasets declare no uncertainty
+  severity: info
+- kind: out_of_range
+  subject: ds_Op_O2_charge_transfer_rate_300K
+  detail: gas_temperature outside [300.0, 300.0] K
+  severity: info
+- kind: out_of_scope
+  subject: cross_section
+  detail: electron cross sections are not in this registry yet
+  severity: info
+- kind: out_of_scope
+  subject: thermochemistry
+  detail: NASA polynomials and reverse rates are not in this registry yet
+  severity: info

@@ -1,0 +1,29 @@
+schema_version: 1
+pair:
+  family: surface
+  projectile: F
+  target: SiO2
+channels:
+- id: F_SiO2_recombination
+  type: recombination
+  products:
+  - species: F2
+    n: 0.5
+  status: literature_supported
+  data:
+    datasets:
+    - id: ds_F_SiO2_gamma
+      kind: sticking_coefficient
+      representation: reference_only
+      unit: dimensionless
+      source:
+        source_type: acquisition_target
+        citation: Wall recombination probability for F on SiO2; acquire from a
+          surface-loss measurement stating material, temperature and coverage.
+      status: needs_import
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Wall loss usually controls the F density; omitting it biases the radical
+    balance by orders of magnitude. Gamma is an explicit acquisition gap.

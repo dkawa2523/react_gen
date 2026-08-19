@@ -24,11 +24,6 @@ properties:
     value: 0.0
     unit: D
     source: atomic-ion symmetry
-  collision_radius_A:
-    value: 1.7025
-    unit: A
-    source: reuse Ar LJ-radius estimate for short-range DNT seed
-    quality: estimated
   enthalpy_formation_eV:
     value: 15.75961
     unit: eV

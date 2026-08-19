@@ -1,0 +1,14 @@
+id: F
+composition: {F: 1}
+charge: 0
+classes: [neutral, radical]
+properties:
+  mass_amu: {value: 18.998, unit: amu, source: fixture}
+thermo:
+  t_min: 200.0
+  t_mid: 1000.0
+  t_max: 6000.0
+  source: fixture polynomial
+  low:  [2.5, 0.0, 0.0, 0.0, 0.0, 8700.0, 4.0]
+  high: [2.5, 0.0, 0.0, 0.0, 0.0, 8700.0, 4.0]
+metadata: {status: curated}

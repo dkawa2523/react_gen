@@ -1,8 +1,30 @@
 schema_version: 1
 id: NF3
 display_name: NF3
-composition: {N: 1, F: 3}
+composition:
+  N: 1
+  F: 3
 charge: 0
-classes: [neutral, molecule, input_feedstock]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
-metadata: {status: literature_supported, notes: [Remote chamber-clean feedstock identity; reaction acquisition remains explicit.]}
+classes:
+- neutral
+- molecule
+- input_feedstock
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+metadata:
+  status: literature_supported
+  notes:
+  - Remote chamber-clean feedstock identity; reaction acquisition remains explicit.
+properties:
+  enthalpy_formation_eV:
+    value: -1.36912
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 7783-54-2, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 260.8
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 7783-54-2, formula
+      verified against the registry

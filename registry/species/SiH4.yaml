@@ -1,8 +1,30 @@
 schema_version: 1
 id: SiH4
 display_name: SiH4
-composition: {Si: 1, H: 4}
+composition:
+  Si: 1
+  H: 4
 charge: 0
-classes: [neutral, molecule, input_feedstock]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
-metadata: {status: literature_supported, notes: [Semiconductor deposition feedstock identity; reaction acquisition remains explicit.]}
+classes:
+- neutral
+- molecule
+- input_feedstock
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+metadata:
+  status: literature_supported
+  notes:
+  - Semiconductor deposition feedstock identity; reaction acquisition remains explicit.
+properties:
+  enthalpy_formation_eV:
+    value: 0.355494
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 7803-62-5, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 204.6
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 7803-62-5, formula
+      verified against the registry

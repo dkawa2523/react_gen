@@ -1,8 +1,30 @@
 schema_version: 1
 id: BCl3
 display_name: BCl3
-composition: {B: 1, Cl: 3}
+composition:
+  B: 1
+  Cl: 3
 charge: 0
-classes: [neutral, molecule, input_feedstock]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
-metadata: {status: literature_supported, notes: [Semiconductor etch feedstock identity; reaction acquisition remains explicit.]}
+classes:
+- neutral
+- molecule
+- input_feedstock
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+metadata:
+  status: literature_supported
+  notes:
+  - Semiconductor etch feedstock identity; reaction acquisition remains explicit.
+properties:
+  enthalpy_formation_eV:
+    value: -4.185092
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 10294-34-5, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 290.1
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 10294-34-5, formula
+      verified against the registry

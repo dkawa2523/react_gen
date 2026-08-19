@@ -19,7 +19,47 @@ channels:
       (2014).
     url: https://doi.org/10.1116/1.4853675
     record_id: R26
-  threshold_eV: 10.0
+  threshold_eV: 10.36001
+- id: e_S_excitation_S_1D
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: S_1D
+    n: 1
+  status: literature_supported
+  threshold_eV: 1.145442
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 1D level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: The level energy is exact; the cross section is not acquired.
+- id: e_S_excitation_S_1S
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: S_1S
+    n: 1
+  status: literature_supported
+  threshold_eV: 2.749964
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 1S level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: The level energy is exact; the cross section is not acquired.
 metadata:
   status: literature_supported
   notes:

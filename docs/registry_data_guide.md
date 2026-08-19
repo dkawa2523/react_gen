@@ -81,7 +81,7 @@ reactgen generate CASE --registry workspace/prepared_registry --output workspace
 ```
 
 Do not treat prepared files as curated until they are reviewed and explicitly
-promoted with `reactgen promote --apply`.
+reviewed through `rgen ingest`, then copied into `registry/` by a person.
 
 ## Species YAML
 
@@ -549,7 +549,7 @@ External DB importers should not:
 
 Implemented local import/preparation commands include:
 
-- `reactgen enrich`
+- `rgen ingest`
 - `reactgen import-cross-sections`
 - `reactgen apply-cross-section-mapping`
 - `reactgen plan-missing`

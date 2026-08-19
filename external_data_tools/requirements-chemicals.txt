@@ -1,4 +1,0 @@
-# Optional dependency for external/source setup only.
-# Install explicitly with:
-#   python -m external_data_tools.source_setup --config external_data/source_access_profiles.yaml --install-chemicals
-chemicals>=1.5

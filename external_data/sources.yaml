@@ -1,0 +1,183 @@
+schema_version: 1
+sources:
+- id: pubchem
+  covers:
+  - species_identity
+  access: api
+  endpoint: https://pubchem.ncbi.nlm.nih.gov/rest/pug
+  priority: 1
+  license: public domain
+  applicability: Identity only. Never evidence that a reaction exists.
+- id: lxcat
+  covers:
+  - electron
+  access: manual_export
+  endpoint: https://lxcat.net
+  priority: 1
+  license: per contributing database, cite the set
+  applicability: 'Evaluated swarm-derived sets for low-temperature plasma. Check that
+    the set is declared complete and that one momentum-transfer channel is present.
+
+    '
+- id: qdb
+  covers:
+  - electron
+  - ion_neutral
+  - neutral_neutral
+  access: api_key
+  endpoint: https://quantemoldb.com/api
+  key_env: QDB_API_KEY
+  priority: 2
+  license: licensed, review before redistribution
+  applicability: Validated plasma chemistry sets; confirm the chemistry id.
+- id: nist_kinetics
+  covers:
+  - neutral_neutral
+  - ion_neutral
+  access: manual_export
+  endpoint: https://kinetics.nist.gov
+  priority: 1
+  license: US government, public domain
+  applicability: 'Mostly combustion and atmospheric temperatures. Confirm the measured
+    range covers the case gas temperature before accepting a rate.
+
+    '
+- id: umist
+  covers:
+  - ion_neutral
+  - neutral_neutral
+  - electron_ion
+  access: bulk_download
+  endpoint: https://umistdatabase.uk/
+  file: https://umistdatabase.uk/downloads/RATE22.dist.txt
+  format: umist
+  access_note: 'measured 2026-08-16, the url answers 200 with the site''s own web
+    page rather than the release, so the download is refused and stays manual
+
+    '
+  priority: 3
+  license: free for research, cite the release
+  applicability: 'Astrochemical network for 10-300 K. Reaction *equations* transfer
+    to plasma work; the rate coefficients usually do not. Treat a UMIST match as evidence
+    the channel exists, not as a usable coefficient. Converter: `acquire umist RELEASE.rates`;
+    the declared temperature range travels with each rate, so generation flags it
+    out of range rather than using it silently.
+
+    '
+- id: atct
+  covers:
+  - thermochemistry
+  - ion_neutral
+  - neutral_neutral
+  access: manual_export
+  endpoint: https://atct.anl.gov/
+  access_note: measured 2026-08-16, the site answers 403 to a program
+  priority: 1
+  license: free for research, cite the release
+  applicability: 'Argonne Active Thermochemical Tables: enthalpies of formation solved
+    as one consistent network, with real uncertainties. Not a reaction database, but
+    the one that answers ion-neutral questions best: with these energies a charge-transfer
+    or abstraction channel can be shown open or closed without any reaction measurement
+    at all. See `discover pairs`.
+
+    '
+- id: anicich
+  covers:
+  - ion_neutral
+  access: bulk_download
+  endpoint: https://ntrs.nasa.gov/citations/20030105144
+  priority: 1
+  license: US government, public domain
+  applicability: 'JPL Publication 03-19, the standing compilation of ion-molecule
+    rate constants at 300 K. The definitive first stop for ion-neutral equations and
+    their branching; a single-temperature value needs a stated extrapolation before
+    use at a plasma gas temperature.
+
+    '
+- id: iupac_kinetics
+  covers:
+  - neutral_neutral
+  access: bulk_download
+  endpoint: https://iupac-aeris.ipsl.fr/
+  priority: 1
+  license: free for research, cite the evaluation
+  applicability: 'Evaluated datasheets for O, halogen and radical chemistry, each
+    with an uncertainty and a temperature range. Atmospheric in scope, so check the
+    range covers the case before accepting a coefficient.
+
+    '
+- id: jpl_evaluation
+  covers:
+  - neutral_neutral
+  access: bulk_download
+  endpoint: https://jpldataeval.jpl.nasa.gov/
+  priority: 2
+  license: US government, public domain
+  applicability: 'Companion evaluation to IUPAC with the same atmospheric scope. Useful
+    as the second opinion when two sources disagree on a rate.
+
+    '
+- id: kida
+  covers:
+  - ion_neutral
+  - neutral_neutral
+  - electron_ion
+  access: bulk_download
+  endpoint: https://kida.astrochem-tools.org/
+  priority: 3
+  license: free, cite the release
+  applicability: 'Astrochemistry, like UMIST, and reviewed more recently. Same caveat:
+    the equations and branching transfer to plasma work, the low-temperature rate
+    coefficients generally do not.
+
+    '
+- id: aladdin
+  covers:
+  - ion_neutral
+  - electron
+  - electron_ion
+  access: manual_export
+  endpoint: https://www-amdis.iaea.org/ALADDIN/
+  priority: 2
+  license: IAEA, free for research
+  applicability: 'Fusion-oriented atomic and molecular data: charge exchange, ionization
+    and recombination for light species. Energies run higher than a processing plasma,
+    so check the range rather than the species alone.
+
+    '
+- id: nifs
+  covers:
+  - ion_neutral
+  - electron
+  access: manual_export
+  endpoint: https://dbshino.nifs.ac.jp/
+  priority: 3
+  license: free for research, cite the database
+  applicability: 'Heavy-particle collision cross sections, again fusion-oriented.
+    Consult when ALADDIN has no entry for the pair.
+
+    '
+- id: structural
+  covers:
+  - electron
+  - ion_neutral
+  - neutral_neutral
+  access: derived
+  priority: 9
+  license: none
+  applicability: 'Channels enumerated from the molecular formula under conservation.
+    They are geometrically possible, not observed. Every one needs a source before
+    it leaves candidate status.
+
+    '
+- id: nist_asd
+  covers:
+  - species_property
+  access: api
+  priority: 1
+  license: NIST public domain, cite the database
+  applicability: atomic energy levels; the metastable and resonant split follows from
+    J and parity
+  access_note: measured 2026-08-19, energy1.pl answers with delimited text and needs
+    no key. lines1.pl is a different query and carries no level energies, so asking
+    it looks like a refusal

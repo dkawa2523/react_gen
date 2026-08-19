@@ -1,0 +1,15 @@
+digraph reactions {
+  rankdir=LR; splines=true; overlap=false; bgcolor="transparent";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10];
+  edge [fontname="Helvetica", fontsize=8, arrowsize=0.6];
+  "Ar" [fillcolor="#f0f4f3", label="Ar
+depth 0"];
+  "Ar+" [fillcolor="#e3ecea", label="Ar+
+depth 1"];
+  "Ar_4s" [fillcolor="#e3ecea", label="Ar_4s
+depth 1"];
+  "Ar" -> "Ar_4s" [color="#1f6f8b", tooltip="e_Ar_excitation_4s_lumped"];
+  "Ar" -> "Ar+" [color="#1f6f8b", tooltip="e_Ar_ionization"];
+  "Ar_4s" -> "Ar+" [color="#1f6f8b", tooltip="e_Ar4s_stepwise_ionization"];
+  "Ar_4s" -> "Ar" [color="#1f6f8b", tooltip="e_Ar4s_superelastic"];
+}

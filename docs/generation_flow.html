@@ -1,0 +1,421 @@
+<title>反応リスト生成フロー</title>
+<style>
+  :root {
+    --paper: #F3F4F7; --surface: #FFFFFF; --sunk: #ECEEF3;
+    --ink: #161A25; --muted: #5A6175; --hair: #D8DCE5;
+    --gate: #4A3FBF; --gate-soft: #ECEAFB;
+    --data: #0F6F66; --data-soft: #E3F1EF;
+    --stop: #A93226; --stop-soft: #FAE9E7;
+    --sans: "Hiragino Kaku Gothic ProN", "Yu Gothic Medium", "Yu Gothic",
+            "Noto Sans JP", Meiryo, -apple-system, "Segoe UI", system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12141B; --surface: #1A1D26; --sunk: #22262F;
+      --ink: #E8EAF0; --muted: #9AA1B4; --hair: #2E3340;
+      --gate: #A79BFF; --gate-soft: #262340;
+      --data: #58C7B8; --data-soft: #12312E;
+      --stop: #F0857A; --stop-soft: #351F1D;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12141B; --surface: #1A1D26; --sunk: #22262F;
+    --ink: #E8EAF0; --muted: #9AA1B4; --hair: #2E3340;
+    --gate: #A79BFF; --gate-soft: #262340;
+    --data: #58C7B8; --data-soft: #12312E;
+    --stop: #F0857A; --stop-soft: #351F1D;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans);
+         line-height: 1.7; margin: 0; padding: 0 1.25rem 5rem; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 62rem; margin: 0 auto; }
+  header.masthead { padding: 3.5rem 0 2rem; border-bottom: 2px solid var(--ink);
+                    display: flex; flex-direction: column; gap: .75rem; }
+  .eyebrow { font-family: var(--mono); font-size: .72rem; letter-spacing: .16em;
+             text-transform: uppercase; color: var(--muted); }
+  h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.25; margin: 0;
+       letter-spacing: -.01em; text-wrap: balance; font-weight: 700; }
+  .standfirst { color: var(--muted); max-width: 44rem; margin: 0; font-size: 1.02rem; }
+  h2 { font-size: 1.25rem; margin: 3.25rem 0 0; letter-spacing: -.005em;
+       display: flex; align-items: baseline; gap: .7rem; text-wrap: balance; }
+  h2 .n { font-family: var(--mono); font-size: .78rem; color: var(--gate);
+          border: 1px solid var(--gate); border-radius: 2px; padding: .05rem .4rem;
+          letter-spacing: .06em; flex: none; }
+  h3 { font-size: .95rem; margin: 2rem 0 .6rem; letter-spacing: .01em; }
+  p { margin: .8rem 0; }
+  .lede { color: var(--muted); margin-top: .5rem; }
+  code, .mono { font-family: var(--mono); font-size: .85em; }
+  code { background: var(--sunk); padding: .1rem .32rem; border-radius: 3px; }
+  .stage { display: grid; grid-template-columns: 3.2rem 1fr; gap: 0 1.1rem;
+           position: relative; padding-bottom: 1.5rem; }
+  .stage::before { content: ""; position: absolute; left: 1.55rem; top: 2.4rem; bottom: 0;
+                   width: 2px; background: var(--hair); }
+  .stage:last-of-type::before { display: none; }
+  .marker { width: 3.2rem; height: 2.1rem; display: grid; place-items: center;
+            font-family: var(--mono); font-size: .82rem; font-weight: 600;
+            background: var(--gate); color: var(--surface); border-radius: 3px;
+            position: relative; z-index: 1; }
+  .marker.d { background: var(--data); }
+  .stage-body { background: var(--surface); border: 1px solid var(--hair); border-radius: 5px;
+                padding: 1rem 1.15rem; display: flex; flex-direction: column; gap: .7rem; }
+  .stage-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem; }
+  .stage-head .name { font-weight: 700; font-size: 1rem; }
+  .stage-head .where { font-family: var(--mono); font-size: .76rem; color: var(--muted); }
+  .stage p { margin: 0; font-size: .93rem; }
+  .pairs { display: grid; gap: .45rem; }
+  .pair { display: grid; grid-template-columns: 5.4rem 1fr; gap: .8rem;
+          font-size: .89rem; align-items: start; }
+  .pair dt { font-family: var(--mono); font-size: .7rem; letter-spacing: .1em;
+             text-transform: uppercase; padding-top: .25rem; }
+  .pair.j dt { color: var(--gate); } .pair.d dt { color: var(--data); } .pair.x dt { color: var(--stop); }
+  .pair dd { margin: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .chip { font-family: var(--mono); font-size: .74rem; padding: .12rem .45rem;
+          border-radius: 3px; background: var(--data-soft); color: var(--data);
+          border: 1px solid transparent; white-space: nowrap; }
+  .chip.g { background: var(--gate-soft); color: var(--gate); }
+  .chip.s { background: var(--stop-soft); color: var(--stop); }
+  .scroll { overflow-x: auto; margin: 1rem 0; border: 1px solid var(--hair); border-radius: 5px; }
+  table { border-collapse: collapse; width: 100%; font-size: .87rem; background: var(--surface); }
+  th, td { text-align: left; padding: .55rem .8rem; border-bottom: 1px solid var(--hair); vertical-align: top; }
+  th { font-family: var(--mono); font-size: .7rem; letter-spacing: .09em; text-transform: uppercase;
+       color: var(--muted); background: var(--sunk); white-space: nowrap; font-weight: 600; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.k { font-family: var(--mono); font-size: .8rem; white-space: nowrap; }
+  .sev { font-family: var(--mono); font-size: .72rem; font-weight: 600; }
+  .sev.b { color: var(--stop); } .sev.d { color: var(--data); } .sev.i { color: var(--muted); }
+  pre { background: var(--surface); border: 1px solid var(--hair); border-radius: 5px;
+        padding: .9rem 1rem; overflow-x: auto; font-family: var(--mono);
+        font-size: .82rem; line-height: 1.6; margin: 1rem 0; }
+  .note { border-left: 3px solid var(--gate); background: var(--sunk);
+          padding: .75rem 1rem; font-size: .9rem; margin: 1.2rem 0; border-radius: 0 4px 4px 0; }
+  ul { padding-left: 1.15rem; margin: .7rem 0; }
+  li { margin: .3rem 0; font-size: .93rem; }
+  footer { margin-top: 3.5rem; padding-top: 1.2rem; border-top: 1px solid var(--hair);
+           color: var(--muted); font-size: .84rem; }
+  @media (max-width: 34rem) {
+    .stage { grid-template-columns: 1fr; } .stage::before { display: none; }
+    .marker { width: 100%; } .pair { grid-template-columns: 1fr; gap: .1rem; }
+  }
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">reactgen / discover / acquire</div>
+  <h1>入力ガスから反応式・状態リストまで</h1>
+  <p class="standfirst">
+    ガス名を受け取ってから反応式リストと状態リストを書き出すまでに、どの処理がどのデータを使って
+    何を判定しているか。判定点は<strong>インディゴ</strong>、データ源は<strong>ティール</strong>、
+    棄却は<strong>赤</strong>で示します。
+  </p>
+</header>
+
+<h2><span class="n">00</span>目的</h2>
+<p>
+  <strong>ガス名を入力し、妥当かつ網羅的な化学種リストと反応式リストを出力する。</strong>
+  多段(生成物のさらなる反応まで)で、イオンと励起状態を含みます。存在量と速度係数は
+  意図的に後回しで、この出力が <strong>DNT+ の計算対象</strong>を決めます。
+</p>
+
+<pre>rgen generate  cases/ar_o2/case.yaml       # レジストリのみ。候補生成なし
+discover network --gas Ar --gas CF4        # レジストリ + 候補生成
+acquire asd Ar O F  →  rgen ingest  →  --overlay work/levels   # 外部データの取り込み</pre>
+
+<h2><span class="n">01</span>データ源</h2>
+<p class="lede">レジストリはファイル群、オーバーレイはメモリ上でマージされます。curated なファイルは書き換えません。</p>
+
+<div class="scroll">
+<table>
+  <thead><tr><th>場所</th><th>持っているもの</th></tr></thead>
+  <tbody>
+    <tr><td class="k">registry/species/</td>
+        <td>組成・電荷・state(kind / label / energy_eV / resolution / members)・properties・NASA多項式</td></tr>
+    <tr><td class="k">registry/reactions/</td>
+        <td>族ごとのチャンネル(type, threshold_eV, datasets, status)と、ペアの potential</td></tr>
+    <tr><td class="k">registry/materials/</td><td>表面材料と付着係数</td></tr>
+    <tr><td class="k">registry/datasets/</td><td>断面積表、速度係数</td></tr>
+    <tr><td class="k">overlay(任意)</td><td><code>rgen ingest</code> が受理したもの。熱化学、原子準位など</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>射影 — 候補生成がレジストリを引く見方</h3>
+<div class="scroll">
+<table>
+  <thead><tr><th>view</th><th>返すもの</th><th>出どころ</th></tr></thead>
+  <tbody>
+    <tr><td class="k">known()</td><td>(組成, 電荷) → 種ID</td><td>全種。<strong>基底状態を優先</strong></td></tr>
+    <tr><td class="k">ionization()</td><td>種 → IE [eV]</td><td>プロパティ、無ければ電離反応の閾値。励起状態は IE(X)−E で導出</td></tr>
+    <tr><td class="k">affinity()</td><td>種 → EA [eV]</td><td><code>electron_affinity_eV</code></td></tr>
+    <tr><td class="k">enthalpy()</td><td>種 → ΔHf [eV]</td><td>プロパティ。励起状態は Hf(X)+E で導出</td></tr>
+    <tr><td class="k">excitation()</td><td>種 → {metastable / resonant / lumped: eV}</td><td>NIST ASD 由来</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note">
+  <strong>基底状態の優先が要ります。</strong> <code>O</code> と <code>O_1D</code> は組成も電荷も同じです。
+  索引が後勝ちだと断片の命名が励起状態を拾い、<code>e + SO → e + O_1D + S</code> を生成します。
+  <br><br>
+  <strong>励起状態の値は導出です。</strong> Hf(X*) = Hf(X) + E、IE(X*) = IE(X) − E。推定ではなく恒等式で、
+  導出した IE(Ar_4s) = 4.16 eV はレジストリの独立した実測閾値と一致します。
+</div>
+
+<h2><span class="n">02</span>判定フロー</h2>
+<p class="lede">展開は深さごとの1パス。各パスで収集・提案・濾過・検算を行い、生成物が次のフロンティアになります。</p>
+
+<div class="stage">
+  <div class="marker">1</div>
+  <div class="stage-body">
+    <div class="stage-head"><span class="name">種の解決</span><span class="where">expand._seed</span></div>
+    <dl class="pairs">
+      <div class="pair d"><dt>データ</dt><dd><code>registry.resolve(gas)</code> — 表記ゆれを吸収して種IDへ</dd></div>
+      <div class="pair x"><dt>棄却</dt><dd><span class="chip s">input_gas</span> 未登録のガス名。<strong>blocking</strong></dd></div>
+    </dl>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="marker">2</div>
+  <div class="stage-body">
+    <div class="stage-head"><span class="name">レジストリからの収集</span><span class="where">expand._collect</span></div>
+    <dl class="pairs">
+      <div class="pair d"><dt>データ</dt><dd><code>pairs_touching(active, frontier)</code> で到達したペアのチャンネル</dd></div>
+      <div class="pair j"><dt>判定</dt><dd><code>status in case.accept_status</code> — <code>candidate</code> は既定で入りません</dd></div>
+    </dl>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="marker">3</div>
+  <div class="stage-body">
+    <div class="stage-head"><span class="name">電子衝突の候補</span><span class="where">discover/fragments.py</span></div>
+    <p><code>rgen generate</code> では動きません。<code>discover network</code> のときだけ呼ばれます。</p>
+    <dl class="pairs">
+      <div class="pair j"><dt>構造</dt><dd>
+        配位子剥離(<code>--max-leaving</code>)、多価電離(<code>--max-ion-charge</code>)。
+        付着は EA が正のときのみ
+      </dd></div>
+      <div class="pair j"><dt>励起</dt><dd>
+        原子は選択則で <code>X_meta</code> / <code>X_res</code> に分割。分子は<strong>常に2つ</strong> —
+        <code>X_v</code>(振動)と <code>X*</code>(電子)は別過程であって同じものの粗さ違いではありません
+      </dd></div>
+      <div class="pair d"><dt>データ</dt><dd>known / affinity / excitation</dd></div>
+    </dl>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="marker">4</div>
+  <div class="stage-body">
+    <div class="stage-head"><span class="name">重粒子衝突の候補</span><span class="where">discover/collide.py</span></div>
+    <p>
+      電荷交換・解離性電荷交換・配位子移動・会合・CID は<strong>1つの操作</strong>です。
+      両者の原子を結合が許す断片に割り、組み替え、電荷を置く。
+    </p>
+    <pre>ΔH = Σ Hf(生成物) − Σ Hf(反応物)
+     Hf(A⁺) = Hf(A) + IE(A)      Hf(A⁻) = Hf(A) − EA(A)</pre>
+    <dl class="pairs">
+      <div class="pair j"><dt>相殺</dt><dd>
+        両辺に残る骨格は<strong>値を引かずに消します</strong>。電荷交換は Hf が相殺して IE 差だけになるため、
+        絶対値で計算すると答えに影響しないデータを要求して解ける反応を落とします
+      </dd></div>
+      <div class="pair j"><dt>価数則</dt><dd>
+        骨格 m 原子の容量 <code>m·valence − 2(m−1)</code>。<code>CF5</code>・<code>C2F7</code>・<code>F3</code> を棄却
+      </dd></div>
+      <div class="pair j"><dt>上限</dt><dd>
+        <code>--max-endothermic</code>(既定 2.0 eV)。<strong>吸熱チャンネルは削除しません</strong> —
+        DNT+ は σ(E) を計算するので、閾値を持つことがそのまま計算指定です
+      </dd></div>
+      <div class="pair d"><dt>データ</dt><dd>enthalpy / ionization / affinity</dd></div>
+    </dl>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="marker">5</div>
+  <div class="stage-body">
+    <div class="stage-head"><span class="name">Penning と V-T緩和</span><span class="where">discover/propose.py</span></div>
+    <p>原子の組み替えでは表現できない2つは、専用の生成器で残しています。</p>
+    <dl class="pairs">
+      <div class="pair j"><dt>Penning</dt><dd>
+        <code>M* + X → M + X⁺ + e</code>。電荷を<strong>作る</strong>過程で、そのエネルギー源は
+        準安定に蓄えられた内部励起です。原子の分割では書けません
+      </dd></div>
+      <div class="pair j"><dt>V-T緩和</dt><dd>
+        <code>AB_v + M → AB + M</code>。相手を汎用の第三体で隠さず<strong>明示的に列挙</strong>します —
+        酸素原子はアルゴンより桁で速く、どれかが速度を決めるためです。発熱なので篩は不要
+      </dd></div>
+    </dl>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="marker">6</div>
+  <div class="stage-body">
+    <div class="stage-head"><span class="name">衝突族の濾過</span><span class="where">case.accepts</span></div>
+    <dl class="pairs">
+      <div class="pair j"><dt>判定</dt><dd>求められていない族は<strong>収集しません</strong>。あとで落とすと「棄却」に見え、データの欠陥と読まれます</dd></div>
+      <div class="pair d"><dt>既定 on</dt><dd>
+        <span class="chip g">elastic</span><span class="chip g">excitation</span><span class="chip g">dissociation</span><span class="chip g">ionization</span><span class="chip g">vibrational_relaxation</span>
+      </dd></div>
+      <div class="pair d"><dt>既定 off</dt><dd>
+        <span class="chip">attachment</span><span class="chip">heavy_particle</span><span class="chip">three_body</span>
+        <span class="chip">growth(未実装・表面過程)</span>
+      </dd></div>
+    </dl>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="marker">7</div>
+  <div class="stage-body">
+    <div class="stage-head"><span class="name">保存則と重複</span><span class="where">balance.py / Reaction.signature</span></div>
+    <dl class="pairs">
+      <div class="pair x"><dt>棄却</dt><dd>未登録の種／電荷が合わない(表面は免除)／元素が合わない → <span class="chip s">rejected_reaction</span> <strong>blocking</strong></dd></div>
+      <div class="pair j"><dt>重複</dt><dd>
+        鍵は族・第三体・表面・<strong>種ごとに合算した</strong>両辺。<code>2 e</code> と <code>e + e</code> は同一。
+        <code>type</code> は含めません — 同じ式なら同じ過程です
+      </dd></div>
+      <div class="pair j"><dt>粒度</dt><dd>レジストリが準位を持つ種には一括準位を足しません(<code>Ar*</code> と <code>Ar_4s</code> の併存を防ぐ)</dd></div>
+    </dl>
+  </div>
+</div>
+
+<h2><span class="n">03</span>網ができたあとの検査</h2>
+<p class="lede">
+  <strong>監査</strong>は式の構造だけを見るので数値が要らず、どのレジストリでも常に走ります。
+  <strong>品質</strong>はデータの有無と整合を見ます。
+</p>
+
+<h3>監査(audit)— 式は健全か</h3>
+<div class="scroll">
+<table>
+  <thead><tr><th>検査</th><th>問い</th><th>severity</th></tr></thead>
+  <tbody>
+    <tr><td class="k">unknown_species / unknown_material</td><td>式の種・材料は登録されているか</td><td class="sev b">blocking</td></tr>
+    <tr><td class="k">energy_inconsistent</td><td>吸熱量より閾値が低くないか</td><td class="sev b">blocking</td></tr>
+    <tr><td class="k">energy_above_ionization</td><td>励起が電離より高くないか</td><td class="sev b">blocking</td></tr>
+    <tr><td class="k">ionization_disagreement</td><td>電離閾値と種のIEが一致するか</td><td class="sev b">blocking</td></tr>
+    <tr><td class="k">duplicate_equation / duplicate_id</td><td>同じ過程が二重に登録されていないか</td><td class="sev b">blocking</td></tr>
+    <tr><td class="k">double_counted</td><td>運動量移行が1本か。<strong>梯子ごとに</strong>解像度が1つか</td><td class="sev b">blocking</td></tr>
+    <tr><td class="k">missing_threshold</td><td>電子衝突の閾値が分かっているか</td><td class="sev d">data</td></tr>
+    <tr><td class="k">missing_electron_chemistry</td><td>中性種に電子衝突経路があるか(<strong>網</strong>を見る)</td><td class="sev d">data</td></tr>
+    <tr><td class="k">no_loss_path</td><td>生成されるだけの種はないか</td><td class="sev i">info</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note">
+  <strong>振動と電子は別の梯子です。</strong> <code>O2_v</code>(振動・一括)が <code>O2_a1Delta</code>(電子・分解済)と
+  並んでも二重計上ではありません。解像度の衝突は <code>state.manifold</code> の内側でのみ判定します。
+</div>
+
+<h3>品質(quality)— データは揃っているか</h3>
+<p>役割ごとに要求する物性が決まっており、<strong>役割は種が網にいることから決まります</strong>(反応式からではありません)。</p>
+<div class="scroll">
+<table>
+  <thead><tr><th>役割</th><th>要求する物性</th></tr></thead>
+  <tbody>
+    <tr><td class="k">electron_target</td><td>mass_amu</td></tr>
+    <tr><td class="k">ion</td><td>mass_amu, <strong>enthalpy_formation_eV</strong></td></tr>
+    <tr><td class="k">dnt_neutral</td><td>mass_amu, polarizability_A3, dipole_moment_D, collision_radius_A,
+        <strong>enthalpy_formation_eV, ionization_energy_eV</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p>
+  太字が篩用です。これを要求しないと「この種の ΔHf が無いのでこのペアが篩えない」が無言になり、
+  何を取れば何が動くかが分かりません。ほかに
+  <code>conflicting_rate_form</code> / <code>competing_datasets</code> / <code>out_of_range</code> /
+  <code>missing_cross_section</code> / <code>missing_sticking_coefficient</code> /
+  <code>undeclared_reverse</code> / <code>out_of_scope</code> があります。
+</p>
+
+<h2><span class="n">04</span>出力</h2>
+<div class="scroll">
+<table>
+  <thead><tr><th>ファイル</th><th>中身</th></tr></thead>
+  <tbody>
+    <tr><td class="k">species.yaml</td><td><strong>状態リスト</strong>。組成・電荷・state・物性</td></tr>
+    <tr><td class="k">reactions.yaml</td><td><strong>反応式リスト</strong>。式・型・深さ・前駆体・閾値・出典・status・<code>listed_by</code></td></tr>
+    <tr><td class="k">reduced.yaml / reactions.csv</td><td>関連度で絞った部分集合と、表形式</td></tr>
+    <tr><td class="k">network.dot</td><td><strong>可視化グラフ</strong></td></tr>
+    <tr><td class="k">gaps.yaml</td><td>欠けているもの全件。kind / subject / detail / severity</td></tr>
+    <tr><td class="k">coverage.yaml / summary.yaml</td><td>被覆率、件数、mechanism_id、打ち切りの有無</td></tr>
+    <tr><td class="k">datasets/rates.yaml</td><td>条件下で評価した速度係数</td></tr>
+    <tr><td class="k">datasets/dnt/index.yaml</td><td><strong>DNT+ の作業指示書</strong></td></tr>
+    <tr><td class="k">lock.yaml</td><td>使ったデータの固定(<code>rgen generate</code> のみ)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note">
+  <strong><code>listed_by</code> はラベルであってフィルタではありません。</strong>
+  <code>--known</code> で渡した出典が同じ式を述べていれば記録しますが、
+  出典の沈黙は反応の否定ではないので、何も除きません。
+</div>
+
+<h3>報告と終了コード</h3>
+<pre>findings      380 data, 20 info
+  data        missing_property               222
+  data        missing_threshold              158
+  BLOCKING    &lt;subject&gt;  &lt;detail&gt;          ← 個別に列挙
+
+exit 1  blocking が1件でもある     exit 0  それ以外</pre>
+<p>
+  同一内容が数百件になるため <code>data</code> は種類ごとの件数だけを出し、
+  <strong>blocking は必ず個別に列挙</strong>します。集約しないと機構の誤りが埋もれます。
+</p>
+
+<h2><span class="n">05</span>DNT+ への引き渡し</h2>
+<p class="lede">
+  イオン衝突の断面積は外部データベースにありません。だから DNT+ が計算します。
+  本コードの役割は<strong>何を計算すべきかを決めること</strong>です。
+</p>
+
+<div class="note">
+  <strong>ペアは反応式ではなく種から列挙します。</strong>
+  反応式が既にあるペアだけを渡すと、データが無いペア — つまり計算が必要なまさにそれ — が
+  指示書から漏れます。イオンと中性が出会えば、化学変化の有無に関わらず弾性散乱と捕獲は起きます。
+</div>
+
+<div class="scroll">
+<table>
+  <thead><tr><th>索引の項目</th><th>意味</th></tr></thead>
+  <tbody>
+    <tr><td class="k">pairs_total</td><td>網内のイオン × 中性。計算対象の全体</td></tr>
+    <tr><td class="k">no_known_channel</td><td>反応式が1本も無いペア。<strong>DNT+ が存在する理由</strong></td></tr>
+    <tr><td class="k">resonant</td><td>対称電荷交換。組成が同じなら構造的に判定。断面積が最大の過程</td></tr>
+    <tr><td class="k">summary.long_range</td><td>分極率・双極子・質量が揃い、今すぐ走れるペア</td></tr>
+    <tr><td class="k">summary.full</td><td>短距離ポテンシャルも揃い、非弾性・反応チャンネルまで出せるペア</td></tr>
+    <tr><td class="k">blocked_by</td><td>そのペアに何が足りないか</td></tr>
+  </tbody>
+</table>
+</div>
+<p>
+  入力文書は<strong>実行可能なペアにだけ</strong>書きます。数千の空スタブを書くと走らせられるものが埋もれるためです。
+  なお<strong>短距離ポテンシャルの取得は DNT+ 側の仕事</strong>で、本コードは <code>blocked_by</code> で
+  足りないことを言うところまでです。
+</p>
+
+<h2><span class="n">06</span>いま埋まっていないもの</h2>
+<p class="lede">リストの内容として欠けているものはありません。残りはすべて数値です。</p>
+<ul>
+  <li><strong>振動量子</strong> — V-T の ΔH と振動励起の閾値。振動定数があれば埋まります。</li>
+  <li><strong>分子の電子励起閾値</strong> — LXCat の手動エクスポート。原子は NIST ASD から自動取得できます。</li>
+  <li><strong>硫黄フッ化物5種の ΔHf</strong>(SF, SF3, SOF, SOF3, SOF4)— 燃焼化学に現れないため既存編纂物に存在しません。</li>
+  <li><strong>短距離ポテンシャル</strong> — DNT+ の入力。本コードの範囲外です。</li>
+</ul>
+<p>
+  いずれも <code>gaps.yaml</code> が種と反応を名指しした上で何が足りないかを書いており、
+  リスト自体は成立しています。
+</p>
+
+<footer>
+  <span class="mono">reactgen</span> はネットワークに触れません。取得は <span class="mono">acquire</span>、
+  候補生成は <span class="mono">discover</span> の責務で、import-linter が契約として検査しています。
+</footer>
+
+</div>

@@ -1,0 +1,75 @@
+case: ar_o2
+conditions:
+  pressure_Pa: 6.7
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 2.0e+16
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+note: langevin_estimate values are capture upper bounds, not measurements
+rates:
+- reaction_id: Arp_O2_charge_transfer
+  equation: Ar+ + O2 -> Ar + O2+
+  family: ion_neutral
+  third_body: null
+  value: 6.3e-17
+  unit: m3/s
+  basis: dataset
+  dataset_id: ds_Arp_O2_charge_transfer_rate_1977
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 76431.44637051126
+  relevance: fast
+  relevance_basis: fastest_reaction
+- reaction_id: Op_O2_charge_transfer
+  equation: O+ + O2 -> O + O2+
+  family: ion_neutral
+  third_body: null
+  value: 2.1e-17
+  unit: m3/s
+  basis: dataset
+  dataset_id: ds_Op_O2_charge_transfer_rate_300K
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 25477.148790170417
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: O2a_O2_self_quenching
+  equation: O2 + O2_a1Delta -> 2 O2
+  family: neutral_neutral
+  third_body: null
+  value: 1.5e-24
+  unit: m3/s
+  basis: dataset
+  dataset_id: ds_O2a_O2_self_quenching_rate_1988
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 0.0018197963421550298
+  relevance: negligible
+  relevance_basis: fastest_reaction
+- reaction_id: O1D_O2_quenching_O2_b1Sigma
+  equation: O_1D + O2 -> O + O2_b1Sigma
+  family: neutral_neutral
+  third_body: null
+  value: 2.64e-17
+  unit: m3/s
+  basis: dataset
+  dataset_id: ds_O1D_O2_quenching_b1Sigma_rate_jpl_19_5
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 32028.415621928525
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: O1D_O2_quenching_O2_a1Delta
+  equation: O_1D + O2 -> O + O2_a1Delta
+  family: neutral_neutral
+  third_body: null
+  value: 6.6e-18
+  unit: m3/s
+  basis: dataset
+  dataset_id: ds_O1D_O2_quenching_a1Delta_rate_jpl_19_5
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 8007.103905482131
+  relevance: comparable
+  relevance_basis: fastest_reaction

@@ -1,0 +1,44 @@
+mechanisms:
+- id: pateau_2014_sf6_volume
+  citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+    (2014).
+  scope: Tables II-III, R1-R50 mass-balance reactions for SFx and F species.
+  expected: 50
+  found: 35
+  complete: false
+  missing:
+  - R31
+  - R32
+  - R33
+  - R34
+  - R35
+  - R36
+  - R37
+  - R38
+  - R39
+  - R40
+  - R41
+  - R42
+  - R43
+  - R44
+  - R50
+  excluded:
+  - R51-R55
+  exclusion_reason: Elastic and excitation rows affect the power balance but not chemical
+    composition.
+- id: pateau_2014_sf6_o2_cross_chemistry
+  citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+    (2014).
+  scope: Table VII, R119-R138 cross-chemistry between SF6 and O2 fragments.
+  expected: 20
+  found: 14
+  complete: false
+  missing:
+  - R124
+  - R125
+  - R126
+  - R127
+  - R128
+  - R129
+  excluded: []
+  exclusion_reason: null

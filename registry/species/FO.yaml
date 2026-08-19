@@ -1,10 +1,24 @@
 schema_version: 1
 id: FO
 display_name: FO
-composition: {F: 1, O: 1}
+composition:
+  F: 1
+  O: 1
 charge: 0
-classes: [neutral, radical, molecule]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+classes:
+- neutral
+- radical
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
 metadata:
   status: literature_supported
-  notes: [Fluorine monoxide radical in oxygenated fluorocarbon chemistry.]
+  notes:
+  - Fluorine monoxide radical in oxygenated fluorocarbon chemistry.
+properties:
+  enthalpy_formation_eV:
+    value: 1.128071
+    unit: eV
+    source: pyromat NASA Glenn ideal-gas tables, read at 300 K, formula verified

@@ -1,0 +1,48 @@
+schema_version: 1
+id: P_2D
+display_name: P(2D*)
+composition:
+  P: 1
+charge: 0
+classes:
+- neutral
+- atom
+- metastable
+state:
+  kind: excited
+  label: 2D*
+  excitation_energy_eV: 1.408587
+properties:
+  mass_amu:
+    value: 30.973761998
+    unit: amu
+    source: same nucleus as P
+  enthalpy_formation_eV:
+    value: 4.688878
+    unit: eV
+    source: P enthalpy plus the level energy
+  ionization_energy_eV:
+    value: 9.078099
+    unit: eV
+    source: P ionization energy less the level energy
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: literature_supported
+  notes:
+  - 'NIST Atomic Spectra Database, energy levels (energy1.pl). Metastable: no electric
+    dipole transition to any lower level is allowed.'

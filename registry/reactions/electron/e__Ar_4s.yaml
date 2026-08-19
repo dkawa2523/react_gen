@@ -1,0 +1,63 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: Ar_4s
+channels:
+- id: e_Ar4s_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: Ar_4s
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat metastable-argon sets
+      status: needs_import
+      note: Momentum-transfer channel for the excited manifold.
+- id: e_Ar4s_stepwise_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: Ar+
+    n: 1
+  status: literature_supported
+  threshold_eV: 4.16
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: NIST ASD ionization limit; numeric curve pending
+      status: needs_import
+      note: Threshold is 15.7596 eV minus the 11.6 eV manifold energy.
+  notes:
+  - Stepwise ionization dominates argon ionization at moderate electron
+    temperature; omitting it understates the electron source term.
+- id: e_Ar4s_superelastic
+  type: deexcitation
+  products:
+  - species: e
+    n: 1
+  - species: Ar
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  deltaE_products_minus_reactants_eV: -11.6
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: detailed balance against the 4s excitation cross section
+      status: needs_import
+      note: Superelastic channel returns 11.6 eV to the electron energy balance.
+metadata:
+  status: literature_supported
+  notes:
+  - Electron chemistry of the lumped Ar 4s manifold. Equations are registered so
+    the pathway exists; every numerical curve remains an acquisition gap.

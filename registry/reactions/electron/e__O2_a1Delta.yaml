@@ -1,0 +1,62 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: O2_a1Delta
+channels:
+- id: e_O2_a1Delta_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: O2_a1Delta
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat excited-state sets
+      status: needs_import
+      note: Momentum-transfer channel for the excited state.
+- id: e_O2_a1Delta_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: O2+
+    n: 1
+  status: literature_supported
+  threshold_eV: 11.0927
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: derived threshold; numeric curve pending
+      status: needs_import
+      note: Threshold is the O2 ionization threshold minus the 0.977 eV excitation.
+  notes:
+  - Stepwise ionization from a1Delta_g; omitting it understates the electron source.
+- id: e_O2_a1Delta_superelastic
+  type: deexcitation
+  products:
+  - species: e
+    n: 1
+  - species: O2
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  deltaE_products_minus_reactants_eV: -0.977
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: detailed balance against the O2 excitation cross section
+      status: needs_import
+      note: Superelastic channel returns 0.977 eV to the electron energy balance.
+metadata:
+  status: literature_supported
+  notes:
+  - Electron chemistry of a1Delta_g. Thresholds are exact arithmetic on registered
+    O2 values; every numerical curve remains an acquisition gap.

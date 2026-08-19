@@ -1,0 +1,10 @@
+id: Ar
+composition: {Ar: 1}
+charge: 0
+classes: [neutral, atom]
+properties:
+  mass_amu: {value: 39.948, unit: amu, source: fixture}
+  polarizability_A3: {value: 1.64, unit: A3, source: fixture}
+  dipole_moment_D: {value: 0.0, unit: D, source: fixture}
+  collision_radius_A: {value: 1.88, unit: A, source: fixture}
+metadata: {status: curated}

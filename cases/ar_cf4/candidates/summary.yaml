@@ -1,0 +1,33 @@
+mechanism_id: ar_cf4.Ar-CF4.677f0001
+case: ar_cf4
+gases:
+- Ar
+- CF4
+conditions:
+  pressure_Pa: 2.7
+  gas_temperature_K: 350.0
+  electron_temperature_eV: 4.0
+  electron_density_m3: 3.0e+16
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+species: 31
+reactions: 446
+by_family:
+  electron: 127
+  ion_neutral: 209
+  neutral_neutral: 110
+max_depth: 3
+complete: true
+truncated_by: []
+data_coverage:
+  cross_section: 0/127
+  rate_coefficient: 3/319
+relevance:
+  comparable: 16
+  fast: 3
+  slow: 2
+  unknown: 425
+gaps:
+  blocking: 0
+  data: 169
+  info: 4

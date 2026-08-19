@@ -1,0 +1,8 @@
+schema_version: 1
+pair: {family: ion_neutral, projectile: 'Ar+', target: F2}
+channels:
+- id: Arp_F2_charge_transfer
+  type: charge_transfer
+  products: [{species: Ar, n: 1}, {species: 'F2+', n: 1}]
+  dnt_class: long_range_charge_exchange
+  status: curated

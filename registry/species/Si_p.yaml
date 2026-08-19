@@ -1,0 +1,39 @@
+schema_version: 1
+id: Si+
+display_name: Si+
+composition:
+  Si: 1
+charge: 1
+classes:
+- ion
+- cation
+- atom
+state:
+  kind: ion
+  label: ''
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 28.084451
+    unit: amu
+    source: Si atomic mass minus the electron mass
+  enthalpy_formation_eV:
+    value: 12.815601
+    unit: eV
+    source: Si enthalpy plus its ionization energy
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic-ion symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+metadata:
+  status: literature_supported
+  notes:
+  - Cation of an acquired ground atom; the ion is the neutral plus IE.

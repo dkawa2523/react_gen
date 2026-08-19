@@ -1,8 +1,31 @@
 schema_version: 1
 id: C4F8
 display_name: C4F8
-composition: {C: 4, F: 8}
+composition:
+  C: 4
+  F: 8
 charge: 0
-classes: [neutral, molecule, input_feedstock]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
-metadata: {status: literature_supported, notes: [Feedstock identity does not select a cyclic or linear isomer; review before reaction import.]}
+classes:
+- neutral
+- molecule
+- input_feedstock
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+metadata:
+  status: literature_supported
+  notes:
+  - Feedstock identity does not select a cyclic or linear isomer; review before reaction
+    import.
+properties:
+  enthalpy_formation_eV:
+    value: -15.987922
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 115-25-3, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 400.92
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 115-25-3, formula
+      verified against the registry

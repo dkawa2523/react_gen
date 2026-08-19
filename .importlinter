@@ -1,36 +1,42 @@
 [importlinter]
-root_package = plasma_reactgen
+root_packages =
+    reactgen
+    acquire
+    discover
 include_external_packages = True
 
-[importlinter:contract:domain-independence]
-name = Domain does not depend on outer layers
-type = forbidden
-source_modules =
-    plasma_reactgen.domain
-forbidden_modules =
-    plasma_reactgen.application
-    plasma_reactgen.data_sources
-    plasma_reactgen.inference
-    plasma_reactgen.infrastructure
-    plasma_reactgen.interface
-    plasma_reactgen.preparation
-    plasma_reactgen.visualization
+[importlinter:contract:reactgen-layers]
+name = reactgen modules import only from the layers below them
+type = layers
+layers =
+    reactgen.cli
+    reactgen.export
+    reactgen.plan | reactgen.lock | reactgen.ingest | reactgen.coverage | reactgen.dnt | reactgen.graph | reactgen.known
+    reactgen.audit | reactgen.quality
+    reactgen.rank
+    reactgen.physics
+    reactgen.expand
+    reactgen.thermo | reactgen.balance
+    reactgen.registry
+    reactgen.case
+    reactgen.layers
+    reactgen.processes | reactgen.model
 
-[importlinter:contract:application-boundary]
-name = Application does not depend on delivery or infrastructure
+[importlinter:contract:reactgen-offline]
+name = reactgen never reaches the network or the acquisition tools
 type = forbidden
 source_modules =
-    plasma_reactgen.application
+    reactgen
 forbidden_modules =
-    plasma_reactgen.infrastructure
-    plasma_reactgen.interface
-    plasma_reactgen.preparation
-    plasma_reactgen.visualization
+    http
+    urllib
+    socket
 
-[importlinter:contract:external-tools-boundary]
-name = Core package does not import external data tools
+[importlinter:contract:optional-packages-stay-optional]
+name = the core never imports acquisition or discovery
 type = forbidden
 source_modules =
-    plasma_reactgen
+    reactgen
 forbidden_modules =
-    external_data_tools
+    acquire
+    discover

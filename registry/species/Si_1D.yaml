@@ -1,0 +1,48 @@
+schema_version: 1
+id: Si_1D
+display_name: Si(1D)
+composition:
+  Si: 1
+charge: 0
+classes:
+- neutral
+- atom
+- metastable
+state:
+  kind: excited
+  label: 1D
+  excitation_energy_eV: 0.780958
+properties:
+  mass_amu:
+    value: 28.085
+    unit: amu
+    source: same nucleus as Si
+  enthalpy_formation_eV:
+    value: 5.444879
+    unit: eV
+    source: Si enthalpy plus the level energy
+  ionization_energy_eV:
+    value: 7.370722
+    unit: eV
+    source: Si ionization energy less the level energy
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  electron_affinity_eV:
+    value: null
+    unit: eV
+    source: null
+metadata:
+  status: literature_supported
+  notes:
+  - 'NIST Atomic Spectra Database, energy levels (energy1.pl). Metastable: no electric
+    dipole transition to any lower level is allowed.'

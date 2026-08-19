@@ -18,12 +18,6 @@ properties:
     value: 50.0075
     unit: amu
     source: NIST Chemistry WebBook SRD 69
-  polarizability_A3:
-    value: 1.85
-    unit: A3
-    source: engineering estimate for DNT pre-processing; replace with curated value
-      before production
-    quality: estimated
   dipole_moment_D:
     value: 0.469
     unit: D
@@ -31,12 +25,6 @@ properties:
     uncertainty_D: 0.026
     quality: curated
     note: Ground-state microwave dipole moment.
-  collision_radius_A:
-    value: 2.0
-    unit: A
-    source: engineering estimate for DNT pre-processing; replace with curated value
-      before production
-    quality: estimated
   enthalpy_formation_eV:
     value: -1.8862970774399115
     unit: eV

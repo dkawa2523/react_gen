@@ -1,0 +1,18 @@
+schema_version: 1
+pair: {family: electron, projectile: e, target: F2}
+channels:
+- id: e_F2_elastic
+  type: elastic
+  products: [{species: e, n: 1}, {species: F2, n: 1}]
+  threshold_eV: 0.0
+  status: curated
+- id: e_F2_dissociation
+  type: dissociation
+  products: [{species: e, n: 1}, {species: F, n: 2}]
+  threshold_eV: 3.16
+  status: curated
+- id: e_F2_broken_balance
+  type: dissociation
+  products: [{species: e, n: 1}, {species: F, n: 3}]
+  threshold_eV: 3.16
+  status: curated

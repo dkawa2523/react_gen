@@ -1,0 +1,54 @@
+schema_version: 1
+id: Ar_4s
+display_name: Ar(4s)
+aliases:
+- Ar*
+- Ar(1s5)
+- argon metastable
+composition:
+  Ar: 1
+charge: 0
+classes:
+- neutral
+- atom
+- metastable
+- excited
+state:
+  kind: excited
+  label: 3p5 4s manifold
+  excitation_energy_eV: 11.6
+  resolution: lumped
+  members:
+  - Ar_1s5
+  - Ar_1s4
+  - Ar_1s3
+  - Ar_1s2
+properties:
+  mass_amu:
+    value: 39.948
+    unit: amu
+    source: NIST Chemistry WebBook SRD 69
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic species
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+  ionization_energy_eV:
+    value: 4.16
+    unit: eV
+    source: 15.7596 eV Ar ionization limit minus the 11.6 eV manifold energy
+metadata:
+  status: literature_supported
+  notes:
+  - The four 3p5 4s levels (1s5 11.548, 1s4 11.624, 1s3 11.723, 1s2 11.828 eV in
+    NIST ASD) are carried as one lumped manifold at 11.6 eV.
+  - Two of the four levels are metastable; resolving them requires separate
+    radiative and quenching data and must replace this record, not sit beside it.
+  - Collision radius and polarizability of the excited state are acquisition gaps.

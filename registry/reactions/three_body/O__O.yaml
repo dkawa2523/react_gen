@@ -1,0 +1,30 @@
+schema_version: 1
+pair:
+  family: three_body
+  projectile: O
+  target: O
+channels:
+- id: O_O_M_recombination
+  type: recombination
+  third_body: M
+  products:
+  - species: O2
+    n: 1
+  status: literature_supported
+  reverse: from_equilibrium
+  data:
+    datasets:
+    - id: ds_O_O_M_recombination
+      kind: rate_coefficient
+      representation: reference_only
+      unit: m6/s
+      source:
+        source_type: acquisition_target
+        citation: Termolecular oxygen recombination; acquire from an evaluated
+          kinetics compilation with third-body efficiencies.
+      status: needs_import
+      preferred: true
+metadata:
+  status: literature_supported
+  notes:
+  - Registered as an equation; the coefficient is an explicit acquisition gap.

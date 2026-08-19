@@ -1,0 +1,38 @@
+schema_version: 1
+pair:
+  family: neutral_neutral
+  projectile: Ar_4s
+  target: Ar_4s
+channels:
+- id: Ar4s_Ar4s_pooling_ionization
+  type: associative_ionization
+  products:
+  - species: Ar+
+    n: 1
+  - species: Ar
+    n: 1
+  - species: e
+    n: 1
+  status: literature_supported
+  reverse: not_applicable
+  deltaE_products_minus_reactants_eV: -7.44
+  data:
+    datasets:
+    - id: ds_Ar4s_Ar4s_pooling_ionization
+      kind: rate_coefficient
+      representation: reference_only
+      unit: m3/s
+      source:
+        source_type: acquisition_target
+        citation: Metastable pooling rate; acquire from an evaluated argon kinetics
+          compilation before quantitative use.
+      status: needs_import
+      preferred: true
+  notes:
+  - Two 11.6 eV metastables carry 23.2 eV, above the 15.76 eV ionization limit, so
+    pooling is energetically open.
+metadata:
+  status: literature_supported
+  notes:
+  - Metastable pooling is a significant ionization source in argon discharges and
+    is registered here as an equation with an explicit numerical gap.

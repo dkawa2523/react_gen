@@ -1,0 +1,85 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: N
+channels:
+- id: e_N_excitation_N_2D
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: N_2D
+    n: 1
+  status: literature_supported
+  threshold_eV: 2.38353
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 2D* level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: The level energy is exact; the cross section is not acquired.
+- id: e_N_elastic
+  type: elastic
+  products:
+  - species: e
+    n: 1
+  - species: N
+    n: 1
+  status: literature_supported
+  threshold_eV: 0.0
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the ground level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: Momentum transfer for the ground atom.
+- id: e_N_ionization
+  type: ionization
+  products:
+  - species: e
+    n: 2
+  - species: N+
+    n: 1
+  status: literature_supported
+  threshold_eV: 14.53413
+  source_record:
+    source_type: mendeleev
+    citation: mendeleev package, bundled periodic table
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: Ionization cross section not acquired.
+- id: e_N_excitation_N_2P
+  type: excitation
+  products:
+  - species: e
+    n: 1
+  - species: N_2P
+    n: 1
+  status: literature_supported
+  threshold_eV: 3.57557
+  source_record:
+    source_type: nist_asd
+    citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
+    note: threshold is the 2P* level energy; excitation costs exactly that
+  data:
+    cross_section:
+      path: null
+      format: external_reference_pending_digitization
+      source: LXCat or an evaluated electron-impact set
+      status: needs_import
+      note: The level energy is exact; the cross section is not acquired.

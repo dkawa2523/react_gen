@@ -1,8 +1,28 @@
 schema_version: 1
 id: SOF2
 display_name: SOF2
-composition: {S: 1, O: 1, F: 2}
+composition:
+  S: 1
+  O: 1
+  F: 2
 charge: 0
-classes: [neutral, molecule]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
-metadata: {status: literature_supported}
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+metadata:
+  status: literature_supported
+properties:
+  enthalpy_formation_eV:
+    value: -5.637334
+    unit: eV
+    source: chemicals package bundled thermodynamic tables, CAS 7783-42-8, formula
+      verified against the registry
+  entropy_J_mol_K:
+    value: 278.7
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 7783-42-8, formula
+      verified against the registry

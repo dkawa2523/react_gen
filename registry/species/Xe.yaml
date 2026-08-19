@@ -1,0 +1,46 @@
+schema_version: 1
+id: Xe
+display_name: Xe
+composition:
+  Xe: 1
+charge: 0
+classes:
+- neutral
+- atom
+state:
+  kind: ground
+  label: ''
+  excitation_energy_eV: 0.0
+properties:
+  mass_amu:
+    value: 131.293
+    unit: amu
+    source: mendeleev standard atomic weight
+  ionization_energy_eV:
+    value: 12.1298437
+    unit: eV
+    source: mendeleev package, bundled periodic table
+  electron_affinity_eV:
+    value: -0.055999999999999994
+    unit: eV
+    source: mendeleev package, bundled periodic table
+  enthalpy_formation_eV:
+    value: 0.0
+    unit: eV
+    source: chemicals package bundled thermodynamic tables
+  polarizability_A3:
+    value: null
+    unit: A3
+    source: null
+  dipole_moment_D:
+    value: 0.0
+    unit: D
+    source: atomic symmetry
+  collision_radius_A:
+    value: null
+    unit: A
+    source: null
+metadata:
+  status: literature_supported
+  notes:
+  - Ground-state atom acquired for the gases that produce it.

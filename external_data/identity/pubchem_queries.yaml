@@ -1,0 +1,12 @@
+# Registry ids whose formula is not a name PubChem resolves, or resolves wrongly.
+# Verified by checking the returned formula against the registry composition.
+schema_version: 1
+queries:
+  CO: carbon monoxide        # "CO" resolves to cobalt
+  C4F8: octafluorocyclobutane
+  CF2O: carbonyl fluoride
+  SO2F2: sulfuryl fluoride
+  SOF2: thionyl fluoride
+  SOF4: sulfur tetrafluoride oxide
+  C2F4: tetrafluoroethylene
+  C2H2: acetylene

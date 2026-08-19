@@ -31,9 +31,10 @@ properties:
     unit: A
     source: null
   enthalpy_formation_eV:
-    value: null
+    value: -9.415421
     unit: eV
-    source: null
+    source: chemicals package bundled thermodynamic tables, CAS 10546-01-7, formula
+      verified against the registry
   ionization_energy_eV:
     value: 9.6
     unit: eV
@@ -42,6 +43,11 @@ properties:
     value: 3.85
     unit: eV
     source: NIST Chemistry WebBook electron affinity determination
+  entropy_J_mol_K:
+    value: 304.75
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 10546-01-7, formula
+      verified against the registry
 metadata:
   status: curated
   notes:

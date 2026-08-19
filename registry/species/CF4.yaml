@@ -39,9 +39,10 @@ properties:
     note: Effective short-range core radius for preprocessing. Tune/replace during
       DNT+ calibration or import from a transport set.
   enthalpy_formation_eV:
-    value: -9.671936443224865
+    value: -9.673802
     unit: eV
-    source: NIST Chemistry WebBook SRD 69, ΔfH°gas=-933.20 kJ/mol
+    source: chemicals package bundled thermodynamic tables, CAS 75-73-0, formula verified
+      against the registry
   ionization_energy_eV:
     value: 14.7
     unit: eV
@@ -50,8 +51,8 @@ properties:
   electron_affinity_eV:
     value: null
     unit: eV
-    source: Bjarnason et al., Int. J. Mass Spectrom. 339-340, 45-53 (2013),
-      CF4 attachment proceeds through an unstable transient parent anion
+    source: Bjarnason et al., Int. J. Mass Spectrom. 339-340, 45-53 (2013), CF4 attachment
+      proceeds through an unstable transient parent anion
     status: unbound
     note: Do not substitute fragment-anion appearance energy for the parent-molecule
       electron affinity.
@@ -67,6 +68,11 @@ properties:
     quality: transport_fit_alternative
     note: Use only when reproducing specific ion-mobility/transport-set assumptions;
       do not silently replace polarizability_A3.
+  entropy_J_mol_K:
+    value: 261.6
+    unit: J/mol/K
+    source: chemicals package bundled thermodynamic tables, CAS 75-73-0, formula verified
+      against the registry
 metadata:
   status: estimated
   notes:
