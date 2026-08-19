@@ -1,7 +1,17 @@
 layer: thermochemistry
 question: do the energetics leave the channel open?
-reactions: 446
-verdicts:
-  unknown: 230
-  exothermic: 151
-  endothermic: 65
+reactions:
+  total: 446
+  judged: 216
+  undecided: 230
+  not_run: 0
+  by_verdict:
+    unknown: 230
+    exothermic: 151
+    endothermic: 65
+species:
+  total: 30
+  needs:
+  - enthalpy_formation_eV
+  - ionization_energy_eV
+  blocked_by_missing_property: 23

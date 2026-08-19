@@ -1,5 +1,14 @@
 layer: structure
 question: can these species exist, and does the equation balance?
-reactions: 6
-verdicts:
-  conserved: 6
+reactions:
+  total: 6
+  judged: 6
+  undecided: 0
+  not_run: 0
+  by_verdict:
+    conserved: 6
+species:
+  total: 3
+  needs:
+  - mass_amu
+  blocked_by_missing_property: 0

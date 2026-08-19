@@ -42,25 +42,56 @@ import numpy as np
 import yaml
 
 ELECTRON = "e"
+NEWLINE = chr(10)
 READABLE = 45  # species past which a node-link diagram stops being a picture
 
-INK = "#161A25"
-MUTED = "#5A6175"
-HAIR = "#D8DCE5"
-CHARGE = {0: "#4F8A5C", 1: "#2E6E8E", -1: "#C08A2E"}
+# Okabe-Ito: the colour-blind-safe set the chemistry and physics journals ask
+# for. Saturated on white, distinguishable in greyscale, and eight is enough
+# for every categorical axis here.
+BLACK = "#000000"
+ORANGE = "#E69F00"
+SKY = "#56B4E9"
+GREEN = "#009E73"
+YELLOW = "#F0E442"
+BLUE = "#0072B2"
+VERMILLION = "#D55E00"
+PURPLE = "#CC79A7"
+GREY = "#5A5A5A"
+
+INK = BLACK
+MUTED = "#3A3A3A"
+HAIR = "#9A9A9A"
+CHARGE = {0: GREEN, 1: BLUE, -1: ORANGE}
 CHARGE_NAME = {"neutral": CHARGE[0], "cation": CHARGE[1], "anion": CHARGE[-1]}
-STATUS = {"curated": "#1B3A5C", "literature_supported": "#4FA3A5", "candidate": "#D9A441"}
+STATUS = {"curated": BLUE, "literature_supported": GREEN, "candidate": ORANGE}
 FAMILY = {
-    "electron": "#2E6E8E",
-    "electron_ion": "#4A8FA8",
-    "ion_neutral": "#B3541E",
-    "ion_ion": "#8A3D6B",
-    "neutral_neutral": "#4F8A5C",
-    "three_body": "#9A7BAE",
-    "unimolecular": "#7A7A7A",
-    "surface": "#7A6A55",
+    "electron": BLUE,
+    "electron_ion": SKY,
+    "ion_neutral": VERMILLION,
+    "ion_ion": PURPLE,
+    "neutral_neutral": GREEN,
+    "three_body": ORANGE,
+    "unimolecular": GREY,
+    "surface": BLACK,
 }
-LACKING = "#A93226"
+# A verdict is either decided, undecided, or never asked; the palette says which.
+VERDICT = {
+    "conserved": BLUE,
+    "conserved, species proposed": ORANGE,
+    "exothermic": GREEN,
+    "endothermic": VERMILLION,
+    "thermoneutral": YELLOW,
+    "fast": GREEN,
+    "comparable": SKY,
+    "slow": ORANGE,
+    "negligible": GREY,
+    "attested": BLUE,
+    "unknown": "#BFBFBF",
+    "unattested": "#BFBFBF",
+    "not_run": "#E4E4E4",
+}
+UNDECIDED = frozenset({"unknown", "unattested"})
+LACKING = VERMILLION
 
 
 def read(bundle: Path, name: str, key: str) -> list:
@@ -78,8 +109,9 @@ def frame(axes, title: str, subtitle: str = "") -> None:
     for side in ("top", "right"):
         axes.spines[side].set_visible(False)
     for side in ("left", "bottom"):
-        axes.spines[side].set_color(HAIR)
-    axes.tick_params(labelsize=8, colors=MUTED, length=3)
+        axes.spines[side].set_color(BLACK)
+        axes.spines[side].set_linewidth(0.9)
+    axes.tick_params(labelsize=8.5, colors=BLACK, length=4, width=0.9, direction="out")
 
 
 def charge_name(charge: int) -> str:
@@ -112,11 +144,13 @@ def energy_landscape(reactions: list[dict], conditions: dict, out: Path, title: 
             xs.append(onset)
             ys.append(rows[reaction["type"]] + rng.uniform(-0.24, 0.24))
         if xs:
-            axes.scatter(xs, ys, s=26, c=colour, alpha=0.75, linewidths=0, label=status)
+            axes.scatter(
+                xs, ys, s=30, c=colour, alpha=0.85, linewidths=0.3, edgecolors="white", label=status
+            )
 
     temperature = (conditions or {}).get("electron_temperature_eV")
     if temperature:
-        axes.axvspan(0, temperature, color=LACKING, alpha=0.05)
+        axes.axvspan(0, temperature, color=YELLOW, alpha=0.22)
         axes.axvline(temperature, color=LACKING, lw=1.2, ls="--")
         axes.axvline(3 * temperature, color=LACKING, lw=0.8, ls=":")
         top = len(kinds) - 0.4
@@ -179,7 +213,9 @@ def _nodes(graph, layout, axes, index: dict, size: int = 700) -> None:
         node_size=size,
         alpha=0.95,
     )
-    nx.draw_networkx_labels(graph, layout, ax=axes, font_size=6.5, font_color="white")
+    nx.draw_networkx_labels(
+        graph, layout, ax=axes, font_size=6.5, font_color="white", font_weight="bold"
+    )
 
 
 def fragmentation(species: list[dict], reactions: list[dict], out: Path, title: str) -> None:
@@ -261,7 +297,7 @@ def interaction_matrix(species: list[dict], reactions: list[dict], out: Path, ti
                     grid[place[source], place[target]] += 1
     size = max(7.0, 0.19 * len(heavy) + 3)
     figure, axes = plt.subplots(figsize=(size, size))
-    shown = axes.imshow(np.log1p(grid), cmap="YlGnBu", interpolation="nearest")
+    shown = axes.imshow(np.log1p(grid), cmap="cividis", interpolation="nearest")
     axes.set_xticks(range(len(heavy)))
     axes.set_yticks(range(len(heavy)))
     axes.set_xticklabels(heavy, rotation=90, fontsize=5.5)
@@ -521,6 +557,7 @@ def layer_figure(
     conditions: dict,
     out: Path,
     title: str,
+    tally: dict | None = None,
 ) -> None:
     """The verdict, and the quantity the verdict was made on.
 
@@ -533,7 +570,13 @@ def layer_figure(
     verdicts = Counter(
         str((r.get("evidence") or {}).get(layer, "not_run")).split(" by ")[0] for r in reactions
     )
-    bars(left, verdicts, "verdict")
+    counted = tally or {}
+    head = (
+        f"judged {counted.get('judged', 0)} / undecided {counted.get('undecided', 0)}"
+        f" / not run {counted.get('not_run', 0)}   of {len(reactions)}"
+    )
+    bars(left, verdicts, "verdict", VERDICT)
+    left.text(0, 1.02, head, transform=left.transAxes, fontsize=8, color=MUTED, va="bottom")
 
     if layer == "thermochemistry":
         _enthalpy(right, reactions)
@@ -552,48 +595,221 @@ def layer_figure(
     plt.close(figure)
 
 
+def _layer_network(
+    species: list[dict],
+    reactions: list[dict],
+    verdicts: dict[str, str],
+    out: Path,
+    title: str,
+    layer: str,
+) -> None:
+    """The network with every edge coloured by what this one layer said.
+
+    Undecided edges are drawn thin and grey so the decided ones carry the eye:
+    what a layer answers is which part of the mechanism it settled, and a
+    uniformly drawn graph cannot show that.
+    """
+
+    index = {item["id"]: item for item in species if item["id"] != ELECTRON}
+    graph = nx.DiGraph()
+    for name in index:
+        graph.add_node(name)
+    for reaction in reactions:
+        verdict = verdicts.get(reaction["id"], "not_run").split(" by ")[0]
+        left = [t["species"] for t in reaction["reactants"] if t["species"] != ELECTRON]
+        right = [t["species"] for t in reaction["products"] if t["species"] != ELECTRON]
+        for source in left:
+            for target in right:
+                if source != target and graph.has_node(source) and graph.has_node(target):
+                    graph.add_edge(source, target, verdict=verdict)
+    if not graph.number_of_edges():
+        return
+    if len(index) > READABLE:
+        _verdict_matrix(index, graph, out, title, layer)
+        return
+
+    layout = nx.kamada_kawai_layout(graph)
+    figure, axes = plt.subplots(figsize=(11, 8.5))
+    seen = [d["verdict"] for _, _, d in graph.edges(data=True)]
+    faint = UNDECIDED | {"not_run"}
+    nx.draw_networkx_edges(
+        graph,
+        layout,
+        ax=axes,
+        edge_color=[VERDICT.get(name, GREY) for name in seen],
+        width=[0.6 if name in faint else 1.5 for name in seen],
+        alpha=0.8,
+        arrowsize=9,
+        connectionstyle="arc3,rad=0.1",
+        node_size=700,
+    )
+    _nodes(graph, layout, axes, index)
+    axes.legend(
+        handles=[
+            plt.Line2D([], [], color=VERDICT.get(name, GREY), lw=2.5, label=name)
+            for name in sorted(set(seen))
+        ],
+        fontsize=8,
+        frameon=False,
+        loc="upper left",
+    )
+    axes.set_title(f"{title}   {layer} across the network", fontsize=11, color=INK, loc="left")
+    axes.axis("off")
+    figure.tight_layout()
+    figure.savefig(out, format="svg", bbox_inches="tight")
+    plt.close(figure)
+
+
+def _verdict_matrix(index: dict, graph, out: Path, title: str, layer: str) -> None:
+    """Which pairs this layer decided, where a node-link view is unreadable."""
+
+    names = sorted(index)
+    place = {name: position for position, name in enumerate(names)}
+    order = [key for key in VERDICT if key != "not_run"]
+    grid = np.full((len(names), len(names)), np.nan)
+    for source, target, data in graph.edges(data=True):
+        verdict = data["verdict"]
+        if verdict in order:
+            grid[place[source], place[target]] = order.index(verdict)
+    size = max(7.0, 0.19 * len(names) + 3)
+    figure, axes = plt.subplots(figsize=(size, size))
+    shown = axes.imshow(grid, cmap="cividis", interpolation="nearest", vmin=0, vmax=len(order) - 1)
+    axes.set_xticks(range(len(names)))
+    axes.set_yticks(range(len(names)))
+    axes.set_xticklabels(names, rotation=90, fontsize=5.5)
+    axes.set_yticklabels(names, fontsize=5.5)
+    axes.set_xlabel("product", fontsize=9, color=INK)
+    axes.set_ylabel("reactant", fontsize=9, color=INK)
+    bar = figure.colorbar(shown, ax=axes, shrink=0.6, ticks=range(len(order)))
+    bar.ax.set_yticklabels(order, fontsize=7)
+    axes.set_title(f"{title}   {layer} per pair", fontsize=11, color=INK, loc="left")
+    figure.tight_layout()
+    figure.savefig(out, format="svg", bbox_inches="tight")
+    plt.close(figure)
+
+
+# What each layer needs of a species before it can decide anything about it.
+NEEDS = {
+    "structure": ("mass_amu",),
+    "thermochemistry": ("enthalpy_formation_eV", "ionization_energy_eV"),
+    "kinetics": ("mass_amu", "polarizability_A3"),
+    "attestation": (),
+}
+
+
+def _species_rows(layer: str, species: list[dict], reactions: list[dict]) -> list[str]:
+    """The state list, with what this layer can say about each species.
+
+    A layer is not only a verdict on reactions. Thermochemistry cannot decide a
+    channel whose species carry no formation enthalpy, so the state list says
+    which of them do — that is where a reviewer looks to see what unblocks the
+    layer next.
+    """
+
+    touched: Counter = Counter()
+    for reaction in reactions:
+        for term in reaction["reactants"] + reaction["products"]:
+            touched[term["species"]] += 1
+
+    rows = ["id,charge,depth,status,reactions,ready,missing"]
+    for item in sorted(species, key=lambda entry: entry["id"]):
+        properties = item.get("properties") or {}
+        missing = [
+            name
+            for name in NEEDS.get(layer, ())
+            if (properties.get(name) or {}).get("value") is None
+        ]
+        rows.append(
+            ",".join(
+                str(field)
+                for field in (
+                    item["id"],
+                    item.get("charge", 0),
+                    item.get("depth", 0),
+                    item.get("status", ""),
+                    touched.get(item["id"], 0),
+                    "no" if missing else "yes",
+                    "|".join(missing),
+                )
+            )
+        )
+    return rows
+
+
+def _tally(verdicts: dict[str, str]) -> dict:
+    """Decided, undecided, never asked. A count of verdicts hides the middle."""
+
+    kinds = Counter(value.split(" by ")[0] for value in verdicts.values())
+    return {
+        "judged": sum(n for k, n in kinds.items() if k not in UNDECIDED and k != "not_run"),
+        "undecided": sum(kinds[k] for k in UNDECIDED if k in kinds),
+        "not_run": kinds.get("not_run", 0),
+        "by_verdict": dict(kinds.most_common()),
+    }
+
+
 def per_layer(
     species: list[dict], reactions: list[dict], conditions: dict, out: Path, title: str
 ) -> list[str]:
     """One directory per layer: the whole list with that layer's answer attached."""
 
     names = sorted({layer for r in reactions for layer in (r.get("evidence") or {})})
+    heavy = [item for item in species if item["id"] != ELECTRON]
     for layer in names:
         target = out / layer
         target.mkdir(parents=True, exist_ok=True)
         verdicts = {
             r["id"]: str((r.get("evidence") or {}).get(layer, "not_run")) for r in reactions
         }
+        tally = _tally(verdicts)
 
-        rows = ["id,equation,family,type,status,verdict"]
+        rows = ["id,equation,family,type,depth,status,verdict,decided"]
         for reaction in reactions:
+            verdict = verdicts[reaction["id"]]
+            kind = verdict.split(" by ")[0]
             fields = [
                 reaction["id"],
                 reaction["equation"],
                 reaction.get("family", ""),
                 reaction.get("type", ""),
+                reaction.get("depth", 0),
                 reaction.get("status", ""),
-                verdicts[reaction["id"]],
+                verdict,
+                "no" if kind in UNDECIDED or kind == "not_run" else "yes",
             ]
             rows.append(",".join(f'"{f}"' if "," in str(f) else str(f) for f in fields))
-        (target / "reactions.csv").write_text("\n".join(rows) + "\n", encoding="utf-8")
+        (target / "reactions.csv").write_text(NEWLINE.join(rows) + NEWLINE, encoding="utf-8")
+        (target / "species.csv").write_text(
+            NEWLINE.join(_species_rows(layer, heavy, reactions)) + NEWLINE, encoding="utf-8"
+        )
 
+        blocked = [
+            item["id"]
+            for item in heavy
+            if any(
+                (item.get("properties") or {}).get(name, {}).get("value") is None
+                for name in NEEDS.get(layer, ())
+            )
+        ]
         (target / "summary.yaml").write_text(
             yaml.safe_dump(
                 {
                     "layer": layer,
                     "question": QUESTIONS[layer],
-                    "reactions": len(reactions),
-                    # Grouped by kind: "exothermic" is the answer, and the
-                    # electronvolts belong beside each reaction, not in a tally.
-                    "verdicts": dict(Counter(v.split(" by ")[0] for v in verdicts.values())),
+                    "reactions": {"total": len(reactions), **tally},
+                    "species": {
+                        "total": len(heavy),
+                        "needs": list(NEEDS.get(layer, ())),
+                        "blocked_by_missing_property": len(blocked),
+                    },
                 },
                 sort_keys=False,
                 allow_unicode=True,
             ),
             encoding="utf-8",
         )
-        layer_figure(layer, reactions, species, conditions, target / "verdict.svg", title)
+        layer_figure(layer, reactions, heavy, conditions, target / "verdict.svg", title, tally)
+        _layer_network(species, reactions, verdicts, target / "network.svg", title, layer)
     return names
 
 

@@ -1,7 +1,7 @@
-id,equation,family,type,status,verdict
-e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,curated,unattested
-e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,curated,unattested
-e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,curated,unattested
-e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,literature_supported,unattested
-e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,literature_supported,unattested
-e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,literature_supported,unattested
+id,equation,family,type,depth,status,verdict,decided
+e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,unattested,no
+e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,0,curated,unattested,no
+e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,unattested,no
+e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,literature_supported,unattested,no
+e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,1,literature_supported,unattested,no
+e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,unattested,no

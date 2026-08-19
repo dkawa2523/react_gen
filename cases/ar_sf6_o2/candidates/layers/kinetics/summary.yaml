@@ -1,9 +1,19 @@
 layer: kinetics
 question: does it run fast enough to matter under these conditions?
-reactions: 2081
-verdicts:
-  unknown: 2006
-  fast: 62
-  slow: 4
-  negligible: 1
-  comparable: 8
+reactions:
+  total: 2081
+  judged: 75
+  undecided: 2006
+  not_run: 0
+  by_verdict:
+    unknown: 2006
+    fast: 62
+    comparable: 8
+    slow: 4
+    negligible: 1
+species:
+  total: 79
+  needs:
+  - mass_amu
+  - polarizability_A3
+  blocked_by_missing_property: 75

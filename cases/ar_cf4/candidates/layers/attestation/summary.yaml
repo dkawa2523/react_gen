@@ -1,5 +1,13 @@
 layer: attestation
 question: does any source state this reaction?
-reactions: 446
-verdicts:
-  unattested: 446
+reactions:
+  total: 446
+  judged: 0
+  undecided: 446
+  not_run: 0
+  by_verdict:
+    unattested: 446
+species:
+  total: 30
+  needs: []
+  blocked_by_missing_property: 0

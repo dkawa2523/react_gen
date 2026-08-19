@@ -1,0 +1,13 @@
+id,charge,depth,status,reactions,ready,missing
+Ar,0,0,curated,16,yes,
+Ar+,1,1,curated,13,no,polarizability_A3
+Ar_4s,0,1,literature_supported,11,no,polarizability_A3
+O,0,1,curated,35,no,polarizability_A3
+O+,1,1,curated,20,no,polarizability_A3
+O2,0,0,curated,33,yes,
+O2+,1,1,curated,18,no,polarizability_A3
+O2_a1Delta,0,1,curated,13,no,polarizability_A3
+O2_b1Sigma,0,1,curated,13,no,polarizability_A3
+O2_v,0,1,candidate,17,no,mass_amu|polarizability_A3
+O_1D,0,1,curated,12,no,polarizability_A3
+O_1S,0,1,literature_supported,10,no,polarizability_A3
