@@ -309,9 +309,9 @@ def _pathway_graph(shown: list[dict], index: dict):
 # A layered drawing is boxes you can read, not dots you have to hover. These are
 # in axis units: one column is COLUMN wide, one row ROW tall, and a box is sized
 # to its own label inside that.
-COLUMN = 3.6
-ROW = 1.0
-CHAR = 0.085  # width of a character at the label size, in axis units
+COLUMN = 4.4
+ROW = 1.5
+CHAR = 0.10  # width of a character at the label size, in axis units
 
 
 def _box(axes, position, lines: list[str], fill: str, rim: str, width: float = 1.0) -> tuple:
@@ -338,7 +338,7 @@ def _box(axes, position, lines: list[str], fill: str, rim: str, width: float = 1
         NEWLINE.join(lines),
         ha="center",
         va="center",
-        fontsize=7,
+        fontsize=8.5,
         color=INK,
         zorder=4,
         linespacing=1.25,
@@ -433,8 +433,20 @@ def _draw_boxes(axes, layout: dict, detail: dict, index: dict) -> dict:
     return extent
 
 
+# How much of a mechanism fits on one page. Ar/CF4 opens fifteen channels on the
+# feed gas and a hundred and five on their products; by the third generation it
+# is two hundred and seventy-five, which is a table, not a diagram.
+PRIMARY_DEPTH = 1
+CARDS = 40
+
+
 def pathway(
-    species: list[dict], reactions: list[dict], out: Path, title: str, limit: int = 90
+    species: list[dict],
+    reactions: list[dict],
+    out: Path,
+    title: str,
+    max_depth: int = PRIMARY_DEPTH,
+    limit: int = CARDS,
 ) -> None:
     """Reactions as labelled cards, laid out left to right by the depth they open at.
 
@@ -446,10 +458,21 @@ def pathway(
     Columns are ordered at the barycentre of their neighbours, which is the step
     that makes a layered drawing legible; ordering them by name instead crossed
     three times as many edges.
+
+    Only the primary chemistry is drawn: what the feed gas does and what its
+    first products do. Everything past that is where the count explodes, and a
+    page of four hundred cards answers nothing a reviewer asked. The curated
+    channels come first inside that, because they are the backbone the rest
+    hangs off. `reactions.csv` carries the whole list.
     """
 
     index = {item["id"]: item for item in species if item["id"] != ELECTRON}
-    shown = sorted(reactions, key=lambda item: (item.get("depth", 0), item["id"]))[:limit]
+    rank = {"curated": 0, "literature_supported": 1, "candidate": 2}
+    primary = [r for r in reactions if r.get("depth", 0) <= max_depth]
+    shown = sorted(
+        primary,
+        key=lambda item: (rank.get(item.get("status"), 3), item.get("depth", 0), item["id"]),
+    )[:limit]
     if not shown:
         return
 
@@ -474,7 +497,7 @@ def pathway(
         layout.setdefault(name, (0.0, 0.0))
 
     figure, axes = plt.subplots(
-        figsize=(max(11.0, 2.6 * len(unique)), max(6.0, 0.40 * tallest + 2.6))
+        figsize=(max(12.0, 3.1 * len(unique)), max(6.5, 0.62 * tallest + 2.8))
     )
     extent = _draw_boxes(axes, layout, detail, index)
 
@@ -501,8 +524,9 @@ def pathway(
     ]
     axes.legend(handles=handles, fontsize=7.5, frameon=False, loc="lower left", ncol=2)
     axes.set_title(
-        f"{title}   reaction pathway — {len(shown)} of {len(reactions)} by depth",
-        fontsize=11,
+        f"{title}   primary chemistry — {len(shown)} channels to depth {max_depth}, "
+        f"of {len(reactions)}",
+        fontsize=11.5,
         color=INK,
         loc="left",
     )
