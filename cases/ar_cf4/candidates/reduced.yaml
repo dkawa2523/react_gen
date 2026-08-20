@@ -13,12 +13,13 @@ dropped_ids: []
 reactions:
 - id: e_Ar_elastic
   equation: e + Ar -> e + Ar
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 0
@@ -61,12 +62,13 @@ reactions:
   source: {}
 - id: e_Ar_excitation_4s_lumped
   equation: e + Ar -> e + Ar_4s
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: excitation
   depth: 0
@@ -109,12 +111,13 @@ reactions:
   source: {}
 - id: e_Ar_ionization
   equation: e + Ar -> 2 e + Ar+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 15.76 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 0
@@ -157,12 +160,13 @@ reactions:
   source: {}
 - id: e_CF4_elastic
   equation: e + CF4 -> e + CF4
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 0
@@ -207,12 +211,13 @@ reactions:
   source: {}
 - id: e_CF4_dissociation_CF3_F
   equation: e + CF4 -> e + CF3 + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 5.64 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociation
   depth: 0
@@ -262,12 +267,13 @@ reactions:
     record_id: R4
 - id: e_CF4_dissociation_CF2_2F
   equation: e + CF4 -> e + CF2 + 2 F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 9.43 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociation
   depth: 0
@@ -317,12 +323,13 @@ reactions:
     record_id: R5
 - id: e_CF4_dissociative_ionization_CF3p
   equation: e + CF4 -> 2 e + CF3+ + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 14.67 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociative_ionization
   depth: 0
@@ -372,12 +379,13 @@ reactions:
     record_id: R6
 - id: e_CF4_dissociative_ionization_Fp_CF3
   equation: e + CF4 -> 2 e + CF3 + F+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 23.07 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociative_ionization
   depth: 0
@@ -416,12 +424,13 @@ reactions:
     record_id: R7
 - id: e_CF4_dissociative_ionization_CF2p
   equation: e + CF4 -> 2 e + CF2+ + 2 F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 20.79 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: dissociative_ionization
   depth: 0
@@ -547,12 +556,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF4_to_e_CF4*
   equation: e + CF4 -> e + CF4*
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: excitation
   depth: 0
@@ -587,12 +597,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF4*_to_e_CF4
   equation: e + CF4* -> e + CF4
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: deexcitation
   depth: 0
@@ -714,12 +725,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: e_Ar4s_elastic
   equation: e + Ar_4s -> e + Ar_4s
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 1
@@ -763,12 +775,13 @@ reactions:
   source: {}
 - id: e_Ar4s_stepwise_ionization
   equation: e + Ar_4s -> 2 e + Ar+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -813,12 +826,13 @@ reactions:
   source: {}
 - id: e_Ar4s_superelastic
   equation: e + Ar_4s -> e + Ar
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 11.60 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: deexcitation
   depth: 1
@@ -863,12 +877,13 @@ reactions:
   source: {}
 - id: e_CF2_ionization_CF2p
   equation: e + CF2 -> 2 e + CF2+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 11.36 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -913,12 +928,13 @@ reactions:
   source: {}
 - id: e_CF2_dissociation_CF_F
   equation: e + CF2 -> e + CF + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 5.35 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociation
   depth: 1
@@ -960,12 +976,13 @@ reactions:
     record_id: R9
 - id: e_CF2_dissociation_C_2F
   equation: e + CF2 -> e + C + 2 F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 10.96 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociation
   depth: 1
@@ -1007,12 +1024,13 @@ reactions:
     record_id: R10
 - id: e_CF3_ionization_CF3p
   equation: e + CF3 -> 2 e + CF3+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 9.03 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -1057,12 +1075,13 @@ reactions:
   source: {}
 - id: e_CF3_dissociation_CF2_F
   equation: e + CF3 -> e + CF2 + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 3.79 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociation
   depth: 1
@@ -1115,12 +1134,13 @@ reactions:
     record_id: R8
 - id: e_F_elastic
   equation: e + F -> e + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 1
@@ -1170,12 +1190,13 @@ reactions:
   source: {}
 - id: e_F_ionization
   equation: e + F -> 2 e + F+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 17.42 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -1226,12 +1247,13 @@ reactions:
   source: {}
 - id: e_F2_dissociation_2F
   equation: e + F2 -> e + 2 F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 1.65 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociation
   depth: 1
@@ -1271,12 +1293,13 @@ reactions:
     record_id: R12
 - id: e_F2_ionization_F2p
   equation: e + F2 -> 2 e + F2+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: unknown
     kinetics: unknown
-    attestation: doi:10.1116/1.4853675
+    attestation: registry, doi:10.1116/1.4853675
   family: electron
   type: ionization
   depth: 1
@@ -1316,12 +1339,13 @@ reactions:
     record_id: R28
 - id: F2_CF2_to_CF3_F
   equation: F2 + CF2 -> CF3 + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 2.14 eV
     kinetics: slow
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: neutral_neutral
   type: reactive_scattering
   depth: 1
@@ -1385,12 +1409,13 @@ reactions:
     record_id: R27
 - id: F2_CF3_to_CF4_F
   equation: F2 + CF3 -> CF4 + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 4.00 eV
     kinetics: slow
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: neutral_neutral
   type: reactive_scattering
   depth: 1
@@ -2179,12 +2204,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF4*_to_e_CF4*
   equation: e + CF4* -> e + CF4*
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 1
@@ -2220,12 +2246,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF4*_to_e_e_CF4p
   equation: e + CF4* -> e + e + CF4+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -2264,12 +2291,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF4*_to_e_CF3_F
   equation: e + CF4* -> e + CF3 + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: dissociation
   depth: 1
@@ -2308,12 +2336,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF4*_to_e_e_CF3p_F
   equation: e + CF4* -> e + e + CF3+ + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: dissociative_ionization
   depth: 1
@@ -2709,12 +2738,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_F_to_e_F*
   equation: e + F -> e + F*
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: excitation
   depth: 1
@@ -2766,12 +2796,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_F*_to_e_F
   equation: e + F* -> e + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: deexcitation
   depth: 1
@@ -6105,12 +6136,13 @@ reactions:
     citation: the metastable carries 11.60 eV, more than the 9.05 eV needed
 - id: e_C_excitation_C_1D
   equation: e + C -> e + C_1D
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 1.26 eV
     kinetics: unknown
-    attestation: nist_asd
+    attestation: registry, nist_asd
   family: electron
   type: excitation
   depth: 2
@@ -6157,12 +6189,13 @@ reactions:
     citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
 - id: e_C_excitation_C_1S
   equation: e + C -> e + C_1S
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 2.68 eV
     kinetics: unknown
-    attestation: nist_asd
+    attestation: registry, nist_asd
   family: electron
   type: excitation
   depth: 2
@@ -6209,12 +6242,13 @@ reactions:
     citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
 - id: e_CF_dissociation_C_F
   equation: e + CF -> e + C + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 5.61 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociation
   depth: 2
@@ -6259,12 +6293,13 @@ reactions:
     record_id: R11
 - id: e_C_1D_elastic
   equation: e + C_1D -> e + C_1D
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: nist_asd
+    attestation: registry, nist_asd
   family: electron
   type: elastic
   depth: 2
@@ -6311,12 +6346,13 @@ reactions:
     citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
 - id: e_C_1D_superelastic
   equation: e + C_1D -> e + C
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 1.26 eV
     kinetics: unknown
-    attestation: nist_asd
+    attestation: registry, nist_asd
   family: electron
   type: deexcitation
   depth: 2
@@ -6364,12 +6400,13 @@ reactions:
     citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
 - id: e_C_1S_elastic
   equation: e + C_1S -> e + C_1S
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: nist_asd
+    attestation: registry, nist_asd
   family: electron
   type: elastic
   depth: 2
@@ -6416,12 +6453,13 @@ reactions:
     citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
 - id: e_C_1S_superelastic
   equation: e + C_1S -> e + C
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 2.68 eV
     kinetics: unknown
-    attestation: nist_asd
+    attestation: registry, nist_asd
   family: electron
   type: deexcitation
   depth: 2
@@ -6469,12 +6507,13 @@ reactions:
     citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
 - id: F2_CF_to_CF2_F
   equation: F2 + CF -> CF2 + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 3.71 eV
     kinetics: comparable
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: neutral_neutral
   type: reactive_scattering
   depth: 2
@@ -7012,12 +7051,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF2*_to_e_e_CF2p
   equation: e + CF2* -> e + e + CF2+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 2
@@ -7056,12 +7096,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF2*_to_e_CF_F
   equation: e + CF2* -> e + CF + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: dissociation
   depth: 2
@@ -7542,12 +7583,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF3*_to_e_e_CF3p
   equation: e + CF3* -> e + e + CF3+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 2
@@ -7586,12 +7628,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF3*_to_e_CF2_F
   equation: e + CF3* -> e + CF2 + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: dissociation
   depth: 2
@@ -8121,12 +8164,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_F*_to_e_F*
   equation: e + F* -> e + F*
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 2
@@ -8162,12 +8206,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_F*_to_e_e_Fp
   equation: e + F* -> e + e + F+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 2
@@ -8247,12 +8292,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_F2*_to_e_e_F2p
   equation: e + F2* -> e + e + F2+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 2
@@ -8291,12 +8337,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_F2*_to_e_F_F
   equation: e + F2* -> e + F + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: dissociation
   depth: 2
@@ -22844,12 +22891,13 @@ reactions:
     citation: conservation allows this channel; no source has been consulted
 - id: cand_e_CF*_to_e_C_F
   equation: e + CF* -> e + C + F
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved, species proposed
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: dissociation
   depth: 3

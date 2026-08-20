@@ -14,12 +14,13 @@ dropped_ids:
 reactions:
 - id: e_Ar_elastic
   equation: e + Ar -> e + Ar
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 0
@@ -62,12 +63,13 @@ reactions:
   source: {}
 - id: e_Ar_excitation_4s_lumped
   equation: e + Ar -> e + Ar_4s
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: excitation
   depth: 0
@@ -110,12 +112,13 @@ reactions:
   source: {}
 - id: e_Ar_ionization
   equation: e + Ar -> 2 e + Ar+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 15.76 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 0
@@ -158,12 +161,13 @@ reactions:
   source: {}
 - id: e_O2_elastic
   equation: e + O2 -> e + O2
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 0
@@ -206,12 +210,13 @@ reactions:
   source: {}
 - id: e_O2_excitation_O2_a1Delta
   equation: e + O2 -> e + O2_a1Delta
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 0.98 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: excitation
   depth: 0
@@ -254,12 +259,13 @@ reactions:
   source: {}
 - id: e_O2_excitation_O2_b1Sigma
   equation: e + O2 -> e + O2_b1Sigma
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 1.63 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: excitation
   depth: 0
@@ -302,12 +308,13 @@ reactions:
   source: {}
 - id: e_O2_ionization
   equation: e + O2 -> 2 e + O2+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 12.07 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 0
@@ -350,12 +357,13 @@ reactions:
   source: {}
 - id: e_O2_dissociation_O_O
   equation: e + O2 -> e + 2 O
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 5.17 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociation
   depth: 0
@@ -403,12 +411,13 @@ reactions:
     record_id: R13
 - id: e_O2_dissociation_O_O1D
   equation: e + O2 -> e + O + O_1D
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 7.13 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: dissociation
   depth: 0
@@ -615,12 +624,13 @@ reactions:
       below any measured onset
 - id: e_Ar4s_elastic
   equation: e + Ar_4s -> e + Ar_4s
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 1
@@ -664,12 +674,13 @@ reactions:
   source: {}
 - id: e_Ar4s_stepwise_ionization
   equation: e + Ar_4s -> 2 e + Ar+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: unknown
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -714,12 +725,13 @@ reactions:
   source: {}
 - id: e_Ar4s_superelastic
   equation: e + Ar_4s -> e + Ar
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 11.60 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: deexcitation
   depth: 1
@@ -764,12 +776,13 @@ reactions:
   source: {}
 - id: e_O_elastic
   equation: e + O -> e + O
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 1
@@ -816,12 +829,13 @@ reactions:
   source: {}
 - id: e_O_excitation_O_1D
   equation: e + O -> e + O_1D
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 1.97 eV
     kinetics: unknown
-    attestation: doi:10.1007/s11090-013-9513-1
+    attestation: registry, doi:10.1007/s11090-013-9513-1
   family: electron
   type: excitation
   depth: 1
@@ -874,12 +888,13 @@ reactions:
     record_id: R17
 - id: e_O_ionization
   equation: e + O -> 2 e + O+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 13.62 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -927,12 +942,13 @@ reactions:
   source: {}
 - id: e_O_excitation_O_1S
   equation: e + O -> e + O_1S
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 4.19 eV
     kinetics: unknown
-    attestation: nist_asd
+    attestation: registry, nist_asd
   family: electron
   type: excitation
   depth: 1
@@ -982,12 +998,13 @@ reactions:
     citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
 - id: e_O2_a1Delta_elastic
   equation: e + O2_a1Delta -> e + O2_a1Delta
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 1
@@ -1031,12 +1048,13 @@ reactions:
   source: {}
 - id: e_O2_a1Delta_ionization
   equation: e + O2_a1Delta -> 2 e + O2+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 11.09 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -1081,12 +1099,13 @@ reactions:
   source: {}
 - id: e_O2_a1Delta_superelastic
   equation: e + O2_a1Delta -> e + O2
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 0.98 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: deexcitation
   depth: 1
@@ -1131,12 +1150,13 @@ reactions:
   source: {}
 - id: e_O2_b1Sigma_elastic
   equation: e + O2_b1Sigma -> e + O2_b1Sigma
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 1
@@ -1180,12 +1200,13 @@ reactions:
   source: {}
 - id: e_O2_b1Sigma_ionization
   equation: e + O2_b1Sigma -> 2 e + O2+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 10.44 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -1230,12 +1251,13 @@ reactions:
   source: {}
 - id: e_O2_b1Sigma_superelastic
   equation: e + O2_b1Sigma -> e + O2
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 1.63 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: deexcitation
   depth: 1
@@ -1280,12 +1302,13 @@ reactions:
   source: {}
 - id: e_O_1D_elastic
   equation: e + O_1D -> e + O_1D
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: elastic
   depth: 1
@@ -1330,12 +1353,13 @@ reactions:
   source: {}
 - id: e_O_1D_ionization
   equation: e + O_1D -> 2 e + O+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: endothermic by 11.65 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: ionization
   depth: 1
@@ -1381,12 +1405,13 @@ reactions:
   source: {}
 - id: e_O_1D_superelastic
   equation: e + O_1D -> e + O
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 1.97 eV
     kinetics: unknown
-    attestation: unattested
+    attestation: registry
   family: electron
   type: deexcitation
   depth: 1
@@ -1432,12 +1457,13 @@ reactions:
   source: {}
 - id: e_O_1S_elastic
   equation: e + O_1S -> e + O_1S
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: thermoneutral
     kinetics: unknown
-    attestation: nist_asd
+    attestation: registry, nist_asd
   family: electron
   type: elastic
   depth: 1
@@ -1484,12 +1510,13 @@ reactions:
     citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
 - id: e_O_1S_superelastic
   equation: e + O_1S -> e + O
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 4.19 eV
     kinetics: unknown
-    attestation: nist_asd
+    attestation: registry, nist_asd
   family: electron
   type: deexcitation
   depth: 1
@@ -1537,12 +1564,13 @@ reactions:
     citation: NIST Atomic Spectra Database, energy levels (energy1.pl)
 - id: Arp_O2_charge_transfer
   equation: Ar+ + O2 -> Ar + O2+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 3.69 eV
     kinetics: fast
-    attestation: unattested
+    attestation: registry
   family: ion_neutral
   type: charge_transfer
   depth: 1
@@ -1597,12 +1625,13 @@ reactions:
   source: {}
 - id: Op_O2_charge_transfer
   equation: O+ + O2 -> O + O2+
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 1.55 eV
     kinetics: comparable
-    attestation: unattested
+    attestation: registry
   family: ion_neutral
   type: charge_transfer
   depth: 1
@@ -1658,12 +1687,13 @@ reactions:
   source: {}
 - id: O1D_O2_quenching_O2_b1Sigma
   equation: O_1D + O2 -> O + O2_b1Sigma
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 0.34 eV
     kinetics: comparable
-    attestation: unattested
+    attestation: registry
   family: neutral_neutral
   type: reactive_scattering
   depth: 1
@@ -1718,12 +1748,13 @@ reactions:
   source: {}
 - id: O1D_O2_quenching_O2_a1Delta
   equation: O_1D + O2 -> O + O2_a1Delta
-  listed_by: []
+  listed_by:
+  - registry
   evidence:
     structure: conserved
     thermochemistry: exothermic by 0.99 eV
     kinetics: comparable
-    attestation: unattested
+    attestation: registry
   family: neutral_neutral
   type: reactive_scattering
   depth: 1

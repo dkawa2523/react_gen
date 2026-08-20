@@ -1,7 +1,33 @@
 id,equation,family,type,depth,status,verdict,decided
-e_O2_dissociation_O_O,e + O2 -> e + 2 O,electron,dissociation,0,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_O2_dissociation_O_O1D,e + O2 -> e + O + O_1D,electron,dissociation,0,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_O_excitation_O_1D,e + O -> e + O_1D,electron,excitation,1,curated,doi:10.1007/s11090-013-9513-1,yes
-e_O_excitation_O_1S,e + O -> e + O_1S,electron,excitation,1,literature_supported,nist_asd,yes
-e_O_1S_elastic,e + O_1S -> e + O_1S,electron,elastic,1,literature_supported,nist_asd,yes
-e_O_1S_superelastic,e + O_1S -> e + O,electron,deexcitation,1,literature_supported,nist_asd,yes
+e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,registry,yes
+e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,0,curated,registry,yes
+e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,registry,yes
+e_O2_elastic,e + O2 -> e + O2,electron,elastic,0,curated,registry,yes
+e_O2_excitation_O2_a1Delta,e + O2 -> e + O2_a1Delta,electron,excitation,0,curated,registry,yes
+e_O2_excitation_O2_b1Sigma,e + O2 -> e + O2_b1Sigma,electron,excitation,0,curated,registry,yes
+e_O2_ionization,e + O2 -> 2 e + O2+,electron,ionization,0,curated,registry,yes
+e_O2_dissociation_O_O,e + O2 -> e + 2 O,electron,dissociation,0,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_O2_dissociation_O_O1D,e + O2 -> e + O + O_1D,electron,dissociation,0,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,literature_supported,registry,yes
+e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,1,literature_supported,registry,yes
+e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,registry,yes
+e_O_elastic,e + O -> e + O,electron,elastic,1,literature_supported,registry,yes
+e_O_excitation_O_1D,e + O -> e + O_1D,electron,excitation,1,curated,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_O_ionization,e + O -> 2 e + O+,electron,ionization,1,curated,registry,yes
+e_O_excitation_O_1S,e + O -> e + O_1S,electron,excitation,1,literature_supported,"registry, nist_asd",yes
+e_O2_a1Delta_elastic,e + O2_a1Delta -> e + O2_a1Delta,electron,elastic,1,literature_supported,registry,yes
+e_O2_a1Delta_ionization,e + O2_a1Delta -> 2 e + O2+,electron,ionization,1,literature_supported,registry,yes
+e_O2_a1Delta_superelastic,e + O2_a1Delta -> e + O2,electron,deexcitation,1,literature_supported,registry,yes
+e_O2_b1Sigma_elastic,e + O2_b1Sigma -> e + O2_b1Sigma,electron,elastic,1,literature_supported,registry,yes
+e_O2_b1Sigma_ionization,e + O2_b1Sigma -> 2 e + O2+,electron,ionization,1,literature_supported,registry,yes
+e_O2_b1Sigma_superelastic,e + O2_b1Sigma -> e + O2,electron,deexcitation,1,literature_supported,registry,yes
+e_O_1D_elastic,e + O_1D -> e + O_1D,electron,elastic,1,literature_supported,registry,yes
+e_O_1D_ionization,e + O_1D -> 2 e + O+,electron,ionization,1,literature_supported,registry,yes
+e_O_1D_superelastic,e + O_1D -> e + O,electron,deexcitation,1,literature_supported,registry,yes
+e_O_1S_elastic,e + O_1S -> e + O_1S,electron,elastic,1,literature_supported,"registry, nist_asd",yes
+e_O_1S_superelastic,e + O_1S -> e + O,electron,deexcitation,1,literature_supported,"registry, nist_asd",yes
+Arp_O2_charge_transfer,Ar+ + O2 -> Ar + O2+,ion_neutral,charge_transfer,1,literature_supported,registry,yes
+Op_O2_charge_transfer,O+ + O2 -> O + O2+,ion_neutral,charge_transfer,1,literature_supported,registry,yes
+O2a_O2_self_quenching,O2 + O2_a1Delta -> 2 O2,neutral_neutral,reactive_scattering,1,literature_supported,registry,yes
+O1D_O2_quenching_O2_b1Sigma,O_1D + O2 -> O + O2_b1Sigma,neutral_neutral,reactive_scattering,1,literature_supported,registry,yes
+O1D_O2_quenching_O2_a1Delta,O_1D + O2 -> O + O2_a1Delta,neutral_neutral,reactive_scattering,1,literature_supported,registry,yes

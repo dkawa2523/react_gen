@@ -1,77 +1,139 @@
 id,equation,family,type,depth,status,verdict,decided
-e_O2_dissociation_O_O,e + O2 -> e + 2 O,electron,dissociation,0,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_O2_dissociation_O_O1D,e + O2 -> e + O + O_1D,electron,dissociation,0,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_SF6_dissociation_SF2_F2_2F,e + SF6 -> e + SF2 + F2 + 2 F,electron,dissociation,0,literature_supported,doi:10.1116/1.4853675,yes
-e_SF6_dissociation_SF_F2_3F,e + SF6 -> e + SF + F2 + 3 F,electron,dissociation,0,literature_supported,doi:10.1116/1.4853675,yes
-e_SF6_dissociative_ionization_SF4p_2F,e + SF6 -> 2 e + SF4+ + 2 F,electron,dissociative_ionization,0,literature_supported,doi:10.1116/1.4853675,yes
-e_SF6_dissociative_ionization_SF3p_3F,e + SF6 -> 2 e + SF3+ + 3 F,electron,dissociative_ionization,0,literature_supported,doi:10.1116/1.4853675,yes
-e_SF6_dissociative_ionization_SF2p_F2_2F,e + SF6 -> 2 e + SF2+ + F2 + 2 F,electron,dissociative_ionization,0,literature_supported,doi:10.1116/1.4853675,yes
-e_SF6_dissociative_ionization_SFp_F2_3F,e + SF6 -> 2 e + SF+ + F2 + 3 F,electron,dissociative_ionization,0,literature_supported,doi:10.1116/1.4853675,yes
-e_SF6_dissociative_ionization_Sp_F2_4F,e + SF6 -> 2 e + S+ + F2 + 4 F,electron,dissociative_ionization,0,literature_supported,doi:10.1116/1.4853675,yes
-e_SF6_dissociative_ionization_Fp_SF4_F,e + SF6 -> 2 e + F+ + SF4 + F,electron,dissociative_ionization,0,literature_supported,doi:10.1116/1.4853675,yes
-e_F2_dissociation_2F,e + F2 -> e + 2 F,electron,dissociation,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_F2_ionization_F2p,e + F2 -> 2 e + F2+,electron,ionization,1,literature_supported,doi:10.1116/1.4853675,yes
-e_O_excitation_O_1D,e + O -> e + O_1D,electron,excitation,1,curated,doi:10.1007/s11090-013-9513-1,yes
-e_O_excitation_O_1S,e + O -> e + O_1S,electron,excitation,1,literature_supported,nist_asd,yes
-e_O_1S_elastic,e + O_1S -> e + O_1S,electron,elastic,1,literature_supported,nist_asd,yes
-e_O_1S_superelastic,e + O_1S -> e + O,electron,deexcitation,1,literature_supported,nist_asd,yes
-e_SF_dissociation_S_F,e + SF -> e + S + F,electron,dissociation,1,literature_supported,doi:10.1116/1.4853675,yes
-e_SF_ionization_SFp,e + SF -> 2 e + SF+,electron,ionization,1,literature_supported,doi:10.1116/1.4853675,yes
-e_SF2_dissociation_SF_F,e + SF2 -> e + SF + F,electron,dissociation,1,literature_supported,doi:10.1116/1.4853675,yes
-e_SF2_ionization_SF2p,e + SF2 -> 2 e + SF2+,electron,ionization,1,literature_supported,doi:10.1116/1.4853675,yes
-e_SF3_dissociation_SF2_F,e + SF3 -> e + SF2 + F,electron,dissociation,1,literature_supported,doi:10.1116/1.4853675,yes
-e_SF4_dissociation_SF3_F,e + SF4 -> e + SF3 + F,electron,dissociation,1,literature_supported,doi:10.1116/1.4853675,yes
-e_SF4_dissociative_ionization_SF3p_F,e + SF4 -> 2 e + SF3+ + F,electron,dissociative_ionization,1,literature_supported,doi:10.1116/1.4853675,yes
-e_SF5_dissociation_SF4_F,e + SF5 -> e + SF4 + F,electron,dissociation,1,literature_supported,doi:10.1116/1.4853675,yes
-e_SF5_dissociative_ionization_SF4p_F,e + SF5 -> 2 e + SF4+ + F,electron,dissociative_ionization,1,literature_supported,doi:10.1116/1.4853675,yes
-SF5p_SF6_to_SF3p_SF6_F2,SF5+ + SF6 -> SF3+ + SF6 + F2,ion_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-F2_O_to_FO_F,F2 + O -> FO + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-F2_O1D_to_FO_F,F2 + O_1D -> FO + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-SF_F2_to_SF2_F,SF + F2 -> SF2 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF_O_R121,SF + O -> SO + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF_O_R136,SF + O -> SOF,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF_O1D_R121,SF + O_1D -> SO + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF_O1D_R136,SF + O_1D -> SOF,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF_SF_to_S_SF2,SF + SF -> S + SF2,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF2_F2_to_SF3_F,SF2 + F2 -> SF3 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF2_O_R120,SF2 + O -> SOF + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF2_O_R135,SF2 + O -> SOF2,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF2_O1D_R120,SF2 + O_1D -> SOF + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF2_O1D_R135,SF2 + O_1D -> SOF2,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF3_F2_to_SF4_F,SF3 + F2 -> SF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF3_O_R119,SF3 + O -> SOF2 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF3_O_R134,SF3 + O -> SOF3,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF3_O1D_R119,SF3 + O_1D -> SOF2 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF3_O1D_R134,SF3 + O_1D -> SOF3,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF3_SF3_to_SF2_SF4,SF3 + SF3 -> SF2 + SF4,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF4_F2_to_SF5_F,SF4 + F2 -> SF5 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF4_O_R133,SF4 + O -> SOF4,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF4_O1D_R133,SF4 + O_1D -> SOF4,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF5_F2_to_SF6_F,SF5 + F2 -> SF6 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF5_O_R132,SF5 + O -> SOF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF5_O1D_R132,SF5 + O_1D -> SOF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-SF5_SF5_to_SF4_SF6,SF5 + SF5 -> SF4 + SF6,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1116/1.4853675,yes
-e_FO_dissociation_F_O,e + FO -> e + F + O,electron,dissociation,2,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_S_ionization_Sp,e + S -> 2 e + S+,electron,ionization,2,literature_supported,doi:10.1116/1.4853675,yes
-e_S_excitation_S_1D,e + S -> e + S_1D,electron,excitation,2,literature_supported,nist_asd,yes
-e_S_excitation_S_1S,e + S -> e + S_1S,electron,excitation,2,literature_supported,nist_asd,yes
-e_S_1D_elastic,e + S_1D -> e + S_1D,electron,elastic,2,literature_supported,nist_asd,yes
-e_S_1D_superelastic,e + S_1D -> e + S,electron,deexcitation,2,literature_supported,nist_asd,yes
-e_S_1S_elastic,e + S_1S -> e + S_1S,electron,elastic,2,literature_supported,nist_asd,yes
-e_S_1S_superelastic,e + S_1S -> e + S,electron,deexcitation,2,literature_supported,nist_asd,yes
-FO_FO_to_2F_O2,FO + FO -> 2 F + O2,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-FO_FO_to_F2_O2,FO + FO -> F2 + O2,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-FO_O_to_F_O2,FO + O -> F + O2,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-FO_O1D_to_F_O2,FO + O_1D -> F + O2,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-S_F2_to_SF_F,S + F2 -> SF + F,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1116/1.4853675,yes
-SO_O_R130,SO + O -> SO2,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1116/1.4853675,yes
-SO_O1D_R130,SO + O_1D -> SO2,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1116/1.4853675,yes
-SOF_O_R122,SOF + O -> SO2 + F,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1116/1.4853675,yes
-SOF_O1D_R122,SOF + O_1D -> SO2 + F,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1116/1.4853675,yes
-SOF2_O_R131,SOF2 + O -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1116/1.4853675,yes
-SOF2_O1D_R131,SOF2 + O_1D -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1116/1.4853675,yes
-SOF3_O_R123,SOF3 + O -> SO2F2 + F,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1116/1.4853675,yes
-SOF3_O1D_R123,SOF3 + O_1D -> SO2F2 + F,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1116/1.4853675,yes
-SOF4_dissociation_SOF3_F,SOF4 -> SOF3 + F,unimolecular,dissociation,2,literature_supported,doi:10.1116/1.4853675,yes
-SO2F2_O_R137,SO2F2 + O -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,doi:10.1116/1.4853675,yes
-SO2F2_O1D_R137,SO2F2 + O_1D -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,doi:10.1116/1.4853675,yes
+e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,registry,yes
+e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,0,curated,registry,yes
+e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,registry,yes
+e_O2_elastic,e + O2 -> e + O2,electron,elastic,0,curated,registry,yes
+e_O2_excitation_O2_a1Delta,e + O2 -> e + O2_a1Delta,electron,excitation,0,curated,registry,yes
+e_O2_excitation_O2_b1Sigma,e + O2 -> e + O2_b1Sigma,electron,excitation,0,curated,registry,yes
+e_O2_ionization,e + O2 -> 2 e + O2+,electron,ionization,0,curated,registry,yes
+e_O2_dissociation_O_O,e + O2 -> e + 2 O,electron,dissociation,0,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_O2_dissociation_O_O1D,e + O2 -> e + O + O_1D,electron,dissociation,0,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_SF6_elastic,e + SF6 -> e + SF6,electron,elastic,0,curated,registry,yes
+e_SF6_dissociation_SF5_F,e + SF6 -> e + SF5 + F,electron,dissociation,0,literature_supported,registry,yes
+e_SF6_dissociation_SF4_2F,e + SF6 -> e + SF4 + 2 F,electron,dissociation,0,literature_supported,registry,yes
+e_SF6_dissociation_SF3_3F,e + SF6 -> e + SF3 + 3 F,electron,dissociation,0,literature_supported,registry,yes
+e_SF6_dissociation_SF2_F2_2F,e + SF6 -> e + SF2 + F2 + 2 F,electron,dissociation,0,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF6_dissociation_SF_F2_3F,e + SF6 -> e + SF + F2 + 3 F,electron,dissociation,0,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF6_dissociative_ionization_SF5p_F,e + SF6 -> 2 e + SF5+ + F,electron,dissociative_ionization,0,literature_supported,registry,yes
+e_SF6_dissociative_ionization_SF4p_2F,e + SF6 -> 2 e + SF4+ + 2 F,electron,dissociative_ionization,0,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF6_dissociative_ionization_SF3p_3F,e + SF6 -> 2 e + SF3+ + 3 F,electron,dissociative_ionization,0,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF6_dissociative_ionization_SF2p_F2_2F,e + SF6 -> 2 e + SF2+ + F2 + 2 F,electron,dissociative_ionization,0,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF6_dissociative_ionization_SFp_F2_3F,e + SF6 -> 2 e + SF+ + F2 + 3 F,electron,dissociative_ionization,0,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF6_dissociative_ionization_Sp_F2_4F,e + SF6 -> 2 e + S+ + F2 + 4 F,electron,dissociative_ionization,0,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF6_dissociative_ionization_Fp_SF4_F,e + SF6 -> 2 e + F+ + SF4 + F,electron,dissociative_ionization,0,literature_supported,"registry, doi:10.1116/1.4853675",yes
+cand_e_SF6_to_e_SF6*,e + SF6 -> e + SF6*,electron,excitation,0,candidate,registry,yes
+cand_e_SF6*_to_e_SF6,e + SF6* -> e + SF6,electron,deexcitation,0,candidate,registry,yes
+e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,literature_supported,registry,yes
+e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,1,literature_supported,registry,yes
+e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,registry,yes
+e_F_elastic,e + F -> e + F,electron,elastic,1,curated,registry,yes
+e_F_ionization,e + F -> 2 e + F+,electron,ionization,1,curated,registry,yes
+e_F2_dissociation_2F,e + F2 -> e + 2 F,electron,dissociation,1,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_F2_ionization_F2p,e + F2 -> 2 e + F2+,electron,ionization,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_O_elastic,e + O -> e + O,electron,elastic,1,literature_supported,registry,yes
+e_O_excitation_O_1D,e + O -> e + O_1D,electron,excitation,1,curated,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_O_ionization,e + O -> 2 e + O+,electron,ionization,1,curated,registry,yes
+e_O_excitation_O_1S,e + O -> e + O_1S,electron,excitation,1,literature_supported,"registry, nist_asd",yes
+e_O2_a1Delta_elastic,e + O2_a1Delta -> e + O2_a1Delta,electron,elastic,1,literature_supported,registry,yes
+e_O2_a1Delta_ionization,e + O2_a1Delta -> 2 e + O2+,electron,ionization,1,literature_supported,registry,yes
+e_O2_a1Delta_superelastic,e + O2_a1Delta -> e + O2,electron,deexcitation,1,literature_supported,registry,yes
+e_O2_b1Sigma_elastic,e + O2_b1Sigma -> e + O2_b1Sigma,electron,elastic,1,literature_supported,registry,yes
+e_O2_b1Sigma_ionization,e + O2_b1Sigma -> 2 e + O2+,electron,ionization,1,literature_supported,registry,yes
+e_O2_b1Sigma_superelastic,e + O2_b1Sigma -> e + O2,electron,deexcitation,1,literature_supported,registry,yes
+e_O_1D_elastic,e + O_1D -> e + O_1D,electron,elastic,1,literature_supported,registry,yes
+e_O_1D_ionization,e + O_1D -> 2 e + O+,electron,ionization,1,literature_supported,registry,yes
+e_O_1D_superelastic,e + O_1D -> e + O,electron,deexcitation,1,literature_supported,registry,yes
+e_O_1S_elastic,e + O_1S -> e + O_1S,electron,elastic,1,literature_supported,"registry, nist_asd",yes
+e_O_1S_superelastic,e + O_1S -> e + O,electron,deexcitation,1,literature_supported,"registry, nist_asd",yes
+e_SF_dissociation_S_F,e + SF -> e + S + F,electron,dissociation,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF_ionization_SFp,e + SF -> 2 e + SF+,electron,ionization,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF2_dissociation_SF_F,e + SF2 -> e + SF + F,electron,dissociation,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF2_ionization_SF2p,e + SF2 -> 2 e + SF2+,electron,ionization,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF3_dissociation_SF2_F,e + SF3 -> e + SF2 + F,electron,dissociation,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF3_ionization,e + SF3 -> 2 e + SF3+,electron,ionization,1,literature_supported,registry,yes
+e_SF4_dissociation_SF3_F,e + SF4 -> e + SF3 + F,electron,dissociation,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF4_dissociative_ionization_SF3p_F,e + SF4 -> 2 e + SF3+ + F,electron,dissociative_ionization,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF4_ionization,e + SF4 -> 2 e + SF4+,electron,ionization,1,literature_supported,registry,yes
+e_SF5_dissociation_SF4_F,e + SF5 -> e + SF4 + F,electron,dissociation,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF5_dissociative_ionization_SF4p_F,e + SF5 -> 2 e + SF4+ + F,electron,dissociative_ionization,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_SF5_ionization,e + SF5 -> 2 e + SF5+,electron,ionization,1,literature_supported,registry,yes
+Arp_O2_charge_transfer,Ar+ + O2 -> Ar + O2+,ion_neutral,charge_transfer,1,literature_supported,registry,yes
+Arp_SF6_dissociative_charge_transfer_SF5p_F,Ar+ + SF6 -> Ar + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,literature_supported,registry,yes
+Op_O2_charge_transfer,O+ + O2 -> O + O2+,ion_neutral,charge_transfer,1,literature_supported,registry,yes
+SF5p_SF6_to_SF3p_SF6_F2,SF5+ + SF6 -> SF3+ + SF6 + F2,ion_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+F2_O_to_FO_F,F2 + O -> FO + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+F2_O1D_to_FO_F,F2 + O_1D -> FO + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+O2a_O2_self_quenching,O2 + O2_a1Delta -> 2 O2,neutral_neutral,reactive_scattering,1,literature_supported,registry,yes
+O1D_O2_quenching_O2_b1Sigma,O_1D + O2 -> O + O2_b1Sigma,neutral_neutral,reactive_scattering,1,literature_supported,registry,yes
+O1D_O2_quenching_O2_a1Delta,O_1D + O2 -> O + O2_a1Delta,neutral_neutral,reactive_scattering,1,literature_supported,registry,yes
+SF_F2_to_SF2_F,SF + F2 -> SF2 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF_O_R121,SF + O -> SO + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF_O_R136,SF + O -> SOF,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF_O1D_R121,SF + O_1D -> SO + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF_O1D_R136,SF + O_1D -> SOF,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF_SF_to_S_SF2,SF + SF -> S + SF2,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF2_F2_to_SF3_F,SF2 + F2 -> SF3 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF2_O_R120,SF2 + O -> SOF + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF2_O_R135,SF2 + O -> SOF2,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF2_O1D_R120,SF2 + O_1D -> SOF + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF2_O1D_R135,SF2 + O_1D -> SOF2,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF3_F2_to_SF4_F,SF3 + F2 -> SF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF3_O_R119,SF3 + O -> SOF2 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF3_O_R134,SF3 + O -> SOF3,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF3_O1D_R119,SF3 + O_1D -> SOF2 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF3_O1D_R134,SF3 + O_1D -> SOF3,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF3_SF3_to_SF2_SF4,SF3 + SF3 -> SF2 + SF4,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF4_F2_to_SF5_F,SF4 + F2 -> SF5 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF4_O_R133,SF4 + O -> SOF4,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF4_O1D_R133,SF4 + O_1D -> SOF4,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF5_F2_to_SF6_F,SF5 + F2 -> SF6 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF5_O_R132,SF5 + O -> SOF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF5_O1D_R132,SF5 + O_1D -> SOF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SF5_SF5_to_SF4_SF6,SF5 + SF5 -> SF4 + SF6,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+cand_e_F_to_e_F*,e + F -> e + F*,electron,excitation,1,candidate,registry,yes
+cand_e_F*_to_e_F,e + F* -> e + F,electron,deexcitation,1,candidate,registry,yes
+cand_e_SF6*_to_e_SF6*,e + SF6* -> e + SF6*,electron,elastic,1,candidate,registry,yes
+cand_e_SF6*_to_e_SF5_F,e + SF6* -> e + SF5 + F,electron,dissociation,1,candidate,registry,yes
+cand_e_SF6*_to_e_e_SF5p_F,e + SF6* -> e + e + SF5+ + F,electron,dissociative_ionization,1,candidate,registry,yes
+cand_Arp_SF6*_diss_Ar_SF5p_F,Ar+ + SF6* -> Ar + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,candidate,registry,yes
+e_FO_dissociation_F_O,e + FO -> e + F + O,electron,dissociation,2,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_S_ionization_Sp,e + S -> 2 e + S+,electron,ionization,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+e_S_excitation_S_1D,e + S -> e + S_1D,electron,excitation,2,literature_supported,"registry, nist_asd",yes
+e_S_excitation_S_1S,e + S -> e + S_1S,electron,excitation,2,literature_supported,"registry, nist_asd",yes
+e_S_1D_elastic,e + S_1D -> e + S_1D,electron,elastic,2,literature_supported,"registry, nist_asd",yes
+e_S_1D_superelastic,e + S_1D -> e + S,electron,deexcitation,2,literature_supported,"registry, nist_asd",yes
+e_S_1S_elastic,e + S_1S -> e + S_1S,electron,elastic,2,literature_supported,"registry, nist_asd",yes
+e_S_1S_superelastic,e + S_1S -> e + S,electron,deexcitation,2,literature_supported,"registry, nist_asd",yes
+FO_FO_to_2F_O2,FO + FO -> 2 F + O2,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+FO_FO_to_F2_O2,FO + FO -> F2 + O2,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+FO_O_to_F_O2,FO + O -> F + O2,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+FO_O1D_to_F_O2,FO + O_1D -> F + O2,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+S_F2_to_SF_F,S + F2 -> SF + F,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SO_O_R130,SO + O -> SO2,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SO_O1D_R130,SO + O_1D -> SO2,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SOF_O_R122,SOF + O -> SO2 + F,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SOF_O1D_R122,SOF + O_1D -> SO2 + F,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SOF2_O_R131,SOF2 + O -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SOF2_O1D_R131,SOF2 + O_1D -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SOF3_O_R123,SOF3 + O -> SO2F2 + F,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SOF3_O1D_R123,SOF3 + O_1D -> SO2F2 + F,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SOF4_dissociation_SOF3_F,SOF4 -> SOF3 + F,unimolecular,dissociation,2,literature_supported,"registry, doi:10.1116/1.4853675",yes
+cand_e_F*_to_e_F*,e + F* -> e + F*,electron,elastic,2,candidate,registry,yes
+cand_e_F*_to_e_e_Fp,e + F* -> e + e + F+,electron,ionization,2,candidate,registry,yes
+cand_e_F2*_to_e_e_F2p,e + F2* -> e + e + F2+,electron,ionization,2,candidate,registry,yes
+cand_e_F2*_to_e_F_F,e + F2* -> e + F + F,electron,dissociation,2,candidate,registry,yes
+cand_e_SF*_to_e_e_SFp,e + SF* -> e + e + SF+,electron,ionization,2,candidate,registry,yes
+cand_e_SF*_to_e_F_S,e + SF* -> e + F + S,electron,dissociation,2,candidate,registry,yes
+cand_e_SF2*_to_e_e_SF2p,e + SF2* -> e + e + SF2+,electron,ionization,2,candidate,registry,yes
+cand_e_SF2*_to_e_SF_F,e + SF2* -> e + SF + F,electron,dissociation,2,candidate,registry,yes
+cand_e_SF3*_to_e_e_SF3p,e + SF3* -> e + e + SF3+,electron,ionization,2,candidate,registry,yes
+cand_e_SF3*_to_e_SF2_F,e + SF3* -> e + SF2 + F,electron,dissociation,2,candidate,registry,yes
+cand_e_SF4*_to_e_e_SF4p,e + SF4* -> e + e + SF4+,electron,ionization,2,candidate,registry,yes
+cand_e_SF4*_to_e_SF3_F,e + SF4* -> e + SF3 + F,electron,dissociation,2,candidate,registry,yes
+cand_e_SF4*_to_e_e_SF3p_F,e + SF4* -> e + e + SF3+ + F,electron,dissociative_ionization,2,candidate,registry,yes
+cand_e_SF5*_to_e_e_SF5p,e + SF5* -> e + e + SF5+,electron,ionization,2,candidate,registry,yes
+cand_e_SF5*_to_e_SF4_F,e + SF5* -> e + SF4 + F,electron,dissociation,2,candidate,registry,yes
+cand_e_SF5*_to_e_e_SF4p_F,e + SF5* -> e + e + SF4+ + F,electron,dissociative_ionization,2,candidate,registry,yes
+SO2F2_O_R137,SO2F2 + O -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,"registry, doi:10.1116/1.4853675",yes
+SO2F2_O1D_R137,SO2F2 + O_1D -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,"registry, doi:10.1116/1.4853675",yes
+cand_e_FO*_to_e_F_O,e + FO* -> e + F + O,electron,dissociation,3,candidate,registry,yes

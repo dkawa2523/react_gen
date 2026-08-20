@@ -109,8 +109,9 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         action="append",
         default=[],
-        help="snapshot listing reactions; labels each one with who states it. "
-        "A label, never a filter: silence is not evidence against a channel",
+        help="a published list of reactions to match against, on top of the "
+        "registry, which is always matched. A label, never a filter: "
+        "silence is not evidence against a channel",
     )
     network.add_argument(
         "--layers",
@@ -239,7 +240,12 @@ def _network(args) -> int:
 
     gaps += audit.audit(registry, net)
     gaps += quality.quality(net, case, registry)
-    listed = known.load(args.known, registry) if args.known else None
+    # Always cross-check against the registry, snapshot or not: a candidate that
+    # matches a curated channel is not new work, and that is worth saying whether
+    # or not the caller also brought a published list. `rgen generate` is the
+    # opposite case -- there every reaction comes from the registry, so the same
+    # label would be vacuous and the reaction's own source_id carries it instead.
+    listed = known.load(args.known, registry)
     export.write(
         args.out,
         case,

@@ -1,0 +1,4 @@
+bodies,reactants,products,id,family,type,depth,status,verdict
+2,O2 + O2_a1Delta,O2,O2a_O2_self_quenching,neutral_neutral,reactive_scattering,1,literature_supported,registry
+2,O_1D + O2,O + O2_a1Delta,O1D_O2_quenching_O2_a1Delta,neutral_neutral,reactive_scattering,1,literature_supported,registry
+2,O_1D + O2,O + O2_b1Sigma,O1D_O2_quenching_O2_b1Sigma,neutral_neutral,reactive_scattering,1,literature_supported,registry

@@ -1,33 +1,33 @@
 id,equation,family,type,depth,status,verdict,decided
-e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,unattested,no
-e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,0,curated,unattested,no
-e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,unattested,no
-e_CF4_elastic,e + CF4 -> e + CF4,electron,elastic,0,curated,unattested,no
-e_CF4_dissociation_CF3_F,e + CF4 -> e + CF3 + F,electron,dissociation,0,curated,doi:10.1007/s11090-013-9513-1,yes
-e_CF4_dissociation_CF2_2F,e + CF4 -> e + CF2 + 2 F,electron,dissociation,0,curated,doi:10.1007/s11090-013-9513-1,yes
-e_CF4_dissociative_ionization_CF3p,e + CF4 -> 2 e + CF3+ + F,electron,dissociative_ionization,0,curated,doi:10.1007/s11090-013-9513-1,yes
-e_CF4_dissociative_ionization_Fp_CF3,e + CF4 -> 2 e + CF3 + F+,electron,dissociative_ionization,0,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_CF4_dissociative_ionization_CF2p,e + CF4 -> 2 e + CF2+ + 2 F,electron,dissociative_ionization,0,curated,unattested,no
+e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,registry,yes
+e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,0,curated,registry,yes
+e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,registry,yes
+e_CF4_elastic,e + CF4 -> e + CF4,electron,elastic,0,curated,registry,yes
+e_CF4_dissociation_CF3_F,e + CF4 -> e + CF3 + F,electron,dissociation,0,curated,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_CF4_dissociation_CF2_2F,e + CF4 -> e + CF2 + 2 F,electron,dissociation,0,curated,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_CF4_dissociative_ionization_CF3p,e + CF4 -> 2 e + CF3+ + F,electron,dissociative_ionization,0,curated,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_CF4_dissociative_ionization_Fp_CF3,e + CF4 -> 2 e + CF3 + F+,electron,dissociative_ionization,0,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_CF4_dissociative_ionization_CF2p,e + CF4 -> 2 e + CF2+ + 2 F,electron,dissociative_ionization,0,curated,registry,yes
 cand_e_CF4_to_e_CF4_v,e + CF4 -> e + CF4_v,electron,excitation,0,candidate,unattested,no
 cand_e_CF4_v_to_e_CF4,e + CF4_v -> e + CF4,electron,deexcitation,0,candidate,unattested,no
-cand_e_CF4_to_e_CF4*,e + CF4 -> e + CF4*,electron,excitation,0,candidate,unattested,no
-cand_e_CF4*_to_e_CF4,e + CF4* -> e + CF4,electron,deexcitation,0,candidate,unattested,no
+cand_e_CF4_to_e_CF4*,e + CF4 -> e + CF4*,electron,excitation,0,candidate,registry,yes
+cand_e_CF4*_to_e_CF4,e + CF4* -> e + CF4,electron,deexcitation,0,candidate,registry,yes
 cand_e_CF4_to_e_CF2_F2,e + CF4 -> e + CF2 + F2,electron,dissociation,0,candidate,unattested,no
 cand_e_CF4_to_e_e_CF2p_F2,e + CF4 -> e + e + CF2+ + F2,electron,dissociative_ionization,0,candidate,unattested,no
-e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,literature_supported,unattested,no
-e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,1,literature_supported,unattested,no
-e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,unattested,no
-e_CF2_ionization_CF2p,e + CF2 -> 2 e + CF2+,electron,ionization,1,curated,unattested,no
-e_CF2_dissociation_CF_F,e + CF2 -> e + CF + F,electron,dissociation,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_CF2_dissociation_C_2F,e + CF2 -> e + C + 2 F,electron,dissociation,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_CF3_ionization_CF3p,e + CF3 -> 2 e + CF3+,electron,ionization,1,curated,unattested,no
-e_CF3_dissociation_CF2_F,e + CF3 -> e + CF2 + F,electron,dissociation,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_F_elastic,e + F -> e + F,electron,elastic,1,curated,unattested,no
-e_F_ionization,e + F -> 2 e + F+,electron,ionization,1,curated,unattested,no
-e_F2_dissociation_2F,e + F2 -> e + 2 F,electron,dissociation,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_F2_ionization_F2p,e + F2 -> 2 e + F2+,electron,ionization,1,literature_supported,doi:10.1116/1.4853675,yes
-F2_CF2_to_CF3_F,F2 + CF2 -> CF3 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-F2_CF3_to_CF4_F,F2 + CF3 -> CF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,literature_supported,registry,yes
+e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,1,literature_supported,registry,yes
+e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,registry,yes
+e_CF2_ionization_CF2p,e + CF2 -> 2 e + CF2+,electron,ionization,1,curated,registry,yes
+e_CF2_dissociation_CF_F,e + CF2 -> e + CF + F,electron,dissociation,1,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_CF2_dissociation_C_2F,e + CF2 -> e + C + 2 F,electron,dissociation,1,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_CF3_ionization_CF3p,e + CF3 -> 2 e + CF3+,electron,ionization,1,curated,registry,yes
+e_CF3_dissociation_CF2_F,e + CF3 -> e + CF2 + F,electron,dissociation,1,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_F_elastic,e + F -> e + F,electron,elastic,1,curated,registry,yes
+e_F_ionization,e + F -> 2 e + F+,electron,ionization,1,curated,registry,yes
+e_F2_dissociation_2F,e + F2 -> e + 2 F,electron,dissociation,1,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_F2_ionization_F2p,e + F2 -> 2 e + F2+,electron,ionization,1,literature_supported,"registry, doi:10.1116/1.4853675",yes
+F2_CF2_to_CF3_F,F2 + CF2 -> CF3 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+F2_CF3_to_CF4_F,F2 + CF3 -> CF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
 cand_e_CF2_to_e_CF2,e + CF2 -> e + CF2,electron,elastic,1,candidate,unattested,no
 cand_e_CF2_to_e_CF2_v,e + CF2 -> e + CF2_v,electron,excitation,1,candidate,unattested,no
 cand_e_CF2_v_to_e_CF2,e + CF2_v -> e + CF2,electron,deexcitation,1,candidate,unattested,no
@@ -44,10 +44,10 @@ cand_e_CF3*_to_e_CF3,e + CF3* -> e + CF3,electron,deexcitation,1,candidate,unatt
 cand_e_CF3_to_e_e_CF2p_F,e + CF3 -> e + e + CF2+ + F,electron,dissociative_ionization,1,candidate,unattested,no
 cand_e_CF3_to_e_CF_F2,e + CF3 -> e + CF + F2,electron,dissociation,1,candidate,unattested,no
 cand_e_CF3_to_e_e_CFp_F2,e + CF3 -> e + e + CF+ + F2,electron,dissociative_ionization,1,candidate,unattested,no
-cand_e_CF4*_to_e_CF4*,e + CF4* -> e + CF4*,electron,elastic,1,candidate,unattested,no
-cand_e_CF4*_to_e_e_CF4p,e + CF4* -> e + e + CF4+,electron,ionization,1,candidate,unattested,no
-cand_e_CF4*_to_e_CF3_F,e + CF4* -> e + CF3 + F,electron,dissociation,1,candidate,unattested,no
-cand_e_CF4*_to_e_e_CF3p_F,e + CF4* -> e + e + CF3+ + F,electron,dissociative_ionization,1,candidate,unattested,no
+cand_e_CF4*_to_e_CF4*,e + CF4* -> e + CF4*,electron,elastic,1,candidate,registry,yes
+cand_e_CF4*_to_e_e_CF4p,e + CF4* -> e + e + CF4+,electron,ionization,1,candidate,registry,yes
+cand_e_CF4*_to_e_CF3_F,e + CF4* -> e + CF3 + F,electron,dissociation,1,candidate,registry,yes
+cand_e_CF4*_to_e_e_CF3p_F,e + CF4* -> e + e + CF3+ + F,electron,dissociative_ionization,1,candidate,registry,yes
 cand_e_CF4*_to_e_CF2_F2,e + CF4* -> e + CF2 + F2,electron,dissociation,1,candidate,unattested,no
 cand_e_CF4*_to_e_e_CF2p_F2,e + CF4* -> e + e + CF2+ + F2,electron,dissociative_ionization,1,candidate,unattested,no
 cand_e_CF4_v_to_e_CF4_v,e + CF4_v -> e + CF4_v,electron,elastic,1,candidate,unattested,no
@@ -56,8 +56,8 @@ cand_e_CF4_v_to_e_CF3_F,e + CF4_v -> e + CF3 + F,electron,dissociation,1,candida
 cand_e_CF4_v_to_e_e_CF3p_F,e + CF4_v -> e + e + CF3+ + F,electron,dissociative_ionization,1,candidate,unattested,no
 cand_e_CF4_v_to_e_CF2_F2,e + CF4_v -> e + CF2 + F2,electron,dissociation,1,candidate,unattested,no
 cand_e_CF4_v_to_e_e_CF2p_F2,e + CF4_v -> e + e + CF2+ + F2,electron,dissociative_ionization,1,candidate,unattested,no
-cand_e_F_to_e_F*,e + F -> e + F*,electron,excitation,1,candidate,unattested,no
-cand_e_F*_to_e_F,e + F* -> e + F,electron,deexcitation,1,candidate,unattested,no
+cand_e_F_to_e_F*,e + F -> e + F*,electron,excitation,1,candidate,registry,yes
+cand_e_F*_to_e_F,e + F* -> e + F,electron,deexcitation,1,candidate,registry,yes
 cand_e_F2_to_e_F2,e + F2 -> e + F2,electron,elastic,1,candidate,unattested,no
 cand_e_F2_to_e_F2_v,e + F2 -> e + F2_v,electron,excitation,1,candidate,unattested,no
 cand_e_F2_v_to_e_F2,e + F2_v -> e + F2,electron,deexcitation,1,candidate,unattested,no
@@ -119,14 +119,14 @@ cand_Fp_CF4_v_diss_F_CF2p_F2,F+ + CF4_v -> F + CF2+ + F2,ion_neutral,dissociativ
 cand_Fp_F2_char_F_F2p,F+ + F2 -> F + F2+,ion_neutral,charge_transfer,1,candidate,unattested,no
 cand_Fp_F2_reac_Fp_F_F,F+ + F2 -> F+ + F + F,ion_neutral,reactive_scattering,1,candidate,unattested,no
 cand_Ar_4s_CF3_penning,Ar_4s + CF3 -> Ar + CF3+ + e,neutral_neutral,penning_ionization,1,candidate,unattested,no
-e_C_excitation_C_1D,e + C -> e + C_1D,electron,excitation,2,literature_supported,nist_asd,yes
-e_C_excitation_C_1S,e + C -> e + C_1S,electron,excitation,2,literature_supported,nist_asd,yes
-e_CF_dissociation_C_F,e + CF -> e + C + F,electron,dissociation,2,literature_supported,doi:10.1007/s11090-013-9513-1,yes
-e_C_1D_elastic,e + C_1D -> e + C_1D,electron,elastic,2,literature_supported,nist_asd,yes
-e_C_1D_superelastic,e + C_1D -> e + C,electron,deexcitation,2,literature_supported,nist_asd,yes
-e_C_1S_elastic,e + C_1S -> e + C_1S,electron,elastic,2,literature_supported,nist_asd,yes
-e_C_1S_superelastic,e + C_1S -> e + C,electron,deexcitation,2,literature_supported,nist_asd,yes
-F2_CF_to_CF2_F,F2 + CF -> CF2 + F,neutral_neutral,reactive_scattering,2,literature_supported,doi:10.1007/s11090-013-9513-1,yes
+e_C_excitation_C_1D,e + C -> e + C_1D,electron,excitation,2,literature_supported,"registry, nist_asd",yes
+e_C_excitation_C_1S,e + C -> e + C_1S,electron,excitation,2,literature_supported,"registry, nist_asd",yes
+e_CF_dissociation_C_F,e + CF -> e + C + F,electron,dissociation,2,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
+e_C_1D_elastic,e + C_1D -> e + C_1D,electron,elastic,2,literature_supported,"registry, nist_asd",yes
+e_C_1D_superelastic,e + C_1D -> e + C,electron,deexcitation,2,literature_supported,"registry, nist_asd",yes
+e_C_1S_elastic,e + C_1S -> e + C_1S,electron,elastic,2,literature_supported,"registry, nist_asd",yes
+e_C_1S_superelastic,e + C_1S -> e + C,electron,deexcitation,2,literature_supported,"registry, nist_asd",yes
+F2_CF_to_CF2_F,F2 + CF -> CF2 + F,neutral_neutral,reactive_scattering,2,literature_supported,"registry, doi:10.1007/s11090-013-9513-1",yes
 cand_e_C_to_e_C,e + C -> e + C,electron,elastic,2,candidate,unattested,no
 cand_e_C_to_e_e_Cp,e + C -> e + e + C+,electron,ionization,2,candidate,unattested,no
 cand_e_CF_to_e_CF,e + CF -> e + CF,electron,elastic,2,candidate,unattested,no
@@ -137,8 +137,8 @@ cand_e_CF_to_e_CF*,e + CF -> e + CF*,electron,excitation,2,candidate,unattested,
 cand_e_CF*_to_e_CF,e + CF* -> e + CF,electron,deexcitation,2,candidate,unattested,no
 cand_e_CF_to_e_e_Cp_F,e + CF -> e + e + C+ + F,electron,dissociative_ionization,2,candidate,unattested,no
 cand_e_CF2*_to_e_CF2*,e + CF2* -> e + CF2*,electron,elastic,2,candidate,unattested,no
-cand_e_CF2*_to_e_e_CF2p,e + CF2* -> e + e + CF2+,electron,ionization,2,candidate,unattested,no
-cand_e_CF2*_to_e_CF_F,e + CF2* -> e + CF + F,electron,dissociation,2,candidate,unattested,no
+cand_e_CF2*_to_e_e_CF2p,e + CF2* -> e + e + CF2+,electron,ionization,2,candidate,registry,yes
+cand_e_CF2*_to_e_CF_F,e + CF2* -> e + CF + F,electron,dissociation,2,candidate,registry,yes
 cand_e_CF2*_to_e_e_CFp_F,e + CF2* -> e + e + CF+ + F,electron,dissociative_ionization,2,candidate,unattested,no
 cand_e_CF2*_to_e_C_F2,e + CF2* -> e + C + F2,electron,dissociation,2,candidate,unattested,no
 cand_e_CF2*_to_e_e_Cp_F2,e + CF2* -> e + e + C+ + F2,electron,dissociative_ionization,2,candidate,unattested,no
@@ -149,8 +149,8 @@ cand_e_CF2_v_to_e_e_CFp_F,e + CF2_v -> e + e + CF+ + F,electron,dissociative_ion
 cand_e_CF2_v_to_e_C_F2,e + CF2_v -> e + C + F2,electron,dissociation,2,candidate,unattested,no
 cand_e_CF2_v_to_e_e_Cp_F2,e + CF2_v -> e + e + C+ + F2,electron,dissociative_ionization,2,candidate,unattested,no
 cand_e_CF3*_to_e_CF3*,e + CF3* -> e + CF3*,electron,elastic,2,candidate,unattested,no
-cand_e_CF3*_to_e_e_CF3p,e + CF3* -> e + e + CF3+,electron,ionization,2,candidate,unattested,no
-cand_e_CF3*_to_e_CF2_F,e + CF3* -> e + CF2 + F,electron,dissociation,2,candidate,unattested,no
+cand_e_CF3*_to_e_e_CF3p,e + CF3* -> e + e + CF3+,electron,ionization,2,candidate,registry,yes
+cand_e_CF3*_to_e_CF2_F,e + CF3* -> e + CF2 + F,electron,dissociation,2,candidate,registry,yes
 cand_e_CF3*_to_e_e_CF2p_F,e + CF3* -> e + e + CF2+ + F,electron,dissociative_ionization,2,candidate,unattested,no
 cand_e_CF3*_to_e_CF_F2,e + CF3* -> e + CF + F2,electron,dissociation,2,candidate,unattested,no
 cand_e_CF3*_to_e_e_CFp_F2,e + CF3* -> e + e + CF+ + F2,electron,dissociative_ionization,2,candidate,unattested,no
@@ -162,11 +162,11 @@ cand_e_CF3_v_to_e_CF_F2,e + CF3_v -> e + CF + F2,electron,dissociation,2,candida
 cand_e_CF3_v_to_e_e_CFp_F2,e + CF3_v -> e + e + CF+ + F2,electron,dissociative_ionization,2,candidate,unattested,no
 cand_e_C_1D_to_e_e_Cp,e + C_1D -> e + e + C+,electron,ionization,2,candidate,unattested,no
 cand_e_C_1S_to_e_e_Cp,e + C_1S -> e + e + C+,electron,ionization,2,candidate,unattested,no
-cand_e_F*_to_e_F*,e + F* -> e + F*,electron,elastic,2,candidate,unattested,no
-cand_e_F*_to_e_e_Fp,e + F* -> e + e + F+,electron,ionization,2,candidate,unattested,no
+cand_e_F*_to_e_F*,e + F* -> e + F*,electron,elastic,2,candidate,registry,yes
+cand_e_F*_to_e_e_Fp,e + F* -> e + e + F+,electron,ionization,2,candidate,registry,yes
 cand_e_F2*_to_e_F2*,e + F2* -> e + F2*,electron,elastic,2,candidate,unattested,no
-cand_e_F2*_to_e_e_F2p,e + F2* -> e + e + F2+,electron,ionization,2,candidate,unattested,no
-cand_e_F2*_to_e_F_F,e + F2* -> e + F + F,electron,dissociation,2,candidate,unattested,no
+cand_e_F2*_to_e_e_F2p,e + F2* -> e + e + F2+,electron,ionization,2,candidate,registry,yes
+cand_e_F2*_to_e_F_F,e + F2* -> e + F + F,electron,dissociation,2,candidate,registry,yes
 cand_e_F2*_to_e_e_Fp_F,e + F2* -> e + e + F+ + F,electron,dissociative_ionization,2,candidate,unattested,no
 cand_e_F2_v_to_e_F2_v,e + F2_v -> e + F2_v,electron,elastic,2,candidate,unattested,no
 cand_e_F2_v_to_e_e_F2p,e + F2_v -> e + e + F2+,electron,ionization,2,candidate,unattested,no
@@ -396,7 +396,7 @@ cand_F2p_F2_v_reac_F_F_F2p,F2+ + F2_v -> F + F + F2+,ion_neutral,reactive_scatte
 cand_Ar_4s_C_penning,Ar_4s + C -> Ar + C+ + e,neutral_neutral,penning_ionization,2,candidate,unattested,no
 cand_e_CF*_to_e_CF*,e + CF* -> e + CF*,electron,elastic,3,candidate,unattested,no
 cand_e_CF*_to_e_e_CFp,e + CF* -> e + e + CF+,electron,ionization,3,candidate,unattested,no
-cand_e_CF*_to_e_C_F,e + CF* -> e + C + F,electron,dissociation,3,candidate,unattested,no
+cand_e_CF*_to_e_C_F,e + CF* -> e + C + F,electron,dissociation,3,candidate,registry,yes
 cand_e_CF*_to_e_e_Cp_F,e + CF* -> e + e + C+ + F,electron,dissociative_ionization,3,candidate,unattested,no
 cand_e_CF_v_to_e_CF_v,e + CF_v -> e + CF_v,electron,elastic,3,candidate,unattested,no
 cand_e_CF_v_to_e_e_CFp,e + CF_v -> e + e + CF+,electron,ionization,3,candidate,unattested,no

@@ -745,6 +745,28 @@ def test_a_source_labels_a_reaction_and_never_removes_it(tmp_path):
     assert any(not marks for marks in labelled.values())
 
 
+def test_the_registry_is_matched_without_a_snapshot(tmp_path):
+    """A curated channel confirms a candidate whether or not a list is supplied.
+
+    Attestation once needed `--known` before it looked at anything, so a run
+    with no published list to hand called every reaction unattested -- including
+    the ones the registry itself states.
+    """
+
+    import yaml as _yaml
+
+    from discover.cli import main
+
+    out = tmp_path / "out"
+    main(["network", "--gas", "F2", "--registry", str(FIXTURE), "--out", str(out)])
+
+    document = _yaml.safe_load((out / "reactions.yaml").read_text(encoding="utf-8"))
+    labelled = {r["equation"]: r["listed_by"] for r in document["reactions"]}
+    assert "registry" in labelled["e + F2 -> e + F2"]
+    # Still a label and not a filter: the proposed channels are all still here.
+    assert any(not marks for marks in labelled.values())
+
+
 def test_a_vibrational_manifold_gets_a_heavy_partner_to_relax_on():
     """Without it, electron superelastic is the only way down from X_v."""
 

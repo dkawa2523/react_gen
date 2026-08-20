@@ -2,16 +2,19 @@ layer: attestation
 question: does any source state this reaction?
 reactions:
   total: 70
-  judged: 6
-  undecided: 64
+  judged: 32
+  undecided: 38
   not_run: 0
   by_verdict:
-    unattested: 64
-    doi:10.1007/s11090-013-9513-1: 3
-    nist_asd: 3
+    unattested: 38
+    registry: 26
+    registry, doi:10.1007/s11090-013-9513-1: 3
+    registry, nist_asd: 3
 species:
   total: 12
   needs: []
   blocked_by_missing_property: 0
 by_process:
-  electron_impact: 6
+  electron_impact: 27
+  ion_collision: 2
+  neutral_reaction: 3

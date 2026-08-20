@@ -337,7 +337,9 @@ $$\text{attested}(r) \iff \bigl(\text{source\_type}(r) \notin \mathcal{D}\bigr) 
 
 $\mathcal{D}$ は本コードが自分で導出したものの集合(`bond_breaking`, `formation_enthalpy`, `dissociation_limit`, `ionization_and_bond_energy`, `vibrational_manifold`, `structural`)。**自分自身の証拠にはなりません**。
 
-$\mathcal{K}$ は `--known` で渡した索引。照合は種ごとに係数を合算した化学量論で行うので、$2e$ と $e + e$ は同一と判定されます。
+$\mathcal{K}$ は照合先の索引で、**レジストリは常に含まれます** — curated なチャンネルは論文から読んで査読したものなので、候補がそれに一致すれば新規ではありません。`--known` で渡した公開リストはその上に載ります。
+
+照合は種ごとに係数を合算した化学量論で行うので、$2e$ と $e + e$ は同一と判定されます。
 
 $$\text{sig}(r) = \Bigl(\text{family},\ \text{third\_body},\ \text{surface},\ \textstyle\sum\nu\ \text{per species 両辺}\Bigr)$$
 
