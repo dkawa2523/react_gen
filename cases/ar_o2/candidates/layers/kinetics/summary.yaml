@@ -2,20 +2,20 @@ layer: kinetics
 question: does it run fast enough to matter under these conditions?
 reactions:
   total: 70
-  judged: 5
-  undecided: 65
+  judged: 22
+  undecided: 48
   not_run: 0
   by_verdict:
-    unknown: 65
-    comparable: 3
-    fast: 1
+    unknown: 48
+    comparable: 18
+    fast: 3
     negligible: 1
 species:
   total: 12
   needs:
   - mass_amu
   - polarizability_A3
-  blocked_by_missing_property: 10
+  blocked_by_missing_property: 3
 by_process:
-  ion_collision: 2
+  ion_collision: 19
   neutral_reaction: 3

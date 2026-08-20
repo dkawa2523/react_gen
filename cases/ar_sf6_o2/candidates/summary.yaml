@@ -1,4 +1,4 @@
-mechanism_id: ar_sf6_o2.Ar-O2-SF6.a7772983
+mechanism_id: ar_sf6_o2.Ar-O2-SF6.9af071a1
 case: ar_sf6_o2
 gases:
 - Ar
@@ -28,11 +28,11 @@ data_coverage:
   rate_coefficient: 48/1697
 relevance:
   comparable: 8
-  fast: 62
+  fast: 294
   negligible: 1
   slow: 4
-  unknown: 2010
+  unknown: 1778
 gaps:
   blocking: 1
-  data: 549
-  info: 13
+  data: 1430
+  info: 12

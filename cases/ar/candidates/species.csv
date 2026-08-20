@@ -1,0 +1,5 @@
+id,formula,charge,state_kind,state_label,state_energy_eV,depth,n_Ar,mass_amu,polarizability_A3,dipole_moment_D,collision_radius_A,well_depth_K,enthalpy_formation_eV,entropy_J_mol_K,ionization_energy_eV,electron_affinity_eV,vibrational_quantum_eV,has_thermo,status,missing
+Ar,Ar,0,ground,X,0.0,0,1,39.948,1.6411,0.0,1.7037,123.55,0.0,154.8,15.759612,-11.5,,yes,curated,vibrational_quantum_eV
+Ar+,Ar,1,ground,X,0.0,1,1,39.94745,,0.0,,,15.75961,,27.62966,,,yes,curated,polarizability_A3 collision_radius_A well_depth_K entropy_J_mol_K electron_affinity_eV vibrational_quantum_eV
+Ar_4s,Ar,0,excited,3p5 4s manifold,11.6,1,1,39.948,1.6423,0.0,1.7037,123.55,11.6,,4.16,,,yes,literature_supported,entropy_J_mol_K electron_affinity_eV vibrational_quantum_eV
+e,,-1,ground,,,0,0,0.00054858,,,,,,,,,,no,curated,polarizability_A3 dipole_moment_D collision_radius_A well_depth_K enthalpy_formation_eV entropy_J_mol_K ionization_energy_eV electron_affinity_eV vibrational_quantum_eV

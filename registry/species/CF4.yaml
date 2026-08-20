@@ -78,6 +78,10 @@ properties:
     unit: eV
     source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
       K
+  well_depth_K:
+    source: chemicals package bundled molecular property tables, CAS 75-73-0
+    unit: K
+    value: 134.0
 metadata:
   status: estimated
   notes:
@@ -85,3 +89,24 @@ metadata:
     DNT short-range collision radius remains an engineering seed.
   - Primary polarizability_A3=2.824 A3 is from NIST CCCBDB. dnt_polarizability_alt_A3=3.86
     A3 is retained only for transport-fit reproduction.
+thermo:
+  high:
+  - 9.47215359
+  - 0.00359525216
+  - -1.40378502e-06
+  - 2.39188188e-10
+  - -1.48558906e-14
+  - -115816.337
+  - -24.9709091
+  low:
+  - 1.05143992
+  - 0.0278246468
+  - -2.4652526e-05
+  - 6.74548304e-09
+  - 9.18909316e-13
+  - -113574.067
+  - 18.1900899
+  source: cantera bundled thermodynamic data, listed as CF4 in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 1000.0
+  t_min: 200.0

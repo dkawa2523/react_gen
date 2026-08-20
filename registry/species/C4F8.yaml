@@ -34,3 +34,7 @@ properties:
     unit: eV
     source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
       K
+  dipole_moment_D:
+    source: chemicals package bundled molecular property tables, CAS 115-25-3
+    unit: D
+    value: 0.0

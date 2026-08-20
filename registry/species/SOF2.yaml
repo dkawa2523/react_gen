@@ -26,3 +26,24 @@ properties:
     unit: J/mol/K
     source: chemicals package bundled thermodynamic tables, CAS 7783-42-8, formula
       verified against the registry
+thermo:
+  high:
+  - 8.0874212
+  - 0.0021095716
+  - -9.0866912e-07
+  - 1.7344834e-10
+  - -1.2214158e-14
+  - -68238.159
+  - -13.8555916
+  low:
+  - 2.4749066
+  - 0.020952426
+  - -2.4164277e-05
+  - 1.2120377e-08
+  - -1.9338731e-12
+  - -66897.602
+  - 14.1973404
+  source: cantera bundled thermodynamic data, listed as SOF2 in nasa_gas.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

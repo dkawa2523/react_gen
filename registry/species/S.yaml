@@ -35,3 +35,33 @@ properties:
     value: 2.077104
     unit: eV
     source: mendeleev package, bundled periodic table
+  dipole_moment_D:
+    source: chemicals package bundled molecular property tables, CAS 7704-34-9
+    unit: D
+    value: 0.0
+  polarizability_A3:
+    source: mendeleev package, bundled periodic table, dipole polarizability in atomic
+      units
+    unit: A3
+    value: 2.8748
+thermo:
+  high:
+  - 0.371369512
+  - 0.0153373501
+  - -3.35441107e-05
+  - 2.892495e-08
+  - 0.0
+  - -553.21385
+  - -1.59624498
+  low:
+  - 0.371369512
+  - 0.0153373501
+  - -3.35441107e-05
+  - 2.892495e-08
+  - 0.0
+  - -553.21385
+  - -1.59624498
+  source: cantera bundled thermodynamic data, listed as S(cr1) in nasa_condensed.yaml
+  t_max: 368.3
+  t_mid: 368.3
+  t_min: 200.0

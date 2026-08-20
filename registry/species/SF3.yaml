@@ -43,8 +43,8 @@ properties:
   electron_affinity_eV:
     value: 3.07
     unit: eV
-    source: NIST Chemistry WebBook SRD 69, Compton, Reinhardt, et al. (1978),
-      from SF6
+    source: NIST Chemistry WebBook SRD 69, Compton, Reinhardt, et al. (1978), from
+      SF6
     uncertainty_eV: 0.2
     quality: literature_supported
     note: NIST also lists determinations from 2.50 to 2.90 eV; retain the uncertainty
@@ -53,3 +53,24 @@ metadata:
   status: literature_supported
   notes:
   - Registered only for the measured direct neutral SF6 dissociation branch.
+thermo:
+  high:
+  - 8.8076897
+  - 0.0013671676
+  - -6.0808333e-07
+  - 1.1883022e-10
+  - -8.4470915e-15
+  - -63440.494
+  - -16.7648869
+  low:
+  - 1.8777728
+  - 0.031234035
+  - -5.1571379e-05
+  - 4.0247322e-08
+  - -1.2110594e-11
+  - -62067.939
+  - 16.3694361
+  source: cantera bundled thermodynamic data, listed as SF3 in nasa_gas.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

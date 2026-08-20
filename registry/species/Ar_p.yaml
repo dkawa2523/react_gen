@@ -41,3 +41,24 @@ metadata:
   status: curated
   notes:
   - Ar+ enthalpy is relative to neutral Ar + ionization energy.
+thermo:
+  high:
+  - 2.86999547
+  - -0.000142547242
+  - 9.36688776e-09
+  - 2.92580859e-12
+  - -3.58247941e-16
+  - 182702.617
+  - 3.5322998
+  low:
+  - 2.59316097
+  - -0.00132892944
+  - 5.26503944e-06
+  - -5.97956691e-09
+  - 2.18967862e-12
+  - 182878.368
+  - 5.44980575
+  source: cantera bundled thermodynamic data, listed as Ar+ in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 1000.0
+  t_min: 298.15

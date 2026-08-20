@@ -26,9 +26,10 @@ properties:
     unit: eV
     source: Si ionization energy less the level energy
   polarizability_A3:
-    value: null
+    source: unchanged from Si on excitation; mendeleev package, bundled periodic table,
+      dipole polarizability in atomic units
     unit: A3
-    source: null
+    value: 5.5273
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -46,3 +47,24 @@ metadata:
   notes:
   - 'NIST Atomic Spectra Database, energy levels (energy1.pl). Metastable: no electric
     dipole transition to any lower level is allowed.'
+thermo:
+  high:
+  - 2.4753989
+  - 0.00088112187
+  - -2.0939481e-07
+  - 4.2757187e-12
+  - 1.6006564e-14
+  - 21336.511521362
+  - -12.188747
+  low:
+  - 0.84197538
+  - 0.0083710416
+  - -1.307703e-05
+  - 9.7593603e-09
+  - -2.727938e-12
+  - 21624.204841362
+  - -4.5272678
+  source: Si polynomial with the 1.909 eV level energy added to the enthalpy constant
+  t_max: 1685.0
+  t_mid: 1000.0
+  t_min: 300.0

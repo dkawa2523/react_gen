@@ -26,23 +26,51 @@ properties:
     unit: eV
     source: null
   polarizability_A3:
-    value: null
+    source: unchanged from He on excitation; mendeleev package, bundled periodic table,
+      dipole polarizability in atomic units
     unit: A3
-    source: null
+    value: 0.2051
   dipole_moment_D:
     value: 0.0
     unit: D
     source: atomic symmetry
   collision_radius_A:
-    value: null
+    source: unchanged from He on excitation; chemicals package bundled molecular property
+      tables, CAS 7440-59-7
     unit: A
-    source: null
+    value: 1.2755
   electron_affinity_eV:
     value: null
     unit: eV
     source: null
+  well_depth_K:
+    source: unchanged from He on excitation; chemicals package bundled molecular property
+      tables, CAS 7440-59-7
+    unit: K
+    value: 10.22
 metadata:
   status: literature_supported
   notes:
   - 'NIST Atomic Spectra Database, energy levels (energy1.pl). Metastable: no electric
     dipole transition to any lower level is allowed, which is what lets it accumulate.'
+thermo:
+  high:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 229251.70402056997
+  - 0.928724724
+  low:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 229251.70402056997
+  - 0.928724724
+  source: He polynomial with the 19.82 eV level energy added to the enthalpy constant
+  t_max: 6000.0
+  t_mid: 6000.0
+  t_min: 200.0

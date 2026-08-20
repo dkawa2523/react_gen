@@ -36,3 +36,41 @@ properties:
     value: -19.7
     unit: eV
     source: mendeleev package, bundled periodic table
+  collision_radius_A:
+    source: chemicals package bundled molecular property tables, CAS 7440-59-7
+    unit: A
+    value: 1.2755
+  dipole_moment_D:
+    source: chemicals package bundled molecular property tables, CAS 7440-59-7
+    unit: D
+    value: 0.0
+  polarizability_A3:
+    source: mendeleev package, bundled periodic table, dipole polarizability in atomic
+      units
+    unit: A3
+    value: 0.2051
+  well_depth_K:
+    source: chemicals package bundled molecular property tables, CAS 7440-59-7
+    unit: K
+    value: 10.22
+thermo:
+  high:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - -745.375
+  - 0.928724724
+  low:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - -745.375
+  - 0.928724724
+  source: cantera bundled thermodynamic data, listed as He in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 6000.0
+  t_min: 200.0

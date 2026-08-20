@@ -1,5 +1,6 @@
 id,equation,family,type,depth,status,verdict,decided
 e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,thermoneutral,yes
+e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,0,curated,endothermic by 11.60 eV,yes
 e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,endothermic by 15.76 eV,yes
 e_O2_elastic,e + O2 -> e + O2,electron,elastic,0,curated,thermoneutral,yes
 e_O2_excitation_O2_a1Delta,e + O2 -> e + O2_a1Delta,electron,excitation,0,curated,endothermic by 0.98 eV,yes
@@ -12,9 +13,13 @@ e_SF6_dissociation_SF5_F,e + SF6 -> e + SF5 + F,electron,dissociation,0,literatu
 e_SF6_dissociation_SF4_2F,e + SF6 -> e + SF4 + 2 F,electron,dissociation,0,literature_supported,endothermic by 6.38 eV,yes
 e_SF6_dissociation_SF2_F2_2F,e + SF6 -> e + SF2 + F2 + 2 F,electron,dissociation,0,literature_supported,endothermic by 11.22 eV,yes
 e_SF6_dissociative_ionization_Fp_SF4_F,e + SF6 -> 2 e + F+ + SF4 + F,electron,dissociative_ionization,0,literature_supported,endothermic by 23.81 eV,yes
+cand_e_O2_to_e_O2_v,e + O2 -> e + O2_v,electron,excitation,0,candidate,endothermic by 0.19 eV,yes
+cand_e_O2_v_to_e_O2,e + O2_v -> e + O2,electron,deexcitation,0,candidate,exothermic by 0.19 eV,yes
 cand_e_O2_to_e_e_Op_O,e + O2 -> e + e + O+ + O,electron,dissociative_ionization,0,candidate,endothermic by 18.78 eV,yes
 cand_e_SF6_to_e_SF4_F2,e + SF6 -> e + SF4 + F2,electron,dissociation,0,candidate,endothermic by 4.74 eV,yes
 cand_O2_diss_O_1S,e + O2 -> e + O + O_1S,electron,dissociation,0,candidate,endothermic by 9.36 eV,yes
+e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,literature_supported,thermoneutral,yes
+e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,1,literature_supported,endothermic by 4.16 eV,yes
 e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,exothermic by 11.60 eV,yes
 e_F_elastic,e + F -> e + F,electron,elastic,1,curated,thermoneutral,yes
 e_F_ionization,e + F -> 2 e + F+,electron,ionization,1,curated,endothermic by 17.42 eV,yes
@@ -49,15 +54,23 @@ SF4_F2_to_SF5_F,SF4 + F2 -> SF5 + F,neutral_neutral,reactive_scattering,1,litera
 SF5_F2_to_SF6_F,SF5 + F2 -> SF6 + F,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 2.41 eV,yes
 SF5_SF5_to_SF4_SF6,SF5 + SF5 -> SF4 + SF6,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 1.73 eV,yes
 cand_e_F2_to_e_F2,e + F2 -> e + F2,electron,elastic,1,candidate,thermoneutral,yes
+cand_e_F2_to_e_F2_v,e + F2 -> e + F2_v,electron,excitation,1,candidate,endothermic by 0.10 eV,yes
+cand_e_F2_v_to_e_F2,e + F2_v -> e + F2,electron,deexcitation,1,candidate,exothermic by 0.10 eV,yes
 cand_e_F2_to_e_e_Fp_F,e + F2 -> e + e + F+ + F,electron,dissociative_ionization,1,candidate,endothermic by 19.07 eV,yes
 cand_e_O2_a1Delta_to_e_O_O,e + O2_a1Delta -> e + O + O,electron,dissociation,1,candidate,endothermic by 4.19 eV,yes
 cand_e_O2_a1Delta_to_e_e_Op_O,e + O2_a1Delta -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,endothermic by 17.81 eV,yes
 cand_e_O2_b1Sigma_to_e_O_O,e + O2_b1Sigma -> e + O + O,electron,dissociation,1,candidate,endothermic by 3.54 eV,yes
 cand_e_O2_b1Sigma_to_e_e_Op_O,e + O2_b1Sigma -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,endothermic by 17.16 eV,yes
+cand_e_O2_v_to_e_O2_v,e + O2_v -> e + O2_v,electron,elastic,1,candidate,thermoneutral,yes
+cand_e_O2_v_to_e_e_O2p,e + O2_v -> e + e + O2+,electron,ionization,1,candidate,endothermic by 11.88 eV,yes
+cand_e_O2_v_to_e_O_O,e + O2_v -> e + O + O,electron,dissociation,1,candidate,endothermic by 4.98 eV,yes
+cand_e_O2_v_to_e_e_Op_O,e + O2_v -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,endothermic by 18.60 eV,yes
 cand_e_O_1S_to_e_e_Op,e + O_1S -> e + e + O+,electron,ionization,1,candidate,endothermic by 9.43 eV,yes
 cand_e_SF2_to_e_SF2,e + SF2 -> e + SF2,electron,elastic,1,candidate,thermoneutral,yes
 cand_e_SF2_to_e_S_F2,e + SF2 -> e + S + F2,electron,dissociation,1,candidate,endothermic by 5.95 eV,yes
 cand_e_SF4_to_e_SF4,e + SF4 -> e + SF4,electron,elastic,1,candidate,thermoneutral,yes
+cand_e_SF4_to_e_SF4_v,e + SF4 -> e + SF4_v,electron,excitation,1,candidate,endothermic by 0.08 eV,yes
+cand_e_SF4_v_to_e_SF4,e + SF4_v -> e + SF4,electron,deexcitation,1,candidate,exothermic by 0.08 eV,yes
 cand_e_SF4_to_e_SF2_F2,e + SF4 -> e + SF2 + F2,electron,dissociation,1,candidate,endothermic by 4.84 eV,yes
 cand_e_SF5_to_e_SF5,e + SF5 -> e + SF5,electron,elastic,1,candidate,thermoneutral,yes
 cand_SF2_diss_S_1D,e + SF2 -> e + F2 + S_1D,electron,dissociation,1,candidate,endothermic by 7.09 eV,yes
@@ -359,10 +372,17 @@ SO_O_R130,SO + O -> SO2,neutral_neutral,reactive_scattering,2,literature_support
 SO_O1D_R130,SO + O_1D -> SO2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 7.69 eV,yes
 SOF2_O_R131,SOF2 + O -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 4.81 eV,yes
 SOF2_O1D_R131,SOF2 + O_1D -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 6.77 eV,yes
+cand_e_F2_v_to_e_F2_v,e + F2_v -> e + F2_v,electron,elastic,2,candidate,thermoneutral,yes
+cand_e_F2_v_to_e_F_F,e + F2_v -> e + F + F,electron,dissociation,2,candidate,endothermic by 1.55 eV,yes
+cand_e_F2_v_to_e_e_Fp_F,e + F2_v -> e + e + F+ + F,electron,dissociative_ionization,2,candidate,endothermic by 18.97 eV,yes
 cand_e_FO_to_e_FO,e + FO -> e + FO,electron,elastic,2,candidate,thermoneutral,yes
 cand_e_FO_to_e_e_Fp_O,e + FO -> e + e + F+ + O,electron,dissociative_ionization,2,candidate,endothermic by 19.70 eV,yes
 cand_e_S_to_e_S,e + S -> e + S,electron,elastic,2,candidate,thermoneutral,yes
+cand_e_SF4_v_to_e_SF4_v,e + SF4_v -> e + SF4_v,electron,elastic,2,candidate,thermoneutral,yes
+cand_e_SF4_v_to_e_SF2_F2,e + SF4_v -> e + SF2 + F2,electron,dissociation,2,candidate,endothermic by 4.76 eV,yes
 cand_e_SO_to_e_SO,e + SO -> e + SO,electron,elastic,2,candidate,thermoneutral,yes
+cand_e_SO_to_e_SO_v,e + SO -> e + SO_v,electron,excitation,2,candidate,endothermic by 0.13 eV,yes
+cand_e_SO_v_to_e_SO,e + SO_v -> e + SO,electron,deexcitation,2,candidate,exothermic by 0.13 eV,yes
 cand_e_SO_to_e_O_S,e + SO -> e + O + S,electron,dissociation,2,candidate,endothermic by 5.39 eV,yes
 cand_e_SO_to_e_e_Op_S,e + SO -> e + e + O+ + S,electron,dissociative_ionization,2,candidate,endothermic by 19.01 eV,yes
 cand_e_SOF2_to_e_SOF2,e + SOF2 -> e + SOF2,electron,elastic,2,candidate,thermoneutral,yes
@@ -827,11 +847,16 @@ cand_Ar_4s_S_penning,Ar_4s + S -> Ar + S+ + e,neutral_neutral,penning_ionization
 SO2F2_O_R137,SO2F2 + O -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,exothermic by 0.36 eV,yes
 SO2F2_O1D_R137,SO2F2 + O_1D -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,exothermic by 2.33 eV,yes
 cand_e_SO2_to_e_SO2,e + SO2 -> e + SO2,electron,elastic,3,candidate,thermoneutral,yes
+cand_e_SO2_to_e_SO2_v,e + SO2 -> e + SO2_v,electron,excitation,3,candidate,endothermic by 0.11 eV,yes
+cand_e_SO2_v_to_e_SO2,e + SO2_v -> e + SO2,electron,deexcitation,3,candidate,exothermic by 0.11 eV,yes
 cand_e_SO2_to_e_SO_O,e + SO2 -> e + SO + O,electron,dissociation,3,candidate,endothermic by 5.72 eV,yes
 cand_e_SO2_to_e_S_O2,e + SO2 -> e + S + O2,electron,dissociation,3,candidate,endothermic by 5.95 eV,yes
 cand_e_SO2F2_to_e_SO2F2,e + SO2F2 -> e + SO2F2,electron,elastic,3,candidate,thermoneutral,yes
 cand_e_SO2F2_to_e_SOF2_O,e + SO2F2 -> e + SOF2 + O,electron,dissociation,3,candidate,endothermic by 4.81 eV,yes
 cand_e_SO2F2_to_e_SF2_O2,e + SO2F2 -> e + SF2 + O2,electron,dissociation,3,candidate,endothermic by 4.79 eV,yes
+cand_e_SO_v_to_e_SO_v,e + SO_v -> e + SO_v,electron,elastic,3,candidate,thermoneutral,yes
+cand_e_SO_v_to_e_O_S,e + SO_v -> e + O + S,electron,dissociation,3,candidate,endothermic by 5.26 eV,yes
+cand_e_SO_v_to_e_e_Op_S,e + SO_v -> e + e + O+ + S,electron,dissociative_ionization,3,candidate,endothermic by 18.87 eV,yes
 cand_SO2_diss_SO_v,e + SO2 -> e + O + SO_v,electron,dissociation,3,candidate,endothermic by 5.86 eV,yes
 cand_SO2_diss_O_1D,e + SO2 -> e + SO + O_1D,electron,dissociation,3,candidate,endothermic by 7.69 eV,yes
 cand_SO2_diss_O_1S,e + SO2 -> e + SO + O_1S,electron,dissociation,3,candidate,endothermic by 9.91 eV,yes
@@ -1005,6 +1030,9 @@ cand_SF6p_SOF_v_diss_SF4p_F2_SOF,SF6+ + SOF_v -> SF4+ + F2 + SOF,ion_neutral,dis
 cand_SF6p_SO_v_diss_SF5p_F_SO,SF6+ + SO_v -> SF5+ + F + SO,ion_neutral,dissociative_charge_transfer,3,candidate,exothermic by 1.66 eV,yes
 cand_SF6p_SO_v_diss_SF4p_F2_SO,SF6+ + SO_v -> SF4+ + F2 + SO,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 1.42 eV,yes
 cand_SF6p_SO_v_diss_SF6_O_Sp,SF6+ + SO_v -> SF6 + O + S+,ion_neutral,dissociative_charge_transfer,3,candidate,endothermic by 0.43 eV,yes
+cand_e_SO2_v_to_e_SO2_v,e + SO2_v -> e + SO2_v,electron,elastic,4,candidate,thermoneutral,yes
+cand_e_SO2_v_to_e_SO_O,e + SO2_v -> e + SO + O,electron,dissociation,4,candidate,endothermic by 5.61 eV,yes
+cand_e_SO2_v_to_e_S_O2,e + SO2_v -> e + S + O2,electron,dissociation,4,candidate,endothermic by 5.84 eV,yes
 cand_F2_v_SO2*_vt,F2_v + SO2* -> F2 + SO2*,neutral_neutral,vibrational_relaxation,4,candidate,exothermic by 0.10 eV,yes
 cand_F2_v_SO2F2*_vt,F2_v + SO2F2* -> F2 + SO2F2*,neutral_neutral,vibrational_relaxation,4,candidate,exothermic by 0.10 eV,yes
 cand_F2_v_SO2F2_v_vt,F2_v + SO2F2_v -> F2 + SO2F2_v,neutral_neutral,vibrational_relaxation,4,candidate,exothermic by 0.10 eV,yes

@@ -26,9 +26,10 @@ properties:
     unit: eV
     source: null
   polarizability_A3:
-    value: null
+    source: unchanged from C on excitation; mendeleev package, bundled periodic table,
+      dipole polarizability in atomic units
     unit: A3
-    source: null
+    value: 1.6745
   dipole_moment_D:
     value: 0.0
     unit: D

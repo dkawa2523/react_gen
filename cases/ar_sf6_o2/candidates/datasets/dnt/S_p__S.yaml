@@ -1,24 +1,21 @@
 pair: S_p__S
 models:
 - analytic_resonant_charge_exchange
-- unknown
+- dnt_plus
 readiness:
   long_range:
-    status: blocked
-    missing:
-    - dipole_moment_D
-    - polarizability_A3
+    status: ready
+    missing: []
   full:
     status: blocked
     missing:
     - collision_radius_A
-    - dipole_moment_D
-    - polarizability_A3
     - short_range_potential
   analytic_resonant:
     status: ready
     missing: []
 runnable:
+- long_range
 - analytic_resonant
 projectile:
   id: S+
@@ -27,8 +24,8 @@ projectile:
 target:
   id: S
   mass_amu: 32.06
-  polarizability_A3: null
-  dipole_moment_D: null
+  polarizability_A3: 2.8748
+  dipole_moment_D: 0.0
   collision_radius_A: null
   quadrupole_moment_DA: null
   polarizability_anisotropy_A3: null
@@ -36,8 +33,8 @@ target:
 reduced_mass_amu: 16.029862853826646
 long_range:
   model: ion_induced_dipole
-  polarizability_A3: null
-  dipole_moment_D: null
+  polarizability_A3: 2.8748
+  dipole_moment_D: 0.0
 short_range: null
 energy_grid:
   energy_min_eV: 0.01

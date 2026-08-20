@@ -40,3 +40,24 @@ metadata:
   status: curated
   notes:
   - F+ is included because CF4 discharge ion-molecule data include F+ + CF4.
+thermo:
+  high:
+  - 2.68834861
+  - -0.000176182961
+  - 6.06940639e-08
+  - -8.91530067e-12
+  - 5.47552167e-16
+  - 211744.095
+  - 4.27480838
+  low:
+  - 3.08421084
+  - -0.000900062139
+  - -1.64599174e-07
+  - 1.10121336e-09
+  - -5.5627092e-13
+  - 211619.101
+  - 2.14597653
+  source: cantera bundled thermodynamic data, listed as F+ in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 1000.0
+  t_min: 298.15

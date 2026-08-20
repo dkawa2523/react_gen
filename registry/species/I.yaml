@@ -29,9 +29,10 @@ properties:
     unit: eV
     source: chemicals package bundled thermodynamic tables
   polarizability_A3:
-    value: null
+    source: mendeleev package, bundled periodic table, dipole polarizability in atomic
+      units
     unit: A3
-    source: null
+    value: 4.8753
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -44,3 +45,24 @@ metadata:
   status: literature_supported
   notes:
   - Ground-state atom acquired for the gases that produce it.
+thermo:
+  high:
+  - 2.61667712
+  - -0.00026601032
+  - 1.8606015e-07
+  - -3.81927472e-11
+  - 2.52036053e-15
+  - 12058.279
+  - 6.87896653
+  low:
+  - 2.50041683
+  - -4.48046831e-06
+  - 1.69962536e-08
+  - -2.6770803e-11
+  - 1.48927452e-14
+  - 12094.799
+  - 7.49816581
+  source: cantera bundled thermodynamic data, listed as I in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 1000.0
+  t_min: 200.0

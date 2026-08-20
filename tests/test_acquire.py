@@ -385,3 +385,95 @@ def test_a_polyatomic_is_divided_by_its_mode_count():
     # Nine modes spanning 0.078 to 0.16 eV; an average sits inside that.
     assert 0.06 < found.energy_eV < 0.20
     assert "9 modes" in found.fit_note
+
+
+# --------------------------------------------------------------------------- cantera
+
+
+def test_a_polynomial_is_matched_on_composition_not_name():
+    """A mechanism writes AR and this registry writes Ar; the atom counts agree."""
+
+    from acquire import nasa
+
+    if not nasa.available():
+        pytest.skip("cantera is not installed")
+    found = nasa.fetch([{"id": "Ar", "composition": {"Ar": 1}, "charge": 0}])[0]
+    assert found.known
+    assert found.listed_as.upper() == "AR"
+    low, high = found.nasa7
+    assert len(low) == 7
+    assert len(high) == 7
+
+
+def test_charge_is_part_of_the_match():
+    """Ar and Ar+ share a composition and are different substances."""
+
+    from acquire import nasa
+
+    if not nasa.available():
+        pytest.skip("cantera is not installed")
+    neutral, cation = nasa.fetch(
+        [
+            {"id": "Ar", "composition": {"Ar": 1}, "charge": 0},
+            {"id": "Ar+", "composition": {"Ar": 1}, "charge": 1},
+        ]
+    )
+    assert neutral.known
+    assert cation.known
+    assert neutral.nasa7 != cation.nasa7
+
+
+def test_an_excited_state_is_left_to_derive():
+    """O_1D and O match on composition, and sit 1.967 eV apart."""
+
+    from acquire import nasa
+
+    if not nasa.available():
+        pytest.skip("cantera is not installed")
+    found = nasa.fetch(
+        [{"id": "O_1D", "composition": {"O": 1}, "charge": 0, "state": {"kind": "excited"}}]
+    )[0]
+    assert not found.known
+    assert found.deferred
+
+
+def test_nasa9_is_refused_rather_than_truncated():
+    """Seven of nine terms is a different function, not a rounder one."""
+
+    from acquire import nasa
+
+    item = nasa.Polynomial(
+        "X",
+        model="NASA9",
+        temperature_ranges=[200.0, 1000.0, 6000.0],
+        coefficients=[[0.0] * 9, [0.0] * 9],
+    )
+    assert item.nasa7 == (None, None)
+    assert not item.known
+    assert "NASA9" in item.unusable
+
+
+def test_chemicals_answers_for_a_polar_molecule():
+    """The value that unblocks ion-dipole capture, where symmetry gives nothing."""
+
+    from acquire import molecular
+
+    if not molecular.available():
+        pytest.skip("chemicals is not installed")
+    found = {item.species: item for item in molecular.fetch(["SO2", "CF4"])}
+    assert found["SO2"].dipole_D == pytest.approx(1.63, abs=0.1)
+    assert found["CF4"].dipole_D == pytest.approx(0.0, abs=0.01)
+    # Half the Lennard-Jones diameter, so of the order of an atomic radius.
+    assert 1.0 < found["CF4"].collision_radius_A < 4.0
+
+
+def test_atomic_polarizability_is_read_not_estimated():
+    """The one place polarizability can be looked up; argon is measured at 1.641."""
+
+    from acquire import atoms
+
+    if not atoms.available():
+        pytest.skip("mendeleev is not installed")
+    found = {item.symbol: item for item in atoms.fetch(["Ar", "F"])}
+    assert found["Ar"].polarizability_A3 == pytest.approx(1.641, abs=0.01)
+    assert found["F"].polarizability_A3 == pytest.approx(0.557, abs=0.02)

@@ -29,18 +29,44 @@ properties:
     unit: eV
     source: chemicals package bundled thermodynamic tables
   polarizability_A3:
-    value: null
+    source: mendeleev package, bundled periodic table, dipole polarizability in atomic
+      units
     unit: A3
-    source: null
+    value: 0.3943
   dipole_moment_D:
     value: 0.0
     unit: D
     source: atomic symmetry
   collision_radius_A:
-    value: null
+    source: chemicals package bundled molecular property tables, CAS 7440-01-9
     unit: A
-    source: null
+    value: 1.3342
+  well_depth_K:
+    source: chemicals package bundled molecular property tables, CAS 7440-01-9
+    unit: K
+    value: 34.37
 metadata:
   status: literature_supported
   notes:
   - Ground-state atom acquired for the gases that produce it.
+thermo:
+  high:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - -745.375
+  - 3.35532272
+  low:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - -745.375
+  - 3.35532272
+  source: cantera bundled thermodynamic data, listed as Ne in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 6000.0
+  t_min: 200.0

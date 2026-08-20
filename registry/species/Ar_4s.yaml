@@ -29,26 +29,58 @@ properties:
     unit: amu
     source: NIST Chemistry WebBook SRD 69
   polarizability_A3:
-    value: null
+    source: unchanged from Ar on excitation; mendeleev package, bundled periodic table,
+      dipole polarizability in atomic units
     unit: A3
-    source: null
+    value: 1.6423
   dipole_moment_D:
     value: 0.0
     unit: D
     source: atomic species
   collision_radius_A:
-    value: null
+    source: unchanged from Ar on excitation; chemicals package bundled molecular property
+      tables, CAS 7440-37-1
     unit: A
-    source: null
+    value: 1.7037
   ionization_energy_eV:
     value: 4.16
     unit: eV
     source: 15.7596 eV Ar ionization limit minus the 11.6 eV manifold energy
+  well_depth_K:
+    source: unchanged from Ar on excitation; chemicals package bundled molecular property
+      tables, CAS 7440-37-1
+    unit: K
+    value: 123.55
+  enthalpy_formation_eV:
+    source: Ar enthalpy plus the 11.6 eV level energy
+    unit: eV
+    value: 11.6
 metadata:
   status: literature_supported
   notes:
-  - The four 3p5 4s levels (1s5 11.548, 1s4 11.624, 1s3 11.723, 1s2 11.828 eV in
-    NIST ASD) are carried as one lumped manifold at 11.6 eV.
-  - Two of the four levels are metastable; resolving them requires separate
-    radiative and quenching data and must replace this record, not sit beside it.
+  - The four 3p5 4s levels (1s5 11.548, 1s4 11.624, 1s3 11.723, 1s2 11.828 eV in NIST
+    ASD) are carried as one lumped manifold at 11.6 eV.
+  - Two of the four levels are metastable; resolving them requires separate radiative
+    and quenching data and must replace this record, not sit beside it.
   - Collision radius and polarizability of the excited state are acquisition gaps.
+thermo:
+  high:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 133867.0338
+  - 4.366
+  low:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 133867.0338
+  - 4.366
+  source: Ar polynomial with the 11.6 eV level energy added to the enthalpy constant
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

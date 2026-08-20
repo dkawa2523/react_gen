@@ -57,9 +57,34 @@ properties:
     unit: eV
     source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
       K
+  well_depth_K:
+    source: chemicals package bundled molecular property tables, CAS 7782-44-7
+    unit: K
+    value: 119.66
 metadata:
   status: curated
   notes:
   - Ground-state O2 record shared by every gas mixture.
   - Collision radius is a transparent DNT preprocessing estimate, not a fundamental
     constant.
+thermo:
+  high:
+  - 3.28253784
+  - 0.00148308754
+  - -7.57966669e-07
+  - 2.09470555e-10
+  - -2.16717794e-14
+  - -1088.45772
+  - 5.45323129
+  low:
+  - 3.78245636
+  - -0.00299673416
+  - 9.84730201e-06
+  - -9.68129509e-09
+  - 3.24372837e-12
+  - -1063.94356
+  - 3.65767573
+  source: cantera bundled thermodynamic data, listed as O2 in air.yaml
+  t_max: 3500.0
+  t_mid: 1000.0
+  t_min: 200.0

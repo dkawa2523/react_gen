@@ -28,3 +28,36 @@ properties:
     unit: J/mol/K
     source: chemicals package bundled thermodynamic tables, CAS 7803-62-5, formula
       verified against the registry
+  collision_radius_A:
+    source: chemicals package bundled molecular property tables, CAS 7803-62-5
+    unit: A
+    value: 2.042
+  dipole_moment_D:
+    source: chemicals package bundled molecular property tables, CAS 7803-62-5
+    unit: D
+    value: 0.0
+  well_depth_K:
+    source: chemicals package bundled molecular property tables, CAS 7803-62-5
+    unit: K
+    value: 207.6
+thermo:
+  high:
+  - 4.2092038
+  - 0.0090822628
+  - -3.7905396e-06
+  - 7.1369888e-10
+  - -5.0046286e-14
+  - 2134.4627
+  - -2.72768704
+  low:
+  - 1.5922639
+  - 0.012841093
+  - -1.9456278e-06
+  - -4.3106372e-09
+  - 1.987488e-12
+  - 3105.5942
+  - 11.8336025
+  source: cantera bundled thermodynamic data, listed as SiH4 in nasa_gas.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

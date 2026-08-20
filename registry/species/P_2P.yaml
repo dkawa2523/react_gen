@@ -26,9 +26,10 @@ properties:
     unit: eV
     source: P ionization energy less the level energy
   polarizability_A3:
-    value: null
+    source: unchanged from P on excitation; mendeleev package, bundled periodic table,
+      dipole polarizability in atomic units
     unit: A3
-    source: null
+    value: 3.7046
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -46,3 +47,24 @@ metadata:
   notes:
   - 'NIST Atomic Spectra Database, energy levels (energy1.pl). Metastable: no electric
     dipole transition to any lower level is allowed.'
+thermo:
+  high:
+  - 0.802469681
+  - 0.0185779347
+  - -8.34080748e-05
+  - 2.11104876e-07
+  - -2.09658894e-10
+  - 26291.43715376
+  - -2.91281027
+  low:
+  - 0.802469681
+  - 0.0185779347
+  - -8.34080748e-05
+  - 2.11104876e-07
+  - -2.09658894e-10
+  - 26291.43715376
+  - -2.91281027
+  source: P polynomial with the 2.321 eV level energy added to the enthalpy constant
+  t_max: 317.3
+  t_mid: 317.3
+  t_min: 195.4

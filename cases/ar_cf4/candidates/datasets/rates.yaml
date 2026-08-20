@@ -60,6 +60,58 @@ rates:
   frequency_upper_bound_s-1: 419525.4498732314
   relevance: comparable
   relevance_basis: fastest_reaction
+- reaction_id: cand_Arp_CF4*_char_Ar_CF4p
+  equation: Ar+ + CF4* -> Ar + CF4+
+  family: ion_neutral
+  third_body: null
+  value: 7.508373610915166e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 419525.4498732314
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Arp_CF4*_diss_Ar_CF3p_F
+  equation: Ar+ + CF4* -> Ar + CF3+ + F
+  family: ion_neutral
+  third_body: null
+  value: 7.508373610915166e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 419525.4498732314
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Arp_CF4_v_char_Ar_CF4p
+  equation: Ar+ + CF4_v -> Ar + CF4+
+  family: ion_neutral
+  third_body: null
+  value: 7.508373610915166e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 419525.4498732314
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Arp_CF4_v_diss_Ar_CF3p_F
+  equation: Ar+ + CF4_v -> Ar + CF3+ + F
+  family: ion_neutral
+  third_body: null
+  value: 7.508373610915166e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 419525.4498732314
+  relevance: comparable
+  relevance_basis: fastest_reaction
 - reaction_id: cand_Arp_F_char_Ar_Fp
   equation: Ar+ + F -> Ar + F+
   family: ion_neutral
@@ -71,6 +123,58 @@ rates:
   bounds: null
   reverse: null
   frequency_upper_bound_s-1: 272176.4049768092
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF2p_Ar_4s_char_CF2_Arp
+  equation: CF2+ + Ar_4s -> CF2 + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 6.368878495908136e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 355856.9078527969
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF2p_Ar_4s_diss_CF_Fp_Ar
+  equation: CF2+ + Ar_4s -> CF + F+ + Ar
+  family: ion_neutral
+  third_body: null
+  value: 6.368878495908136e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 355856.9078527969
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF2p_Ar_4s_diss_CF_F_Arp
+  equation: CF2+ + Ar_4s -> CF + F + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 6.368878495908136e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 355856.9078527969
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF2p_Ar_4s_diss_Cp_F2_Ar
+  equation: CF2+ + Ar_4s -> C+ + F2 + Ar
+  family: ion_neutral
+  third_body: null
+  value: 6.368878495908136e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 355856.9078527969
   relevance: comparable
   relevance_basis: fastest_reaction
 - reaction_id: cand_CF2p_CF4_diss_CF3p_CF3
@@ -86,6 +190,84 @@ rates:
   frequency_upper_bound_s-1: 389423.16749448
   relevance: comparable
   relevance_basis: fastest_reaction
+- reaction_id: cand_CF2p_CF4*_diss_CF3p_CF3
+  equation: CF2+ + CF4* -> CF3+ + CF3
+  family: ion_neutral
+  third_body: null
+  value: 6.969623976752971e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 389423.16749448
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF2p_CF4_v_diss_CF3p_CF3
+  equation: CF2+ + CF4_v -> CF3+ + CF3
+  family: ion_neutral
+  third_body: null
+  value: 6.969623976752971e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 389423.16749448
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF3p_Ar_4s_char_CF3_Arp
+  equation: CF3+ + Ar_4s -> CF3 + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 5.966841855547448e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 333393.37431636674
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF3p_Ar_4s_diss_CF2p_F_Ar
+  equation: CF3+ + Ar_4s -> CF2+ + F + Ar
+  family: ion_neutral
+  third_body: null
+  value: 5.966841855547448e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 333393.37431636674
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF3p_Ar_4s_diss_CF2_Fp_Ar
+  equation: CF3+ + Ar_4s -> CF2 + F+ + Ar
+  family: ion_neutral
+  third_body: null
+  value: 5.966841855547448e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 333393.37431636674
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF3p_Ar_4s_diss_CF2_F_Arp
+  equation: CF3+ + Ar_4s -> CF2 + F + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 5.966841855547448e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 333393.37431636674
+  relevance: comparable
+  relevance_basis: fastest_reaction
 - reaction_id: cand_Fp_Ar_char_F_Arp
   equation: F+ + Ar -> F + Ar+
   family: ion_neutral
@@ -99,6 +281,19 @@ rates:
   frequency_upper_bound_s-1: 467190.1572726349
   relevance: comparable
   relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_Ar_4s_char_F_Arp
+  equation: F+ + Ar_4s -> F + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 8.364499722465142e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 467360.93472098745
+  relevance: comparable
+  relevance_basis: fastest_reaction
 - reaction_id: cand_Fp_CF4_char_F_CF4p
   equation: F+ + CF4 -> F + CF4+
   family: ion_neutral
@@ -110,7 +305,7 @@ rates:
   bounds: null
   reverse: null
   frequency_upper_bound_s-1: 556318.7650536939
-  relevance: fast
+  relevance: comparable
   relevance_basis: fastest_reaction
 - reaction_id: cand_Fp_CF4_diss_F_CF3p_F
   equation: F+ + CF4 -> F + CF3+ + F
@@ -123,7 +318,7 @@ rates:
   bounds: null
   reverse: null
   frequency_upper_bound_s-1: 556318.7650536939
-  relevance: fast
+  relevance: comparable
   relevance_basis: fastest_reaction
 - reaction_id: cand_Fp_CF4_diss_F_CF2p_F2
   equation: F+ + CF4 -> F + CF2+ + F2
@@ -136,7 +331,85 @@ rates:
   bounds: null
   reverse: null
   frequency_upper_bound_s-1: 556318.7650536939
-  relevance: fast
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_CF4*_char_F_CF4p
+  equation: F+ + CF4* -> F + CF4+
+  family: ion_neutral
+  third_body: null
+  value: 9.956604864015412e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 556318.7650536939
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_CF4*_diss_F_CF3p_F
+  equation: F+ + CF4* -> F + CF3+ + F
+  family: ion_neutral
+  third_body: null
+  value: 9.956604864015412e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 556318.7650536939
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_CF4*_diss_F_CF2p_F2
+  equation: F+ + CF4* -> F + CF2+ + F2
+  family: ion_neutral
+  third_body: null
+  value: 9.956604864015412e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 556318.7650536939
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_CF4_v_char_F_CF4p
+  equation: F+ + CF4_v -> F + CF4+
+  family: ion_neutral
+  third_body: null
+  value: 9.956604864015412e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 556318.7650536939
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_CF4_v_diss_F_CF3p_F
+  equation: F+ + CF4_v -> F + CF3+ + F
+  family: ion_neutral
+  third_body: null
+  value: 9.956604864015412e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 556318.7650536939
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_CF4_v_diss_F_CF2p_F2
+  equation: F+ + CF4_v -> F + CF2+ + F2
+  family: ion_neutral
+  third_body: null
+  value: 9.956604864015412e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 556318.7650536939
+  relevance: comparable
   relevance_basis: fastest_reaction
 - reaction_id: F2_CF_to_CF2_F
   equation: F2 + CF -> CF2 + F
@@ -149,6 +422,136 @@ rates:
   bounds: null
   reverse: null
   frequency_upper_bound_s-1: 2223.798890438999
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Arp_C_char_Ar_Cp
+  equation: Ar+ + C -> Ar + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.972945500247583e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 557231.7873833966
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Arp_C_1D_char_Ar_Cp
+  equation: Ar+ + C_1D -> Ar + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.972945500247583e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 557231.7873833966
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Arp_C_1S_char_Ar_Cp
+  equation: Ar+ + C_1S -> Ar + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.972945500247583e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 557231.7873833966
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Arp_F*_char_Ar_Fp
+  equation: Ar+ + F* -> Ar + F+
+  family: ion_neutral
+  third_body: null
+  value: 4.871223276821828e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 272176.4049768092
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Cp_Ar_4s_char_C_Arp
+  equation: C+ + Ar_4s -> C + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 9.876749892861365e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 551856.9209268495
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF2p_C_char_CF2_Cp
+  equation: CF2+ + C -> CF2 + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.738305659094858e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 544121.4401872104
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF2p_C_1D_char_CF2_Cp
+  equation: CF2+ + C_1D -> CF2 + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.738305659094858e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 544121.4401872104
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF2p_C_1S_char_CF2_Cp
+  equation: CF2+ + C_1S -> CF2 + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.738305659094858e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 544121.4401872104
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF3p_C_1D_char_CF3_Cp
+  equation: CF3+ + C_1D -> CF3 + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.475122590265021e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 529416.2588694686
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF3p_C_1S_char_CF3_Cp
+  equation: CF3+ + C_1S -> CF3 + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.475122590265021e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 529416.2588694686
   relevance: comparable
   relevance_basis: fastest_reaction
 - reaction_id: cand_CF4p_Ar_char_CF4_Arp
@@ -177,6 +580,123 @@ rates:
   frequency_upper_bound_s-1: 319809.86398007115
   relevance: comparable
   relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_Ar_4s_char_CF4_Arp
+  equation: CF4+ + Ar_4s -> CF4 + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 5.725825933746845e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 319926.76779681107
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_Ar_4s_diss_CF3p_F_Ar
+  equation: CF4+ + Ar_4s -> CF3+ + F + Ar
+  family: ion_neutral
+  third_body: null
+  value: 5.725825933746845e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 319926.76779681107
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_Ar_4s_diss_CF3_Fp_Ar
+  equation: CF4+ + Ar_4s -> CF3 + F+ + Ar
+  family: ion_neutral
+  third_body: null
+  value: 5.725825933746845e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 319926.76779681107
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_Ar_4s_diss_CF3_F_Arp
+  equation: CF4+ + Ar_4s -> CF3 + F + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 5.725825933746845e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 319926.76779681107
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_Ar_4s_diss_CF2p_F2_Ar
+  equation: CF4+ + Ar_4s -> CF2+ + F2 + Ar
+  family: ion_neutral
+  third_body: null
+  value: 5.725825933746845e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 319926.76779681107
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_Ar_4s_diss_CF2_F2p_Ar
+  equation: CF4+ + Ar_4s -> CF2 + F2+ + Ar
+  family: ion_neutral
+  third_body: null
+  value: 5.725825933746845e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 319926.76779681107
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_Ar_4s_diss_CF2_F2_Arp
+  equation: CF4+ + Ar_4s -> CF2 + F2 + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 5.725825933746845e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 319926.76779681107
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_char_CF4_Cp
+  equation: CF4+ + C -> CF4 + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_diss_CF3p_F_C
+  equation: CF4+ + C -> CF3+ + F + C
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
+  relevance: comparable
+  relevance_basis: fastest_reaction
 - reaction_id: cand_CF4p_CF4_diss_CF3p_F_CF4
   equation: CF4+ + CF4 -> CF3+ + F + CF4
   family: ion_neutral
@@ -188,6 +708,136 @@ rates:
   bounds: null
   reverse: null
   frequency_upper_bound_s-1: 331509.06023860554
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_CF4*_diss_CF3p_F_CF4
+  equation: CF4+ + CF4* -> CF3+ + F + CF4
+  family: ion_neutral
+  third_body: null
+  value: 5.933117717714062e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 331509.06023860554
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_CF4_v_diss_CF3p_F_CF4
+  equation: CF4+ + CF4_v -> CF3+ + F + CF4
+  family: ion_neutral
+  third_body: null
+  value: 5.933117717714062e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 331509.06023860554
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_1D_char_CF4_Cp
+  equation: CF4+ + C_1D -> CF4 + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_1D_diss_CF3p_F_C
+  equation: CF4+ + C_1D -> CF3+ + F + C
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_1D_diss_CF3_F_Cp
+  equation: CF4+ + C_1D -> CF3 + F + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_1S_char_CF4_Cp
+  equation: CF4+ + C_1S -> CF4 + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_1S_diss_CF3p_F_C
+  equation: CF4+ + C_1S -> CF3+ + F + C
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_1S_diss_CF3_F_Cp
+  equation: CF4+ + C_1S -> CF3 + F + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_1S_diss_CF2p_F2_C
+  equation: CF4+ + C_1S -> CF2+ + F2 + C
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_C_1S_diss_CF2_F2_Cp
+  equation: CF4+ + C_1S -> CF2 + F2 + C+
+  family: ion_neutral
+  third_body: null
+  value: 9.322262339275105e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 520875.2926246545
   relevance: comparable
   relevance_basis: fastest_reaction
 - reaction_id: cand_CF4p_F_diss_CF3p_F_F
@@ -202,6 +852,58 @@ rates:
   reverse: null
   frequency_upper_bound_s-1: 247066.60291387013
   relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_CF4p_F*_diss_CF3p_F_F
+  equation: CF4+ + F* -> CF3+ + F + F
+  family: ion_neutral
+  third_body: null
+  value: 4.4218255698611545e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 247066.60291387013
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_C_char_F_Cp
+  equation: F+ + C -> F + C+
+  family: ion_neutral
+  third_body: null
+  value: 1.1171988134278926e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 624227.5079650036
+  relevance: fast
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_C_1D_char_F_Cp
+  equation: F+ + C_1D -> F + C+
+  family: ion_neutral
+  third_body: null
+  value: 1.1171988134278926e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 624227.5079650036
+  relevance: fast
+  relevance_basis: fastest_reaction
+- reaction_id: cand_Fp_C_1S_char_F_Cp
+  equation: F+ + C_1S -> F + C+
+  family: ion_neutral
+  third_body: null
+  value: 1.1171988134278926e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 624227.5079650036
+  relevance: fast
   relevance_basis: fastest_reaction
 - reaction_id: cand_F2p_Ar_char_F2_Arp
   equation: F2+ + Ar -> F2 + Ar+
@@ -227,6 +929,71 @@ rates:
   bounds: null
   reverse: null
   frequency_upper_bound_s-1: 379877.29960474465
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_Ar_4s_char_F2_Arp
+  equation: F2+ + Ar_4s -> F2 + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 6.801263934292245e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 380016.16056939395
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_Ar_4s_diss_Fp_F_Ar
+  equation: F2+ + Ar_4s -> F+ + F + Ar
+  family: ion_neutral
+  third_body: null
+  value: 6.801263934292245e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 380016.16056939395
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_Ar_4s_diss_F_F_Arp
+  equation: F2+ + Ar_4s -> F + F + Ar+
+  family: ion_neutral
+  third_body: null
+  value: 6.801263934292245e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 380016.16056939395
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_C_char_F2_Cp
+  equation: F2+ + C -> F2 + C+
+  family: ion_neutral
+  third_body: null
+  value: 1.003199015687896e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 560530.8688382511
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_C_diss_F_F_Cp
+  equation: F2+ + C -> F + F + C+
+  family: ion_neutral
+  third_body: null
+  value: 1.003199015687896e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 560530.8688382511
   relevance: comparable
   relevance_basis: fastest_reaction
 - reaction_id: cand_F2p_CF4_char_F2_CF4p
@@ -268,8 +1035,164 @@ rates:
   frequency_upper_bound_s-1: 426873.07980624295
   relevance: comparable
   relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_CF4*_char_F2_CF4p
+  equation: F2+ + CF4* -> F2 + CF4+
+  family: ion_neutral
+  third_body: null
+  value: 7.639876361721977e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 426873.07980624295
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_CF4*_diss_F_F_CF4p
+  equation: F2+ + CF4* -> F + F + CF4+
+  family: ion_neutral
+  third_body: null
+  value: 7.639876361721977e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 426873.07980624295
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_CF4*_diss_F2_CF3p_F
+  equation: F2+ + CF4* -> F2 + CF3+ + F
+  family: ion_neutral
+  third_body: null
+  value: 7.639876361721977e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 426873.07980624295
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_CF4_v_char_F2_CF4p
+  equation: F2+ + CF4_v -> F2 + CF4+
+  family: ion_neutral
+  third_body: null
+  value: 7.639876361721977e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 426873.07980624295
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_CF4_v_diss_F_F_CF4p
+  equation: F2+ + CF4_v -> F + F + CF4+
+  family: ion_neutral
+  third_body: null
+  value: 7.639876361721977e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 426873.07980624295
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_CF4_v_diss_F2_CF3p_F
+  equation: F2+ + CF4_v -> F2 + CF3+ + F
+  family: ion_neutral
+  third_body: null
+  value: 7.639876361721977e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 426873.07980624295
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_C_1D_char_F2_Cp
+  equation: F2+ + C_1D -> F2 + C+
+  family: ion_neutral
+  third_body: null
+  value: 1.003199015687896e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 560530.8688382511
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_C_1D_diss_F_F_Cp
+  equation: F2+ + C_1D -> F + F + C+
+  family: ion_neutral
+  third_body: null
+  value: 1.003199015687896e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 560530.8688382511
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_C_1S_char_F2_Cp
+  equation: F2+ + C_1S -> F2 + C+
+  family: ion_neutral
+  third_body: null
+  value: 1.003199015687896e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 560530.8688382511
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_C_1S_diss_Fp_F_C
+  equation: F2+ + C_1S -> F+ + F + C
+  family: ion_neutral
+  third_body: null
+  value: 1.003199015687896e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 560530.8688382511
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_C_1S_diss_F_F_Cp
+  equation: F2+ + C_1S -> F + F + C+
+  family: ion_neutral
+  third_body: null
+  value: 1.003199015687896e-15
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 560530.8688382511
+  relevance: comparable
+  relevance_basis: fastest_reaction
 - reaction_id: cand_F2p_F_char_F2_Fp
   equation: F2+ + F -> F2 + F+
+  family: ion_neutral
+  third_body: null
+  value: 4.91138691582954e-16
+  unit: m3/s
+  basis: langevin_estimate
+  dataset_id: null
+  bounds: null
+  reverse: null
+  frequency_upper_bound_s-1: 274420.52195825
+  relevance: comparable
+  relevance_basis: fastest_reaction
+- reaction_id: cand_F2p_F*_char_F2_Fp
+  equation: F2+ + F* -> F2 + F+
   family: ion_neutral
   third_body: null
   value: 4.91138691582954e-16

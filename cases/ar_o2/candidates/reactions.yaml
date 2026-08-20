@@ -35,7 +35,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -63,7 +65,7 @@ reactions:
   - registry
   evidence:
     structure: conserved
-    thermochemistry: unknown
+    thermochemistry: endothermic by 11.60 eV
     kinetics: unknown
     attestation: registry
   family: electron
@@ -82,9 +84,11 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 11.6
-  delta_e_eV: null
+  delta_e_eV: 11.6
   electron_energy_cost_eV: 11.6
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 11.599999878283448
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -133,7 +137,9 @@ reactions:
   threshold_eV: 15.75961
   delta_e_eV: 15.75961
   electron_energy_cost_eV: 15.75961
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 15.775407831330298
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -182,7 +188,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -231,7 +239,9 @@ reactions:
   threshold_eV: 0.977
   delta_e_eV: 0.977
   electron_energy_cost_eV: 0.977
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.9769999897485282
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -280,7 +290,9 @@ reactions:
   threshold_eV: 1.627
   delta_e_eV: 1.627
   electron_energy_cost_eV: 1.627
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 1.6269999829282042
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -378,7 +390,9 @@ reactions:
   threshold_eV: 5.12
   delta_e_eV: 5.166154
   electron_energy_cost_eV: 5.12
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 4.677816967714865
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -434,7 +448,9 @@ reactions:
   threshold_eV: 8.57
   delta_e_eV: 7.132676999999999
   electron_energy_cost_eV: 8.57
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 6.6448169470755145
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -455,7 +471,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: endothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: electron
@@ -474,8 +490,8 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: null
-  delta_e_eV: null
-  electron_energy_cost_eV: null
+  delta_e_eV: 0.1853
+  electron_energy_cost_eV: -0.1853
   thermodynamics: null
   reverse: null
   precursors: []
@@ -495,7 +511,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: electron
@@ -514,7 +530,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: 0.0
   thermodynamics: null
   reverse: null
@@ -603,7 +619,9 @@ reactions:
   threshold_eV: null
   delta_e_eV: 9.3559
   electron_energy_cost_eV: -9.3559
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 8.867562923752672
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -624,7 +642,7 @@ reactions:
   - registry
   evidence:
     structure: conserved
-    thermochemistry: unknown
+    thermochemistry: thermoneutral
     kinetics: unknown
     attestation: registry
   family: electron
@@ -643,9 +661,11 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors:
   - e_Ar_excitation_4s_lumped
@@ -674,7 +694,7 @@ reactions:
   - registry
   evidence:
     structure: conserved
-    thermochemistry: unknown
+    thermochemistry: endothermic by 4.16 eV
     kinetics: unknown
     attestation: registry
   family: electron
@@ -693,9 +713,11 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 4.16
-  delta_e_eV: null
+  delta_e_eV: 4.159610000000001
   electron_energy_cost_eV: 4.16
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 4.175407953046849
+    favourable: false
   reverse: null
   precursors:
   - e_Ar4s_elastic
@@ -746,7 +768,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: -11.6
   electron_energy_cost_eV: 0.0
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: -11.599999878283448
+    favourable: true
   reverse: null
   precursors:
   - e_Ar4s_elastic
@@ -797,7 +821,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors:
   - cand_O2_diss_O_1S
@@ -850,7 +876,9 @@ reactions:
   threshold_eV: 1.967
   delta_e_eV: 1.966523
   electron_energy_cost_eV: 1.967
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 1.9669999793606499
+    favourable: false
   reverse: null
   precursors:
   - cand_O2_diss_O_1S
@@ -963,7 +991,9 @@ reactions:
   threshold_eV: 4.189746
   delta_e_eV: 4.1897459999999995
   electron_energy_cost_eV: 4.189746
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 4.1897459560378065
+    favourable: false
   reverse: null
   precursors:
   - cand_O2_diss_O_1S
@@ -1019,7 +1049,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors:
   - e_O2_excitation_O2_a1Delta
@@ -1120,7 +1152,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: -0.977
   electron_energy_cost_eV: 0.0
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: -0.9769999897485282
+    favourable: true
   reverse: null
   precursors:
   - e_O2_a1Delta_elastic
@@ -1171,7 +1205,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors:
   - e_O2_excitation_O2_b1Sigma
@@ -1272,7 +1308,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: -1.627
   electron_energy_cost_eV: 0.0
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: -1.6269999829282042
+    favourable: true
   reverse: null
   precursors:
   - e_O2_b1Sigma_elastic
@@ -1323,7 +1361,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors:
   - e_O2_dissociation_O_O1D
@@ -1426,7 +1466,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: -1.967
   electron_energy_cost_eV: 0.0
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: -1.9669999793606499
+    favourable: true
   reverse: null
   precursors:
   - e_O2_dissociation_O_O1D
@@ -1478,7 +1520,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors:
   - cand_O2_diss_O_1S
@@ -1531,7 +1575,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: -4.1897459999999995
   electron_energy_cost_eV: 0.0
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: -4.1897459560378065
+    favourable: true
   reverse: null
   precursors:
   - cand_O2_diss_O_1S
@@ -1565,7 +1611,7 @@ reactions:
   evidence:
     structure: conserved
     thermochemistry: exothermic by 3.69 eV
-    kinetics: fast
+    kinetics: comparable
     attestation: registry
   family: ion_neutral
   type: charge_transfer
@@ -1599,7 +1645,7 @@ reactions:
     bounds: null
     reverse: null
   frequency_upper_bound_s-1: 76431.44637051126
-  relevance: fast
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets:
   - id: ds_Arp_O2_charge_transfer_rate_1977
@@ -1706,7 +1752,9 @@ reactions:
   threshold_eV: null
   delta_e_eV: -0.977
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: -0.9769999897485282
+    favourable: true
   reverse: null
   precursors:
   - e_O2_a1Delta_elastic
@@ -1766,7 +1814,9 @@ reactions:
   threshold_eV: null
   delta_e_eV: -0.34
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: -0.33999999643244555
+    favourable: true
   reverse: null
   precursors:
   - e_O2_dissociation_O_O1D
@@ -1827,7 +1877,9 @@ reactions:
   threshold_eV: null
   delta_e_eV: -0.99
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: -0.9899999896121217
+    favourable: true
   reverse: null
   precursors:
   - e_O2_dissociation_O_O1D
@@ -1889,7 +1941,9 @@ reactions:
   threshold_eV: null
   delta_e_eV: 4.189153999999999
   electron_energy_cost_eV: -4.189153999999999
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 3.700816977966337
+    favourable: false
   reverse: null
   precursors:
   - O1D_O2_quenching_O2_a1Delta
@@ -1981,7 +2035,9 @@ reactions:
   threshold_eV: null
   delta_e_eV: 3.539154
   electron_energy_cost_eV: -3.539154
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 3.0508169847866604
+    favourable: false
   reverse: null
   precursors:
   - O1D_O2_quenching_O2_b1Sigma
@@ -2050,7 +2106,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: thermoneutral
     kinetics: unknown
     attestation: unattested
   family: electron
@@ -2069,7 +2125,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: 0.0
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -2091,7 +2147,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: endothermic by 11.88 eV
     kinetics: unknown
     attestation: unattested
   family: electron
@@ -2112,8 +2168,8 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: null
-  delta_e_eV: null
-  electron_energy_cost_eV: null
+  delta_e_eV: 11.8844
+  electron_energy_cost_eV: -11.8844
   thermodynamics: null
   reverse: null
   precursors:
@@ -2135,7 +2191,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: endothermic by 4.98 eV
     kinetics: unknown
     attestation: unattested
   family: electron
@@ -2156,8 +2212,8 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: null
-  delta_e_eV: null
-  electron_energy_cost_eV: null
+  delta_e_eV: 4.980854
+  electron_energy_cost_eV: -4.980854
   thermodynamics: null
   reverse: null
   precursors:
@@ -2179,7 +2235,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: endothermic by 18.60 eV
     kinetics: unknown
     attestation: unattested
   family: electron
@@ -2202,8 +2258,8 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: null
-  delta_e_eV: null
-  electron_energy_cost_eV: null
+  delta_e_eV: 18.598432
+  electron_energy_cost_eV: -18.598432
   thermodynamics: null
   reverse: null
   precursors:
@@ -2645,7 +2701,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 2.14 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -2688,9 +2744,15 @@ reactions:
   - e_O_1S_superelastic
   - e_O_elastic
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.140783410095053e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 744998.3458438178
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -2705,7 +2767,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 4.67 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -2735,9 +2797,15 @@ reactions:
   - e_O2_a1Delta_elastic
   - e_O2_excitation_O2_a1Delta
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.944166251779241e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 842464.5562869511
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -2752,7 +2820,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 5.32 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -2782,9 +2850,15 @@ reactions:
   - e_O2_b1Sigma_elastic
   - e_O2_excitation_O2_b1Sigma
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.944166251779241e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 842464.5562869511
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -2799,7 +2873,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.40 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: dissociative_charge_transfer
@@ -2831,9 +2905,15 @@ reactions:
   - e_O2_b1Sigma_elastic
   - e_O2_excitation_O2_b1Sigma
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.944166251779241e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 842464.5562869511
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -2848,7 +2928,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 3.69 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -2876,9 +2956,15 @@ reactions:
   - e_Ar4s_stepwise_ionization
   - e_Ar_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.944166251779241e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 842464.5562869511
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -2893,7 +2979,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 4.11 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -2923,9 +3009,15 @@ reactions:
   - e_O_1D_elastic
   - e_O_excitation_O_1D
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.140783410095053e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 744998.3458438178
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -2940,7 +3032,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 6.33 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -2970,9 +3062,15 @@ reactions:
   - e_O_1S_elastic
   - e_O_excitation_O_1S
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.140783410095053e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 744998.3458438178
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -2987,7 +3085,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 9.46 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -3025,9 +3123,15 @@ reactions:
   - e_O_1D_ionization
   - e_O_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 8.879919716625724e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 1077309.6945963881
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -3042,7 +3146,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 2.52 eV
-    kinetics: unknown
+    kinetics: fast
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -3081,9 +3185,15 @@ reactions:
   - e_O_1D_ionization
   - e_O_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 8.962437720654399e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 1087320.7587226091
+  relevance: fast
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -3098,7 +3208,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 3.17 eV
-    kinetics: unknown
+    kinetics: fast
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -3137,9 +3247,15 @@ reactions:
   - e_O_1D_ionization
   - e_O_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 8.962437720654399e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 1087320.7587226091
+  relevance: fast
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -3154,7 +3270,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 1.55 eV
-    kinetics: unknown
+    kinetics: fast
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -3191,9 +3307,15 @@ reactions:
   - e_O_1D_ionization
   - e_O_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 8.962437720654399e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 1087320.7587226091
+  relevance: fast
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -3208,7 +3330,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 7.91 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -3247,9 +3369,15 @@ reactions:
   - e_O2_b1Sigma_ionization
   - e_O2_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 7.120435863506108e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 863849.5425971937
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -3264,7 +3392,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 4.89 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: dissociative_charge_transfer
@@ -3305,9 +3433,15 @@ reactions:
   - e_O2_b1Sigma_ionization
   - e_O2_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 7.120435863506108e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 863849.5425971937
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -3322,7 +3456,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 2.74 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: dissociative_charge_transfer
@@ -3363,9 +3497,15 @@ reactions:
   - e_O2_b1Sigma_ionization
   - e_O2_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 7.120435863506108e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 863849.5425971937
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -3380,7 +3520,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.55 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -3436,9 +3576,15 @@ reactions:
   - e_O_1S_superelastic
   - e_O_elastic
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.355172768326321e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 771008.0105042328
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -3453,7 +3599,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 0.42 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -3493,9 +3639,15 @@ reactions:
   - e_O_1D_elastic
   - e_O_excitation_O_1D
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.355172768326321e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 771008.0105042328
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -3510,7 +3662,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 2.64 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -3550,9 +3702,15 @@ reactions:
   - e_O_1S_elastic
   - e_O_excitation_O_1S
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 6.355172768326321e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 771008.0105042328
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate

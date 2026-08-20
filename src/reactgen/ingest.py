@@ -55,7 +55,9 @@ def ingest(snapshot_path: Path, registry: Registry, overlay_path: Path) -> Repor
     report = Report()
 
     for index, record in enumerate(snapshot.get("records") or []):
-        if record.get("species"):
+        if record.get("species") and record.get("thermo"):
+            _apply_thermo(record, registry, overlay, report, index)
+        elif record.get("species"):
             _apply_property(record, registry, overlay, report, source, index)
         else:
             _apply_dataset(record, kind, registry, overlay, report, source, index)
@@ -117,6 +119,25 @@ def _apply_property(
         "unit": record.get("unit"),
         "source": (record.get("source") or source).get("citation") or source.get("source_id"),
     }
+    report.accepted += 1
+
+
+def _apply_thermo(
+    record: dict, registry: Registry, overlay: dict, report: Report, index: int
+) -> None:
+    """A NASA polynomial for one species, held beside its scalar properties.
+
+    Separate from `_apply_property` because a polynomial is not a value with a
+    unit: it is fourteen coefficients and three temperatures that only mean
+    anything together, and splitting it across fourteen property records would
+    let half of one fit merge with half of another.
+    """
+
+    match = registry.identify(str(record["species"]))
+    if match.species is None:
+        report.review.append(_queued(record, index, list(match.candidates), [], "species"))
+        return
+    overlay.setdefault("thermo", {})[match.species] = dict(record["thermo"])
     report.accepted += 1
 
 

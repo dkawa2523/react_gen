@@ -1,0 +1,54 @@
+pair: SF2_p__O_1D
+models:
+- dnt_plus
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - collision_radius_A
+    - short_range_potential
+runnable:
+- long_range
+projectile:
+  id: SF2+
+  charge: 1
+  mass_amu: 70.05545142000001
+target:
+  id: O_1D
+  mass_amu: 15.9994
+  polarizability_A3: 0.7854
+  dipole_moment_D: 0.0
+  collision_radius_A: null
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 13.024776302020928
+long_range:
+  model: ion_induced_dipole
+  polarizability_A3: 0.7854
+  dipole_moment_D: 0.0
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 300.0
+  points: 300
+  spacing: log
+conditions:
+  pressure_Pa: 4.0
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 5.0e+16
+  reduced_field_Td: 50.0
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+  residence_time_s: 0.05
+channels:
+- reaction_id: cand_SF2p_O_1D_char_SF2_Op
+  equation: SF2+ + O_1D -> SF2 + O+
+  dnt_class: long_range_charge_exchange
+  tier: long_range
+  threshold_eV: 0.8515319999999988
+  delta_e_eV: 0.8515319999999988

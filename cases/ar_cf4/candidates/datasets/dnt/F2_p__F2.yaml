@@ -1,18 +1,15 @@
 pair: F2_p__F2
 models:
 - analytic_resonant_charge_exchange
-- unknown
+- dnt_plus
 readiness:
   long_range:
     status: blocked
     missing:
-    - dipole_moment_D
     - polarizability_A3
   full:
     status: blocked
     missing:
-    - collision_radius_A
-    - dipole_moment_D
     - polarizability_A3
     - short_range_potential
   analytic_resonant:
@@ -28,8 +25,8 @@ target:
   id: F2
   mass_amu: 37.996
   polarizability_A3: null
-  dipole_moment_D: null
-  collision_radius_A: null
+  dipole_moment_D: 0.0
+  collision_radius_A: 1.6785
   quadrupole_moment_DA: null
   polarizability_anisotropy_A3: null
   rotational_constant_cm1: null
@@ -37,7 +34,7 @@ reduced_mass_amu: 18.997862854009956
 long_range:
   model: ion_induced_dipole
   polarizability_A3: null
-  dipole_moment_D: null
+  dipole_moment_D: 0.0
 short_range: null
 energy_grid:
   energy_min_eV: 0.01

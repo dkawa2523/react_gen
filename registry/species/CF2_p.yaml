@@ -43,3 +43,24 @@ metadata:
   notes:
   - CF2+ appears in electron-impact dissociative ionization of CF4 and generated-pair
     ion reactions.
+thermo:
+  high:
+  - 5.155423
+  - 0.002052831
+  - -9.1173911e-07
+  - 1.8272761e-10
+  - -1.321364e-14
+  - 111431.22
+  - -0.778766841
+  low:
+  - 2.9783522
+  - 0.0060336602
+  - 6.5858785e-10
+  - -5.2129449e-09
+  - 2.6663021e-12
+  - 112126.75
+  - 10.9515563
+  source: cantera bundled thermodynamic data, listed as CF2+ in nasa_gas.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

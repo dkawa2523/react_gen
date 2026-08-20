@@ -30,7 +30,7 @@ e_O_1D_ionization,e + O_1D -> 2 e + O+,electron,ionization,1,literature_supporte
 e_O_1D_superelastic,e + O_1D -> e + O,electron,deexcitation,1,literature_supported,unknown,no
 e_O_1S_elastic,e + O_1S -> e + O_1S,electron,elastic,1,literature_supported,unknown,no
 e_O_1S_superelastic,e + O_1S -> e + O,electron,deexcitation,1,literature_supported,unknown,no
-Arp_O2_charge_transfer,Ar+ + O2 -> Ar + O2+,ion_neutral,charge_transfer,1,literature_supported,fast,yes
+Arp_O2_charge_transfer,Ar+ + O2 -> Ar + O2+,ion_neutral,charge_transfer,1,literature_supported,comparable,yes
 Op_O2_charge_transfer,O+ + O2 -> O + O2+,ion_neutral,charge_transfer,1,literature_supported,comparable,yes
 O2a_O2_self_quenching,O2 + O2_a1Delta -> 2 O2,neutral_neutral,reactive_scattering,1,literature_supported,negligible,yes
 O1D_O2_quenching_O2_b1Sigma,O_1D + O2 -> O + O2_b1Sigma,neutral_neutral,reactive_scattering,1,literature_supported,comparable,yes
@@ -52,20 +52,20 @@ cand_O2_v_O2_a1Delta_vt,O2_v + O2_a1Delta -> O2 + O2_a1Delta,neutral_neutral,vib
 cand_O2_v_O2_b1Sigma_vt,O2_v + O2_b1Sigma -> O2 + O2_b1Sigma,neutral_neutral,vibrational_relaxation,1,candidate,unknown,no
 cand_O2_v_O_1D_vt,O2_v + O_1D -> O2 + O_1D,neutral_neutral,vibrational_relaxation,1,candidate,unknown,no
 cand_O2_v_O_1S_vt,O2_v + O_1S -> O2 + O_1S,neutral_neutral,vibrational_relaxation,1,candidate,unknown,no
-cand_Arp_O_char_Ar_Op,Ar+ + O -> Ar + O+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_Arp_O2_a1Delta_char_Ar_O2p,Ar+ + O2_a1Delta -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_Arp_O2_b1Sigma_char_Ar_O2p,Ar+ + O2_b1Sigma -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_Arp_O2_b1Sigma_diss_Ar_Op_O,Ar+ + O2_b1Sigma -> Ar + O+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
-cand_Arp_O2_v_char_Ar_O2p,Ar+ + O2_v -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_Arp_O_1D_char_Ar_Op,Ar+ + O_1D -> Ar + O+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_Arp_O_1S_char_Ar_Op,Ar+ + O_1S -> Ar + O+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_Op_Ar_4s_char_O_Arp,O+ + Ar_4s -> O + Ar+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_Op_O2_a1Delta_char_O_O2p,O+ + O2_a1Delta -> O + O2+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_Op_O2_b1Sigma_char_O_O2p,O+ + O2_b1Sigma -> O + O2+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_Op_O2_v_char_O_O2p,O+ + O2_v -> O + O2+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_O2p_Ar_4s_char_O2_Arp,O2+ + Ar_4s -> O2 + Ar+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_O2p_Ar_4s_diss_Op_O_Ar,O2+ + Ar_4s -> O+ + O + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
-cand_O2p_Ar_4s_diss_O_O_Arp,O2+ + Ar_4s -> O + O + Ar+,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
-cand_O2p_O_char_O2_Op,O2+ + O -> O2 + O+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_O2p_O_1D_char_O2_Op,O2+ + O_1D -> O2 + O+,ion_neutral,charge_transfer,1,candidate,unknown,no
-cand_O2p_O_1S_char_O2_Op,O2+ + O_1S -> O2 + O+,ion_neutral,charge_transfer,1,candidate,unknown,no
+cand_Arp_O_char_Ar_Op,Ar+ + O -> Ar + O+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_Arp_O2_a1Delta_char_Ar_O2p,Ar+ + O2_a1Delta -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_Arp_O2_b1Sigma_char_Ar_O2p,Ar+ + O2_b1Sigma -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_Arp_O2_b1Sigma_diss_Ar_Op_O,Ar+ + O2_b1Sigma -> Ar + O+ + O,ion_neutral,dissociative_charge_transfer,1,candidate,comparable,yes
+cand_Arp_O2_v_char_Ar_O2p,Ar+ + O2_v -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_Arp_O_1D_char_Ar_Op,Ar+ + O_1D -> Ar + O+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_Arp_O_1S_char_Ar_Op,Ar+ + O_1S -> Ar + O+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_Op_Ar_4s_char_O_Arp,O+ + Ar_4s -> O + Ar+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_Op_O2_a1Delta_char_O_O2p,O+ + O2_a1Delta -> O + O2+,ion_neutral,charge_transfer,1,candidate,fast,yes
+cand_Op_O2_b1Sigma_char_O_O2p,O+ + O2_b1Sigma -> O + O2+,ion_neutral,charge_transfer,1,candidate,fast,yes
+cand_Op_O2_v_char_O_O2p,O+ + O2_v -> O + O2+,ion_neutral,charge_transfer,1,candidate,fast,yes
+cand_O2p_Ar_4s_char_O2_Arp,O2+ + Ar_4s -> O2 + Ar+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_O2p_Ar_4s_diss_Op_O_Ar,O2+ + Ar_4s -> O+ + O + Ar,ion_neutral,dissociative_charge_transfer,1,candidate,comparable,yes
+cand_O2p_Ar_4s_diss_O_O_Arp,O2+ + Ar_4s -> O + O + Ar+,ion_neutral,dissociative_charge_transfer,1,candidate,comparable,yes
+cand_O2p_O_char_O2_Op,O2+ + O -> O2 + O+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_O2p_O_1D_char_O2_Op,O2+ + O_1D -> O2 + O+,ion_neutral,charge_transfer,1,candidate,comparable,yes
+cand_O2p_O_1S_char_O2_Op,O2+ + O_1S -> O2 + O+,ion_neutral,charge_transfer,1,candidate,comparable,yes

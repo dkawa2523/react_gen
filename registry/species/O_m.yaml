@@ -44,3 +44,24 @@ metadata:
   status: curated
   notes:
   - Produced by dissociative attachment to O2.
+thermo:
+  high:
+  - 2.54474868
+  - -4.66695419e-05
+  - 1.8491231e-08
+  - -3.18159131e-12
+  - 1.98962894e-16
+  - 11482.2713
+  - 4.52131005
+  low:
+  - 2.90805921
+  - -0.00169804907
+  - 2.98069956e-06
+  - -2.43835127e-09
+  - 7.61229313e-13
+  - 11413.8341
+  - 2.80339084
+  source: cantera bundled thermodynamic data, listed as O- in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 1000.0
+  t_min: 298.15

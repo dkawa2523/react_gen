@@ -35,3 +35,29 @@ properties:
     value: 1.235
     unit: eV
     source: mendeleev package, bundled periodic table
+  polarizability_A3:
+    source: mendeleev package, bundled periodic table, dipole polarizability in atomic
+      units
+    unit: A3
+    value: 6.8906
+thermo:
+  high:
+  - 3.4200891
+  - -0.00161201394
+  - 3.05145917e-06
+  - -2.11162788e-09
+  - 6.99858397e-13
+  - -990.295636
+  - -15.1932294
+  low:
+  - 1.76672074
+  - 0.00734699432
+  - -1.5471296e-05
+  - 1.50539591e-08
+  - -5.24861335e-12
+  - -743.882087
+  - -7.70454044
+  source: cantera bundled thermodynamic data, listed as Cu(cr) in nasa_condensed.yaml
+  t_max: 1358.0
+  t_mid: 1000.0
+  t_min: 200.0

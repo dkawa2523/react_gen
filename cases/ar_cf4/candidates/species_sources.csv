@@ -1,0 +1,143 @@
+id,property,value,unit,source
+Ar,collision_radius_A,1.7037,A,"chemicals package bundled molecular property tables, CAS 7440-37-1"
+Ar,dipole_moment_D,0.0,D,atomic symmetry
+Ar,electron_affinity_eV,-11.5,eV,"mendeleev package, bundled periodic table"
+Ar,enthalpy_formation_eV,0.0,eV,"chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula verified against the registry"
+Ar,entropy_J_mol_K,154.8,J/mol/K,"chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula verified against the registry"
+Ar,ionization_energy_eV,15.759612,eV,"mendeleev package, bundled periodic table"
+Ar,mass_amu,39.948,amu,NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+Ar,polarizability_A3,1.6411,A3,Experimental/static polarizability literature seed; CCCBDB/NIST polarizability tables for review
+Ar,well_depth_K,123.55,K,"chemicals package bundled molecular property tables, CAS 7440-37-1"
+Ar,nasa7,,,"cantera bundled thermodynamic data, listed as AR in air.yaml"
+Ar+,dipole_moment_D,0.0,D,atomic-ion symmetry
+Ar+,enthalpy_formation_eV,15.75961,eV,"derived from Ar IE, NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data"
+Ar+,ionization_energy_eV,27.62966,eV,NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+Ar+,mass_amu,39.94745,amu,Ar atomic mass minus electron mass
+Ar+,nasa7,,,"cantera bundled thermodynamic data, listed as Ar+ in nasa_gas.yaml"
+Ar_4s,collision_radius_A,1.7037,A,"unchanged from Ar on excitation; chemicals package bundled molecular property tables, CAS 7440-37-1"
+Ar_4s,dipole_moment_D,0.0,D,atomic species
+Ar_4s,enthalpy_formation_eV,11.6,eV,Ar enthalpy plus the 11.6 eV level energy
+Ar_4s,ionization_energy_eV,4.16,eV,15.7596 eV Ar ionization limit minus the 11.6 eV manifold energy
+Ar_4s,mass_amu,39.948,amu,NIST Chemistry WebBook SRD 69
+Ar_4s,polarizability_A3,1.6423,A3,"unchanged from Ar on excitation; mendeleev package, bundled periodic table, dipole polarizability in atomic units"
+Ar_4s,well_depth_K,123.55,K,"unchanged from Ar on excitation; chemicals package bundled molecular property tables, CAS 7440-37-1"
+Ar_4s,nasa7,,,Ar polynomial with the 11.6 eV level energy added to the enthalpy constant
+C,dipole_moment_D,0.0,D,"chemicals package bundled molecular property tables, CAS 7440-44-0"
+C,electron_affinity_eV,1.262119,eV,"mendeleev package, bundled periodic table"
+C,enthalpy_formation_eV,7.429865,eV,"chemicals package bundled thermodynamic tables, CAS 7440-44-0, formula verified against the registry"
+C,entropy_J_mol_K,158.1,J/mol/K,"chemicals package bundled thermodynamic tables, CAS 7440-44-0, formula verified against the registry"
+C,ionization_energy_eV,11.260288,eV,"mendeleev package, bundled periodic table"
+C,mass_amu,12.011,amu,derived from composition
+C,polarizability_A3,1.6745,A3,"mendeleev package, bundled periodic table, dipole polarizability in atomic units"
+C+,mass_amu,12.010451,amu,"sum of atomic masses in the registry, less the electron mass"
+CF,collision_radius_A,2.0092,A,"chemicals package bundled molecular property tables, CAS 593-53-3"
+CF,dipole_moment_D,1.85,D,"chemicals package bundled molecular property tables, CAS 593-53-3"
+CF,enthalpy_formation_eV,2.645818,eV,"pyromat NASA Glenn ideal-gas tables, read at 300 K, formula verified"
+CF,mass_amu,31.009,amu,derived from composition
+CF,well_depth_K,243.81,K,"chemicals package bundled molecular property tables, CAS 593-53-3"
+CF,nasa7,,,"cantera bundled thermodynamic data, listed as CF in nasa_gas.yaml"
+CF*,collision_radius_A,2.0092,A,"unchanged from CF on excitation; chemicals package bundled molecular property tables, CAS 593-53-3"
+CF*,dipole_moment_D,1.85,D,"unchanged from CF on excitation; chemicals package bundled molecular property tables, CAS 593-53-3"
+CF*,mass_amu,31.009,amu,unchanged from CF on excitation; derived from composition
+CF*,well_depth_K,243.81,K,"unchanged from CF on excitation; chemicals package bundled molecular property tables, CAS 593-53-3"
+CF+,mass_amu,31.008855,amu,"sum of atomic masses in the registry, less the electron mass"
+CF2,dipole_moment_D,0.469,D,"NIST CCCBDB experimental dipole list, NIST triatomic evaluation"
+CF2,electron_affinity_eV,0.179,eV,NIST CCCBDB experimental electron affinity
+CF2,enthalpy_formation_eV,-1.8862970774399115,eV,"NIST Chemistry WebBook SRD 69, ΔfH°gas=-182.00 kJ/mol"
+CF2,ionization_energy_eV,11.362,eV,"Innocenti et al., Chem. Eur. J. 14, 11452-11460 (2008), AIE=11.362 eV"
+CF2,mass_amu,50.0075,amu,NIST Chemistry WebBook SRD 69
+CF2,nasa7,,,"cantera bundled thermodynamic data, listed as CF2 in nasa_gas.yaml"
+CF2*,dipole_moment_D,0.469,D,"unchanged from CF2 on excitation; NIST CCCBDB experimental dipole list, NIST triatomic evaluation"
+CF2*,mass_amu,50.0075,amu,unchanged from CF2 on excitation; NIST Chemistry WebBook SRD 69
+CF2+,enthalpy_formation_eV,9.475702922560089,eV,derived from CF2 ΔfH° and IE=11.362 eV
+CF2+,mass_amu,50.0069514,amu,CF2 mass minus electron mass
+CF2+,nasa7,,,"cantera bundled thermodynamic data, listed as CF2+ in nasa_gas.yaml"
+CF2_v,dipole_moment_D,0.469,D,"unchanged from CF2 on excitation; NIST CCCBDB experimental dipole list, NIST triatomic evaluation"
+CF2_v,mass_amu,50.0075,amu,unchanged from CF2 on excitation; NIST Chemistry WebBook SRD 69
+CF3,dipole_moment_D,0.43,D,"Mass-spectrometric molecular-beam focusing measurement, Chem. Phys. Lett. 63, 375-377 (1979)"
+CF3,electron_affinity_eV,1.82,eV,"Deyerl/Alconcel/Continetti, J. Phys. Chem. A 105, 552-557 (2001)"
+CF3,enthalpy_formation_eV,-4.852447,eV,"chemicals package bundled thermodynamic tables, CAS 2264-21-3, formula verified against the registry"
+CF3,entropy_J_mol_K,264.5,J/mol/K,"chemicals package bundled thermodynamic tables, CAS 2264-21-3, formula verified against the registry"
+CF3,ionization_energy_eV,9.05,eV,"Irikura, JACS 121, 7689-7694 (1999)"
+CF3,mass_amu,69.0059,amu,NIST Chemistry WebBook SRD 69
+CF3,vibrational_quantum_eV,0.1086,eV,"chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500 K"
+CF3,nasa7,,,"cantera bundled thermodynamic data, listed as CF3 in nasa_gas.yaml"
+CF3*,dipole_moment_D,0.43,D,"unchanged from CF3 on excitation; Mass-spectrometric molecular-beam focusing measurement, Chem. Phys. Lett. 63, 375-377 (1979)"
+CF3*,mass_amu,69.0059,amu,unchanged from CF3 on excitation; NIST Chemistry WebBook SRD 69
+CF3+,enthalpy_formation_eV,4.17589126605252,eV,derived from CF3 ΔfH° and IE=9.05 eV
+CF3+,mass_amu,69.0053514,amu,CF3 mass minus electron mass
+CF3+,nasa7,,,"cantera bundled thermodynamic data, listed as CF3+ in nasa_gas.yaml"
+CF3_v,dipole_moment_D,0.43,D,"unchanged from CF3 on excitation; Mass-spectrometric molecular-beam focusing measurement, Chem. Phys. Lett. 63, 375-377 (1979)"
+CF3_v,enthalpy_formation_eV,-4.743847,eV,CF3 enthalpy plus the 0.1086 eV level energy
+CF3_v,mass_amu,69.0059,amu,unchanged from CF3 on excitation; NIST Chemistry WebBook SRD 69
+CF4,collision_radius_A,2.35,A,engineering DNT short-range seed from kinetic-diameter scale about 4.7 A / 2; not a curated fundamental constant
+CF4,dipole_moment_D,0.0,D,Td symmetry of CF4
+CF4,dnt_polarizability_alt_A3,3.86,A3,"Ar+ in CF4 transport-set literature; adopted in Stojanović/Nikitović-style mobility fitting, not the primary molecular polarizability."
+CF4,enthalpy_formation_eV,-9.673802,eV,"chemicals package bundled thermodynamic tables, CAS 75-73-0, formula verified against the registry"
+CF4,entropy_J_mol_K,261.6,J/mol/K,"chemicals package bundled thermodynamic tables, CAS 75-73-0, formula verified against the registry"
+CF4,ionization_energy_eV,14.7,eV,"NIST Chemistry WebBook SRD 69, evaluated IE <=14.7 eV"
+CF4,mass_amu,88.0043,amu,NIST Chemistry WebBook SRD 69
+CF4,polarizability_A3,2.824,A3,NIST CCCBDB experimental data for CF4; Olney et al. Chem. Phys. 223 (1997) 59-98
+CF4,vertical_ionization_energy_eV,16.2,eV,"NIST Chemistry WebBook SRD 69, vertical IE determinations ~16.2 eV"
+CF4,vibrational_quantum_eV,0.1017,eV,"chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500 K"
+CF4,well_depth_K,134.0,K,"chemicals package bundled molecular property tables, CAS 75-73-0"
+CF4,nasa7,,,"cantera bundled thermodynamic data, listed as CF4 in nasa_gas.yaml"
+CF4*,collision_radius_A,2.35,A,unchanged from CF4 on excitation; engineering DNT short-range seed from kinetic-diameter scale about 4.7 A / 2
+CF4*,dipole_moment_D,0.0,D,unchanged from CF4 on excitation; Td symmetry of CF4
+CF4*,mass_amu,88.0043,amu,unchanged from CF4 on excitation; NIST Chemistry WebBook SRD 69
+CF4*,polarizability_A3,2.824,A3,unchanged from CF4 on excitation; NIST CCCBDB experimental data for CF4
+CF4*,well_depth_K,134.0,K,"unchanged from CF4 on excitation; chemicals package bundled molecular property tables, CAS 75-73-0"
+CF4+,enthalpy_formation_eV,5.028063556775134,eV,derived from CF4 ΔfH° and evaluated IE<=14.7 eV
+CF4+,mass_amu,88.0037514,amu,CF4 mass minus electron mass
+CF4_v,collision_radius_A,2.35,A,unchanged from CF4 on excitation; engineering DNT short-range seed from kinetic-diameter scale about 4.7 A / 2
+CF4_v,dipole_moment_D,0.0,D,unchanged from CF4 on excitation; Td symmetry of CF4
+CF4_v,enthalpy_formation_eV,-9.572102,eV,CF4 enthalpy plus the 0.1017 eV level energy
+CF4_v,mass_amu,88.0043,amu,unchanged from CF4 on excitation; NIST Chemistry WebBook SRD 69
+CF4_v,polarizability_A3,2.824,A3,unchanged from CF4 on excitation; NIST CCCBDB experimental data for CF4
+CF4_v,well_depth_K,134.0,K,"unchanged from CF4 on excitation; chemicals package bundled molecular property tables, CAS 75-73-0"
+CF_v,collision_radius_A,2.0092,A,"unchanged from CF on excitation; chemicals package bundled molecular property tables, CAS 593-53-3"
+CF_v,dipole_moment_D,1.85,D,"unchanged from CF on excitation; chemicals package bundled molecular property tables, CAS 593-53-3"
+CF_v,mass_amu,31.009,amu,unchanged from CF on excitation; derived from composition
+CF_v,well_depth_K,243.81,K,"unchanged from CF on excitation; chemicals package bundled molecular property tables, CAS 593-53-3"
+C_1D,dipole_moment_D,0.0,D,atomic symmetry
+C_1D,enthalpy_formation_eV,8.693593,eV,C enthalpy plus the level energy
+C_1D,mass_amu,12.011,amu,same nucleus as C
+C_1D,polarizability_A3,1.6745,A3,"unchanged from C on excitation; mendeleev package, bundled periodic table, dipole polarizability in atomic units"
+C_1S,dipole_moment_D,0.0,D,atomic symmetry
+C_1S,enthalpy_formation_eV,10.113879,eV,C enthalpy plus the level energy
+C_1S,mass_amu,12.011,amu,same nucleus as C
+C_1S,polarizability_A3,1.6745,A3,"unchanged from C on excitation; mendeleev package, bundled periodic table, dipole polarizability in atomic units"
+F,dipole_moment_D,0.0,D,atomic symmetry
+F,electron_affinity_eV,3.40119,eV,"mendeleev package, bundled periodic table"
+F,enthalpy_formation_eV,0.822654,eV,"chemicals package bundled thermodynamic tables, CAS 14762-94-8, formula verified against the registry"
+F,entropy_J_mol_K,158.8,J/mol/K,"chemicals package bundled thermodynamic tables, CAS 14762-94-8, formula verified against the registry"
+F,ionization_energy_eV,17.42282,eV,"mendeleev package, bundled periodic table"
+F,mass_amu,18.9984032,amu,NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+F,polarizability_A3,0.557,A3,NIST CCCBDB experimental polarizability table
+F,nasa7,,,"cantera bundled thermodynamic data, listed as F in SiF4_NH3_mec.yaml"
+F*,dipole_moment_D,0.0,D,unchanged from F on excitation; atomic symmetry
+F*,mass_amu,18.9984032,amu,unchanged from F on excitation; NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+F*,polarizability_A3,0.557,A3,unchanged from F on excitation; NIST CCCBDB experimental polarizability table
+F+,dipole_moment_D,0.0,D,atomic-ion symmetry
+F+,enthalpy_formation_eV,18.245535725314177,eV,derived from F atom ΔfH° and F IE
+F+,mass_amu,18.9978546,amu,F atomic mass minus electron mass
+F+,nasa7,,,"cantera bundled thermodynamic data, listed as F+ in nasa_gas.yaml"
+F2,collision_radius_A,1.6785,A,"chemicals package bundled molecular property tables, CAS 7782-41-4"
+F2,dipole_moment_D,0.0,D,"chemicals package bundled molecular property tables, CAS 7782-41-4"
+F2,enthalpy_formation_eV,0.0,eV,"chemicals package bundled thermodynamic tables, CAS 7782-41-4, formula verified against the registry"
+F2,entropy_J_mol_K,202.8,J/mol/K,"chemicals package bundled thermodynamic tables, CAS 7782-41-4, formula verified against the registry"
+F2,mass_amu,37.996,amu,derived from composition
+F2,vibrational_quantum_eV,0.0991,eV,"chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500 K"
+F2,well_depth_K,112.6,K,"chemicals package bundled molecular property tables, CAS 7782-41-4"
+F2,nasa7,,,"cantera bundled thermodynamic data, listed as F2 in nasa_gas.yaml"
+F2*,collision_radius_A,1.6785,A,"unchanged from F2 on excitation; chemicals package bundled molecular property tables, CAS 7782-41-4"
+F2*,dipole_moment_D,0.0,D,"unchanged from F2 on excitation; chemicals package bundled molecular property tables, CAS 7782-41-4"
+F2*,mass_amu,37.996,amu,unchanged from F2 on excitation; derived from composition
+F2*,well_depth_K,112.6,K,"unchanged from F2 on excitation; chemicals package bundled molecular property tables, CAS 7782-41-4"
+F2+,mass_amu,37.99545142,amu,derived from composition
+F2_v,collision_radius_A,1.6785,A,"unchanged from F2 on excitation; chemicals package bundled molecular property tables, CAS 7782-41-4"
+F2_v,dipole_moment_D,0.0,D,"unchanged from F2 on excitation; chemicals package bundled molecular property tables, CAS 7782-41-4"
+F2_v,enthalpy_formation_eV,0.0991,eV,F2 enthalpy plus the 0.0991 eV level energy
+F2_v,mass_amu,37.996,amu,unchanged from F2 on excitation; derived from composition
+F2_v,well_depth_K,112.6,K,"unchanged from F2 on excitation; chemicals package bundled molecular property tables, CAS 7782-41-4"
+e,mass_amu,0.00054858,amu,physical constant

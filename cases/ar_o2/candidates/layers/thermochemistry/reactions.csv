@@ -1,6 +1,6 @@
 id,equation,family,type,depth,status,verdict,decided
 e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,thermoneutral,yes
-e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,0,curated,unknown,no
+e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,0,curated,endothermic by 11.60 eV,yes
 e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,endothermic by 15.76 eV,yes
 e_O2_elastic,e + O2 -> e + O2,electron,elastic,0,curated,thermoneutral,yes
 e_O2_excitation_O2_a1Delta,e + O2 -> e + O2_a1Delta,electron,excitation,0,curated,endothermic by 0.98 eV,yes
@@ -8,12 +8,12 @@ e_O2_excitation_O2_b1Sigma,e + O2 -> e + O2_b1Sigma,electron,excitation,0,curate
 e_O2_ionization,e + O2 -> 2 e + O2+,electron,ionization,0,curated,endothermic by 12.07 eV,yes
 e_O2_dissociation_O_O,e + O2 -> e + 2 O,electron,dissociation,0,literature_supported,endothermic by 5.17 eV,yes
 e_O2_dissociation_O_O1D,e + O2 -> e + O + O_1D,electron,dissociation,0,literature_supported,endothermic by 7.13 eV,yes
-cand_e_O2_to_e_O2_v,e + O2 -> e + O2_v,electron,excitation,0,candidate,unknown,no
-cand_e_O2_v_to_e_O2,e + O2_v -> e + O2,electron,deexcitation,0,candidate,unknown,no
+cand_e_O2_to_e_O2_v,e + O2 -> e + O2_v,electron,excitation,0,candidate,endothermic by 0.19 eV,yes
+cand_e_O2_v_to_e_O2,e + O2_v -> e + O2,electron,deexcitation,0,candidate,exothermic by 0.19 eV,yes
 cand_e_O2_to_e_e_Op_O,e + O2 -> e + e + O+ + O,electron,dissociative_ionization,0,candidate,endothermic by 18.78 eV,yes
 cand_O2_diss_O_1S,e + O2 -> e + O + O_1S,electron,dissociation,0,candidate,endothermic by 9.36 eV,yes
-e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,literature_supported,unknown,no
-e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,1,literature_supported,unknown,no
+e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,literature_supported,thermoneutral,yes
+e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,1,literature_supported,endothermic by 4.16 eV,yes
 e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,exothermic by 11.60 eV,yes
 e_O_elastic,e + O -> e + O,electron,elastic,1,literature_supported,thermoneutral,yes
 e_O_excitation_O_1D,e + O -> e + O_1D,electron,excitation,1,curated,endothermic by 1.97 eV,yes
@@ -39,10 +39,10 @@ cand_e_O2_a1Delta_to_e_O_O,e + O2_a1Delta -> e + O + O,electron,dissociation,1,c
 cand_e_O2_a1Delta_to_e_e_Op_O,e + O2_a1Delta -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,endothermic by 17.81 eV,yes
 cand_e_O2_b1Sigma_to_e_O_O,e + O2_b1Sigma -> e + O + O,electron,dissociation,1,candidate,endothermic by 3.54 eV,yes
 cand_e_O2_b1Sigma_to_e_e_Op_O,e + O2_b1Sigma -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,endothermic by 17.16 eV,yes
-cand_e_O2_v_to_e_O2_v,e + O2_v -> e + O2_v,electron,elastic,1,candidate,unknown,no
-cand_e_O2_v_to_e_e_O2p,e + O2_v -> e + e + O2+,electron,ionization,1,candidate,unknown,no
-cand_e_O2_v_to_e_O_O,e + O2_v -> e + O + O,electron,dissociation,1,candidate,unknown,no
-cand_e_O2_v_to_e_e_Op_O,e + O2_v -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,unknown,no
+cand_e_O2_v_to_e_O2_v,e + O2_v -> e + O2_v,electron,elastic,1,candidate,thermoneutral,yes
+cand_e_O2_v_to_e_e_O2p,e + O2_v -> e + e + O2+,electron,ionization,1,candidate,endothermic by 11.88 eV,yes
+cand_e_O2_v_to_e_O_O,e + O2_v -> e + O + O,electron,dissociation,1,candidate,endothermic by 4.98 eV,yes
+cand_e_O2_v_to_e_e_Op_O,e + O2_v -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,endothermic by 18.60 eV,yes
 cand_e_O_1S_to_e_e_Op,e + O_1S -> e + e + O+,electron,ionization,1,candidate,endothermic by 9.43 eV,yes
 cand_O2_v_Ar_vt,O2_v + Ar -> O2 + Ar,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes
 cand_O2_v_Ar_4s_vt,O2_v + Ar_4s -> O2 + Ar_4s,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes

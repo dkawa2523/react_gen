@@ -45,3 +45,24 @@ metadata:
   status: literature_supported
   notes:
   - Dominant positive fragment from electron-impact ionization of SF6.
+thermo:
+  high:
+  - 13.684216
+  - 0.0025177023
+  - -1.0854393e-06
+  - 2.2533745e-10
+  - -1.7223917e-14
+  - 16004.908
+  - -44.1997237
+  low:
+  - -1.7164861
+  - 0.068940046
+  - -0.00011471051
+  - 8.9977865e-08
+  - -2.7166326e-11
+  - 19061.149
+  - 29.4445133
+  source: cantera bundled thermodynamic data, listed as SF5+ in nasa_gas.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

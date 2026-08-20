@@ -1,8 +1,38 @@
 schema_version: 1
 id: SF2+
 display_name: SF2+
-composition: {S: 1, F: 2}
+composition:
+  S: 1
+  F: 2
 charge: 1
-classes: [positive_ion, molecular_ion]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
-metadata: {status: literature_supported}
+classes:
+- positive_ion
+- molecular_ion
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+metadata:
+  status: literature_supported
+properties: {}
+thermo:
+  high:
+  - 6.1209
+  - 0.00099984817
+  - -4.3992932e-07
+  - 8.4368137e-11
+  - -5.7795378e-15
+  - 82444.585
+  - -3.86307542
+  low:
+  - 2.427149
+  - 0.015517546
+  - -2.3060259e-05
+  - 1.6499612e-08
+  - -4.6246418e-12
+  - 83239.557
+  - 14.1278866
+  source: cantera bundled thermodynamic data, listed as SF2+ in nasa_gas.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

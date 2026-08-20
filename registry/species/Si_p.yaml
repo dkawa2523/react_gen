@@ -37,3 +37,24 @@ metadata:
   status: literature_supported
   notes:
   - Cation of an acquired ground atom; the ion is the neutral plus IE.
+thermo:
+  high:
+  - 2.64794579
+  - -0.000160109008
+  - 6.54024155e-08
+  - -1.16224655e-11
+  - 7.55961272e-16
+  - 148703.413
+  - 4.73171848
+  low:
+  - 4.24419073
+  - -0.00751160863
+  - 1.33368333e-05
+  - -1.09406149e-08
+  - 3.41357223e-12
+  - 148408.792
+  - -2.78917334
+  source: cantera bundled thermodynamic data, listed as Si+ in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 1000.0
+  t_min: 298.15

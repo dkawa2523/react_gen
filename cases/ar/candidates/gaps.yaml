@@ -1,34 +1,14 @@
 case: ar
 counts:
   blocking: 0
-  data: 4
-  info: 3
+  data: 0
+  info: 2
 gaps:
 - kind: no_loss_path
   subject: Ar+
   detail: produced but never consumed
   severity: info
-- kind: missing_property
-  subject: Ar
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: Ar_4s
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: Ar_4s
-  detail: enthalpy_formation_eV
-  severity: data
-- kind: missing_property
-  subject: Ar_4s
-  detail: polarizability_A3
-  severity: data
 - kind: out_of_scope
   subject: cross_section
   detail: electron cross sections are not in this registry yet
-  severity: info
-- kind: out_of_scope
-  subject: thermochemistry
-  detail: NASA polynomials and reverse rates are not in this registry yet
   severity: info

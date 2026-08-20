@@ -1,0 +1,69 @@
+pair: CF3_p__Ar_4s
+models:
+- dnt_plus
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - short_range_potential
+runnable:
+- long_range
+projectile:
+  id: CF3+
+  charge: 1
+  mass_amu: 69.0053514
+target:
+  id: Ar_4s
+  mass_amu: 39.948
+  polarizability_A3: 1.6423
+  dipole_moment_D: 0.0
+  collision_radius_A: 1.7037
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 25.300972776934696
+long_range:
+  model: ion_induced_dipole
+  polarizability_A3: 1.6423
+  dipole_moment_D: 0.0
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 100.0
+  points: 200
+  spacing: log
+conditions:
+  pressure_Pa: 2.7
+  gas_temperature_K: 350.0
+  electron_temperature_eV: 4.0
+  electron_density_m3: 3.0e+16
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+channels:
+- reaction_id: cand_CF3p_Ar_4s_char_CF3_Arp
+  equation: CF3+ + Ar_4s -> CF3 + Ar+
+  dnt_class: long_range_charge_exchange
+  tier: long_range
+  threshold_eV: 0.0
+  delta_e_eV: -4.868726266052518
+- reaction_id: cand_CF3p_Ar_4s_diss_CF2p_F_Ar
+  equation: CF3+ + Ar_4s -> CF2+ + F + Ar
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.0
+  delta_e_eV: -5.47753434349243
+- reaction_id: cand_CF3p_Ar_4s_diss_CF2_Fp_Ar
+  equation: CF3+ + Ar_4s -> CF2 + F+ + Ar
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.5832856565075684
+  delta_e_eV: 0.5832856565075684
+- reaction_id: cand_CF3p_Ar_4s_diss_CF2_F_Arp
+  equation: CF3+ + Ar_4s -> CF2 + F + Ar+
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.0
+  delta_e_eV: -1.079922343492429

@@ -8,7 +8,6 @@ readiness:
   full:
     status: blocked
     missing:
-    - collision_radius_A
     - short_range_potential
 runnable:
 - long_range
@@ -21,7 +20,7 @@ target:
   mass_amu: 39.948
   polarizability_A3: 1.6411
   dipole_moment_D: 0.0
-  collision_radius_A: null
+  collision_radius_A: 1.7037
   quadrupole_moment_DA: null
   polarizability_anisotropy_A3: null
   rotational_constant_cm1: null

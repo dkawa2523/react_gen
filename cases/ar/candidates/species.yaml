@@ -18,6 +18,10 @@ species:
   - e_Ar4s_superelastic
   - e_Ar_elastic
   properties:
+    collision_radius_A:
+      value: 1.7037
+      unit: A
+      source: chemicals package bundled molecular property tables, CAS 7440-37-1
     dipole_moment_D:
       value: 0.0
       unit: D
@@ -49,7 +53,31 @@ species:
       unit: A3
       source: Experimental/static polarizability literature seed; CCCBDB/NIST polarizability
         tables for review
-  thermo: null
+    well_depth_K:
+      value: 123.55
+      unit: K
+      source: chemicals package bundled molecular property tables, CAS 7440-37-1
+  thermo:
+    low:
+    - 2.5
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - -745.375
+    - 4.366
+    high:
+    - 2.5
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - -745.375
+    - 4.366
+    t_min: 300.0
+    t_mid: 1000.0
+    t_max: 5000.0
+    source: cantera bundled thermodynamic data, listed as AR in air.yaml
   status: curated
 - id: Ar+
   charge: 1
@@ -94,7 +122,27 @@ species:
       value: null
       unit: A3
       source: null
-  thermo: null
+  thermo:
+    low:
+    - 2.59316097
+    - -0.00132892944
+    - 5.26503944e-06
+    - -5.97956691e-09
+    - 2.18967862e-12
+    - 182878.368
+    - 5.44980575
+    high:
+    - 2.86999547
+    - -0.000142547242
+    - 9.36688776e-09
+    - 2.92580859e-12
+    - -3.58247941e-16
+    - 182702.617
+    - 3.5322998
+    t_min: 298.15
+    t_mid: 1000.0
+    t_max: 6000.0
+    source: cantera bundled thermodynamic data, listed as Ar+ in nasa_gas.yaml
   status: curated
 - id: Ar_4s
   charge: 0
@@ -121,13 +169,18 @@ species:
   - e_Ar_excitation_4s_lumped
   properties:
     collision_radius_A:
-      value: null
+      value: 1.7037
       unit: A
-      source: null
+      source: unchanged from Ar on excitation; chemicals package bundled molecular
+        property tables, CAS 7440-37-1
     dipole_moment_D:
       value: 0.0
       unit: D
       source: atomic species
+    enthalpy_formation_eV:
+      value: 11.6
+      unit: eV
+      source: Ar enthalpy plus the 11.6 eV level energy
     ionization_energy_eV:
       value: 4.16
       unit: eV
@@ -137,10 +190,36 @@ species:
       unit: amu
       source: NIST Chemistry WebBook SRD 69
     polarizability_A3:
-      value: null
+      value: 1.6423
       unit: A3
-      source: null
-  thermo: null
+      source: unchanged from Ar on excitation; mendeleev package, bundled periodic
+        table, dipole polarizability in atomic units
+    well_depth_K:
+      value: 123.55
+      unit: K
+      source: unchanged from Ar on excitation; chemicals package bundled molecular
+        property tables, CAS 7440-37-1
+  thermo:
+    low:
+    - 2.5
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 133867.0338
+    - 4.366
+    high:
+    - 2.5
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 133867.0338
+    - 4.366
+    t_min: 300.0
+    t_mid: 1000.0
+    t_max: 5000.0
+    source: Ar polynomial with the 11.6 eV level energy added to the enthalpy constant
   status: literature_supported
 - id: e
   charge: -1

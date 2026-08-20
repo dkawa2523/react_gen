@@ -23,6 +23,8 @@ from acquire import (
     download,
     ideal_gas,
     lxcat,
+    molecular,
+    nasa,
     pubchem,
     snapshot,
     thermo,
@@ -74,6 +76,24 @@ def main(argv: list[str] | None = None) -> int:
     gas.add_argument("species", type=Path, help="YAML list of species")
     gas.add_argument("--out", type=Path, required=True)
     gas.set_defaults(run=_ideal_gas)
+
+    bulk = commands.add_parser(
+        "molecular", help="read dipole moment and Lennard-Jones size from `chemicals`"
+    )
+    bulk.add_argument("species", type=Path, help="YAML list of species names")
+    bulk.add_argument("--out", type=Path, required=True)
+    bulk.set_defaults(run=_molecular)
+
+    fit = commands.add_parser(
+        "nasa", help="read NASA thermodynamic polynomials from `cantera` bundled data"
+    )
+    fit.add_argument(
+        "species",
+        type=Path,
+        help="a bundle's species.yaml, or any list with composition and charge",
+    )
+    fit.add_argument("--out", type=Path, required=True)
+    fit.set_defaults(run=_nasa)
 
     heat = commands.add_parser("thermo", help="read formation enthalpy from `chemicals`")
     heat.add_argument("species", type=Path, help="YAML list of species names")
@@ -204,6 +224,66 @@ def _asd(args) -> int:
 
 def _eV(value: float | None) -> str:
     return "     none" if value is None else f"{value:8.4f} eV"
+
+
+def _molecular(args) -> int:
+    if not molecular.available():
+        print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
+        return 1
+    wanted = yaml.safe_load(args.species.read_text(encoding="utf-8")) or []
+    names = [item["id"] if isinstance(item, dict) else str(item) for item in _listed(wanted)]
+    citation = "chemicals package bundled molecular property tables"
+    found = molecular.fetch(names)
+    path = snapshot.write(
+        args.out,
+        "species_property",
+        {"source_type": "chemicals", "citation": citation},
+        molecular.records(found, citation),
+    )
+    for item in found:
+        if item.known:
+            print(
+                f"  {item.species:10} dipole {item.dipole_D!s:>6}  D"
+                f"   radius {item.collision_radius_A!s:>7} A"
+                f"   well {item.well_depth_K!s:>7} K"
+            )
+    missing = [item.species for item in found if not item.known]
+    print(f"  {len(found) - len(missing)} of {len(found)} answered; {len(missing)} not tabulated")
+    print(f"  wrote {path}")
+    return 0
+
+
+def _nasa(args) -> int:
+    if not nasa.available():
+        print('  cantera is not installed: python -m pip install -e ".[thermo]"')
+        return 1
+    wanted = _listed(yaml.safe_load(args.species.read_text(encoding="utf-8")) or [])
+    citation = "cantera bundled thermodynamic data"
+    found = nasa.fetch([item for item in wanted if isinstance(item, dict)])
+    written = nasa.records(found, citation)
+    path = snapshot.write(
+        args.out, "species_thermo", {"source_type": "cantera", "citation": citation}, written
+    )
+    for item in found:
+        if item.unusable:
+            print(f"  {item.species:10} skipped: {item.unusable}")
+    deferred = [item.species for item in found if item.deferred]
+    absent = [item.species for item in found if item.error and not item.deferred]
+    print(f"  {len(written)} of {len(found)} species carry a NASA7 fit")
+    if deferred:
+        print(f"  left to `rgen derive`: {' '.join(sorted(deferred))}")
+    if absent:
+        print(f"  no bundled fit for: {' '.join(sorted(absent))}")
+    print(f"  wrote {path}")
+    return 0
+
+
+def _listed(document) -> list:
+    """The species entries of a bundle's species.yaml, or a plain list as given."""
+
+    if isinstance(document, dict):
+        return list(document.get("species") or [])
+    return list(document)
 
 
 def _vibration(args) -> int:

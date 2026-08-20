@@ -1,0 +1,53 @@
+pair: Ar_p__O2_v
+models:
+- dnt_plus
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - short_range_potential
+runnable:
+- long_range
+projectile:
+  id: Ar+
+  charge: 1
+  mass_amu: 39.94745
+target:
+  id: O2_v
+  mass_amu: 31.9988
+  polarizability_A3: 1.562
+  dipole_moment_D: 0.0
+  collision_radius_A: 1.73
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 17.767020005351217
+long_range:
+  model: ion_induced_dipole
+  polarizability_A3: 1.562
+  dipole_moment_D: 0.0
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 300.0
+  points: 300
+  spacing: log
+conditions:
+  pressure_Pa: 4.0
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 5.0e+16
+  reduced_field_Td: 50.0
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+  residence_time_s: 0.05
+channels:
+- reaction_id: cand_Arp_O2_v_char_Ar_O2p
+  equation: Ar+ + O2_v -> Ar + O2+
+  dnt_class: long_range_charge_exchange
+  tier: long_range
+  threshold_eV: 0.0
+  delta_e_eV: -3.689910000000001

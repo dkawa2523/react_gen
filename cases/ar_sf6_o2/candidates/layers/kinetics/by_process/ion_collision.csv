@@ -2,31 +2,263 @@ bodies,reactants,products,id,family,type,depth,status,verdict
 2,F+ + Ar,F + Ar+,cand_Fp_Ar_char_F_Arp,ion_neutral,charge_transfer,1,candidate,fast
 2,F2+ + Ar,F2 + Ar+,cand_F2p_Ar_char_F2_Arp,ion_neutral,charge_transfer,2,candidate,fast
 2,F2+ + Ar,F + F + Ar+,cand_F2p_Ar_diss_F_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + Ar,SF6 + Ar+,cand_SF6p_Ar_char_SF6_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + Ar,SF4+ + F2 + Ar,cand_SF6p_Ar_diss_SF4p_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + Ar,SF5+ + F + Ar,cand_SF6p_Ar_diss_SF5p_F_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
 2,Ar+ + F,Ar + F+,cand_Arp_F_char_Ar_Fp,ion_neutral,charge_transfer,1,candidate,fast
+2,Ar+ + F*,Ar + F+,cand_Arp_F*_char_Ar_Fp,ion_neutral,charge_transfer,2,candidate,fast
+2,Ar+ + O,Ar + O+,cand_Arp_O_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,fast
 2,Ar+ + O2,Ar + O2+,Arp_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,fast
+2,Ar+ + O2_a1Delta,Ar + O2+,cand_Arp_O2_a1Delta_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,Ar+ + O2_b1Sigma,Ar + O2+,cand_Arp_O2_b1Sigma_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,Ar+ + O2_b1Sigma,Ar + O+ + O,cand_Arp_O2_b1Sigma_diss_Ar_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,Ar+ + O2_v,Ar + O2+,cand_Arp_O2_v_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,Ar+ + O_1D,Ar + O+,cand_Arp_O_1D_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,Ar+ + O_1S,Ar + O+,cand_Arp_O_1S_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,Ar+ + S,Ar + S+,cand_Arp_S_char_Ar_Sp,ion_neutral,charge_transfer,2,candidate,fast
 2,Ar+ + SF6,Ar + SF6+,cand_Arp_SF6_char_Ar_SF6p,ion_neutral,charge_transfer,1,candidate,fast
 2,Ar+ + SF6,Ar + SF5+ + F,Arp_SF6_dissociative_charge_transfer_SF5p_F,ion_neutral,dissociative_charge_transfer,1,literature_supported,fast
 2,Ar+ + SF6,Ar + SF4+ + F2,cand_Arp_SF6_diss_Ar_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,Ar+ + SF6*,Ar + SF6+,cand_Arp_SF6*_char_Ar_SF6p,ion_neutral,charge_transfer,1,candidate,fast
+2,Ar+ + SF6*,Ar + SF4+ + F2,cand_Arp_SF6*_diss_Ar_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,Ar+ + SF6*,Ar + SF5+ + F,cand_Arp_SF6*_diss_Ar_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,Ar+ + SF6_v,Ar + SF6+,cand_Arp_SF6_v_char_Ar_SF6p,ion_neutral,charge_transfer,1,candidate,fast
+2,Ar+ + SF6_v,Ar + SF4+ + F2,cand_Arp_SF6_v_diss_Ar_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,Ar+ + SF6_v,Ar + SF5+ + F,cand_Arp_SF6_v_diss_Ar_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,Ar+ + S_1D,Ar + S+,cand_Arp_S_1D_char_Ar_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,Ar+ + S_1S,Ar + S+,cand_Arp_S_1S_char_Ar_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,F+ + Ar_4s,F + Ar+,cand_Fp_Ar_4s_char_F_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,F2+ + Ar_4s,F2 + Ar+,cand_F2p_Ar_4s_char_F2_Arp,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + Ar_4s,F + F + Ar+,cand_F2p_Ar_4s_diss_F_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + Ar_4s,F+ + F + Ar,cand_F2p_Ar_4s_diss_Fp_F_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,O+ + Ar_4s,O + Ar+,cand_Op_Ar_4s_char_O_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,O2+ + Ar_4s,O2 + Ar+,cand_O2p_Ar_4s_char_O2_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,O2+ + Ar_4s,O + O + Ar+,cand_O2p_Ar_4s_diss_O_O_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,O2+ + Ar_4s,O+ + O + Ar,cand_O2p_Ar_4s_diss_Op_O_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,S+ + Ar_4s,S + Ar+,cand_Sp_Ar_4s_char_S_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,SF+ + Ar_4s,SF + Ar+,cand_SFp_Ar_4s_char_SF_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,SF2+ + Ar_4s,SF2 + Ar+,cand_SF2p_Ar_4s_char_SF2_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,SF2+ + Ar_4s,S + F2 + Ar+,cand_SF2p_Ar_4s_diss_S_F2_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF2+ + Ar_4s,S + F2+ + Ar,cand_SF2p_Ar_4s_diss_S_F2p_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF2+ + Ar_4s,S+ + F2 + Ar,cand_SF2p_Ar_4s_diss_Sp_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF3+ + Ar_4s,SF3 + Ar+,cand_SF3p_Ar_4s_char_SF3_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + Ar_4s,SF4 + Ar+,cand_SF4p_Ar_4s_char_SF4_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + Ar_4s,SF2 + F2 + Ar+,cand_SF4p_Ar_4s_diss_SF2_F2_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF4+ + Ar_4s,SF2 + F2+ + Ar,cand_SF4p_Ar_4s_diss_SF2_F2p_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF4+ + Ar_4s,SF2+ + F2 + Ar,cand_SF4p_Ar_4s_diss_SF2p_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF5+ + Ar_4s,SF5 + Ar+,cand_SF5p_Ar_4s_char_SF5_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,SF5+ + Ar_4s,SF4 + F + Ar+,cand_SF5p_Ar_4s_diss_SF4_F_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF5+ + Ar_4s,SF4 + F+ + Ar,cand_SF5p_Ar_4s_diss_SF4_Fp_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF5+ + Ar_4s,SF4+ + F + Ar,cand_SF5p_Ar_4s_diss_SF4p_F_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + Ar_4s,SF6 + Ar+,cand_SF6p_Ar_4s_char_SF6_Arp,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + Ar_4s,SF4 + F2 + Ar+,cand_SF6p_Ar_4s_diss_SF4_F2_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + Ar_4s,SF4 + F2+ + Ar,cand_SF6p_Ar_4s_diss_SF4_F2p_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + Ar_4s,SF4+ + F2 + Ar,cand_SF6p_Ar_4s_diss_SF4p_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + Ar_4s,SF5 + F + Ar+,cand_SF6p_Ar_4s_diss_SF5_F_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + Ar_4s,SF5 + F+ + Ar,cand_SF6p_Ar_4s_diss_SF5_Fp_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + Ar_4s,SF5+ + F + Ar,cand_SF6p_Ar_4s_diss_SF5p_F_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,fast
 2,F2+ + F,F2 + F+,cand_F2p_F_char_F2_Fp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF6+ + F,SF4+ + F2 + F,cand_SF6p_F_diss_SF4p_F2_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + F,SF5+ + F + F,cand_SF6p_F_diss_SF5p_F_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F2+ + F*,F2 + F+,cand_F2p_F*_char_F2_Fp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF6+ + F*,SF4+ + F2 + F,cand_SF6p_F*_diss_SF4p_F2_F,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + F*,SF5+ + F + F,cand_SF6p_F*_diss_SF5p_F_F,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F+ + O,F + O+,cand_Fp_O_char_F_Op,ion_neutral,charge_transfer,1,candidate,fast
 2,F+ + O2,F + O2+,cand_Fp_O2_char_F_O2p,ion_neutral,charge_transfer,1,candidate,fast
 2,F+ + O2,F + O+ + O,cand_Fp_O2_diss_F_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F+ + O2_a1Delta,F + O2+,cand_Fp_O2_a1Delta_char_F_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,F+ + O2_a1Delta,F + O+ + O,cand_Fp_O2_a1Delta_diss_F_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F+ + O2_b1Sigma,F + O2+,cand_Fp_O2_b1Sigma_char_F_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,F+ + O2_b1Sigma,F + O+ + O,cand_Fp_O2_b1Sigma_diss_F_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F+ + O2_v,F + O2+,cand_Fp_O2_v_char_F_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,F+ + O2_v,F + O+ + O,cand_Fp_O2_v_diss_F_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F+ + O_1D,F + O+,cand_Fp_O_1D_char_F_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,F+ + O_1S,F + O+,cand_Fp_O_1S_char_F_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,F+ + S,F + S+,cand_Fp_S_char_F_Sp,ion_neutral,charge_transfer,2,candidate,fast
 2,F+ + SF6,F + SF6+,cand_Fp_SF6_char_F_SF6p,ion_neutral,charge_transfer,1,candidate,fast
 2,F+ + SF6,F + SF4+ + F2,cand_Fp_SF6_diss_F_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
 2,F+ + SF6,F + SF5+ + F,cand_Fp_SF6_diss_F_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F+ + SF6*,F + SF6+,cand_Fp_SF6*_char_F_SF6p,ion_neutral,charge_transfer,1,candidate,fast
+2,F+ + SF6*,F + SF4+ + F2,cand_Fp_SF6*_diss_F_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F+ + SF6*,F + SF5+ + F,cand_Fp_SF6*_diss_F_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F+ + SF6_v,F + SF6+,cand_Fp_SF6_v_char_F_SF6p,ion_neutral,charge_transfer,1,candidate,fast
+2,F+ + SF6_v,F + SF4+ + F2,cand_Fp_SF6_v_diss_F_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F+ + SF6_v,F + SF5+ + F,cand_Fp_SF6_v_diss_F_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,F+ + S_1D,F + S+,cand_Fp_S_1D_char_F_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,F+ + S_1S,F + S+,cand_Fp_S_1S_char_F_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + O,F2 + O+,cand_F2p_O_char_F2_Op,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + O,F + F + O+,cand_F2p_O_diss_F_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,fast
 2,F2+ + O2,F2 + O2+,cand_F2p_O2_char_F2_O2p,ion_neutral,charge_transfer,2,candidate,fast
 2,F2+ + O2,F + F + O2+,cand_F2p_O2_diss_F_F_O2p,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + O2_a1Delta,F2 + O2+,cand_F2p_O2_a1Delta_char_F2_O2p,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + O2_a1Delta,F + F + O2+,cand_F2p_O2_a1Delta_diss_F_F_O2p,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + O2_b1Sigma,F2 + O2+,cand_F2p_O2_b1Sigma_char_F2_O2p,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + O2_b1Sigma,F2 + O+ + O,cand_F2p_O2_b1Sigma_diss_F2_Op_O,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + O2_b1Sigma,F + F + O2+,cand_F2p_O2_b1Sigma_diss_F_F_O2p,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + O2_b1Sigma,F+ + F + O2,cand_F2p_O2_b1Sigma_diss_Fp_F_O2,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + O2_v,F2 + O2+,cand_F2p_O2_v_char_F2_O2p,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + O2_v,F + F + O2+,cand_F2p_O2_v_diss_F_F_O2p,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + O_1D,F2 + O+,cand_F2p_O_1D_char_F2_Op,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + O_1D,F + F + O+,cand_F2p_O_1D_diss_F_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + O_1D,F+ + F + O,cand_F2p_O_1D_diss_Fp_F_O,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + O_1S,F2 + O+,cand_F2p_O_1S_char_F2_Op,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + O_1S,F + F + O+,cand_F2p_O_1S_diss_F_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + O_1S,F+ + F + O,cand_F2p_O_1S_diss_Fp_F_O,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + S,F2 + S+,cand_F2p_S_char_F2_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + S,F + F + S+,cand_F2p_S_diss_F_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
 2,F2+ + SF6,F2 + SF6+,cand_F2p_SF6_char_F2_SF6p,ion_neutral,charge_transfer,2,candidate,fast
 2,F2+ + SF6,F2 + SF4+ + F2,cand_F2p_SF6_diss_F2_SF4p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,fast
 2,F2+ + SF6,F2 + SF5+ + F,cand_F2p_SF6_diss_F2_SF5p_F,ion_neutral,dissociative_charge_transfer,2,candidate,fast
 2,F2+ + SF6,F + F + SF6+,cand_F2p_SF6_diss_F_F_SF6p,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + SF6*,F2 + SF6+,cand_F2p_SF6*_char_F2_SF6p,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + SF6*,F2 + SF4+ + F2,cand_F2p_SF6*_diss_F2_SF4p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + SF6*,F2 + SF5+ + F,cand_F2p_SF6*_diss_F2_SF5p_F,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + SF6*,F + F + SF6+,cand_F2p_SF6*_diss_F_F_SF6p,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + SF6_v,F2 + SF6+,cand_F2p_SF6_v_char_F2_SF6p,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + SF6_v,F2 + SF4+ + F2,cand_F2p_SF6_v_diss_F2_SF4p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + SF6_v,F2 + SF5+ + F,cand_F2p_SF6_v_diss_F2_SF5p_F,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + SF6_v,F + F + SF6+,cand_F2p_SF6_v_diss_F_F_SF6p,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + S_1D,F2 + S+,cand_F2p_S_1D_char_F2_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + S_1D,F + F + S+,cand_F2p_S_1D_diss_F_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + S_1S,F2 + S+,cand_F2p_S_1S_char_F2_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,F2+ + S_1S,F + F + S+,cand_F2p_S_1S_diss_F_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,F2+ + S_1S,F+ + F + S,cand_F2p_S_1S_diss_Fp_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,O2+ + O,O2 + O+,cand_O2p_O_char_O2_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + O,SF4 + O+,cand_SF4p_O_char_SF4_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O,SF6 + O+,cand_SF6p_O_char_SF6_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O,SF4+ + F2 + O,cand_SF6p_O_diss_SF4p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O,SF5+ + F + O,cand_SF6p_O_diss_SF5p_F_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
 2,O+ + O2,O + O2+,Op_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,fast
+2,O+ + O2_a1Delta,O + O2+,cand_Op_O2_a1Delta_char_O_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,O+ + O2_b1Sigma,O + O2+,cand_Op_O2_b1Sigma_char_O_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,O+ + O2_v,O + O2+,cand_Op_O2_v_char_O_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,O+ + S,O + S+,cand_Op_S_char_O_Sp,ion_neutral,charge_transfer,2,candidate,fast
 2,O+ + SF6,O + SF6+,cand_Op_SF6_char_O_SF6p,ion_neutral,charge_transfer,1,candidate,fast
 2,O+ + SF6,O + SF5+ + F,cand_Op_SF6_diss_O_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,O+ + SF6*,O + SF6+,cand_Op_SF6*_char_O_SF6p,ion_neutral,charge_transfer,1,candidate,fast
+2,O+ + SF6*,O + SF5+ + F,cand_Op_SF6*_diss_O_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,O+ + SF6_v,O + SF6+,cand_Op_SF6_v_char_O_SF6p,ion_neutral,charge_transfer,1,candidate,fast
+2,O+ + SF6_v,O + SF5+ + F,cand_Op_SF6_v_diss_O_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,O+ + S_1D,O + S+,cand_Op_S_1D_char_O_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,O+ + S_1S,O + S+,cand_Op_S_1S_char_O_Sp,ion_neutral,charge_transfer,2,candidate,fast
 2,S+ + O2,S + O2+,cand_Sp_O2_char_S_O2p,ion_neutral,charge_transfer,1,candidate,fast
 2,SF+ + O2,SF + O2+,cand_SFp_O2_char_SF_O2p,ion_neutral,charge_transfer,1,candidate,fast
 2,SF2+ + O2,SF2 + O2+,cand_SF2p_O2_char_SF2_O2p,ion_neutral,charge_transfer,1,candidate,fast
 2,SF4+ + O2,SF4 + O2+,cand_SF4p_O2_char_SF4_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O2,SF6 + O2+,cand_SF6p_O2_char_SF6_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O2,SF4 + F2 + O2+,cand_SF6p_O2_diss_SF4_F2_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2,SF4+ + F2 + O2,cand_SF6p_O2_diss_SF4p_F2_O2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2,SF5 + F + O2+,cand_SF6p_O2_diss_SF5_F_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2,SF5+ + F + O2,cand_SF6p_O2_diss_SF5p_F_O2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,O2+ + O_1D,O2 + O+,cand_O2p_O_1D_char_O2_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,O2+ + O_1S,O2 + O+,cand_O2p_O_1S_char_O2_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,O2+ + S,O2 + S+,cand_O2p_S_char_O2_Sp,ion_neutral,charge_transfer,2,candidate,fast
 2,O2+ + SF6,O2 + SF5+ + F,cand_O2p_SF6_diss_O2_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,O2+ + SF6*,O2 + SF5+ + F,cand_O2p_SF6*_diss_O2_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,O2+ + SF6_v,O2 + SF5+ + F,cand_O2p_SF6_v_diss_O2_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,O2+ + S_1D,O2 + S+,cand_O2p_S_1D_char_O2_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,O2+ + S_1S,O2 + S+,cand_O2p_S_1S_char_O2_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,O2+ + S_1S,O + O + S+,cand_O2p_S_1S_diss_O_O_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,S+ + O2_a1Delta,S + O2+,cand_Sp_O2_a1Delta_char_S_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF+ + O2_a1Delta,SF + O2+,cand_SFp_O2_a1Delta_char_SF_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF2+ + O2_a1Delta,SF2 + O2+,cand_SF2p_O2_a1Delta_char_SF2_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + O2_a1Delta,SF4 + O2+,cand_SF4p_O2_a1Delta_char_SF4_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF5+ + O2_a1Delta,SF5 + O2+,cand_SF5p_O2_a1Delta_char_SF5_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O2_a1Delta,SF6 + O2+,cand_SF6p_O2_a1Delta_char_SF6_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O2_a1Delta,SF4 + F2 + O2+,cand_SF6p_O2_a1Delta_diss_SF4_F2_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_a1Delta,SF4+ + F2 + O2,cand_SF6p_O2_a1Delta_diss_SF4p_F2_O2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_a1Delta,SF5 + F + O2+,cand_SF6p_O2_a1Delta_diss_SF5_F_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_a1Delta,SF5+ + F + O2,cand_SF6p_O2_a1Delta_diss_SF5p_F_O2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,S+ + O2_b1Sigma,S + O2+,cand_Sp_O2_b1Sigma_char_S_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF+ + O2_b1Sigma,SF + O2+,cand_SFp_O2_b1Sigma_char_SF_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF2+ + O2_b1Sigma,SF2 + O2+,cand_SF2p_O2_b1Sigma_char_SF2_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + O2_b1Sigma,SF4 + O2+,cand_SF4p_O2_b1Sigma_char_SF4_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF5+ + O2_b1Sigma,SF5 + O2+,cand_SF5p_O2_b1Sigma_char_SF5_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O2_b1Sigma,SF6 + O2+,cand_SF6p_O2_b1Sigma_char_SF6_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O2_b1Sigma,SF4 + F2 + O2+,cand_SF6p_O2_b1Sigma_diss_SF4_F2_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_b1Sigma,SF4+ + F2 + O2,cand_SF6p_O2_b1Sigma_diss_SF4p_F2_O2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_b1Sigma,SF5 + F + O2+,cand_SF6p_O2_b1Sigma_diss_SF5_F_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_b1Sigma,SF5+ + F + O2,cand_SF6p_O2_b1Sigma_diss_SF5p_F_O2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_b1Sigma,SF6 + O+ + O,cand_SF6p_O2_b1Sigma_diss_SF6_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,S+ + O2_v,S + O2+,cand_Sp_O2_v_char_S_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF+ + O2_v,SF + O2+,cand_SFp_O2_v_char_SF_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF2+ + O2_v,SF2 + O2+,cand_SF2p_O2_v_char_SF2_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + O2_v,SF4 + O2+,cand_SF4p_O2_v_char_SF4_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O2_v,SF6 + O2+,cand_SF6p_O2_v_char_SF6_O2p,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O2_v,SF4 + F2 + O2+,cand_SF6p_O2_v_diss_SF4_F2_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_v,SF4+ + F2 + O2,cand_SF6p_O2_v_diss_SF4p_F2_O2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_v,SF5 + F + O2+,cand_SF6p_O2_v_diss_SF5_F_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O2_v,SF5+ + F + O2,cand_SF6p_O2_v_diss_SF5p_F_O2,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,S+ + O_1D,S + O+,cand_Sp_O_1D_char_S_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF+ + O_1D,SF + O+,cand_SFp_O_1D_char_SF_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF2+ + O_1D,SF2 + O+,cand_SF2p_O_1D_char_SF2_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + O_1D,SF4 + O+,cand_SF4p_O_1D_char_SF4_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + O_1D,SF2+ + F2 + O,cand_SF4p_O_1D_diss_SF2p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1D,SF6 + O+,cand_SF6p_O_1D_char_SF6_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O_1D,SF4 + F2 + O+,cand_SF6p_O_1D_diss_SF4_F2_Op,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1D,SF4+ + F2 + O,cand_SF6p_O_1D_diss_SF4p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1D,SF5 + F + O+,cand_SF6p_O_1D_diss_SF5_F_Op,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1D,SF5+ + F + O,cand_SF6p_O_1D_diss_SF5p_F_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,S+ + O_1S,S + O+,cand_Sp_O_1S_char_S_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF+ + O_1S,SF + O+,cand_SFp_O_1S_char_SF_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF2+ + O_1S,SF2 + O+,cand_SF2p_O_1S_char_SF2_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF2+ + O_1S,S+ + F2 + O,cand_SF2p_O_1S_diss_Sp_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF3+ + O_1S,SF3 + O+,cand_SF3p_O_1S_char_SF3_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + O_1S,SF4 + O+,cand_SF4p_O_1S_char_SF4_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF4+ + O_1S,SF2+ + F2 + O,cand_SF4p_O_1S_diss_SF2p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF5+ + O_1S,SF5 + O+,cand_SF5p_O_1S_char_SF5_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF5+ + O_1S,SF4+ + F + O,cand_SF5p_O_1S_diss_SF4p_F_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1S,SF6 + O+,cand_SF6p_O_1S_char_SF6_Op,ion_neutral,charge_transfer,1,candidate,fast
+2,SF6+ + O_1S,SF4 + F2 + O+,cand_SF6p_O_1S_diss_SF4_F2_Op,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1S,SF4 + F2+ + O,cand_SF6p_O_1S_diss_SF4_F2p_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1S,SF4+ + F2 + O,cand_SF6p_O_1S_diss_SF4p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1S,SF5 + F + O+,cand_SF6p_O_1S_diss_SF5_F_Op,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1S,SF5 + F+ + O,cand_SF6p_O_1S_diss_SF5_Fp_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + O_1S,SF5+ + F + O,cand_SF6p_O_1S_diss_SF5p_F_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF+ + S,SF + S+,cand_SFp_S_char_SF_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF2+ + S,SF2 + S+,cand_SF2p_S_char_SF2_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF4+ + S,SF4 + S+,cand_SF4p_S_char_SF4_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF5+ + S,SF5 + S+,cand_SF5p_S_char_SF5_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF6+ + S,SF6 + S+,cand_SF6p_S_char_SF6_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF6+ + S,SF4 + F2 + S+,cand_SF6p_S_diss_SF4_F2_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S,SF4+ + F2 + S,cand_SF6p_S_diss_SF4p_F2_S,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S,SF5 + F + S+,cand_SF6p_S_diss_SF5_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S,SF5+ + F + S,cand_SF6p_S_diss_SF5p_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF+ + S_1D,SF + S+,cand_SFp_S_1D_char_SF_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF+ + S_1S,SF + S+,cand_SFp_S_1S_char_SF_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF2+ + S_1D,SF2 + S+,cand_SF2p_S_1D_char_SF2_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF2+ + S_1S,SF2 + S+,cand_SF2p_S_1S_char_SF2_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF3+ + S_1D,SF3 + S+,cand_SF3p_S_1D_char_SF3_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF3+ + S_1S,SF3 + S+,cand_SF3p_S_1S_char_SF3_Sp,ion_neutral,charge_transfer,2,candidate,fast
 2,SF4+ + SF6,SF4 + SF5+ + F,cand_SF4p_SF6_diss_SF4_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
 2,SF4+ + SF6,SF5+ + SF5,cand_SF4p_SF6_diss_SF5p_SF5,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF4+ + SF6*,SF4 + SF5+ + F,cand_SF4p_SF6*_diss_SF4_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF4+ + SF6*,SF5+ + SF5,cand_SF4p_SF6*_diss_SF5p_SF5,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF4+ + SF6_v,SF4 + SF5+ + F,cand_SF4p_SF6_v_diss_SF4_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF4+ + SF6_v,SF5+ + SF5,cand_SF4p_SF6_v_diss_SF5p_SF5,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF4+ + S_1D,SF4 + S+,cand_SF4p_S_1D_char_SF4_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF4+ + S_1S,SF4 + S+,cand_SF4p_S_1S_char_SF4_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF4+ + S_1S,SF2 + F2 + S+,cand_SF4p_S_1S_diss_SF2_F2_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF4+ + S_1S,SF2+ + F2 + S,cand_SF4p_S_1S_diss_SF2p_F2_S,ion_neutral,dissociative_charge_transfer,2,candidate,fast
 2,SF5+ + SF6,SF3+ + SF6 + F2,SF5p_SF6_to_SF3p_SF6_F2,ion_neutral,reactive_scattering,1,literature_supported,fast
+2,SF5+ + S_1D,SF5 + S+,cand_SF5p_S_1D_char_SF5_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF5+ + S_1D,SF4 + F + S+,cand_SF5p_S_1D_diss_SF4_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF5+ + S_1S,SF5 + S+,cand_SF5p_S_1S_char_SF5_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF5+ + S_1S,SF4 + F + S+,cand_SF5p_S_1S_diss_SF4_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF5+ + S_1S,SF4+ + F + S,cand_SF5p_S_1S_diss_SF4p_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + SF6,SF4+ + F2 + SF6,cand_SF6p_SF6_diss_SF4p_F2_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + SF6,SF5+ + F + SF6,cand_SF6p_SF6_diss_SF5p_F_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + SF6*,SF4+ + F2 + SF6,cand_SF6p_SF6*_diss_SF4p_F2_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + SF6*,SF5+ + F + SF6,cand_SF6p_SF6*_diss_SF5p_F_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + SF6_v,SF4+ + F2 + SF6,cand_SF6p_SF6_v_diss_SF4p_F2_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + SF6_v,SF5+ + F + SF6,cand_SF6p_SF6_v_diss_SF5p_F_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,fast
+2,SF6+ + S_1D,SF6 + S+,cand_SF6p_S_1D_char_SF6_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF6+ + S_1D,SF4 + F2 + S+,cand_SF6p_S_1D_diss_SF4_F2_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S_1D,SF4+ + F2 + S,cand_SF6p_S_1D_diss_SF4p_F2_S,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S_1D,SF5 + F + S+,cand_SF6p_S_1D_diss_SF5_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S_1D,SF5+ + F + S,cand_SF6p_S_1D_diss_SF5p_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S_1S,SF6 + S+,cand_SF6p_S_1S_char_SF6_Sp,ion_neutral,charge_transfer,2,candidate,fast
+2,SF6+ + S_1S,SF4 + F2 + S+,cand_SF6p_S_1S_diss_SF4_F2_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S_1S,SF4+ + F2 + S,cand_SF6p_S_1S_diss_SF4p_F2_S,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S_1S,SF5 + F + S+,cand_SF6p_S_1S_diss_SF5_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,fast
+2,SF6+ + S_1S,SF5+ + F + S,cand_SF6p_S_1S_diss_SF5p_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,fast

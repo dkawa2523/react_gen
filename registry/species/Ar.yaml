@@ -44,7 +44,36 @@ properties:
     unit: J/mol/K
     source: chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula
       verified against the registry
+  collision_radius_A:
+    source: chemicals package bundled molecular property tables, CAS 7440-37-1
+    unit: A
+    value: 1.7037
+  well_depth_K:
+    source: chemicals package bundled molecular property tables, CAS 7440-37-1
+    unit: K
+    value: 123.55
 metadata:
   status: curated
   notes:
   - Curated atomic values; collision radius is a transport/DNT engineering estimate.
+thermo:
+  high:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - -745.375
+  - 4.366
+  low:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - -745.375
+  - 4.366
+  source: cantera bundled thermodynamic data, listed as AR in air.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

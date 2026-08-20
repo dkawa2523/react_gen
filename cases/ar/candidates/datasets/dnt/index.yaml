@@ -1,5 +1,5 @@
 summary:
-  long_range: 1/2
+  long_range: 2/2
   full: 0/2
   analytic_resonant: 2/2
 pairs_total: 2
@@ -15,13 +15,11 @@ pairs:
   - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
   - short_range_potential
 - pair: Ar_p__Ar_4s
   runnable:
+  - long_range
   - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential

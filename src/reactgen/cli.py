@@ -8,7 +8,18 @@ from pathlib import Path
 
 import yaml
 
-from reactgen import audit, export, ingest, known, layers, lock, plan, quality
+from reactgen import (
+    adopt,
+    audit,
+    derive,
+    export,
+    ingest,
+    known,
+    layers,
+    lock,
+    plan,
+    quality,
+)
 from reactgen.case import Case
 from reactgen.expand import expand
 from reactgen.registry import Registry
@@ -59,8 +70,63 @@ def main(argv: list[str] | None = None) -> int:
     absorb.add_argument("--overlay", type=Path, default=Path("overlay.yaml"))
     absorb.set_defaults(run=_ingest)
 
+    infer = commands.add_parser(
+        "derive", help="fill excited-state properties from the ground state they belong to"
+    )
+    infer.add_argument("--registry", type=Path, default=Path("registry"))
+    infer.add_argument("--overlay", type=Path, default=Path("overlay.yaml"))
+    infer.add_argument("--out", type=Path, required=True)
+    infer.set_defaults(run=_derive)
+
+    settle = commands.add_parser(
+        "adopt", help="write a reviewed overlay into the registry files it belongs to"
+    )
+    settle.add_argument("overlay", type=Path)
+    settle.add_argument("--registry", type=Path, default=Path("registry"))
+    settle.add_argument("--dry-run", action="store_true", help="report without writing")
+    settle.set_defaults(run=_adopt)
+
     args = parser.parse_args(argv)
     return args.run(args)
+
+
+def _derive(args) -> int:
+    registry = Registry.load(args.registry, overlay=args.overlay)
+    filled = derive.overlay(registry)
+    # Written as one overlay rather than a second one to chain, because
+    # `Registry.load` takes a single file. Derived entries only ever fill a gap,
+    # so merging cannot overwrite what the acquired overlay already said.
+    merged = derive.merged(_document(args.overlay), filled)
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(
+        yaml.safe_dump(merged, sort_keys=True, allow_unicode=True), encoding="utf-8"
+    )
+    values = sum(len(entry) for entry in filled["properties"].values())
+    print(f"  states      {len(derive.parents(registry))} with a ground state to inherit from")
+    print(f"  properties  {values} filled across {len(filled['properties'])} states")
+    print(f"  thermo      {len(filled['thermo'])} polynomials shifted by their level energy")
+    print(f"  overlay     {args.out}")
+    return 0
+
+
+def _adopt(args) -> int:
+    report = adopt.adopt(_document(args.overlay), args.registry, args.dry_run)
+    for species_id, names in sorted(report.written.items()):
+        print(f"  {species_id:14} {' '.join(names)}")
+    print(f"  wrote       {report.values} values across {len(report.written)} species")
+    if report.held:
+        print(f"  kept        {report.held} the registry already answered for")
+    if report.unplaced:
+        print(f"  no file for {' '.join(report.unplaced)}")
+    if args.dry_run:
+        print("  dry run: nothing written")
+    return 0
+
+
+def _document(path: Path) -> dict:
+    if not path.is_file():
+        return {}
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
 def _generate(args) -> int:

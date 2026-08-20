@@ -53,3 +53,24 @@ metadata:
   notes:
   - CF3 radical is an important CF4 dissociation product; polarizability/radius are
     estimated.
+thermo:
+  high:
+  - 7.2012622
+  - 0.0030663935
+  - -1.3144181e-06
+  - 2.4996925e-10
+  - -1.7550928e-14
+  - -59238.631
+  - -10.94571
+  low:
+  - 2.0650168
+  - 0.016424158
+  - -1.0838146e-05
+  - -8.5317997e-10
+  - 2.387807e-12
+  - -57811.976
+  - 15.704693
+  source: cantera bundled thermodynamic data, listed as CF3 in nasa_gas.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

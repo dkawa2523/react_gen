@@ -12,7 +12,7 @@ species:
   total: 30
   needs:
   - mass_amu
-  blocked_by_missing_property: 13
+  blocked_by_missing_property: 0
 by_process:
   electron_impact: 127
   ion_collision: 209

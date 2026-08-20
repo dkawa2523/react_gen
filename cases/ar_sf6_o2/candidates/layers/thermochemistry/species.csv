@@ -1,14 +1,14 @@
 id,charge,depth,status,reactions,ready,missing
 Ar,0,0,curated,126,yes,
 Ar+,1,1,curated,94,yes,
-Ar_4s,0,1,literature_supported,72,no,enthalpy_formation_eV
+Ar_4s,0,1,literature_supported,72,yes,
 F,0,1,curated,494,yes,
 F*,0,2,candidate,41,no,enthalpy_formation_eV|ionization_energy_eV
 F+,1,1,curated,109,no,ionization_energy_eV
 F2,0,1,literature_supported,376,no,ionization_energy_eV
 F2*,0,2,candidate,56,no,enthalpy_formation_eV|ionization_energy_eV
 F2+,1,2,literature_supported,120,no,enthalpy_formation_eV|ionization_energy_eV
-F2_v,0,2,candidate,113,no,enthalpy_formation_eV|ionization_energy_eV
+F2_v,0,2,candidate,113,no,ionization_energy_eV
 FO,0,2,literature_supported,124,no,ionization_energy_eV
 FO*,0,3,candidate,45,no,enthalpy_formation_eV|ionization_energy_eV
 FO_v,0,3,candidate,101,no,enthalpy_formation_eV|ionization_energy_eV
@@ -18,7 +18,7 @@ O2,0,0,curated,203,yes,
 O2+,1,1,curated,106,no,ionization_energy_eV
 O2_a1Delta,0,1,curated,59,no,ionization_energy_eV
 O2_b1Sigma,0,1,curated,62,no,ionization_energy_eV
-O2_v,0,1,candidate,112,no,enthalpy_formation_eV|ionization_energy_eV
+O2_v,0,1,candidate,112,no,ionization_energy_eV
 OF+,1,3,candidate,6,no,enthalpy_formation_eV|ionization_energy_eV
 O_1D,0,1,curated,75,no,ionization_energy_eV
 O_1S,0,1,literature_supported,64,no,ionization_energy_eV
@@ -38,7 +38,7 @@ SF3_v,0,2,candidate,116,no,enthalpy_formation_eV|ionization_energy_eV
 SF4,0,1,curated,196,yes,
 SF4*,0,2,candidate,59,no,enthalpy_formation_eV|ionization_energy_eV
 SF4+,1,1,literature_supported,183,no,enthalpy_formation_eV|ionization_energy_eV
-SF4_v,0,2,candidate,115,no,enthalpy_formation_eV|ionization_energy_eV
+SF4_v,0,2,candidate,115,no,ionization_energy_eV
 SF5,0,1,curated,184,yes,
 SF5*,0,2,candidate,62,no,enthalpy_formation_eV|ionization_energy_eV
 SF5+,1,1,literature_supported,165,no,enthalpy_formation_eV|ionization_energy_eV
@@ -58,7 +58,7 @@ SO2F2,0,3,literature_supported,134,no,ionization_energy_eV
 SO2F2*,0,4,candidate,54,no,enthalpy_formation_eV|ionization_energy_eV
 SO2F2+,1,4,candidate,3,no,enthalpy_formation_eV|ionization_energy_eV
 SO2F2_v,0,4,candidate,110,no,enthalpy_formation_eV|ionization_energy_eV
-SO2_v,0,4,candidate,106,no,enthalpy_formation_eV|ionization_energy_eV
+SO2_v,0,4,candidate,106,no,ionization_energy_eV
 SOF,0,2,literature_supported,119,no,enthalpy_formation_eV|ionization_energy_eV
 SOF*,0,3,candidate,41,no,enthalpy_formation_eV|ionization_energy_eV
 SOF+,1,3,candidate,9,no,enthalpy_formation_eV|ionization_energy_eV
@@ -75,6 +75,6 @@ SOF4*,0,3,candidate,43,no,enthalpy_formation_eV|ionization_energy_eV
 SOF4+,1,3,candidate,3,no,enthalpy_formation_eV|ionization_energy_eV
 SOF4_v,0,3,candidate,99,no,enthalpy_formation_eV|ionization_energy_eV
 SOF_v,0,3,candidate,97,no,enthalpy_formation_eV|ionization_energy_eV
-SO_v,0,3,candidate,103,no,enthalpy_formation_eV|ionization_energy_eV
+SO_v,0,3,candidate,103,no,ionization_energy_eV
 S_1D,0,2,literature_supported,57,no,ionization_energy_eV
 S_1S,0,2,literature_supported,62,no,ionization_energy_eV

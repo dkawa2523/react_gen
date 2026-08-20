@@ -23,3 +23,24 @@ properties:
     value: -1.77712
     unit: eV
     source: pyromat NASA Glenn ideal-gas tables, read at 300 K, formula verified
+thermo:
+  high:
+  - 4.8908214
+  - 0.0022179703
+  - -9.2550725e-07
+  - 1.727012e-10
+  - -1.1955343e-14
+  - -22357.984
+  - 0.992784061
+  low:
+  - 3.2019727
+  - 0.005583777
+  - -1.4905481e-06
+  - -2.3126069e-09
+  - 1.3614353e-12
+  - -21817.043
+  - 10.0607392
+  source: cantera bundled thermodynamic data, listed as COF in nasa_gas.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0

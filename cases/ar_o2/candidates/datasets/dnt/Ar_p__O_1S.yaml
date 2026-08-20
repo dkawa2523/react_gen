@@ -1,0 +1,52 @@
+pair: Ar_p__O_1S
+models:
+- dnt_plus
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - collision_radius_A
+    - short_range_potential
+runnable:
+- long_range
+projectile:
+  id: Ar+
+  charge: 1
+  mass_amu: 39.94745
+target:
+  id: O_1S
+  mass_amu: 15.9994
+  polarizability_A3: 0.7854
+  dipole_moment_D: 0.0
+  collision_radius_A: null
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 11.423971707611779
+long_range:
+  model: ion_induced_dipole
+  polarizability_A3: 0.7854
+  dipole_moment_D: 0.0
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 100.0
+  points: 200
+  spacing: log
+conditions:
+  pressure_Pa: 6.7
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 2.0e+16
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+channels:
+- reaction_id: cand_Arp_O_1S_char_Ar_Op
+  equation: Ar+ + O_1S -> Ar + O+
+  dnt_class: long_range_charge_exchange
+  tier: long_range
+  threshold_eV: 0.0
+  delta_e_eV: -6.331300999999999

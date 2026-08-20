@@ -21,6 +21,7 @@ from __future__ import annotations
 
 from dataclasses import asdict
 
+from reactgen import naming
 from reactgen.case import Case
 from reactgen.model import ELECTRON, Network, Reaction
 from reactgen.physics import ion_neutral_pair, reduced_mass_amu
@@ -86,7 +87,7 @@ def _pair(
     readiness = _readiness(ion, neutral, potential, reactions, resonant)
 
     return {
-        "pair": f"{_slug(ion_id)}__{_slug(neutral_id)}",
+        "pair": f"{naming.slug(ion_id)}__{naming.slug(neutral_id)}",
         "models": _models(neutral.value("dipole_moment_D"), resonant),
         "readiness": readiness,
         "runnable": [tier for tier, state in readiness.items() if state["status"] == "ready"],
@@ -194,7 +195,3 @@ def _index(documents: list[dict]) -> dict:
             for document in documents
         ],
     }
-
-
-def _slug(species_id: str) -> str:
-    return species_id.replace("+", "_p").replace("-", "_m").replace("(", "").replace(")", "")

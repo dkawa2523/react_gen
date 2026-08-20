@@ -3,6 +3,9 @@
 ::
 
     species.yaml              every state with property values, thermo and sources
+    species.csv               one row per state: composition, then every property
+    species_sources.csv       the same values long-form, each with where it came from
+    species_thermo.csv        NASA polynomial coefficients, one row per state
     reactions.yaml / .csv     the list with lineage, rate, relevance and datasets
     coverage.yaml             how much of each declared literature mechanism is present
     gaps.yaml                 everything still missing, in one list
@@ -64,6 +67,9 @@ def write(
     _yaml(outdir / "gaps.yaml", _gaps_doc(case, gaps))
     _yaml(outdir / "summary.yaml", _summary_doc(case, network, gaps, ranking, mechanism_id))
     _reactions_csv(outdir / "reactions.csv", records)
+    _species_csv(outdir / "species.csv", network)
+    _species_sources_csv(outdir / "species_sources.csv", network)
+    _species_thermo_csv(outdir / "species_thermo.csv", network)
     graph.write(outdir / "reaction_network.dot", network)
     graph.write(outdir / "species_lineage.dot", network, lineage=True)
 
@@ -238,6 +244,114 @@ def _reactions_csv(path: Path, records: list[dict]) -> None:
             )
 
 
+# The scalar properties a state list is asked for, in the order a reader wants
+# them: what the species is, then how it moves, then what it costs to make.
+SPECIES_PROPERTIES = (
+    "mass_amu",
+    "polarizability_A3",
+    "dipole_moment_D",
+    "collision_radius_A",
+    "well_depth_K",
+    "enthalpy_formation_eV",
+    "entropy_J_mol_K",
+    "ionization_energy_eV",
+    "electron_affinity_eV",
+    "vibrational_quantum_eV",
+)
+
+
+def _species_csv(path: Path, network: Network) -> None:
+    """One row per state, with a column per element actually present.
+
+    The element columns are built from the bundle rather than fixed, because the
+    registry spans eighteen elements and any one case uses three or four; a
+    fixed header would be mostly empty columns. `formula` keeps the composition
+    readable in one field for anything that reads the file by eye.
+    """
+
+    listed = sorted(network.species.values(), key=lambda item: item.id)
+    elements = sorted({element for item in listed for element in item.composition})
+    header = (
+        ["id", "formula", "charge", "state_kind", "state_label", "state_energy_eV", "depth"]
+        + [f"n_{element}" for element in elements]
+        + list(SPECIES_PROPERTIES)
+        + ["has_thermo", "status", "missing"]
+    )
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(header)
+        for item in listed:
+            values = {name: item.value(name) for name in SPECIES_PROPERTIES}
+            writer.writerow(
+                [
+                    item.id,
+                    _formula(item.composition),
+                    item.charge,
+                    item.state.kind,
+                    item.state.label,
+                    item.state.energy_eV,
+                    network.depth.get(item.id, 0),
+                ]
+                + [item.composition.get(element, 0) for element in elements]
+                + ["" if value is None else value for value in values.values()]
+                + [
+                    "yes" if item.thermo else "no",
+                    item.status,
+                    " ".join(name for name, value in values.items() if value is None),
+                ]
+            )
+
+
+def _species_sources_csv(path: Path, network: Network) -> None:
+    """Every property value long-form, so provenance survives the flattening.
+
+    Without this the wide table cannot be read: a dipole moment of zero is
+    either a measurement, a symmetry argument or an untouched default, and a
+    single number column says which one it is only by losing the distinction.
+    """
+
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(["id", "property", "value", "unit", "source"])
+        for item in sorted(network.species.values(), key=lambda entry: entry.id):
+            for name, prop in sorted(item.properties.items()):
+                if prop.value is not None:
+                    writer.writerow([item.id, name, prop.value, prop.unit or "", prop.source or ""])
+            if item.thermo is not None:
+                writer.writerow([item.id, "nasa7", "", "", item.thermo.source or ""])
+
+
+def _species_thermo_csv(path: Path, network: Network) -> None:
+    """NASA 7-coefficient polynomials, kept out of the wide table.
+
+    Fifteen numeric columns would swamp the ten properties beside them, and a
+    polynomial is read by a program rather than by eye.
+    """
+
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(
+            ["id", "t_min", "t_mid", "t_max"]
+            + [f"a{n}_low" for n in range(1, 8)]
+            + [f"a{n}_high" for n in range(1, 8)]
+            + ["source"]
+        )
+        for item in sorted(network.species.values(), key=lambda entry: entry.id):
+            fit = item.thermo
+            if fit is None:
+                continue
+            writer.writerow(
+                [item.id, fit.t_min, fit.t_mid, fit.t_max, *fit.low, *fit.high, fit.source or ""]
+            )
+
+
+def _formula(composition: dict[str, int]) -> str:
+    return "".join(
+        element if count == 1 else f"{element}{count}"
+        for element, count in sorted(composition.items())
+    )
+
+
 # --------------------------------------------------------------------------- datasets
 
 
@@ -340,10 +454,6 @@ def _counts(gaps: list[Gap]) -> dict[str, int]:
 
 def _conditions(case: Case) -> dict:
     return {k: v for k, v in asdict(case.conditions).items() if v is not None}
-
-
-def _slug(species_id: str) -> str:
-    return species_id.replace("+", "_p").replace("-", "_m").replace("(", "").replace(")", "")
 
 
 def _yaml(path: Path, payload: dict) -> None:

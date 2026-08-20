@@ -1,7 +1,7 @@
 summary:
-  long_range: 18/176
+  long_range: 80/176
   full: 0/176
-  analytic_resonant: 7/176
+  analytic_resonant: 22/176
 pairs_total: 176
 no_known_channel: 54
 resonant: 22
@@ -15,39 +15,31 @@ pairs:
   - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
   - short_range_potential
 - pair: Ar_p__Ar_4s
   runnable:
+  - long_range
   - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__C
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__CF
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: Ar_p__CF*
+- pair: Ar_p__CF_x
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: Ar_p__CF2
@@ -57,13 +49,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: Ar_p__CF2*
+- pair: Ar_p__CF2_x
   runnable: []
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: Ar_p__CF2_v
@@ -71,8 +61,6 @@ pairs:
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: Ar_p__CF3
@@ -82,13 +70,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: Ar_p__CF3*
+- pair: Ar_p__CF3_x
   runnable: []
   known_channels: 2
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: Ar_p__CF3_v
@@ -96,8 +82,6 @@ pairs:
   known_channels: 2
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: Ar_p__CF4
@@ -106,46 +90,37 @@ pairs:
   known_channels: 2
   blocked_by:
   - short_range_potential
-- pair: Ar_p__CF4*
-  runnable: []
+- pair: Ar_p__CF4_x
+  runnable:
+  - long_range
   known_channels: 2
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__CF4_v
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 2
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__CF_v
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: Ar_p__C_1D
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__C_1S
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__F
   runnable:
@@ -154,84 +129,62 @@ pairs:
   blocked_by:
   - collision_radius_A
   - short_range_potential
-- pair: Ar_p__F*
-  runnable: []
+- pair: Ar_p__F_x
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__F2
   runnable: []
   known_channels: 2
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: Ar_p__F2*
+- pair: Ar_p__F2_x
   runnable: []
   known_channels: 2
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: Ar_p__F2_v
   runnable: []
   known_channels: 2
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: C_p__Ar
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__Ar_4s
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__C
-  runnable: []
+  runnable:
+  - long_range
+  - analytic_resonant
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__CF
   runnable: []
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
-- pair: C_p__CF*
+- pair: C_p__CF_x
   runnable: []
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__CF2
   runnable: []
@@ -239,27 +192,20 @@ pairs:
   blocked_by:
   - collision_radius_A
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
-- pair: C_p__CF2*
+- pair: C_p__CF2_x
   runnable: []
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__CF2_v
   runnable: []
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__CF3
   runnable: []
@@ -267,171 +213,125 @@ pairs:
   blocked_by:
   - collision_radius_A
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
-- pair: C_p__CF3*
+- pair: C_p__CF3_x
   runnable: []
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__CF3_v
   runnable: []
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__CF4
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - projectile.mass_amu
   - short_range_potential
-- pair: C_p__CF4*
-  runnable: []
+- pair: C_p__CF4_x
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__CF4_v
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__CF_v
   runnable: []
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__C_1D
-  runnable: []
+  runnable:
+  - long_range
+  - analytic_resonant
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__C_1S
-  runnable: []
+  runnable:
+  - long_range
+  - analytic_resonant
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__F
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - projectile.mass_amu
   - short_range_potential
-- pair: C_p__F*
-  runnable: []
+- pair: C_p__F_x
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__F2
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
-- pair: C_p__F2*
+- pair: C_p__F2_x
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: C_p__F2_v
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__Ar
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__Ar_4s
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__C
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__CF
-  runnable: []
+  runnable:
+  - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
-- pair: CF_p__CF*
-  runnable: []
+- pair: CF_p__CF_x
+  runnable:
+  - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__CF2
   runnable: []
@@ -439,27 +339,20 @@ pairs:
   blocked_by:
   - collision_radius_A
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
-- pair: CF_p__CF2*
+- pair: CF_p__CF2_x
   runnable: []
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__CF2_v
   runnable: []
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__CF3
   runnable: []
@@ -467,163 +360,121 @@ pairs:
   blocked_by:
   - collision_radius_A
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
-- pair: CF_p__CF3*
+- pair: CF_p__CF3_x
   runnable: []
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__CF3_v
   runnable: []
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__CF4
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - projectile.mass_amu
   - short_range_potential
-- pair: CF_p__CF4*
-  runnable: []
+- pair: CF_p__CF4_x
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__CF4_v
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__CF_v
-  runnable: []
+  runnable:
+  - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
-  - projectile.mass_amu
   - short_range_potential
 - pair: CF_p__C_1D
-  runnable: []
-  known_channels: 0
-  blocked_by:
-  - collision_radius_A
-  - polarizability_A3
-  - projectile.mass_amu
-  - short_range_potential
-- pair: CF_p__C_1S
-  runnable: []
-  known_channels: 0
-  blocked_by:
-  - collision_radius_A
-  - polarizability_A3
-  - projectile.mass_amu
-  - short_range_potential
-- pair: CF_p__F
-  runnable: []
-  known_channels: 0
-  blocked_by:
-  - collision_radius_A
-  - projectile.mass_amu
-  - short_range_potential
-- pair: CF_p__F*
-  runnable: []
-  known_channels: 0
-  blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
-  - short_range_potential
-- pair: CF_p__F2
-  runnable: []
-  known_channels: 0
-  blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - polarizability_A3
-  - projectile.mass_amu
-  - short_range_potential
-- pair: CF_p__F2*
-  runnable: []
-  known_channels: 0
-  blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
-  - short_range_potential
-- pair: CF_p__F2_v
-  runnable: []
-  known_channels: 0
-  blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
-  - projectile.mass_amu
-  - short_range_potential
-- pair: CF2_p__Ar
   runnable:
   - long_range
   known_channels: 0
   blocked_by:
   - collision_radius_A
   - short_range_potential
-- pair: CF2_p__Ar_4s
-  runnable: []
-  known_channels: 4
+- pair: CF_p__C_1S
+  runnable:
+  - long_range
+  known_channels: 0
   blocked_by:
   - collision_radius_A
+  - short_range_potential
+- pair: CF_p__F
+  runnable:
+  - long_range
+  known_channels: 0
+  blocked_by:
+  - collision_radius_A
+  - short_range_potential
+- pair: CF_p__F_x
+  runnable:
+  - long_range
+  known_channels: 0
+  blocked_by:
+  - collision_radius_A
+  - short_range_potential
+- pair: CF_p__F2
+  runnable: []
+  known_channels: 0
+  blocked_by:
   - polarizability_A3
   - short_range_potential
-- pair: CF2_p__C
+- pair: CF_p__F2_x
   runnable: []
+  known_channels: 0
+  blocked_by:
+  - polarizability_A3
+  - short_range_potential
+- pair: CF_p__F2_v
+  runnable: []
+  known_channels: 0
+  blocked_by:
+  - polarizability_A3
+  - short_range_potential
+- pair: CF2_p__Ar
+  runnable:
+  - long_range
+  known_channels: 0
+  blocked_by:
+  - short_range_potential
+- pair: CF2_p__Ar_4s
+  runnable:
+  - long_range
+  known_channels: 4
+  blocked_by:
+  - short_range_potential
+- pair: CF2_p__C
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - polarizability_A3
   - short_range_potential
 - pair: CF2_p__CF
   runnable: []
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: CF2_p__CF*
+- pair: CF2_p__CF_x
   runnable: []
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF2_p__CF2
@@ -634,22 +485,20 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: CF2_p__CF2*
-  runnable: []
+- pair: CF2_p__CF2_x
+  runnable:
+  - analytic_resonant
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF2_p__CF2_v
-  runnable: []
+  runnable:
+  - analytic_resonant
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF2_p__CF3
@@ -659,13 +508,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: CF2_p__CF3*
+- pair: CF2_p__CF3_x
   runnable: []
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF2_p__CF3_v
@@ -673,8 +520,6 @@ pairs:
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF2_p__CF4
@@ -683,46 +528,37 @@ pairs:
   known_channels: 1
   blocked_by:
   - short_range_potential
-- pair: CF2_p__CF4*
-  runnable: []
+- pair: CF2_p__CF4_x
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: CF2_p__CF4_v
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: CF2_p__CF_v
   runnable: []
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF2_p__C_1D
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: CF2_p__C_1S
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: CF2_p__F
   runnable:
@@ -731,39 +567,29 @@ pairs:
   blocked_by:
   - collision_radius_A
   - short_range_potential
-- pair: CF2_p__F*
-  runnable: []
+- pair: CF2_p__F_x
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: CF2_p__F2
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: CF2_p__F2*
+- pair: CF2_p__F2_x
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF2_p__F2_v
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF3_p__Ar
@@ -771,38 +597,30 @@ pairs:
   - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
   - short_range_potential
 - pair: CF3_p__Ar_4s
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 4
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: CF3_p__C
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - polarizability_A3
   - short_range_potential
 - pair: CF3_p__CF
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: CF3_p__CF*
+- pair: CF3_p__CF_x
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF3_p__CF2
@@ -812,13 +630,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: CF3_p__CF2*
+- pair: CF3_p__CF2_x
   runnable: []
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF3_p__CF2_v
@@ -826,8 +642,6 @@ pairs:
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF3_p__CF3
@@ -838,22 +652,20 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: CF3_p__CF3*
-  runnable: []
+- pair: CF3_p__CF3_x
+  runnable:
+  - analytic_resonant
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF3_p__CF3_v
-  runnable: []
+  runnable:
+  - analytic_resonant
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF3_p__CF4
@@ -862,46 +674,37 @@ pairs:
   known_channels: 0
   blocked_by:
   - short_range_potential
-- pair: CF3_p__CF4*
-  runnable: []
+- pair: CF3_p__CF4_x
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: CF3_p__CF4_v
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: CF3_p__CF_v
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF3_p__C_1D
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: CF3_p__C_1S
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: CF3_p__F
   runnable:
@@ -910,39 +713,29 @@ pairs:
   blocked_by:
   - collision_radius_A
   - short_range_potential
-- pair: CF3_p__F*
-  runnable: []
+- pair: CF3_p__F_x
+  runnable:
+  - long_range
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: CF3_p__F2
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: CF3_p__F2*
+- pair: CF3_p__F2_x
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF3_p__F2_v
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF4_p__Ar
@@ -950,38 +743,30 @@ pairs:
   - long_range
   known_channels: 2
   blocked_by:
-  - collision_radius_A
   - short_range_potential
 - pair: CF4_p__Ar_4s
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 7
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: CF4_p__C
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 2
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - polarizability_A3
   - short_range_potential
 - pair: CF4_p__CF
   runnable: []
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: CF4_p__CF*
+- pair: CF4_p__CF_x
   runnable: []
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF4_p__CF2
@@ -991,13 +776,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: CF4_p__CF2*
+- pair: CF4_p__CF2_x
   runnable: []
   known_channels: 3
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF4_p__CF2_v
@@ -1005,8 +788,6 @@ pairs:
   known_channels: 3
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF4_p__CF3
@@ -1016,13 +797,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: CF4_p__CF3*
+- pair: CF4_p__CF3_x
   runnable: []
   known_channels: 3
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF4_p__CF3_v
@@ -1030,8 +809,6 @@ pairs:
   known_channels: 3
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF4_p__CF4
@@ -1041,46 +818,39 @@ pairs:
   known_channels: 1
   blocked_by:
   - short_range_potential
-- pair: CF4_p__CF4*
-  runnable: []
+- pair: CF4_p__CF4_x
+  runnable:
+  - long_range
+  - analytic_resonant
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: CF4_p__CF4_v
-  runnable: []
+  runnable:
+  - long_range
+  - analytic_resonant
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: CF4_p__CF_v
   runnable: []
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF4_p__C_1D
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 3
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: CF4_p__C_1S
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 5
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: CF4_p__F
   runnable:
@@ -1089,39 +859,29 @@ pairs:
   blocked_by:
   - collision_radius_A
   - short_range_potential
-- pair: CF4_p__F*
-  runnable: []
+- pair: CF4_p__F_x
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: CF4_p__F2
   runnable: []
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: CF4_p__F2*
+- pair: CF4_p__F2_x
   runnable: []
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: CF4_p__F2_v
   runnable: []
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F_p__Ar
@@ -1129,38 +889,30 @@ pairs:
   - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
   - short_range_potential
 - pair: F_p__Ar_4s
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: F_p__C
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - polarizability_A3
   - short_range_potential
 - pair: F_p__CF
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: F_p__CF*
+- pair: F_p__CF_x
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F_p__CF2
@@ -1170,13 +922,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: F_p__CF2*
+- pair: F_p__CF2_x
   runnable: []
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F_p__CF2_v
@@ -1184,8 +934,6 @@ pairs:
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F_p__CF3
@@ -1195,13 +943,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: F_p__CF3*
+- pair: F_p__CF3_x
   runnable: []
   known_channels: 2
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F_p__CF3_v
@@ -1209,8 +955,6 @@ pairs:
   known_channels: 2
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F_p__CF4
@@ -1219,46 +963,37 @@ pairs:
   known_channels: 3
   blocked_by:
   - short_range_potential
-- pair: F_p__CF4*
-  runnable: []
+- pair: F_p__CF4_x
+  runnable:
+  - long_range
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: F_p__CF4_v
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: F_p__CF_v
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F_p__C_1D
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: F_p__C_1S
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: F_p__F
   runnable:
@@ -1268,39 +1003,30 @@ pairs:
   blocked_by:
   - collision_radius_A
   - short_range_potential
-- pair: F_p__F*
-  runnable: []
+- pair: F_p__F_x
+  runnable:
+  - long_range
+  - analytic_resonant
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: F_p__F2
   runnable: []
   known_channels: 2
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: F_p__F2*
+- pair: F_p__F2_x
   runnable: []
   known_channels: 2
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F_p__F2_v
   runnable: []
   known_channels: 2
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F2_p__Ar
@@ -1308,38 +1034,30 @@ pairs:
   - long_range
   known_channels: 2
   blocked_by:
-  - collision_radius_A
   - short_range_potential
 - pair: F2_p__Ar_4s
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: F2_p__C
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 2
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - polarizability_A3
   - short_range_potential
 - pair: F2_p__CF
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: F2_p__CF*
+- pair: F2_p__CF_x
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F2_p__CF2
@@ -1349,13 +1067,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: F2_p__CF2*
+- pair: F2_p__CF2_x
   runnable: []
   known_channels: 2
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F2_p__CF2_v
@@ -1363,8 +1079,6 @@ pairs:
   known_channels: 2
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F2_p__CF3
@@ -1374,13 +1088,11 @@ pairs:
   - collision_radius_A
   - polarizability_A3
   - short_range_potential
-- pair: F2_p__CF3*
+- pair: F2_p__CF3_x
   runnable: []
   known_channels: 3
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F2_p__CF3_v
@@ -1388,8 +1100,6 @@ pairs:
   known_channels: 3
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F2_p__CF4
@@ -1398,46 +1108,37 @@ pairs:
   known_channels: 3
   blocked_by:
   - short_range_potential
-- pair: F2_p__CF4*
-  runnable: []
+- pair: F2_p__CF4_x
+  runnable:
+  - long_range
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: F2_p__CF4_v
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: F2_p__CF_v
   runnable: []
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F2_p__C_1D
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 2
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: F2_p__C_1S
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 3
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: F2_p__F
   runnable:
@@ -1446,39 +1147,31 @@ pairs:
   blocked_by:
   - collision_radius_A
   - short_range_potential
-- pair: F2_p__F*
-  runnable: []
+- pair: F2_p__F_x
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: F2_p__F2
   runnable:
   - analytic_resonant
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
   - polarizability_A3
   - short_range_potential
-- pair: F2_p__F2*
-  runnable: []
+- pair: F2_p__F2_x
+  runnable:
+  - analytic_resonant
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential
 - pair: F2_p__F2_v
-  runnable: []
+  runnable:
+  - analytic_resonant
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
   - polarizability_A3
   - short_range_potential

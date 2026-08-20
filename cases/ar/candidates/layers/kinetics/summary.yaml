@@ -12,5 +12,5 @@ species:
   needs:
   - mass_amu
   - polarizability_A3
-  blocked_by_missing_property: 2
+  blocked_by_missing_property: 1
 by_process: {}

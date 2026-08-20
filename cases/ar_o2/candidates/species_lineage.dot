@@ -12,16 +12,16 @@ digraph reactions {
   }
   "Ar" [label="Ar\nq=+0 | depth=0\natom,neutral", fillcolor="#E8F5E9", style="rounded,filled", color="#666666", penwidth=1.0, tooltip="Ar"];
   "Ar+" [label="Ar+\nq=+1 | depth=1\natom,positive_ion\nmissing=2", fillcolor="#E3F2FD", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="Ar+ | missing=electron_affinity_eV,polarizability_A3"];
-  "Ar_4s" [label="Ar_4s\nq=+0 | depth=1\natom,excited,metastable\nmissing=2", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="Ar_4s | missing=collision_radius_A,polarizability_A3"];
-  "O" [label="O\nq=+0 | depth=1\natom,neutral,radical\nmissing=2", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O | missing=collision_radius_A,polarizability_A3"];
+  "Ar_4s" [label="Ar_4s\nq=+0 | depth=1\natom,excited,metastable", fillcolor="#E8F5E9", style="rounded,filled", color="#666666", penwidth=1.0, tooltip="Ar_4s"];
+  "O" [label="O\nq=+0 | depth=1\natom,neutral,radical\nmissing=1", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O | missing=collision_radius_A"];
   "O+" [label="O+\nq=+1 | depth=1\natomic_ion,positive_ion\nmissing=3", fillcolor="#E3F2FD", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O+ | missing=collision_radius_A,electron_affinity_eV,polarizability_A3"];
   "O2" [label="O2\nq=+0 | depth=0\nmolecule,neutral", fillcolor="#E8F5E9", style="rounded,filled", color="#666666", penwidth=1.0, tooltip="O2"];
   "O2+" [label="O2+\nq=+1 | depth=1\nmolecular_ion,positive_ion\nmissing=4", fillcolor="#E3F2FD", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O2+ | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV,polarizability_A3"];
-  "O2_a1Delta" [label="O2_a1Delta\nq=+0 | depth=1\nmetastable,molecule,neutral\nmissing=4", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O2_a1Delta | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV,polarizability_A3"];
-  "O2_b1Sigma" [label="O2_b1Sigma\nq=+0 | depth=1\nmetastable,molecule,neutral\nmissing=4", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O2_b1Sigma | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV,polarizability_A3"];
+  "O2_a1Delta" [label="O2_a1Delta\nq=+0 | depth=1\nmetastable,molecule,neutral\nmissing=2", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O2_a1Delta | missing=electron_affinity_eV,ionization_energy_eV"];
+  "O2_b1Sigma" [label="O2_b1Sigma\nq=+0 | depth=1\nmetastable,molecule,neutral\nmissing=2", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O2_b1Sigma | missing=electron_affinity_eV,ionization_energy_eV"];
   "O2_v" [label="O2_v\nq=+0 | depth=1\ncandidate,excited,vibrational", fillcolor="#F7F7F7", style="rounded,filled,dashed", color="#666666", penwidth=1.0, tooltip="O2_v"];
-  "O_1D" [label="O_1D\nq=+0 | depth=1\natom,metastable,neutral\nmissing=4", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O_1D | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV,polarizability_A3"];
-  "O_1S" [label="O_1S\nq=+0 | depth=1\natom,metastable,neutral\nmissing=4", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O_1S | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV,polarizability_A3"];
+  "O_1D" [label="O_1D\nq=+0 | depth=1\natom,metastable,neutral\nmissing=3", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O_1D | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV"];
+  "O_1S" [label="O_1S\nq=+0 | depth=1\natom,metastable,neutral\nmissing=3", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="O_1S | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV"];
   "Ar" -> "Ar_4s" [label="excitation\nd0 | e_Ar_excitation_4s_lumped", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + Ar -> e + Ar_4s"];
   "Ar" -> "Ar+" [label="ionization\nd0 | e_Ar_ionization", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + Ar -> 2 e + Ar+"];
   "O2" -> "O2_a1Delta" [label="excitation\nd0 | e_O2_excitation_O2_a1Delta", color="#2F6DB3", fontcolor="#2F6DB3", style="dashed", tooltip="e + O2 -> e + O2_a1Delta"];

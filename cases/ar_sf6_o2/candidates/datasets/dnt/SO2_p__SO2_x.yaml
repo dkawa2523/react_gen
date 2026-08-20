@@ -1,0 +1,53 @@
+pair: SO2_p__SO2_x
+models:
+- analytic_resonant_charge_exchange
+- dnt_plus_dm
+readiness:
+  long_range:
+    status: blocked
+    missing:
+    - polarizability_A3
+  full:
+    status: blocked
+    missing:
+    - polarizability_A3
+    - short_range_potential
+  analytic_resonant:
+    status: ready
+    missing: []
+runnable:
+- analytic_resonant
+projectile:
+  id: SO2+
+  charge: 1
+  mass_amu: 64.058251
+target:
+  id: SO2*
+  mass_amu: 64.058
+  polarizability_A3: null
+  dipole_moment_D: 1.63
+  collision_radius_A: 1.9903
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 32.02906274987706
+long_range:
+  model: ion_dipole
+  polarizability_A3: null
+  dipole_moment_D: 1.63
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 300.0
+  points: 300
+  spacing: log
+conditions:
+  pressure_Pa: 4.0
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 5.0e+16
+  reduced_field_Td: 50.0
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+  residence_time_s: 0.05
+channels: []

@@ -12,7 +12,7 @@ digraph reactions {
   }
   "Ar" [label="Ar\nq=+0 | depth=0\natom,neutral", fillcolor="#E8F5E9", style="rounded,filled", color="#666666", penwidth=1.0, tooltip="Ar"];
   "Ar+" [label="Ar+\nq=+1 | depth=1\natom,positive_ion\nmissing=2", fillcolor="#E3F2FD", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="Ar+ | missing=electron_affinity_eV,polarizability_A3"];
-  "Ar_4s" [label="Ar_4s\nq=+0 | depth=1\natom,excited,metastable\nmissing=2", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="Ar_4s | missing=collision_radius_A,polarizability_A3"];
+  "Ar_4s" [label="Ar_4s\nq=+0 | depth=1\natom,excited,metastable", fillcolor="#E8F5E9", style="rounded,filled", color="#666666", penwidth=1.0, tooltip="Ar_4s"];
   "C" [label="C\nq=+0 | depth=2\natom,neutral,radical", fillcolor="#E8F5E9", style="rounded,filled", color="#666666", penwidth=1.0, tooltip="C"];
   "C+" [label="C+\nq=+1 | depth=2\ncandidate", fillcolor="#F7F7F7", style="rounded,filled,dashed", color="#666666", penwidth=1.0, tooltip="C+"];
   "CF" [label="CF\nq=+0 | depth=2\nmolecule,neutral,radical", fillcolor="#E8F5E9", style="rounded,filled", color="#666666", penwidth=1.0, tooltip="CF"];
@@ -31,8 +31,8 @@ digraph reactions {
   "CF4+" [label="CF4+\nq=+1 | depth=2\nmolecular_ion,positive_ion\nmissing=4", fillcolor="#E3F2FD", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="CF4+ | missing=dipole_moment_D,electron_affinity_eV,ionization_energy_eV,polarizability_A3"];
   "CF4_v" [label="CF4_v\nq=+0 | depth=1\ncandidate,excited,vibrational", fillcolor="#F7F7F7", style="rounded,filled,dashed", color="#666666", penwidth=1.0, tooltip="CF4_v"];
   "CF_v" [label="CF_v\nq=+0 | depth=3\ncandidate,excited,vibrational", fillcolor="#F7F7F7", style="rounded,filled,dashed", color="#666666", penwidth=1.0, tooltip="CF_v"];
-  "C_1D" [label="C_1D\nq=+0 | depth=2\natom,metastable,neutral\nmissing=4", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="C_1D | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV,polarizability_A3"];
-  "C_1S" [label="C_1S\nq=+0 | depth=2\natom,metastable,neutral\nmissing=4", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="C_1S | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV,polarizability_A3"];
+  "C_1D" [label="C_1D\nq=+0 | depth=2\natom,metastable,neutral\nmissing=3", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="C_1D | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV"];
+  "C_1S" [label="C_1S\nq=+0 | depth=2\natom,metastable,neutral\nmissing=3", fillcolor="#E8F5E9", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="C_1S | missing=collision_radius_A,electron_affinity_eV,ionization_energy_eV"];
   "F" [label="F\nq=+0 | depth=1\natom,neutral,radical", fillcolor="#E8F5E9", style="rounded,filled", color="#666666", penwidth=1.0, tooltip="F"];
   "F*" [label="F*\nq=+0 | depth=2\ncandidate,excited,lumped", fillcolor="#F7F7F7", style="rounded,filled,dashed", color="#666666", penwidth=1.0, tooltip="F*"];
   "F+" [label="F+\nq=+1 | depth=1\natom,positive_ion\nmissing=3", fillcolor="#E3F2FD", style="rounded,filled", color="#D62728", penwidth=2.0, tooltip="F+ | missing=electron_affinity_eV,ionization_energy_eV,polarizability_A3"];

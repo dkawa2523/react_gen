@@ -1,0 +1,71 @@
+pair: SF2_p__Ar_4s
+models:
+- dnt_plus
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - short_range_potential
+runnable:
+- long_range
+projectile:
+  id: SF2+
+  charge: 1
+  mass_amu: 70.05545142000001
+target:
+  id: Ar_4s
+  mass_amu: 39.948
+  polarizability_A3: 1.6423
+  dipole_moment_D: 0.0
+  collision_radius_A: 1.7037
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 25.44079424054639
+long_range:
+  model: ion_induced_dipole
+  polarizability_A3: 1.6423
+  dipole_moment_D: 0.0
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 300.0
+  points: 300
+  spacing: log
+conditions:
+  pressure_Pa: 4.0
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 5.0e+16
+  reduced_field_Td: 50.0
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+  residence_time_s: 0.05
+channels:
+- reaction_id: cand_SF2p_Ar_4s_char_SF2_Arp
+  equation: SF2+ + Ar_4s -> SF2 + Ar+
+  dnt_class: long_range_charge_exchange
+  tier: long_range
+  threshold_eV: 0.0
+  delta_e_eV: -6.640388
+- reaction_id: cand_SF2p_Ar_4s_diss_Sp_F2_Ar
+  equation: SF2+ + Ar_4s -> S+ + F2 + Ar
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.0
+  delta_e_eV: -6.092452999999999
+- reaction_id: cand_SF2p_Ar_4s_diss_S_F2p_Ar
+  equation: SF2+ + Ar_4s -> S + F2+ + Ar
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.0
+  delta_e_eV: -0.7624630000000021
+- reaction_id: cand_SF2p_Ar_4s_diss_S_F2_Arp
+  equation: SF2+ + Ar_4s -> S + F2 + Ar+
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.0
+  delta_e_eV: -0.6928509999999992

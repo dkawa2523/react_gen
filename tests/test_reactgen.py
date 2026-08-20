@@ -679,3 +679,100 @@ def test_an_electron_channel_gets_its_reaction_enthalpy(registry):
 
     # One species without an enthalpy is enough to leave the whole thing unknown.
     assert formation_delta(split, registry.species) is None
+
+
+# --------------------------------------------------------------------------- derive / adopt
+
+
+def test_nothing_is_inherited_across_a_charge_change():
+    """A cation is smaller and less polarizable; same composition is not enough."""
+
+    from reactgen import derive
+
+    registry = Registry.load("registry")
+    inherited = derive.parents(registry)
+    for state_id, parent_id in inherited.items():
+        assert registry.species[state_id].charge == registry.species[parent_id].charge
+
+
+def test_a_state_borrows_its_ground_state_polynomial_shifted():
+    """The manifold has the parent's heat capacity but not its enthalpy.
+
+    Checked against what the registry ships rather than against a fresh
+    derivation, because a wrong shift here is wrong in the data a user gets.
+    """
+
+    registry = Registry.load("registry")
+    state, parent = registry.species["O_1D"], registry.species["O"]
+    if state.thermo is None or parent.thermo is None:
+        pytest.skip("no polynomial for O or O_1D in this registry")
+    shift = state.state.energy_eV * 11604.518
+    # a6 carries the enthalpy constant, in kelvin; Cp and S are untouched.
+    assert state.thermo.low[5] == pytest.approx(parent.thermo.low[5] + shift, rel=1e-6)
+    assert state.thermo.low[:5] == parent.thermo.low[:5]
+    assert state.thermo.high[5] == pytest.approx(parent.thermo.high[5] + shift, rel=1e-6)
+
+
+def test_adopt_never_overrules_a_curated_value(tmp_path):
+    """Someone read that number out of a paper; a table has no standing over it."""
+
+    from reactgen import adopt
+
+    species = tmp_path / "species"
+    species.mkdir()
+    (species / "X.yaml").write_text(
+        yaml.safe_dump(
+            {"id": "X", "properties": {"mass_amu": {"value": 1.0, "source": "a paper"}}}
+        ),
+        encoding="utf-8",
+    )
+    overlay = {
+        "properties": {
+            "X": {
+                "mass_amu": {"value": 99.0, "source": "a table"},
+                "dipole_moment_D": {"value": 0.5, "unit": "D", "source": "a table"},
+            }
+        }
+    }
+    report = adopt.adopt(overlay, tmp_path)
+    written = yaml.safe_load((species / "X.yaml").read_text(encoding="utf-8"))
+    assert written["properties"]["mass_amu"]["value"] == 1.0
+    assert written["properties"]["dipole_moment_D"]["value"] == 0.5
+    assert report.kept["X"] == ["mass_amu"]
+
+
+def test_a_bundle_writes_the_state_list_as_csv(tmp_path, registry):
+    """The property table, with a column per element the bundle actually uses."""
+
+    import csv
+
+    case = build_case(tmp_path)
+    network, _ = expand(registry, case)
+    out = tmp_path / "out"
+    export.write(out, case, network, registry, [], "test.mechanism")
+    rows = list(csv.reader((out / "species.csv").read_text(encoding="utf-8").splitlines()))
+    header = rows[0]
+    assert header[:2] == ["id", "formula"]
+    assert "mass_amu" in header
+    assert "polarizability_A3" in header
+    assert any(column.startswith("n_") for column in header)
+    # Every row has to line up with the header or the file is not a table.
+    assert all(len(row) == len(header) for row in rows[1:])
+    # Provenance survives the flattening; the wide table alone cannot say
+    # whether a zero dipole is a measurement or a symmetry argument.
+    long_form = list(
+        csv.reader((out / "species_sources.csv").read_text(encoding="utf-8").splitlines())
+    )
+    assert long_form[0] == ["id", "property", "value", "unit", "source"]
+    assert all(row[4] for row in long_form[1:])
+
+
+def test_a_species_id_is_not_a_filename():
+    """`F2*` and `CF3-` are legal ids and illegal names on Windows."""
+
+    from reactgen import naming
+
+    assert naming.slug("F2*") == "F2_x"
+    assert naming.slug("CF3-") == "CF3_m"
+    assert naming.slug("Ar+") == "Ar_p"
+    assert not set(naming.slug("O2(a1Dg)*")) & set('<>:"/\|?*')

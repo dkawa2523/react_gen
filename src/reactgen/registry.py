@@ -10,7 +10,7 @@ Layout consumed here::
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import yaml
@@ -182,6 +182,12 @@ def _apply_overlay(
         found = species.get(species_id)
         if found is not None:
             found.properties.update(_properties(properties))
+
+    for species_id, data in (overlay.get("thermo") or {}).items():
+        found = species.get(species_id)
+        fit = _thermo(data)
+        if found is not None and fit is not None:
+            species[species_id] = replace(found, thermo=fit)
 
     by_id = {r.id: r for group in channels.values() for r in group}
     for reaction_id, records in (overlay.get("datasets") or {}).items():

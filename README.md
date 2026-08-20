@@ -3,7 +3,13 @@
 Input gases and process conditions in; a reviewed reaction list, the species
 property table, and the numerical datasets a plasma model needs out.
 
-Three packages, 4,643 lines. See [design](docs/core_design.md).
+Three packages. See [design](docs/core_design.md) and
+[judgment criteria](docs/judgment_criteria.md).
+
+Each bundle writes the state list three ways: `species.csv` one row per state
+with a column per element and every scalar property, `species_sources.csv` the
+same values long-form with where each came from, and `species_thermo.csv` the
+NASA polynomial coefficients.
 
 ```powershell
 rgen generate cases/ar_sf6_o2/case.yaml       # reaction list + species + datasets
@@ -21,6 +27,25 @@ acquire pubchem species.yaml --out external_data/identity
 rgen ingest work/ar/snapshot.yaml --overlay work/overlay.yaml
 rgen generate cases/ar_cf4/case.yaml --overlay work/overlay.yaml
 ```
+
+Species properties come from four sources that do not overlap, and one command
+runs all of them:
+
+```powershell
+python tools/refresh_properties.py           # acquire -> ingest -> derive -> adopt
+python tools/refresh_properties.py --dry-run # report without writing
+```
+
+| step | source | answers |
+|---|---|---|
+| `acquire atoms` | mendeleev | ionization energy, electron affinity, atomic polarizability |
+| `acquire molecular` | chemicals | dipole moment, Lennard-Jones size and well depth |
+| `acquire nasa` | cantera | thermodynamic polynomials, ground states only |
+| `rgen derive` | -- | what a state inherits from its ground state, and mass from composition |
+| `rgen adopt` | -- | writes the result into the registry, never over a curated value |
+
+Molecular polarizability is the one thing none of them answers; it stays a
+manual CCCBDB export. Re-running changes nothing on a registry already full.
 
 Proposing chemistry the registry does not have is a third, optional package:
 

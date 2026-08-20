@@ -32,3 +32,36 @@ properties:
     unit: eV
     source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
       K
+  collision_radius_A:
+    source: chemicals package bundled molecular property tables, CAS 630-08-0
+    unit: A
+    value: 1.7678
+  dipole_moment_D:
+    source: chemicals package bundled molecular property tables, CAS 630-08-0
+    unit: D
+    value: 0.11
+  well_depth_K:
+    source: chemicals package bundled molecular property tables, CAS 630-08-0
+    unit: K
+    value: 102.86
+thermo:
+  high:
+  - 2.71518561
+  - 0.00206252743
+  - -9.98825771e-07
+  - 2.30053008e-10
+  - -2.03647716e-14
+  - -14151.8724
+  - 7.81868772
+  low:
+  - 3.57953347
+  - -0.00061035368
+  - 1.01681433e-06
+  - 9.07005884e-10
+  - -9.04424499e-13
+  - -14344.086
+  - 3.50840928
+  source: cantera bundled thermodynamic data, listed as CO in gri30.yaml
+  t_max: 3500.0
+  t_mid: 1000.0
+  t_min: 200.0

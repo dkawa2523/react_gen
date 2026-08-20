@@ -1,7 +1,7 @@
 summary:
-  long_range: 6/27
+  long_range: 27/27
   full: 0/27
-  analytic_resonant: 8/27
+  analytic_resonant: 9/27
 pairs_total: 27
 no_known_channel: 11
 resonant: 9
@@ -15,22 +15,20 @@ pairs:
   - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
   - short_range_potential
 - pair: Ar_p__Ar_4s
   runnable:
+  - long_range
   - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__O
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__O2
   runnable:
@@ -39,63 +37,56 @@ pairs:
   blocked_by:
   - short_range_potential
 - pair: Ar_p__O2_a1Delta
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__O2_b1Sigma
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 2
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__O2_v
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__O_1D
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: Ar_p__O_1S
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O_p__Ar
   runnable:
   - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
   - short_range_potential
 - pair: O_p__Ar_4s
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O_p__O
   runnable:
+  - long_range
   - analytic_resonant
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O_p__O2
   runnable:
@@ -104,64 +95,57 @@ pairs:
   blocked_by:
   - short_range_potential
 - pair: O_p__O2_a1Delta
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O_p__O2_b1Sigma
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O_p__O2_v
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: O_p__O_1D
   runnable:
+  - long_range
   - analytic_resonant
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O_p__O_1S
   runnable:
+  - long_range
   - analytic_resonant
   known_channels: 0
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O2_p__Ar
   runnable:
   - long_range
   known_channels: 0
   blocked_by:
-  - collision_radius_A
   - short_range_potential
 - pair: O2_p__Ar_4s
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 3
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O2_p__O
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O2_p__O2
   runnable:
@@ -172,40 +156,36 @@ pairs:
   - short_range_potential
 - pair: O2_p__O2_a1Delta
   runnable:
+  - long_range
   - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O2_p__O2_b1Sigma
   runnable:
+  - long_range
   - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O2_p__O2_v
-  runnable: []
+  runnable:
+  - long_range
+  - analytic_resonant
   known_channels: 0
   blocked_by:
-  - collision_radius_A
-  - dipole_moment_D
-  - mass_amu
-  - polarizability_A3
   - short_range_potential
 - pair: O2_p__O_1D
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential
 - pair: O2_p__O_1S
-  runnable: []
+  runnable:
+  - long_range
   known_channels: 1
   blocked_by:
   - collision_radius_A
-  - polarizability_A3
   - short_range_potential

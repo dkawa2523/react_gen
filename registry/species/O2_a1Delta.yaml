@@ -18,17 +18,19 @@ properties:
     unit: amu
     source: NIST Chemistry WebBook SRD 69
   polarizability_A3:
-    value: null
+    source: unchanged from O2 on excitation; NIST CCCBDB experimental polarizability
+      list
     unit: A3
-    source: null
+    value: 1.562
   dipole_moment_D:
     value: 0.0
     unit: D
     source: homonuclear diatomic symmetry
   collision_radius_A:
-    value: null
+    source: unchanged from O2 on excitation; chemicals package bundled molecular property
+      tables, CAS 7782-44-7
     unit: A
-    source: null
+    value: 1.6486
   enthalpy_formation_eV:
     value: 0.977
     unit: eV
@@ -41,7 +43,33 @@ properties:
     value: null
     unit: eV
     source: null
+  well_depth_K:
+    source: unchanged from O2 on excitation; chemicals package bundled molecular property
+      tables, CAS 7782-44-7
+    unit: K
+    value: 119.66
 metadata:
   status: curated
   notes:
   - State-specific record; no ground-state transport property is silently reused.
+thermo:
+  high:
+  - 3.28253784
+  - 0.00148308754
+  - -7.57966669e-07
+  - 2.09470555e-10
+  - -2.16717794e-14
+  - 10249.156366
+  - 5.45323129
+  low:
+  - 3.78245636
+  - -0.00299673416
+  - 9.84730201e-06
+  - -9.68129509e-09
+  - 3.24372837e-12
+  - 10273.670526
+  - 3.65767573
+  source: O2 polynomial with the 0.977 eV level energy added to the enthalpy constant
+  t_max: 3500.0
+  t_mid: 1000.0
+  t_min: 200.0

@@ -1,8 +1,8 @@
 case: ar_cf4
 counts:
   blocking: 0
-  data: 171
-  info: 4
+  data: 233
+  info: 3
 gaps:
 - kind: energy_inconsistent
   subject: e_CF4_dissociative_ionization_CF2p
@@ -305,48 +305,12 @@ gaps:
   detail: produced but never consumed
   severity: info
 - kind: missing_property
-  subject: Ar
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: Ar_4s
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: Ar_4s
-  detail: enthalpy_formation_eV
-  severity: data
-- kind: missing_property
-  subject: Ar_4s
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
   subject: C
   detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: C
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: C
-  detail: polarizability_A3
   severity: data
 - kind: missing_property
   subject: C+
   detail: enthalpy_formation_eV
-  severity: data
-- kind: missing_property
-  subject: C+
-  detail: mass_amu
-  severity: data
-- kind: missing_property
-  subject: CF
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: CF
-  detail: dipole_moment_D
   severity: data
 - kind: missing_property
   subject: CF
@@ -358,14 +322,6 @@ gaps:
   severity: data
 - kind: missing_property
   subject: CF*
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: CF*
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: CF*
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
@@ -374,19 +330,11 @@ gaps:
   severity: data
 - kind: missing_property
   subject: CF*
-  detail: mass_amu
-  severity: data
-- kind: missing_property
-  subject: CF*
   detail: polarizability_A3
   severity: data
 - kind: missing_property
   subject: CF+
   detail: enthalpy_formation_eV
-  severity: data
-- kind: missing_property
-  subject: CF+
-  detail: mass_amu
   severity: data
 - kind: missing_property
   subject: CF2
@@ -402,19 +350,11 @@ gaps:
   severity: data
 - kind: missing_property
   subject: CF2*
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: CF2*
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
   subject: CF2*
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: CF2*
-  detail: mass_amu
   severity: data
 - kind: missing_property
   subject: CF2*
@@ -426,19 +366,11 @@ gaps:
   severity: data
 - kind: missing_property
   subject: CF2_v
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: CF2_v
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
   subject: CF2_v
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: CF2_v
-  detail: mass_amu
   severity: data
 - kind: missing_property
   subject: CF2_v
@@ -458,19 +390,11 @@ gaps:
   severity: data
 - kind: missing_property
   subject: CF3*
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: CF3*
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
   subject: CF3*
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: CF3*
-  detail: mass_amu
   severity: data
 - kind: missing_property
   subject: CF3*
@@ -482,19 +406,7 @@ gaps:
   severity: data
 - kind: missing_property
   subject: CF3_v
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: CF3_v
-  detail: enthalpy_formation_eV
-  severity: data
-- kind: missing_property
-  subject: CF3_v
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: CF3_v
-  detail: mass_amu
   severity: data
 - kind: missing_property
   subject: CF3_v
@@ -502,14 +414,6 @@ gaps:
   severity: data
 - kind: missing_property
   subject: CF4*
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: CF4*
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: CF4*
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
@@ -517,44 +421,8 @@ gaps:
   detail: ionization_energy_eV
   severity: data
 - kind: missing_property
-  subject: CF4*
-  detail: mass_amu
-  severity: data
-- kind: missing_property
-  subject: CF4*
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
-  subject: CF4_v
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: CF4_v
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: CF4_v
-  detail: enthalpy_formation_eV
-  severity: data
-- kind: missing_property
   subject: CF4_v
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: CF4_v
-  detail: mass_amu
-  severity: data
-- kind: missing_property
-  subject: CF4_v
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
-  subject: CF_v
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: CF_v
-  detail: dipole_moment_D
   severity: data
 - kind: missing_property
   subject: CF_v
@@ -563,10 +431,6 @@ gaps:
 - kind: missing_property
   subject: CF_v
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: CF_v
-  detail: mass_amu
   severity: data
 - kind: missing_property
   subject: CF_v
@@ -581,20 +445,12 @@ gaps:
   detail: ionization_energy_eV
   severity: data
 - kind: missing_property
-  subject: C_1D
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
   subject: C_1S
   detail: collision_radius_A
   severity: data
 - kind: missing_property
   subject: C_1S
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: C_1S
-  detail: polarizability_A3
   severity: data
 - kind: missing_property
   subject: F
@@ -606,31 +462,11 @@ gaps:
   severity: data
 - kind: missing_property
   subject: F*
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: F*
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
   subject: F*
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: F*
-  detail: mass_amu
-  severity: data
-- kind: missing_property
-  subject: F*
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
-  subject: F2
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: F2
-  detail: dipole_moment_D
   severity: data
 - kind: missing_property
   subject: F2
@@ -642,23 +478,11 @@ gaps:
   severity: data
 - kind: missing_property
   subject: F2*
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: F2*
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: F2*
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
   subject: F2*
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: F2*
-  detail: mass_amu
   severity: data
 - kind: missing_property
   subject: F2*
@@ -670,27 +494,451 @@ gaps:
   severity: data
 - kind: missing_property
   subject: F2_v
-  detail: collision_radius_A
-  severity: data
-- kind: missing_property
-  subject: F2_v
-  detail: dipole_moment_D
-  severity: data
-- kind: missing_property
-  subject: F2_v
-  detail: enthalpy_formation_eV
-  severity: data
-- kind: missing_property
-  subject: F2_v
   detail: ionization_energy_eV
   severity: data
 - kind: missing_property
   subject: F2_v
-  detail: mass_amu
-  severity: data
-- kind: missing_property
-  subject: F2_v
   detail: polarizability_A3
+  severity: data
+- kind: undeclared_reverse
+  subject: F2_CF2_to_CF3_F
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: F2_CF3_to_CF4_F
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: F2_CF_to_CF2_F
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_Ar_4s_CF3_penning
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_Ar_4s_C_penning
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_Ar_4s_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_Ar_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF3*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF3_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF3_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF4*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF4_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF4_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_CF_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_C_1D_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_C_1S_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_C_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_F*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_F2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_F2_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_F2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF2_v_F_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_Ar_4s_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_Ar_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF2_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF3*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF3_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF4*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF4_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF4_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_CF_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_C_1D_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_C_1S_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_C_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_F*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_F2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_F2_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_F2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF3_v_F_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_Ar_4s_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_Ar_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF2_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF3*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF3_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF3_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF4*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF4_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_CF_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_C_1D_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_C_1S_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_C_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_F*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_F2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_F2_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_F2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF4_v_F_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_Ar_4s_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_Ar_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF2_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF3*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF3_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF3_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF4*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF4_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF4_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_CF_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_C_1D_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_C_1S_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_C_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_F*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_F2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_F2_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_F2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_CF_v_F_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_Ar_4s_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_Ar_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF2_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF3*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF3_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF3_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF4*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF4_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF4_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF_v_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_CF_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_C_1D_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_C_1S_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_C_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_F*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_F2*_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_F2_vt
+  detail: neutral_neutral
+  severity: data
+- kind: undeclared_reverse
+  subject: cand_F2_v_F_vt
+  detail: neutral_neutral
   severity: data
 - kind: no_uncertainty
   subject: datasets
@@ -699,8 +947,4 @@ gaps:
 - kind: out_of_scope
   subject: cross_section
   detail: electron cross sections are not in this registry yet
-  severity: info
-- kind: out_of_scope
-  subject: thermochemistry
-  detail: NASA polynomials and reverse rates are not in this registry yet
   severity: info

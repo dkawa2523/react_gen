@@ -202,3 +202,17 @@ def fold(text: str) -> str:
     """Strip the punctuation that separates one spelling from another."""
 
     return re.sub(r"[_\s\-()]", "", text).lower()
+
+
+# A species id is chemistry, not a filename: `F2*`, `O2(a1Dg)` and `CF3-` are
+# all legal ids and none of them is a legal name on Windows. Charge keeps a
+# readable spelling because these names are read back by eye; the rest goes.
+FILENAME_SAFE = {"+": "_p", "-": "_m", "*": "_x", "(": "", ")": "", " ": "_", "/": "_", ":": "_"}
+
+
+def slug(species_id: str) -> str:
+    """A species id as a filename, on every platform this runs on."""
+
+    for character, replacement in FILENAME_SAFE.items():
+        species_id = species_id.replace(character, replacement)
+    return species_id

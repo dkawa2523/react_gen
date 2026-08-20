@@ -35,3 +35,12 @@ properties:
     value: 1.262119
     unit: eV
     source: mendeleev package, bundled periodic table
+  dipole_moment_D:
+    source: chemicals package bundled molecular property tables, CAS 7440-44-0
+    unit: D
+    value: 0.0
+  polarizability_A3:
+    source: mendeleev package, bundled periodic table, dipole polarizability in atomic
+      units
+    unit: A3
+    value: 1.6745

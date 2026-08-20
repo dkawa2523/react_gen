@@ -1,8 +1,37 @@
 schema_version: 1
 id: S+
 display_name: S+
-composition: {S: 1}
+composition:
+  S: 1
 charge: 1
-classes: [positive_ion, atomic_ion]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
-metadata: {status: literature_supported}
+classes:
+- positive_ion
+- atomic_ion
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+metadata:
+  status: literature_supported
+properties: {}
+thermo:
+  high:
+  - 2.46524359
+  - 0.000114257212
+  - -1.19572699e-07
+  - 4.38771359e-11
+  - -3.80523639e-15
+  - 153485.422
+  - 5.60821371
+  low:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 153478.145
+  - 5.43627019
+  source: cantera bundled thermodynamic data, listed as S+ in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 1000.0
+  t_min: 298.15

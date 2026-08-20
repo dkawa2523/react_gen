@@ -22,12 +22,12 @@ marked the same way, so nothing here can reach a normal generated network.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 from discover import collide, fragments, screen, view
 from discover.relations import Relations
-from reactgen import naming
-from reactgen.model import ELECTRON, Reaction, Species, State, Term
+from reactgen import derive, naming
+from reactgen.model import ELECTRON, Property, Reaction, Species, State, Term
 from reactgen.processes import Selection, select
 from reactgen.registry import Registry
 
@@ -66,6 +66,7 @@ class Proposer:
     max_endothermic_eV: float = 2.0
     processes: Selection = field(default_factory=select)
     _equations: set[tuple] | None = None
+    _elements: dict[str, float] | None = None
 
     @classmethod
     def build(
@@ -495,6 +496,7 @@ class Proposer:
             invented = _species_from(term.species, self._level_of(term.species))
             if invented is None:
                 return False
+            invented = self._inherit(invented)
             self.invented[term.species] = invented
             self.registry.species[term.species] = invented
         return True
@@ -515,6 +517,39 @@ class Proposer:
             # Fitted from the parent's heat capacity, not read off a spectrum.
             return self.vibration.get(parent)
         return self.levels.get(parent, {}).get(kind)
+
+    def _inherit(self, invented: Species) -> Species:
+        """Give an invented state the properties of the substance it is a state of.
+
+        `SF4_v` is sulfur tetrafluoride, so it has SF4's mass and size. Without
+        this a proposed state reaches the output carrying nothing at all -- not
+        even a mass, which no collision rate can be formed without.
+        """
+
+        carried: dict = {}
+        mass = derive.mass_of(invented.composition, invented.charge, self._element_masses())
+        if mass is not None:
+            carried["mass_amu"] = Property(
+                value=mass,
+                unit="amu",
+                source="sum of atomic masses in the registry, less the electron mass",
+            )
+        if invented.state.kind == "ground":
+            return replace(invented, properties={**carried, **invented.properties})
+        key = (tuple(sorted(invented.composition.items())), invented.charge)
+        for candidate in self.registry.species.values():
+            if candidate.state.kind != "ground":
+                continue
+            if (tuple(sorted(candidate.composition.items())), candidate.charge) != key:
+                continue
+            carried |= derive.carried_from(candidate, invented.state.energy_eV)
+            break
+        return replace(invented, properties={**carried, **invented.properties})
+
+    def _element_masses(self) -> dict[str, float]:
+        if self._elements is None:
+            self._elements = derive.element_masses(self.registry)
+        return self._elements
 
     def _species(self) -> dict[str, Species]:
         return self.registry.species

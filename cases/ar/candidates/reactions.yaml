@@ -35,7 +35,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -63,7 +65,7 @@ reactions:
   - registry
   evidence:
     structure: conserved
-    thermochemistry: unknown
+    thermochemistry: endothermic by 11.60 eV
     kinetics: unknown
     attestation: registry
   family: electron
@@ -82,9 +84,11 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 11.6
-  delta_e_eV: null
+  delta_e_eV: 11.6
   electron_energy_cost_eV: 11.6
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 11.599999878283448
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -133,7 +137,9 @@ reactions:
   threshold_eV: 15.75961
   delta_e_eV: 15.75961
   electron_energy_cost_eV: 15.75961
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 15.775407831330298
+    favourable: false
   reverse: null
   precursors: []
   consume: cross_section
@@ -161,7 +167,7 @@ reactions:
   - registry
   evidence:
     structure: conserved
-    thermochemistry: unknown
+    thermochemistry: thermoneutral
     kinetics: unknown
     attestation: registry
   family: electron
@@ -180,9 +186,11 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: 0.0
   electron_energy_cost_eV: null
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 0.0
+    favourable: false
   reverse: null
   precursors:
   - e_Ar_excitation_4s_lumped
@@ -211,7 +219,7 @@ reactions:
   - registry
   evidence:
     structure: conserved
-    thermochemistry: unknown
+    thermochemistry: endothermic by 4.16 eV
     kinetics: unknown
     attestation: registry
   family: electron
@@ -230,9 +238,11 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 4.16
-  delta_e_eV: null
+  delta_e_eV: 4.159610000000001
   electron_energy_cost_eV: 4.16
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: 4.175407953046849
+    favourable: false
   reverse: null
   precursors:
   - e_Ar4s_elastic
@@ -283,7 +293,9 @@ reactions:
   threshold_eV: 0.0
   delta_e_eV: -11.6
   electron_energy_cost_eV: 0.0
-  thermodynamics: null
+  thermodynamics:
+    delta_g_eV: -11.599999878283448
+    favourable: true
   reverse: null
   precursors:
   - e_Ar4s_elastic

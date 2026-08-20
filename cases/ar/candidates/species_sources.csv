@@ -1,0 +1,25 @@
+id,property,value,unit,source
+Ar,collision_radius_A,1.7037,A,"chemicals package bundled molecular property tables, CAS 7440-37-1"
+Ar,dipole_moment_D,0.0,D,atomic symmetry
+Ar,electron_affinity_eV,-11.5,eV,"mendeleev package, bundled periodic table"
+Ar,enthalpy_formation_eV,0.0,eV,"chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula verified against the registry"
+Ar,entropy_J_mol_K,154.8,J/mol/K,"chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula verified against the registry"
+Ar,ionization_energy_eV,15.759612,eV,"mendeleev package, bundled periodic table"
+Ar,mass_amu,39.948,amu,NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+Ar,polarizability_A3,1.6411,A3,Experimental/static polarizability literature seed; CCCBDB/NIST polarizability tables for review
+Ar,well_depth_K,123.55,K,"chemicals package bundled molecular property tables, CAS 7440-37-1"
+Ar,nasa7,,,"cantera bundled thermodynamic data, listed as AR in air.yaml"
+Ar+,dipole_moment_D,0.0,D,atomic-ion symmetry
+Ar+,enthalpy_formation_eV,15.75961,eV,"derived from Ar IE, NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data"
+Ar+,ionization_energy_eV,27.62966,eV,NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+Ar+,mass_amu,39.94745,amu,Ar atomic mass minus electron mass
+Ar+,nasa7,,,"cantera bundled thermodynamic data, listed as Ar+ in nasa_gas.yaml"
+Ar_4s,collision_radius_A,1.7037,A,"unchanged from Ar on excitation; chemicals package bundled molecular property tables, CAS 7440-37-1"
+Ar_4s,dipole_moment_D,0.0,D,atomic species
+Ar_4s,enthalpy_formation_eV,11.6,eV,Ar enthalpy plus the 11.6 eV level energy
+Ar_4s,ionization_energy_eV,4.16,eV,15.7596 eV Ar ionization limit minus the 11.6 eV manifold energy
+Ar_4s,mass_amu,39.948,amu,NIST Chemistry WebBook SRD 69
+Ar_4s,polarizability_A3,1.6423,A3,"unchanged from Ar on excitation; mendeleev package, bundled periodic table, dipole polarizability in atomic units"
+Ar_4s,well_depth_K,123.55,K,"unchanged from Ar on excitation; chemicals package bundled molecular property tables, CAS 7440-37-1"
+Ar_4s,nasa7,,,Ar polynomial with the 11.6 eV level energy added to the enthalpy constant
+e,mass_amu,0.00054858,amu,physical constant

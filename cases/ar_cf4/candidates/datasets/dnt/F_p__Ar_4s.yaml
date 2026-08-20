@@ -1,0 +1,51 @@
+pair: F_p__Ar_4s
+models:
+- dnt_plus
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - short_range_potential
+runnable:
+- long_range
+projectile:
+  id: F+
+  charge: 1
+  mass_amu: 18.9978546
+target:
+  id: Ar_4s
+  mass_amu: 39.948
+  polarizability_A3: 1.6423
+  dipole_moment_D: 0.0
+  collision_radius_A: 1.7037
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 12.874973154783982
+long_range:
+  model: ion_induced_dipole
+  polarizability_A3: 1.6423
+  dipole_moment_D: 0.0
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 100.0
+  points: 200
+  spacing: log
+conditions:
+  pressure_Pa: 2.7
+  gas_temperature_K: 350.0
+  electron_temperature_eV: 4.0
+  electron_density_m3: 3.0e+16
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+channels:
+- reaction_id: cand_Fp_Ar_4s_char_F_Arp
+  equation: F+ + Ar_4s -> F + Ar+
+  dnt_class: long_range_charge_exchange
+  tier: long_range
+  threshold_eV: 0.0
+  delta_e_eV: -13.263269725314176

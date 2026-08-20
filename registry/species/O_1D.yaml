@@ -19,9 +19,10 @@ properties:
     unit: amu
     source: NIST Atomic Data for Oxygen
   polarizability_A3:
-    value: null
+    source: unchanged from O on excitation; mendeleev package, bundled periodic table,
+      dipole polarizability in atomic units
     unit: A3
-    source: null
+    value: 0.7854
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -46,3 +47,24 @@ metadata:
   status: curated
   notes:
   - State-specific record used only when excited-state propagation is enabled.
+thermo:
+  high:
+  - 2.56942078
+  - -8.59741137e-05
+  - 4.19484589e-08
+  - -1.00177799e-11
+  - 1.22833691e-15
+  - 52043.666006
+  - 4.78433864
+  low:
+  - 3.1682671
+  - -0.00327931884
+  - 6.64306396e-06
+  - -6.12806624e-09
+  - 2.11265971e-12
+  - 51948.346106
+  - 2.05193346
+  source: O polynomial with the 1.967 eV level energy added to the enthalpy constant
+  t_max: 3500.0
+  t_mid: 1000.0
+  t_min: 200.0

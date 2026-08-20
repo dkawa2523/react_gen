@@ -36,3 +36,28 @@ properties:
     unit: eV
     source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
       K
+  dipole_moment_D:
+    source: chemicals package bundled molecular property tables, CAS 353-50-4
+    unit: D
+    value: 0.95
+thermo:
+  high:
+  - 6.8163173
+  - 0.00316473282
+  - -1.21776269e-06
+  - 2.05582261e-10
+  - -1.26893125e-14
+  - -79548.2716
+  - -9.52864574
+  low:
+  - 2.12979489
+  - 0.0141019723
+  - -5.94381359e-06
+  - -5.3054479e-09
+  - 3.97367469e-12
+  - -78174.5339
+  - 15.1109092
+  source: cantera bundled thermodynamic data, listed as COF2 in nasa_gas.yaml
+  t_max: 6000.0
+  t_mid: 1000.0
+  t_min: 200.0

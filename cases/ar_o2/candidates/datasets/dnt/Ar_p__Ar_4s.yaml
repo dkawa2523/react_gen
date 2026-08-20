@@ -4,19 +4,17 @@ models:
 - dnt_plus
 readiness:
   long_range:
-    status: blocked
-    missing:
-    - polarizability_A3
+    status: ready
+    missing: []
   full:
     status: blocked
     missing:
-    - collision_radius_A
-    - polarizability_A3
     - short_range_potential
   analytic_resonant:
     status: ready
     missing: []
 runnable:
+- long_range
 - analytic_resonant
 projectile:
   id: Ar+
@@ -25,16 +23,16 @@ projectile:
 target:
   id: Ar_4s
   mass_amu: 39.948
-  polarizability_A3: null
+  polarizability_A3: 1.6423
   dipole_moment_D: 0.0
-  collision_radius_A: null
+  collision_radius_A: 1.7037
   quadrupole_moment_DA: null
   polarizability_anisotropy_A3: null
   rotational_constant_cm1: null
 reduced_mass_amu: 19.97386249905345
 long_range:
   model: ion_induced_dipole
-  polarizability_A3: null
+  polarizability_A3: 1.6423
   dipole_moment_D: 0.0
 short_range: null
 energy_grid:

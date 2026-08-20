@@ -1,4 +1,4 @@
-mechanism_id: ar_o2.Ar-O2.a7772983
+mechanism_id: ar_o2.Ar-O2.9af071a1
 case: ar_o2
 gases:
 - Ar
@@ -23,11 +23,11 @@ data_coverage:
   cross_section: 0/40
   rate_coefficient: 5/30
 relevance:
-  comparable: 3
-  fast: 1
+  comparable: 18
+  fast: 3
   negligible: 1
-  unknown: 65
+  unknown: 48
 gaps:
   blocking: 0
-  data: 35
-  info: 4
+  data: 30
+  info: 3

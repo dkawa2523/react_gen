@@ -1,10 +1,41 @@
 schema_version: 1
 id: SF
 display_name: SF
-composition: {S: 1, F: 1}
+composition:
+  S: 1
+  F: 1
 charge: 0
-classes: [neutral, radical, molecule]
-state: {kind: ground, label: X, excitation_energy_eV: 0.0}
+classes:
+- neutral
+- radical
+- molecule
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
 metadata:
   status: literature_supported
-  notes: [Sulfur monofluoride fragment in the SF6/O2 volume mechanism.]
+  notes:
+  - Sulfur monofluoride fragment in the SF6/O2 volume mechanism.
+properties: {}
+thermo:
+  high:
+  - 4.3690885
+  - 0.00019204424
+  - -6.6630365e-08
+  - 1.244859e-11
+  - -7.6537494e-16
+  - 220.18526
+  - 2.07596863
+  low:
+  - 3.4208175
+  - 0.0045511198
+  - -7.9372564e-06
+  - 6.5004711e-09
+  - -2.0289665e-12
+  - 396.09503
+  - 6.54700583
+  source: cantera bundled thermodynamic data, listed as SF in nasa_gas.yaml
+  t_max: 5000.0
+  t_mid: 1000.0
+  t_min: 300.0
