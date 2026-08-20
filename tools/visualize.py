@@ -1174,32 +1174,44 @@ PROCESS = {
 
 
 def _pair_key(reaction: dict) -> tuple:
-    """Sort so every channel of one colliding pair sits together.
+    """Two-body first, then by the colliding pair, then by process.
 
     A reviewer reads `e + CF4 ->` as a block: all the ways that pair can come
-    out, side by side. Sorting by id scatters them, and sorting by product
-    splits the pair that produced them.
+    out, side by side. Sorting by id scatters them. Body count leads because a
+    three-body channel is a different kind of statement from a two-body one —
+    it needs a density to mean anything — and mixing them in one run of rows
+    hides that.
     """
 
     left = tuple(sorted(term["species"] for term in reaction["reactants"]))
-    return (left, reaction.get("type", ""), reaction.get("depth", 0), reaction["id"])
+    bodies = sum(int(term.get("n", 1)) for term in reaction["reactants"])
+    return (bodies, left, reaction.get("type", ""), reaction.get("depth", 0), reaction["id"])
 
 
 def _by_process(reactions: list[dict], verdicts: dict[str, str], out: Path) -> dict[str, int]:
-    """One file per kind of collision, each grouped by the pair that collides."""
+    """One file per kind of collision, holding what this layer settled.
+
+    Only the channels the layer decided are written. A file of everything with
+    a column saying which rows count is a filtering step for whoever opens it;
+    the point of splitting by layer was to hand on a list that stands on its
+    own footing.
+    """
 
     out.mkdir(parents=True, exist_ok=True)
     groups: dict[str, list[dict]] = defaultdict(list)
     for reaction in reactions:
+        kind = verdicts[reaction["id"]].split(" by ")[0]
+        if kind in UNDECIDED or kind == "not_run":
+            continue
         groups[PROCESS.get(reaction.get("family", ""), "neutral_reaction")].append(reaction)
 
     counts = {}
     for name, held in groups.items():
-        rows = ["reactants,products,id,family,type,depth,status,verdict,decided"]
+        rows = ["bodies,reactants,products,id,family,type,depth,status,verdict"]
         for reaction in sorted(held, key=_pair_key):
             verdict = verdicts[reaction["id"]]
-            kind = verdict.split(" by ")[0]
             fields = [
+                sum(int(term.get("n", 1)) for term in reaction["reactants"]),
                 " + ".join(term["species"] for term in reaction["reactants"]),
                 " + ".join(term["species"] for term in reaction["products"]),
                 reaction["id"],
@@ -1208,7 +1220,6 @@ def _by_process(reactions: list[dict], verdicts: dict[str, str], out: Path) -> d
                 reaction.get("depth", 0),
                 reaction.get("status", ""),
                 verdict,
-                "no" if kind in UNDECIDED or kind == "not_run" else "yes",
             ]
             rows.append(",".join(f'"{f}"' if "," in str(f) else str(f) for f in fields))
         (out / f"{name}.csv").write_text(NEWLINE.join(rows) + NEWLINE, encoding="utf-8")

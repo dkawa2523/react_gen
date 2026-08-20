@@ -16,6 +16,6 @@ species:
   - ionization_energy_eV
   blocked_by_missing_property: 23
 by_process:
-  electron_impact: 127
+  electron_impact: 5
   ion_collision: 209
-  neutral_reaction: 110
+  neutral_reaction: 2

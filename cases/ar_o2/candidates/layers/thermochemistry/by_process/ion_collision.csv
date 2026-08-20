@@ -1,20 +1,20 @@
-reactants,products,id,family,type,depth,status,verdict,decided
-Ar+ + O,Ar + O+,cand_Arp_O_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 2.14 eV,yes
-Ar+ + O2,Ar + O2+,Arp_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,exothermic by 3.69 eV,yes
-Ar+ + O2_a1Delta,Ar + O2+,cand_Arp_O2_a1Delta_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 4.67 eV,yes
-Ar+ + O2_b1Sigma,Ar + O2+,cand_Arp_O2_b1Sigma_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 5.32 eV,yes
-Ar+ + O2_b1Sigma,Ar + O+ + O,cand_Arp_O2_b1Sigma_diss_Ar_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.40 eV,yes
-Ar+ + O2_v,Ar + O2+,cand_Arp_O2_v_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 3.69 eV,yes
-Ar+ + O_1D,Ar + O+,cand_Arp_O_1D_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 4.11 eV,yes
-Ar+ + O_1S,Ar + O+,cand_Arp_O_1S_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 6.33 eV,yes
-O+ + Ar_4s,O + Ar+,cand_Op_Ar_4s_char_O_Arp,ion_neutral,charge_transfer,1,candidate,exothermic by 9.46 eV,yes
-O2+ + Ar_4s,O2 + Ar+,cand_O2p_Ar_4s_char_O2_Arp,ion_neutral,charge_transfer,1,candidate,exothermic by 7.91 eV,yes
-O2+ + Ar_4s,O + O + Ar+,cand_O2p_Ar_4s_diss_O_O_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 2.74 eV,yes
-O2+ + Ar_4s,O+ + O + Ar,cand_O2p_Ar_4s_diss_Op_O_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 4.89 eV,yes
-O2+ + O,O2 + O+,cand_O2p_O_char_O2_Op,ion_neutral,charge_transfer,1,candidate,endothermic by 1.55 eV,yes
-O+ + O2,O + O2+,Op_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,exothermic by 1.55 eV,yes
-O+ + O2_a1Delta,O + O2+,cand_Op_O2_a1Delta_char_O_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 2.52 eV,yes
-O+ + O2_b1Sigma,O + O2+,cand_Op_O2_b1Sigma_char_O_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 3.17 eV,yes
-O+ + O2_v,O + O2+,cand_Op_O2_v_char_O_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 1.55 eV,yes
-O2+ + O_1D,O2 + O+,cand_O2p_O_1D_char_O2_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 0.42 eV,yes
-O2+ + O_1S,O2 + O+,cand_O2p_O_1S_char_O2_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 2.64 eV,yes
+bodies,reactants,products,id,family,type,depth,status,verdict
+2,Ar+ + O,Ar + O+,cand_Arp_O_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 2.14 eV
+2,Ar+ + O2,Ar + O2+,Arp_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,exothermic by 3.69 eV
+2,Ar+ + O2_a1Delta,Ar + O2+,cand_Arp_O2_a1Delta_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 4.67 eV
+2,Ar+ + O2_b1Sigma,Ar + O2+,cand_Arp_O2_b1Sigma_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 5.32 eV
+2,Ar+ + O2_b1Sigma,Ar + O+ + O,cand_Arp_O2_b1Sigma_diss_Ar_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,endothermic by 1.40 eV
+2,Ar+ + O2_v,Ar + O2+,cand_Arp_O2_v_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 3.69 eV
+2,Ar+ + O_1D,Ar + O+,cand_Arp_O_1D_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 4.11 eV
+2,Ar+ + O_1S,Ar + O+,cand_Arp_O_1S_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 6.33 eV
+2,O+ + Ar_4s,O + Ar+,cand_Op_Ar_4s_char_O_Arp,ion_neutral,charge_transfer,1,candidate,exothermic by 9.46 eV
+2,O2+ + Ar_4s,O2 + Ar+,cand_O2p_Ar_4s_char_O2_Arp,ion_neutral,charge_transfer,1,candidate,exothermic by 7.91 eV
+2,O2+ + Ar_4s,O + O + Ar+,cand_O2p_Ar_4s_diss_O_O_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 2.74 eV
+2,O2+ + Ar_4s,O+ + O + Ar,cand_O2p_Ar_4s_diss_Op_O_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,exothermic by 4.89 eV
+2,O2+ + O,O2 + O+,cand_O2p_O_char_O2_Op,ion_neutral,charge_transfer,1,candidate,endothermic by 1.55 eV
+2,O+ + O2,O + O2+,Op_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,exothermic by 1.55 eV
+2,O+ + O2_a1Delta,O + O2+,cand_Op_O2_a1Delta_char_O_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 2.52 eV
+2,O+ + O2_b1Sigma,O + O2+,cand_Op_O2_b1Sigma_char_O_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 3.17 eV
+2,O+ + O2_v,O + O2+,cand_Op_O2_v_char_O_O2p,ion_neutral,charge_transfer,1,candidate,exothermic by 1.55 eV
+2,O2+ + O_1D,O2 + O+,cand_O2p_O_1D_char_O2_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 0.42 eV
+2,O2+ + O_1S,O2 + O+,cand_O2p_O_1S_char_O2_Op,ion_neutral,charge_transfer,1,candidate,exothermic by 2.64 eV

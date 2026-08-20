@@ -1,210 +1,210 @@
-reactants,products,id,family,type,depth,status,verdict,decided
-CF4+ + Ar,CF4 + Ar+,cand_CF4p_Ar_char_CF4_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + Ar,CF3+ + F + Ar,cand_CF4p_Ar_diss_CF3p_F_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + Ar,F + Ar+,cand_Fp_Ar_char_F_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-F2+ + Ar,F2 + Ar+,cand_F2p_Ar_char_F2_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + Ar,F + F + Ar+,cand_F2p_Ar_diss_F_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + C,Ar + C+,cand_Arp_C_char_Ar_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + CF,Ar + C+ + F,cand_Arp_CF_diss_Ar_Cp_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + CF*,Ar + C+ + F,cand_Arp_CF*_diss_Ar_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-Ar+ + CF2,Ar + CF2+,cand_Arp_CF2_char_Ar_CF2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + CF2*,Ar + CF2+,cand_Arp_CF2*_char_Ar_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + CF2_v,Ar + CF2+,cand_Arp_CF2_v_char_Ar_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + CF3,Ar + CF3+,cand_Arp_CF3_char_Ar_CF3p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + CF3,Ar + CF2+ + F,cand_Arp_CF3_diss_Ar_CF2p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + CF3*,Ar + CF3+,cand_Arp_CF3*_char_Ar_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + CF3*,Ar + CF2+ + F,cand_Arp_CF3*_diss_Ar_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + CF3_v,Ar + CF3+,cand_Arp_CF3_v_char_Ar_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + CF3_v,Ar + CF2+ + F,cand_Arp_CF3_v_diss_Ar_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + CF4,Ar + CF4+,cand_Arp_CF4_char_Ar_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + CF4,Ar + CF3+ + F,cand_Arp_CF4_diss_Ar_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + CF4*,Ar + CF4+,cand_Arp_CF4*_char_Ar_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + CF4*,Ar + CF3+ + F,cand_Arp_CF4*_diss_Ar_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + CF4_v,Ar + CF4+,cand_Arp_CF4_v_char_Ar_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + CF4_v,Ar + CF3+ + F,cand_Arp_CF4_v_diss_Ar_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + CF_v,Ar + C+ + F,cand_Arp_CF_v_diss_Ar_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-Ar+ + C_1D,Ar + C+,cand_Arp_C_1D_char_Ar_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + C_1S,Ar + C+,cand_Arp_C_1S_char_Ar_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + F,Ar + F+,cand_Arp_F_char_Ar_Fp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + F*,Ar + F+,cand_Arp_F*_char_Ar_Fp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + F2,Ar + F2+,cand_Arp_F2_char_Ar_F2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-Ar+ + F2,Ar+ + F + F,cand_Arp_F2_reac_Arp_F_F,ion_neutral,reactive_scattering,1,candidate,"conserved, species proposed",yes
-Ar+ + F2*,Ar + F2+,cand_Arp_F2*_char_Ar_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + F2*,Ar+ + F + F,cand_Arp_F2*_reac_Arp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-Ar+ + F2_v,Ar + F2+,cand_Arp_F2_v_char_Ar_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-Ar+ + F2_v,Ar+ + F + F,cand_Arp_F2_v_reac_Arp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-C+ + Ar_4s,C + Ar+,cand_Cp_Ar_4s_char_C_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF2+ + Ar_4s,CF2 + Ar+,cand_CF2p_Ar_4s_char_CF2_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-CF2+ + Ar_4s,CF + F + Ar+,cand_CF2p_Ar_4s_diss_CF_F_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF2+ + Ar_4s,CF + F+ + Ar,cand_CF2p_Ar_4s_diss_CF_Fp_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF2+ + Ar_4s,C+ + F2 + Ar,cand_CF2p_Ar_4s_diss_Cp_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF3+ + Ar_4s,CF3 + Ar+,cand_CF3p_Ar_4s_char_CF3_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-CF3+ + Ar_4s,CF2 + F + Ar+,cand_CF3p_Ar_4s_diss_CF2_F_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF3+ + Ar_4s,CF2 + F+ + Ar,cand_CF3p_Ar_4s_diss_CF2_Fp_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF3+ + Ar_4s,CF2+ + F + Ar,cand_CF3p_Ar_4s_diss_CF2p_F_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF4+ + Ar_4s,CF4 + Ar+,cand_CF4p_Ar_4s_char_CF4_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + Ar_4s,CF2 + F2 + Ar+,cand_CF4p_Ar_4s_diss_CF2_F2_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + Ar_4s,CF2 + F2+ + Ar,cand_CF4p_Ar_4s_diss_CF2_F2p_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + Ar_4s,CF2+ + F2 + Ar,cand_CF4p_Ar_4s_diss_CF2p_F2_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + Ar_4s,CF3 + F + Ar+,cand_CF4p_Ar_4s_diss_CF3_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + Ar_4s,CF3 + F+ + Ar,cand_CF4p_Ar_4s_diss_CF3_Fp_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + Ar_4s,CF3+ + F + Ar,cand_CF4p_Ar_4s_diss_CF3p_F_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + Ar_4s,F + Ar+,cand_Fp_Ar_4s_char_F_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-F2+ + Ar_4s,F2 + Ar+,cand_F2p_Ar_4s_char_F2_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + Ar_4s,F + F + Ar+,cand_F2p_Ar_4s_diss_F_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + Ar_4s,F+ + F + Ar,cand_F2p_Ar_4s_diss_Fp_F_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF2+ + C,CF2 + C+,cand_CF2p_C_char_CF2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + C,CF4 + C+,cand_CF4p_C_char_CF4_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + C,CF3+ + F + C,cand_CF4p_C_diss_CF3p_F_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + C,F + C+,cand_Fp_C_char_F_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + C,F2 + C+,cand_F2p_C_char_F2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + C,F + F + C+,cand_F2p_C_diss_F_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-C+ + CF2,C + CF2+,cand_Cp_CF2_char_C_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-C+ + CF2*,C + CF2+,cand_Cp_CF2*_char_C_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-C+ + CF2_v,C + CF2+,cand_Cp_CF2_v_char_C_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-C+ + CF3,C + CF3+,cand_Cp_CF3_char_C_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-C+ + CF3*,C + CF3+,cand_Cp_CF3*_char_C_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-C+ + CF3_v,C + CF3+,cand_Cp_CF3_v_char_C_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-C+ + F2,C+ + F + F,cand_Cp_F2_reac_Cp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-C+ + F2*,C+ + F + F,cand_Cp_F2*_reac_Cp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-C+ + F2_v,C+ + F + F,cand_Cp_F2_v_reac_Cp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-CF3+ + CF,CF2+ + CF2,cand_CF3p_CF_diss_CF2p_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF,CF3 + CF2+,cand_CF4p_CF_diss_CF3_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF,CF3+ + CF2,cand_CF4p_CF_diss_CF3p_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF,CF3+ + F + CF,cand_CF4p_CF_diss_CF3p_F_CF,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF,F + C+ + F,cand_Fp_CF_diss_F_Cp_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF,F2 + C+ + F,cand_F2p_CF_diss_F2_Cp_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF3+ + CF*,CF2+ + CF2,cand_CF3p_CF*_diss_CF2p_CF2,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-CF4+ + CF*,CF3 + CF2+,cand_CF4p_CF*_diss_CF3_CF2p,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-CF4+ + CF*,CF3+ + CF2,cand_CF4p_CF*_diss_CF3p_CF2,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-CF4+ + CF*,CF3+ + F + CF,cand_CF4p_CF*_diss_CF3p_F_CF,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-F+ + CF*,F + C+ + F,cand_Fp_CF*_diss_F_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-F2+ + CF*,F2 + C+ + F,cand_F2p_CF*_diss_F2_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-CF2+ + CF2,CF3+ + CF,cand_CF2p_CF2_diss_CF3p_CF,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF4+ + CF2,CF4 + CF2+,cand_CF4p_CF2_char_CF4_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF2,CF3+ + CF3,cand_CF4p_CF2_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF2,CF3+ + F + CF2,cand_CF4p_CF2_diss_CF3p_F_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF2,F + CF2+,cand_Fp_CF2_char_F_CF2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-F2+ + CF2,F2 + CF2+,cand_F2p_CF2_char_F2_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF2,F + F + CF2+,cand_F2p_CF2_diss_F_F_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF2+ + CF2*,CF3+ + CF,cand_CF2p_CF2*_diss_CF3p_CF,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF2*,CF4 + CF2+,cand_CF4p_CF2*_char_CF4_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF2*,CF3+ + CF3,cand_CF4p_CF2*_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF2*,CF3+ + F + CF2,cand_CF4p_CF2*_diss_CF3p_F_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF2*,F + CF2+,cand_Fp_CF2*_char_F_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF2*,F2 + CF2+,cand_F2p_CF2*_char_F2_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF2*,F + F + CF2+,cand_F2p_CF2*_diss_F_F_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF2+ + CF2_v,CF3+ + CF,cand_CF2p_CF2_v_diss_CF3p_CF,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF2+ + CF3,CF2 + CF3+,cand_CF2p_CF3_char_CF2_CF3p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-CF2+ + CF3*,CF2 + CF3+,cand_CF2p_CF3*_char_CF2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF2+ + CF3_v,CF2 + CF3+,cand_CF2p_CF3_v_char_CF2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF2+ + CF4,CF3+ + CF3,cand_CF2p_CF4_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF2+ + CF4*,CF3+ + CF3,cand_CF2p_CF4*_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF2+ + CF4_v,CF3+ + CF3,cand_CF2p_CF4_v_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF2+ + C_1D,CF2 + C+,cand_CF2p_C_1D_char_CF2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF2+ + C_1S,CF2 + C+,cand_CF2p_C_1S_char_CF2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF2+ + F2,CF2+ + F + F,cand_CF2p_F2_reac_CF2p_F_F,ion_neutral,reactive_scattering,1,candidate,"conserved, species proposed",yes
-CF2+ + F2*,CF2+ + F + F,cand_CF2p_F2*_reac_CF2p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-CF2+ + F2_v,CF2+ + F + F,cand_CF2p_F2_v_reac_CF2p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-CF4+ + CF2_v,CF4 + CF2+,cand_CF4p_CF2_v_char_CF4_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF2_v,CF3+ + CF3,cand_CF4p_CF2_v_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF2_v,CF3+ + F + CF2,cand_CF4p_CF2_v_diss_CF3p_F_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF2_v,F + CF2+,cand_Fp_CF2_v_char_F_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF2_v,F2 + CF2+,cand_F2p_CF2_v_char_F2_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF2_v,F + F + CF2+,cand_F2p_CF2_v_diss_F_F_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF3+ + CF3,CF4 + CF2+,cand_CF3p_CF3_diss_CF4_CF2p,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-CF4+ + CF3,CF4 + CF3+,cand_CF4p_CF3_char_CF4_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF3,CF3+ + F + CF3,cand_CF4p_CF3_diss_CF3p_F_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF3,CF4 + CF2+ + F,cand_CF4p_CF3_diss_CF4_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF3,F + CF3+,cand_Fp_CF3_char_F_CF3p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-F+ + CF3,F + CF2+ + F,cand_Fp_CF3_diss_F_CF2p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-F2+ + CF3,F2 + CF3+,cand_F2p_CF3_char_F2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF3,F2 + CF2+ + F,cand_F2p_CF3_diss_F2_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF3,F + F + CF3+,cand_F2p_CF3_diss_F_F_CF3p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF3+ + CF3*,CF4 + CF2+,cand_CF3p_CF3*_diss_CF4_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF3*,CF4 + CF3+,cand_CF4p_CF3*_char_CF4_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF3*,CF3+ + F + CF3,cand_CF4p_CF3*_diss_CF3p_F_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF3*,CF4 + CF2+ + F,cand_CF4p_CF3*_diss_CF4_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF3*,F + CF3+,cand_Fp_CF3*_char_F_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF3*,F + CF2+ + F,cand_Fp_CF3*_diss_F_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF3*,F2 + CF3+,cand_F2p_CF3*_char_F2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF3*,F2 + CF2+ + F,cand_F2p_CF3*_diss_F2_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF3*,F + F + CF3+,cand_F2p_CF3*_diss_F_F_CF3p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF3+ + CF3_v,CF4 + CF2+,cand_CF3p_CF3_v_diss_CF4_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF3+ + CF_v,CF2+ + CF2,cand_CF3p_CF_v_diss_CF2p_CF2,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-CF3+ + C_1D,CF3 + C+,cand_CF3p_C_1D_char_CF3_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF3+ + C_1S,CF3 + C+,cand_CF3p_C_1S_char_CF3_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF3+ + F2,CF3+ + F + F,cand_CF3p_F2_reac_CF3p_F_F,ion_neutral,reactive_scattering,1,candidate,"conserved, species proposed",yes
-CF3+ + F2*,CF3+ + F + F,cand_CF3p_F2*_reac_CF3p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-CF3+ + F2_v,CF3+ + F + F,cand_CF3p_F2_v_reac_CF3p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-CF4+ + CF3_v,CF4 + CF3+,cand_CF4p_CF3_v_char_CF4_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF3_v,CF3+ + F + CF3,cand_CF4p_CF3_v_diss_CF3p_F_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF3_v,CF4 + CF2+ + F,cand_CF4p_CF3_v_diss_CF4_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF3_v,F + CF3+,cand_Fp_CF3_v_char_F_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF3_v,F + CF2+ + F,cand_Fp_CF3_v_diss_F_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF3_v,F2 + CF3+,cand_F2p_CF3_v_char_F2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF3_v,F2 + CF2+ + F,cand_F2p_CF3_v_diss_F2_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF3_v,F + F + CF3+,cand_F2p_CF3_v_diss_F_F_CF3p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF4,CF3+ + F + CF4,cand_CF4p_CF4_diss_CF3p_F_CF4,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF4,F + CF4+,cand_Fp_CF4_char_F_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-F+ + CF4,F + CF2+ + F2,cand_Fp_CF4_diss_F_CF2p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-F+ + CF4,F + CF3+ + F,cand_Fp_CF4_diss_F_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-F2+ + CF4,F2 + CF4+,cand_F2p_CF4_char_F2_CF4p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF4,F2 + CF3+ + F,cand_F2p_CF4_diss_F2_CF3p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF4,F + F + CF4+,cand_F2p_CF4_diss_F_F_CF4p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF4*,CF3+ + F + CF4,cand_CF4p_CF4*_diss_CF3p_F_CF4,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF4*,F + CF4+,cand_Fp_CF4*_char_F_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-F+ + CF4*,F + CF2+ + F2,cand_Fp_CF4*_diss_F_CF2p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-F+ + CF4*,F + CF3+ + F,cand_Fp_CF4*_diss_F_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-F2+ + CF4*,F2 + CF4+,cand_F2p_CF4*_char_F2_CF4p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF4*,F2 + CF3+ + F,cand_F2p_CF4*_diss_F2_CF3p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF4*,F + F + CF4+,cand_F2p_CF4*_diss_F_F_CF4p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF4_v,CF3+ + F + CF4,cand_CF4p_CF4_v_diss_CF3p_F_CF4,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + CF_v,CF3 + CF2+,cand_CF4p_CF_v_diss_CF3_CF2p,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-CF4+ + CF_v,CF3+ + CF2,cand_CF4p_CF_v_diss_CF3p_CF2,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-CF4+ + CF_v,CF3+ + F + CF,cand_CF4p_CF_v_diss_CF3p_F_CF,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-CF4+ + C_1D,CF4 + C+,cand_CF4p_C_1D_char_CF4_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + C_1D,CF3 + F + C+,cand_CF4p_C_1D_diss_CF3_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + C_1D,CF3+ + F + C,cand_CF4p_C_1D_diss_CF3p_F_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + C_1S,CF4 + C+,cand_CF4p_C_1S_char_CF4_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + C_1S,CF2 + F2 + C+,cand_CF4p_C_1S_diss_CF2_F2_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + C_1S,CF2+ + F2 + C,cand_CF4p_C_1S_diss_CF2p_F2_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + C_1S,CF3 + F + C+,cand_CF4p_C_1S_diss_CF3_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + C_1S,CF3+ + F + C,cand_CF4p_C_1S_diss_CF3p_F_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + F,CF3+ + F + F,cand_CF4p_F_diss_CF3p_F_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + F*,CF3+ + F + F,cand_CF4p_F*_diss_CF3p_F_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + F2,CF4 + F2+,cand_CF4p_F2_char_CF4_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + F2,CF3+ + F + F2,cand_CF4p_F2_diss_CF3p_F_F2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + F2,CF4+ + F + F,cand_CF4p_F2_reac_CF4p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-CF4+ + F2*,CF4 + F2+,cand_CF4p_F2*_char_CF4_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + F2*,CF3+ + F + F2,cand_CF4p_F2*_diss_CF3p_F_F2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + F2*,CF4+ + F + F,cand_CF4p_F2*_reac_CF4p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-CF4+ + F2_v,CF4 + F2+,cand_CF4p_F2_v_char_CF4_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + F2_v,CF3+ + F + F2,cand_CF4p_F2_v_diss_CF3p_F_F2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-CF4+ + F2_v,CF4+ + F + F,cand_CF4p_F2_v_reac_CF4p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-F+ + CF4_v,F + CF4+,cand_Fp_CF4_v_char_F_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-F+ + CF4_v,F + CF2+ + F2,cand_Fp_CF4_v_diss_F_CF2p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-F+ + CF4_v,F + CF3+ + F,cand_Fp_CF4_v_diss_F_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
-F2+ + CF4_v,F2 + CF4+,cand_F2p_CF4_v_char_F2_CF4p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF4_v,F2 + CF3+ + F,cand_F2p_CF4_v_diss_F2_CF3p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + CF4_v,F + F + CF4+,cand_F2p_CF4_v_diss_F_F_CF4p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + CF_v,F + C+ + F,cand_Fp_CF_v_diss_F_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-F2+ + CF_v,F2 + C+ + F,cand_F2p_CF_v_diss_F2_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed",yes
-F+ + C_1D,F + C+,cand_Fp_C_1D_char_F_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + C_1D,F2 + C+,cand_F2p_C_1D_char_F2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + C_1D,F + F + C+,cand_F2p_C_1D_diss_F_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + C_1S,F + C+,cand_Fp_C_1S_char_F_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + C_1S,F2 + C+,cand_F2p_C_1S_char_F2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + C_1S,F + F + C+,cand_F2p_C_1S_diss_F_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + C_1S,F+ + F + C,cand_F2p_C_1S_diss_Fp_F_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + F,F2 + F+,cand_F2p_F_char_F2_Fp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F2+ + F*,F2 + F+,cand_F2p_F*_char_F2_Fp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + F2,F + F2+,cand_Fp_F2_char_F_F2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
-F+ + F2,F+ + F + F,cand_Fp_F2_reac_Fp_F_F,ion_neutral,reactive_scattering,1,candidate,"conserved, species proposed",yes
-F+ + F2*,F + F2+,cand_Fp_F2*_char_F_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + F2*,F+ + F + F,cand_Fp_F2*_reac_Fp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-F+ + F2_v,F + F2+,cand_Fp_F2_v_char_F_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed",yes
-F+ + F2_v,F+ + F + F,cand_Fp_F2_v_reac_Fp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-F2+ + F2,F + F + F2+,cand_F2p_F2_reac_F_F_F2p,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-F2+ + F2*,F + F + F2+,cand_F2p_F2*_reac_F_F_F2p,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
-F2+ + F2_v,F + F + F2+,cand_F2p_F2_v_reac_F_F_F2p,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed",yes
+bodies,reactants,products,id,family,type,depth,status,verdict
+2,CF4+ + Ar,CF4 + Ar+,cand_CF4p_Ar_char_CF4_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + Ar,CF3+ + F + Ar,cand_CF4p_Ar_diss_CF3p_F_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + Ar,F + Ar+,cand_Fp_Ar_char_F_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,F2+ + Ar,F2 + Ar+,cand_F2p_Ar_char_F2_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + Ar,F + F + Ar+,cand_F2p_Ar_diss_F_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + C,Ar + C+,cand_Arp_C_char_Ar_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + CF,Ar + C+ + F,cand_Arp_CF_diss_Ar_Cp_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + CF*,Ar + C+ + F,cand_Arp_CF*_diss_Ar_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,Ar+ + CF2,Ar + CF2+,cand_Arp_CF2_char_Ar_CF2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + CF2*,Ar + CF2+,cand_Arp_CF2*_char_Ar_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + CF2_v,Ar + CF2+,cand_Arp_CF2_v_char_Ar_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + CF3,Ar + CF3+,cand_Arp_CF3_char_Ar_CF3p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + CF3,Ar + CF2+ + F,cand_Arp_CF3_diss_Ar_CF2p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + CF3*,Ar + CF3+,cand_Arp_CF3*_char_Ar_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + CF3*,Ar + CF2+ + F,cand_Arp_CF3*_diss_Ar_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + CF3_v,Ar + CF3+,cand_Arp_CF3_v_char_Ar_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + CF3_v,Ar + CF2+ + F,cand_Arp_CF3_v_diss_Ar_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + CF4,Ar + CF4+,cand_Arp_CF4_char_Ar_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + CF4,Ar + CF3+ + F,cand_Arp_CF4_diss_Ar_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + CF4*,Ar + CF4+,cand_Arp_CF4*_char_Ar_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + CF4*,Ar + CF3+ + F,cand_Arp_CF4*_diss_Ar_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + CF4_v,Ar + CF4+,cand_Arp_CF4_v_char_Ar_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + CF4_v,Ar + CF3+ + F,cand_Arp_CF4_v_diss_Ar_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + CF_v,Ar + C+ + F,cand_Arp_CF_v_diss_Ar_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,Ar+ + C_1D,Ar + C+,cand_Arp_C_1D_char_Ar_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + C_1S,Ar + C+,cand_Arp_C_1S_char_Ar_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + F,Ar + F+,cand_Arp_F_char_Ar_Fp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + F*,Ar + F+,cand_Arp_F*_char_Ar_Fp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + F2,Ar + F2+,cand_Arp_F2_char_Ar_F2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,Ar+ + F2,Ar+ + F + F,cand_Arp_F2_reac_Arp_F_F,ion_neutral,reactive_scattering,1,candidate,"conserved, species proposed"
+2,Ar+ + F2*,Ar + F2+,cand_Arp_F2*_char_Ar_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + F2*,Ar+ + F + F,cand_Arp_F2*_reac_Arp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,Ar+ + F2_v,Ar + F2+,cand_Arp_F2_v_char_Ar_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,Ar+ + F2_v,Ar+ + F + F,cand_Arp_F2_v_reac_Arp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,C+ + Ar_4s,C + Ar+,cand_Cp_Ar_4s_char_C_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF2+ + Ar_4s,CF2 + Ar+,cand_CF2p_Ar_4s_char_CF2_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,CF2+ + Ar_4s,CF + F + Ar+,cand_CF2p_Ar_4s_diss_CF_F_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF2+ + Ar_4s,CF + F+ + Ar,cand_CF2p_Ar_4s_diss_CF_Fp_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF2+ + Ar_4s,C+ + F2 + Ar,cand_CF2p_Ar_4s_diss_Cp_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF3+ + Ar_4s,CF3 + Ar+,cand_CF3p_Ar_4s_char_CF3_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,CF3+ + Ar_4s,CF2 + F + Ar+,cand_CF3p_Ar_4s_diss_CF2_F_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF3+ + Ar_4s,CF2 + F+ + Ar,cand_CF3p_Ar_4s_diss_CF2_Fp_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF3+ + Ar_4s,CF2+ + F + Ar,cand_CF3p_Ar_4s_diss_CF2p_F_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF4+ + Ar_4s,CF4 + Ar+,cand_CF4p_Ar_4s_char_CF4_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + Ar_4s,CF2 + F2 + Ar+,cand_CF4p_Ar_4s_diss_CF2_F2_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + Ar_4s,CF2 + F2+ + Ar,cand_CF4p_Ar_4s_diss_CF2_F2p_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + Ar_4s,CF2+ + F2 + Ar,cand_CF4p_Ar_4s_diss_CF2p_F2_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + Ar_4s,CF3 + F + Ar+,cand_CF4p_Ar_4s_diss_CF3_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + Ar_4s,CF3 + F+ + Ar,cand_CF4p_Ar_4s_diss_CF3_Fp_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + Ar_4s,CF3+ + F + Ar,cand_CF4p_Ar_4s_diss_CF3p_F_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + Ar_4s,F + Ar+,cand_Fp_Ar_4s_char_F_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,F2+ + Ar_4s,F2 + Ar+,cand_F2p_Ar_4s_char_F2_Arp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + Ar_4s,F + F + Ar+,cand_F2p_Ar_4s_diss_F_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + Ar_4s,F+ + F + Ar,cand_F2p_Ar_4s_diss_Fp_F_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF2+ + C,CF2 + C+,cand_CF2p_C_char_CF2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + C,CF4 + C+,cand_CF4p_C_char_CF4_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + C,CF3+ + F + C,cand_CF4p_C_diss_CF3p_F_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + C,F + C+,cand_Fp_C_char_F_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + C,F2 + C+,cand_F2p_C_char_F2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + C,F + F + C+,cand_F2p_C_diss_F_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,C+ + CF2,C + CF2+,cand_Cp_CF2_char_C_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,C+ + CF2*,C + CF2+,cand_Cp_CF2*_char_C_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,C+ + CF2_v,C + CF2+,cand_Cp_CF2_v_char_C_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,C+ + CF3,C + CF3+,cand_Cp_CF3_char_C_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,C+ + CF3*,C + CF3+,cand_Cp_CF3*_char_C_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,C+ + CF3_v,C + CF3+,cand_Cp_CF3_v_char_C_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,C+ + F2,C+ + F + F,cand_Cp_F2_reac_Cp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,C+ + F2*,C+ + F + F,cand_Cp_F2*_reac_Cp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,C+ + F2_v,C+ + F + F,cand_Cp_F2_v_reac_Cp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,CF3+ + CF,CF2+ + CF2,cand_CF3p_CF_diss_CF2p_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF,CF3 + CF2+,cand_CF4p_CF_diss_CF3_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF,CF3+ + CF2,cand_CF4p_CF_diss_CF3p_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF,CF3+ + F + CF,cand_CF4p_CF_diss_CF3p_F_CF,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF,F + C+ + F,cand_Fp_CF_diss_F_Cp_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF,F2 + C+ + F,cand_F2p_CF_diss_F2_Cp_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF3+ + CF*,CF2+ + CF2,cand_CF3p_CF*_diss_CF2p_CF2,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,CF4+ + CF*,CF3 + CF2+,cand_CF4p_CF*_diss_CF3_CF2p,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,CF4+ + CF*,CF3+ + CF2,cand_CF4p_CF*_diss_CF3p_CF2,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,CF4+ + CF*,CF3+ + F + CF,cand_CF4p_CF*_diss_CF3p_F_CF,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,F+ + CF*,F + C+ + F,cand_Fp_CF*_diss_F_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,F2+ + CF*,F2 + C+ + F,cand_F2p_CF*_diss_F2_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,CF2+ + CF2,CF3+ + CF,cand_CF2p_CF2_diss_CF3p_CF,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF4+ + CF2,CF4 + CF2+,cand_CF4p_CF2_char_CF4_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF2,CF3+ + CF3,cand_CF4p_CF2_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF2,CF3+ + F + CF2,cand_CF4p_CF2_diss_CF3p_F_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF2,F + CF2+,cand_Fp_CF2_char_F_CF2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,F2+ + CF2,F2 + CF2+,cand_F2p_CF2_char_F2_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF2,F + F + CF2+,cand_F2p_CF2_diss_F_F_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF2+ + CF2*,CF3+ + CF,cand_CF2p_CF2*_diss_CF3p_CF,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF2*,CF4 + CF2+,cand_CF4p_CF2*_char_CF4_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF2*,CF3+ + CF3,cand_CF4p_CF2*_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF2*,CF3+ + F + CF2,cand_CF4p_CF2*_diss_CF3p_F_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF2*,F + CF2+,cand_Fp_CF2*_char_F_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF2*,F2 + CF2+,cand_F2p_CF2*_char_F2_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF2*,F + F + CF2+,cand_F2p_CF2*_diss_F_F_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF2+ + CF2_v,CF3+ + CF,cand_CF2p_CF2_v_diss_CF3p_CF,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF2+ + CF3,CF2 + CF3+,cand_CF2p_CF3_char_CF2_CF3p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,CF2+ + CF3*,CF2 + CF3+,cand_CF2p_CF3*_char_CF2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF2+ + CF3_v,CF2 + CF3+,cand_CF2p_CF3_v_char_CF2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF2+ + CF4,CF3+ + CF3,cand_CF2p_CF4_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF2+ + CF4*,CF3+ + CF3,cand_CF2p_CF4*_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF2+ + CF4_v,CF3+ + CF3,cand_CF2p_CF4_v_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF2+ + C_1D,CF2 + C+,cand_CF2p_C_1D_char_CF2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF2+ + C_1S,CF2 + C+,cand_CF2p_C_1S_char_CF2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF2+ + F2,CF2+ + F + F,cand_CF2p_F2_reac_CF2p_F_F,ion_neutral,reactive_scattering,1,candidate,"conserved, species proposed"
+2,CF2+ + F2*,CF2+ + F + F,cand_CF2p_F2*_reac_CF2p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,CF2+ + F2_v,CF2+ + F + F,cand_CF2p_F2_v_reac_CF2p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,CF4+ + CF2_v,CF4 + CF2+,cand_CF4p_CF2_v_char_CF4_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF2_v,CF3+ + CF3,cand_CF4p_CF2_v_diss_CF3p_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF2_v,CF3+ + F + CF2,cand_CF4p_CF2_v_diss_CF3p_F_CF2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF2_v,F + CF2+,cand_Fp_CF2_v_char_F_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF2_v,F2 + CF2+,cand_F2p_CF2_v_char_F2_CF2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF2_v,F + F + CF2+,cand_F2p_CF2_v_diss_F_F_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF3+ + CF3,CF4 + CF2+,cand_CF3p_CF3_diss_CF4_CF2p,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,CF4+ + CF3,CF4 + CF3+,cand_CF4p_CF3_char_CF4_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF3,CF3+ + F + CF3,cand_CF4p_CF3_diss_CF3p_F_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF3,CF4 + CF2+ + F,cand_CF4p_CF3_diss_CF4_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF3,F + CF3+,cand_Fp_CF3_char_F_CF3p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,F+ + CF3,F + CF2+ + F,cand_Fp_CF3_diss_F_CF2p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,F2+ + CF3,F2 + CF3+,cand_F2p_CF3_char_F2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF3,F2 + CF2+ + F,cand_F2p_CF3_diss_F2_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF3,F + F + CF3+,cand_F2p_CF3_diss_F_F_CF3p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF3+ + CF3*,CF4 + CF2+,cand_CF3p_CF3*_diss_CF4_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF3*,CF4 + CF3+,cand_CF4p_CF3*_char_CF4_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF3*,CF3+ + F + CF3,cand_CF4p_CF3*_diss_CF3p_F_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF3*,CF4 + CF2+ + F,cand_CF4p_CF3*_diss_CF4_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF3*,F + CF3+,cand_Fp_CF3*_char_F_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF3*,F + CF2+ + F,cand_Fp_CF3*_diss_F_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF3*,F2 + CF3+,cand_F2p_CF3*_char_F2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF3*,F2 + CF2+ + F,cand_F2p_CF3*_diss_F2_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF3*,F + F + CF3+,cand_F2p_CF3*_diss_F_F_CF3p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF3+ + CF3_v,CF4 + CF2+,cand_CF3p_CF3_v_diss_CF4_CF2p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF3+ + CF_v,CF2+ + CF2,cand_CF3p_CF_v_diss_CF2p_CF2,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,CF3+ + C_1D,CF3 + C+,cand_CF3p_C_1D_char_CF3_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF3+ + C_1S,CF3 + C+,cand_CF3p_C_1S_char_CF3_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF3+ + F2,CF3+ + F + F,cand_CF3p_F2_reac_CF3p_F_F,ion_neutral,reactive_scattering,1,candidate,"conserved, species proposed"
+2,CF3+ + F2*,CF3+ + F + F,cand_CF3p_F2*_reac_CF3p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,CF3+ + F2_v,CF3+ + F + F,cand_CF3p_F2_v_reac_CF3p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,CF4+ + CF3_v,CF4 + CF3+,cand_CF4p_CF3_v_char_CF4_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF3_v,CF3+ + F + CF3,cand_CF4p_CF3_v_diss_CF3p_F_CF3,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF3_v,CF4 + CF2+ + F,cand_CF4p_CF3_v_diss_CF4_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF3_v,F + CF3+,cand_Fp_CF3_v_char_F_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF3_v,F + CF2+ + F,cand_Fp_CF3_v_diss_F_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF3_v,F2 + CF3+,cand_F2p_CF3_v_char_F2_CF3p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF3_v,F2 + CF2+ + F,cand_F2p_CF3_v_diss_F2_CF2p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF3_v,F + F + CF3+,cand_F2p_CF3_v_diss_F_F_CF3p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF4,CF3+ + F + CF4,cand_CF4p_CF4_diss_CF3p_F_CF4,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF4,F + CF4+,cand_Fp_CF4_char_F_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,F+ + CF4,F + CF2+ + F2,cand_Fp_CF4_diss_F_CF2p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,F+ + CF4,F + CF3+ + F,cand_Fp_CF4_diss_F_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,F2+ + CF4,F2 + CF4+,cand_F2p_CF4_char_F2_CF4p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF4,F2 + CF3+ + F,cand_F2p_CF4_diss_F2_CF3p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF4,F + F + CF4+,cand_F2p_CF4_diss_F_F_CF4p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF4*,CF3+ + F + CF4,cand_CF4p_CF4*_diss_CF3p_F_CF4,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF4*,F + CF4+,cand_Fp_CF4*_char_F_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,F+ + CF4*,F + CF2+ + F2,cand_Fp_CF4*_diss_F_CF2p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,F+ + CF4*,F + CF3+ + F,cand_Fp_CF4*_diss_F_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,F2+ + CF4*,F2 + CF4+,cand_F2p_CF4*_char_F2_CF4p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF4*,F2 + CF3+ + F,cand_F2p_CF4*_diss_F2_CF3p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF4*,F + F + CF4+,cand_F2p_CF4*_diss_F_F_CF4p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF4_v,CF3+ + F + CF4,cand_CF4p_CF4_v_diss_CF3p_F_CF4,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + CF_v,CF3 + CF2+,cand_CF4p_CF_v_diss_CF3_CF2p,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,CF4+ + CF_v,CF3+ + CF2,cand_CF4p_CF_v_diss_CF3p_CF2,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,CF4+ + CF_v,CF3+ + F + CF,cand_CF4p_CF_v_diss_CF3p_F_CF,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,CF4+ + C_1D,CF4 + C+,cand_CF4p_C_1D_char_CF4_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + C_1D,CF3 + F + C+,cand_CF4p_C_1D_diss_CF3_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + C_1D,CF3+ + F + C,cand_CF4p_C_1D_diss_CF3p_F_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + C_1S,CF4 + C+,cand_CF4p_C_1S_char_CF4_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + C_1S,CF2 + F2 + C+,cand_CF4p_C_1S_diss_CF2_F2_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + C_1S,CF2+ + F2 + C,cand_CF4p_C_1S_diss_CF2p_F2_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + C_1S,CF3 + F + C+,cand_CF4p_C_1S_diss_CF3_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + C_1S,CF3+ + F + C,cand_CF4p_C_1S_diss_CF3p_F_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + F,CF3+ + F + F,cand_CF4p_F_diss_CF3p_F_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + F*,CF3+ + F + F,cand_CF4p_F*_diss_CF3p_F_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + F2,CF4 + F2+,cand_CF4p_F2_char_CF4_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + F2,CF3+ + F + F2,cand_CF4p_F2_diss_CF3p_F_F2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + F2,CF4+ + F + F,cand_CF4p_F2_reac_CF4p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,CF4+ + F2*,CF4 + F2+,cand_CF4p_F2*_char_CF4_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + F2*,CF3+ + F + F2,cand_CF4p_F2*_diss_CF3p_F_F2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + F2*,CF4+ + F + F,cand_CF4p_F2*_reac_CF4p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,CF4+ + F2_v,CF4 + F2+,cand_CF4p_F2_v_char_CF4_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + F2_v,CF3+ + F + F2,cand_CF4p_F2_v_diss_CF3p_F_F2,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,CF4+ + F2_v,CF4+ + F + F,cand_CF4p_F2_v_reac_CF4p_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,F+ + CF4_v,F + CF4+,cand_Fp_CF4_v_char_F_CF4p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,F+ + CF4_v,F + CF2+ + F2,cand_Fp_CF4_v_diss_F_CF2p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,F+ + CF4_v,F + CF3+ + F,cand_Fp_CF4_v_diss_F_CF3p_F,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed"
+2,F2+ + CF4_v,F2 + CF4+,cand_F2p_CF4_v_char_F2_CF4p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF4_v,F2 + CF3+ + F,cand_F2p_CF4_v_diss_F2_CF3p_F,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + CF4_v,F + F + CF4+,cand_F2p_CF4_v_diss_F_F_CF4p,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + CF_v,F + C+ + F,cand_Fp_CF_v_diss_F_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,F2+ + CF_v,F2 + C+ + F,cand_F2p_CF_v_diss_F2_Cp_F,ion_neutral,dissociative_charge_transfer,3,candidate,"conserved, species proposed"
+2,F+ + C_1D,F + C+,cand_Fp_C_1D_char_F_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + C_1D,F2 + C+,cand_F2p_C_1D_char_F2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + C_1D,F + F + C+,cand_F2p_C_1D_diss_F_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + C_1S,F + C+,cand_Fp_C_1S_char_F_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + C_1S,F2 + C+,cand_F2p_C_1S_char_F2_Cp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + C_1S,F + F + C+,cand_F2p_C_1S_diss_F_F_Cp,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + C_1S,F+ + F + C,cand_F2p_C_1S_diss_Fp_F_C,ion_neutral,dissociative_charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + F,F2 + F+,cand_F2p_F_char_F2_Fp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F2+ + F*,F2 + F+,cand_F2p_F*_char_F2_Fp,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + F2,F + F2+,cand_Fp_F2_char_F_F2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed"
+2,F+ + F2,F+ + F + F,cand_Fp_F2_reac_Fp_F_F,ion_neutral,reactive_scattering,1,candidate,"conserved, species proposed"
+2,F+ + F2*,F + F2+,cand_Fp_F2*_char_F_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + F2*,F+ + F + F,cand_Fp_F2*_reac_Fp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,F+ + F2_v,F + F2+,cand_Fp_F2_v_char_F_F2p,ion_neutral,charge_transfer,2,candidate,"conserved, species proposed"
+2,F+ + F2_v,F+ + F + F,cand_Fp_F2_v_reac_Fp_F_F,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,F2+ + F2,F + F + F2+,cand_F2p_F2_reac_F_F_F2p,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,F2+ + F2*,F + F + F2+,cand_F2p_F2*_reac_F_F_F2p,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
+2,F2+ + F2_v,F + F + F2+,cand_F2p_F2_v_reac_F_F_F2p,ion_neutral,reactive_scattering,2,candidate,"conserved, species proposed"
