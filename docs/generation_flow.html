@@ -512,6 +512,255 @@ exit 1  blocking が1件でもある     exit 0  それ以外</pre>
   DNT+ の long_range 段階が塞がる直接の原因です。
 </div>
 
+<h3>判定式の詳細 — レイヤーごと</h3>
+<p class="lede">
+  各式は TeX と可読形の両方で示します。CSP により数式レンダラを読み込めないため、
+  TeX はそのまま引用できる形で置いています。記号の定義は末尾の物性表にあります。
+</p>
+
+<h4 style="font-size:.92rem;margin:1.6rem 0 .5rem">レイヤー 1 &nbsp;<code>structure</code> — この種は存在しうるか、式は保存するか</h4>
+
+<p><strong>1-1 電荷保存</strong>(全反応、例外なし。表面反応のみ免除)</p>
+<pre>\sum_i \nu_i q_i \;=\; \sum_j \nu_j q_j
+      \qquad \text{棄却条件:}\quad \left| \sum_i \nu_i q_i - \sum_j \nu_j q_j \right| &gt; 10^{-9}
+
+可読形:  Σ νᵢqᵢ (反応物) = Σ νⱼqⱼ (生成物)</pre>
+<p>
+  νは化学量論係数、qは電荷数。表面反応を免除するのは壁が電荷を吸収するためで、
+  気相の生成物だけを書くという表記上の約束に対応します。
+</p>
+
+<p><strong>1-2 元素保存</strong></p>
+<pre>\forall E:\quad \sum_i \nu_i n_{E,i} \;=\; \sum_j \nu_j n_{E,j}
+
+可読形:  各元素 E について  Σ νᵢ n_E,ᵢ = Σ νⱼ n_E,ⱼ</pre>
+<p>
+  n<sub>E,i</sub> は種 i に含まれる元素 E の原子数。<strong>質量は別途検査しません</strong> —
+  元素組成が一致すれば質量は自動的に一致するためです。
+</p>
+
+<p><strong>1-3 価数(骨格が配位子を担えるか)</strong>(重粒子衝突の生成物に適用)</p>
+<pre>N_{\text{ligand}} \;\le\; \sum_{k \in \text{skeleton}} \nu_k V_k \;-\; 2\,(m - 1)
+
+可読形:  配位子数 ≤ Σ(骨格原子の価数) − 2×(骨格原子数 − 1)</pre>
+<p>
+  V<sub>k</sub> は元素の価数(C=4, Si=4, S=6, N=3, O=2, ハロゲン=1)、m は骨格原子数。
+  第2項は骨格内の結合が消費する手の数(非環状飽和の上限)です。これにより
+  <code>CF5</code>(4 &lt; 5)、<code>C2F7</code>(2·4−2=6 &lt; 7)、<code>F3</code> が棄却されます。
+  <strong>環状構造には保守的</strong>で、環があれば実際の容量はこれより小さくなります。
+</p>
+
+<p><strong>1-4 陰イオンの存在</strong>(付着チャンネル)</p>
+<pre>\text{親陰イオン } A^- \text{ を書く} \iff EA(A) &gt; 0
+
+可読形:  EA > 0 のときのみ A⁻ を生成</pre>
+<p>
+  EA は電子親和力。負なら束縛状態が無く、<code>e + Ar → Ar⁻</code> は
+  <strong>遅い反応ではなく起こらない反応</strong>です。EA が未取得の種では判定できないため、
+  付着族は既定で切っています。
+</p>
+
+<p><strong>1-5 準安定の選別</strong>(原子の励起状態)</p>
+<pre>\text{E1 遷移 } |i\rangle \to |f\rangle \text{ が許容}
+  \iff \pi_i \neq \pi_f \;\wedge\; |\Delta J| \le 1 \;\wedge\; \neg(J_i = J_f = 0)
+
+\text{準安定} \iff \forall f \text{ with } E_f &lt; E_i:\ \text{E1 遷移が禁制}
+
+可読形:  下位の全準位への電気双極子遷移が禁制なら準安定</pre>
+<p>
+  πはパリティ、J は全角運動量。<strong>基底状態だけでなく下位の全準位</strong>を見るのが要点です。
+  基底へのパリティ選択則だけで判定すると Ar の準安定が305個になりますが、
+  正しくは2個(11.548 eV の <sup>3</sup>P<sub>2</sub> と 11.723 eV の <sup>3</sup>P<sub>0</sub>)。
+  基底項の微細構造は同一種として除外します。
+</p>
+
+<h4 style="font-size:.92rem;margin:1.6rem 0 .5rem">レイヤー 2 &nbsp;<code>thermochemistry</code> — エネルギー的に開いているか</h4>
+
+<p><strong>2-1 反応エンタルピー(統合式)</strong></p>
+<pre>\Delta H \;=\; \sum_j \nu_j \Delta_f H_j \;-\; \sum_i \nu_i \Delta_f H_i
+
+\Delta_f H(A^{+}) = \Delta_f H(A) + IE(A)
+\Delta_f H(A^{-}) = \Delta_f H(A) - EA(A)
+
+可読形:  ΔH = Σ生成物の生成エンタルピー − Σ反応物の生成エンタルピー</pre>
+<p>
+  <strong>符号規約:ΔH &gt; 0 が吸熱</strong>。イオンの生成エンタルピーは別の測定ではなく、
+  中性から電子を1つ外す(または束縛する)コストで決まる恒等式です。
+</p>
+
+<p><strong>2-2 相殺</strong>(実装上の要点)</p>
+<pre>\Delta H \;=\; \underbrace{\sum_s c_s \, \Delta_f H_s}_{\text{骨格の差}} \;+\; \underbrace{\sum_p \sigma_p \, \Delta_p}_{\text{荷電のコスト}},
+\qquad c_s = \sum_{\text{prod}} \nu - \sum_{\text{react}} \nu
+
+\text{if } c_s = 0 \text{ then } \Delta_f H_s \text{ は参照しない}</pre>
+<p>
+  両辺に同数現れる骨格は係数がゼロになり、<strong>その値を引かずに消えます</strong>。
+  絶対エンタルピーを先に評価すると答えに影響しないデータを要求し、解ける反応を落とします。
+</p>
+
+<p><strong>2-3 特殊解</strong>(上式から導出され、手書きしていません)</p>
+<pre>\text{電荷交換 } A^+ + B \to A + B^+:
+  \Delta H = \bigl[\Delta_f H_A + \Delta_f H_B + IE_B\bigr] - \bigl[\Delta_f H_A + IE_A + \Delta_f H_B\bigr] = IE_B - IE_A
+
+\text{解離性電荷交換 } A^+ + BC \to A + B^+ + C:
+  \Delta H = IE_B - IE_A + D_0(B\!-\!C)
+
+\text{相互中和 } A^+ + B^- \to A + B:
+  \Delta H = EA_B - IE_A
+
+\text{Penning } M^* + X \to M + X^+ + e:
+  \Delta E = IE_X - E_{\text{exc}}(M^*)
+
+\text{解離極限 } e + AB \to e + A + B^*:
+  \Delta E = D_0(A\!-\!B) + E^*(B)</pre>
+<p>
+  D<sub>0</sub> は結合解離エネルギーで、<code>D₀(B−C) = ΔfH(B) + ΔfH(C) − ΔfH(BC)</code> として
+  生成エンタルピーから求めます。<strong>電荷交換では ΔfH が完全に相殺</strong>するため、
+  生成エンタルピーが未知でも IE だけで解けます。
+</p>
+
+<p><strong>2-4 篩と閾値</strong></p>
+<pre>\text{採用条件(重粒子):}\quad \Delta H \le E_{\max} = 2.0\ \text{eV}
+\text{記録する閾値:}\quad E_{\text{th}} = \max(0, \Delta H)
+\text{中性間の判定:}\quad \Delta H &lt; -0.25\ \text{eV} \Rightarrow \text{open},\quad
+                          \Delta H &gt; +0.25\ \text{eV} \Rightarrow \text{closed}
+\text{電荷交換の判定:}\quad \Delta E &lt; +0.1\ \text{eV} \Rightarrow \text{open}</pre>
+<p>
+  <strong>2.0 eV の根拠:</strong> 400 K で k<sub>B</sub>T = 0.0345 eV。バルクのイオンは熱的なので
+  2 eV 上のチャンネルには届かず、届くのはプレシースで加速されたイオンです。
+  <br>
+  <strong>0.25 eV の根拠:</strong> 約 7 k<sub>B</sub>T。見えない活性化障壁の代わりで、
+  わずかに発熱なだけの引き抜き反応は通常障壁を持つため、意図的に厳しくしています。
+  <br>
+  <strong>0.1 eV の根拠:</strong> 近共鳴電荷交換は<em>最も速い</em>領域なので、
+  この幅は「捨てる」ためではなく「符号が確定しない」幅です。ここでは open 側に倒します。
+  <br>
+  <strong>電子衝突には篩をかけません。</strong> 電子は必要なエネルギーを持ち込めるので、
+  可否ではなく閾値の問題になります。
+</p>
+
+<p><strong>2-5 解離極限が下限である理由</strong></p>
+<pre>E_{\text{th}}^{\text{observed}} \;\ge\; \Delta E^{\text{adiabatic}} = D_0 + E^*
+
+例: e + O_2 \to e + O + O(^1D)
+    計算 7.13\ \text{eV} \quad\text{vs}\quad 実測 8.57\ \text{eV}\quad (\text{差 } 1.44)</pre>
+<p>
+  差は<strong>垂直遷移と断熱極限の差</strong>(Franck–Condon)。計算値は
+  <code>threshold_eV</code> ではなく <code>delta_e_eV</code> に記録し、
+  実測閾値が入ったときに 2-6 の検査が働くようにしています。
+</p>
+
+<p><strong>2-6 整合検査</strong>(blocking)</p>
+<pre>E_{\text{th}} \;\ge\; \Delta E - 0.05\ \text{eV} \qquad (\Delta E &gt; 0 \text{ のとき})
+E_{\text{th}}^{\text{excitation}} \;&lt;\; IE(\text{target})
+\bigl| E_{\text{th}}^{\text{ionization}} - IE \bigr| \;\le\; 0.05\ \text{eV}</pre>
+<p>
+  3番目は<strong>独立した出典どうしの検算</strong>です。閾値は LXCat・文献、IE は mendeleev から来ており、
+  電離10反応で残差 0.022 eV 以下。偶然ではなく関係式が厳密に成立している証拠です。
+</p>
+
+<h4 style="font-size:.92rem;margin:1.6rem 0 .5rem">レイヤー 3 &nbsp;<code>kinetics</code> — この条件で効くほど速いか</h4>
+
+<p><strong>3-1 Langevin 捕獲率</strong>(イオン中性、無極性標的)</p>
+<pre>k_L \;=\; 2\pi q \sqrt{\frac{\alpha}{4\pi\varepsilon_0\,\mu}}
+     \;=\; 2.342\times10^{-15}\,\sqrt{\frac{\alpha[\text{Å}^3]}{\mu[\text{amu}]}}\ \ \text{m}^3/\text{s}
+
+\mu = \frac{m_1 m_2}{m_1 + m_2}</pre>
+<p>
+  αは標的の分極率、μは換算質量。<strong>温度に依存しない</strong>のが Langevin 率の特徴で、
+  誘起双極子ポテンシャル <em>−αq²/(2(4πε₀)²r⁴)</em> による捕獲断面積が 1/v に比例するためです。
+  検算:Ar⁺/Ar で 6.7×10⁻¹⁶ m³/s。永久双極子を持つ標的では ion–dipole 式に切り替えます。
+</p>
+
+<p><strong>3-2 電子速度と率係数</strong></p>
+<pre>v_e(E) = \sqrt{\frac{2E}{m_e}} = 5.9309\times10^{5}\,\sqrt{E[\text{eV}]}\ \ \text{m/s}
+
+k(T_e) = \int_0^\infty \sigma(E)\, v_e(E)\, f(E; T_e)\, dE
+       \qquad f = \text{Maxwell–Boltzmann}</pre>
+<p>
+  断面積 σ(E) がある反応のみ評価できます。現在ほぼ全件が <code>unknown</code> なのは、
+  断面積が未取得であることと <code>electron_density_m3</code> が未設定であることの両方によります。
+</p>
+
+<p><strong>3-3 壁損失頻度</strong></p>
+<pre>\nu_{\text{wall}} = \gamma \,\frac{\bar v}{4}\,\frac{A}{V},
+\qquad \bar v = \sqrt{\frac{8 k_B T_g}{\pi m}}
+
+可読形:  ν = 付着係数 × 平均熱速度/4 × 表面積/体積</pre>
+<p>
+  γは材料ごとの付着係数。<em>v̄/4</em> は単位面積あたりの壁への流束(Hertz–Knudsen)。
+  <code>volume_m3</code> と <code>surface_area_m2</code> の両方が必要です。
+</p>
+
+<p><strong>3-4 関連度の判定</strong></p>
+<pre>\nu_{\text{upper}} = k \prod_i n_i \quad(\text{片側上限})
+\text{基準} = \tau_{\text{residence}}^{-1}\ \text{または最速反応}
+\text{閾値} = 1/3\ \text{桁}(\text{物理基準})\ /\ 3, 6\ \text{桁}(\text{順序のみ})</pre>
+<p>
+  存在量 n<sub>i</sub> が要ります。<strong>上限であって推定ではありません</strong> —
+  「これより速くはならない」だけを言い、遅いことの証明には使えます。
+</p>
+
+<h4 style="font-size:.92rem;margin:1.6rem 0 .5rem">レイヤー 4 &nbsp;<code>attestation</code> — 出典が述べているか</h4>
+
+<p><strong>4-1 照合</strong>(数式ではなく集合演算)</p>
+<pre>\text{attested}(r) \iff
+   \bigl(\text{source\_type}(r) \notin \mathcal{D}\bigr) \;\vee\; \bigl(\text{sig}(r) \in \mathcal{K}\bigr)
+
+\mathcal{D} = \{\text{bond\_breaking, formation\_enthalpy, dissociation\_limit,}
+      \text{ionization\_and\_bond\_energy, vibrational\_manifold, structural}\}
+
+\text{sig}(r) = \bigl(\text{family},\ \text{third\_body},\ \text{surface},\
+                \textstyle\sum\nu\ \text{per species 両辺}\bigr)</pre>
+<p>
+  𝒟 は<strong>本コードが自分で導出したもの</strong>の集合で、自分自身の証拠にはなりません。
+  𝒦 は <code>--known</code> で渡した索引。照合は種ごとに係数を合算した化学量論で行うので、
+  <code>2 e</code> と <code>e + e</code> は同一と判定されます。
+  <strong>ラベルであってフィルタではありません</strong> — 沈黙は否定ではないので何も除きません。
+</p>
+
+<h3>物性の定義と出どころ</h3>
+<div class="scroll">
+<table>
+  <thead><tr><th>記号</th><th>物性</th><th>単位</th><th>どの判定で要るか</th><th>出どころ(件数)</th></tr></thead>
+  <tbody>
+    <tr><td class="k">q</td><td>電荷数</td><td>—</td><td>1-1</td><td>レジストリ(定義)</td></tr>
+    <tr><td class="k">n<sub>E</sub></td><td>元素の原子数</td><td>—</td><td>1-2</td><td>レジストリ(定義)</td></tr>
+    <tr><td class="k">V</td><td>元素の価数</td><td>—</td><td>1-3</td><td>コード内定数</td></tr>
+    <tr><td class="k">EA</td><td>電子親和力</td><td>eV</td><td>1-4, 2-1, 2-3</td>
+        <td><strong>mendeleev</strong> 16(原子)/ NIST WebBook 手動 8 / CCCBDB 1 / ASD 1 / 文献 2</td></tr>
+    <tr><td class="k">J, π</td><td>全角運動量、パリティ</td><td>—</td><td>1-5</td>
+        <td><strong>NIST ASD</strong>(<code>energy1.pl</code>、API・キー不要)</td></tr>
+    <tr><td class="k">E*</td><td>励起準位エネルギー</td><td>eV</td><td>1-5, 2-3, 2-5</td>
+        <td><strong>NIST ASD</strong>。励起種の Hf・IE はここから導出</td></tr>
+    <tr><td class="k">Δ<sub>f</sub>H</td><td>生成エンタルピー(298 K)</td><td>eV</td><td>2-1〜2-5</td>
+        <td><strong>chemicals</strong> 46 / <strong>導出</strong> 22 / pyromat 3 / NIST 手動 5 / 文献 2</td></tr>
+    <tr><td class="k">IE</td><td>イオン化エネルギー</td><td>eV</td><td>2-1, 2-3, 2-6</td>
+        <td><strong>mendeleev</strong> 18 / NIST WebBook 手動 6 / ASD 2 / 文献 8 / 導出 1</td></tr>
+    <tr><td class="k">D<sub>0</sub></td><td>結合解離エネルギー</td><td>eV</td><td>2-3, 2-5</td>
+        <td><strong>導出</strong>:ΔfH(B)+ΔfH(C)−ΔfH(BC)</td></tr>
+    <tr><td class="k">α</td><td>分極率</td><td>Å<sup>3</sup></td><td>3-1</td>
+        <td>NIST CCCBDB 手動 <strong>5件のみ</strong> — DNT+ の long_range が塞がる原因</td></tr>
+    <tr><td class="k">μ, m</td><td>換算質量、質量</td><td>amu</td><td>3-1, 3-3</td>
+        <td><strong>組成から導出</strong> 75 / mendeleev 11 / NIST 手動 13 / ASD 2</td></tr>
+    <tr><td class="k">σ(E)</td><td>衝突断面積</td><td>m<sup>2</sup></td><td>3-2 のみ</td>
+        <td>LXCat 手動エクスポート。<strong>生成・篩には一切使いません</strong></td></tr>
+    <tr><td class="k">γ</td><td>壁の付着係数</td><td>—</td><td>3-3</td><td>registry/materials/(文献)</td></tr>
+    <tr><td class="k">T<sub>e</sub>, T<sub>g</sub>, n<sub>e</sub></td><td>電子・ガス温度、電子密度</td>
+        <td>eV, K, m<sup>-3</sup></td><td>3-2, 3-3, 3-4</td><td>case.yaml(利用者が指定)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note">
+  <strong>pip で自動取得できるのは3つ</strong>(mendeleev / chemicals / pyromat)、
+  <strong>API で自動は1つ</strong>(NIST ASD)。WebBook・CCCBDB・LXCat は手動エクスポートです。
+  <br><br>
+  <strong>「導出」は推定ではなく恒等式です。</strong> ΔfH の22件はイオン(中性+IE)と
+  励起状態(基底+準位)、質量75件は組成の和。導出した IE(Ar_4s)=4.16 eV が
+  レジストリの独立した実測閾値と一致することで検算しています。
+</div>
+
 <h3>出力</h3>
 <pre>cases/{name}/{outputs,candidates}/
   layers/
