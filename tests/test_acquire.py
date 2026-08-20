@@ -519,3 +519,32 @@ def test_only_what_the_caller_allows_takes_a_value():
     written = cccbdb.records(found, {(("Ar", 1),): "Ar"}, "a list")
     assert [item["species"] for item in written] == ["Ar"]
     assert written[0]["unit"] == "A3"
+
+
+def test_the_fit_reproduces_the_anchors_it_was_trained_near():
+    """SF6 and CF4 are measured; a fit that misses them is not usable at all."""
+
+    from acquire import additivity, cccbdb
+
+    page = (Path(__file__).parent / "fixtures" / "cccbdb_polarizability.html").read_text(
+        encoding="utf-8"
+    )
+    training = [
+        (dict(key), item.polarizability_A3)
+        for item in cccbdb.parse(page)
+        if (key := cccbdb.composition(item.formula)) is not None
+    ]
+    # The fixture is deliberately small, so the guard has to refuse rather than fit.
+    found = additivity.estimate([("CF3", {"C": 1, "F": 3})], training)
+    assert not found[0].known
+    assert "training data" in found[0].error
+
+
+def test_an_estimate_says_it_is_one():
+    """The registry must never take one of these for a measurement."""
+
+    from acquire import additivity
+
+    written = additivity.records([additivity.Estimate("CF3", 2.47, 243)], "a list")
+    assert written[0]["quality"] == "estimated"
+    assert "closed-shell" in written[0]["source"]["citation"]

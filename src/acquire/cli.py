@@ -18,6 +18,7 @@ from pathlib import Path
 import yaml
 
 from acquire import (
+    additivity,
     asd,
     atoms,
     cccbdb,
@@ -92,6 +93,15 @@ def main(argv: list[str] | None = None) -> int:
     polar.add_argument("--out", type=Path, required=True)
     polar.add_argument("--page", type=Path, help="a saved copy of the page, instead of fetching")
     polar.set_defaults(run=_cccbdb)
+
+    guess = commands.add_parser(
+        "additivity",
+        help="estimate polarizability for species no compilation holds (marked estimated)",
+    )
+    guess.add_argument("species", type=Path, help="a bundle's species.yaml")
+    guess.add_argument("--out", type=Path, required=True)
+    guess.add_argument("--page", type=Path, help="a saved CCCBDB list page, instead of fetching")
+    guess.set_defaults(run=_additivity)
 
     fit = commands.add_parser(
         "nasa", help="read NASA thermodynamic polynomials from `cantera` bundled data"
@@ -289,6 +299,39 @@ def _cccbdb(args) -> int:
     if missing:
         print(f"  not listed: {' '.join(missing)}")
     print(f"  wrote {path}")
+    return 0
+
+
+def _additivity(args) -> int:
+    saved = args.page.read_text(encoding="utf-8") if args.page else None
+    listed, error = cccbdb.fetch(saved)
+    if error:
+        print(f"  could not read the training set: {error}")
+        return 1
+    training = [
+        (dict(key), item.polarizability_A3)
+        for item in listed
+        if (key := cccbdb.composition(item.formula)) is not None
+    ]
+    wanted = [
+        (str(item["id"]), {str(k): int(v) for k, v in (item.get("composition") or {}).items()})
+        for item in _listed(yaml.safe_load(args.species.read_text(encoding="utf-8")) or [])
+        if isinstance(item, dict) and item.get("composition") and not item.get("charge")
+    ]
+    found = additivity.estimate(wanted, training)
+    citation = f"NIST CCCBDB experimental polarizability list, {cccbdb.LIST_URL}"
+    written = additivity.records(found, citation)
+    path = snapshot.write(
+        args.out,
+        "species_property",
+        {"source_type": "additivity_fit", "citation": citation},
+        written,
+    )
+    for item in found:
+        if item.known:
+            print(f"  {item.species:10} {item.polarizability_A3:6.3f} A3   estimated")
+    print(f"  fitted on {len(training)} species; {len(written)} estimates written to {path}")
+    print("  these are estimates: do not `rgen adopt` them into the registry")
     return 0
 
 
