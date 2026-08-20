@@ -25,7 +25,7 @@ C_1S,0,2,literature_supported,29,yes,
 F,0,1,curated,219,yes,
 F*,0,2,candidate,18,yes,
 F+,1,1,curated,50,no,polarizability_A3
-F2,0,1,literature_supported,110,no,polarizability_A3
-F2*,0,2,candidate,28,no,polarizability_A3
+F2,0,1,literature_supported,110,yes,
+F2*,0,2,candidate,28,yes,
 F2+,1,2,literature_supported,60,no,polarizability_A3
-F2_v,0,2,candidate,47,no,polarizability_A3
+F2_v,0,2,candidate,47,yes,

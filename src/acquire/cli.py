@@ -20,6 +20,7 @@ import yaml
 from acquire import (
     asd,
     atoms,
+    cccbdb,
     download,
     ideal_gas,
     lxcat,
@@ -83,6 +84,14 @@ def main(argv: list[str] | None = None) -> int:
     bulk.add_argument("species", type=Path, help="YAML list of species names")
     bulk.add_argument("--out", type=Path, required=True)
     bulk.set_defaults(run=_molecular)
+
+    polar = commands.add_parser(
+        "cccbdb", help="read experimental polarizability from the NIST CCCBDB list page"
+    )
+    polar.add_argument("species", type=Path, help="YAML list of species names")
+    polar.add_argument("--out", type=Path, required=True)
+    polar.add_argument("--page", type=Path, help="a saved copy of the page, instead of fetching")
+    polar.set_defaults(run=_cccbdb)
 
     fit = commands.add_parser(
         "nasa", help="read NASA thermodynamic polynomials from `cantera` bundled data"
@@ -249,6 +258,36 @@ def _molecular(args) -> int:
             )
     missing = [item.species for item in found if not item.known]
     print(f"  {len(found) - len(missing)} of {len(found)} answered; {len(missing)} not tabulated")
+    print(f"  wrote {path}")
+    return 0
+
+
+def _cccbdb(args) -> int:
+    wanted: dict[tuple, str] = {}
+    for item in _listed(yaml.safe_load(args.species.read_text(encoding="utf-8")) or []):
+        named = isinstance(item, dict)
+        composition = (item.get("composition") or {}) if named else {}
+        key: tuple | None = (
+            tuple(sorted((str(k), int(v)) for k, v in composition.items()))
+            if composition
+            else cccbdb.composition(str(item))
+        )
+        if key is not None:
+            wanted.setdefault(key, str(item["id"]) if named else str(item))
+    saved = args.page.read_text(encoding="utf-8") if args.page else None
+    found, error = cccbdb.fetch(saved)
+    if error:
+        print(f"  could not read {cccbdb.LIST_URL}: {error}")
+        return 1
+    citation = f"NIST CCCBDB experimental polarizability list, {cccbdb.LIST_URL}"
+    written = cccbdb.records(found, wanted, citation)
+    path = snapshot.write(
+        args.out, "species_property", {"source_type": "cccbdb", "citation": citation}, written
+    )
+    print(f"  {len(found)} species listed, {len(written)} of the {len(wanted)} asked for")
+    missing = sorted(set(wanted.values()) - {item["species"] for item in written})
+    if missing:
+        print(f"  not listed: {' '.join(missing)}")
     print(f"  wrote {path}")
     return 0
 

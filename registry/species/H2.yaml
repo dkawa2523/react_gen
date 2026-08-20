@@ -44,6 +44,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 1333-74-0
     unit: K
     value: 3.4503
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Hydrogen diatomic listed as H2, 1997Oln/Can:59
+    unit: A3
+    value: 0.787
 thermo:
   high:
   - 2.93286575

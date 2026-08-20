@@ -42,6 +42,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 7446-09-5
     unit: K
     value: 333.4
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Sulfur dioxide listed as SO2, 1951LB1.3:509
+    unit: A3
+    value: 3.882
 thermo:
   high:
   - 5.2451364

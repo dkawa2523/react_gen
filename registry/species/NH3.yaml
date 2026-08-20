@@ -45,6 +45,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 7664-41-7
     unit: K
     value: 4.46
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Ammonia listed as NH3, 1997Oln/Can:59
+    unit: A3
+    value: 2.103
 thermo:
   high:
   - 2.461904

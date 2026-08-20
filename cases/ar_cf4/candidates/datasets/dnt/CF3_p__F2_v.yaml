@@ -1,0 +1,51 @@
+pair: CF3_p__F2_v
+models:
+- dnt_plus
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - short_range_potential
+runnable:
+- long_range
+projectile:
+  id: CF3+
+  charge: 1
+  mass_amu: 69.0053514
+target:
+  id: F2_v
+  mass_amu: 37.996
+  polarizability_A3: 1.16
+  dipole_moment_D: 0.0
+  collision_radius_A: 1.6785
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 24.503684275845508
+long_range:
+  model: ion_induced_dipole
+  polarizability_A3: 1.16
+  dipole_moment_D: 0.0
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 100.0
+  points: 200
+  spacing: log
+conditions:
+  pressure_Pa: 2.7
+  gas_temperature_K: 350.0
+  electron_temperature_eV: 4.0
+  electron_density_m3: 3.0e+16
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+channels:
+- reaction_id: cand_CF3p_F2_v_reac_CF3p_F_F
+  equation: CF3+ + F2_v -> CF3+ + F + F
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 1.6669697339474814
+  delta_e_eV: 1.6669697339474814

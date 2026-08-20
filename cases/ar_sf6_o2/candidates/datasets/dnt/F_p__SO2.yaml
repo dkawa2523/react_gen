@@ -1,0 +1,65 @@
+pair: F_p__SO2
+models:
+- dnt_plus_dm
+readiness:
+  long_range:
+    status: ready
+    missing: []
+  full:
+    status: blocked
+    missing:
+    - short_range_potential
+runnable:
+- long_range
+projectile:
+  id: F+
+  charge: 1
+  mass_amu: 18.9978546
+target:
+  id: SO2
+  mass_amu: 64.058
+  polarizability_A3: 3.882
+  dipole_moment_D: 1.63
+  collision_radius_A: 1.9903
+  quadrupole_moment_DA: null
+  polarizability_anisotropy_A3: null
+  rotational_constant_cm1: null
+reduced_mass_amu: 14.652363470675793
+long_range:
+  model: ion_dipole
+  polarizability_A3: 3.882
+  dipole_moment_D: 1.63
+short_range: null
+energy_grid:
+  energy_min_eV: 0.01
+  energy_max_eV: 300.0
+  points: 300
+  spacing: log
+conditions:
+  pressure_Pa: 4.0
+  gas_temperature_K: 400.0
+  electron_temperature_eV: 3.0
+  electron_density_m3: 5.0e+16
+  reduced_field_Td: 50.0
+  volume_m3: 0.021
+  surface_area_m2: 0.52
+  residence_time_s: 0.05
+channels:
+- reaction_id: cand_Fp_SO2_diss_F_SO_Op
+  equation: F+ + SO2 -> F + SO + O+
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 1.9196602746858233
+  delta_e_eV: 1.9196602746858233
+- reaction_id: cand_Fp_SO2_diss_F_Sp_O2
+  equation: F+ + SO2 -> F + S+ + O2
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.0
+  delta_e_eV: -1.1137807253141765
+- reaction_id: cand_Fp_SO2_diss_F_S_O2p
+  equation: F+ + SO2 -> F + S + O2+
+  dnt_class: short_range_charge_exchange
+  tier: full
+  threshold_eV: 0.5959092746858219
+  delta_e_eV: 0.5959092746858219

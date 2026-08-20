@@ -4243,7 +4243,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 0.07 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -4285,9 +4285,15 @@ reactions:
   - e_Ar4s_stepwise_ionization
   - e_Ar_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.716000096189971e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 319377.75556925806
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -4302,7 +4308,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -4348,9 +4354,15 @@ reactions:
   - e_Ar4s_stepwise_ionization
   - e_Ar_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.716000096189971e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 319377.75556925806
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -4902,7 +4914,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -4952,9 +4964,15 @@ reactions:
   - e_CF2_ionization_CF2p
   - e_CF4_dissociative_ionization_CF2p
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.428506660332395e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 303314.248441907
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -5301,7 +5319,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.67 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -5359,9 +5377,15 @@ reactions:
   - e_CF3_ionization_CF3p
   - e_CF4_dissociative_ionization_CF3p
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.095657050910568e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 284716.4948711705
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -6182,7 +6206,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 1.73 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -6232,9 +6256,15 @@ reactions:
   - e_CF4_dissociative_ionization_Fp_CF3
   - e_F_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 7.087754741048307e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 396023.64645344176
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -6249,7 +6279,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -6303,9 +6333,15 @@ reactions:
   - e_CF4_dissociative_ionization_Fp_CF3
   - e_F_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 7.087754741048307e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 396023.64645344176
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -13348,7 +13384,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 0.07 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -13387,9 +13423,15 @@ reactions:
   - e_Ar4s_stepwise_ionization
   - e_Ar_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.716000096189971e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 319377.75556925806
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -13404,7 +13446,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -13445,9 +13487,15 @@ reactions:
   - e_Ar4s_stepwise_ionization
   - e_Ar_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.716000096189971e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 319377.75556925806
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -13462,7 +13510,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 0.07 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -13501,9 +13549,15 @@ reactions:
   - e_Ar4s_stepwise_ionization
   - e_Ar_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.716000096189971e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 319377.75556925806
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -13518,7 +13572,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -13559,9 +13613,15 @@ reactions:
   - e_Ar4s_stepwise_ionization
   - e_Ar_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.716000096189971e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 319377.75556925806
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -14052,7 +14112,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -14135,9 +14195,15 @@ reactions:
   - cand_e_F2_to_e_F2
   - cand_e_F2_v_to_e_F2
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 8.34988135729164e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 466544.14315684506
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -14152,7 +14218,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -14197,9 +14263,15 @@ reactions:
   - cand_e_F2*_to_e_F2*
   - cand_e_F2_to_e_F2*
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 8.34988135729164e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 466544.14315684506
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -14214,7 +14286,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -14259,9 +14331,15 @@ reactions:
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 8.34988135729164e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 466544.14315684506
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -14824,7 +14902,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -14883,9 +14961,15 @@ reactions:
   - e_CF2_ionization_CF2p
   - e_CF4_dissociative_ionization_CF2p
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.428506660332395e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 303314.248441907
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -14900,7 +14984,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -14959,9 +15043,15 @@ reactions:
   - e_CF2_ionization_CF2p
   - e_CF4_dissociative_ionization_CF2p
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.428506660332395e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 303314.248441907
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -15387,7 +15477,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.67 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -15449,9 +15539,15 @@ reactions:
   - e_CF3_ionization_CF3p
   - e_CF4_dissociative_ionization_CF3p
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.095657050910568e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 284716.4948711705
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -15466,7 +15562,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.67 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -15528,9 +15624,15 @@ reactions:
   - e_CF3_ionization_CF3p
   - e_CF4_dissociative_ionization_CF3p
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.095657050910568e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 284716.4948711705
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -18597,7 +18699,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 0.99 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -18682,9 +18784,15 @@ reactions:
   - cand_e_F2_to_e_F2
   - cand_e_F2_v_to_e_F2
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 4.896448569614676e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 273585.8516633352
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -18699,7 +18807,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 0.01 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: dissociative_charge_transfer
@@ -18786,9 +18894,15 @@ reactions:
   - cand_e_F2_to_e_F2
   - cand_e_F2_v_to_e_F2
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 4.896448569614676e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 273585.8516633352
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -18803,7 +18917,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.64 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -18891,9 +19005,15 @@ reactions:
   - cand_e_F2_to_e_F2
   - cand_e_F2_v_to_e_F2
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 4.896448569614676e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 273585.8516633352
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -18908,7 +19028,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 0.99 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -18947,9 +19067,15 @@ reactions:
   - cand_e_F2*_to_e_F2*
   - cand_e_F2_to_e_F2*
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 4.896448569614676e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 273585.8516633352
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -18964,7 +19090,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 0.01 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: dissociative_charge_transfer
@@ -19005,9 +19131,15 @@ reactions:
   - cand_e_F2*_to_e_F2*
   - cand_e_F2_to_e_F2*
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 4.896448569614676e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 273585.8516633352
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -19022,7 +19154,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.64 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -19063,9 +19195,15 @@ reactions:
   - cand_e_F2*_to_e_F2*
   - cand_e_F2_to_e_F2*
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 4.896448569614676e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 273585.8516633352
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -19080,7 +19218,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 0.99 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -19119,9 +19257,15 @@ reactions:
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 4.896448569614676e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 273585.8516633352
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -19136,7 +19280,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 0.01 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: dissociative_charge_transfer
@@ -19177,9 +19321,15 @@ reactions:
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 4.896448569614676e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 273585.8516633352
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -19194,7 +19344,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.64 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -19235,9 +19385,15 @@ reactions:
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 4.896448569614676e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 273585.8516633352
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -19896,7 +20052,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 1.73 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -19938,9 +20094,15 @@ reactions:
   - e_CF4_dissociative_ionization_Fp_CF3
   - e_F_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 7.087754741048307e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 396023.64645344176
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -19955,7 +20117,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -19999,9 +20161,15 @@ reactions:
   - e_CF4_dissociative_ionization_Fp_CF3
   - e_F_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 7.087754741048307e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 396023.64645344176
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -20016,7 +20184,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: exothermic by 1.73 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: charge_transfer
@@ -20058,9 +20226,15 @@ reactions:
   - e_CF4_dissociative_ionization_Fp_CF3
   - e_F_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 7.087754741048307e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 396023.64645344176
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -20075,7 +20249,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -20119,9 +20293,15 @@ reactions:
   - e_CF4_dissociative_ionization_Fp_CF3
   - e_F_ionization
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 7.087754741048307e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 396023.64645344176
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -23023,7 +23203,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -23141,9 +23321,15 @@ reactions:
   - cand_e_F2_v_to_e_e_F2p
   - e_F2_ionization_F2p
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.787133637267505e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 323352.2955120022
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -23158,7 +23344,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -23204,9 +23390,15 @@ reactions:
   - cand_e_F2_v_to_e_e_F2p
   - e_F2_ionization_F2p
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.787133637267505e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 323352.2955120022
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate
@@ -23221,7 +23413,7 @@ reactions:
   evidence:
     structure: conserved, species proposed
     thermochemistry: endothermic by 1.65 eV
-    kinetics: unknown
+    kinetics: comparable
     attestation: unattested
   family: ion_neutral
   type: reactive_scattering
@@ -23267,9 +23459,15 @@ reactions:
   - cand_e_F2_v_to_e_e_F2p
   - e_F2_ionization_F2p
   consume: rate_coefficient
-  rate: null
-  frequency_upper_bound_s-1: null
-  relevance: unknown
+  rate:
+    value: 5.787133637267505e-16
+    unit: m3/s
+    basis: langevin_estimate
+    dataset_id: null
+    bounds: null
+    reverse: null
+  frequency_upper_bound_s-1: 323352.2955120022
+  relevance: comparable
   relevance_basis: fastest_reaction
   datasets: []
   status: candidate

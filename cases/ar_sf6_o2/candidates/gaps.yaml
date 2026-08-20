@@ -1,7 +1,7 @@
 case: ar_sf6_o2
 counts:
   blocking: 1
-  data: 1430
+  data: 1421
   info: 12
 gaps:
 - kind: energy_inconsistent
@@ -1045,20 +1045,12 @@ gaps:
   detail: ionization_energy_eV
   severity: data
 - kind: missing_property
-  subject: F2
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
   subject: F2*
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
   subject: F2*
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: F2*
-  detail: polarizability_A3
   severity: data
 - kind: missing_property
   subject: F2+
@@ -1067,10 +1059,6 @@ gaps:
 - kind: missing_property
   subject: F2_v
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: F2_v
-  detail: polarizability_A3
   severity: data
 - kind: missing_property
   subject: FO
@@ -1497,20 +1485,12 @@ gaps:
   detail: ionization_energy_eV
   severity: data
 - kind: missing_property
-  subject: SO2
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
   subject: SO2*
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
   subject: SO2*
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: SO2*
-  detail: polarizability_A3
   severity: data
 - kind: missing_property
   subject: SO2+
@@ -1569,10 +1549,6 @@ gaps:
   detail: ionization_energy_eV
   severity: data
 - kind: missing_property
-  subject: SO2_v
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
   subject: SOF
   detail: collision_radius_A
   severity: data
@@ -1629,10 +1605,6 @@ gaps:
   detail: ionization_energy_eV
   severity: data
 - kind: missing_property
-  subject: SOF2
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
   subject: SOF2*
   detail: collision_radius_A
   severity: data
@@ -1647,10 +1619,6 @@ gaps:
 - kind: missing_property
   subject: SOF2*
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: SOF2*
-  detail: polarizability_A3
   severity: data
 - kind: missing_property
   subject: SOF2+
@@ -1671,10 +1639,6 @@ gaps:
 - kind: missing_property
   subject: SOF2_v
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: SOF2_v
-  detail: polarizability_A3
   severity: data
 - kind: missing_property
   subject: SOF3

@@ -26,6 +26,11 @@ properties:
     unit: J/mol/K
     source: chemicals package bundled thermodynamic tables, CAS 7783-42-8, formula
       verified against the registry
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Thionyl Fluoride listed as F2SO, 2015Tha/Wu:144302
+    unit: A3
+    value: 3.927
 thermo:
   high:
   - 8.0874212

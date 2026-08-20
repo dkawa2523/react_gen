@@ -44,6 +44,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 7727-37-9
     unit: K
     value: 71.4
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Nitrogen diatomic listed as N2, 1997Oln/Can:59
+    unit: A3
+    value: 1.71
 thermo:
   high:
   - 2.95257637

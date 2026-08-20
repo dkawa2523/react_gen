@@ -45,6 +45,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 74-86-2
     unit: K
     value: 231.8
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Acetylene listed as C2H2, 1997Oln/Can:59
+    unit: A3
+    value: 3.487
 thermo:
   high:
   - 4.14756964

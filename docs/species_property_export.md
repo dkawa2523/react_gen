@@ -111,7 +111,7 @@ Ar   -> transport: {well-depth: 136.5, diameter: 3.33}   (air.yaml)
 なお cantera の `transport` ブロックは燃焼系60組成しか無く、分極率はそのうち9件だけなので、
 輸送物性の解決にはなりません。
 
-### 4.2 分極率には自動取得源が無い(実測して確認)
+### 4.2 分極率の取得経路(実測して確認)
 
 試した経路と結果:
 
@@ -119,8 +119,13 @@ Ar   -> transport: {well-depth: 136.5, diameter: 3.33}   (air.yaml)
 |---|---|
 | cantera `transport.polarizability` | 9 / 102 |
 | `chemicals` 屈折率 → Lorentz–Lorenz | **3 / 57**(中性基底種) — 使えない |
-| mendeleev | 原子のみ。分子は無い |
-| NIST CCCBDB | **手動エクスポートのみ**(フォーム形式、API 無し) |
+| mendeleev | **原子は正確**(Ar 1.642 対 実測 1.641)。分子は無い |
+| **NIST CCCBDB 実験値一覧** | **261種、素の GET で取得可能**。手動不要 |
+| NIST CCCBDB 計算値 | 一括ページ無し。種ごとのフォームのみ |
+
+当初「フォーム形式、API 無し」と判断していましたが、これは誤りでした。
+CCCBDB の**一覧ページ** `pollistx.asp` は普通の GET で 200 を返し、
+261種の実験分極率が出典付きの表で載っています。自動化できます。
 
 分極率は Langevin 率係数 $k_L = 2.342\times10^{-15}\sqrt{\alpha/\mu}$ の唯一の入力なので、
 **kinetics レイヤーが 3.6% しか判定できない直接の原因**がここにあります。
@@ -209,6 +214,7 @@ python tools/refresh_properties.py   # 下の4段を通しで実行し、レジ�
 | 段 | コマンド | 出どころ | 答えるもの |
 |---|---|---|---|
 | 1 | `acquire atoms` | mendeleev | 電離エネルギー、電子親和力、**原子の分極率** |
+| 1b | `acquire cccbdb` | NIST CCCBDB | **分子の実験分極率**(ネットワーク要) |
 | 2 | `acquire molecular` | chemicals | 双極子モーメント、Lennard-Jones 径と井戸深さ |
 | 3 | `acquire nasa` | cantera | NASA多項式(**基底状態のみ**) |
 | 4 | `rgen derive` | — | 状態が基底から受け継ぐもの、組成からの質量 |
@@ -221,23 +227,23 @@ python tools/refresh_properties.py   # 下の4段を通しで実行し、レジ�
 | `mass_amu` | 102 | **102** |
 | NASA7 多項式 | **0** | **83** |
 | `dipole_moment_D` | 46(うち実測4) | **72** |
-| `polarizability_A3` | 5 | **38** |
+| `polarizability_A3` | 5 | **54** |
 | `collision_radius_A` | 3 | **27** |
 | `well_depth_K` | 0 | **27**(新規) |
 
-`rgen adopt` は 193値を書き、53値は既にレジストリが答えていたので残しました。
-再実行すると 0値書き込み・204値保持で、冪等です。
+`rgen adopt` は計 209値を書き、既にレジストリが答えていた値は残しました。
+再実行すると 0値書き込み・223値保持で、冪等です。
 
 ### 6.3 出力への影響
 
 | | ar_cf4 | ar_sf6_o2 |
 |---|---:|---:|
 | 種の質量 | **31/31** | **80/80** |
-| kinetics 判定 | 21 → **92** | 75 → **307** |
-| DNT+ 実行可能ペア | → **92/176** | 59 → **382/1180** |
+| kinetics 判定 | 21 → **125** | 75 → **391** |
+| DNT+ 実行可能ペア | → **113/176** | 59 → **496/1180** |
 
-DNT+ の実行可能ペアが 6.5倍になったのが最大の効果です。分極率が Langevin の
-唯一の入力なので、原子の分極率(mendeleev)と状態への伝播が効いています。
+DNT+ の実行可能ペアが 8.4倍になったのが最大の効果です。分極率が Langevin の
+唯一の入力なので、原子(mendeleev)・分子(CCCBDB)・状態への伝播の3つが効いています。
 
 ### 6.4 実装中に見つかった不具合
 

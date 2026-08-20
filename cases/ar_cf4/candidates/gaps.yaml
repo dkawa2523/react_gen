@@ -1,7 +1,7 @@
 case: ar_cf4
 counts:
   blocking: 0
-  data: 233
+  data: 230
   info: 3
 gaps:
 - kind: energy_inconsistent
@@ -473,20 +473,12 @@ gaps:
   detail: ionization_energy_eV
   severity: data
 - kind: missing_property
-  subject: F2
-  detail: polarizability_A3
-  severity: data
-- kind: missing_property
   subject: F2*
   detail: enthalpy_formation_eV
   severity: data
 - kind: missing_property
   subject: F2*
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: F2*
-  detail: polarizability_A3
   severity: data
 - kind: missing_property
   subject: F2+
@@ -495,10 +487,6 @@ gaps:
 - kind: missing_property
   subject: F2_v
   detail: ionization_energy_eV
-  severity: data
-- kind: missing_property
-  subject: F2_v
-  detail: polarizability_A3
   severity: data
 - kind: undeclared_reverse
   subject: F2_CF2_to_CF3_F

@@ -38,6 +38,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 75-46-7
     unit: D
     value: 1.65
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Methane, trifluoro- listed as CHF3, 1998Gus/Rui:163
+    unit: A3
+    value: 2.801
 thermo:
   high:
   - 7.3870249

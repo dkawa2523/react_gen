@@ -32,6 +32,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 7783-54-2
     unit: D
     value: 0.23
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Nitrogen trifluoride listed as NF3, 1998Gus/Rui:163
+    unit: A3
+    value: 2.81
 thermo:
   high:
   - 7.8419964

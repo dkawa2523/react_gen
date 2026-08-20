@@ -45,6 +45,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 10035-10-6
     unit: K
     value: 449.0
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      hydrogen bromide listed as HBr, 1997Oln/Can:59
+    unit: A3
+    value: 3.616
 thermo:
   high:
   - 2.7935804

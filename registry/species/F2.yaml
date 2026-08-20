@@ -43,6 +43,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 7782-41-4
     unit: K
     value: 112.6
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Fluorine diatomic listed as F2, 1998Gus/Rui:163
+    unit: A3
+    value: 1.16
 thermo:
   high:
   - 3.86166219

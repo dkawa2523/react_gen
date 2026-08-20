@@ -7,6 +7,11 @@ What it must not do is trust a 200. A site that serves a single-page app
 answers every path with its own HTML, so a fetch that only checked the status
 would write a web page into the registry and call it data. The body is checked
 against the format the catalog declares, and a mismatch is refused.
+
+`expect="html"` is the one case where a web page is the data: NIST CCCBDB
+publishes its lists as tables on a page and has no file to download. Asking for
+it explicitly keeps the refusal working everywhere else -- a source that was
+supposed to hand over a release file still cannot quietly hand over a page.
 """
 
 from __future__ import annotations
@@ -60,7 +65,7 @@ def fetch(url: str, expect: str | None = None) -> Fetched:
 
 def _wrong_content(body: bytes, expect: str | None) -> str | None:
     head = body[:400].lower()
-    if any(marker.lower() in head for marker in HTML_MARKERS):
+    if expect != "html" and any(marker.lower() in head for marker in HTML_MARKERS):
         return "the server answered with a web page, not the release file"
     looks_right = LOOKS_LIKE.get(expect or "")
     if looks_right and not looks_right(body[:4000]):

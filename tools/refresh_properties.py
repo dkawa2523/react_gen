@@ -2,8 +2,11 @@
 
 The four acquirers answer different questions and none of them overlaps:
 
-    atoms      mendeleev  ionization energy, electron affinity, and the only
-                          polarizability that can be looked up anywhere here
+    atoms      mendeleev  ionization energy, electron affinity, atomic
+                          polarizability
+    cccbdb     NIST       experimental molecular polarizability, the one
+                          property no installed package holds. Needs the
+                          network; skipped without complaint if it is not there
     molecular  chemicals  dipole moment and Lennard-Jones size for molecules
     nasa       cantera    thermodynamic polynomials, ground states only
     derive     -          what an excited state inherits from its ground state
@@ -66,6 +69,7 @@ def main(argv: list[str]) -> int:
 
     steps = [
         ("atoms", ["atoms", *elements, "--out", str(work / "atoms")]),
+        ("cccbdb", ["cccbdb", str(neutrals), "--out", str(work / "cccbdb")]),
         ("molecular", ["molecular", str(neutrals), "--out", str(work / "molecular")]),
         ("nasa", ["nasa", str(listing), "--out", str(work / "nasa")]),
     ]

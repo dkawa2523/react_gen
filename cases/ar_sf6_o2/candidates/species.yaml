@@ -1316,6 +1316,11 @@ species:
       value: 37.996
       unit: amu
       source: derived from composition
+    polarizability_A3:
+      value: 1.16
+      unit: A3
+      source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+        Fluorine diatomic listed as F2, 1998Gus/Rui:163
     vibrational_quantum_eV:
       value: 0.0991
       unit: eV
@@ -1396,6 +1401,11 @@ species:
       value: 37.996
       unit: amu
       source: unchanged from F2 on excitation; derived from composition
+    polarizability_A3:
+      value: 1.16
+      unit: A3
+      source: unchanged from F2 on excitation; NIST CCCBDB experimental polarizability
+        list, https://cccbdb.nist.gov/pollistx.asp
     well_depth_K:
       value: 112.6
       unit: K
@@ -1497,6 +1507,11 @@ species:
       value: 37.996
       unit: amu
       source: unchanged from F2 on excitation; derived from composition
+    polarizability_A3:
+      value: 1.16
+      unit: A3
+      source: unchanged from F2 on excitation; NIST CCCBDB experimental polarizability
+        list, https://cccbdb.nist.gov/pollistx.asp
     well_depth_K:
       value: 112.6
       unit: K
@@ -6077,6 +6092,11 @@ species:
       value: 64.058
       unit: amu
       source: derived from composition
+    polarizability_A3:
+      value: 3.882
+      unit: A3
+      source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+        Sulfur dioxide listed as SO2, 1951LB1.3:509
     vibrational_quantum_eV:
       value: 0.1129
       unit: eV
@@ -6158,6 +6178,11 @@ species:
       value: 64.058
       unit: amu
       source: unchanged from SO2 on excitation; derived from composition
+    polarizability_A3:
+      value: 3.882
+      unit: A3
+      source: unchanged from SO2 on excitation; NIST CCCBDB experimental polarizability
+        list, https://cccbdb.nist.gov/pollistx.asp
     well_depth_K:
       value: 333.4
       unit: K
@@ -6511,6 +6536,11 @@ species:
       value: 64.058
       unit: amu
       source: unchanged from SO2 on excitation; derived from composition
+    polarizability_A3:
+      value: 3.882
+      unit: A3
+      source: unchanged from SO2 on excitation; NIST CCCBDB experimental polarizability
+        list, https://cccbdb.nist.gov/pollistx.asp
     well_depth_K:
       value: 333.4
       unit: K
@@ -6844,6 +6874,11 @@ species:
       value: 86.055
       unit: amu
       source: derived from composition
+    polarizability_A3:
+      value: 3.927
+      unit: A3
+      source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+        Thionyl Fluoride listed as F2SO, 2015Tha/Wu:144302
   thermo:
     low:
     - 2.4749066
@@ -6907,6 +6942,11 @@ species:
       value: 86.055
       unit: amu
       source: unchanged from SOF2 on excitation; derived from composition
+    polarizability_A3:
+      value: 3.927
+      unit: A3
+      source: unchanged from SOF2 on excitation; NIST CCCBDB experimental polarizability
+        list, https://cccbdb.nist.gov/pollistx.asp
   thermo: null
   status: candidate
 - id: SOF2+
@@ -6984,6 +7024,11 @@ species:
       value: 86.055
       unit: amu
       source: unchanged from SOF2 on excitation; derived from composition
+    polarizability_A3:
+      value: 3.927
+      unit: A3
+      source: unchanged from SOF2 on excitation; NIST CCCBDB experimental polarizability
+        list, https://cccbdb.nist.gov/pollistx.asp
   thermo: null
   status: candidate
 - id: SOF3

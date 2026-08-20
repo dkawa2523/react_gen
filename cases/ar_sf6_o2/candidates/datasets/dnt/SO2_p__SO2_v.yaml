@@ -4,18 +4,17 @@ models:
 - dnt_plus_dm
 readiness:
   long_range:
-    status: blocked
-    missing:
-    - polarizability_A3
+    status: ready
+    missing: []
   full:
     status: blocked
     missing:
-    - polarizability_A3
     - short_range_potential
   analytic_resonant:
     status: ready
     missing: []
 runnable:
+- long_range
 - analytic_resonant
 projectile:
   id: SO2+
@@ -24,7 +23,7 @@ projectile:
 target:
   id: SO2_v
   mass_amu: 64.058
-  polarizability_A3: null
+  polarizability_A3: 3.882
   dipole_moment_D: 1.63
   collision_radius_A: 1.9903
   quadrupole_moment_DA: null
@@ -33,7 +32,7 @@ target:
 reduced_mass_amu: 32.02906274987706
 long_range:
   model: ion_dipole
-  polarizability_A3: null
+  polarizability_A3: 3.882
   dipole_moment_D: 1.63
 short_range: null
 energy_grid:

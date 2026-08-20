@@ -45,3 +45,8 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 74-82-8
     unit: K
     value: 167.15
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Methane listed as CH4, 1997Oln/Can:59
+    unit: A3
+    value: 2.448

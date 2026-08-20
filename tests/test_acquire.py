@@ -477,3 +477,45 @@ def test_atomic_polarizability_is_read_not_estimated():
     found = {item.symbol: item for item in atoms.fetch(["Ar", "F"])}
     assert found["Ar"].polarizability_A3 == pytest.approx(1.641, abs=0.01)
     assert found["F"].polarizability_A3 == pytest.approx(0.557, abs=0.02)
+
+
+# --------------------------------------------------------------------------- cccbdb
+
+
+def test_cccbdb_rows_are_recognised_by_shape_not_position():
+    """The page wraps its own navigation in tables too."""
+
+    from acquire import cccbdb
+
+    page = (Path(__file__).parent / "fixtures" / "cccbdb_polarizability.html").read_text(
+        encoding="utf-8"
+    )
+    found = {item.formula: item.polarizability_A3 for item in cccbdb.parse(page)}
+    assert found["Ar"] == pytest.approx(1.664, abs=0.01)
+    assert found["F"] == pytest.approx(0.557, abs=0.01)
+
+
+def test_a_formula_is_matched_on_its_atoms():
+    """CCCBDB spells thionyl fluoride F2SO and this registry spells it SOF2."""
+
+    from acquire import cccbdb
+
+    assert cccbdb.composition("F2SO") == cccbdb.composition("SOF2")
+    assert cccbdb.composition("CF4") == (("C", 1), ("F", 4))
+    # A charged or structural formula is refused rather than guessed at.
+    assert cccbdb.composition("CF3+") is None
+    assert cccbdb.composition("CH3(CH2)2OH") is None
+
+
+def test_only_what_the_caller_allows_takes_a_value():
+    """An ion may not have its neutral's polarizability."""
+
+    from acquire import cccbdb
+
+    page = (Path(__file__).parent / "fixtures" / "cccbdb_polarizability.html").read_text(
+        encoding="utf-8"
+    )
+    found = cccbdb.parse(page)
+    written = cccbdb.records(found, {(("Ar", 1),): "Ar"}, "a list")
+    assert [item["species"] for item in written] == ["Ar"]
+    assert written[0]["unit"] == "A3"

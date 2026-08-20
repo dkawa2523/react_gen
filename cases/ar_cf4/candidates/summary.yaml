@@ -1,4 +1,4 @@
-mechanism_id: ar_cf4.Ar-CF4.9af071a1
+mechanism_id: ar_cf4.Ar-CF4.65332e82
 case: ar_cf4
 gases:
 - Ar
@@ -23,11 +23,11 @@ data_coverage:
   cross_section: 0/127
   rate_coefficient: 3/319
 relevance:
-  comparable: 87
+  comparable: 120
   fast: 3
   slow: 2
-  unknown: 354
+  unknown: 321
 gaps:
   blocking: 0
-  data: 233
+  data: 230
   info: 3

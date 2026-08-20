@@ -44,6 +44,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 630-08-0
     unit: K
     value: 102.86
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Carbon monoxide listed as CO, 1997Oln/Can:59
+    unit: A3
+    value: 1.953
 thermo:
   high:
   - 2.71518561

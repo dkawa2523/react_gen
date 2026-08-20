@@ -40,6 +40,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 7803-62-5
     unit: K
     value: 207.6
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Silane listed as SiH4, 1997Oln/Can:59
+    unit: A3
+    value: 4.777
 thermo:
   high:
   - 4.2092038

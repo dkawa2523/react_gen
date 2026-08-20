@@ -40,6 +40,11 @@ properties:
     source: chemicals package bundled molecular property tables, CAS 10294-34-5
     unit: K
     value: 337.7
+  polarizability_A3:
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
+      Borane, trichloro- listed as BCl3, 1998Gus/Rui:163
+    unit: A3
+    value: 8.7
 thermo:
   high:
   - 8.598538

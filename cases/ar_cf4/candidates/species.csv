@@ -25,8 +25,8 @@ C_1S,C,0,excited,1S,2.684014,2,0,1,0,12.011,1.6745,0.0,,,10.113879,,,,,no,litera
 F,F,0,ground,X,0.0,1,0,0,1,18.9984032,0.557,0.0,,,0.822654,158.8,17.42282,3.40119,,yes,curated,collision_radius_A well_depth_K vibrational_quantum_eV
 F*,F,0,excited,lumped,,2,0,0,1,18.9984032,0.557,0.0,,,,,,,,no,candidate,collision_radius_A well_depth_K enthalpy_formation_eV entropy_J_mol_K ionization_energy_eV electron_affinity_eV vibrational_quantum_eV
 F+,F,1,ground,X,0.0,1,0,0,1,18.9978546,,0.0,,,18.245535725314177,,,,,yes,curated,polarizability_A3 collision_radius_A well_depth_K entropy_J_mol_K ionization_energy_eV electron_affinity_eV vibrational_quantum_eV
-F2,F2,0,ground,X,0.0,1,0,0,2,37.996,,0.0,1.6785,112.6,0.0,202.8,,,0.0991,yes,literature_supported,polarizability_A3 ionization_energy_eV electron_affinity_eV
-F2*,F2,0,excited,lumped,,2,0,0,2,37.996,,0.0,1.6785,112.6,,,,,,no,candidate,polarizability_A3 enthalpy_formation_eV entropy_J_mol_K ionization_energy_eV electron_affinity_eV vibrational_quantum_eV
+F2,F2,0,ground,X,0.0,1,0,0,2,37.996,1.16,0.0,1.6785,112.6,0.0,202.8,,,0.0991,yes,literature_supported,ionization_energy_eV electron_affinity_eV
+F2*,F2,0,excited,lumped,,2,0,0,2,37.996,1.16,0.0,1.6785,112.6,,,,,,no,candidate,enthalpy_formation_eV entropy_J_mol_K ionization_energy_eV electron_affinity_eV vibrational_quantum_eV
 F2+,F2,1,ground,X,0.0,2,0,0,2,37.99545142,,,,,,,,,,no,literature_supported,polarizability_A3 dipole_moment_D collision_radius_A well_depth_K enthalpy_formation_eV entropy_J_mol_K ionization_energy_eV electron_affinity_eV vibrational_quantum_eV
-F2_v,F2,0,excited,vibrational,0.0991,2,0,0,2,37.996,,0.0,1.6785,112.6,0.0991,,,,,no,candidate,polarizability_A3 entropy_J_mol_K ionization_energy_eV electron_affinity_eV vibrational_quantum_eV
+F2_v,F2,0,excited,vibrational,0.0991,2,0,0,2,37.996,1.16,0.0,1.6785,112.6,0.0991,,,,,no,candidate,entropy_J_mol_K ionization_energy_eV electron_affinity_eV vibrational_quantum_eV
 e,,-1,ground,,,0,0,0,0,0.00054858,,,,,,,,,,no,curated,polarizability_A3 dipole_moment_D collision_radius_A well_depth_K enthalpy_formation_eV entropy_J_mol_K ionization_energy_eV electron_affinity_eV vibrational_quantum_eV

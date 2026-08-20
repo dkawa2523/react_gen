@@ -7,13 +7,11 @@ readiness:
     status: blocked
     missing:
     - dipole_moment_D
-    - polarizability_A3
   full:
     status: blocked
     missing:
     - collision_radius_A
     - dipole_moment_D
-    - polarizability_A3
     - short_range_potential
   analytic_resonant:
     status: ready
@@ -27,7 +25,7 @@ projectile:
 target:
   id: SOF2_v
   mass_amu: 86.055
-  polarizability_A3: null
+  polarizability_A3: 3.927
   dipole_moment_D: null
   collision_radius_A: null
   quadrupole_moment_DA: null
@@ -36,7 +34,7 @@ target:
 reduced_mass_amu: 43.02766449937109
 long_range:
   model: ion_induced_dipole
-  polarizability_A3: null
+  polarizability_A3: 3.927
   dipole_moment_D: null
 short_range: null
 energy_grid:
