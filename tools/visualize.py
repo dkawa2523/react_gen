@@ -1278,6 +1278,22 @@ NEEDS = {
 }
 
 
+# The same scalar properties the bundle's own species.csv carries, so a layer
+# directory is a complete state list rather than a pointer back to one.
+CARRIED = (
+    "mass_amu",
+    "polarizability_A3",
+    "dipole_moment_D",
+    "collision_radius_A",
+    "well_depth_K",
+    "enthalpy_formation_eV",
+    "entropy_J_mol_K",
+    "ionization_energy_eV",
+    "electron_affinity_eV",
+    "vibrational_quantum_eV",
+)
+
+
 def _species_rows(layer: str, species: list[dict], reactions: list[dict]) -> list[str]:
     """The state list, with what this layer can say about each species.
 
@@ -1285,6 +1301,11 @@ def _species_rows(layer: str, species: list[dict], reactions: list[dict]) -> lis
     channel whose species carry no formation enthalpy, so the state list says
     which of them do — that is where a reviewer looks to see what unblocks the
     layer next.
+
+    The property values are here as well as in the bundle's own species.csv.
+    Saying a layer is blocked on a formation enthalpy, without the enthalpies
+    of the species around it, sends the reader to another file to learn what
+    the number would have to be near.
     """
 
     touched: Counter = Counter()
@@ -1292,29 +1313,55 @@ def _species_rows(layer: str, species: list[dict], reactions: list[dict]) -> lis
         for term in reaction["reactants"] + reaction["products"]:
             touched[term["species"]] += 1
 
-    rows = ["id,charge,depth,status,reactions,ready,missing"]
+    elements = sorted({e for item in species for e in (item.get("composition") or {})})
+    header = (
+        [
+            "id",
+            "formula",
+            "charge",
+            "state_kind",
+            "depth",
+            "status",
+            "reactions",
+            "ready",
+            "missing",
+        ]
+        + [f"n_{element}" for element in elements]
+        + list(CARRIED)
+    )
+    rows = [",".join(header)]
     for item in sorted(species, key=lambda entry: entry["id"]):
         properties = item.get("properties") or {}
-        missing = [
-            name
-            for name in NEEDS.get(layer, ())
-            if (properties.get(name) or {}).get("value") is None
-        ]
-        rows.append(
-            ",".join(
-                str(field)
-                for field in (
-                    item["id"],
-                    item.get("charge", 0),
-                    item.get("depth", 0),
-                    item.get("status", ""),
-                    touched.get(item["id"], 0),
-                    "no" if missing else "yes",
-                    "|".join(missing),
-                )
-            )
+        composition = item.get("composition") or {}
+        held = {
+            name: (properties.get(name) or {}).get("value")
+            for name in set(CARRIED) | set(NEEDS.get(layer, ()))
+        }
+        missing = [name for name in NEEDS.get(layer, ()) if held.get(name) is None]
+        fields = (
+            [
+                item["id"],
+                _formula(composition),
+                item.get("charge", 0),
+                (item.get("state") or {}).get("kind", ""),
+                item.get("depth", 0),
+                item.get("status", ""),
+                touched.get(item["id"], 0),
+                "no" if missing else "yes",
+                "|".join(missing),
+            ]
+            + [composition.get(element, 0) for element in elements]
+            + [("" if held.get(name) is None else held[name]) for name in CARRIED]
         )
+        rows.append(",".join(str(field) for field in fields))
     return rows
+
+
+def _formula(composition: dict) -> str:
+    return "".join(
+        element if count == 1 else f"{element}{count}"
+        for element, count in sorted(composition.items())
+    )
 
 
 # Which collision each family is, in the terms a reviewer sorts by rather than

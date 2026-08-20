@@ -1,7 +1,7 @@
-id,charge,depth,status,reactions,ready,missing
-Ar,0,0,curated,16,yes,
-Ar+,1,1,curated,13,yes,
-Ar_4s,0,1,literature_supported,11,yes,
-O,0,1,curated,35,yes,
-O+,1,1,curated,20,yes,
-O2,0,0,curated,33,yes,
+id,formula,charge,state_kind,depth,status,reactions,ready,missing,n_Ar,n_O,mass_amu,polarizability_A3,dipole_moment_D,collision_radius_A,well_depth_K,enthalpy_formation_eV,entropy_J_mol_K,ionization_energy_eV,electron_affinity_eV,vibrational_quantum_eV
+Ar,Ar,0,ground,0,curated,16,yes,,1,0,39.948,1.6411,0.0,1.7037,123.55,0.0,154.8,15.759612,-11.5,
+Ar+,Ar,1,ground,1,curated,13,yes,,1,0,39.94745,,0.0,,,15.75961,,27.62966,,
+Ar_4s,Ar,0,excited,1,literature_supported,11,yes,,1,0,39.948,1.6423,0.0,1.7037,123.55,11.6,,4.16,,
+O,O,0,ground,1,curated,35,yes,,0,1,15.9994,0.7854,0.0,,,2.583077,161.1,13.618055,1.461113,
+O+,O,1,ground,1,curated,20,yes,,0,1,15.9988514,,0.0,,,16.200655,,35.12112,,
+O2,O2,0,ground,0,curated,33,yes,,0,2,31.9988,1.562,0.0,1.73,119.66,0.0,205.2,12.0697,0.448,0.1853
