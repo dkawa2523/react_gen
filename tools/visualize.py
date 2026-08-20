@@ -1294,7 +1294,9 @@ CARRIED = (
 )
 
 
-def _species_rows(layer: str, species: list[dict], reactions: list[dict]) -> list[str]:
+def _species_rows(
+    layer: str, species: list[dict], reactions: list[dict], restrict: bool = False
+) -> list[str]:
     """The state list, with what this layer can say about each species.
 
     A layer is not only a verdict on reactions. Thermochemistry cannot decide a
@@ -1312,6 +1314,8 @@ def _species_rows(layer: str, species: list[dict], reactions: list[dict]) -> lis
     for reaction in reactions:
         for term in reaction["reactants"] + reaction["products"]:
             touched[term["species"]] += 1
+    if restrict:
+        species = [item for item in species if touched.get(item["id"])]
 
     elements = sorted({e for item in species for e in (item.get("composition") or {})})
     header = (
@@ -1475,9 +1479,12 @@ def per_layer(
         tally = _tally(verdicts)
 
         rows = ["id,equation,family,type,depth,status,verdict,decided"]
+        settled = []
         for reaction in reactions:
             verdict = verdicts[reaction["id"]]
             kind = verdict.split(" by ")[0]
+            if kind not in UNDECIDED and kind != "not_run":
+                settled.append(reaction)
             fields = [
                 reaction["id"],
                 reaction["equation"],
@@ -1497,8 +1504,15 @@ def per_layer(
         )
         state = _species_rows(layer, heavy, reactions)
         (target / "species.csv").write_text(NEWLINE.join(state) + NEWLINE, encoding="utf-8")
+        # The states the settled reactions are made of -- not the states whose
+        # properties happen to be complete. Those are different lists and the
+        # second one is not a subset of the mechanism: thermochemistry settles
+        # 339 of ar_cf4's reactions, which span 29 species, while only 8 carry
+        # both an enthalpy and an ionization energy. Filtering on readiness
+        # dropped 21 species that the settled chemistry is written in.
         (target / "species_passed.csv").write_text(
-            NEWLINE.join(_passed(state)) + NEWLINE, encoding="utf-8"
+            NEWLINE.join(_species_rows(layer, heavy, settled, restrict=True)) + NEWLINE,
+            encoding="utf-8",
         )
 
         counts = _by_process(reactions, verdicts, target / "by_process")
