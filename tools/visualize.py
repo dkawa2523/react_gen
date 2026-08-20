@@ -41,7 +41,8 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import yaml
-from matplotlib.patches import FancyBboxPatch
+from matplotlib.colors import ListedColormap
+from matplotlib.patches import FancyBboxPatch, Patch
 
 ELECTRON = "e"
 NEWLINE = chr(10)
@@ -215,9 +216,21 @@ def _nodes(graph, layout, axes, index: dict, size: int = 700) -> None:
         node_size=size,
         alpha=0.95,
     )
-    nx.draw_networkx_labels(
-        graph, layout, ax=axes, font_size=6.5, font_color="white", font_weight="bold"
-    )
+    # A long name overflows its circle at one size for all, so the few that are
+    # long get their own pass at a smaller one -- O2_a1Delta was rendering as
+    # "2_a1Delt" with both ends clipped.
+    for limit, points in ((7, 6.5), (99, 4.6)):
+        group = {n: layout[n] for n in graph if len(n) <= limit and n in layout}
+        if group:
+            nx.draw_networkx_labels(
+                graph.subgraph(group),
+                group,
+                ax=axes,
+                font_size=points,
+                font_color="white",
+                font_weight="bold",
+            )
+        graph = graph.subgraph([n for n in graph if len(n) > limit])
 
 
 def fragmentation(species: list[dict], reactions: list[dict], out: Path, title: str) -> None:
@@ -234,16 +247,7 @@ def fragmentation(species: list[dict], reactions: list[dict], out: Path, title: 
     if not graph.number_of_nodes():
         return
 
-    columns: dict[int, list[str]] = defaultdict(list)
-    for name in graph:
-        columns[index.get(name, {}).get("depth", 0)].append(name)
-    tallest = max(len(names) for names in columns.values())
-    layout = {}
-    for depth, names in columns.items():
-        step = tallest / max(len(names), 1)
-        for row, name in enumerate(sorted(names)):
-            layout[name] = (depth * 2.8, -(row - (len(names) - 1) / 2) * step)
-
+    layout, columns, tallest = _depth_layout(graph, index)
     figure, axes = plt.subplots(
         figsize=(max(8.0, 3.0 * len(columns)), max(5.0, 0.36 * tallest + 2.2))
     )
@@ -1018,6 +1022,125 @@ def layer_figure(
     plt.close(figure)
 
 
+def _heirs(reaction: dict, index: dict) -> list[tuple[str, str]]:
+    """Reactant to product, but only where the skeleton actually carried over.
+
+    Pairing every reactant with every product turns one reaction into a fan of
+    arrows, most of which say nothing: `Ar+ + CF4 -> Ar + CF3+ + F` draws
+    `Ar+ -> F` and `CF4 -> Ar` alongside the two transformations that happened.
+    Across ar_cf4 that fills 45% of all possible arrows, and no layout survives
+    a graph that dense.
+
+    A product belongs to the reactant it shares the most atoms with. That is
+    the arrow a chemist would draw, and it halves the edge count.
+    """
+
+    left = [t["species"] for t in reaction["reactants"] if t["species"] != ELECTRON]
+    right = [t["species"] for t in reaction["products"] if t["species"] != ELECTRON]
+
+    def shared(one: str, other: str) -> int:
+        first = index.get(one, {}).get("composition") or {}
+        second = index.get(other, {}).get("composition") or {}
+        return sum(min(first.get(k, 0), second.get(k, 0)) for k in set(first) | set(second))
+
+    pairs = []
+    for target in right:
+        best = max((shared(source, target) for source in left), default=0)
+        if best:
+            pairs += [(s, target) for s in left if s != target and shared(s, target) == best]
+    return pairs
+
+
+def _forward_only(graph, index: dict):
+    """The generative direction alone: an arrow to a species discovered later.
+
+    Depth is when a species first appeared, not a reaction order, so the full
+    graph is not layered at all -- of ar_cf4's 208 arrows only 55 go forward,
+    89 stay inside one column and 64 point back. Drawing all of them into depth
+    columns gives a hairball no ordering can untangle. Keeping the forward ones
+    makes the picture answer the question the columns pose: what came from what,
+    and how many steps in. The rest is in `matrix.svg`, which loses the layout
+    but keeps every pair.
+    """
+
+    depth = {name: index.get(name, {}).get("depth", 0) for name in graph}
+    forward = graph.__class__()
+    forward.add_nodes_from(graph.nodes)
+    for source, target, data in graph.edges(data=True):
+        if depth[target] > depth[source]:
+            forward.add_edge(source, target, **data)
+    forward.remove_nodes_from([n for n in list(forward) if not forward.degree(n)])
+    return forward
+
+
+def _verdict_graph(reactions: list[dict], verdicts: dict[str, str], index: dict):
+    """Species as nodes, skeleton inheritance as edges, carrying each verdict."""
+
+    graph = nx.DiGraph()
+    for name in index:
+        graph.add_node(name)
+    faint = UNDECIDED | {"not_run"}
+    for reaction in reactions:
+        verdict = verdicts.get(reaction["id"], "not_run").split(" by ")[0]
+        for source, target in _heirs(reaction, index):
+            if not (graph.has_node(source) and graph.has_node(target)):
+                continue
+            # A settled verdict outranks an undecided one on the same arrow: the
+            # eye should follow the strongest thing said about it.
+            if graph.has_edge(source, target) and verdict in faint:
+                continue
+            graph.add_edge(source, target, verdict=verdict)
+    return graph
+
+
+def _depth_layout(graph, index: dict) -> tuple[dict, dict, int]:
+    """One column per reaction depth, so order reads left to right.
+
+    Rows are ordered by barycentre rather than alphabetically. Alphabetical
+    order interleaves a species with its own ions -- CF2, CF2+, CF3, CF3+ --
+    and since those react with different partners every arrow crosses the
+    column. Placing each node near the mean row of what it connects to is the
+    standard fix for a layered drawing, and it is what makes the middle of a
+    dense network legible.
+    """
+
+    columns: dict[int, list[str]] = defaultdict(list)
+    for name in graph:
+        columns[index.get(name, {}).get("depth", 0)].append(name)
+    for names in columns.values():
+        names.sort()
+    _order_by_barycentre(graph, columns)
+
+    tallest = max(len(names) for names in columns.values())
+    layout = {}
+    for depth, names in columns.items():
+        step = tallest / max(len(names), 1)
+        for row, name in enumerate(names):
+            layout[name] = (depth * 2.8, -(row - (len(names) - 1) / 2) * step)
+    return layout, columns, tallest
+
+
+def _order_by_barycentre(graph, columns: dict[int, list[str]], sweeps: int = 4) -> None:
+    """Sort each column by the mean row of its neighbours, forward then back."""
+
+    depths = sorted(columns)
+    for sweep in range(sweeps):
+        walk = depths[1:] if sweep % 2 == 0 else depths[-2::-1]
+        for depth in walk:
+            fixed = depth - 1 if sweep % 2 == 0 else depth + 1
+            rows = {name: row for row, name in enumerate(columns.get(fixed, []))}
+            if not rows:
+                continue
+
+            def barycentre(name: str, rows: dict[str, int] = rows) -> tuple[float, str]:
+                near = [rows[other] for other in graph.predecessors(name) if other in rows]
+                near += [rows[other] for other in graph.successors(name) if other in rows]
+                # No neighbour in the fixed column: leave it where it was.
+                return (sum(near) / len(near) if near else float(len(rows)) / 2, name)
+
+            columns[depth].sort(key=barycentre)
+
+
 def _layer_network(
     species: list[dict],
     reactions: list[dict],
@@ -1028,31 +1151,33 @@ def _layer_network(
 ) -> None:
     """The network with every edge coloured by what this one layer said.
 
-    Undecided edges are drawn thin and grey so the decided ones carry the eye:
-    what a layer answers is which part of the mechanism it settled, and a
-    uniformly drawn graph cannot show that.
+    Laid out in depth columns rather than by a force solver, so the reaction
+    order reads left to right the way it does in `fragmentation`. Undecided
+    edges are drawn thin and grey so the decided ones carry the eye: what a
+    layer answers is which part of the mechanism it settled, and a uniformly
+    drawn graph cannot show that.
     """
 
     index = {item["id"]: item for item in species if item["id"] != ELECTRON}
-    graph = nx.DiGraph()
-    for name in index:
-        graph.add_node(name)
-    for reaction in reactions:
-        verdict = verdicts.get(reaction["id"], "not_run").split(" by ")[0]
-        left = [t["species"] for t in reaction["reactants"] if t["species"] != ELECTRON]
-        right = [t["species"] for t in reaction["products"] if t["species"] != ELECTRON]
-        for source in left:
-            for target in right:
-                if source != target and graph.has_node(source) and graph.has_node(target):
-                    graph.add_edge(source, target, verdict=verdict)
+    graph = _verdict_graph(reactions, verdicts, index)
     if not graph.number_of_edges():
         return
-    if len(index) > READABLE:
-        _verdict_matrix(index, graph, out, title, layer)
+
+    # Every pair, in the one view that stays readable however dense it gets.
+    _verdict_matrix(index, graph, out.with_name("matrix.svg"), title, layer)
+
+    # No size gate here: forward edges are layered by construction, so the
+    # drawing scales the way `fragmentation` does. ar_sf6_o2 goes from 821
+    # arrows to 121 across the same 79 species.
+    forward = _forward_only(graph, index)
+    if not forward.number_of_edges():
         return
 
-    layout = nx.kamada_kawai_layout(graph)
-    figure, axes = plt.subplots(figsize=(11, 8.5))
+    layout, columns, tallest = _depth_layout(forward, index)
+    graph = forward
+    figure, axes = plt.subplots(
+        figsize=(max(9.0, 3.0 * len(columns)), max(5.5, 0.36 * tallest + 2.4))
+    )
     seen = [d["verdict"] for _, _, d in graph.edges(data=True)]
     faint = UNDECIDED | {"not_run"}
     nx.draw_networkx_edges(
@@ -1060,13 +1185,17 @@ def _layer_network(
         layout,
         ax=axes,
         edge_color=[VERDICT.get(name, GREY) for name in seen],
-        width=[0.6 if name in faint else 1.5 for name in seen],
-        alpha=0.8,
+        width=[0.5 if name in faint else 1.6 for name in seen],
+        alpha=[0.25 if name in faint else 0.85 for name in seen],
         arrowsize=9,
-        connectionstyle="arc3,rad=0.1",
-        node_size=700,
+        connectionstyle="arc3,rad=0.08",
+        node_size=900,
     )
-    _nodes(graph, layout, axes, index)
+    _nodes(graph, layout, axes, index, size=900)
+    for depth in sorted(columns):
+        axes.text(
+            depth * 2.8, tallest / 1.6, f"depth {depth}", ha="center", fontsize=9, color=MUTED
+        )
     axes.legend(
         handles=[
             plt.Line2D([], [], color=VERDICT.get(name, GREY), lw=2.5, label=name)
@@ -1084,27 +1213,56 @@ def _layer_network(
 
 
 def _verdict_matrix(index: dict, graph, out: Path, title: str, layer: str) -> None:
-    """Which pairs this layer decided, where a node-link view is unreadable."""
+    """Which pairs this layer decided, where a node-link view is unreadable.
+
+    Only the verdicts this layer actually returned get a colour, taken from the
+    same palette the rest of the drawings use. A continuous ramp over all twelve
+    verdicts put `exothermic` and `conserved` at neighbouring shades of the same
+    blue and offered the reader eight labels that cannot occur here.
+    """
 
     names = sorted(index)
     place = {name: position for position, name in enumerate(names)}
-    order = [key for key in VERDICT if key != "not_run"]
+    order = [
+        key
+        for key in VERDICT
+        if key != "not_run" and any(d["verdict"] == key for _, _, d in graph.edges(data=True))
+    ]
+    if not order:
+        return
     grid = np.full((len(names), len(names)), np.nan)
     for source, target, data in graph.edges(data=True):
-        verdict = data["verdict"]
-        if verdict in order:
-            grid[place[source], place[target]] = order.index(verdict)
+        if data["verdict"] in order:
+            grid[place[source], place[target]] = order.index(data["verdict"])
+
+    shades = ListedColormap([VERDICT[key] for key in order])
+    shades.set_bad("#FFFFFF")
     size = max(7.0, 0.19 * len(names) + 3)
     figure, axes = plt.subplots(figsize=(size, size))
-    shown = axes.imshow(grid, cmap="cividis", interpolation="nearest", vmin=0, vmax=len(order) - 1)
+    axes.imshow(
+        grid,
+        cmap=shades,
+        interpolation="nearest",
+        vmin=-0.5,
+        vmax=len(order) - 0.5,
+    )
     axes.set_xticks(range(len(names)))
     axes.set_yticks(range(len(names)))
     axes.set_xticklabels(names, rotation=90, fontsize=5.5)
     axes.set_yticklabels(names, fontsize=5.5)
     axes.set_xlabel("product", fontsize=9, color=INK)
     axes.set_ylabel("reactant", fontsize=9, color=INK)
-    bar = figure.colorbar(shown, ax=axes, shrink=0.6, ticks=range(len(order)))
-    bar.ax.set_yticklabels(order, fontsize=7)
+    axes.set_xticks(np.arange(-0.5, len(names), 1), minor=True)
+    axes.set_yticks(np.arange(-0.5, len(names), 1), minor=True)
+    axes.grid(which="minor", color="#EDEDED", linewidth=0.4)
+    axes.tick_params(which="minor", length=0)
+    axes.legend(
+        handles=[Patch(facecolor=VERDICT[key], label=key) for key in order],
+        fontsize=8,
+        frameon=False,
+        loc="upper left",
+        bbox_to_anchor=(1.02, 1.0),
+    )
     axes.set_title(f"{title}   {layer} per pair", fontsize=11, color=INK, loc="left")
     figure.tight_layout()
     figure.savefig(out, format="svg", bbox_inches="tight")
