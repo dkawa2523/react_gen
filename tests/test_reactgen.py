@@ -658,3 +658,24 @@ def test_a_curated_reaction_is_attested_by_its_own_record(registry):
     # What this repository worked out for itself is not evidence about itself.
     derived = replace(elastic, source={"source_type": "formation_enthalpy"})
     assert layers.verdicts(derived, [], None, layers.LAYERS)["attestation"] == "unattested"
+
+
+def test_an_electron_channel_gets_its_reaction_enthalpy(registry):
+    """The electron carries none, so the cost is the heavy species' difference."""
+
+    from reactgen.model import Property
+    from reactgen.thermo import formation_delta
+
+    def carrying(name: str, value: float):
+        return replace(
+            registry.species[name],
+            properties={"enthalpy_formation_eV": Property(value=value, unit="eV")},
+        )
+
+    species = {**registry.species, "F": carrying("F", 0.82), "F2": carrying("F2", 0.0)}
+    elastic = registry.channels[("electron", "e", "F2")][0]
+    split = replace(elastic, type="dissociation", products=[Term("e"), Term("F", 2.0)])
+    assert formation_delta(split, species) == pytest.approx(2 * 0.82 - 0.0)
+
+    # One species without an enthalpy is enough to leave the whole thing unknown.
+    assert formation_delta(split, registry.species) is None

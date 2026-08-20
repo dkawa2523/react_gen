@@ -1,9 +1,17 @@
 case: ar_cf4
 counts:
   blocking: 0
-  data: 169
+  data: 171
   info: 4
 gaps:
+- kind: energy_inconsistent
+  subject: e_CF4_dissociative_ionization_CF2p
+  detail: threshold 20.3 eV is 0.49 eV below the 20.8 eV consumed
+  severity: data
+- kind: energy_inconsistent
+  subject: e_CF4_dissociative_ionization_CF3p
+  detail: threshold 14.24 eV is 0.43 eV below the 14.7 eV consumed
+  severity: data
 - kind: missing_threshold
   subject: cand_CF2_diss_C_1D
   detail: appearance energy unknown; LXCat states it

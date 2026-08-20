@@ -1,18 +1,18 @@
 id,equation,family,type,depth,status,verdict,decided
-e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,unknown,no
+e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,thermoneutral,yes
 e_Ar_excitation_4s_lumped,e + Ar -> e + Ar_4s,electron,excitation,0,curated,unknown,no
-e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,unknown,no
-e_O2_elastic,e + O2 -> e + O2,electron,elastic,0,curated,unknown,no
-e_O2_excitation_O2_a1Delta,e + O2 -> e + O2_a1Delta,electron,excitation,0,curated,unknown,no
-e_O2_excitation_O2_b1Sigma,e + O2 -> e + O2_b1Sigma,electron,excitation,0,curated,unknown,no
-e_O2_ionization,e + O2 -> 2 e + O2+,electron,ionization,0,curated,unknown,no
-e_O2_dissociation_O_O,e + O2 -> e + 2 O,electron,dissociation,0,literature_supported,unknown,no
-e_O2_dissociation_O_O1D,e + O2 -> e + O + O_1D,electron,dissociation,0,literature_supported,unknown,no
-e_SF6_elastic,e + SF6 -> e + SF6,electron,elastic,0,curated,unknown,no
-e_SF6_dissociation_SF5_F,e + SF6 -> e + SF5 + F,electron,dissociation,0,literature_supported,unknown,no
-e_SF6_dissociation_SF4_2F,e + SF6 -> e + SF4 + 2 F,electron,dissociation,0,literature_supported,unknown,no
+e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,endothermic by 15.76 eV,yes
+e_O2_elastic,e + O2 -> e + O2,electron,elastic,0,curated,thermoneutral,yes
+e_O2_excitation_O2_a1Delta,e + O2 -> e + O2_a1Delta,electron,excitation,0,curated,endothermic by 0.98 eV,yes
+e_O2_excitation_O2_b1Sigma,e + O2 -> e + O2_b1Sigma,electron,excitation,0,curated,endothermic by 1.63 eV,yes
+e_O2_ionization,e + O2 -> 2 e + O2+,electron,ionization,0,curated,endothermic by 12.07 eV,yes
+e_O2_dissociation_O_O,e + O2 -> e + 2 O,electron,dissociation,0,literature_supported,endothermic by 5.17 eV,yes
+e_O2_dissociation_O_O1D,e + O2 -> e + O + O_1D,electron,dissociation,0,literature_supported,endothermic by 7.13 eV,yes
+e_SF6_elastic,e + SF6 -> e + SF6,electron,elastic,0,curated,thermoneutral,yes
+e_SF6_dissociation_SF5_F,e + SF6 -> e + SF5 + F,electron,dissociation,0,literature_supported,endothermic by 4.06 eV,yes
+e_SF6_dissociation_SF4_2F,e + SF6 -> e + SF4 + 2 F,electron,dissociation,0,literature_supported,endothermic by 6.38 eV,yes
 e_SF6_dissociation_SF3_3F,e + SF6 -> e + SF3 + 3 F,electron,dissociation,0,literature_supported,unknown,no
-e_SF6_dissociation_SF2_F2_2F,e + SF6 -> e + SF2 + F2 + 2 F,electron,dissociation,0,literature_supported,unknown,no
+e_SF6_dissociation_SF2_F2_2F,e + SF6 -> e + SF2 + F2 + 2 F,electron,dissociation,0,literature_supported,endothermic by 11.22 eV,yes
 e_SF6_dissociation_SF_F2_3F,e + SF6 -> e + SF + F2 + 3 F,electron,dissociation,0,literature_supported,unknown,no
 e_SF6_dissociative_ionization_SF5p_F,e + SF6 -> 2 e + SF5+ + F,electron,dissociative_ionization,0,literature_supported,unknown,no
 e_SF6_dissociative_ionization_SF4p_2F,e + SF6 -> 2 e + SF4+ + 2 F,electron,dissociative_ionization,0,literature_supported,unknown,no
@@ -20,40 +20,40 @@ e_SF6_dissociative_ionization_SF3p_3F,e + SF6 -> 2 e + SF3+ + 3 F,electron,disso
 e_SF6_dissociative_ionization_SF2p_F2_2F,e + SF6 -> 2 e + SF2+ + F2 + 2 F,electron,dissociative_ionization,0,literature_supported,unknown,no
 e_SF6_dissociative_ionization_SFp_F2_3F,e + SF6 -> 2 e + SF+ + F2 + 3 F,electron,dissociative_ionization,0,literature_supported,unknown,no
 e_SF6_dissociative_ionization_Sp_F2_4F,e + SF6 -> 2 e + S+ + F2 + 4 F,electron,dissociative_ionization,0,literature_supported,unknown,no
-e_SF6_dissociative_ionization_Fp_SF4_F,e + SF6 -> 2 e + F+ + SF4 + F,electron,dissociative_ionization,0,literature_supported,unknown,no
+e_SF6_dissociative_ionization_Fp_SF4_F,e + SF6 -> 2 e + F+ + SF4 + F,electron,dissociative_ionization,0,literature_supported,endothermic by 23.81 eV,yes
 cand_e_O2_to_e_O2_v,e + O2 -> e + O2_v,electron,excitation,0,candidate,unknown,no
 cand_e_O2_v_to_e_O2,e + O2_v -> e + O2,electron,deexcitation,0,candidate,unknown,no
-cand_e_O2_to_e_e_Op_O,e + O2 -> e + e + O+ + O,electron,dissociative_ionization,0,candidate,unknown,no
+cand_e_O2_to_e_e_Op_O,e + O2 -> e + e + O+ + O,electron,dissociative_ionization,0,candidate,endothermic by 18.78 eV,yes
 cand_e_SF6_to_e_e_SF6p,e + SF6 -> e + e + SF6+,electron,ionization,0,candidate,unknown,no
 cand_e_SF6_to_e_SF6_v,e + SF6 -> e + SF6_v,electron,excitation,0,candidate,unknown,no
 cand_e_SF6_v_to_e_SF6,e + SF6_v -> e + SF6,electron,deexcitation,0,candidate,unknown,no
 cand_e_SF6_to_e_SF6*,e + SF6 -> e + SF6*,electron,excitation,0,candidate,unknown,no
 cand_e_SF6*_to_e_SF6,e + SF6* -> e + SF6,electron,deexcitation,0,candidate,unknown,no
-cand_e_SF6_to_e_SF4_F2,e + SF6 -> e + SF4 + F2,electron,dissociation,0,candidate,unknown,no
+cand_e_SF6_to_e_SF4_F2,e + SF6 -> e + SF4 + F2,electron,dissociation,0,candidate,endothermic by 4.74 eV,yes
 cand_e_SF6_to_e_e_SF4p_F2,e + SF6 -> e + e + SF4+ + F2,electron,dissociative_ionization,0,candidate,unknown,no
 cand_O2_diss_O_1S,e + O2 -> e + O + O_1S,electron,dissociation,0,candidate,endothermic by 9.36 eV,yes
 e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,literature_supported,unknown,no
 e_Ar4s_stepwise_ionization,e + Ar_4s -> 2 e + Ar+,electron,ionization,1,literature_supported,unknown,no
 e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,exothermic by 11.60 eV,yes
-e_F_elastic,e + F -> e + F,electron,elastic,1,curated,unknown,no
-e_F_ionization,e + F -> 2 e + F+,electron,ionization,1,curated,unknown,no
-e_F2_dissociation_2F,e + F2 -> e + 2 F,electron,dissociation,1,literature_supported,unknown,no
+e_F_elastic,e + F -> e + F,electron,elastic,1,curated,thermoneutral,yes
+e_F_ionization,e + F -> 2 e + F+,electron,ionization,1,curated,endothermic by 17.42 eV,yes
+e_F2_dissociation_2F,e + F2 -> e + 2 F,electron,dissociation,1,literature_supported,endothermic by 1.65 eV,yes
 e_F2_ionization_F2p,e + F2 -> 2 e + F2+,electron,ionization,1,literature_supported,unknown,no
-e_O_elastic,e + O -> e + O,electron,elastic,1,literature_supported,unknown,no
-e_O_excitation_O_1D,e + O -> e + O_1D,electron,excitation,1,curated,unknown,no
-e_O_ionization,e + O -> 2 e + O+,electron,ionization,1,curated,unknown,no
-e_O_excitation_O_1S,e + O -> e + O_1S,electron,excitation,1,literature_supported,unknown,no
-e_O2_a1Delta_elastic,e + O2_a1Delta -> e + O2_a1Delta,electron,elastic,1,literature_supported,unknown,no
-e_O2_a1Delta_ionization,e + O2_a1Delta -> 2 e + O2+,electron,ionization,1,literature_supported,unknown,no
+e_O_elastic,e + O -> e + O,electron,elastic,1,literature_supported,thermoneutral,yes
+e_O_excitation_O_1D,e + O -> e + O_1D,electron,excitation,1,curated,endothermic by 1.97 eV,yes
+e_O_ionization,e + O -> 2 e + O+,electron,ionization,1,curated,endothermic by 13.62 eV,yes
+e_O_excitation_O_1S,e + O -> e + O_1S,electron,excitation,1,literature_supported,endothermic by 4.19 eV,yes
+e_O2_a1Delta_elastic,e + O2_a1Delta -> e + O2_a1Delta,electron,elastic,1,literature_supported,thermoneutral,yes
+e_O2_a1Delta_ionization,e + O2_a1Delta -> 2 e + O2+,electron,ionization,1,literature_supported,endothermic by 11.09 eV,yes
 e_O2_a1Delta_superelastic,e + O2_a1Delta -> e + O2,electron,deexcitation,1,literature_supported,exothermic by 0.98 eV,yes
-e_O2_b1Sigma_elastic,e + O2_b1Sigma -> e + O2_b1Sigma,electron,elastic,1,literature_supported,unknown,no
-e_O2_b1Sigma_ionization,e + O2_b1Sigma -> 2 e + O2+,electron,ionization,1,literature_supported,unknown,no
+e_O2_b1Sigma_elastic,e + O2_b1Sigma -> e + O2_b1Sigma,electron,elastic,1,literature_supported,thermoneutral,yes
+e_O2_b1Sigma_ionization,e + O2_b1Sigma -> 2 e + O2+,electron,ionization,1,literature_supported,endothermic by 10.44 eV,yes
 e_O2_b1Sigma_superelastic,e + O2_b1Sigma -> e + O2,electron,deexcitation,1,literature_supported,exothermic by 1.63 eV,yes
-e_O_1D_elastic,e + O_1D -> e + O_1D,electron,elastic,1,literature_supported,unknown,no
-e_O_1D_ionization,e + O_1D -> 2 e + O+,electron,ionization,1,literature_supported,unknown,no
+e_O_1D_elastic,e + O_1D -> e + O_1D,electron,elastic,1,literature_supported,thermoneutral,yes
+e_O_1D_ionization,e + O_1D -> 2 e + O+,electron,ionization,1,literature_supported,endothermic by 11.65 eV,yes
 e_O_1D_superelastic,e + O_1D -> e + O,electron,deexcitation,1,literature_supported,exothermic by 1.97 eV,yes
-e_O_1S_elastic,e + O_1S -> e + O_1S,electron,elastic,1,literature_supported,unknown,no
-e_O_1S_superelastic,e + O_1S -> e + O,electron,deexcitation,1,literature_supported,unknown,no
+e_O_1S_elastic,e + O_1S -> e + O_1S,electron,elastic,1,literature_supported,thermoneutral,yes
+e_O_1S_superelastic,e + O_1S -> e + O,electron,deexcitation,1,literature_supported,exothermic by 4.19 eV,yes
 e_SF_dissociation_S_F,e + SF -> e + S + F,electron,dissociation,1,literature_supported,unknown,no
 e_SF_ionization_SFp,e + SF -> 2 e + SF+,electron,ionization,1,literature_supported,unknown,no
 e_SF2_dissociation_SF_F,e + SF2 -> e + SF + F,electron,dissociation,1,literature_supported,unknown,no
@@ -63,15 +63,15 @@ e_SF3_ionization,e + SF3 -> 2 e + SF3+,electron,ionization,1,literature_supporte
 e_SF4_dissociation_SF3_F,e + SF4 -> e + SF3 + F,electron,dissociation,1,literature_supported,unknown,no
 e_SF4_dissociative_ionization_SF3p_F,e + SF4 -> 2 e + SF3+ + F,electron,dissociative_ionization,1,literature_supported,unknown,no
 e_SF4_ionization,e + SF4 -> 2 e + SF4+,electron,ionization,1,literature_supported,unknown,no
-e_SF5_dissociation_SF4_F,e + SF5 -> e + SF4 + F,electron,dissociation,1,literature_supported,unknown,no
+e_SF5_dissociation_SF4_F,e + SF5 -> e + SF4 + F,electron,dissociation,1,literature_supported,endothermic by 2.33 eV,yes
 e_SF5_dissociative_ionization_SF4p_F,e + SF5 -> 2 e + SF4+ + F,electron,dissociative_ionization,1,literature_supported,unknown,no
 e_SF5_ionization,e + SF5 -> 2 e + SF5+,electron,ionization,1,literature_supported,unknown,no
 Arp_O2_charge_transfer,Ar+ + O2 -> Ar + O2+,ion_neutral,charge_transfer,1,literature_supported,exothermic by 3.69 eV,yes
 Arp_SF6_dissociative_charge_transfer_SF5p_F,Ar+ + SF6 -> Ar + SF5+ + F,ion_neutral,dissociative_charge_transfer,1,literature_supported,exothermic by 0.44 eV,yes
 Op_O2_charge_transfer,O+ + O2 -> O + O2+,ion_neutral,charge_transfer,1,literature_supported,exothermic by 1.55 eV,yes
 SF5p_SF6_to_SF3p_SF6_F2,SF5+ + SF6 -> SF3+ + SF6 + F2,ion_neutral,reactive_scattering,1,literature_supported,unknown,no
-F2_O_to_FO_F,F2 + O -> FO + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
-F2_O1D_to_FO_F,F2 + O_1D -> FO + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
+F2_O_to_FO_F,F2 + O -> FO + F,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 0.63 eV,yes
+F2_O1D_to_FO_F,F2 + O_1D -> FO + F,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 2.60 eV,yes
 O2a_O2_self_quenching,O2 + O2_a1Delta -> 2 O2,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 0.98 eV,yes
 O1D_O2_quenching_O2_b1Sigma,O_1D + O2 -> O + O2_b1Sigma,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 0.34 eV,yes
 O1D_O2_quenching_O2_a1Delta,O_1D + O2 -> O + O2_a1Delta,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 0.99 eV,yes
@@ -83,52 +83,52 @@ SF_O1D_R136,SF + O_1D -> SOF,neutral_neutral,reactive_scattering,1,literature_su
 SF_SF_to_S_SF2,SF + SF -> S + SF2,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
 SF2_F2_to_SF3_F,SF2 + F2 -> SF3 + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
 SF2_O_R120,SF2 + O -> SOF + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
-SF2_O_R135,SF2 + O -> SOF2,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
+SF2_O_R135,SF2 + O -> SOF2,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 5.15 eV,yes
 SF2_O1D_R120,SF2 + O_1D -> SOF + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
-SF2_O1D_R135,SF2 + O_1D -> SOF2,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
+SF2_O1D_R135,SF2 + O_1D -> SOF2,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 7.11 eV,yes
 SF3_F2_to_SF4_F,SF3 + F2 -> SF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
 SF3_O_R119,SF3 + O -> SOF2 + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
 SF3_O_R134,SF3 + O -> SOF3,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
 SF3_O1D_R119,SF3 + O_1D -> SOF2 + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
 SF3_O1D_R134,SF3 + O_1D -> SOF3,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
 SF3_SF3_to_SF2_SF4,SF3 + SF3 -> SF2 + SF4,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
-SF4_F2_to_SF5_F,SF4 + F2 -> SF5 + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
+SF4_F2_to_SF5_F,SF4 + F2 -> SF5 + F,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 0.68 eV,yes
 SF4_O_R133,SF4 + O -> SOF4,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
 SF4_O1D_R133,SF4 + O_1D -> SOF4,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
-SF5_F2_to_SF6_F,SF5 + F2 -> SF6 + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
+SF5_F2_to_SF6_F,SF5 + F2 -> SF6 + F,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 2.41 eV,yes
 SF5_O_R132,SF5 + O -> SOF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
 SF5_O1D_R132,SF5 + O_1D -> SOF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
-SF5_SF5_to_SF4_SF6,SF5 + SF5 -> SF4 + SF6,neutral_neutral,reactive_scattering,1,literature_supported,unknown,no
+SF5_SF5_to_SF4_SF6,SF5 + SF5 -> SF4 + SF6,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 1.73 eV,yes
 cand_e_F_to_e_F*,e + F -> e + F*,electron,excitation,1,candidate,unknown,no
 cand_e_F*_to_e_F,e + F* -> e + F,electron,deexcitation,1,candidate,unknown,no
-cand_e_F2_to_e_F2,e + F2 -> e + F2,electron,elastic,1,candidate,unknown,no
+cand_e_F2_to_e_F2,e + F2 -> e + F2,electron,elastic,1,candidate,thermoneutral,yes
 cand_e_F2_to_e_F2_v,e + F2 -> e + F2_v,electron,excitation,1,candidate,unknown,no
 cand_e_F2_v_to_e_F2,e + F2_v -> e + F2,electron,deexcitation,1,candidate,unknown,no
 cand_e_F2_to_e_F2*,e + F2 -> e + F2*,electron,excitation,1,candidate,unknown,no
 cand_e_F2*_to_e_F2,e + F2* -> e + F2,electron,deexcitation,1,candidate,unknown,no
-cand_e_F2_to_e_e_Fp_F,e + F2 -> e + e + F+ + F,electron,dissociative_ionization,1,candidate,unknown,no
-cand_e_O2_a1Delta_to_e_O_O,e + O2_a1Delta -> e + O + O,electron,dissociation,1,candidate,unknown,no
-cand_e_O2_a1Delta_to_e_e_Op_O,e + O2_a1Delta -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,unknown,no
-cand_e_O2_b1Sigma_to_e_O_O,e + O2_b1Sigma -> e + O + O,electron,dissociation,1,candidate,unknown,no
-cand_e_O2_b1Sigma_to_e_e_Op_O,e + O2_b1Sigma -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,unknown,no
+cand_e_F2_to_e_e_Fp_F,e + F2 -> e + e + F+ + F,electron,dissociative_ionization,1,candidate,endothermic by 19.07 eV,yes
+cand_e_O2_a1Delta_to_e_O_O,e + O2_a1Delta -> e + O + O,electron,dissociation,1,candidate,endothermic by 4.19 eV,yes
+cand_e_O2_a1Delta_to_e_e_Op_O,e + O2_a1Delta -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,endothermic by 17.81 eV,yes
+cand_e_O2_b1Sigma_to_e_O_O,e + O2_b1Sigma -> e + O + O,electron,dissociation,1,candidate,endothermic by 3.54 eV,yes
+cand_e_O2_b1Sigma_to_e_e_Op_O,e + O2_b1Sigma -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,endothermic by 17.16 eV,yes
 cand_e_O2_v_to_e_O2_v,e + O2_v -> e + O2_v,electron,elastic,1,candidate,unknown,no
 cand_e_O2_v_to_e_e_O2p,e + O2_v -> e + e + O2+,electron,ionization,1,candidate,unknown,no
 cand_e_O2_v_to_e_O_O,e + O2_v -> e + O + O,electron,dissociation,1,candidate,unknown,no
 cand_e_O2_v_to_e_e_Op_O,e + O2_v -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,unknown,no
-cand_e_O_1S_to_e_e_Op,e + O_1S -> e + e + O+,electron,ionization,1,candidate,unknown,no
+cand_e_O_1S_to_e_e_Op,e + O_1S -> e + e + O+,electron,ionization,1,candidate,endothermic by 9.43 eV,yes
 cand_e_SF_to_e_SF,e + SF -> e + SF,electron,elastic,1,candidate,unknown,no
 cand_e_SF_to_e_SF_v,e + SF -> e + SF_v,electron,excitation,1,candidate,unknown,no
 cand_e_SF_v_to_e_SF,e + SF_v -> e + SF,electron,deexcitation,1,candidate,unknown,no
 cand_e_SF_to_e_SF*,e + SF -> e + SF*,electron,excitation,1,candidate,unknown,no
 cand_e_SF*_to_e_SF,e + SF* -> e + SF,electron,deexcitation,1,candidate,unknown,no
 cand_e_SF_to_e_e_Fp_S,e + SF -> e + e + F+ + S,electron,dissociative_ionization,1,candidate,unknown,no
-cand_e_SF2_to_e_SF2,e + SF2 -> e + SF2,electron,elastic,1,candidate,unknown,no
+cand_e_SF2_to_e_SF2,e + SF2 -> e + SF2,electron,elastic,1,candidate,thermoneutral,yes
 cand_e_SF2_to_e_SF2_v,e + SF2 -> e + SF2_v,electron,excitation,1,candidate,unknown,no
 cand_e_SF2_v_to_e_SF2,e + SF2_v -> e + SF2,electron,deexcitation,1,candidate,unknown,no
 cand_e_SF2_to_e_SF2*,e + SF2 -> e + SF2*,electron,excitation,1,candidate,unknown,no
 cand_e_SF2*_to_e_SF2,e + SF2* -> e + SF2,electron,deexcitation,1,candidate,unknown,no
 cand_e_SF2_to_e_e_SFp_F,e + SF2 -> e + e + SF+ + F,electron,dissociative_ionization,1,candidate,unknown,no
-cand_e_SF2_to_e_S_F2,e + SF2 -> e + S + F2,electron,dissociation,1,candidate,unknown,no
+cand_e_SF2_to_e_S_F2,e + SF2 -> e + S + F2,electron,dissociation,1,candidate,endothermic by 5.95 eV,yes
 cand_e_SF2_to_e_e_Sp_F2,e + SF2 -> e + e + S+ + F2,electron,dissociative_ionization,1,candidate,unknown,no
 cand_e_SF3_to_e_SF3,e + SF3 -> e + SF3,electron,elastic,1,candidate,unknown,no
 cand_e_SF3_to_e_SF3_v,e + SF3 -> e + SF3_v,electron,excitation,1,candidate,unknown,no
@@ -138,14 +138,14 @@ cand_e_SF3*_to_e_SF3,e + SF3* -> e + SF3,electron,deexcitation,1,candidate,unkno
 cand_e_SF3_to_e_e_SF2p_F,e + SF3 -> e + e + SF2+ + F,electron,dissociative_ionization,1,candidate,unknown,no
 cand_e_SF3_to_e_SF_F2,e + SF3 -> e + SF + F2,electron,dissociation,1,candidate,unknown,no
 cand_e_SF3_to_e_e_SFp_F2,e + SF3 -> e + e + SF+ + F2,electron,dissociative_ionization,1,candidate,unknown,no
-cand_e_SF4_to_e_SF4,e + SF4 -> e + SF4,electron,elastic,1,candidate,unknown,no
+cand_e_SF4_to_e_SF4,e + SF4 -> e + SF4,electron,elastic,1,candidate,thermoneutral,yes
 cand_e_SF4_to_e_SF4_v,e + SF4 -> e + SF4_v,electron,excitation,1,candidate,unknown,no
 cand_e_SF4_v_to_e_SF4,e + SF4_v -> e + SF4,electron,deexcitation,1,candidate,unknown,no
 cand_e_SF4_to_e_SF4*,e + SF4 -> e + SF4*,electron,excitation,1,candidate,unknown,no
 cand_e_SF4*_to_e_SF4,e + SF4* -> e + SF4,electron,deexcitation,1,candidate,unknown,no
-cand_e_SF4_to_e_SF2_F2,e + SF4 -> e + SF2 + F2,electron,dissociation,1,candidate,unknown,no
+cand_e_SF4_to_e_SF2_F2,e + SF4 -> e + SF2 + F2,electron,dissociation,1,candidate,endothermic by 4.84 eV,yes
 cand_e_SF4_to_e_e_SF2p_F2,e + SF4 -> e + e + SF2+ + F2,electron,dissociative_ionization,1,candidate,unknown,no
-cand_e_SF5_to_e_SF5,e + SF5 -> e + SF5,electron,elastic,1,candidate,unknown,no
+cand_e_SF5_to_e_SF5,e + SF5 -> e + SF5,electron,elastic,1,candidate,thermoneutral,yes
 cand_e_SF5_to_e_SF5_v,e + SF5 -> e + SF5_v,electron,excitation,1,candidate,unknown,no
 cand_e_SF5_v_to_e_SF5,e + SF5_v -> e + SF5,electron,deexcitation,1,candidate,unknown,no
 cand_e_SF5_to_e_SF5*,e + SF5 -> e + SF5*,electron,excitation,1,candidate,unknown,no
@@ -466,25 +466,25 @@ cand_Ar_4s_SF_penning,Ar_4s + SF -> Ar + SF+ + e,neutral_neutral,penning_ionizat
 cand_Ar_4s_SF2_penning,Ar_4s + SF2 -> Ar + SF2+ + e,neutral_neutral,penning_ionization,1,candidate,exothermic by 0.80 eV,yes
 cand_Ar_4s_SF3_penning,Ar_4s + SF3 -> Ar + SF3+ + e,neutral_neutral,penning_ionization,1,candidate,exothermic by 3.42 eV,yes
 cand_Ar_4s_SF5_penning,Ar_4s + SF5 -> Ar + SF5+ + e,neutral_neutral,penning_ionization,1,candidate,exothermic by 2.00 eV,yes
-e_FO_dissociation_F_O,e + FO -> e + F + O,electron,dissociation,2,literature_supported,unknown,no
+e_FO_dissociation_F_O,e + FO -> e + F + O,electron,dissociation,2,literature_supported,endothermic by 2.28 eV,yes
 e_S_ionization_Sp,e + S -> 2 e + S+,electron,ionization,2,literature_supported,unknown,no
-e_S_excitation_S_1D,e + S -> e + S_1D,electron,excitation,2,literature_supported,unknown,no
-e_S_excitation_S_1S,e + S -> e + S_1S,electron,excitation,2,literature_supported,unknown,no
-e_S_1D_elastic,e + S_1D -> e + S_1D,electron,elastic,2,literature_supported,unknown,no
-e_S_1D_superelastic,e + S_1D -> e + S,electron,deexcitation,2,literature_supported,unknown,no
-e_S_1S_elastic,e + S_1S -> e + S_1S,electron,elastic,2,literature_supported,unknown,no
-e_S_1S_superelastic,e + S_1S -> e + S,electron,deexcitation,2,literature_supported,unknown,no
-FO_FO_to_2F_O2,FO + FO -> 2 F + O2,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
-FO_FO_to_F2_O2,FO + FO -> F2 + O2,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
-FO_O_to_F_O2,FO + O -> F + O2,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
-FO_O1D_to_F_O2,FO + O_1D -> F + O2,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
+e_S_excitation_S_1D,e + S -> e + S_1D,electron,excitation,2,literature_supported,endothermic by 1.15 eV,yes
+e_S_excitation_S_1S,e + S -> e + S_1S,electron,excitation,2,literature_supported,endothermic by 2.75 eV,yes
+e_S_1D_elastic,e + S_1D -> e + S_1D,electron,elastic,2,literature_supported,thermoneutral,yes
+e_S_1D_superelastic,e + S_1D -> e + S,electron,deexcitation,2,literature_supported,exothermic by 1.15 eV,yes
+e_S_1S_elastic,e + S_1S -> e + S_1S,electron,elastic,2,literature_supported,thermoneutral,yes
+e_S_1S_superelastic,e + S_1S -> e + S,electron,deexcitation,2,literature_supported,exothermic by 2.75 eV,yes
+FO_FO_to_2F_O2,FO + FO -> 2 F + O2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 0.61 eV,yes
+FO_FO_to_F2_O2,FO + FO -> F2 + O2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 2.26 eV,yes
+FO_O_to_F_O2,FO + O -> F + O2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 2.89 eV,yes
+FO_O1D_to_F_O2,FO + O_1D -> F + O2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 4.86 eV,yes
 S_F2_to_SF_F,S + F2 -> SF + F,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
-SO_O_R130,SO + O -> SO2,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
-SO_O1D_R130,SO + O_1D -> SO2,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
+SO_O_R130,SO + O -> SO2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 5.72 eV,yes
+SO_O1D_R130,SO + O_1D -> SO2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 7.69 eV,yes
 SOF_O_R122,SOF + O -> SO2 + F,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
 SOF_O1D_R122,SOF + O_1D -> SO2 + F,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
-SOF2_O_R131,SOF2 + O -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
-SOF2_O1D_R131,SOF2 + O_1D -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
+SOF2_O_R131,SOF2 + O -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 4.81 eV,yes
+SOF2_O1D_R131,SOF2 + O_1D -> SO2F2,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 6.77 eV,yes
 SOF3_O_R123,SOF3 + O -> SO2F2 + F,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
 SOF3_O1D_R123,SOF3 + O_1D -> SO2F2 + F,neutral_neutral,reactive_scattering,2,literature_supported,unknown,no
 SOF4_dissociation_SOF3_F,SOF4 -> SOF3 + F,unimolecular,dissociation,2,literature_supported,unknown,no
@@ -498,14 +498,14 @@ cand_e_F2_v_to_e_F2_v,e + F2_v -> e + F2_v,electron,elastic,2,candidate,unknown,
 cand_e_F2_v_to_e_e_F2p,e + F2_v -> e + e + F2+,electron,ionization,2,candidate,unknown,no
 cand_e_F2_v_to_e_F_F,e + F2_v -> e + F + F,electron,dissociation,2,candidate,unknown,no
 cand_e_F2_v_to_e_e_Fp_F,e + F2_v -> e + e + F+ + F,electron,dissociative_ionization,2,candidate,unknown,no
-cand_e_FO_to_e_FO,e + FO -> e + FO,electron,elastic,2,candidate,unknown,no
+cand_e_FO_to_e_FO,e + FO -> e + FO,electron,elastic,2,candidate,thermoneutral,yes
 cand_e_FO_to_e_e_OFp,e + FO -> e + e + OF+,electron,ionization,2,candidate,unknown,no
 cand_e_FO_to_e_FO_v,e + FO -> e + FO_v,electron,excitation,2,candidate,unknown,no
 cand_e_FO_v_to_e_FO,e + FO_v -> e + FO,electron,deexcitation,2,candidate,unknown,no
 cand_e_FO_to_e_FO*,e + FO -> e + FO*,electron,excitation,2,candidate,unknown,no
 cand_e_FO*_to_e_FO,e + FO* -> e + FO,electron,deexcitation,2,candidate,unknown,no
-cand_e_FO_to_e_e_Fp_O,e + FO -> e + e + F+ + O,electron,dissociative_ionization,2,candidate,unknown,no
-cand_e_S_to_e_S,e + S -> e + S,electron,elastic,2,candidate,unknown,no
+cand_e_FO_to_e_e_Fp_O,e + FO -> e + e + F+ + O,electron,dissociative_ionization,2,candidate,endothermic by 19.70 eV,yes
+cand_e_S_to_e_S,e + S -> e + S,electron,elastic,2,candidate,thermoneutral,yes
 cand_e_SF*_to_e_SF*,e + SF* -> e + SF*,electron,elastic,2,candidate,unknown,no
 cand_e_SF*_to_e_e_SFp,e + SF* -> e + e + SF+,electron,ionization,2,candidate,unknown,no
 cand_e_SF*_to_e_F_S,e + SF* -> e + F + S,electron,dissociation,2,candidate,unknown,no
@@ -562,14 +562,14 @@ cand_e_SF_v_to_e_SF_v,e + SF_v -> e + SF_v,electron,elastic,2,candidate,unknown,
 cand_e_SF_v_to_e_e_SFp,e + SF_v -> e + e + SF+,electron,ionization,2,candidate,unknown,no
 cand_e_SF_v_to_e_F_S,e + SF_v -> e + F + S,electron,dissociation,2,candidate,unknown,no
 cand_e_SF_v_to_e_e_Fp_S,e + SF_v -> e + e + F+ + S,electron,dissociative_ionization,2,candidate,unknown,no
-cand_e_SO_to_e_SO,e + SO -> e + SO,electron,elastic,2,candidate,unknown,no
+cand_e_SO_to_e_SO,e + SO -> e + SO,electron,elastic,2,candidate,thermoneutral,yes
 cand_e_SO_to_e_e_SOp,e + SO -> e + e + SO+,electron,ionization,2,candidate,unknown,no
 cand_e_SO_to_e_SO_v,e + SO -> e + SO_v,electron,excitation,2,candidate,unknown,no
 cand_e_SO_v_to_e_SO,e + SO_v -> e + SO,electron,deexcitation,2,candidate,unknown,no
 cand_e_SO_to_e_SO*,e + SO -> e + SO*,electron,excitation,2,candidate,unknown,no
 cand_e_SO*_to_e_SO,e + SO* -> e + SO,electron,deexcitation,2,candidate,unknown,no
-cand_e_SO_to_e_O_S,e + SO -> e + O + S,electron,dissociation,2,candidate,unknown,no
-cand_e_SO_to_e_e_Op_S,e + SO -> e + e + O+ + S,electron,dissociative_ionization,2,candidate,unknown,no
+cand_e_SO_to_e_O_S,e + SO -> e + O + S,electron,dissociation,2,candidate,endothermic by 5.39 eV,yes
+cand_e_SO_to_e_e_Op_S,e + SO -> e + e + O+ + S,electron,dissociative_ionization,2,candidate,endothermic by 19.01 eV,yes
 cand_e_SOF_to_e_SOF,e + SOF -> e + SOF,electron,elastic,2,candidate,unknown,no
 cand_e_SOF_to_e_e_SOFp,e + SOF -> e + e + SOF+,electron,ionization,2,candidate,unknown,no
 cand_e_SOF_to_e_SOF_v,e + SOF -> e + SOF_v,electron,excitation,2,candidate,unknown,no
@@ -578,7 +578,7 @@ cand_e_SOF_to_e_SOF*,e + SOF -> e + SOF*,electron,excitation,2,candidate,unknown
 cand_e_SOF*_to_e_SOF,e + SOF* -> e + SOF,electron,deexcitation,2,candidate,unknown,no
 cand_e_SOF_to_e_FO_S,e + SOF -> e + FO + S,electron,dissociation,2,candidate,unknown,no
 cand_e_SOF_to_e_e_OFp_S,e + SOF -> e + e + OF+ + S,electron,dissociative_ionization,2,candidate,unknown,no
-cand_e_SOF2_to_e_SOF2,e + SOF2 -> e + SOF2,electron,elastic,2,candidate,unknown,no
+cand_e_SOF2_to_e_SOF2,e + SOF2 -> e + SOF2,electron,elastic,2,candidate,thermoneutral,yes
 cand_e_SOF2_to_e_e_SOF2p,e + SOF2 -> e + e + SOF2+,electron,ionization,2,candidate,unknown,no
 cand_e_SOF2_to_e_SOF2_v,e + SOF2 -> e + SOF2_v,electron,excitation,2,candidate,unknown,no
 cand_e_SOF2_v_to_e_SOF2,e + SOF2_v -> e + SOF2,electron,deexcitation,2,candidate,unknown,no
@@ -586,7 +586,7 @@ cand_e_SOF2_to_e_SOF2*,e + SOF2 -> e + SOF2*,electron,excitation,2,candidate,unk
 cand_e_SOF2*_to_e_SOF2,e + SOF2* -> e + SOF2,electron,deexcitation,2,candidate,unknown,no
 cand_e_SOF2_to_e_SOF_F,e + SOF2 -> e + SOF + F,electron,dissociation,2,candidate,unknown,no
 cand_e_SOF2_to_e_e_SOFp_F,e + SOF2 -> e + e + SOF+ + F,electron,dissociative_ionization,2,candidate,unknown,no
-cand_e_SOF2_to_e_SO_F2,e + SOF2 -> e + SO + F2,electron,dissociation,2,candidate,unknown,no
+cand_e_SOF2_to_e_SO_F2,e + SOF2 -> e + SO + F2,electron,dissociation,2,candidate,endothermic by 5.70 eV,yes
 cand_e_SOF2_to_e_e_SOp_F2,e + SOF2 -> e + e + SO+ + F2,electron,dissociative_ionization,2,candidate,unknown,no
 cand_e_SOF3_to_e_SOF3,e + SOF3 -> e + SOF3,electron,elastic,2,candidate,unknown,no
 cand_e_SOF3_to_e_e_SOF3p,e + SOF3 -> e + e + SOF3+,electron,ionization,2,candidate,unknown,no
@@ -1248,8 +1248,8 @@ cand_SF6p_S_1S_diss_SF5_F_Sp,SF6+ + S_1S -> SF5 + F + S+,ion_neutral,dissociativ
 cand_SF6p_S_1S_diss_SF4p_F2_S,SF6+ + S_1S -> SF4+ + F2 + S,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 1.33 eV,yes
 cand_SF6p_S_1S_diss_SF4_F2_Sp,SF6+ + S_1S -> SF4 + F2 + S+,ion_neutral,dissociative_charge_transfer,2,candidate,exothermic by 2.97 eV,yes
 cand_Ar_4s_S_penning,Ar_4s + S -> Ar + S+ + e,neutral_neutral,penning_ionization,2,candidate,exothermic by 1.24 eV,yes
-SO2F2_O_R137,SO2F2 + O -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,unknown,no
-SO2F2_O1D_R137,SO2F2 + O_1D -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,unknown,no
+SO2F2_O_R137,SO2F2 + O -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,exothermic by 0.36 eV,yes
+SO2F2_O1D_R137,SO2F2 + O_1D -> SOF2 + O2,neutral_neutral,reactive_scattering,3,literature_supported,exothermic by 2.33 eV,yes
 cand_e_FO*_to_e_FO*,e + FO* -> e + FO*,electron,elastic,3,candidate,unknown,no
 cand_e_FO*_to_e_e_OFp,e + FO* -> e + e + OF+,electron,ionization,3,candidate,unknown,no
 cand_e_FO*_to_e_F_O,e + FO* -> e + F + O,electron,dissociation,3,candidate,unknown,no
@@ -1262,25 +1262,25 @@ cand_e_SO*_to_e_SO*,e + SO* -> e + SO*,electron,elastic,3,candidate,unknown,no
 cand_e_SO*_to_e_e_SOp,e + SO* -> e + e + SO+,electron,ionization,3,candidate,unknown,no
 cand_e_SO*_to_e_O_S,e + SO* -> e + O + S,electron,dissociation,3,candidate,unknown,no
 cand_e_SO*_to_e_e_Op_S,e + SO* -> e + e + O+ + S,electron,dissociative_ionization,3,candidate,unknown,no
-cand_e_SO2_to_e_SO2,e + SO2 -> e + SO2,electron,elastic,3,candidate,unknown,no
+cand_e_SO2_to_e_SO2,e + SO2 -> e + SO2,electron,elastic,3,candidate,thermoneutral,yes
 cand_e_SO2_to_e_e_SO2p,e + SO2 -> e + e + SO2+,electron,ionization,3,candidate,unknown,no
 cand_e_SO2_to_e_SO2_v,e + SO2 -> e + SO2_v,electron,excitation,3,candidate,unknown,no
 cand_e_SO2_v_to_e_SO2,e + SO2_v -> e + SO2,electron,deexcitation,3,candidate,unknown,no
 cand_e_SO2_to_e_SO2*,e + SO2 -> e + SO2*,electron,excitation,3,candidate,unknown,no
 cand_e_SO2*_to_e_SO2,e + SO2* -> e + SO2,electron,deexcitation,3,candidate,unknown,no
-cand_e_SO2_to_e_SO_O,e + SO2 -> e + SO + O,electron,dissociation,3,candidate,unknown,no
+cand_e_SO2_to_e_SO_O,e + SO2 -> e + SO + O,electron,dissociation,3,candidate,endothermic by 5.72 eV,yes
 cand_e_SO2_to_e_e_SOp_O,e + SO2 -> e + e + SO+ + O,electron,dissociative_ionization,3,candidate,unknown,no
-cand_e_SO2_to_e_S_O2,e + SO2 -> e + S + O2,electron,dissociation,3,candidate,unknown,no
+cand_e_SO2_to_e_S_O2,e + SO2 -> e + S + O2,electron,dissociation,3,candidate,endothermic by 5.95 eV,yes
 cand_e_SO2_to_e_e_Sp_O2,e + SO2 -> e + e + S+ + O2,electron,dissociative_ionization,3,candidate,unknown,no
-cand_e_SO2F2_to_e_SO2F2,e + SO2F2 -> e + SO2F2,electron,elastic,3,candidate,unknown,no
+cand_e_SO2F2_to_e_SO2F2,e + SO2F2 -> e + SO2F2,electron,elastic,3,candidate,thermoneutral,yes
 cand_e_SO2F2_to_e_e_SO2F2p,e + SO2F2 -> e + e + SO2F2+,electron,ionization,3,candidate,unknown,no
 cand_e_SO2F2_to_e_SO2F2_v,e + SO2F2 -> e + SO2F2_v,electron,excitation,3,candidate,unknown,no
 cand_e_SO2F2_v_to_e_SO2F2,e + SO2F2_v -> e + SO2F2,electron,deexcitation,3,candidate,unknown,no
 cand_e_SO2F2_to_e_SO2F2*,e + SO2F2 -> e + SO2F2*,electron,excitation,3,candidate,unknown,no
 cand_e_SO2F2*_to_e_SO2F2,e + SO2F2* -> e + SO2F2,electron,deexcitation,3,candidate,unknown,no
-cand_e_SO2F2_to_e_SOF2_O,e + SO2F2 -> e + SOF2 + O,electron,dissociation,3,candidate,unknown,no
+cand_e_SO2F2_to_e_SOF2_O,e + SO2F2 -> e + SOF2 + O,electron,dissociation,3,candidate,endothermic by 4.81 eV,yes
 cand_e_SO2F2_to_e_e_SOF2p_O,e + SO2F2 -> e + e + SOF2+ + O,electron,dissociative_ionization,3,candidate,unknown,no
-cand_e_SO2F2_to_e_SF2_O2,e + SO2F2 -> e + SF2 + O2,electron,dissociation,3,candidate,unknown,no
+cand_e_SO2F2_to_e_SF2_O2,e + SO2F2 -> e + SF2 + O2,electron,dissociation,3,candidate,endothermic by 4.79 eV,yes
 cand_e_SO2F2_to_e_e_SF2p_O2,e + SO2F2 -> e + e + SF2+ + O2,electron,dissociative_ionization,3,candidate,unknown,no
 cand_e_SOF*_to_e_SOF*,e + SOF* -> e + SOF*,electron,elastic,3,candidate,unknown,no
 cand_e_SOF*_to_e_e_SOFp,e + SOF* -> e + e + SOF+,electron,ionization,3,candidate,unknown,no

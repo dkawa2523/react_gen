@@ -2,13 +2,14 @@ layer: thermochemistry
 question: do the energetics leave the channel open?
 reactions:
   total: 2081
-  judged: 749
-  undecided: 1332
+  judged: 830
+  undecided: 1251
   not_run: 0
   by_verdict:
-    unknown: 1332
-    exothermic: 447
-    endothermic: 302
+    unknown: 1251
+    exothermic: 467
+    endothermic: 342
+    thermoneutral: 21
 species:
   total: 79
   needs:
@@ -16,6 +17,6 @@ species:
   - ionization_energy_eV
   blocked_by_missing_property: 69
 by_process:
-  electron_impact: 23
+  electron_impact: 87
   ion_collision: 718
-  neutral_reaction: 8
+  neutral_reaction: 25

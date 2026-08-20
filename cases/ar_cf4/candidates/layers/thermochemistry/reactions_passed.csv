@@ -1,5 +1,32 @@
 id,equation,family,type,depth,status,verdict,decided
+e_Ar_elastic,e + Ar -> e + Ar,electron,elastic,0,curated,thermoneutral,yes
+e_Ar_ionization,e + Ar -> 2 e + Ar+,electron,ionization,0,curated,endothermic by 15.76 eV,yes
+e_CF4_elastic,e + CF4 -> e + CF4,electron,elastic,0,curated,thermoneutral,yes
+e_CF4_dissociation_CF3_F,e + CF4 -> e + CF3 + F,electron,dissociation,0,curated,endothermic by 5.64 eV,yes
+e_CF4_dissociation_CF2_2F,e + CF4 -> e + CF2 + 2 F,electron,dissociation,0,curated,endothermic by 9.43 eV,yes
+e_CF4_dissociative_ionization_CF3p,e + CF4 -> 2 e + CF3+ + F,electron,dissociative_ionization,0,curated,endothermic by 14.67 eV,yes
+e_CF4_dissociative_ionization_Fp_CF3,e + CF4 -> 2 e + CF3 + F+,electron,dissociative_ionization,0,literature_supported,endothermic by 23.07 eV,yes
+e_CF4_dissociative_ionization_CF2p,e + CF4 -> 2 e + CF2+ + 2 F,electron,dissociative_ionization,0,curated,endothermic by 20.79 eV,yes
+cand_e_CF4_to_e_CF2_F2,e + CF4 -> e + CF2 + F2,electron,dissociation,0,candidate,endothermic by 7.79 eV,yes
+cand_e_CF4_to_e_e_CF2p_F2,e + CF4 -> e + e + CF2+ + F2,electron,dissociative_ionization,0,candidate,endothermic by 19.15 eV,yes
 e_Ar4s_superelastic,e + Ar_4s -> e + Ar,electron,deexcitation,1,literature_supported,exothermic by 11.60 eV,yes
+e_CF2_ionization_CF2p,e + CF2 -> 2 e + CF2+,electron,ionization,1,curated,endothermic by 11.36 eV,yes
+e_CF2_dissociation_CF_F,e + CF2 -> e + CF + F,electron,dissociation,1,literature_supported,endothermic by 5.35 eV,yes
+e_CF2_dissociation_C_2F,e + CF2 -> e + C + 2 F,electron,dissociation,1,literature_supported,endothermic by 10.96 eV,yes
+e_CF3_ionization_CF3p,e + CF3 -> 2 e + CF3+,electron,ionization,1,curated,endothermic by 9.03 eV,yes
+e_CF3_dissociation_CF2_F,e + CF3 -> e + CF2 + F,electron,dissociation,1,literature_supported,endothermic by 3.79 eV,yes
+e_F_elastic,e + F -> e + F,electron,elastic,1,curated,thermoneutral,yes
+e_F_ionization,e + F -> 2 e + F+,electron,ionization,1,curated,endothermic by 17.42 eV,yes
+e_F2_dissociation_2F,e + F2 -> e + 2 F,electron,dissociation,1,literature_supported,endothermic by 1.65 eV,yes
+F2_CF2_to_CF3_F,F2 + CF2 -> CF3 + F,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 2.14 eV,yes
+F2_CF3_to_CF4_F,F2 + CF3 -> CF4 + F,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 4.00 eV,yes
+cand_e_CF2_to_e_CF2,e + CF2 -> e + CF2,electron,elastic,1,candidate,thermoneutral,yes
+cand_e_CF2_to_e_C_F2,e + CF2 -> e + C + F2,electron,dissociation,1,candidate,endothermic by 9.32 eV,yes
+cand_e_CF3_to_e_CF3,e + CF3 -> e + CF3,electron,elastic,1,candidate,thermoneutral,yes
+cand_e_CF3_to_e_e_CF2p_F,e + CF3 -> e + e + CF2+ + F,electron,dissociative_ionization,1,candidate,endothermic by 15.15 eV,yes
+cand_e_CF3_to_e_CF_F2,e + CF3 -> e + CF + F2,electron,dissociation,1,candidate,endothermic by 7.50 eV,yes
+cand_e_F2_to_e_F2,e + F2 -> e + F2,electron,elastic,1,candidate,thermoneutral,yes
+cand_e_F2_to_e_e_Fp_F,e + F2 -> e + e + F+ + F,electron,dissociative_ionization,1,candidate,endothermic by 19.07 eV,yes
 cand_CF2_diss_C_1D,e + CF2 -> e + F2 + C_1D,electron,dissociation,1,candidate,endothermic by 10.58 eV,yes
 cand_CF2_diss_C_1S,e + CF2 -> e + F2 + C_1S,electron,dissociation,1,candidate,endothermic by 12.00 eV,yes
 cand_Arp_CF2_char_Ar_CF2p,Ar+ + CF2 -> Ar + CF2+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.40 eV,yes
@@ -47,6 +74,16 @@ cand_Fp_CF4_v_diss_F_CF2p_F2,F+ + CF4_v -> F + CF2+ + F2,ion_neutral,dissociativ
 cand_Fp_F2_char_F_F2p,F+ + F2 -> F + F2+,ion_neutral,charge_transfer,1,candidate,exothermic by 1.73 eV,yes
 cand_Fp_F2_reac_Fp_F_F,F+ + F2 -> F+ + F + F,ion_neutral,reactive_scattering,1,candidate,endothermic by 1.65 eV,yes
 cand_Ar_4s_CF3_penning,Ar_4s + CF3 -> Ar + CF3+ + e,neutral_neutral,penning_ionization,1,candidate,exothermic by 2.55 eV,yes
+e_C_excitation_C_1D,e + C -> e + C_1D,electron,excitation,2,literature_supported,endothermic by 1.26 eV,yes
+e_C_excitation_C_1S,e + C -> e + C_1S,electron,excitation,2,literature_supported,endothermic by 2.68 eV,yes
+e_CF_dissociation_C_F,e + CF -> e + C + F,electron,dissociation,2,literature_supported,endothermic by 5.61 eV,yes
+e_C_1D_elastic,e + C_1D -> e + C_1D,electron,elastic,2,literature_supported,thermoneutral,yes
+e_C_1D_superelastic,e + C_1D -> e + C,electron,deexcitation,2,literature_supported,exothermic by 1.26 eV,yes
+e_C_1S_elastic,e + C_1S -> e + C_1S,electron,elastic,2,literature_supported,thermoneutral,yes
+e_C_1S_superelastic,e + C_1S -> e + C,electron,deexcitation,2,literature_supported,exothermic by 2.68 eV,yes
+F2_CF_to_CF2_F,F2 + CF -> CF2 + F,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 3.71 eV,yes
+cand_e_C_to_e_C,e + C -> e + C,electron,elastic,2,candidate,thermoneutral,yes
+cand_e_CF_to_e_CF,e + CF -> e + CF,electron,elastic,2,candidate,thermoneutral,yes
 cand_CF_diss_C_1D,e + CF -> e + F + C_1D,electron,dissociation,2,candidate,endothermic by 6.87 eV,yes
 cand_CF_diss_C_1S,e + CF -> e + F + C_1S,electron,dissociation,2,candidate,endothermic by 8.29 eV,yes
 cand_Arp_C_char_Ar_Cp,Ar+ + C -> Ar + C+,ion_neutral,charge_transfer,2,candidate,exothermic by 4.50 eV,yes

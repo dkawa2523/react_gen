@@ -19,6 +19,7 @@ from reactgen.balance import imbalance
 from reactgen.case import Case
 from reactgen.model import ELECTRON, Gap, Network, Reaction
 from reactgen.registry import PairKey, Registry
+from reactgen.thermo import formation_delta
 
 # Given the frontier and everything active, return further channels to consider.
 Proposer = Callable[[set[str], set[str]], list[Reaction]]
@@ -121,8 +122,22 @@ def _accept(
         if reason:
             rejected.append(Gap("rejected_reaction", reaction.id, reason, "blocking"))
         else:
-            accepted.append(replace(reaction, depth=depth))
+            accepted.append(_with_energy(replace(reaction, depth=depth), registry))
     return accepted, rejected
+
+
+def _with_energy(reaction: Reaction, registry: Registry) -> Reaction:
+    """Fill the reaction enthalpy where the species carry one and it is absent.
+
+    A curated channel records the threshold it was measured at, not the energy
+    it costs, so without this the thermochemistry layer could say nothing about
+    the very reactions a source stands behind.
+    """
+
+    if reaction.delta_e_eV is not None:
+        return reaction
+    energy = formation_delta(reaction, registry.species)
+    return reaction if energy is None else replace(reaction, delta_e_eV=energy)
 
 
 def _record(

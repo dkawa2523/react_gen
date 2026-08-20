@@ -18,6 +18,33 @@ AVOGADRO = 6.02214076e23
 JOULE_PER_EV = 1.602176634e-19
 
 
+def formation_delta(reaction: Reaction, species: dict[str, Species]) -> float | None:
+    """Reaction enthalpy from formation enthalpies, or None where one is missing.
+
+    ``E(products) - E(reactants)``, so a positive value is endothermic. The
+    electron carries none by the usual convention, which makes an electron
+    impact channel the same arithmetic as any other: ``e + CF4 -> e + CF3 + F``
+    costs the bond, and ``e + A -> 2e + A+`` costs the ionization energy.
+
+    Not a screen. An electron brings whatever energy it has, so a positive value
+    here says where the channel opens rather than that it is shut — but it has
+    to be recorded for `audit` to check an acquired threshold against it, and
+    for a reviewer to see how far uphill a channel sits.
+    """
+
+    total = 0.0
+    for terms, sign in ((reaction.products, 1.0), (reaction.reactants, -1.0)):
+        for term in terms:
+            if term.species == ELECTRON:
+                continue
+            found = species.get(term.species)
+            value = None if found is None else found.value("enthalpy_formation_eV")
+            if value is None:
+                return None
+            total += sign * term.n * value
+    return total
+
+
 def enthalpy_RT(thermo: Thermo, temperature_K: float) -> float:
     a = thermo.coefficients(temperature_K)
     t = temperature_K

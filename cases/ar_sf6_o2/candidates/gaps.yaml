@@ -1,9 +1,13 @@
 case: ar_sf6_o2
 counts:
-  blocking: 0
+  blocking: 1
   data: 545
   info: 13
 gaps:
+- kind: energy_inconsistent
+  subject: e_SF6_dissociative_ionization_Fp_SF4_F
+  detail: threshold 23.0 eV is 0.81 eV below the 23.8 eV consumed
+  severity: blocking
 - kind: missing_threshold
   subject: SOF4_dissociation_SOF3_F
   detail: appearance energy unknown; LXCat states it

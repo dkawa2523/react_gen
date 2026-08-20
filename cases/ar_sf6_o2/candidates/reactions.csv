@@ -23,13 +23,13 @@ e_SF6_dissociative_ionization_Sp_F2_4F,e + SF6 -> 2 e + S+ + F2 + 4 F,electron,d
 e_SF6_dissociative_ionization_Fp_SF4_F,e + SF6 -> 2 e + F+ + SF4 + F,electron,dissociative_ionization,0,cross_section,23.0,23.0,,,,,,unknown,,literature_supported,"A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014)."
 cand_e_O2_to_e_O2_v,e + O2 -> e + O2_v,electron,excitation,0,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_O2_v_to_e_O2,e + O2_v -> e + O2,electron,deexcitation,0,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_O2_to_e_e_Op_O,e + O2 -> e + e + O+ + O,electron,dissociative_ionization,0,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_O2_to_e_e_Op_O,e + O2 -> e + e + O+ + O,electron,dissociative_ionization,0,cross_section,,-18.783732,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF6_to_e_e_SF6p,e + SF6 -> e + e + SF6+,electron,ionization,0,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF6_to_e_SF6_v,e + SF6 -> e + SF6_v,electron,excitation,0,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF6_v_to_e_SF6,e + SF6_v -> e + SF6,electron,deexcitation,0,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF6_to_e_SF6*,e + SF6 -> e + SF6*,electron,excitation,0,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF6*_to_e_SF6,e + SF6* -> e + SF6,electron,deexcitation,0,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SF6_to_e_SF4_F2,e + SF6 -> e + SF4 + F2,electron,dissociation,0,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SF6_to_e_SF4_F2,e + SF6 -> e + SF4 + F2,electron,dissociation,0,cross_section,,-4.739579999999999,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF6_to_e_e_SF4p_F2,e + SF6 -> e + e + SF4+ + F2,electron,dissociative_ionization,0,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_O2_diss_O_1S,e + O2 -> e + O + O_1S,electron,dissociation,0,cross_section,,-9.3559,,,,,,unknown,,candidate,"bond energy 5.17 eV plus the 4.19 eV level; the thermodynamic limit, below any measured onset"
 e_Ar4s_elastic,e + Ar_4s -> e + Ar_4s,electron,elastic,1,cross_section,0.0,,,,,,,unknown,,literature_supported,
@@ -106,16 +106,16 @@ cand_e_F2_to_e_F2_v,e + F2 -> e + F2_v,electron,excitation,1,cross_section,,,,,,
 cand_e_F2_v_to_e_F2,e + F2_v -> e + F2,electron,deexcitation,1,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_F2_to_e_F2*,e + F2 -> e + F2*,electron,excitation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_F2*_to_e_F2,e + F2* -> e + F2,electron,deexcitation,1,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_F2_to_e_e_Fp_F,e + F2 -> e + e + F+ + F,electron,dissociative_ionization,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_O2_a1Delta_to_e_O_O,e + O2_a1Delta -> e + O + O,electron,dissociation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_O2_a1Delta_to_e_e_Op_O,e + O2_a1Delta -> e + e + O+ + O,electron,dissociative_ionization,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_O2_b1Sigma_to_e_O_O,e + O2_b1Sigma -> e + O + O,electron,dissociation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_O2_b1Sigma_to_e_e_Op_O,e + O2_b1Sigma -> e + e + O+ + O,electron,dissociative_ionization,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_F2_to_e_e_Fp_F,e + F2 -> e + e + F+ + F,electron,dissociative_ionization,1,cross_section,,-19.068189725314177,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_O2_a1Delta_to_e_O_O,e + O2_a1Delta -> e + O + O,electron,dissociation,1,cross_section,,-4.189153999999999,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_O2_a1Delta_to_e_e_Op_O,e + O2_a1Delta -> e + e + O+ + O,electron,dissociative_ionization,1,cross_section,,-17.806732,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_O2_b1Sigma_to_e_O_O,e + O2_b1Sigma -> e + O + O,electron,dissociation,1,cross_section,,-3.539154,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_O2_b1Sigma_to_e_e_Op_O,e + O2_b1Sigma -> e + e + O+ + O,electron,dissociative_ionization,1,cross_section,,-17.156732,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_O2_v_to_e_O2_v,e + O2_v -> e + O2_v,electron,elastic,1,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_O2_v_to_e_e_O2p,e + O2_v -> e + e + O2+,electron,ionization,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_O2_v_to_e_O_O,e + O2_v -> e + O + O,electron,dissociation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_O2_v_to_e_e_Op_O,e + O2_v -> e + e + O+ + O,electron,dissociative_ionization,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_O_1S_to_e_e_Op,e + O_1S -> e + e + O+,electron,ionization,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_O_1S_to_e_e_Op,e + O_1S -> e + e + O+,electron,ionization,1,cross_section,,-9.427832000000002,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF_to_e_SF,e + SF -> e + SF,electron,elastic,1,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF_to_e_SF_v,e + SF -> e + SF_v,electron,excitation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF_v_to_e_SF,e + SF_v -> e + SF,electron,deexcitation,1,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
@@ -128,7 +128,7 @@ cand_e_SF2_v_to_e_SF2,e + SF2_v -> e + SF2,electron,deexcitation,1,cross_section
 cand_e_SF2_to_e_SF2*,e + SF2 -> e + SF2*,electron,excitation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF2*_to_e_SF2,e + SF2* -> e + SF2,electron,deexcitation,1,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF2_to_e_e_SFp_F,e + SF2 -> e + e + SF+ + F,electron,dissociative_ionization,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SF2_to_e_S_F2,e + SF2 -> e + S + F2,electron,dissociation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SF2_to_e_S_F2,e + SF2 -> e + S + F2,electron,dissociation,1,cross_section,,-5.9475370000000005,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF2_to_e_e_Sp_F2,e + SF2 -> e + e + S+ + F2,electron,dissociative_ionization,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF3_to_e_SF3,e + SF3 -> e + SF3,electron,elastic,1,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF3_to_e_SF3_v,e + SF3 -> e + SF3_v,electron,excitation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
@@ -143,7 +143,7 @@ cand_e_SF4_to_e_SF4_v,e + SF4 -> e + SF4_v,electron,excitation,1,cross_section,,
 cand_e_SF4_v_to_e_SF4,e + SF4_v -> e + SF4,electron,deexcitation,1,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF4_to_e_SF4*,e + SF4 -> e + SF4*,electron,excitation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF4*_to_e_SF4,e + SF4* -> e + SF4,electron,deexcitation,1,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SF4_to_e_SF2_F2,e + SF4 -> e + SF2 + F2,electron,dissociation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SF4_to_e_SF2_F2,e + SF4 -> e + SF2 + F2,electron,dissociation,1,cross_section,,-4.83545,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF4_to_e_e_SF2p_F2,e + SF4 -> e + e + SF2+ + F2,electron,dissociative_ionization,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF5_to_e_SF5,e + SF5 -> e + SF5,electron,elastic,1,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF5_to_e_SF5_v,e + SF5 -> e + SF5_v,electron,excitation,1,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
@@ -504,7 +504,7 @@ cand_e_FO_to_e_FO_v,e + FO -> e + FO_v,electron,excitation,2,cross_section,,,,,,
 cand_e_FO_v_to_e_FO,e + FO_v -> e + FO,electron,deexcitation,2,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_FO_to_e_FO*,e + FO -> e + FO*,electron,excitation,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_FO*_to_e_FO,e + FO* -> e + FO,electron,deexcitation,2,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_FO_to_e_e_Fp_O,e + FO -> e + e + F+ + O,electron,dissociative_ionization,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_FO_to_e_e_Fp_O,e + FO -> e + e + F+ + O,electron,dissociative_ionization,2,cross_section,,-19.700541725314178,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_S_to_e_S,e + S -> e + S,electron,elastic,2,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF*_to_e_SF*,e + SF* -> e + SF*,electron,elastic,2,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SF*_to_e_e_SFp,e + SF* -> e + e + SF+,electron,ionization,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
@@ -568,8 +568,8 @@ cand_e_SO_to_e_SO_v,e + SO -> e + SO_v,electron,excitation,2,cross_section,,,,,,
 cand_e_SO_v_to_e_SO,e + SO_v -> e + SO,electron,deexcitation,2,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO_to_e_SO*,e + SO -> e + SO*,electron,excitation,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO*_to_e_SO,e + SO* -> e + SO,electron,deexcitation,2,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SO_to_e_O_S,e + SO -> e + O + S,electron,dissociation,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SO_to_e_e_Op_S,e + SO -> e + e + O+ + S,electron,dissociative_ionization,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SO_to_e_O_S,e + SO -> e + O + S,electron,dissociation,2,cross_section,,-5.390758,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SO_to_e_e_Op_S,e + SO -> e + e + O+ + S,electron,dissociative_ionization,2,cross_section,,-19.008336000000003,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF_to_e_SOF,e + SOF -> e + SOF,electron,elastic,2,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF_to_e_e_SOFp,e + SOF -> e + e + SOF+,electron,ionization,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF_to_e_SOF_v,e + SOF -> e + SOF_v,electron,excitation,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
@@ -586,7 +586,7 @@ cand_e_SOF2_to_e_SOF2*,e + SOF2 -> e + SOF2*,electron,excitation,2,cross_section
 cand_e_SOF2*_to_e_SOF2,e + SOF2* -> e + SOF2,electron,deexcitation,2,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF2_to_e_SOF_F,e + SOF2 -> e + SOF + F,electron,dissociation,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF2_to_e_e_SOFp_F,e + SOF2 -> e + e + SOF+ + F,electron,dissociative_ionization,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SOF2_to_e_SO_F2,e + SOF2 -> e + SO + F2,electron,dissociation,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SOF2_to_e_SO_F2,e + SOF2 -> e + SO + F2,electron,dissociation,2,cross_section,,-5.702629,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF2_to_e_e_SOp_F2,e + SOF2 -> e + e + SO+ + F2,electron,dissociative_ionization,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF3_to_e_SOF3,e + SOF3 -> e + SOF3,electron,elastic,2,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF3_to_e_e_SOF3p,e + SOF3 -> e + e + SOF3+,electron,ionization,2,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
@@ -1268,9 +1268,9 @@ cand_e_SO2_to_e_SO2_v,e + SO2 -> e + SO2_v,electron,excitation,3,cross_section,,
 cand_e_SO2_v_to_e_SO2,e + SO2_v -> e + SO2,electron,deexcitation,3,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2_to_e_SO2*,e + SO2 -> e + SO2*,electron,excitation,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2*_to_e_SO2,e + SO2* -> e + SO2,electron,deexcitation,3,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SO2_to_e_SO_O,e + SO2 -> e + SO + O,electron,dissociation,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SO2_to_e_SO_O,e + SO2 -> e + SO + O,electron,dissociation,3,cross_section,,-5.724487,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2_to_e_e_SOp_O,e + SO2 -> e + e + SO+ + O,electron,dissociative_ionization,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SO2_to_e_S_O2,e + SO2 -> e + S + O2,electron,dissociation,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SO2_to_e_S_O2,e + SO2 -> e + S + O2,electron,dissociation,3,cross_section,,-5.949091,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2_to_e_e_Sp_O2,e + SO2 -> e + e + S+ + O2,electron,dissociative_ionization,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2F2_to_e_SO2F2,e + SO2F2 -> e + SO2F2,electron,elastic,3,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2F2_to_e_e_SO2F2p,e + SO2F2 -> e + e + SO2F2+,electron,ionization,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
@@ -1278,9 +1278,9 @@ cand_e_SO2F2_to_e_SO2F2_v,e + SO2F2 -> e + SO2F2_v,electron,excitation,3,cross_s
 cand_e_SO2F2_v_to_e_SO2F2,e + SO2F2_v -> e + SO2F2,electron,deexcitation,3,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2F2_to_e_SO2F2*,e + SO2F2 -> e + SO2F2*,electron,excitation,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2F2*_to_e_SO2F2,e + SO2F2* -> e + SO2F2,electron,deexcitation,3,cross_section,0.0,0.0,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SO2F2_to_e_SOF2_O,e + SO2F2 -> e + SOF2 + O,electron,dissociation,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SO2F2_to_e_SOF2_O,e + SO2F2 -> e + SOF2 + O,electron,dissociation,3,cross_section,,-4.807663,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2F2_to_e_e_SOF2p_O,e + SO2F2 -> e + e + SOF2+ + O,electron,dissociative_ionization,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
-cand_e_SO2F2_to_e_SF2_O2,e + SO2F2 -> e + SF2 + O2,electron,dissociation,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
+cand_e_SO2F2_to_e_SF2_O2,e + SO2F2 -> e + SF2 + O2,electron,dissociation,3,cross_section,,-4.7873589999999995,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SO2F2_to_e_e_SF2p_O2,e + SO2F2 -> e + e + SF2+ + O2,electron,dissociative_ionization,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF*_to_e_SOF*,e + SOF* -> e + SOF*,electron,elastic,3,cross_section,0.0,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted
 cand_e_SOF*_to_e_e_SOFp,e + SOF* -> e + e + SOF+,electron,ionization,3,cross_section,,,,,,,,unknown,,candidate,conservation allows this channel; no source has been consulted

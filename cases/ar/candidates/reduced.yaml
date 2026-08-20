@@ -16,7 +16,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved
-    thermochemistry: unknown
+    thermochemistry: thermoneutral
     kinetics: unknown
     attestation: unattested
   family: electron
@@ -35,7 +35,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: 0.0
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -112,7 +112,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved
-    thermochemistry: unknown
+    thermochemistry: endothermic by 15.76 eV
     kinetics: unknown
     attestation: unattested
   family: electron
@@ -131,7 +131,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 15.75961
-  delta_e_eV: null
+  delta_e_eV: 15.75961
   electron_energy_cost_eV: 15.75961
   thermodynamics: null
   reverse: null

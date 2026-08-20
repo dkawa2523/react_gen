@@ -15,7 +15,15 @@ from reactgen.model import ELECTRON, Gap, Network, Reaction, Species
 from reactgen.registry import Registry
 
 MOMENTUM_TRANSFER = {"elastic", "effective", "momentum_transfer"}
+# Two measurements of one quantity — an ionization threshold against the same
+# species' ionization energy — agree to about 20 meV, so this is what a
+# disagreement between them has to beat.
 ENERGY_TOLERANCE_EV = 0.05
+# An onset measured in one experiment against a sum of formation enthalpies
+# compiled in another is a different comparison. Each enthalpy carries a
+# tenth of an eV or so and an appearance energy carries its own, so a few
+# tenths is agreement and only more than that is a contradiction.
+ENTHALPY_TOLERANCE_EV = 0.5
 
 # What an electron-impact channel's onset is called, per process. Elastic and
 # superelastic collisions are absent because theirs is zero by definition; every
@@ -108,9 +116,14 @@ def _energy_consistency(reactions: list[Reaction]) -> list[Gap]:
         threshold, delta = reaction.threshold_eV, reaction.delta_e_eV
         if threshold is None or delta is None or delta <= 0:
             continue
-        if threshold < delta - ENERGY_TOLERANCE_EV:
-            detail = f"threshold {threshold} eV below the {delta:.3g} eV consumed"
-            gaps.append(Gap("energy_inconsistent", reaction.id, detail, "blocking"))
+        short = delta - threshold
+        if short <= ENERGY_TOLERANCE_EV:
+            continue
+        # An onset below the thermodynamic limit is impossible; how far below
+        # decides whether it is a contradiction or two compilations disagreeing.
+        severity = "blocking" if short > ENTHALPY_TOLERANCE_EV else "data"
+        detail = f"threshold {threshold} eV is {short:.2f} eV below the {delta:.3g} eV consumed"
+        gaps.append(Gap("energy_inconsistent", reaction.id, detail, severity))
     return gaps
 
 

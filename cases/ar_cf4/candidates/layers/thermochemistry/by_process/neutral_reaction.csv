@@ -1,3 +1,6 @@
 bodies,reactants,products,id,family,type,depth,status,verdict
 2,Ar_4s + C,Ar + C+ + e,cand_Ar_4s_C_penning,neutral_neutral,penning_ionization,2,candidate,exothermic by 0.34 eV
 2,Ar_4s + CF3,Ar + CF3+ + e,cand_Ar_4s_CF3_penning,neutral_neutral,penning_ionization,1,candidate,exothermic by 2.55 eV
+2,F2 + CF,CF2 + F,F2_CF_to_CF2_F,neutral_neutral,reactive_scattering,2,literature_supported,exothermic by 3.71 eV
+2,F2 + CF2,CF3 + F,F2_CF2_to_CF3_F,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 2.14 eV
+2,F2 + CF3,CF4 + F,F2_CF3_to_CF4_F,neutral_neutral,reactive_scattering,1,literature_supported,exothermic by 4.00 eV
