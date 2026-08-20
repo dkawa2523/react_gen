@@ -66,8 +66,10 @@ bodies,reactants,products,id,family,type,depth,status,verdict
 2,e + SO,e + SO,cand_e_SO_to_e_SO,electron,elastic,2,candidate,thermoneutral
 2,e + SO2,e + S + O2_a1Delta,cand_SO2_diss_O2_a1Delta,electron,dissociation,3,candidate,endothermic by 6.93 eV
 2,e + SO2,e + S + O2_b1Sigma,cand_SO2_diss_O2_b1Sigma,electron,dissociation,3,candidate,endothermic by 7.58 eV
+2,e + SO2,e + S + O2_v,cand_SO2_diss_O2_v,electron,dissociation,3,candidate,endothermic by 6.13 eV
 2,e + SO2,e + SO + O_1D,cand_SO2_diss_O_1D,electron,dissociation,3,candidate,endothermic by 7.69 eV
 2,e + SO2,e + SO + O_1S,cand_SO2_diss_O_1S,electron,dissociation,3,candidate,endothermic by 9.91 eV
+2,e + SO2,e + O + SO_v,cand_SO2_diss_SO_v,electron,dissociation,3,candidate,endothermic by 5.86 eV
 2,e + SO2,e + O2 + S_1D,cand_SO2_diss_S_1D,electron,dissociation,3,candidate,endothermic by 7.09 eV
 2,e + SO2,e + O2 + S_1S,cand_SO2_diss_S_1S,electron,dissociation,3,candidate,endothermic by 8.70 eV
 2,e + SO2,e + SO + O,cand_e_SO2_to_e_SO_O,electron,dissociation,3,candidate,endothermic by 5.72 eV
@@ -75,11 +77,13 @@ bodies,reactants,products,id,family,type,depth,status,verdict
 2,e + SO2,e + SO2,cand_e_SO2_to_e_SO2,electron,elastic,3,candidate,thermoneutral
 2,e + SO2F2,e + SF2 + O2_a1Delta,cand_SO2F2_diss_O2_a1Delta,electron,dissociation,3,candidate,endothermic by 5.76 eV
 2,e + SO2F2,e + SF2 + O2_b1Sigma,cand_SO2F2_diss_O2_b1Sigma,electron,dissociation,3,candidate,endothermic by 6.41 eV
+2,e + SO2F2,e + SF2 + O2_v,cand_SO2F2_diss_O2_v,electron,dissociation,3,candidate,endothermic by 4.97 eV
 2,e + SO2F2,e + SOF2 + O_1D,cand_SO2F2_diss_O_1D,electron,dissociation,3,candidate,endothermic by 6.77 eV
 2,e + SO2F2,e + SOF2 + O_1S,cand_SO2F2_diss_O_1S,electron,dissociation,3,candidate,endothermic by 9.00 eV
 2,e + SO2F2,e + SF2 + O2,cand_e_SO2F2_to_e_SF2_O2,electron,dissociation,3,candidate,endothermic by 4.79 eV
 2,e + SO2F2,e + SOF2 + O,cand_e_SO2F2_to_e_SOF2_O,electron,dissociation,3,candidate,endothermic by 4.81 eV
 2,e + SO2F2,e + SO2F2,cand_e_SO2F2_to_e_SO2F2,electron,elastic,3,candidate,thermoneutral
+2,e + SOF2,e + SO + F2_v,cand_SOF2_diss_F2_v,electron,dissociation,2,candidate,endothermic by 5.80 eV
 2,e + SOF2,e + SO + F2,cand_e_SOF2_to_e_SO_F2,electron,dissociation,2,candidate,endothermic by 5.70 eV
 2,e + SOF2,e + SOF2,cand_e_SOF2_to_e_SOF2,electron,elastic,2,candidate,thermoneutral
 2,e + S_1D,e + S,e_S_1D_superelastic,electron,deexcitation,2,literature_supported,exothermic by 1.15 eV

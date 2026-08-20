@@ -362,6 +362,11 @@ species:
       value: 1.562
       unit: A3
       source: NIST CCCBDB experimental polarizability list
+    vibrational_quantum_eV:
+      value: 0.1853
+      unit: eV
+      source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+        K
   thermo: null
   status: curated
 - id: O2+
@@ -535,7 +540,7 @@ species:
   state:
     kind: excited
     label: vibrational
-    energy_eV: null
+    energy_eV: 0.1853
     resolution: lumped
     members: []
   depth: 1

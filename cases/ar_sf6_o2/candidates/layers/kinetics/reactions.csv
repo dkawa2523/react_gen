@@ -616,6 +616,7 @@ cand_SO_diss_O_1D,e + SO -> e + S + O_1D,electron,dissociation,2,candidate,unkno
 cand_SO_diss_O_1S,e + SO -> e + S + O_1S,electron,dissociation,2,candidate,unknown,no
 cand_SO_diss_S_1D,e + SO -> e + O + S_1D,electron,dissociation,2,candidate,unknown,no
 cand_SO_diss_S_1S,e + SO -> e + O + S_1S,electron,dissociation,2,candidate,unknown,no
+cand_SOF2_diss_F2_v,e + SOF2 -> e + SO + F2_v,electron,dissociation,2,candidate,unknown,no
 cand_F2_v_Ar_vt,F2_v + Ar -> F2 + Ar,neutral_neutral,vibrational_relaxation,2,candidate,unknown,no
 cand_F2_v_Ar_4s_vt,F2_v + Ar_4s -> F2 + Ar_4s,neutral_neutral,vibrational_relaxation,2,candidate,unknown,no
 cand_F2_v_F_vt,F2_v + F -> F2 + F,neutral_neutral,vibrational_relaxation,2,candidate,unknown,no
@@ -1330,16 +1331,19 @@ cand_e_SO_v_to_e_SO_v,e + SO_v -> e + SO_v,electron,elastic,3,candidate,unknown,
 cand_e_SO_v_to_e_e_SOp,e + SO_v -> e + e + SO+,electron,ionization,3,candidate,unknown,no
 cand_e_SO_v_to_e_O_S,e + SO_v -> e + O + S,electron,dissociation,3,candidate,unknown,no
 cand_e_SO_v_to_e_e_Op_S,e + SO_v -> e + e + O+ + S,electron,dissociative_ionization,3,candidate,unknown,no
+cand_SO2_diss_SO_v,e + SO2 -> e + O + SO_v,electron,dissociation,3,candidate,unknown,no
 cand_SO2_diss_O_1D,e + SO2 -> e + SO + O_1D,electron,dissociation,3,candidate,unknown,no
 cand_SO2_diss_O_1S,e + SO2 -> e + SO + O_1S,electron,dissociation,3,candidate,unknown,no
 cand_SO2_diss_S_1D,e + SO2 -> e + O2 + S_1D,electron,dissociation,3,candidate,unknown,no
 cand_SO2_diss_S_1S,e + SO2 -> e + O2 + S_1S,electron,dissociation,3,candidate,unknown,no
 cand_SO2_diss_O2_a1Delta,e + SO2 -> e + S + O2_a1Delta,electron,dissociation,3,candidate,unknown,no
 cand_SO2_diss_O2_b1Sigma,e + SO2 -> e + S + O2_b1Sigma,electron,dissociation,3,candidate,unknown,no
+cand_SO2_diss_O2_v,e + SO2 -> e + S + O2_v,electron,dissociation,3,candidate,unknown,no
 cand_SO2F2_diss_O_1D,e + SO2F2 -> e + SOF2 + O_1D,electron,dissociation,3,candidate,unknown,no
 cand_SO2F2_diss_O_1S,e + SO2F2 -> e + SOF2 + O_1S,electron,dissociation,3,candidate,unknown,no
 cand_SO2F2_diss_O2_a1Delta,e + SO2F2 -> e + SF2 + O2_a1Delta,electron,dissociation,3,candidate,unknown,no
 cand_SO2F2_diss_O2_b1Sigma,e + SO2F2 -> e + SF2 + O2_b1Sigma,electron,dissociation,3,candidate,unknown,no
+cand_SO2F2_diss_O2_v,e + SO2F2 -> e + SF2 + O2_v,electron,dissociation,3,candidate,unknown,no
 cand_F2_v_FO*_vt,F2_v + FO* -> F2 + FO*,neutral_neutral,vibrational_relaxation,3,candidate,unknown,no
 cand_F2_v_FO_v_vt,F2_v + FO_v -> F2 + FO_v,neutral_neutral,vibrational_relaxation,3,candidate,unknown,no
 cand_F2_v_SO*_vt,F2_v + SO* -> F2 + SO*,neutral_neutral,vibrational_relaxation,3,candidate,unknown,no

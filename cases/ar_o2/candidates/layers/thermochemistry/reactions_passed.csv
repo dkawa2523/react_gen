@@ -35,6 +35,14 @@ cand_e_O2_a1Delta_to_e_e_Op_O,e + O2_a1Delta -> e + e + O+ + O,electron,dissocia
 cand_e_O2_b1Sigma_to_e_O_O,e + O2_b1Sigma -> e + O + O,electron,dissociation,1,candidate,endothermic by 3.54 eV,yes
 cand_e_O2_b1Sigma_to_e_e_Op_O,e + O2_b1Sigma -> e + e + O+ + O,electron,dissociative_ionization,1,candidate,endothermic by 17.16 eV,yes
 cand_e_O_1S_to_e_e_Op,e + O_1S -> e + e + O+,electron,ionization,1,candidate,endothermic by 9.43 eV,yes
+cand_O2_v_Ar_vt,O2_v + Ar -> O2 + Ar,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes
+cand_O2_v_Ar_4s_vt,O2_v + Ar_4s -> O2 + Ar_4s,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes
+cand_O2_v_O_vt,O2_v + O -> O2 + O,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes
+cand_O2_v_O2_vt,O2_v + O2 -> O2 + O2,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes
+cand_O2_v_O2_a1Delta_vt,O2_v + O2_a1Delta -> O2 + O2_a1Delta,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes
+cand_O2_v_O2_b1Sigma_vt,O2_v + O2_b1Sigma -> O2 + O2_b1Sigma,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes
+cand_O2_v_O_1D_vt,O2_v + O_1D -> O2 + O_1D,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes
+cand_O2_v_O_1S_vt,O2_v + O_1S -> O2 + O_1S,neutral_neutral,vibrational_relaxation,1,candidate,exothermic by 0.19 eV,yes
 cand_Arp_O_char_Ar_Op,Ar+ + O -> Ar + O+,ion_neutral,charge_transfer,1,candidate,exothermic by 2.14 eV,yes
 cand_Arp_O2_a1Delta_char_Ar_O2p,Ar+ + O2_a1Delta -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 4.67 eV,yes
 cand_Arp_O2_b1Sigma_char_Ar_O2p,Ar+ + O2_b1Sigma -> Ar + O2+,ion_neutral,charge_transfer,1,candidate,exothermic by 5.32 eV,yes

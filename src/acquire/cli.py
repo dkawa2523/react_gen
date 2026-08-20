@@ -17,7 +17,18 @@ from pathlib import Path
 
 import yaml
 
-from acquire import asd, atoms, download, ideal_gas, lxcat, pubchem, snapshot, thermo, umist
+from acquire import (
+    asd,
+    atoms,
+    download,
+    ideal_gas,
+    lxcat,
+    pubchem,
+    snapshot,
+    thermo,
+    umist,
+    vibration,
+)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -51,6 +62,13 @@ def main(argv: list[str] | None = None) -> int:
     levels.add_argument("symbols", nargs="+", help="element symbols")
     levels.add_argument("--out", type=Path, required=True)
     levels.set_defaults(run=_asd)
+
+    vibrate = commands.add_parser(
+        "vibration", help="fit an effective vibrational quantum from heat capacity"
+    )
+    vibrate.add_argument("species", type=Path, help="YAML list of species names")
+    vibrate.add_argument("--out", type=Path, required=True)
+    vibrate.set_defaults(run=_vibration)
 
     gas = commands.add_parser("idealgas", help="read formation enthalpy from `pyromat`")
     gas.add_argument("species", type=Path, help="YAML list of species")
@@ -186,6 +204,31 @@ def _asd(args) -> int:
 
 def _eV(value: float | None) -> str:
     return "     none" if value is None else f"{value:8.4f} eV"
+
+
+def _vibration(args) -> int:
+    if not vibration.available():
+        print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
+        return 1
+    wanted = yaml.safe_load(args.species.read_text(encoding="utf-8")) or []
+    names = [item["id"] if isinstance(item, dict) else str(item) for item in wanted]
+    linear = {n["id"]: n.get("linear", False) for n in wanted if isinstance(n, dict)}
+    atoms_of = {n["id"]: n.get("atoms", 2) for n in wanted if isinstance(n, dict)}
+    citation = "chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500 K"
+    found = vibration.fetch(names, linear, atoms_of)
+    path = snapshot.write(
+        args.out,
+        "species_property",
+        {"source_type": "chemicals_cp_fit", "citation": citation},
+        vibration.records(found, citation),
+    )
+    for item in found:
+        if item.known:
+            print(f"  {item.species:10} {item.energy_eV:7.4f} eV   theta {item.theta_K:6.0f} K")
+        else:
+            print(f"  {item.species:10} {item.error}")
+    print(f"  snapshot      {path}")
+    return 0 if any(item.known for item in found) else 1
 
 
 def _ideal_gas(args) -> int:

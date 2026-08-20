@@ -809,6 +809,9 @@ cross_sections:
 - reaction_id: cand_SO_diss_S_1S
   file: null
   status: needs_import
+- reaction_id: cand_SOF2_diss_F2_v
+  file: null
+  status: needs_import
 - reaction_id: cand_e_FO*_to_e_FO*
   file: null
   status: needs_import
@@ -1049,6 +1052,9 @@ cross_sections:
 - reaction_id: cand_e_SO_v_to_e_e_Op_S
   file: null
   status: needs_import
+- reaction_id: cand_SO2_diss_SO_v
+  file: null
+  status: needs_import
 - reaction_id: cand_SO2_diss_O_1D
   file: null
   status: needs_import
@@ -1067,6 +1073,9 @@ cross_sections:
 - reaction_id: cand_SO2_diss_O2_b1Sigma
   file: null
   status: needs_import
+- reaction_id: cand_SO2_diss_O2_v
+  file: null
+  status: needs_import
 - reaction_id: cand_SO2F2_diss_O_1D
   file: null
   status: needs_import
@@ -1077,6 +1086,9 @@ cross_sections:
   file: null
   status: needs_import
 - reaction_id: cand_SO2F2_diss_O2_b1Sigma
+  file: null
+  status: needs_import
+- reaction_id: cand_SO2F2_diss_O2_v
   file: null
   status: needs_import
 - reaction_id: cand_e_SO2*_to_e_SO2*

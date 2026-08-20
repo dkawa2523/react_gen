@@ -228,6 +228,7 @@ def _network(args) -> int:
         view.affinity(registry),
         view.enthalpy(registry),
         view.excitation(registry),
+        view.vibration(registry),
         max_ion_charge=args.max_ion_charge,
         excitation=args.excitation,
         max_leaving=args.max_leaving,

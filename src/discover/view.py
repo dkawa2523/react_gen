@@ -142,3 +142,17 @@ def excitation(registry: Registry) -> dict[str, dict[str, float]]:
         if levels:
             out[species.id] = levels
     return out
+
+
+def vibration(registry: Registry) -> dict[str, float]:
+    """Effective vibrational quantum per species, where one has been fitted.
+
+    The manifold a proposer invents as ``X_v`` sits this far above the ground
+    state, so without it the relaxation channel carries no energy at all.
+    """
+
+    return {
+        species.id: value
+        for species in registry.species.values()
+        if (value := species.value("vibrational_quantum_eV")) is not None
+    }

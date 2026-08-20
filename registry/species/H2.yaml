@@ -27,3 +27,8 @@ properties:
     unit: J/mol/K
     source: chemicals package bundled thermodynamic tables, CAS 1333-74-0, formula
       verified against the registry
+  vibrational_quantum_eV:
+    value: 0.4619
+    unit: eV
+    source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+      K

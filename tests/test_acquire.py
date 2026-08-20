@@ -350,3 +350,38 @@ def test_levels_are_recorded_against_the_ground_state_atom(monkeypatch):
     records = asd.records([_levels(monkeypatch, ARGON_LEVELS)], "NIST ASD")
     assert {item["species"] for item in records} == {"X"}
     assert "metastable_energy_eV" in {item["property"] for item in records}
+
+
+def test_a_diatomic_quantum_comes_back_near_its_measured_one():
+    """One mode, one fit: nitrogen and oxygen are the check on the method."""
+
+    from acquire import vibration
+
+    if not vibration.available():
+        pytest.skip("chemicals is not installed")
+    found = {
+        item.species: item
+        for item in vibration.fetch(
+            ["N2", "O2", "CO"],
+            {"N2": True, "O2": True, "CO": True},
+            {"N2": 2, "O2": 2, "CO": 2},
+        )
+    }
+    # Measured fundamentals: N2 0.289, O2 0.196, CO 0.269 eV.
+    assert found["N2"].energy_eV == pytest.approx(0.289, abs=0.02)
+    assert found["O2"].energy_eV == pytest.approx(0.196, abs=0.02)
+    assert found["CO"].energy_eV == pytest.approx(0.269, abs=0.02)
+
+
+def test_a_polyatomic_is_divided_by_its_mode_count():
+    """Without it the fit lowers theta until one mode carries them all."""
+
+    from acquire import vibration
+
+    if not vibration.available():
+        pytest.skip("chemicals is not installed")
+    found = vibration.fetch(["CF4"], {"CF4": False}, {"CF4": 5})[0]
+    assert found.known
+    # Nine modes spanning 0.078 to 0.16 eV; an average sits inside that.
+    assert 0.06 < found.energy_eV < 0.20
+    assert "9 modes" in found.fit_note

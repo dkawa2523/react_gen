@@ -1,7 +1,7 @@
 case: ar_sf6_o2
 counts:
   blocking: 1
-  data: 545
+  data: 549
   info: 13
 gaps:
 - kind: energy_inconsistent
@@ -41,6 +41,10 @@ gaps:
   detail: appearance energy unknown; LXCat states it
   severity: data
 - kind: missing_threshold
+  subject: cand_SO2F2_diss_O2_v
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
   subject: cand_SO2F2_diss_O_1D
   detail: appearance energy unknown; LXCat states it
   severity: data
@@ -57,6 +61,10 @@ gaps:
   detail: appearance energy unknown; LXCat states it
   severity: data
 - kind: missing_threshold
+  subject: cand_SO2_diss_O2_v
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
   subject: cand_SO2_diss_O_1D
   detail: appearance energy unknown; LXCat states it
   severity: data
@@ -65,11 +73,19 @@ gaps:
   detail: appearance energy unknown; LXCat states it
   severity: data
 - kind: missing_threshold
+  subject: cand_SO2_diss_SO_v
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
   subject: cand_SO2_diss_S_1D
   detail: appearance energy unknown; LXCat states it
   severity: data
 - kind: missing_threshold
   subject: cand_SO2_diss_S_1S
+  detail: appearance energy unknown; LXCat states it
+  severity: data
+- kind: missing_threshold
+  subject: cand_SOF2_diss_F2_v
   detail: appearance energy unknown; LXCat states it
   severity: data
 - kind: missing_threshold

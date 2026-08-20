@@ -1175,6 +1175,11 @@ species:
       value: 37.996
       unit: amu
       source: derived from composition
+    vibrational_quantum_eV:
+      value: 0.0991
+      unit: eV
+      source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+        K
   thermo: null
   status: literature_supported
 - id: F2*
@@ -1266,7 +1271,7 @@ species:
   state:
     kind: excited
     label: vibrational
-    energy_eV: null
+    energy_eV: 0.0991
     resolution: lumped
     members: []
   depth: 2
@@ -1281,6 +1286,7 @@ species:
   - cand_SF_v_F2_v_vt
   - cand_SO2F2_v_F2_v_vt
   - cand_SO2_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF3_v_F2_v_vt
   - cand_SOF4_v_F2_v_vt
@@ -1584,6 +1590,7 @@ species:
   - cand_SF6p_SO_v_diss_SF6_O_Sp
   - cand_SF_v_O_vt
   - cand_SO2F2_v_O_vt
+  - cand_SO2_diss_SO_v
   - cand_SO2_v_O_vt
   - cand_SOF2_v_O_vt
   - cand_SOF3_v_O_vt
@@ -1993,6 +2000,11 @@ species:
       value: 1.562
       unit: A3
       source: NIST CCCBDB experimental polarizability list
+    vibrational_quantum_eV:
+      value: 0.1853
+      unit: eV
+      source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+        K
   thermo: null
   status: curated
 - id: O2+
@@ -2260,7 +2272,7 @@ species:
   state:
     kind: excited
     label: vibrational
-    energy_eV: null
+    energy_eV: 0.1853
     resolution: lumped
     members: []
   depth: 1
@@ -2273,7 +2285,9 @@ species:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
   - cand_SO2F2_v_O2_v_vt
+  - cand_SO2_diss_O2_v
   - cand_SO2_v_O2_v_vt
   - cand_SOF2_v_O2_v_vt
   - cand_SOF3_v_O2_v_vt
@@ -2496,6 +2510,7 @@ species:
   - cand_SO2F2_v_S_vt
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
   - cand_SO2_v_S_vt
   - cand_SOF2_v_S_vt
   - cand_SOF3_v_S_vt
@@ -3081,6 +3096,7 @@ species:
   - cand_SF_v_SF2_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
   - cand_SO2F2_v_SF2_vt
   - cand_SO2_v_SF2_vt
   - cand_SOF2_v_SF2_vt
@@ -3841,6 +3857,11 @@ species:
       value: null
       unit: A3
       source: null
+    vibrational_quantum_eV:
+      value: 0.0767
+      unit: eV
+      source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+        K
   thermo: null
   status: curated
 - id: SF4*
@@ -4078,7 +4099,7 @@ species:
   state:
     kind: excited
     label: vibrational
-    energy_eV: null
+    energy_eV: 0.0767
     resolution: lumped
     members: []
   depth: 2
@@ -4932,6 +4953,7 @@ species:
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
   - cand_SO2_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_SO_vt
   - cand_SOF3_v_SO_vt
   - cand_SOF4_v_SO_vt
@@ -5018,6 +5040,11 @@ species:
       value: 48.059000000000005
       unit: amu
       source: derived from composition
+    vibrational_quantum_eV:
+      value: 0.1336
+      unit: eV
+      source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+        K
   thermo: null
   status: literature_supported
 - id: SO*
@@ -5205,6 +5232,11 @@ species:
       value: 64.058
       unit: amu
       source: derived from composition
+    vibrational_quantum_eV:
+      value: 0.1129
+      unit: eV
+      source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+        K
   thermo: null
   status: literature_supported
 - id: SO2*
@@ -5500,7 +5532,7 @@ species:
   state:
     kind: excited
     label: vibrational
-    energy_eV: null
+    energy_eV: 0.1129
     resolution: lumped
     members: []
   depth: 4
@@ -6427,7 +6459,7 @@ species:
   state:
     kind: excited
     label: vibrational
-    energy_eV: null
+    energy_eV: 0.1336
     resolution: lumped
     members: []
   depth: 3
@@ -6442,6 +6474,7 @@ species:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SO2_v_SO_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
@@ -6613,14 +6646,18 @@ species:
   - cand_SF2_diss_S_1S
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
   - cand_SO2F2_diss_O_1D
   - cand_SO2F2_diss_O_1S
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
+  - cand_SO2_diss_SO_v
   - cand_SO2_diss_S_1D
   - cand_SO2_diss_S_1S
+  - cand_SOF2_diss_F2_v
   - cand_SO_diss_O_1D
   - cand_SO_diss_O_1S
   - cand_SO_diss_S_1D

@@ -9,7 +9,7 @@ conditions:
   surface_area_m2: 0.52
   residence_time_s: 0.05
 criterion: upper-bound frequency more than 6 decades below the residence_time
-kept: 2080
+kept: 2084
 dropped: 1
 dropped_ids:
 - O2a_O2_self_quenching
@@ -8603,7 +8603,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -8622,7 +8622,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -8646,7 +8646,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -8665,7 +8665,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -8691,7 +8691,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -8710,7 +8710,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -8779,7 +8779,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -8798,7 +8798,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -8847,7 +8847,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -8866,7 +8866,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -8906,7 +8906,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -8925,7 +8925,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -8949,7 +8949,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -8968,7 +8968,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -8995,7 +8995,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9014,7 +9014,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9041,7 +9041,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9060,7 +9060,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9087,7 +9087,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9106,7 +9106,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9133,7 +9133,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9152,7 +9152,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9182,7 +9182,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9201,7 +9201,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9234,7 +9234,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9253,7 +9253,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9284,7 +9284,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9303,7 +9303,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9339,7 +9339,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9358,7 +9358,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9389,7 +9389,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9408,7 +9408,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9432,7 +9432,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9451,7 +9451,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -9477,7 +9477,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -9496,7 +9496,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -35706,12 +35706,64 @@ reactions:
     confidence: energetic
     citation: bond energy 5.39 eV plus the 2.75 eV level; the thermodynamic limit,
       below any measured onset
+- id: cand_SOF2_diss_F2_v
+  equation: e + SOF2 -> e + SO + F2_v
+  listed_by: []
+  evidence:
+    structure: conserved, species proposed
+    thermochemistry: endothermic by 5.80 eV
+    kinetics: unknown
+    attestation: unattested
+  family: electron
+  type: dissociation
+  depth: 2
+  reactants:
+  - species: e
+    n: 1.0
+  - species: SOF2
+    n: 1.0
+  products:
+  - species: e
+    n: 1.0
+  - species: SO
+    n: 1.0
+  - species: F2_v
+    n: 1.0
+  third_body: null
+  surface: null
+  threshold_eV: null
+  delta_e_eV: 5.801729
+  electron_energy_cost_eV: -5.801729
+  thermodynamics: null
+  reverse: null
+  precursors:
+  - SF2_O1D_R135
+  - SF2_O_R135
+  - SF3_O1D_R119
+  - SF3_O_R119
+  - cand_e_SOF2*_to_e_SOF2
+  - cand_e_SOF2_to_e_SOF2
+  - cand_e_SOF2_v_to_e_SOF2
+  - cand_e_SOF3_to_e_SOF2_F
+  - cand_e_SOF4_to_e_SOF2_F2
+  consume: cross_section
+  rate: null
+  frequency_upper_bound_s-1: null
+  relevance: unknown
+  relevance_basis: residence_time
+  datasets: []
+  status: candidate
+  source:
+    source_type: dissociation_limit
+    confidence: energetic
+    citation: bond energy 5.70 eV plus the 0.10 eV level; the thermodynamic limit,
+      below any measured onset
 - id: cand_F2_v_Ar_vt
   equation: F2_v + Ar -> F2 + Ar
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -35730,11 +35782,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   consume: rate_coefficient
@@ -35754,7 +35807,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -35773,13 +35826,14 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
   - cand_O2_v_Ar_4s_vt
   - cand_SF6_v_Ar_4s_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - e_Ar4s_elastic
@@ -35801,7 +35855,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -35820,7 +35874,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -35944,6 +35998,7 @@ reactions:
   - cand_SF6p_SF_diss_SF5_F_SFp
   - cand_SF6p_SF_diss_SF5p_F_SF
   - cand_SFp_F2_reac_SFp_F_F
+  - cand_SOF2_diss_F2_v
   - cand_Sp_F2_reac_Sp_F_F
   - cand_e_F*_to_e_F
   - cand_e_F2*_to_e_F_F
@@ -36022,7 +36077,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36041,11 +36096,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F*_to_e_F*
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
@@ -36067,7 +36123,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36086,7 +36142,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -36152,6 +36208,7 @@ reactions:
   - cand_SF6p_SF6_v_diss_SF4p_F2_SF6
   - cand_SF6p_SF_diss_SF4_F2_SFp
   - cand_SF6p_SF_diss_SF4p_F2_SF
+  - cand_SOF2_diss_F2_v
   - cand_e_F2*_to_e_F2
   - cand_e_F2_to_e_F2
   - cand_e_F2_to_e_F2_v
@@ -36215,7 +36272,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36234,11 +36291,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2*_to_e_F2*
   - cand_e_F2_to_e_F2*
   - cand_e_F2_to_e_F2_v
@@ -36260,7 +36318,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36279,13 +36337,14 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
   - F2_O1D_to_FO_F
   - F2_O_to_FO_F
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_FO*_to_e_FO
@@ -36309,7 +36368,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36328,7 +36387,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -36376,6 +36435,7 @@ reactions:
   - cand_SF6p_O_1S_diss_SF5p_F_O
   - cand_SF6p_O_diss_SF4p_F2_O
   - cand_SF6p_O_diss_SF5p_F_O
+  - cand_SOF2_diss_F2_v
   - cand_SO_diss_S_1D
   - cand_SO_diss_S_1S
   - cand_e_F2_to_e_F2_v
@@ -36412,7 +36472,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36431,11 +36491,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   consume: rate_coefficient
@@ -36455,7 +36516,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36474,7 +36535,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -36482,6 +36543,7 @@ reactions:
   - O1D_O2_quenching_O2_a1Delta
   - cand_O2_v_O2_a1Delta_vt
   - cand_SF6_v_O2_a1Delta_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - e_O2_a1Delta_elastic
@@ -36503,7 +36565,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36522,7 +36584,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -36530,6 +36592,7 @@ reactions:
   - O1D_O2_quenching_O2_b1Sigma
   - cand_O2_v_O2_b1Sigma_vt
   - cand_SF6_v_O2_b1Sigma_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - e_O2_b1Sigma_elastic
@@ -36551,7 +36614,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36570,12 +36633,13 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
   - cand_SF6_v_O2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_O2_to_e_O2_v
@@ -36597,7 +36661,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36616,7 +36680,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -36624,6 +36688,7 @@ reactions:
   - cand_FO_diss_O_1D
   - cand_O2_v_O_1D_vt
   - cand_SF6_v_O_1D_vt
+  - cand_SOF2_diss_F2_v
   - cand_SO_diss_O_1D
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
@@ -36647,7 +36712,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36666,7 +36731,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -36675,6 +36740,7 @@ reactions:
   - cand_O2_diss_O_1S
   - cand_O2_v_O_1S_vt
   - cand_SF6_v_O_1S_vt
+  - cand_SOF2_diss_F2_v
   - cand_SO_diss_O_1S
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
@@ -36697,7 +36763,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36716,7 +36782,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -36724,6 +36790,7 @@ reactions:
   - SF_SF_to_S_SF2
   - cand_SF2p_Ar_4s_diss_S_F2_Arp
   - cand_SF2p_Ar_4s_diss_S_F2p_Ar
+  - cand_SOF2_diss_F2_v
   - cand_SO_diss_O_1D
   - cand_SO_diss_O_1S
   - cand_Sp_Ar_4s_char_S_Arp
@@ -36773,7 +36840,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36792,7 +36859,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -36813,6 +36880,7 @@ reactions:
   - cand_SFp_SF3_char_SF_SF3p
   - cand_SFp_SF4_char_SF_SF4p
   - cand_SFp_SF5_char_SF_SF5p
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF*_to_e_SF
@@ -36842,7 +36910,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36861,11 +36929,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF*_to_e_SF*
@@ -36887,7 +36956,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36906,7 +36975,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -36932,6 +37001,7 @@ reactions:
   - cand_SF6_v_SF2_vt
   - cand_SF6p_SF2_diss_SF4p_F2_SF2
   - cand_SF6p_SF2_diss_SF5p_F_SF2
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF2*_to_e_SF2
@@ -36961,7 +37031,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -36980,11 +37050,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF2*_to_e_SF2*
@@ -37006,7 +37077,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37025,11 +37096,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF2_to_e_SF2_v
@@ -37051,7 +37123,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37070,7 +37142,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -37083,6 +37155,7 @@ reactions:
   - cand_SF6_v_SF3_vt
   - cand_SF6p_SF3_diss_SF4p_F2_SF3
   - cand_SF6p_SF3_diss_SF5p_F_SF3
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF3*_to_e_SF3
@@ -37112,7 +37185,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37131,11 +37204,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF3*_to_e_SF3*
@@ -37157,7 +37231,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37176,11 +37250,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF3_to_e_SF3_v
@@ -37202,7 +37277,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37221,7 +37296,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -37264,6 +37339,7 @@ reactions:
   - cand_SF6p_SF4_diss_SF5p_F_SF4
   - cand_SF6p_SF5_diss_SF4_F2_SF5p
   - cand_SF6p_SF_diss_SF4_F2_SFp
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF4*_to_e_SF4
@@ -37294,7 +37370,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37313,11 +37389,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF4*_to_e_SF4*
@@ -37339,7 +37416,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37358,11 +37435,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF4_to_e_SF4_v
@@ -37384,7 +37462,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37403,7 +37481,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -37437,6 +37515,7 @@ reactions:
   - cand_SF6p_SF5_diss_SF4p_F2_SF5
   - cand_SF6p_SF5_diss_SF5p_F_SF5
   - cand_SF6p_SF_diss_SF5_F_SFp
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF5*_to_e_SF5
@@ -37462,7 +37541,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37481,11 +37560,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF5*_to_e_SF5*
@@ -37507,7 +37587,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37526,11 +37606,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF5_to_e_SF5_v
@@ -37552,7 +37633,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37571,11 +37652,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   consume: rate_coefficient
@@ -37595,7 +37677,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37614,13 +37696,14 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
   - cand_O2_v_SF6*_vt
   - cand_SF6_v_SF6*_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF6*_to_e_SF6*
@@ -37642,7 +37725,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37661,12 +37744,13 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
   - cand_O2_v_SF6_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF6_to_e_SF6_v
@@ -37688,7 +37772,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37707,11 +37791,12 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF_to_e_SF_v
@@ -37733,7 +37818,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37752,13 +37837,14 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
   - SF_O1D_R121
   - SF_O_R121
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SO*_to_e_SO
@@ -37782,7 +37868,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37801,7 +37887,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -37810,6 +37896,7 @@ reactions:
   - SF2_O_R120
   - SF_O1D_R136
   - SF_O_R136
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF*_to_e_SOF
@@ -37834,7 +37921,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37853,7 +37940,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -37862,6 +37949,7 @@ reactions:
   - SF2_O_R135
   - SF3_O1D_R119
   - SF3_O_R119
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF2*_to_e_SOF2
@@ -37886,7 +37974,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37905,7 +37993,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -37913,6 +38001,7 @@ reactions:
   - SF3_O1D_R134
   - SF3_O_R134
   - SOF4_dissociation_SOF3_F
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF3*_to_e_SOF3
@@ -37936,7 +38025,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -37955,7 +38044,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -37964,6 +38053,7 @@ reactions:
   - SF4_O_R133
   - SF5_O1D_R132
   - SF5_O_R132
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF4*_to_e_SOF4
@@ -37986,7 +38076,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38005,12 +38095,13 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
   - cand_SF2_diss_S_1D
+  - cand_SOF2_diss_F2_v
   - cand_SO_diss_S_1D
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
@@ -38033,7 +38124,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38052,12 +38143,13 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
   - cand_SF2_diss_S_1S
+  - cand_SOF2_diss_F2_v
   - cand_SO_diss_S_1S
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
@@ -38080,7 +38172,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38099,7 +38191,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38128,7 +38220,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38147,7 +38239,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38176,7 +38268,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38195,13 +38287,14 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
   precursors:
   - cand_F2_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_O2_to_e_O2_v
@@ -38223,7 +38316,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38242,7 +38335,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38275,7 +38368,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38294,7 +38387,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38354,7 +38447,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38373,7 +38466,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38402,7 +38495,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38421,7 +38514,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38450,7 +38543,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38469,7 +38562,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38498,7 +38591,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38517,7 +38610,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38546,7 +38639,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38565,7 +38658,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38594,7 +38687,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38613,7 +38706,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38642,7 +38735,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38661,7 +38754,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38690,7 +38783,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38709,7 +38802,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38738,7 +38831,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38757,7 +38850,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38786,7 +38879,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38805,7 +38898,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38834,7 +38927,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38853,7 +38946,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38863,6 +38956,7 @@ reactions:
   - cand_F2_v_O2_v_vt
   - cand_F2_v_SO_vt
   - cand_SF6_v_O2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SO*_to_e_SO
@@ -38886,7 +38980,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38905,7 +38999,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38941,7 +39035,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -38960,7 +39054,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -38996,7 +39090,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -39015,7 +39109,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -39049,7 +39143,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -39068,7 +39162,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -39102,7 +39196,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -39121,7 +39215,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -39152,7 +39246,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -39171,7 +39265,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -39831,6 +39925,7 @@ reactions:
   - cand_F2_v_SF2_v_vt
   - cand_O2_v_F2_v_vt
   - cand_O2_v_SF2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF2_to_e_SF2_v
@@ -41415,6 +41510,7 @@ reactions:
   - cand_F2_v_SO_vt
   - cand_O2_v_SF2_v_vt
   - cand_O2_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_SF2_to_e_SF2_v
   - cand_e_SF2_v_to_e_SF2_v
   - cand_e_SO*_to_e_SO
@@ -42402,6 +42498,7 @@ reactions:
   - cand_O2_v_SF3_v_vt
   - cand_SF2_v_F2_v_vt
   - cand_SF2_v_SF3_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF3_to_e_SF3_v
@@ -44078,6 +44175,7 @@ reactions:
   - cand_O2_v_SO_vt
   - cand_SF2_v_SF3_v_vt
   - cand_SF2_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_SF3_to_e_SF3_v
   - cand_e_SF3_v_to_e_SF3_v
   - cand_e_SO*_to_e_SO
@@ -44435,7 +44533,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -44454,7 +44552,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -44482,7 +44580,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -44501,7 +44599,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -44536,7 +44634,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -44555,7 +44653,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -44764,7 +44862,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -44783,7 +44881,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -44817,7 +44915,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -44836,7 +44934,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45006,7 +45104,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45025,7 +45123,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45059,7 +45157,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45078,7 +45176,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45090,6 +45188,7 @@ reactions:
   - cand_SF2_v_SF4_v_vt
   - cand_SF3_v_F2_v_vt
   - cand_SF3_v_SF4_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF4_to_e_SF4_v
@@ -45111,7 +45210,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45130,7 +45229,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45168,7 +45267,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45187,7 +45286,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45278,7 +45377,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45297,7 +45396,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45325,7 +45424,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45344,7 +45443,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45380,7 +45479,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45399,7 +45498,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45435,7 +45534,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45454,7 +45553,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45488,7 +45587,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45507,7 +45606,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45545,7 +45644,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45564,7 +45663,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45602,7 +45701,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45621,7 +45720,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45686,7 +45785,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45705,7 +45804,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45762,7 +45861,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45781,7 +45880,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45815,7 +45914,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45834,7 +45933,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45934,7 +46033,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -45953,7 +46052,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -45987,7 +46086,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46006,7 +46105,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46039,7 +46138,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46058,7 +46157,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46145,7 +46244,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46164,7 +46263,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46198,7 +46297,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46217,7 +46316,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46250,7 +46349,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46269,7 +46368,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46373,7 +46472,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46392,7 +46491,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46426,7 +46525,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46445,7 +46544,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46511,7 +46610,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46530,7 +46629,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46564,7 +46663,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46583,7 +46682,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46617,7 +46716,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46636,7 +46735,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46664,7 +46763,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46683,7 +46782,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46718,7 +46817,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46737,7 +46836,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46771,7 +46870,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46790,7 +46889,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46824,7 +46923,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46843,7 +46942,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46858,6 +46957,7 @@ reactions:
   - cand_SF2_v_SO_vt
   - cand_SF3_v_SF4_v_vt
   - cand_SF3_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_SF4_to_e_SF4_v
   - cand_e_SF4_v_to_e_SF4_v
   - cand_e_SO*_to_e_SO
@@ -46881,7 +46981,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46900,7 +47000,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -46941,7 +47041,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -46960,7 +47060,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -47001,7 +47101,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -47020,7 +47120,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -47059,7 +47159,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -47078,7 +47178,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -47117,7 +47217,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -47136,7 +47236,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -47172,7 +47272,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -47191,7 +47291,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -47895,6 +47995,7 @@ reactions:
   - cand_SF3_v_SF5_v_vt
   - cand_SF4_v_F2_v_vt
   - cand_SF4_v_SF5_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF5_to_e_SF5_v
@@ -49755,6 +49856,7 @@ reactions:
   - cand_SF3_v_SO_vt
   - cand_SF4_v_SF5_v_vt
   - cand_SF4_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_SF5_to_e_SF5_v
   - cand_e_SF5_v_to_e_SF5_v
   - cand_e_SO*_to_e_SO
@@ -50285,6 +50387,7 @@ reactions:
   - cand_SF4_v_SF6_v_vt
   - cand_SF5_v_F2_v_vt
   - cand_SF5_v_SF6_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF6_to_e_SF6_v
@@ -51059,6 +51162,7 @@ reactions:
   - cand_SF4_v_SO_vt
   - cand_SF5_v_SF6_v_vt
   - cand_SF5_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_SF6_to_e_SF6_v
   - cand_e_SF6_v_to_e_SF6_v
   - cand_e_SO*_to_e_SO
@@ -52143,6 +52247,7 @@ reactions:
   - cand_SF5_v_SF_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF6_v_SF_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF_to_e_SF_v
@@ -54120,6 +54225,7 @@ reactions:
   - cand_SF5_v_SO_vt
   - cand_SF6_v_SF_v_vt
   - cand_SF6_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_SF_to_e_SF_v
   - cand_e_SF_v_to_e_SF_v
   - cand_e_SO*_to_e_SO
@@ -54793,6 +54899,7 @@ reactions:
   - cand_SF6p_Ar_char_SF6_Arp
   - cand_SF_v_F2_v_vt
   - cand_SFp_Ar_4s_char_SF_Arp
+  - cand_SOF2_diss_F2_v
   - cand_Sp_Ar_4s_char_S_Arp
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
@@ -54867,6 +54974,7 @@ reactions:
   - cand_SF6p_Ar_char_SF6_Arp
   - cand_SF_v_F2_v_vt
   - cand_SFp_Ar_4s_char_SF_Arp
+  - cand_SOF2_diss_F2_v
   - cand_Sp_Ar_4s_char_S_Arp
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
@@ -56316,6 +56424,7 @@ reactions:
   - cand_SF6p_Ar_char_SF6_Arp
   - cand_SF_v_SO_vt
   - cand_SFp_Ar_4s_char_SF_Arp
+  - cand_SOF2_diss_F2_v
   - cand_Sp_Ar_4s_char_S_Arp
   - cand_e_SO*_to_e_SO
   - cand_e_SOF2_to_e_SO_F2
@@ -56666,6 +56775,7 @@ reactions:
   - cand_SF6p_Ar_4s_diss_SF5_Fp_Ar
   - cand_SF6p_O_1S_diss_SF5_Fp_O
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F*_to_e_e_Fp
   - cand_e_F2*_to_e_e_Fp_F
   - cand_e_F2_to_e_F2_v
@@ -56735,6 +56845,7 @@ reactions:
   - cand_SF6p_Ar_4s_diss_SF5_Fp_Ar
   - cand_SF6p_O_1S_diss_SF5_Fp_O
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F*_to_e_e_Fp
   - cand_e_F2*_to_e_e_Fp_F
   - cand_e_F2_to_e_F2_v
@@ -58088,6 +58199,7 @@ reactions:
   - cand_SF6p_Ar_4s_diss_SF5_Fp_Ar
   - cand_SF6p_O_1S_diss_SF5_Fp_O
   - cand_SF_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F*_to_e_e_Fp
   - cand_e_F2*_to_e_e_Fp_F
   - cand_e_F2_to_e_e_Fp_F
@@ -58163,6 +58275,7 @@ reactions:
   - cand_SF6p_Ar_4s_diss_SF5_Fp_Ar
   - cand_SF6p_O_1S_diss_SF5_Fp_O
   - cand_SF_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F*_to_e_e_Fp
   - cand_e_F2*_to_e_e_Fp_F
   - cand_e_F2_to_e_e_Fp_F
@@ -59329,6 +59442,7 @@ reactions:
   - cand_SF6p_F2_char_SF6_F2p
   - cand_SF6p_O_1S_diss_SF4_F2p_O
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2*_to_e_e_F2p
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
@@ -65429,6 +65543,7 @@ reactions:
   - cand_SF6p_F2_char_SF6_F2p
   - cand_SF6p_O_1S_diss_SF4_F2p_O
   - cand_SF_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2*_to_e_e_F2p
   - cand_e_F2_v_to_e_e_F2p
   - cand_e_SO*_to_e_SO
@@ -65994,6 +66109,7 @@ reactions:
   - cand_SF_v_F2_v_vt
   - cand_SFp_O_1D_char_SF_Op
   - cand_SFp_O_1S_char_SF_Op
+  - cand_SOF2_diss_F2_v
   - cand_Sp_O_1D_char_S_Op
   - cand_Sp_O_1S_char_S_Op
   - cand_e_F2_to_e_F2_v
@@ -67848,6 +67964,7 @@ reactions:
   - cand_SFp_O2_b1Sigma_char_SF_O2p
   - cand_SFp_O2_char_SF_O2p
   - cand_SFp_O2_v_char_SF_O2p
+  - cand_SOF2_diss_F2_v
   - cand_Sp_O2_a1Delta_char_S_O2p
   - cand_Sp_O2_b1Sigma_char_S_O2p
   - cand_Sp_O2_char_S_O2p
@@ -69800,6 +69917,7 @@ reactions:
   - cand_SF6_v_F2_v_vt
   - cand_SF6p_SF2_diss_SF6_Sp_F2
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_Sp_F2*_reac_Sp_F_F
   - cand_Sp_F2_reac_Sp_F_F
   - cand_e_F2_to_e_F2_v
@@ -70925,6 +71043,7 @@ reactions:
   - cand_SF_v_F2_v_vt
   - cand_SFp_F2*_reac_SFp_F_F
   - cand_SFp_F2_reac_SFp_F_F
+  - cand_SOF2_diss_F2_v
   - cand_Sp_SF*_char_S_SFp
   - cand_Sp_SF_char_S_SFp
   - cand_Sp_SF_v_char_S_SFp
@@ -72191,6 +72310,7 @@ reactions:
   - cand_SFp_SF2*_char_SF_SF2p
   - cand_SFp_SF2_char_SF_SF2p
   - cand_SFp_SF2_v_char_SF_SF2p
+  - cand_SOF2_diss_F2_v
   - cand_Sp_SF2*_char_S_SF2p
   - cand_Sp_SF2_char_S_SF2p
   - cand_Sp_SF2_v_char_S_SF2p
@@ -73614,6 +73734,7 @@ reactions:
   - cand_SFp_SF3*_char_SF_SF3p
   - cand_SFp_SF3_char_SF_SF3p
   - cand_SFp_SF3_v_char_SF_SF3p
+  - cand_SOF2_diss_F2_v
   - cand_Sp_SF3*_char_S_SF3p
   - cand_Sp_SF3_char_S_SF3p
   - cand_Sp_SF3_v_char_S_SF3p
@@ -74303,6 +74424,7 @@ reactions:
   - cand_SFp_SF4*_char_SF_SF4p
   - cand_SFp_SF4_char_SF_SF4p
   - cand_SFp_SF4_v_char_SF_SF4p
+  - cand_SOF2_diss_F2_v
   - cand_Sp_SF4*_char_S_SF4p
   - cand_Sp_SF4_char_S_SF4p
   - cand_Sp_SF4_v_char_S_SF4p
@@ -76687,6 +76809,7 @@ reactions:
   - cand_SFp_SF5*_char_SF_SF5p
   - cand_SFp_SF5_char_SF_SF5p
   - cand_SFp_SF5_v_char_SF_SF5p
+  - cand_SOF2_diss_F2_v
   - cand_Sp_SF5*_char_S_SF5p
   - cand_Sp_SF5_char_S_SF5p
   - cand_Sp_SF5_v_char_S_SF5p
@@ -79441,6 +79564,7 @@ reactions:
   - cand_SF6p_F2*_reac_SF6p_F_F
   - cand_SF6p_F2_reac_SF6p_F_F
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF6*_to_e_e_SF6p
@@ -79513,6 +79637,7 @@ reactions:
   - cand_SF6p_F2*_reac_SF6p_F_F
   - cand_SF6p_F2_reac_SF6p_F_F
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF6*_to_e_e_SF6p
@@ -79585,6 +79710,7 @@ reactions:
   - cand_SF6p_F2*_reac_SF6p_F_F
   - cand_SF6p_F2_reac_SF6p_F_F
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF6*_to_e_e_SF6p
@@ -79657,6 +79783,7 @@ reactions:
   - cand_SF6p_F2*_reac_SF6p_F_F
   - cand_SF6p_F2_reac_SF6p_F_F
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SF6*_to_e_e_SF6p
@@ -84512,6 +84639,7 @@ reactions:
   - cand_SF6p_F2_reac_SF6p_F_F
   - cand_SF6p_F2_v_reac_SF6p_F_F
   - cand_SF_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_SF6*_to_e_e_SF6p
   - cand_e_SF6_to_e_e_SF6p
   - cand_e_SF6_v_to_e_e_SF6p
@@ -84591,6 +84719,7 @@ reactions:
   - cand_SF6p_F2_v_reac_SF6p_F_F
   - cand_SF6p_SO_diss_SF5p_F_SO
   - cand_SF_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_SF6*_to_e_e_SF6p
   - cand_e_SF6_to_e_e_SF6p
   - cand_e_SF6_v_to_e_e_SF6p
@@ -84671,6 +84800,7 @@ reactions:
   - cand_SF6p_SO_diss_SF4p_F2_SO
   - cand_SF6p_SO_diss_SF5p_F_SO
   - cand_SF_v_SO_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_SF6*_to_e_e_SF6p
   - cand_e_SF6_to_e_e_SF6p
   - cand_e_SF6_v_to_e_e_SF6p
@@ -90013,6 +90143,56 @@ reactions:
     source_type: bond_breaking
     confidence: structural
     citation: conservation allows this channel; no source has been consulted
+- id: cand_SO2_diss_SO_v
+  equation: e + SO2 -> e + O + SO_v
+  listed_by: []
+  evidence:
+    structure: conserved, species proposed
+    thermochemistry: endothermic by 5.86 eV
+    kinetics: unknown
+    attestation: unattested
+  family: electron
+  type: dissociation
+  depth: 3
+  reactants:
+  - species: e
+    n: 1.0
+  - species: SO2
+    n: 1.0
+  products:
+  - species: e
+    n: 1.0
+  - species: O
+    n: 1.0
+  - species: SO_v
+    n: 1.0
+  third_body: null
+  surface: null
+  threshold_eV: null
+  delta_e_eV: 5.858087
+  electron_energy_cost_eV: -5.858087
+  thermodynamics: null
+  reverse: null
+  precursors:
+  - SOF_O1D_R122
+  - SOF_O_R122
+  - SO_O1D_R130
+  - SO_O_R130
+  - cand_e_SO2*_to_e_SO2
+  - cand_e_SO2_to_e_SO2
+  - cand_e_SO2_v_to_e_SO2
+  consume: cross_section
+  rate: null
+  frequency_upper_bound_s-1: null
+  relevance: unknown
+  relevance_basis: residence_time
+  datasets: []
+  status: candidate
+  source:
+    source_type: dissociation_limit
+    confidence: energetic
+    citation: bond energy 5.72 eV plus the 0.13 eV level; the thermodynamic limit,
+      below any measured onset
 - id: cand_SO2_diss_O_1D
   equation: e + SO2 -> e + SO + O_1D
   listed_by: []
@@ -90313,6 +90493,56 @@ reactions:
     confidence: energetic
     citation: bond energy 5.95 eV plus the 1.63 eV level; the thermodynamic limit,
       below any measured onset
+- id: cand_SO2_diss_O2_v
+  equation: e + SO2 -> e + S + O2_v
+  listed_by: []
+  evidence:
+    structure: conserved, species proposed
+    thermochemistry: endothermic by 6.13 eV
+    kinetics: unknown
+    attestation: unattested
+  family: electron
+  type: dissociation
+  depth: 3
+  reactants:
+  - species: e
+    n: 1.0
+  - species: SO2
+    n: 1.0
+  products:
+  - species: e
+    n: 1.0
+  - species: S
+    n: 1.0
+  - species: O2_v
+    n: 1.0
+  third_body: null
+  surface: null
+  threshold_eV: null
+  delta_e_eV: 6.134391
+  electron_energy_cost_eV: -6.134391
+  thermodynamics: null
+  reverse: null
+  precursors:
+  - SOF_O1D_R122
+  - SOF_O_R122
+  - SO_O1D_R130
+  - SO_O_R130
+  - cand_e_SO2*_to_e_SO2
+  - cand_e_SO2_to_e_SO2
+  - cand_e_SO2_v_to_e_SO2
+  consume: cross_section
+  rate: null
+  frequency_upper_bound_s-1: null
+  relevance: unknown
+  relevance_basis: residence_time
+  datasets: []
+  status: candidate
+  source:
+    source_type: dissociation_limit
+    confidence: energetic
+    citation: bond energy 5.95 eV plus the 0.19 eV level; the thermodynamic limit,
+      below any measured onset
 - id: cand_SO2F2_diss_O_1D
   equation: e + SO2F2 -> e + SOF2 + O_1D
   listed_by: []
@@ -90513,12 +90743,62 @@ reactions:
     confidence: energetic
     citation: bond energy 4.79 eV plus the 1.63 eV level; the thermodynamic limit,
       below any measured onset
+- id: cand_SO2F2_diss_O2_v
+  equation: e + SO2F2 -> e + SF2 + O2_v
+  listed_by: []
+  evidence:
+    structure: conserved, species proposed
+    thermochemistry: endothermic by 4.97 eV
+    kinetics: unknown
+    attestation: unattested
+  family: electron
+  type: dissociation
+  depth: 3
+  reactants:
+  - species: e
+    n: 1.0
+  - species: SO2F2
+    n: 1.0
+  products:
+  - species: e
+    n: 1.0
+  - species: SF2
+    n: 1.0
+  - species: O2_v
+    n: 1.0
+  third_body: null
+  surface: null
+  threshold_eV: null
+  delta_e_eV: 4.972658999999999
+  electron_energy_cost_eV: -4.972658999999999
+  thermodynamics: null
+  reverse: null
+  precursors:
+  - SOF2_O1D_R131
+  - SOF2_O_R131
+  - SOF3_O1D_R123
+  - SOF3_O_R123
+  - cand_e_SO2F2*_to_e_SO2F2
+  - cand_e_SO2F2_to_e_SO2F2
+  - cand_e_SO2F2_v_to_e_SO2F2
+  consume: cross_section
+  rate: null
+  frequency_upper_bound_s-1: null
+  relevance: unknown
+  relevance_basis: residence_time
+  datasets: []
+  status: candidate
+  source:
+    source_type: dissociation_limit
+    confidence: energetic
+    citation: bond energy 4.79 eV plus the 0.19 eV level; the thermodynamic limit,
+      below any measured onset
 - id: cand_F2_v_FO*_vt
   equation: F2_v + FO* -> F2 + FO*
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -90537,7 +90817,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -90549,6 +90829,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_FO*_to_e_FO*
@@ -90570,7 +90851,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -90589,7 +90870,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -90601,6 +90882,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_FO_to_e_FO_v
@@ -90622,7 +90904,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -90641,7 +90923,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -90653,6 +90935,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SO*_to_e_SO*
@@ -90674,7 +90957,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -90693,7 +90976,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -90709,6 +90992,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SO2*_to_e_SO2
@@ -90731,7 +91015,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -90750,7 +91034,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -90766,6 +91050,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SO2F2*_to_e_SO2F2
@@ -90788,7 +91073,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -90807,7 +91092,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -90819,6 +91104,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF*_to_e_SOF*
@@ -90840,7 +91126,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -90859,7 +91145,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -90871,6 +91157,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF2*_to_e_SOF2*
@@ -90892,7 +91179,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -90911,7 +91198,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -90923,6 +91210,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF2_to_e_SOF2_v
@@ -90944,7 +91232,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -90963,7 +91251,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -90975,6 +91263,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF3*_to_e_SOF3*
@@ -90996,7 +91285,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -91015,7 +91304,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -91027,6 +91316,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF3_to_e_SOF3_v
@@ -91048,7 +91338,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -91067,7 +91357,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -91079,6 +91369,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF4*_to_e_SOF4*
@@ -91100,7 +91391,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -91119,7 +91410,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -91131,6 +91422,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF4_to_e_SOF4_v
@@ -91152,7 +91444,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -91171,7 +91463,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -91183,6 +91475,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF_to_e_SOF_v
@@ -91204,7 +91497,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -91223,7 +91516,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -91235,6 +91528,8 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SO2_diss_SO_v
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SO_to_e_SO_v
@@ -92190,6 +92485,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_FO_to_e_FO_v
@@ -92426,6 +92722,7 @@ reactions:
   - cand_SF6p_O_diss_SF5p_F_O
   - cand_SF6p_SO_diss_SF6_O_Sp
   - cand_SF_v_O_vt
+  - cand_SO2_diss_SO_v
   - cand_SO_diss_S_1D
   - cand_SO_diss_S_1S
   - cand_e_FO*_to_e_F_O
@@ -92662,6 +92959,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_FO_to_e_FO_v
   - cand_e_FO_v_to_e_FO_v
   - cand_e_O2_to_e_O2_v
@@ -92849,6 +93148,7 @@ reactions:
   - cand_SF_v_S_vt
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
   - cand_SO_diss_O_1D
   - cand_SO_diss_O_1S
   - cand_Sp_Ar_4s_char_S_Arp
@@ -93212,6 +93512,7 @@ reactions:
   - cand_SF_v_SF2_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
   - cand_e_FO_to_e_FO_v
   - cand_e_FO_v_to_e_FO_v
   - cand_e_SF2*_to_e_SF2
@@ -94346,6 +94647,7 @@ reactions:
   - cand_SF_v_SO_vt
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
+  - cand_SOF2_diss_F2_v
   - cand_e_FO_to_e_FO_v
   - cand_e_FO_v_to_e_FO_v
   - cand_e_SO*_to_e_SO
@@ -95188,6 +95490,7 @@ reactions:
   precursors:
   - cand_F2_v_FO_v_vt
   - cand_F2_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_e_FO_to_e_FO_v
   - cand_e_FO_v_to_e_FO_v
   - cand_e_SO_to_e_SO_v
@@ -95323,7 +95626,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95342,7 +95645,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95357,6 +95660,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_FO*_to_e_FO*
   - cand_e_FO_to_e_FO*
   - cand_e_O2_to_e_O2_v
@@ -95378,7 +95683,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95397,7 +95702,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95411,6 +95716,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_FO_to_e_FO_v
   - cand_e_FO_v_to_e_FO_v
   - cand_e_O2_to_e_O2_v
@@ -95432,7 +95739,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95451,7 +95758,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95466,6 +95773,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SO*_to_e_SO*
@@ -95487,7 +95796,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95506,7 +95815,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95525,6 +95834,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SO2*_to_e_SO2
@@ -95547,7 +95858,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95566,7 +95877,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95585,6 +95896,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SO2F2*_to_e_SO2F2
@@ -95607,7 +95920,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95626,7 +95939,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95641,6 +95954,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SOF*_to_e_SOF*
@@ -95662,7 +95977,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95681,7 +95996,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95696,6 +96011,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SOF2*_to_e_SOF2*
@@ -95717,7 +96034,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95736,7 +96053,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95751,6 +96068,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SOF2_to_e_SOF2_v
@@ -95772,7 +96091,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95791,7 +96110,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95806,6 +96125,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SOF3*_to_e_SOF3*
@@ -95827,7 +96148,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95846,7 +96167,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95861,6 +96182,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SOF3_to_e_SOF3_v
@@ -95882,7 +96205,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95901,7 +96224,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95916,6 +96239,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SOF4*_to_e_SOF4*
@@ -95937,7 +96262,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -95956,7 +96281,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -95971,6 +96296,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SOF4_to_e_SOF4_v
@@ -95992,7 +96319,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -96011,7 +96338,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -96026,6 +96353,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SOF_to_e_SOF_v
@@ -96047,7 +96376,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -96066,7 +96395,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -96081,6 +96410,9 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
+  - cand_SO2_diss_SO_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SO_to_e_SO_v
@@ -96874,6 +97206,7 @@ reactions:
   - cand_SF5_v_SF2_v_vt
   - cand_SF6_v_SF2_v_vt
   - cand_SF_v_SF2_v_vt
+  - cand_SO2_diss_SO_v
   - cand_e_SF2_to_e_SF2_v
   - cand_e_SF2_v_to_e_SF2_v
   - cand_e_SO_to_e_SO_v
@@ -97681,6 +98014,7 @@ reactions:
   - cand_SF5_v_SF3_v_vt
   - cand_SF6_v_SF3_v_vt
   - cand_SF_v_SF3_v_vt
+  - cand_SO2_diss_SO_v
   - cand_e_SF3_to_e_SF3_v
   - cand_e_SF3_v_to_e_SF3_v
   - cand_e_SO_to_e_SO_v
@@ -97702,7 +98036,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -97721,7 +98055,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -97760,7 +98094,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -97779,7 +98113,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -97817,7 +98151,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -97836,7 +98170,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -97875,7 +98209,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -97894,7 +98228,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -97938,7 +98272,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -97957,7 +98291,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98001,7 +98335,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -98020,7 +98354,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98059,7 +98393,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -98078,7 +98412,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98117,7 +98451,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -98136,7 +98470,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98175,7 +98509,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -98194,7 +98528,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98233,7 +98567,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -98252,7 +98586,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98291,7 +98625,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -98310,7 +98644,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98349,7 +98683,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -98368,7 +98702,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98407,7 +98741,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -98426,7 +98760,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98465,7 +98799,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -98484,7 +98818,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -98502,6 +98836,7 @@ reactions:
   - cand_SF5_v_SF4_v_vt
   - cand_SF6_v_SF4_v_vt
   - cand_SF_v_SF4_v_vt
+  - cand_SO2_diss_SO_v
   - cand_e_SF4_to_e_SF4_v
   - cand_e_SF4_v_to_e_SF4_v
   - cand_e_SO_to_e_SO_v
@@ -99337,6 +99672,7 @@ reactions:
   - cand_SF4_v_SO_v_vt
   - cand_SF6_v_SF5_v_vt
   - cand_SF_v_SF5_v_vt
+  - cand_SO2_diss_SO_v
   - cand_e_SF5_to_e_SF5_v
   - cand_e_SF5_v_to_e_SF5_v
   - cand_e_SO_to_e_SO_v
@@ -100186,6 +100522,7 @@ reactions:
   - cand_SF5_v_SF6_v_vt
   - cand_SF5_v_SO_v_vt
   - cand_SF_v_SF6_v_vt
+  - cand_SO2_diss_SO_v
   - cand_e_SF6_to_e_SF6_v
   - cand_e_SF6_v_to_e_SF6_v
   - cand_e_SO_to_e_SO_v
@@ -101049,6 +101386,7 @@ reactions:
   - cand_SF5_v_SO_v_vt
   - cand_SF6_v_SF_v_vt
   - cand_SF6_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_e_SF_to_e_SF_v
   - cand_e_SF_v_to_e_SF_v
   - cand_e_SO_to_e_SO_v
@@ -102066,6 +102404,7 @@ reactions:
   - cand_SF6_v_SOF2_v_vt
   - cand_SF_v_F2_v_vt
   - cand_SF_v_SOF2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_e_F2_to_e_F2_v
   - cand_e_F2_v_to_e_F2_v
   - cand_e_SOF2_to_e_SOF2_v
@@ -102443,6 +102782,7 @@ reactions:
   - cand_SF6p_SO_diss_SF6_O_Sp
   - cand_SF_v_O_vt
   - cand_SF_v_SOF2_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SO_diss_S_1D
   - cand_SO_diss_S_1S
   - cand_e_FO*_to_e_F_O
@@ -102714,6 +103054,8 @@ reactions:
   - cand_SF6_v_SOF2_v_vt
   - cand_SF_v_O2_v_vt
   - cand_SF_v_SOF2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_e_O2_to_e_O2_v
   - cand_e_O2_v_to_e_O2_v
   - cand_e_SOF2_to_e_SOF2_v
@@ -102928,6 +103270,7 @@ reactions:
   - cand_SF_v_S_vt
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
   - cand_SO_diss_O_1D
   - cand_SO_diss_O_1S
   - cand_Sp_Ar_4s_char_S_Arp
@@ -103344,6 +103687,7 @@ reactions:
   - cand_SF_v_SOF2_v_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
   - cand_e_SF2*_to_e_SF2
   - cand_e_SF2_to_e_SF2
   - cand_e_SF2_v_to_e_SF2
@@ -104660,6 +105004,7 @@ reactions:
   - cand_SF_v_SO_vt
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
+  - cand_SOF2_diss_F2_v
   - cand_e_SO*_to_e_SO
   - cand_e_SO2_to_e_SO_O
   - cand_e_SOF2*_to_e_SO_F2
@@ -105709,6 +106054,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF2_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_e_SOF2_to_e_SOF2_v
   - cand_e_SOF2_v_to_e_SOF2_v
   - cand_e_SO_to_e_SO_v
@@ -106869,6 +107215,7 @@ reactions:
   - cand_SF6_v_SOF3_v_vt
   - cand_SF_v_F2_v_vt
   - cand_SF_v_SOF3_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF2_v_SOF3_v_vt
   - cand_e_F2_to_e_F2_v
@@ -107254,6 +107601,7 @@ reactions:
   - cand_SF6p_SO_diss_SF6_O_Sp
   - cand_SF_v_O_vt
   - cand_SF_v_SOF3_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O_vt
   - cand_SOF2_v_SOF3_v_vt
   - cand_SO_diss_S_1D
@@ -107532,6 +107880,8 @@ reactions:
   - cand_SF6_v_SOF3_v_vt
   - cand_SF_v_O2_v_vt
   - cand_SF_v_SOF3_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF2_v_SOF3_v_vt
   - cand_e_O2_to_e_O2_v
@@ -107752,6 +108102,7 @@ reactions:
   - cand_SF_v_S_vt
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_SOF3_v_vt
   - cand_SOF2_v_S_vt
   - cand_SO_diss_O_1D
@@ -108174,6 +108525,7 @@ reactions:
   - cand_SF_v_SOF3_v_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
   - cand_SOF2_v_SF2_vt
   - cand_SOF2_v_SOF3_v_vt
   - cand_e_SF2*_to_e_SF2
@@ -109521,6 +109873,7 @@ reactions:
   - cand_SF_v_SO_vt
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_SOF3_v_vt
   - cand_SOF2_v_SO_vt
   - cand_e_SO*_to_e_SO
@@ -110654,6 +111007,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF3_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF3_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_e_SOF3_to_e_SOF3_v
@@ -111831,6 +112185,7 @@ reactions:
   - cand_SF6_v_SOF4_v_vt
   - cand_SF_v_F2_v_vt
   - cand_SF_v_SOF4_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF2_v_SOF4_v_vt
   - cand_SOF3_v_F2_v_vt
@@ -112224,6 +112579,7 @@ reactions:
   - cand_SF6p_SO_diss_SF6_O_Sp
   - cand_SF_v_O_vt
   - cand_SF_v_SOF4_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O_vt
   - cand_SOF2_v_SOF4_v_vt
   - cand_SOF3_v_O_vt
@@ -112509,6 +112865,8 @@ reactions:
   - cand_SF6_v_SOF4_v_vt
   - cand_SF_v_O2_v_vt
   - cand_SF_v_SOF4_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF2_v_SOF4_v_vt
   - cand_SOF3_v_O2_v_vt
@@ -112735,6 +113093,7 @@ reactions:
   - cand_SF_v_S_vt
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_SOF4_v_vt
   - cand_SOF2_v_S_vt
   - cand_SOF3_v_SOF4_v_vt
@@ -113163,6 +113522,7 @@ reactions:
   - cand_SF_v_SOF4_v_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
   - cand_SOF2_v_SF2_vt
   - cand_SOF2_v_SOF4_v_vt
   - cand_SOF3_v_SF2_vt
@@ -114541,6 +114901,7 @@ reactions:
   - cand_SF_v_SO_vt
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_SOF4_v_vt
   - cand_SOF2_v_SO_vt
   - cand_SOF3_v_SOF4_v_vt
@@ -115758,6 +116119,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF4_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF4_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF4_v_vt
@@ -116952,6 +117314,7 @@ reactions:
   - cand_SF6_v_SOF_v_vt
   - cand_SF_v_F2_v_vt
   - cand_SF_v_SOF_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF2_v_SOF_v_vt
   - cand_SOF3_v_F2_v_vt
@@ -117353,6 +117716,7 @@ reactions:
   - cand_SF6p_SO_diss_SF6_O_Sp
   - cand_SF_v_O_vt
   - cand_SF_v_SOF_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O_vt
   - cand_SOF2_v_SOF_v_vt
   - cand_SOF3_v_O_vt
@@ -117645,6 +118009,8 @@ reactions:
   - cand_SF6_v_SOF_v_vt
   - cand_SF_v_O2_v_vt
   - cand_SF_v_SOF_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF2_v_SOF_v_vt
   - cand_SOF3_v_O2_v_vt
@@ -117877,6 +118243,7 @@ reactions:
   - cand_SF_v_S_vt
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_SOF_v_vt
   - cand_SOF2_v_S_vt
   - cand_SOF3_v_SOF_v_vt
@@ -118311,6 +118678,7 @@ reactions:
   - cand_SF_v_SOF_v_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
   - cand_SOF2_v_SF2_vt
   - cand_SOF2_v_SOF_v_vt
   - cand_SOF3_v_SF2_vt
@@ -119720,6 +120088,7 @@ reactions:
   - cand_SF_v_SO_vt
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_SOF_v_vt
   - cand_SOF2_v_SO_vt
   - cand_SOF3_v_SOF_v_vt
@@ -121010,6 +121379,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF_v_vt
@@ -121181,7 +121551,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -121200,7 +121570,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -121214,6 +121584,7 @@ reactions:
   - cand_SF5_v_SO_v_vt
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -121237,7 +121608,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -121256,7 +121627,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -121279,6 +121650,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_Ar_4s_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_Ar_4s_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_Ar_4s_vt
@@ -121308,7 +121680,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -121327,7 +121699,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -121603,6 +121975,7 @@ reactions:
   - cand_SFp_F2*_reac_SFp_F_F
   - cand_SFp_F2_reac_SFp_F_F
   - cand_SFp_F2_v_reac_SFp_F_F
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_F_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_F_vt
@@ -121705,7 +122078,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -121724,7 +122097,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -121747,6 +122120,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_F*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_F*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_F*_vt
@@ -121776,7 +122150,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -121795,7 +122169,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122026,6 +122400,7 @@ reactions:
   - cand_SF6p_S_diss_SF4p_F2_S
   - cand_SF_v_F2_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_F2_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_F2_vt
@@ -122109,7 +122484,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122128,7 +122503,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122151,6 +122526,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_F2*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_F2*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_F2*_vt
@@ -122180,7 +122556,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122199,7 +122575,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122221,6 +122597,8 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_F2_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_F2_v_vt
@@ -122250,7 +122628,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122269,7 +122647,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122348,6 +122726,7 @@ reactions:
   - cand_SF6p_FO_diss_SF5p_F_FO
   - cand_SF_v_FO_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_FO_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_FO_vt
@@ -122381,7 +122760,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122400,7 +122779,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122423,6 +122802,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_FO*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_FO*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_FO*_vt
@@ -122452,7 +122832,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122471,7 +122851,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122493,6 +122873,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_FO_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_FO_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_FO_v_vt
@@ -122522,7 +122903,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122541,7 +122922,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122630,6 +123011,7 @@ reactions:
   - cand_SF6p_SO_diss_SF6_O_Sp
   - cand_SF_v_O_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_O_vt
@@ -122684,7 +123066,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122703,7 +123085,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122717,6 +123099,7 @@ reactions:
   - cand_SF5_v_SO_v_vt
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -122740,7 +123123,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122759,7 +123142,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122785,6 +123168,7 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2_diss_O2_a1Delta
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O2_a1Delta_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_O2_a1Delta_vt
@@ -122814,7 +123198,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122833,7 +123217,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122859,6 +123243,7 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_diss_O2_b1Sigma
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O2_b1Sigma_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_O2_b1Sigma_vt
@@ -122888,7 +123273,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122907,7 +123292,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -122929,6 +123314,9 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_O2_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_O2_v_vt
@@ -122958,7 +123346,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -122977,7 +123365,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123003,6 +123391,7 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_diss_O_1D
   - cand_SO2_diss_O_1D
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O_1D_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_O_1D_vt
@@ -123034,7 +123423,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -123053,7 +123442,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123080,6 +123469,7 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_diss_O_1S
   - cand_SO2_diss_O_1S
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O_1S_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_O_1S_vt
@@ -123110,7 +123500,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -123129,7 +123519,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123167,6 +123557,8 @@ reactions:
   - cand_SF_v_S_vt
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF2_v_S_vt
   - cand_SOF3_v_SO_v_vt
@@ -123243,7 +123635,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -123262,7 +123654,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123366,6 +123758,7 @@ reactions:
   - cand_SFp_S_1D_char_SF_Sp
   - cand_SFp_S_1S_char_SF_Sp
   - cand_SFp_S_char_SF_Sp
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF_vt
@@ -123403,7 +123796,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -123422,7 +123815,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123445,6 +123838,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF*_vt
@@ -123474,7 +123868,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -123493,7 +123887,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123607,6 +124001,8 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF2_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF2_vt
@@ -123645,7 +124041,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -123664,7 +124060,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123687,6 +124083,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF2*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF2*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF2*_vt
@@ -123716,7 +124113,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -123735,7 +124132,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123757,6 +124154,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF2_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF2_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF2_v_vt
@@ -123786,7 +124184,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -123805,7 +124203,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123894,6 +124292,7 @@ reactions:
   - cand_SF6p_SF3_v_diss_SF5p_F_SF3
   - cand_SF_v_SF3_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF3_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF3_vt
@@ -123931,7 +124330,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -123950,7 +124349,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -123973,6 +124372,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF3*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF3*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF3*_vt
@@ -124002,7 +124402,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124021,7 +124421,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124043,6 +124443,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF3_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF3_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF3_v_vt
@@ -124072,7 +124473,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124091,7 +124492,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124232,6 +124633,7 @@ reactions:
   - cand_SF6p_S_diss_SF4_F2_Sp
   - cand_SF_v_SF4_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF4_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF4_vt
@@ -124270,7 +124672,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124289,7 +124691,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124312,6 +124714,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF4*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF4*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF4*_vt
@@ -124341,7 +124744,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124360,7 +124763,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124382,6 +124785,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF4_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF4_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF4_v_vt
@@ -124411,7 +124815,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124430,7 +124834,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124558,6 +124962,7 @@ reactions:
   - cand_SF6p_S_diss_SF5_F_Sp
   - cand_SF_v_SF5_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF5_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF5_vt
@@ -124591,7 +124996,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124610,7 +125015,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124633,6 +125038,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF5*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF5*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF5*_vt
@@ -124662,7 +125068,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124681,7 +125087,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124703,6 +125109,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF5_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF5_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF5_v_vt
@@ -124732,7 +125139,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124751,7 +125158,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124765,6 +125172,7 @@ reactions:
   - cand_SF5_v_SO_v_vt
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -124788,7 +125196,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124807,7 +125215,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124830,6 +125238,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF6*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF6*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF6*_vt
@@ -124859,7 +125268,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124878,7 +125287,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124900,6 +125309,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SF6_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF6_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF6_v_vt
@@ -124929,7 +125339,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -124948,7 +125358,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -124970,6 +125380,7 @@ reactions:
   - cand_SF6_v_SF_v_vt
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SF_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SF_v_vt
@@ -124999,7 +125410,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125018,7 +125429,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125047,6 +125458,8 @@ reactions:
   - cand_SF_v_SO_vt
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
+  - cand_SO2_diss_SO_v
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF2_v_SO_vt
   - cand_SOF3_v_SO_v_vt
@@ -125117,7 +125530,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125136,7 +125549,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125159,6 +125572,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SO*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO*_vt
@@ -125188,7 +125602,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125207,7 +125621,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125234,6 +125648,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SO2_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO2_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO2_vt
@@ -125264,7 +125679,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125283,7 +125698,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125310,6 +125725,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SO2F2_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO2F2_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO2F2_vt
@@ -125340,7 +125756,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125359,7 +125775,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125388,6 +125804,7 @@ reactions:
   - cand_SF6p_SOF_diss_SF5p_F_SOF
   - cand_SF_v_SOF_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF_vt
@@ -125476,7 +125893,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125495,7 +125912,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125518,6 +125935,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF*_vt
@@ -125547,7 +125965,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125566,7 +125984,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125599,6 +126017,7 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_diss_O_1D
   - cand_SO2F2_diss_O_1S
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_Ar_4s_vt
   - cand_SOF2_v_Ar_vt
   - cand_SOF2_v_F*_vt
@@ -125688,7 +126107,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125707,7 +126126,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125730,6 +126149,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF2*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF2*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF2*_vt
@@ -125759,7 +126179,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125778,7 +126198,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125801,6 +126221,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF2_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF2_v_vt
   - cand_SOF3_v_SO_v_vt
@@ -125829,7 +126250,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125848,7 +126269,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -125876,6 +126297,7 @@ reactions:
   - cand_SF6p_SOF3_diss_SF5p_F_SOF3
   - cand_SF_v_SOF3_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF3_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_Ar_4s_vt
@@ -125961,7 +126383,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -125980,7 +126402,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -126003,6 +126425,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF3*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF3*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF3*_vt
@@ -126032,7 +126455,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -126051,7 +126474,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -126074,6 +126497,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF3_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF3_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
@@ -126102,7 +126526,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -126121,7 +126545,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -126150,6 +126574,7 @@ reactions:
   - cand_SF6p_SOF4_diss_SF5p_F_SOF4
   - cand_SF_v_SOF4_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF4_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF4_vt
@@ -126232,7 +126657,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -126251,7 +126676,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -126274,6 +126699,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF4*_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF4*_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF4*_vt
@@ -126303,7 +126729,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -126322,7 +126748,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -126345,6 +126771,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF4_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF4_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF4_v_vt
@@ -126373,7 +126800,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -126392,7 +126819,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -126415,6 +126842,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SOF_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SOF_v_vt
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SOF_v_vt
@@ -126443,7 +126871,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -126462,7 +126890,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -126486,6 +126914,7 @@ reactions:
   - cand_SF6_v_S_1D_vt
   - cand_SF_v_SO_v_vt
   - cand_SF_v_S_1D_vt
+  - cand_SO2_diss_SO_v
   - cand_SO2_diss_S_1D
   - cand_SOF2_v_SO_v_vt
   - cand_SOF2_v_S_1D_vt
@@ -126517,7 +126946,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -126536,7 +126965,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -126560,6 +126989,7 @@ reactions:
   - cand_SF6_v_S_1S_vt
   - cand_SF_v_SO_v_vt
   - cand_SF_v_S_1S_vt
+  - cand_SO2_diss_SO_v
   - cand_SO2_diss_S_1S
   - cand_SOF2_v_SO_v_vt
   - cand_SOF2_v_S_1S_vt
@@ -127180,6 +127610,7 @@ reactions:
   - cand_SF6p_Ar_char_SF6_Arp
   - cand_SF_v_SO_v_vt
   - cand_SFp_Ar_4s_char_SF_Arp
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -128145,6 +128576,7 @@ reactions:
   - cand_SF6p_Ar_4s_diss_SF5_Fp_Ar
   - cand_SF6p_O_1S_diss_SF5_Fp_O
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -128230,6 +128662,7 @@ reactions:
   - cand_SF6p_Ar_4s_diss_SF5_Fp_Ar
   - cand_SF6p_O_1S_diss_SF5_Fp_O
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -128798,6 +129231,7 @@ reactions:
   - cand_SF6p_F2_v_char_SF6_F2p
   - cand_SF6p_O_1S_diss_SF4_F2p_O
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -131925,6 +132359,7 @@ reactions:
   - cand_SF6p_F2_reac_SF6p_F_F
   - cand_SF6p_F2_v_reac_SF6p_F_F
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -132004,6 +132439,7 @@ reactions:
   - cand_SF6p_F2_reac_SF6p_F_F
   - cand_SF6p_F2_v_reac_SF6p_F_F
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -132083,6 +132519,7 @@ reactions:
   - cand_SF6p_F2_reac_SF6p_F_F
   - cand_SF6p_F2_v_reac_SF6p_F_F
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -133169,7 +133606,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -133188,7 +133625,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -133201,6 +133638,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF3_v_F2_v_vt
   - cand_SOF4_v_F2_v_vt
@@ -133227,7 +133665,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -133246,7 +133684,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -133259,6 +133697,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF3_v_F2_v_vt
   - cand_SOF4_v_F2_v_vt
@@ -133285,7 +133724,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -133304,7 +133743,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -133317,6 +133756,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF3_v_F2_v_vt
   - cand_SOF4_v_F2_v_vt
@@ -133343,7 +133783,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.10 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -133362,7 +133802,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0991
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -133375,6 +133815,7 @@ reactions:
   - cand_SF5_v_F2_v_vt
   - cand_SF6_v_F2_v_vt
   - cand_SF_v_F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF3_v_F2_v_vt
   - cand_SOF4_v_F2_v_vt
@@ -133637,7 +134078,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -133656,7 +134097,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -133671,6 +134112,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF3_v_O2_v_vt
   - cand_SOF4_v_O2_v_vt
@@ -133697,7 +134140,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -133716,7 +134159,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -133731,6 +134174,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF3_v_O2_v_vt
   - cand_SOF4_v_O2_v_vt
@@ -133757,7 +134202,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -133776,7 +134221,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -133791,6 +134236,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF3_v_O2_v_vt
   - cand_SOF4_v_O2_v_vt
@@ -133817,7 +134264,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.19 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -133836,7 +134283,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1853
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -133851,6 +134298,8 @@ reactions:
   - cand_SF5_v_O2_v_vt
   - cand_SF6_v_O2_v_vt
   - cand_SF_v_O2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF3_v_O2_v_vt
   - cand_SOF4_v_O2_v_vt
@@ -134369,7 +134818,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -134388,7 +134837,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -134432,7 +134881,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -134451,7 +134900,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -134495,7 +134944,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -134514,7 +134963,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -134558,7 +135007,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.08 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -134577,7 +135026,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.0767
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -136479,6 +136928,7 @@ reactions:
   - cand_SF6_v_SO2F2_v_vt
   - cand_SF_v_F2_v_vt
   - cand_SF_v_SO2F2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF3_v_F2_v_vt
   - cand_SOF4_v_F2_v_vt
@@ -136893,6 +137343,7 @@ reactions:
   - cand_SF6p_SO_v_diss_SF6_O_Sp
   - cand_SF_v_O_vt
   - cand_SF_v_SO2F2_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O_vt
   - cand_SOF3_v_O_vt
   - cand_SOF4_v_O_vt
@@ -137187,6 +137638,8 @@ reactions:
   - cand_SF6_v_SO2F2_v_vt
   - cand_SF_v_O2_v_vt
   - cand_SF_v_SO2F2_v_vt
+  - cand_SO2F2_diss_O2_v
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF3_v_O2_v_vt
   - cand_SOF4_v_O2_v_vt
@@ -137419,6 +137872,7 @@ reactions:
   - cand_SF_v_S_vt
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_S_vt
   - cand_SOF3_v_S_vt
   - cand_SOF4_v_S_vt
@@ -137864,6 +138318,7 @@ reactions:
   - cand_SF_v_SO2F2_v_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
   - cand_SOF2_v_SF2_vt
   - cand_SOF3_v_SF2_vt
   - cand_SOF4_v_SF2_vt
@@ -139274,6 +139729,7 @@ reactions:
   - cand_SF_v_SO_vt
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_SO_vt
   - cand_SOF3_v_SO_vt
   - cand_SOF4_v_SO_vt
@@ -140941,6 +141397,7 @@ reactions:
   - cand_SF6_v_SO_v_vt
   - cand_SF_v_SO2F2_v_vt
   - cand_SF_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -141108,7 +141565,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -141127,7 +141584,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -141161,7 +141618,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -141180,7 +141637,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -141231,7 +141688,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -141250,7 +141707,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -141659,7 +142116,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -141678,7 +142135,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -141729,7 +142186,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -141748,7 +142205,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142086,7 +142543,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142105,7 +142562,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142156,7 +142613,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142175,7 +142632,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142199,6 +142656,7 @@ reactions:
   - cand_SF_v_SO2_v_vt
   - cand_SO2F2_v_F2_v_vt
   - cand_SO2F2_v_SO2_v_vt
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_F2_v_vt
   - cand_SOF3_v_F2_v_vt
   - cand_SOF4_v_F2_v_vt
@@ -142225,7 +142683,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142244,7 +142702,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142363,7 +142821,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142382,7 +142840,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142433,7 +142891,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142452,7 +142910,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142502,7 +142960,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142521,7 +142979,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142621,6 +143079,7 @@ reactions:
   - cand_SF_v_SO2_v_vt
   - cand_SO2F2_v_O_vt
   - cand_SO2F2_v_SO2_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_O_vt
   - cand_SOF3_v_O_vt
   - cand_SOF4_v_O_vt
@@ -142680,7 +143139,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142699,7 +143158,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142733,7 +143192,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142752,7 +143211,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142806,7 +143265,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142825,7 +143284,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142879,7 +143338,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142898,7 +143357,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -142920,8 +143379,10 @@ reactions:
   - cand_SF6_v_SO2_v_vt
   - cand_SF_v_O2_v_vt
   - cand_SF_v_SO2_v_vt
+  - cand_SO2F2_diss_O2_v
   - cand_SO2F2_v_O2_v_vt
   - cand_SO2F2_v_SO2_v_vt
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_O2_v_vt
   - cand_SOF3_v_O2_v_vt
   - cand_SOF4_v_O2_v_vt
@@ -142948,7 +143409,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -142967,7 +143428,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -143023,7 +143484,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -143042,7 +143503,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -143098,7 +143559,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -143117,7 +143578,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -143160,6 +143621,7 @@ reactions:
   - cand_SO2F2_v_S_vt
   - cand_SO2_diss_O2_a1Delta
   - cand_SO2_diss_O2_b1Sigma
+  - cand_SO2_diss_O2_v
   - cand_SOF2_v_S_vt
   - cand_SOF3_v_S_vt
   - cand_SOF4_v_S_vt
@@ -143235,7 +143697,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -143254,7 +143716,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -143398,7 +143860,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -143417,7 +143879,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -143468,7 +143930,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -143487,7 +143949,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -143609,6 +144071,7 @@ reactions:
   - cand_SF_v_SO2_v_vt
   - cand_SO2F2_diss_O2_a1Delta
   - cand_SO2F2_diss_O2_b1Sigma
+  - cand_SO2F2_diss_O2_v
   - cand_SO2F2_v_SF2_vt
   - cand_SO2F2_v_SO2_v_vt
   - cand_SOF2_v_SF2_vt
@@ -143648,7 +144111,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -143667,7 +144130,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -143718,7 +144181,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -143737,7 +144200,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -143787,7 +144250,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -143806,7 +144269,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -143935,7 +144398,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -143954,7 +144417,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144005,7 +144468,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144024,7 +144487,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144074,7 +144537,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144093,7 +144556,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144275,7 +144738,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144294,7 +144757,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144345,7 +144808,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144364,7 +144827,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144414,7 +144877,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144433,7 +144896,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144597,7 +145060,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144616,7 +145079,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144667,7 +145130,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144686,7 +145149,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144736,7 +145199,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144755,7 +145218,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144789,7 +145252,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144808,7 +145271,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144859,7 +145322,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144878,7 +145341,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144928,7 +145391,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -144947,7 +145410,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -144997,7 +145460,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145016,7 +145479,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -145052,6 +145515,7 @@ reactions:
   - cand_SO2F2_v_SO_vt
   - cand_SO2_diss_O_1D
   - cand_SO2_diss_O_1S
+  - cand_SOF2_diss_F2_v
   - cand_SOF2_v_SO_vt
   - cand_SOF3_v_SO_vt
   - cand_SOF4_v_SO_vt
@@ -145138,7 +145602,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145157,7 +145621,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -145208,7 +145672,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145227,7 +145691,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -145324,7 +145788,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145343,7 +145807,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -145389,7 +145853,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145408,7 +145872,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -145523,7 +145987,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145542,7 +146006,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -145588,7 +146052,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145607,7 +146071,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -145652,7 +146116,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145671,7 +146135,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -145792,7 +146256,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145811,7 +146275,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -145862,7 +146326,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -145881,7 +146345,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146010,7 +146474,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146029,7 +146493,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146080,7 +146544,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146099,7 +146563,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146149,7 +146613,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146168,7 +146632,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146285,7 +146749,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146304,7 +146768,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146355,7 +146819,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146374,7 +146838,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146424,7 +146888,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146443,7 +146907,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146558,7 +147022,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146577,7 +147041,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146628,7 +147092,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146647,7 +147111,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146697,7 +147161,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146716,7 +147180,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146766,7 +147230,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146785,7 +147249,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146810,6 +147274,7 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_v_SO2_v_vt
   - cand_SO2F2_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SOF2_v_SO_v_vt
   - cand_SOF3_v_SO_v_vt
   - cand_SOF4_v_SO_v_vt
@@ -146835,7 +147300,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146854,7 +147319,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -146908,7 +147373,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.11 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -146927,7 +147392,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1129
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -148133,7 +148598,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -148152,7 +148617,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -148177,6 +148642,7 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_v_SO2*_vt
   - cand_SO2F2_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SO2_v_SO2*_vt
   - cand_SO2_v_SO_v_vt
   - cand_SOF2_v_SO2*_vt
@@ -148208,7 +148674,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -148227,7 +148693,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -148252,6 +148718,7 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_v_SO2F2*_vt
   - cand_SO2F2_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SO2_v_SO2F2*_vt
   - cand_SO2_v_SO_v_vt
   - cand_SOF2_v_SO2F2*_vt
@@ -148283,7 +148750,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -148302,7 +148769,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -148326,6 +148793,7 @@ reactions:
   - cand_SF_v_SO2F2_v_vt
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SO2_v_SO2F2_v_vt
   - cand_SO2_v_SO_v_vt
   - cand_SOF2_v_SO2F2_v_vt
@@ -148357,7 +148825,7 @@ reactions:
   listed_by: []
   evidence:
     structure: conserved, species proposed
-    thermochemistry: unknown
+    thermochemistry: exothermic by 0.13 eV
     kinetics: unknown
     attestation: unattested
   family: neutral_neutral
@@ -148376,7 +148844,7 @@ reactions:
   third_body: null
   surface: null
   threshold_eV: 0.0
-  delta_e_eV: null
+  delta_e_eV: -0.1336
   electron_energy_cost_eV: null
   thermodynamics: null
   reverse: null
@@ -148401,6 +148869,7 @@ reactions:
   - cand_SF_v_SO_v_vt
   - cand_SO2F2_v_SO2_v_vt
   - cand_SO2F2_v_SO_v_vt
+  - cand_SO2_diss_SO_v
   - cand_SO2_v_SO_v_vt
   - cand_SOF2_v_SO2_v_vt
   - cand_SOF2_v_SO_v_vt

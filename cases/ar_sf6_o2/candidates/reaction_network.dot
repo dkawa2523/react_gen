@@ -489,5 +489,5 @@ digraph reactions {
   "SF6*" -> "O2" [label="dissociative_charge_transfer\nd1 | cand_O2p_SF6*_diss_O2_SF5p_F", color="#B23B3B", fontcolor="#B23B3B", style="dotted", tooltip="O2+ + SF6* -> O2 + SF5+ + F"];
   "SF6_v" -> "O2" [label="dissociative_charge_transfer\nd1 | cand_O2p_SF6_v_diss_O2_SF5p_F", color="#B23B3B", fontcolor="#B23B3B", style="dotted", tooltip="O2+ + SF6_v -> O2 + SF5+ + F"];
   "S+" -> "S" [label="charge_transfer\nd1 | cand_Sp_Ar_4s_char_S_Arp", color="#B23B3B", fontcolor="#B23B3B", style="dotted", tooltip="S+ + Ar_4s -> S + Ar+"];
-  labelloc=b; label="showing 400 of 2894 edges";
+  labelloc=b; label="showing 400 of 2898 edges";
 }

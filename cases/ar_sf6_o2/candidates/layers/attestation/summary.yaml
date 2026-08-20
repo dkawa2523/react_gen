@@ -1,12 +1,12 @@
 layer: attestation
 question: does any source state this reaction?
 reactions:
-  total: 2081
+  total: 2085
   judged: 76
-  undecided: 2005
+  undecided: 2009
   not_run: 0
   by_verdict:
-    unattested: 2005
+    unattested: 2009
     doi:10.1116/1.4853675: 56
     doi:10.1007/s11090-013-9513-1: 11
     nist_asd: 9

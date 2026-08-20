@@ -58,6 +58,7 @@ class Proposer:
     affinity: dict[str, float]
     enthalpy: dict[str, float]
     levels: dict[str, dict[str, float]]
+    vibration: dict[str, float]
     invented: dict[str, Species]
     max_ion_charge: int = 1
     excitation: str = "lumped"
@@ -74,6 +75,7 @@ class Proposer:
         affinity: dict[str, float] | None = None,
         enthalpy: dict[str, float] | None = None,
         levels: dict[str, dict[str, float]] | None = None,
+        vibration: dict[str, float] | None = None,
         max_ion_charge: int = 1,
         excitation: str = "lumped",
         max_leaving: int = 2,
@@ -87,6 +89,7 @@ class Proposer:
             affinity or {},
             enthalpy or {},
             levels or {},
+            vibration or {},
             {},
             max_ion_charge,
             excitation,
@@ -508,6 +511,9 @@ class Proposer:
         if kind is None:
             return None
         parent = written[: -len(SUFFIX[kind])]
+        if kind == "vibrational":
+            # Fitted from the parent's heat capacity, not read off a spectrum.
+            return self.vibration.get(parent)
         return self.levels.get(parent, {}).get(kind)
 
     def _species(self) -> dict[str, Species]:

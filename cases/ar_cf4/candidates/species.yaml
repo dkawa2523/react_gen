@@ -811,6 +811,11 @@ species:
       value: 69.0059
       unit: amu
       source: NIST Chemistry WebBook SRD 69
+    vibrational_quantum_eV:
+      value: 0.1086
+      unit: eV
+      source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+        K
   thermo: null
   status: estimated
 - id: CF3*
@@ -969,7 +974,7 @@ species:
   state:
     kind: excited
     label: vibrational
-    energy_eV: null
+    energy_eV: 0.1086
     resolution: lumped
     members: []
   depth: 2
@@ -1098,6 +1103,11 @@ species:
       value: 16.2
       unit: eV
       source: NIST Chemistry WebBook SRD 69, vertical IE determinations ~16.2 eV
+    vibrational_quantum_eV:
+      value: 0.1017
+      unit: eV
+      source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+        K
   thermo: null
   status: estimated
 - id: CF4*
@@ -1199,7 +1209,7 @@ species:
   state:
     kind: excited
     label: vibrational
-    energy_eV: null
+    energy_eV: 0.1017
     resolution: lumped
     members: []
   depth: 1
@@ -1760,6 +1770,11 @@ species:
       value: 37.996
       unit: amu
       source: derived from composition
+    vibrational_quantum_eV:
+      value: 0.0991
+      unit: eV
+      source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
+        K
   thermo: null
   status: literature_supported
 - id: F2*
@@ -1837,7 +1852,7 @@ species:
   state:
     kind: excited
     label: vibrational
-    energy_eV: null
+    energy_eV: 0.0991
     resolution: lumped
     members: []
   depth: 2

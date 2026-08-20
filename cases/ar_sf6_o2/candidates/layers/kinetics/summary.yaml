@@ -1,12 +1,12 @@
 layer: kinetics
 question: does it run fast enough to matter under these conditions?
 reactions:
-  total: 2081
+  total: 2085
   judged: 75
-  undecided: 2006
+  undecided: 2010
   not_run: 0
   by_verdict:
-    unknown: 2006
+    unknown: 2010
     fast: 62
     comparable: 8
     slow: 4
