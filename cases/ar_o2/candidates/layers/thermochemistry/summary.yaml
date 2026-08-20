@@ -15,3 +15,7 @@ species:
   - enthalpy_formation_eV
   - ionization_energy_eV
   blocked_by_missing_property: 7
+by_process:
+  electron_impact: 40
+  ion_collision: 19
+  neutral_reaction: 11

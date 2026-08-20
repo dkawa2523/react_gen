@@ -1,0 +1,720 @@
+reactants,products,id,family,type,depth,status,verdict,decided
+F+ + Ar,F + Ar+,cand_Fp_Ar_char_F_Arp,ion_neutral,charge_transfer,1,candidate,fast,yes
+F2+ + Ar,F2 + Ar+,cand_F2p_Ar_char_F2_Arp,ion_neutral,charge_transfer,2,candidate,fast,yes
+F2+ + Ar,F + F + Ar+,cand_F2p_Ar_diss_F_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,fast,yes
+SF6+ + Ar,SF6 + Ar+,cand_SF6p_Ar_char_SF6_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + Ar,SF4+ + F2 + Ar,cand_SF6p_Ar_diss_SF4p_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + Ar,SF5+ + F + Ar,cand_SF6p_Ar_diss_SF5p_F_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+Ar+ + F,Ar + F+,cand_Arp_F_char_Ar_Fp,ion_neutral,charge_transfer,1,candidate,fast,yes
+Ar+ + F*,Ar + F+,cand_Arp_F*_char_Ar_Fp,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + F2,Ar + F2+,cand_Arp_F2_char_Ar_F2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + F2,Ar+ + F + F,cand_Arp_F2_reac_Arp_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+Ar+ + F2*,Ar + F2+,cand_Arp_F2*_char_Ar_F2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + F2*,Ar+ + F + F,cand_Arp_F2*_reac_Arp_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+Ar+ + F2_v,Ar + F2+,cand_Arp_F2_v_char_Ar_F2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + F2_v,Ar+ + F + F,cand_Arp_F2_v_reac_Arp_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+Ar+ + FO,Ar + F + O+,cand_Arp_FO_diss_Ar_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+Ar+ + FO*,Ar + F + O+,cand_Arp_FO*_diss_Ar_F_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+Ar+ + FO_v,Ar + F + O+,cand_Arp_FO_v_diss_Ar_F_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+Ar+ + O,Ar + O+,cand_Arp_O_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + O2,Ar + O2+,Arp_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,fast,yes
+Ar+ + O2_a1Delta,Ar + O2+,cand_Arp_O2_a1Delta_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + O2_b1Sigma,Ar + O2+,cand_Arp_O2_b1Sigma_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + O2_b1Sigma,Ar + O+ + O,cand_Arp_O2_b1Sigma_diss_Ar_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+Ar+ + O2_v,Ar + O2+,cand_Arp_O2_v_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + O_1D,Ar + O+,cand_Arp_O_1D_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + O_1S,Ar + O+,cand_Arp_O_1S_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + S,Ar + S+,cand_Arp_S_char_Ar_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF,Ar + SF+,cand_Arp_SF_char_Ar_SFp,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + SF*,Ar + SF+,cand_Arp_SF*_char_Ar_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF2,Ar + SF2+,cand_Arp_SF2_char_Ar_SF2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + SF2,Ar + S+ + F2,cand_Arp_SF2_diss_Ar_Sp_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+Ar+ + SF2*,Ar + SF2+,cand_Arp_SF2*_char_Ar_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF2*,Ar + S+ + F2,cand_Arp_SF2*_diss_Ar_Sp_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+Ar+ + SF2_v,Ar + SF2+,cand_Arp_SF2_v_char_Ar_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF2_v,Ar + S+ + F2,cand_Arp_SF2_v_diss_Ar_Sp_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+Ar+ + SF3,Ar + SF3+,cand_Arp_SF3_char_Ar_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + SF3*,Ar + SF3+,cand_Arp_SF3*_char_Ar_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF3_v,Ar + SF3+,cand_Arp_SF3_v_char_Ar_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF4,Ar + SF4+,cand_Arp_SF4_char_Ar_SF4p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + SF4,Ar + SF2+ + F2,cand_Arp_SF4_diss_Ar_SF2p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+Ar+ + SF4*,Ar + SF4+,cand_Arp_SF4*_char_Ar_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF4*,Ar + SF2+ + F2,cand_Arp_SF4*_diss_Ar_SF2p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+Ar+ + SF4_v,Ar + SF4+,cand_Arp_SF4_v_char_Ar_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF4_v,Ar + SF2+ + F2,cand_Arp_SF4_v_diss_Ar_SF2p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+Ar+ + SF5,Ar + SF5+,cand_Arp_SF5_char_Ar_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + SF5,Ar + SF4+ + F,cand_Arp_SF5_diss_Ar_SF4p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+Ar+ + SF5*,Ar + SF5+,cand_Arp_SF5*_char_Ar_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF5*,Ar + SF4+ + F,cand_Arp_SF5*_diss_Ar_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+Ar+ + SF5_v,Ar + SF5+,cand_Arp_SF5_v_char_Ar_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SF5_v,Ar + SF4+ + F,cand_Arp_SF5_v_diss_Ar_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+Ar+ + SF6,Ar + SF6+,cand_Arp_SF6_char_Ar_SF6p,ion_neutral,charge_transfer,1,candidate,fast,yes
+Ar+ + SF6,Ar + SF5+ + F,Arp_SF6_dissociative_charge_transfer_SF5p_F,ion_neutral,dissociative_charge_transfer,1,literature_supported,fast,yes
+Ar+ + SF6,Ar + SF4+ + F2,cand_Arp_SF6_diss_Ar_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+Ar+ + SF6*,Ar + SF6+,cand_Arp_SF6*_char_Ar_SF6p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + SF6*,Ar + SF4+ + F2,cand_Arp_SF6*_diss_Ar_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+Ar+ + SF6*,Ar + SF5+ + F,cand_Arp_SF6*_diss_Ar_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+Ar+ + SF6_v,Ar + SF6+,cand_Arp_SF6_v_char_Ar_SF6p,ion_neutral,charge_transfer,1,candidate,unknown,no
+Ar+ + SF6_v,Ar + SF4+ + F2,cand_Arp_SF6_v_diss_Ar_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+Ar+ + SF6_v,Ar + SF5+ + F,cand_Arp_SF6_v_diss_Ar_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+Ar+ + SF_v,Ar + SF+,cand_Arp_SF_v_char_Ar_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + SO,Ar + O + S+,cand_Arp_SO_diss_Ar_O_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+Ar+ + SO*,Ar + O + S+,cand_Arp_SO*_diss_Ar_O_Sp,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+Ar+ + SO2,Ar + S+ + O2,cand_Arp_SO2_diss_Ar_Sp_O2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+Ar+ + SO2*,Ar + S+ + O2,cand_Arp_SO2*_diss_Ar_Sp_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+Ar+ + SO2F2,Ar + SF2 + O2+,cand_Arp_SO2F2_diss_Ar_SF2_O2p,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+Ar+ + SO2F2,Ar + SF2+ + O2,cand_Arp_SO2F2_diss_Ar_SF2p_O2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+Ar+ + SO2F2*,Ar + SF2 + O2+,cand_Arp_SO2F2*_diss_Ar_SF2_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+Ar+ + SO2F2*,Ar + SF2+ + O2,cand_Arp_SO2F2*_diss_Ar_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+Ar+ + SO2F2_v,Ar + SF2 + O2+,cand_Arp_SO2F2_v_diss_Ar_SF2_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+Ar+ + SO2F2_v,Ar + SF2+ + O2,cand_Arp_SO2F2_v_diss_Ar_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+Ar+ + SO2_v,Ar + S+ + O2,cand_Arp_SO2_v_diss_Ar_Sp_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+Ar+ + SO_v,Ar + O + S+,cand_Arp_SO_v_diss_Ar_O_Sp,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+Ar+ + S_1D,Ar + S+,cand_Arp_S_1D_char_Ar_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+Ar+ + S_1S,Ar + S+,cand_Arp_S_1S_char_Ar_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + Ar_4s,F + Ar+,cand_Fp_Ar_4s_char_F_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+F2+ + Ar_4s,F2 + Ar+,cand_F2p_Ar_4s_char_F2_Arp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + Ar_4s,F + F + Ar+,cand_F2p_Ar_4s_diss_F_F_Arp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + Ar_4s,F+ + F + Ar,cand_F2p_Ar_4s_diss_Fp_F_Ar,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+O+ + Ar_4s,O + Ar+,cand_Op_Ar_4s_char_O_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+O2+ + Ar_4s,O2 + Ar+,cand_O2p_Ar_4s_char_O2_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+O2+ + Ar_4s,O + O + Ar+,cand_O2p_Ar_4s_diss_O_O_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+O2+ + Ar_4s,O+ + O + Ar,cand_O2p_Ar_4s_diss_Op_O_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+S+ + Ar_4s,S + Ar+,cand_Sp_Ar_4s_char_S_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + Ar_4s,SF + Ar+,cand_SFp_Ar_4s_char_SF_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + Ar_4s,SF2 + Ar+,cand_SF2p_Ar_4s_char_SF2_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + Ar_4s,S + F2 + Ar+,cand_SF2p_Ar_4s_diss_S_F2_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF2+ + Ar_4s,S + F2+ + Ar,cand_SF2p_Ar_4s_diss_S_F2p_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF2+ + Ar_4s,S+ + F2 + Ar,cand_SF2p_Ar_4s_diss_Sp_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF3+ + Ar_4s,SF3 + Ar+,cand_SF3p_Ar_4s_char_SF3_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + Ar_4s,SF4 + Ar+,cand_SF4p_Ar_4s_char_SF4_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + Ar_4s,SF2 + F2 + Ar+,cand_SF4p_Ar_4s_diss_SF2_F2_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF4+ + Ar_4s,SF2 + F2+ + Ar,cand_SF4p_Ar_4s_diss_SF2_F2p_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF4+ + Ar_4s,SF2+ + F2 + Ar,cand_SF4p_Ar_4s_diss_SF2p_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF5+ + Ar_4s,SF5 + Ar+,cand_SF5p_Ar_4s_char_SF5_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF5+ + Ar_4s,SF4 + F + Ar+,cand_SF5p_Ar_4s_diss_SF4_F_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF5+ + Ar_4s,SF4 + F+ + Ar,cand_SF5p_Ar_4s_diss_SF4_Fp_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF5+ + Ar_4s,SF4+ + F + Ar,cand_SF5p_Ar_4s_diss_SF4p_F_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + Ar_4s,SF6 + Ar+,cand_SF6p_Ar_4s_char_SF6_Arp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + Ar_4s,SF4 + F2 + Ar+,cand_SF6p_Ar_4s_diss_SF4_F2_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + Ar_4s,SF4 + F2+ + Ar,cand_SF6p_Ar_4s_diss_SF4_F2p_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + Ar_4s,SF4+ + F2 + Ar,cand_SF6p_Ar_4s_diss_SF4p_F2_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + Ar_4s,SF5 + F + Ar+,cand_SF6p_Ar_4s_diss_SF5_F_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + Ar_4s,SF5 + F+ + Ar,cand_SF6p_Ar_4s_diss_SF5_Fp_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + Ar_4s,SF5+ + F + Ar,cand_SF6p_Ar_4s_diss_SF5p_F_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F2+ + F,F2 + F+,cand_F2p_F_char_F2_Fp,ion_neutral,charge_transfer,2,candidate,fast,yes
+SF6+ + F,SF4+ + F2 + F,cand_SF6p_F_diss_SF4p_F2_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + F,SF5+ + F + F,cand_SF6p_F_diss_SF5p_F_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F2+ + F*,F2 + F+,cand_F2p_F*_char_F2_Fp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + F*,SF4+ + F2 + F,cand_SF6p_F*_diss_SF4p_F2_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + F*,SF5+ + F + F,cand_SF6p_F*_diss_SF5p_F_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + F2,F + F2+,cand_Fp_F2_char_F_F2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + F2,F+ + F + F,cand_Fp_F2_reac_Fp_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+F+ + F2*,F + F2+,cand_Fp_F2*_char_F_F2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + F2*,F+ + F + F,cand_Fp_F2*_reac_Fp_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+F+ + F2_v,F + F2+,cand_Fp_F2_v_char_F_F2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + F2_v,F+ + F + F,cand_Fp_F2_v_reac_Fp_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+F+ + FO,F + F + O+,cand_Fp_FO_diss_F_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + FO*,F + F + O+,cand_Fp_FO*_diss_F_F_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + FO_v,F + F + O+,cand_Fp_FO_v_diss_F_F_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + O,F + O+,cand_Fp_O_char_F_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + O2,F + O2+,cand_Fp_O2_char_F_O2p,ion_neutral,charge_transfer,1,candidate,fast,yes
+F+ + O2,F + O+ + O,cand_Fp_O2_diss_F_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+F+ + O2_a1Delta,F + O2+,cand_Fp_O2_a1Delta_char_F_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + O2_a1Delta,F + O+ + O,cand_Fp_O2_a1Delta_diss_F_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + O2_b1Sigma,F + O2+,cand_Fp_O2_b1Sigma_char_F_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + O2_b1Sigma,F + O+ + O,cand_Fp_O2_b1Sigma_diss_F_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + O2_v,F + O2+,cand_Fp_O2_v_char_F_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + O2_v,F + O+ + O,cand_Fp_O2_v_diss_F_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + O_1D,F + O+,cand_Fp_O_1D_char_F_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + O_1S,F + O+,cand_Fp_O_1S_char_F_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + S,F + S+,cand_Fp_S_char_F_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF,F + SF+,cand_Fp_SF_char_F_SFp,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + SF*,F + SF+,cand_Fp_SF*_char_F_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF2,F + SF2+,cand_Fp_SF2_char_F_SF2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + SF2,F + S+ + F2,cand_Fp_SF2_diss_F_Sp_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + SF2*,F + SF2+,cand_Fp_SF2*_char_F_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF2*,F + S+ + F2,cand_Fp_SF2*_diss_F_Sp_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + SF2_v,F + SF2+,cand_Fp_SF2_v_char_F_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF2_v,F + S+ + F2,cand_Fp_SF2_v_diss_F_Sp_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + SF3,F + SF3+,cand_Fp_SF3_char_F_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + SF3*,F + SF3+,cand_Fp_SF3*_char_F_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF3_v,F + SF3+,cand_Fp_SF3_v_char_F_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF4,F + SF4+,cand_Fp_SF4_char_F_SF4p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + SF4,F + SF2+ + F2,cand_Fp_SF4_diss_F_SF2p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + SF4*,F + SF4+,cand_Fp_SF4*_char_F_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF4*,F + SF2+ + F2,cand_Fp_SF4*_diss_F_SF2p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + SF4_v,F + SF4+,cand_Fp_SF4_v_char_F_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF4_v,F + SF2+ + F2,cand_Fp_SF4_v_diss_F_SF2p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + SF5,F + SF5+,cand_Fp_SF5_char_F_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + SF5,F + SF4+ + F,cand_Fp_SF5_diss_F_SF4p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + SF5*,F + SF5+,cand_Fp_SF5*_char_F_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF5*,F + SF4+ + F,cand_Fp_SF5*_diss_F_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + SF5_v,F + SF5+,cand_Fp_SF5_v_char_F_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SF5_v,F + SF4+ + F,cand_Fp_SF5_v_diss_F_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + SF6,F + SF6+,cand_Fp_SF6_char_F_SF6p,ion_neutral,charge_transfer,1,candidate,fast,yes
+F+ + SF6,F + SF4+ + F2,cand_Fp_SF6_diss_F_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+F+ + SF6,F + SF5+ + F,cand_Fp_SF6_diss_F_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+F+ + SF6*,F + SF6+,cand_Fp_SF6*_char_F_SF6p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + SF6*,F + SF4+ + F2,cand_Fp_SF6*_diss_F_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + SF6*,F + SF5+ + F,cand_Fp_SF6*_diss_F_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + SF6_v,F + SF6+,cand_Fp_SF6_v_char_F_SF6p,ion_neutral,charge_transfer,1,candidate,unknown,no
+F+ + SF6_v,F + SF4+ + F2,cand_Fp_SF6_v_diss_F_SF4p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + SF6_v,F + SF5+ + F,cand_Fp_SF6_v_diss_F_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+F+ + SF_v,F + SF+,cand_Fp_SF_v_char_F_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + SO,F + O + S+,cand_Fp_SO_diss_F_O_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + SO,F + O+ + S,cand_Fp_SO_diss_F_Op_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F+ + SO*,F + O + S+,cand_Fp_SO*_diss_F_O_Sp,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + SO*,F + O+ + S,cand_Fp_SO*_diss_F_Op_S,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + SO2,F + SO + O+,cand_Fp_SO2_diss_F_SO_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + SO2,F + S + O2+,cand_Fp_SO2_diss_F_S_O2p,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + SO2,F + S+ + O2,cand_Fp_SO2_diss_F_Sp_O2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + SO2*,F + SO + O+,cand_Fp_SO2*_diss_F_SO_Op,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2*,F + S + O2+,cand_Fp_SO2*_diss_F_S_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2*,F + S+ + O2,cand_Fp_SO2*_diss_F_Sp_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2F2,F + SF2 + O2+,cand_Fp_SO2F2_diss_F_SF2_O2p,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + SO2F2,F + SF2+ + O2,cand_Fp_SO2F2_diss_F_SF2p_O2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + SO2F2,F + SOF2 + O+,cand_Fp_SO2F2_diss_F_SOF2_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + SO2F2*,F + SF2 + O2+,cand_Fp_SO2F2*_diss_F_SF2_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2F2*,F + SF2+ + O2,cand_Fp_SO2F2*_diss_F_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2F2*,F + SOF2 + O+,cand_Fp_SO2F2*_diss_F_SOF2_Op,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2F2_v,F + SF2 + O2+,cand_Fp_SO2F2_v_diss_F_SF2_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2F2_v,F + SF2+ + O2,cand_Fp_SO2F2_v_diss_F_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2F2_v,F + SOF2 + O+,cand_Fp_SO2F2_v_diss_F_SOF2_Op,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2_v,F + SO + O+,cand_Fp_SO2_v_diss_F_SO_Op,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2_v,F + S + O2+,cand_Fp_SO2_v_diss_F_S_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO2_v,F + S+ + O2,cand_Fp_SO2_v_diss_F_Sp_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F+ + SO_v,F + O + S+,cand_Fp_SO_v_diss_F_O_Sp,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + SO_v,F + O+ + S,cand_Fp_SO_v_diss_F_Op_S,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F+ + S_1D,F + S+,cand_Fp_S_1D_char_F_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F+ + S_1S,F + S+,cand_Fp_S_1S_char_F_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + F2,F + F + F2+,cand_F2p_F2_reac_F_F_F2p,ion_neutral,reactive_scattering,2,candidate,unknown,no
+O+ + F2,O+ + F + F,cand_Op_F2_reac_Op_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+O2+ + F2,O2+ + F + F,cand_O2p_F2_reac_O2p_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+S+ + F2,S+ + F + F,cand_Sp_F2_reac_Sp_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+SF+ + F2,SF+ + F + F,cand_SFp_F2_reac_SFp_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+SF2+ + F2,SF2+ + F + F,cand_SF2p_F2_reac_SF2p_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+SF3+ + F2,SF3+ + F + F,cand_SF3p_F2_reac_SF3p_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+SF4+ + F2,SF4+ + F + F,cand_SF4p_F2_reac_SF4p_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+SF5+ + F2,SF5+ + F + F,cand_SF5p_F2_reac_SF5p_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+SF6+ + F2,SF6 + F2+,cand_SF6p_F2_char_SF6_F2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + F2,SF4+ + F2 + F2,cand_SF6p_F2_diss_SF4p_F2_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + F2,SF5+ + F + F2,cand_SF6p_F2_diss_SF5p_F_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + F2,SF6+ + F + F,cand_SF6p_F2_reac_SF6p_F_F,ion_neutral,reactive_scattering,1,candidate,unknown,no
+F2+ + F2*,F + F + F2+,cand_F2p_F2*_reac_F_F_F2p,ion_neutral,reactive_scattering,2,candidate,unknown,no
+O+ + F2*,O+ + F + F,cand_Op_F2*_reac_Op_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+O2+ + F2*,O2+ + F + F,cand_O2p_F2*_reac_O2p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+S+ + F2*,S+ + F + F,cand_Sp_F2*_reac_Sp_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF+ + F2*,SF+ + F + F,cand_SFp_F2*_reac_SFp_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF2+ + F2*,SF2+ + F + F,cand_SF2p_F2*_reac_SF2p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF3+ + F2*,SF3+ + F + F,cand_SF3p_F2*_reac_SF3p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF4+ + F2*,SF4+ + F + F,cand_SF4p_F2*_reac_SF4p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF5+ + F2*,SF5+ + F + F,cand_SF5p_F2*_reac_SF5p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF6+ + F2*,SF6 + F2+,cand_SF6p_F2*_char_SF6_F2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + F2*,SF4+ + F2 + F2,cand_SF6p_F2*_diss_SF4p_F2_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + F2*,SF5+ + F + F2,cand_SF6p_F2*_diss_SF5p_F_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + F2*,SF6+ + F + F,cand_SF6p_F2*_reac_SF6p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+F2+ + F2_v,F + F + F2+,cand_F2p_F2_v_reac_F_F_F2p,ion_neutral,reactive_scattering,2,candidate,unknown,no
+F2+ + FO,F2 + F + O+,cand_F2p_FO_diss_F2_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + FO*,F2 + F + O+,cand_F2p_FO*_diss_F2_F_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F2+ + FO_v,F2 + F + O+,cand_F2p_FO_v_diss_F2_F_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F2+ + O,F2 + O+,cand_F2p_O_char_F2_Op,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + O,F + F + O+,cand_F2p_O_diss_F_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + O2,F2 + O2+,cand_F2p_O2_char_F2_O2p,ion_neutral,charge_transfer,2,candidate,fast,yes
+F2+ + O2,F + F + O2+,cand_F2p_O2_diss_F_F_O2p,ion_neutral,dissociative_charge_transfer,2,candidate,fast,yes
+F2+ + O2_a1Delta,F2 + O2+,cand_F2p_O2_a1Delta_char_F2_O2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + O2_a1Delta,F + F + O2+,cand_F2p_O2_a1Delta_diss_F_F_O2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + O2_b1Sigma,F2 + O2+,cand_F2p_O2_b1Sigma_char_F2_O2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + O2_b1Sigma,F2 + O+ + O,cand_F2p_O2_b1Sigma_diss_F2_Op_O,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + O2_b1Sigma,F + F + O2+,cand_F2p_O2_b1Sigma_diss_F_F_O2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + O2_b1Sigma,F+ + F + O2,cand_F2p_O2_b1Sigma_diss_Fp_F_O2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + O2_v,F2 + O2+,cand_F2p_O2_v_char_F2_O2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + O2_v,F + F + O2+,cand_F2p_O2_v_diss_F_F_O2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + O_1D,F2 + O+,cand_F2p_O_1D_char_F2_Op,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + O_1D,F + F + O+,cand_F2p_O_1D_diss_F_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + O_1D,F+ + F + O,cand_F2p_O_1D_diss_Fp_F_O,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + O_1S,F2 + O+,cand_F2p_O_1S_char_F2_Op,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + O_1S,F + F + O+,cand_F2p_O_1S_diss_F_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + O_1S,F+ + F + O,cand_F2p_O_1S_diss_Fp_F_O,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + S,F2 + S+,cand_F2p_S_char_F2_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + S,F + F + S+,cand_F2p_S_diss_F_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF,F2 + SF+,cand_F2p_SF_char_F2_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF,F + F + SF+,cand_F2p_SF_diss_F_F_SFp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF*,F2 + SF+,cand_F2p_SF*_char_F2_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF*,F + F + SF+,cand_F2p_SF*_diss_F_F_SFp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF2,F2 + SF2+,cand_F2p_SF2_char_F2_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF2,F2 + S+ + F2,cand_F2p_SF2_diss_F2_Sp_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF2,F + F + SF2+,cand_F2p_SF2_diss_F_F_SF2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF2*,F2 + SF2+,cand_F2p_SF2*_char_F2_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF2*,F2 + S+ + F2,cand_F2p_SF2*_diss_F2_Sp_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF2*,F + F + SF2+,cand_F2p_SF2*_diss_F_F_SF2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF2_v,F2 + SF2+,cand_F2p_SF2_v_char_F2_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF2_v,F2 + S+ + F2,cand_F2p_SF2_v_diss_F2_Sp_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF2_v,F + F + SF2+,cand_F2p_SF2_v_diss_F_F_SF2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF3,F2 + SF3+,cand_F2p_SF3_char_F2_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF3,F + F + SF3+,cand_F2p_SF3_diss_F_F_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF3*,F2 + SF3+,cand_F2p_SF3*_char_F2_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF3*,F + F + SF3+,cand_F2p_SF3*_diss_F_F_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF3_v,F2 + SF3+,cand_F2p_SF3_v_char_F2_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF3_v,F + F + SF3+,cand_F2p_SF3_v_diss_F_F_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF4,F2 + SF4+,cand_F2p_SF4_char_F2_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF4,F2 + SF2+ + F2,cand_F2p_SF4_diss_F2_SF2p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF4,F + F + SF4+,cand_F2p_SF4_diss_F_F_SF4p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF4*,F2 + SF4+,cand_F2p_SF4*_char_F2_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF4*,F2 + SF2+ + F2,cand_F2p_SF4*_diss_F2_SF2p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF4*,F + F + SF4+,cand_F2p_SF4*_diss_F_F_SF4p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF4_v,F2 + SF4+,cand_F2p_SF4_v_char_F2_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF4_v,F2 + SF2+ + F2,cand_F2p_SF4_v_diss_F2_SF2p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF4_v,F + F + SF4+,cand_F2p_SF4_v_diss_F_F_SF4p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF5,F2 + SF5+,cand_F2p_SF5_char_F2_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF5,F2 + SF4+ + F,cand_F2p_SF5_diss_F2_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF5,F + F + SF5+,cand_F2p_SF5_diss_F_F_SF5p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF5*,F2 + SF5+,cand_F2p_SF5*_char_F2_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF5*,F2 + SF4+ + F,cand_F2p_SF5*_diss_F2_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF5*,F + F + SF5+,cand_F2p_SF5*_diss_F_F_SF5p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF5_v,F2 + SF5+,cand_F2p_SF5_v_char_F2_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF5_v,F2 + SF4+ + F,cand_F2p_SF5_v_diss_F2_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF5_v,F + F + SF5+,cand_F2p_SF5_v_diss_F_F_SF5p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF6,F2 + SF6+,cand_F2p_SF6_char_F2_SF6p,ion_neutral,charge_transfer,2,candidate,fast,yes
+F2+ + SF6,F2 + SF4+ + F2,cand_F2p_SF6_diss_F2_SF4p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,fast,yes
+F2+ + SF6,F2 + SF5+ + F,cand_F2p_SF6_diss_F2_SF5p_F,ion_neutral,dissociative_charge_transfer,2,candidate,fast,yes
+F2+ + SF6,F + F + SF6+,cand_F2p_SF6_diss_F_F_SF6p,ion_neutral,dissociative_charge_transfer,2,candidate,fast,yes
+F2+ + SF6*,F2 + SF6+,cand_F2p_SF6*_char_F2_SF6p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF6*,F2 + SF4+ + F2,cand_F2p_SF6*_diss_F2_SF4p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF6*,F2 + SF5+ + F,cand_F2p_SF6*_diss_F2_SF5p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF6*,F + F + SF6+,cand_F2p_SF6*_diss_F_F_SF6p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF6_v,F2 + SF6+,cand_F2p_SF6_v_char_F2_SF6p,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF6_v,F2 + SF4+ + F2,cand_F2p_SF6_v_diss_F2_SF4p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF6_v,F2 + SF5+ + F,cand_F2p_SF6_v_diss_F2_SF5p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF6_v,F + F + SF6+,cand_F2p_SF6_v_diss_F_F_SF6p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SF_v,F2 + SF+,cand_F2p_SF_v_char_F2_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + SF_v,F + F + SF+,cand_F2p_SF_v_diss_F_F_SFp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SO,F2 + O + S+,cand_F2p_SO_diss_F2_O_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + SO*,F2 + O + S+,cand_F2p_SO*_diss_F2_O_Sp,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F2+ + SO2,F2 + S+ + O2,cand_F2p_SO2_diss_F2_Sp_O2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F2+ + SO2*,F2 + S+ + O2,cand_F2p_SO2*_diss_F2_Sp_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F2+ + SO2F2,F2 + SF2 + O2+,cand_F2p_SO2F2_diss_F2_SF2_O2p,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F2+ + SO2F2,F2 + SF2+ + O2,cand_F2p_SO2F2_diss_F2_SF2p_O2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F2+ + SO2F2*,F2 + SF2 + O2+,cand_F2p_SO2F2*_diss_F2_SF2_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F2+ + SO2F2*,F2 + SF2+ + O2,cand_F2p_SO2F2*_diss_F2_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F2+ + SO2F2_v,F2 + SF2 + O2+,cand_F2p_SO2F2_v_diss_F2_SF2_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F2+ + SO2F2_v,F2 + SF2+ + O2,cand_F2p_SO2F2_v_diss_F2_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F2+ + SO2_v,F2 + S+ + O2,cand_F2p_SO2_v_diss_F2_Sp_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+F2+ + SO_v,F2 + O + S+,cand_F2p_SO_v_diss_F2_O_Sp,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+F2+ + S_1D,F2 + S+,cand_F2p_S_1D_char_F2_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + S_1D,F + F + S+,cand_F2p_S_1D_diss_F_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + S_1S,F2 + S+,cand_F2p_S_1S_char_F2_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+F2+ + S_1S,F + F + S+,cand_F2p_S_1S_diss_F_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+F2+ + S_1S,F+ + F + S,cand_F2p_S_1S_diss_Fp_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+O+ + F2_v,O+ + F + F,cand_Op_F2_v_reac_Op_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+O2+ + F2_v,O2+ + F + F,cand_O2p_F2_v_reac_O2p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+S+ + F2_v,S+ + F + F,cand_Sp_F2_v_reac_Sp_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF+ + F2_v,SF+ + F + F,cand_SFp_F2_v_reac_SFp_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF2+ + F2_v,SF2+ + F + F,cand_SF2p_F2_v_reac_SF2p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF3+ + F2_v,SF3+ + F + F,cand_SF3p_F2_v_reac_SF3p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF4+ + F2_v,SF4+ + F + F,cand_SF4p_F2_v_reac_SF4p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF5+ + F2_v,SF5+ + F + F,cand_SF5p_F2_v_reac_SF5p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF6+ + F2_v,SF6 + F2+,cand_SF6p_F2_v_char_SF6_F2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + F2_v,SF4+ + F2 + F2,cand_SF6p_F2_v_diss_SF4p_F2_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + F2_v,SF5+ + F + F2,cand_SF6p_F2_v_diss_SF5p_F_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + F2_v,SF6+ + F + F,cand_SF6p_F2_v_reac_SF6p_F_F,ion_neutral,reactive_scattering,2,candidate,unknown,no
+SF6+ + FO,SF4+ + F2 + FO,cand_SF6p_FO_diss_SF4p_F2_FO,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + FO,SF5+ + F + FO,cand_SF6p_FO_diss_SF5p_F_FO,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + FO,SF6 + F + O+,cand_SF6p_FO_diss_SF6_F_Op,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + FO*,SF4+ + F2 + FO,cand_SF6p_FO*_diss_SF4p_F2_FO,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + FO*,SF5+ + F + FO,cand_SF6p_FO*_diss_SF5p_F_FO,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + FO*,SF6 + F + O+,cand_SF6p_FO*_diss_SF6_F_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + FO_v,SF4+ + F2 + FO,cand_SF6p_FO_v_diss_SF4p_F2_FO,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + FO_v,SF5+ + F + FO,cand_SF6p_FO_v_diss_SF5p_F_FO,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + FO_v,SF6 + F + O+,cand_SF6p_FO_v_diss_SF6_F_Op,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+O2+ + O,O2 + O+,cand_O2p_O_char_O2_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + O,SF4 + O+,cand_SF4p_O_char_SF4_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O,SF6 + O+,cand_SF6p_O_char_SF6_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O,SF4+ + F2 + O,cand_SF6p_O_diss_SF4p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O,SF5+ + F + O,cand_SF6p_O_diss_SF5p_F_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+O+ + O2,O + O2+,Op_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,fast,yes
+O+ + O2_a1Delta,O + O2+,cand_Op_O2_a1Delta_char_O_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + O2_b1Sigma,O + O2+,cand_Op_O2_b1Sigma_char_O_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + O2_v,O + O2+,cand_Op_O2_v_char_O_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + S,O + S+,cand_Op_S_char_O_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF,O + SF+,cand_Op_SF_char_O_SFp,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + SF*,O + SF+,cand_Op_SF*_char_O_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF2,O + SF2+,cand_Op_SF2_char_O_SF2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + SF2*,O + SF2+,cand_Op_SF2*_char_O_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF2_v,O + SF2+,cand_Op_SF2_v_char_O_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF3,O + SF3+,cand_Op_SF3_char_O_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + SF3*,O + SF3+,cand_Op_SF3*_char_O_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF3_v,O + SF3+,cand_Op_SF3_v_char_O_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF4,O + SF4+,cand_Op_SF4_char_O_SF4p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + SF4*,O + SF4+,cand_Op_SF4*_char_O_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF4_v,O + SF4+,cand_Op_SF4_v_char_O_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF5,O + SF5+,cand_Op_SF5_char_O_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + SF5,O + SF4+ + F,cand_Op_SF5_diss_O_SF4p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+O+ + SF5*,O + SF5+,cand_Op_SF5*_char_O_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF5*,O + SF4+ + F,cand_Op_SF5*_diss_O_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+O+ + SF5_v,O + SF5+,cand_Op_SF5_v_char_O_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SF5_v,O + SF4+ + F,cand_Op_SF5_v_diss_O_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+O+ + SF6,O + SF6+,cand_Op_SF6_char_O_SF6p,ion_neutral,charge_transfer,1,candidate,fast,yes
+O+ + SF6,O + SF5+ + F,cand_Op_SF6_diss_O_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+O+ + SF6*,O + SF6+,cand_Op_SF6*_char_O_SF6p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + SF6*,O + SF5+ + F,cand_Op_SF6*_diss_O_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+O+ + SF6_v,O + SF6+,cand_Op_SF6_v_char_O_SF6p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O+ + SF6_v,O + SF5+ + F,cand_Op_SF6_v_diss_O_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+O+ + SF_v,O + SF+,cand_Op_SF_v_char_O_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + SO2F2,O + SF2+ + O2,cand_Op_SO2F2_diss_O_SF2p_O2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+O+ + SO2F2*,O + SF2+ + O2,cand_Op_SO2F2*_diss_O_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+O+ + SO2F2_v,O + SF2+ + O2,cand_Op_SO2F2_v_diss_O_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+O+ + S_1D,O + S+,cand_Op_S_1D_char_O_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+O+ + S_1S,O + S+,cand_Op_S_1S_char_O_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + O2,S + O2+,cand_Sp_O2_char_S_O2p,ion_neutral,charge_transfer,1,candidate,fast,yes
+SF+ + O2,SF + O2+,cand_SFp_O2_char_SF_O2p,ion_neutral,charge_transfer,1,candidate,fast,yes
+SF2+ + O2,SF2 + O2+,cand_SF2p_O2_char_SF2_O2p,ion_neutral,charge_transfer,1,candidate,fast,yes
+SF4+ + O2,SF4 + O2+,cand_SF4p_O2_char_SF4_O2p,ion_neutral,charge_transfer,1,candidate,fast,yes
+SF6+ + O2,SF6 + O2+,cand_SF6p_O2_char_SF6_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O2,SF4 + F2 + O2+,cand_SF6p_O2_diss_SF4_F2_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2,SF4+ + F2 + O2,cand_SF6p_O2_diss_SF4p_F2_O2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2,SF5 + F + O2+,cand_SF6p_O2_diss_SF5_F_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2,SF5+ + F + O2,cand_SF6p_O2_diss_SF5p_F_O2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+O2+ + O_1D,O2 + O+,cand_O2p_O_1D_char_O2_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+O2+ + O_1S,O2 + O+,cand_O2p_O_1S_char_O2_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+O2+ + S,O2 + S+,cand_O2p_S_char_O2_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF,O2 + SF+,cand_O2p_SF_char_O2_SFp,ion_neutral,charge_transfer,1,candidate,unknown,no
+O2+ + SF*,O2 + SF+,cand_O2p_SF*_char_O2_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF2,O2 + SF2+,cand_O2p_SF2_char_O2_SF2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O2+ + SF2*,O2 + SF2+,cand_O2p_SF2*_char_O2_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF2_v,O2 + SF2+,cand_O2p_SF2_v_char_O2_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF3,O2 + SF3+,cand_O2p_SF3_char_O2_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O2+ + SF3,O + O + SF3+,cand_O2p_SF3_diss_O_O_SF3p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+O2+ + SF3*,O2 + SF3+,cand_O2p_SF3*_char_O2_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF3*,O + O + SF3+,cand_O2p_SF3*_diss_O_O_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+O2+ + SF3_v,O2 + SF3+,cand_O2p_SF3_v_char_O2_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF3_v,O + O + SF3+,cand_O2p_SF3_v_diss_O_O_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+O2+ + SF4,O2 + SF4+,cand_O2p_SF4_char_O2_SF4p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O2+ + SF4*,O2 + SF4+,cand_O2p_SF4*_char_O2_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF4_v,O2 + SF4+,cand_O2p_SF4_v_char_O2_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF5,O2 + SF5+,cand_O2p_SF5_char_O2_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+O2+ + SF5*,O2 + SF5+,cand_O2p_SF5*_char_O2_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF5_v,O2 + SF5+,cand_O2p_SF5_v_char_O2_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + SF6,O2 + SF5+ + F,cand_O2p_SF6_diss_O2_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+O2+ + SF6*,O2 + SF5+ + F,cand_O2p_SF6*_diss_O2_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+O2+ + SF6_v,O2 + SF5+ + F,cand_O2p_SF6_v_diss_O2_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+O2+ + SF_v,O2 + SF+,cand_O2p_SF_v_char_O2_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + S_1D,O2 + S+,cand_O2p_S_1D_char_O2_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + S_1S,O2 + S+,cand_O2p_S_1S_char_O2_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+O2+ + S_1S,O + O + S+,cand_O2p_S_1S_diss_O_O_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+S+ + O2_a1Delta,S + O2+,cand_Sp_O2_a1Delta_char_S_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + O2_a1Delta,SF + O2+,cand_SFp_O2_a1Delta_char_SF_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + O2_a1Delta,SF2 + O2+,cand_SF2p_O2_a1Delta_char_SF2_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + O2_a1Delta,SF4 + O2+,cand_SF4p_O2_a1Delta_char_SF4_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF5+ + O2_a1Delta,SF5 + O2+,cand_SF5p_O2_a1Delta_char_SF5_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O2_a1Delta,SF6 + O2+,cand_SF6p_O2_a1Delta_char_SF6_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O2_a1Delta,SF4 + F2 + O2+,cand_SF6p_O2_a1Delta_diss_SF4_F2_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_a1Delta,SF4+ + F2 + O2,cand_SF6p_O2_a1Delta_diss_SF4p_F2_O2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_a1Delta,SF5 + F + O2+,cand_SF6p_O2_a1Delta_diss_SF5_F_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_a1Delta,SF5+ + F + O2,cand_SF6p_O2_a1Delta_diss_SF5p_F_O2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+S+ + O2_b1Sigma,S + O2+,cand_Sp_O2_b1Sigma_char_S_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + O2_b1Sigma,SF + O2+,cand_SFp_O2_b1Sigma_char_SF_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + O2_b1Sigma,SF2 + O2+,cand_SF2p_O2_b1Sigma_char_SF2_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + O2_b1Sigma,SF4 + O2+,cand_SF4p_O2_b1Sigma_char_SF4_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF5+ + O2_b1Sigma,SF5 + O2+,cand_SF5p_O2_b1Sigma_char_SF5_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O2_b1Sigma,SF6 + O2+,cand_SF6p_O2_b1Sigma_char_SF6_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O2_b1Sigma,SF4 + F2 + O2+,cand_SF6p_O2_b1Sigma_diss_SF4_F2_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_b1Sigma,SF4+ + F2 + O2,cand_SF6p_O2_b1Sigma_diss_SF4p_F2_O2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_b1Sigma,SF5 + F + O2+,cand_SF6p_O2_b1Sigma_diss_SF5_F_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_b1Sigma,SF5+ + F + O2,cand_SF6p_O2_b1Sigma_diss_SF5p_F_O2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_b1Sigma,SF6 + O+ + O,cand_SF6p_O2_b1Sigma_diss_SF6_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+S+ + O2_v,S + O2+,cand_Sp_O2_v_char_S_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + O2_v,SF + O2+,cand_SFp_O2_v_char_SF_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + O2_v,SF2 + O2+,cand_SF2p_O2_v_char_SF2_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + O2_v,SF4 + O2+,cand_SF4p_O2_v_char_SF4_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O2_v,SF6 + O2+,cand_SF6p_O2_v_char_SF6_O2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O2_v,SF4 + F2 + O2+,cand_SF6p_O2_v_diss_SF4_F2_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_v,SF4+ + F2 + O2,cand_SF6p_O2_v_diss_SF4p_F2_O2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_v,SF5 + F + O2+,cand_SF6p_O2_v_diss_SF5_F_O2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O2_v,SF5+ + F + O2,cand_SF6p_O2_v_diss_SF5p_F_O2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+S+ + O_1D,S + O+,cand_Sp_O_1D_char_S_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + O_1D,SF + O+,cand_SFp_O_1D_char_SF_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + O_1D,SF2 + O+,cand_SF2p_O_1D_char_SF2_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + O_1D,SF4 + O+,cand_SF4p_O_1D_char_SF4_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + O_1D,SF2+ + F2 + O,cand_SF4p_O_1D_diss_SF2p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1D,SF6 + O+,cand_SF6p_O_1D_char_SF6_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O_1D,SF4 + F2 + O+,cand_SF6p_O_1D_diss_SF4_F2_Op,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1D,SF4+ + F2 + O,cand_SF6p_O_1D_diss_SF4p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1D,SF5 + F + O+,cand_SF6p_O_1D_diss_SF5_F_Op,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1D,SF5+ + F + O,cand_SF6p_O_1D_diss_SF5p_F_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+S+ + O_1S,S + O+,cand_Sp_O_1S_char_S_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + O_1S,SF + O+,cand_SFp_O_1S_char_SF_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + O_1S,SF2 + O+,cand_SF2p_O_1S_char_SF2_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + O_1S,S+ + F2 + O,cand_SF2p_O_1S_diss_Sp_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF3+ + O_1S,SF3 + O+,cand_SF3p_O_1S_char_SF3_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + O_1S,SF4 + O+,cand_SF4p_O_1S_char_SF4_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + O_1S,SF2+ + F2 + O,cand_SF4p_O_1S_diss_SF2p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF5+ + O_1S,SF5 + O+,cand_SF5p_O_1S_char_SF5_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF5+ + O_1S,SF4+ + F + O,cand_SF5p_O_1S_diss_SF4p_F_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1S,SF6 + O+,cand_SF6p_O_1S_char_SF6_Op,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + O_1S,SF4 + F2 + O+,cand_SF6p_O_1S_diss_SF4_F2_Op,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1S,SF4 + F2+ + O,cand_SF6p_O_1S_diss_SF4_F2p_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1S,SF4+ + F2 + O,cand_SF6p_O_1S_diss_SF4p_F2_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1S,SF5 + F + O+,cand_SF6p_O_1S_diss_SF5_F_Op,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1S,SF5 + F+ + O,cand_SF6p_O_1S_diss_SF5_Fp_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + O_1S,SF5+ + F + O,cand_SF6p_O_1S_diss_SF5p_F_O,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF+ + S,SF + S+,cand_SFp_S_char_SF_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + S,SF2 + S+,cand_SF2p_S_char_SF2_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + S,SF4 + S+,cand_SF4p_S_char_SF4_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF5+ + S,SF5 + S+,cand_SF5p_S_char_SF5_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + S,SF6 + S+,cand_SF6p_S_char_SF6_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + S,SF4 + F2 + S+,cand_SF6p_S_diss_SF4_F2_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S,SF4+ + F2 + S,cand_SF6p_S_diss_SF4p_F2_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S,SF5 + F + S+,cand_SF6p_S_diss_SF5_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S,SF5+ + F + S,cand_SF6p_S_diss_SF5p_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+S+ + SF,S + SF+,cand_Sp_SF_char_S_SFp,ion_neutral,charge_transfer,1,candidate,unknown,no
+S+ + SF*,S + SF+,cand_Sp_SF*_char_S_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + SF2,S + SF2+,cand_Sp_SF2_char_S_SF2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+S+ + SF2*,S + SF2+,cand_Sp_SF2*_char_S_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + SF2_v,S + SF2+,cand_Sp_SF2_v_char_S_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + SF3,S + SF3+,cand_Sp_SF3_char_S_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+S+ + SF3*,S + SF3+,cand_Sp_SF3*_char_S_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + SF3_v,S + SF3+,cand_Sp_SF3_v_char_S_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + SF4,S + SF4+,cand_Sp_SF4_char_S_SF4p,ion_neutral,charge_transfer,1,candidate,unknown,no
+S+ + SF4*,S + SF4+,cand_Sp_SF4*_char_S_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + SF4_v,S + SF4+,cand_Sp_SF4_v_char_S_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + SF5,S + SF5+,cand_Sp_SF5_char_S_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+S+ + SF5*,S + SF5+,cand_Sp_SF5*_char_S_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + SF5_v,S + SF5+,cand_Sp_SF5_v_char_S_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+S+ + SF_v,S + SF+,cand_Sp_SF_v_char_S_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + SF,SF2 + SF+,cand_SF2p_SF_char_SF2_SFp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + SF,SF4 + SF+,cand_SF4p_SF_char_SF4_SFp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF5+ + SF,SF5 + SF+,cand_SF5p_SF_char_SF5_SFp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + SF,SF6 + SF+,cand_SF6p_SF_char_SF6_SFp,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + SF,SF4 + F2 + SF+,cand_SF6p_SF_diss_SF4_F2_SFp,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF,SF4+ + F2 + SF,cand_SF6p_SF_diss_SF4p_F2_SF,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF,SF5 + F + SF+,cand_SF6p_SF_diss_SF5_F_SFp,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF,SF5+ + F + SF,cand_SF6p_SF_diss_SF5p_F_SF,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF2+ + SF*,SF2 + SF+,cand_SF2p_SF*_char_SF2_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + SF*,SF4 + SF+,cand_SF4p_SF*_char_SF4_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF5+ + SF*,SF5 + SF+,cand_SF5p_SF*_char_SF5_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF*,SF6 + SF+,cand_SF6p_SF*_char_SF6_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF*,SF4 + F2 + SF+,cand_SF6p_SF*_diss_SF4_F2_SFp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF*,SF4+ + F2 + SF,cand_SF6p_SF*_diss_SF4p_F2_SF,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF*,SF5 + F + SF+,cand_SF6p_SF*_diss_SF5_F_SFp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF*,SF5+ + F + SF,cand_SF6p_SF*_diss_SF5p_F_SF,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF+ + SF2,SF + SF2+,cand_SFp_SF2_char_SF_SF2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + SF2*,SF + SF2+,cand_SFp_SF2*_char_SF_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF+ + SF2_v,SF + SF2+,cand_SFp_SF2_v_char_SF_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF+ + SF3,SF + SF3+,cand_SFp_SF3_char_SF_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + SF3*,SF + SF3+,cand_SFp_SF3*_char_SF_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF+ + SF3_v,SF + SF3+,cand_SFp_SF3_v_char_SF_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF+ + SF4,SF + SF4+,cand_SFp_SF4_char_SF_SF4p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + SF4*,SF + SF4+,cand_SFp_SF4*_char_SF_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF+ + SF4_v,SF + SF4+,cand_SFp_SF4_v_char_SF_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF+ + SF5,SF + SF5+,cand_SFp_SF5_char_SF_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF+ + SF5*,SF + SF5+,cand_SFp_SF5*_char_SF_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF+ + SF5_v,SF + SF5+,cand_SFp_SF5_v_char_SF_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF+ + S_1D,SF + S+,cand_SFp_S_1D_char_SF_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF+ + S_1S,SF + S+,cand_SFp_S_1S_char_SF_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + SF2,SF4 + SF2+,cand_SF4p_SF2_char_SF4_SF2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF5+ + SF2,SF5 + SF2+,cand_SF5p_SF2_char_SF5_SF2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + SF2,SF6 + SF2+,cand_SF6p_SF2_char_SF6_SF2p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + SF2,SF4 + F2 + SF2+,cand_SF6p_SF2_diss_SF4_F2_SF2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF2,SF4+ + F2 + SF2,cand_SF6p_SF2_diss_SF4p_F2_SF2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF2,SF5 + F + SF2+,cand_SF6p_SF2_diss_SF5_F_SF2p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF2,SF5+ + F + SF2,cand_SF6p_SF2_diss_SF5p_F_SF2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF2,SF6 + S+ + F2,cand_SF6p_SF2_diss_SF6_Sp_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF4+ + SF2*,SF4 + SF2+,cand_SF4p_SF2*_char_SF4_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF5+ + SF2*,SF5 + SF2+,cand_SF5p_SF2*_char_SF5_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF2*,SF6 + SF2+,cand_SF6p_SF2*_char_SF6_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF2*,SF4 + F2 + SF2+,cand_SF6p_SF2*_diss_SF4_F2_SF2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF2*,SF4+ + F2 + SF2,cand_SF6p_SF2*_diss_SF4p_F2_SF2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF2*,SF5 + F + SF2+,cand_SF6p_SF2*_diss_SF5_F_SF2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF2*,SF5+ + F + SF2,cand_SF6p_SF2*_diss_SF5p_F_SF2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF2*,SF6 + S+ + F2,cand_SF6p_SF2*_diss_SF6_Sp_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF2+ + SF3,SF2 + SF3+,cand_SF2p_SF3_char_SF2_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + SF3*,SF2 + SF3+,cand_SF2p_SF3*_char_SF2_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + SF3_v,SF2 + SF3+,cand_SF2p_SF3_v_char_SF2_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + SF4,SF2 + SF4+,cand_SF2p_SF4_char_SF2_SF4p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + SF4*,SF2 + SF4+,cand_SF2p_SF4*_char_SF2_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + SF4_v,SF2 + SF4+,cand_SF2p_SF4_v_char_SF2_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + SF5,SF2 + SF5+,cand_SF2p_SF5_char_SF2_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF2+ + SF5*,SF2 + SF5+,cand_SF2p_SF5*_char_SF2_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + SF5_v,SF2 + SF5+,cand_SF2p_SF5_v_char_SF2_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + SF_v,SF2 + SF+,cand_SF2p_SF_v_char_SF2_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + SO2F2,SO2 + SF4+,cand_SF2p_SO2F2_diss_SO2_SF4p,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF2+ + SO2F2*,SO2 + SF4+,cand_SF2p_SO2F2*_diss_SO2_SF4p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF2+ + SO2F2_v,SO2 + SF4+,cand_SF2p_SO2F2_v_diss_SO2_SF4p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF2+ + S_1D,SF2 + S+,cand_SF2p_S_1D_char_SF2_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF2+ + S_1S,SF2 + S+,cand_SF2p_S_1S_char_SF2_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + SF2_v,SF4 + SF2+,cand_SF4p_SF2_v_char_SF4_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF5+ + SF2_v,SF5 + SF2+,cand_SF5p_SF2_v_char_SF5_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF2_v,SF6 + SF2+,cand_SF6p_SF2_v_char_SF6_SF2p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF2_v,SF4 + F2 + SF2+,cand_SF6p_SF2_v_diss_SF4_F2_SF2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF2_v,SF4+ + F2 + SF2,cand_SF6p_SF2_v_diss_SF4p_F2_SF2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF2_v,SF5 + F + SF2+,cand_SF6p_SF2_v_diss_SF5_F_SF2p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF2_v,SF5+ + F + SF2,cand_SF6p_SF2_v_diss_SF5p_F_SF2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF2_v,SF6 + S+ + F2,cand_SF6p_SF2_v_diss_SF6_Sp_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF4+ + SF3,SF4 + SF3+,cand_SF4p_SF3_char_SF4_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + SF3,SF2 + F2 + SF3+,cand_SF4p_SF3_diss_SF2_F2_SF3p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF5+ + SF3,SF5 + SF3+,cand_SF5p_SF3_char_SF5_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF5+ + SF3,SF4 + F + SF3+,cand_SF5p_SF3_diss_SF4_F_SF3p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF3,SF6 + SF3+,cand_SF6p_SF3_char_SF6_SF3p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + SF3,SF4 + F2 + SF3+,cand_SF6p_SF3_diss_SF4_F2_SF3p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF3,SF4+ + F2 + SF3,cand_SF6p_SF3_diss_SF4p_F2_SF3,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF3,SF5 + F + SF3+,cand_SF6p_SF3_diss_SF5_F_SF3p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF3,SF5+ + F + SF3,cand_SF6p_SF3_diss_SF5p_F_SF3,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF4+ + SF3*,SF4 + SF3+,cand_SF4p_SF3*_char_SF4_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + SF3*,SF2 + F2 + SF3+,cand_SF4p_SF3*_diss_SF2_F2_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF5+ + SF3*,SF5 + SF3+,cand_SF5p_SF3*_char_SF5_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF5+ + SF3*,SF4 + F + SF3+,cand_SF5p_SF3*_diss_SF4_F_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF3*,SF6 + SF3+,cand_SF6p_SF3*_char_SF6_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF3*,SF4 + F2 + SF3+,cand_SF6p_SF3*_diss_SF4_F2_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF3*,SF4+ + F2 + SF3,cand_SF6p_SF3*_diss_SF4p_F2_SF3,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF3*,SF5 + F + SF3+,cand_SF6p_SF3*_diss_SF5_F_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF3*,SF5+ + F + SF3,cand_SF6p_SF3*_diss_SF5p_F_SF3,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF3+ + SF5,SF3 + SF5+,cand_SF3p_SF5_char_SF3_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF3+ + SF5*,SF3 + SF5+,cand_SF3p_SF5*_char_SF3_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF3+ + SF5_v,SF3 + SF5+,cand_SF3p_SF5_v_char_SF3_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF3+ + S_1D,SF3 + S+,cand_SF3p_S_1D_char_SF3_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF3+ + S_1S,SF3 + S+,cand_SF3p_S_1S_char_SF3_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + SF3_v,SF4 + SF3+,cand_SF4p_SF3_v_char_SF4_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + SF3_v,SF2 + F2 + SF3+,cand_SF4p_SF3_v_diss_SF2_F2_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF5+ + SF3_v,SF5 + SF3+,cand_SF5p_SF3_v_char_SF5_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF5+ + SF3_v,SF4 + F + SF3+,cand_SF5p_SF3_v_diss_SF4_F_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF3_v,SF6 + SF3+,cand_SF6p_SF3_v_char_SF6_SF3p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF3_v,SF4 + F2 + SF3+,cand_SF6p_SF3_v_diss_SF4_F2_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF3_v,SF4+ + F2 + SF3,cand_SF6p_SF3_v_diss_SF4p_F2_SF3,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF3_v,SF5 + F + SF3+,cand_SF6p_SF3_v_diss_SF5_F_SF3p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF3_v,SF5+ + F + SF3,cand_SF6p_SF3_v_diss_SF5p_F_SF3,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4,SF6 + SF4+,cand_SF6p_SF4_char_SF6_SF4p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + SF4,SF4+ + F2 + SF4,cand_SF6p_SF4_diss_SF4p_F2_SF4,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF4,SF5 + F + SF4+,cand_SF6p_SF4_diss_SF5_F_SF4p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF4,SF5+ + F + SF4,cand_SF6p_SF4_diss_SF5p_F_SF4,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF4,SF5+ + SF5,cand_SF6p_SF4_diss_SF5p_SF5,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF4,SF6 + SF2+ + F2,cand_SF6p_SF4_diss_SF6_SF2p_F2,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF4*,SF6 + SF4+,cand_SF6p_SF4*_char_SF6_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF4*,SF4+ + F2 + SF4,cand_SF6p_SF4*_diss_SF4p_F2_SF4,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4*,SF5 + F + SF4+,cand_SF6p_SF4*_diss_SF5_F_SF4p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4*,SF5+ + F + SF4,cand_SF6p_SF4*_diss_SF5p_F_SF4,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4*,SF5+ + SF5,cand_SF6p_SF4*_diss_SF5p_SF5,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4*,SF6 + SF2+ + F2,cand_SF6p_SF4*_diss_SF6_SF2p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF4+ + SF5,SF4 + SF5+,cand_SF4p_SF5_char_SF4_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF4+ + SF5*,SF4 + SF5+,cand_SF4p_SF5*_char_SF4_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + SF5_v,SF4 + SF5+,cand_SF4p_SF5_v_char_SF4_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + SF6,SF4 + SF5+ + F,cand_SF4p_SF6_diss_SF4_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+SF4+ + SF6,SF5+ + SF5,cand_SF4p_SF6_diss_SF5p_SF5,ion_neutral,dissociative_charge_transfer,1,candidate,fast,yes
+SF4+ + SF6*,SF4 + SF5+ + F,cand_SF4p_SF6*_diss_SF4_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF4+ + SF6*,SF5+ + SF5,cand_SF4p_SF6*_diss_SF5p_SF5,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF4+ + SF6_v,SF4 + SF5+ + F,cand_SF4p_SF6_v_diss_SF4_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF4+ + SF6_v,SF5+ + SF5,cand_SF4p_SF6_v_diss_SF5p_SF5,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF4+ + SF_v,SF4 + SF+,cand_SF4p_SF_v_char_SF4_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + SO2,SO2F2 + SF2+,cand_SF4p_SO2_diss_SO2F2_SF2p,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF4+ + SO2*,SO2F2 + SF2+,cand_SF4p_SO2*_diss_SO2F2_SF2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF4+ + SO2_v,SO2F2 + SF2+,cand_SF4p_SO2_v_diss_SO2F2_SF2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF4+ + S_1D,SF4 + S+,cand_SF4p_S_1D_char_SF4_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + S_1S,SF4 + S+,cand_SF4p_S_1S_char_SF4_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF4+ + S_1S,SF2 + F2 + S+,cand_SF4p_S_1S_diss_SF2_F2_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF4+ + S_1S,SF2+ + F2 + S,cand_SF4p_S_1S_diss_SF2p_F2_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4_v,SF6 + SF4+,cand_SF6p_SF4_v_char_SF6_SF4p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF4_v,SF4+ + F2 + SF4,cand_SF6p_SF4_v_diss_SF4p_F2_SF4,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4_v,SF5 + F + SF4+,cand_SF6p_SF4_v_diss_SF5_F_SF4p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4_v,SF5+ + F + SF4,cand_SF6p_SF4_v_diss_SF5p_F_SF4,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4_v,SF5+ + SF5,cand_SF6p_SF4_v_diss_SF5p_SF5,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF4_v,SF6 + SF2+ + F2,cand_SF6p_SF4_v_diss_SF6_SF2p_F2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF5+ + SF5,SF6 + SF4+,cand_SF5p_SF5_diss_SF6_SF4p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF5,SF6 + SF5+,cand_SF6p_SF5_char_SF6_SF5p,ion_neutral,charge_transfer,1,candidate,unknown,no
+SF6+ + SF5,SF4 + F2 + SF5+,cand_SF6p_SF5_diss_SF4_F2_SF5p,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF5,SF4+ + F2 + SF5,cand_SF6p_SF5_diss_SF4p_F2_SF5,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF5,SF5+ + F + SF5,cand_SF6p_SF5_diss_SF5p_F_SF5,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF5,SF6 + SF4+ + F,cand_SF6p_SF5_diss_SF6_SF4p_F,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF5+ + SF5*,SF6 + SF4+,cand_SF5p_SF5*_diss_SF6_SF4p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF5*,SF6 + SF5+,cand_SF6p_SF5*_char_SF6_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF5*,SF4 + F2 + SF5+,cand_SF6p_SF5*_diss_SF4_F2_SF5p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF5*,SF4+ + F2 + SF5,cand_SF6p_SF5*_diss_SF4p_F2_SF5,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF5*,SF5+ + F + SF5,cand_SF6p_SF5*_diss_SF5p_F_SF5,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF5*,SF6 + SF4+ + F,cand_SF6p_SF5*_diss_SF6_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF5+ + SF5_v,SF6 + SF4+,cand_SF5p_SF5_v_diss_SF6_SF4p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF5+ + SF6,SF3+ + SF6 + F2,SF5p_SF6_to_SF3p_SF6_F2,ion_neutral,reactive_scattering,1,literature_supported,fast,yes
+SF5+ + SF_v,SF5 + SF+,cand_SF5p_SF_v_char_SF5_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF5+ + S_1D,SF5 + S+,cand_SF5p_S_1D_char_SF5_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF5+ + S_1D,SF4 + F + S+,cand_SF5p_S_1D_diss_SF4_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF5+ + S_1S,SF5 + S+,cand_SF5p_S_1S_char_SF5_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF5+ + S_1S,SF4 + F + S+,cand_SF5p_S_1S_diss_SF4_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF5+ + S_1S,SF4+ + F + S,cand_SF5p_S_1S_diss_SF4p_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF5_v,SF6 + SF5+,cand_SF6p_SF5_v_char_SF6_SF5p,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF5_v,SF4 + F2 + SF5+,cand_SF6p_SF5_v_diss_SF4_F2_SF5p,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF5_v,SF4+ + F2 + SF5,cand_SF6p_SF5_v_diss_SF4p_F2_SF5,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF5_v,SF5+ + F + SF5,cand_SF6p_SF5_v_diss_SF5p_F_SF5,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF5_v,SF6 + SF4+ + F,cand_SF6p_SF5_v_diss_SF6_SF4p_F,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF6,SF4+ + F2 + SF6,cand_SF6p_SF6_diss_SF4p_F2_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF6,SF5+ + F + SF6,cand_SF6p_SF6_diss_SF5p_F_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF6*,SF4+ + F2 + SF6,cand_SF6p_SF6*_diss_SF4p_F2_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF6*,SF5+ + F + SF6,cand_SF6p_SF6*_diss_SF5p_F_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF6_v,SF4+ + F2 + SF6,cand_SF6p_SF6_v_diss_SF4p_F2_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF6_v,SF5+ + F + SF6,cand_SF6p_SF6_v_diss_SF5p_F_SF6,ion_neutral,dissociative_charge_transfer,1,candidate,unknown,no
+SF6+ + SF_v,SF6 + SF+,cand_SF6p_SF_v_char_SF6_SFp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + SF_v,SF4 + F2 + SF+,cand_SF6p_SF_v_diss_SF4_F2_SFp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF_v,SF4+ + F2 + SF,cand_SF6p_SF_v_diss_SF4p_F2_SF,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF_v,SF5 + F + SF+,cand_SF6p_SF_v_diss_SF5_F_SFp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SF_v,SF5+ + F + SF,cand_SF6p_SF_v_diss_SF5p_F_SF,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SO,SF4+ + F2 + SO,cand_SF6p_SO_diss_SF4p_F2_SO,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SO,SF5+ + F + SO,cand_SF6p_SO_diss_SF5p_F_SO,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SO,SF6 + O + S+,cand_SF6p_SO_diss_SF6_O_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SO*,SF4+ + F2 + SO,cand_SF6p_SO*_diss_SF4p_F2_SO,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO*,SF5+ + F + SO,cand_SF6p_SO*_diss_SF5p_F_SO,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO*,SF6 + O + S+,cand_SF6p_SO*_diss_SF6_O_Sp,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO2,SF4+ + F2 + SO2,cand_SF6p_SO2_diss_SF4p_F2_SO2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO2,SF5+ + F + SO2,cand_SF6p_SO2_diss_SF5p_F_SO2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO2,SF6 + S+ + O2,cand_SF6p_SO2_diss_SF6_Sp_O2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO2*,SF4+ + F2 + SO2,cand_SF6p_SO2*_diss_SF4p_F2_SO2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2*,SF5+ + F + SO2,cand_SF6p_SO2*_diss_SF5p_F_SO2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2*,SF6 + S+ + O2,cand_SF6p_SO2*_diss_SF6_Sp_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2F2,SF4+ + F2 + SO2F2,cand_SF6p_SO2F2_diss_SF4p_F2_SO2F2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO2F2,SF5+ + F + SO2F2,cand_SF6p_SO2F2_diss_SF5p_F_SO2F2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO2F2,SF6 + SF2 + O2+,cand_SF6p_SO2F2_diss_SF6_SF2_O2p,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO2F2,SF6 + SF2+ + O2,cand_SF6p_SO2F2_diss_SF6_SF2p_O2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO2F2*,SF4+ + F2 + SO2F2,cand_SF6p_SO2F2*_diss_SF4p_F2_SO2F2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2F2*,SF5+ + F + SO2F2,cand_SF6p_SO2F2*_diss_SF5p_F_SO2F2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2F2*,SF6 + SF2 + O2+,cand_SF6p_SO2F2*_diss_SF6_SF2_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2F2*,SF6 + SF2+ + O2,cand_SF6p_SO2F2*_diss_SF6_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2F2_v,SF4+ + F2 + SO2F2,cand_SF6p_SO2F2_v_diss_SF4p_F2_SO2F2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2F2_v,SF5+ + F + SO2F2,cand_SF6p_SO2F2_v_diss_SF5p_F_SO2F2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2F2_v,SF6 + SF2 + O2+,cand_SF6p_SO2F2_v_diss_SF6_SF2_O2p,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2F2_v,SF6 + SF2+ + O2,cand_SF6p_SO2F2_v_diss_SF6_SF2p_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2_v,SF4+ + F2 + SO2,cand_SF6p_SO2_v_diss_SF4p_F2_SO2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2_v,SF5+ + F + SO2,cand_SF6p_SO2_v_diss_SF5p_F_SO2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SO2_v,SF6 + S+ + O2,cand_SF6p_SO2_v_diss_SF6_Sp_O2,ion_neutral,dissociative_charge_transfer,4,candidate,unknown,no
+SF6+ + SOF,SF4+ + F2 + SOF,cand_SF6p_SOF_diss_SF4p_F2_SOF,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SOF,SF5+ + F + SOF,cand_SF6p_SOF_diss_SF5p_F_SOF,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SOF*,SF4+ + F2 + SOF,cand_SF6p_SOF*_diss_SF4p_F2_SOF,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF*,SF5+ + F + SOF,cand_SF6p_SOF*_diss_SF5p_F_SOF,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF2,SF4+ + F2 + SOF2,cand_SF6p_SOF2_diss_SF4p_F2_SOF2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SOF2,SF5+ + F + SOF2,cand_SF6p_SOF2_diss_SF5p_F_SOF2,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SOF2*,SF4+ + F2 + SOF2,cand_SF6p_SOF2*_diss_SF4p_F2_SOF2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF2*,SF5+ + F + SOF2,cand_SF6p_SOF2*_diss_SF5p_F_SOF2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF2_v,SF4+ + F2 + SOF2,cand_SF6p_SOF2_v_diss_SF4p_F2_SOF2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF2_v,SF5+ + F + SOF2,cand_SF6p_SOF2_v_diss_SF5p_F_SOF2,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF3,SF4+ + F2 + SOF3,cand_SF6p_SOF3_diss_SF4p_F2_SOF3,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SOF3,SF5+ + F + SOF3,cand_SF6p_SOF3_diss_SF5p_F_SOF3,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SOF3*,SF4+ + F2 + SOF3,cand_SF6p_SOF3*_diss_SF4p_F2_SOF3,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF3*,SF5+ + F + SOF3,cand_SF6p_SOF3*_diss_SF5p_F_SOF3,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF3_v,SF4+ + F2 + SOF3,cand_SF6p_SOF3_v_diss_SF4p_F2_SOF3,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF3_v,SF5+ + F + SOF3,cand_SF6p_SOF3_v_diss_SF5p_F_SOF3,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF4,SF4+ + F2 + SOF4,cand_SF6p_SOF4_diss_SF4p_F2_SOF4,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SOF4,SF5+ + F + SOF4,cand_SF6p_SOF4_diss_SF5p_F_SOF4,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + SOF4*,SF4+ + F2 + SOF4,cand_SF6p_SOF4*_diss_SF4p_F2_SOF4,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF4*,SF5+ + F + SOF4,cand_SF6p_SOF4*_diss_SF5p_F_SOF4,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF4_v,SF4+ + F2 + SOF4,cand_SF6p_SOF4_v_diss_SF4p_F2_SOF4,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF4_v,SF5+ + F + SOF4,cand_SF6p_SOF4_v_diss_SF5p_F_SOF4,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF_v,SF4+ + F2 + SOF,cand_SF6p_SOF_v_diss_SF4p_F2_SOF,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SOF_v,SF5+ + F + SOF,cand_SF6p_SOF_v_diss_SF5p_F_SOF,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO_v,SF4+ + F2 + SO,cand_SF6p_SO_v_diss_SF4p_F2_SO,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO_v,SF5+ + F + SO,cand_SF6p_SO_v_diss_SF5p_F_SO,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + SO_v,SF6 + O + S+,cand_SF6p_SO_v_diss_SF6_O_Sp,ion_neutral,dissociative_charge_transfer,3,candidate,unknown,no
+SF6+ + S_1D,SF6 + S+,cand_SF6p_S_1D_char_SF6_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + S_1D,SF4 + F2 + S+,cand_SF6p_S_1D_diss_SF4_F2_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S_1D,SF4+ + F2 + S,cand_SF6p_S_1D_diss_SF4p_F2_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S_1D,SF5 + F + S+,cand_SF6p_S_1D_diss_SF5_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S_1D,SF5+ + F + S,cand_SF6p_S_1D_diss_SF5p_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S_1S,SF6 + S+,cand_SF6p_S_1S_char_SF6_Sp,ion_neutral,charge_transfer,2,candidate,unknown,no
+SF6+ + S_1S,SF4 + F2 + S+,cand_SF6p_S_1S_diss_SF4_F2_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S_1S,SF4+ + F2 + S,cand_SF6p_S_1S_diss_SF4p_F2_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S_1S,SF5 + F + S+,cand_SF6p_S_1S_diss_SF5_F_Sp,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no
+SF6+ + S_1S,SF5+ + F + S,cand_SF6p_S_1S_diss_SF5p_F_S,ion_neutral,dissociative_charge_transfer,2,candidate,unknown,no

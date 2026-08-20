@@ -13,3 +13,7 @@ species:
   needs:
   - mass_amu
   blocked_by_missing_property: 41
+by_process:
+  electron_impact: 384
+  ion_collision: 719
+  neutral_reaction: 978

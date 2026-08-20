@@ -570,58 +570,151 @@ def interaction_matrix(species: list[dict], reactions: list[dict], out: Path, ti
     plt.close(figure)
 
 
-def reaction_network(species: list[dict], reactions: list[dict], out: Path, title: str) -> None:
-    """A node-link view where one is still a picture; a matrix where it is not."""
+def _routes(reactions: list[dict], index: dict) -> dict:
+    """One route per ordered species pair, spoken for by its best reaction."""
 
-    heavy = [item for item in species if item["id"] != ELECTRON]
-    if len(heavy) > READABLE:
-        interaction_matrix(species, reactions, out, title)
-        return
-
-    index = {item["id"]: item for item in heavy}
-    graph = nx.DiGraph()
-    for item in heavy:
-        graph.add_node(item["id"])
+    routes: dict[tuple[str, str], dict] = {}
     for reaction in reactions:
-        left = [t["species"] for t in reaction["reactants"] if t["species"] != ELECTRON]
-        right = [t["species"] for t in reaction["products"] if t["species"] != ELECTRON]
+        left = [t["species"] for t in reaction["reactants"] if t["species"] in index]
+        right = [t["species"] for t in reaction["products"] if t["species"] in index]
         for source in left:
             for target in right:
-                if source != target and graph.has_node(source) and graph.has_node(target):
-                    graph.add_edge(source, target, family=reaction.get("family", "?"))
-    if not graph.number_of_nodes():
+                if source == target:
+                    continue
+                held = routes.get((source, target))
+                if held is None or _rank(reaction) < _rank(held):
+                    routes[(source, target)] = reaction
+    return routes
+
+
+def _draw_routes(axes, graph, layout: dict, extent: dict, population: int) -> None:
+    """Arrows coloured by family, labelled with the process where there is room."""
+
+    labelled: set[tuple[float, float]] = set()
+    for source, target, data in graph.edges(data=True):
+        reaction = data["reaction"]
+        colour = FAMILY.get(reaction.get("family", "?"), GREY)
+        _arrow(axes, (source, layout[source]), (target, layout[target]), extent, colour)
+        middle = (
+            (layout[source][0] + layout[target][0]) / 2,
+            (layout[source][1] + layout[target][1]) / 2,
+        )
+        key = (round(middle[0], 1), round(middle[1], 1))
+        if key in labelled or population > 30:
+            continue
+        labelled.add(key)
+        axes.text(
+            *middle,
+            reaction.get("type", ""),
+            fontsize=5.5,
+            color=colour,
+            ha="center",
+            va="center",
+            zorder=5,
+            bbox={"facecolor": "white", "edgecolor": "none", "pad": 0.6, "alpha": 0.85},
+        )
+
+
+def reaction_network(
+    species: list[dict], reactions: list[dict], out: Path, title: str, max_depth: int = 3
+) -> None:
+    """Species as nodes, reactions as edges, in columns by the depth they appear at.
+
+    The generation a species belongs to is a position on the page here, so the
+    multi-step structure is something you look at rather than trace: the feed
+    gas on the left, what it becomes next to it, and so on. Edge colour is the
+    collision family and the label is the process, so an arrow says what turned
+    one into the other without going back to the file.
+
+    Past `max_depth` the tail of the expansion adds columns of species that
+    appear once and react with nothing, which stretches the page without saying
+    more; `species.csv` carries them.
+    """
+
+    index = {
+        item["id"]: item
+        for item in species
+        if item["id"] != ELECTRON and item.get("depth", 0) <= max_depth
+    }
+    if not index:
         return
 
-    layout = nx.kamada_kawai_layout(graph) if graph.number_of_edges() else nx.circular_layout(graph)
-    figure, axes = plt.subplots(figsize=(11, 8.5))
-    families = [d["family"] for _, _, d in graph.edges(data=True)]
-    nx.draw_networkx_edges(
-        graph,
-        layout,
-        ax=axes,
-        edge_color=[FAMILY.get(name, "#B9BEC9") for name in families],
-        width=0.8,
-        alpha=0.4,
-        arrowsize=8,
-        connectionstyle="arc3,rad=0.1",
-        node_size=700,
+    edges = _routes(reactions, index)
+    graph = nx.DiGraph()
+    for name in index:
+        graph.add_node(name)
+    for (source, target), reaction in edges.items():
+        graph.add_edge(source, target, reaction=reaction)
+    if not graph.number_of_edges():
+        return
+
+    columns: dict[float, list[str]] = defaultdict(list)
+    for name, item in index.items():
+        columns[float(item.get("depth", 0))].append(name)
+    ordered = _ordered({k: sorted(v) for k, v in columns.items()}, graph)
+
+    tallest = max(len(names) for names in ordered.values())
+    layout = {}
+    for column, names in ordered.items():
+        step = tallest / max(len(names), 1)
+        for row, name in enumerate(names):
+            layout[name] = (column * COLUMN, -(row - (len(names) - 1) / 2) * step * ROW)
+
+    figure, axes = plt.subplots(
+        figsize=(max(11.0, 3.4 * len(ordered)), max(6.5, 0.60 * tallest + 2.6))
     )
-    _nodes(graph, layout, axes, index)
+    extent = {}
+    for name, position in layout.items():
+        item = index[name]
+        short = lacking_count(item)
+        extent[name] = _box(
+            axes,
+            position,
+            [name],
+            fill=CHARGE.get(item.get("charge", 0), GREY),
+            rim=LACKING if short else "#FFFFFF",
+            width=1.6 if short else 0.8,
+        )
+
+    _draw_routes(axes, graph, layout, extent, len(index))
+
+    for column in sorted(ordered):
+        axes.text(
+            column * COLUMN,
+            tallest / 1.6 + 0.6,
+            f"depth {column:g}",
+            ha="center",
+            fontsize=9.5,
+            color=MUTED,
+        )
     handles = [
+        plt.Line2D([], [], marker="s", ls="", color=colour, label=name, markersize=9)
+        for name, colour in CHARGE_NAME.items()
+    ] + [
         plt.Line2D([], [], color=colour, lw=2, label=name)
         for name, colour in FAMILY.items()
-        if name in set(families)
+        if name in {r.get("family") for r in edges.values()}
     ]
-    handles += [
-        plt.Line2D([], [], marker="o", ls="", color=colour, label=name, markersize=8)
-        for name, colour in CHARGE_NAME.items()
-    ]
-    axes.legend(handles=handles, fontsize=7, frameon=False, loc="upper left", ncol=2)
-    axes.set_title(f"{title}   every reaction", fontsize=11, color=INK, loc="left")
-    axes.axis("off")
+    axes.legend(handles=handles, fontsize=8, frameon=False, loc="lower left", ncol=2)
+    axes.set_title(
+        f"{title}   species network — {len(index)} species to depth {max_depth}, "
+        f"{len(edges)} routes",
+        fontsize=11.5,
+        color=INK,
+        loc="left",
+    )
+    axes.margins(0.06)
+    axes.set_axis_off()
     figure.tight_layout()
     figure.savefig(out, format="svg", bbox_inches="tight")
     plt.close(figure)
+
+
+def _rank(reaction: dict) -> tuple:
+    """Curated first, then shallowest: which reaction speaks for a route."""
+
+    order = {"curated": 0, "literature_supported": 1, "candidate": 2}
+    return (order.get(reaction.get("status"), 3), reaction.get("depth", 0))
 
 
 # --------------------------------------------------------------------------- sheet
@@ -1066,6 +1159,63 @@ def _species_rows(layer: str, species: list[dict], reactions: list[dict]) -> lis
     return rows
 
 
+# Which collision each family is, in the terms a reviewer sorts by rather than
+# the terms the generator families are named in.
+PROCESS = {
+    "electron": "electron_impact",
+    "electron_ion": "electron_impact",
+    "ion_neutral": "ion_collision",
+    "ion_ion": "ion_collision",
+    "neutral_neutral": "neutral_reaction",
+    "three_body": "neutral_reaction",
+    "unimolecular": "neutral_reaction",
+    "surface": "neutral_reaction",
+}
+
+
+def _pair_key(reaction: dict) -> tuple:
+    """Sort so every channel of one colliding pair sits together.
+
+    A reviewer reads `e + CF4 ->` as a block: all the ways that pair can come
+    out, side by side. Sorting by id scatters them, and sorting by product
+    splits the pair that produced them.
+    """
+
+    left = tuple(sorted(term["species"] for term in reaction["reactants"]))
+    return (left, reaction.get("type", ""), reaction.get("depth", 0), reaction["id"])
+
+
+def _by_process(reactions: list[dict], verdicts: dict[str, str], out: Path) -> dict[str, int]:
+    """One file per kind of collision, each grouped by the pair that collides."""
+
+    out.mkdir(parents=True, exist_ok=True)
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for reaction in reactions:
+        groups[PROCESS.get(reaction.get("family", ""), "neutral_reaction")].append(reaction)
+
+    counts = {}
+    for name, held in groups.items():
+        rows = ["reactants,products,id,family,type,depth,status,verdict,decided"]
+        for reaction in sorted(held, key=_pair_key):
+            verdict = verdicts[reaction["id"]]
+            kind = verdict.split(" by ")[0]
+            fields = [
+                " + ".join(term["species"] for term in reaction["reactants"]),
+                " + ".join(term["species"] for term in reaction["products"]),
+                reaction["id"],
+                reaction.get("family", ""),
+                reaction.get("type", ""),
+                reaction.get("depth", 0),
+                reaction.get("status", ""),
+                verdict,
+                "no" if kind in UNDECIDED or kind == "not_run" else "yes",
+            ]
+            rows.append(",".join(f'"{f}"' if "," in str(f) else str(f) for f in fields))
+        (out / f"{name}.csv").write_text(NEWLINE.join(rows) + NEWLINE, encoding="utf-8")
+        counts[name] = len(held)
+    return counts
+
+
 def _passed(rows: list[str]) -> list[str]:
     """The header, and the rows whose flag says the layer settled it.
 
@@ -1135,6 +1285,7 @@ def per_layer(
             NEWLINE.join(_passed(state)) + NEWLINE, encoding="utf-8"
         )
 
+        counts = _by_process(reactions, verdicts, target / "by_process")
         blocked = [
             item["id"]
             for item in heavy
@@ -1154,6 +1305,7 @@ def per_layer(
                         "needs": list(NEEDS.get(layer, ())),
                         "blocked_by_missing_property": len(blocked),
                     },
+                    "by_process": dict(sorted(counts.items())),
                 },
                 sort_keys=False,
                 allow_unicode=True,

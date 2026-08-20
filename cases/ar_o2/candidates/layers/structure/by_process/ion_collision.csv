@@ -1,0 +1,20 @@
+reactants,products,id,family,type,depth,status,verdict,decided
+Ar+ + O,Ar + O+,cand_Arp_O_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+Ar+ + O2,Ar + O2+,Arp_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,conserved,yes
+Ar+ + O2_a1Delta,Ar + O2+,cand_Arp_O2_a1Delta_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+Ar+ + O2_b1Sigma,Ar + O2+,cand_Arp_O2_b1Sigma_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+Ar+ + O2_b1Sigma,Ar + O+ + O,cand_Arp_O2_b1Sigma_diss_Ar_Op_O,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
+Ar+ + O2_v,Ar + O2+,cand_Arp_O2_v_char_Ar_O2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+Ar+ + O_1D,Ar + O+,cand_Arp_O_1D_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+Ar+ + O_1S,Ar + O+,cand_Arp_O_1S_char_Ar_Op,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+O+ + Ar_4s,O + Ar+,cand_Op_Ar_4s_char_O_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+O2+ + Ar_4s,O2 + Ar+,cand_O2p_Ar_4s_char_O2_Arp,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+O2+ + Ar_4s,O + O + Ar+,cand_O2p_Ar_4s_diss_O_O_Arp,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
+O2+ + Ar_4s,O+ + O + Ar,cand_O2p_Ar_4s_diss_Op_O_Ar,ion_neutral,dissociative_charge_transfer,1,candidate,"conserved, species proposed",yes
+O2+ + O,O2 + O+,cand_O2p_O_char_O2_Op,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+O+ + O2,O + O2+,Op_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,conserved,yes
+O+ + O2_a1Delta,O + O2+,cand_Op_O2_a1Delta_char_O_O2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+O+ + O2_b1Sigma,O + O2+,cand_Op_O2_b1Sigma_char_O_O2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+O+ + O2_v,O + O2+,cand_Op_O2_v_char_O_O2p,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+O2+ + O_1D,O2 + O+,cand_O2p_O_1D_char_O2_Op,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes
+O2+ + O_1S,O2 + O+,cand_O2p_O_1S_char_O2_Op,ion_neutral,charge_transfer,1,candidate,"conserved, species proposed",yes

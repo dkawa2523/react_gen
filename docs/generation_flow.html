@@ -453,6 +453,65 @@ exit 1  blocking が1件でもある     exit 0  それ以外</pre>
   出典の沈黙は反応の否定ではないので、何も除きません。レジストリ自身も1つの出典として数えます。
 </p>
 
+<h3>判定ごとの一覧 — 何を使い、何を判定し、どこから取るか</h3>
+<div class="scroll">
+<table>
+  <thead><tr>
+    <th>判定</th><th>使う情報</th><th>判定する対象</th><th>式・方法</th><th>情報の出どころ</th>
+  </tr></thead>
+  <tbody>
+    <tr><td class="k">電荷保存</td><td>species.charge</td><td>全反応</td>
+        <td><code>|Σq(反応物) − Σq(生成物)| &gt; 1e-9 → 棄却</code>。表面は免除</td>
+        <td>レジストリ(組成から自明)</td></tr>
+    <tr><td class="k">元素保存</td><td>species.composition</td><td>全反応</td>
+        <td>各元素で <code>Σ n·count</code> が一致しなければ棄却</td>
+        <td>レジストリ</td></tr>
+    <tr><td class="k">価数</td><td>元素の価数表</td><td>重粒子衝突の生成物</td>
+        <td><code>配位子数 ≤ Σvalence(骨格) − 2(骨格数−1)</code></td>
+        <td>コード内定数(周期表の常識)</td></tr>
+    <tr><td class="k">陰イオンの存在</td><td>electron_affinity_eV</td><td>付着チャンネル</td>
+        <td><code>EA &gt; 0</code> のときのみ親陰イオンを書く</td>
+        <td><strong>mendeleev</strong>(原子16)/ NIST WebBook 手動(分子8)</td></tr>
+    <tr><td class="k">励起準位の分類</td><td>準位の J とパリティ</td><td>原子の励起状態</td>
+        <td>下位の全準位への E1 遷移が禁制なら準安定。<code>パリティ変化 かつ ΔJ≤1、0→0 禁制</code></td>
+        <td><strong>NIST ASD</strong>(<code>energy1.pl</code>、API・キー不要)</td></tr>
+    <tr><td class="k">重粒子の可否</td><td>ΔHf, IE, EA</td><td>イオン中性・中性間</td>
+        <td><code>ΔH = ΣHf(生成物) − ΣHf(反応物)</code>、<code>Hf(A⁺)=Hf(A)+IE</code>、<code>Hf(A⁻)=Hf(A)−EA</code>。両辺に残る骨格は相殺。<code>ΔH ≤ 2.0 eV</code> で採用</td>
+        <td><strong>chemicals</strong>(ΔHf 46)/ <strong>pyromat</strong>(3)/ <strong>mendeleev</strong>(IE・EA)/ 導出(22)</td></tr>
+    <tr><td class="k">解離極限</td><td>ΔHf, 断片の準位</td><td>励起解離チャンネル</td>
+        <td><code>ΔE = D0(A−B) + E(B*)</code>。熱力学的下限なので閾値には入れない</td>
+        <td>chemicals(D0 の元)/ NIST ASD(準位)</td></tr>
+    <tr><td class="k">Penning</td><td>IE, 励起エネルギー</td><td>準安定 + 中性</td>
+        <td><code>ΔE = IE(X) − E_exc &lt; −0.25 eV</code> で開</td>
+        <td>mendeleev(IE)/ NIST ASD(E_exc)</td></tr>
+    <tr><td class="k">閾値の整合</td><td>threshold_eV, ΔE</td><td>吸熱反応</td>
+        <td><code>threshold &lt; ΔE − 0.05 eV → blocking</code></td>
+        <td>LXCat / 文献(閾値)、上記(ΔE)</td></tr>
+    <tr><td class="k">励起 &lt; 電離</td><td>threshold_eV, IE</td><td>励起反応</td>
+        <td><code>励起閾値 &gt; IE(標的) → blocking</code></td>
+        <td>同上</td></tr>
+    <tr><td class="k">電離の一致</td><td>threshold_eV, IE</td><td>電離反応</td>
+        <td><code>|threshold − IE| &gt; 0.05 eV → blocking</code>。実測で残差 0.02 eV 以下</td>
+        <td>LXCat(閾値)/ mendeleev(IE)— <strong>独立した出典どうしの検算</strong></td></tr>
+    <tr><td class="k">速度</td><td>分極率, 質量, 条件</td><td>イオン中性</td>
+        <td>Langevin <code>k = 2.342e-15·√(α/μ)</code>、電子 <code>v = 5.9309e5·√E</code>、壁 <code>ν = γ·v̄/4·(A/V)</code></td>
+        <td><strong>NIST CCCBDB</strong>(分極率5件のみ、手動)/ 質量は組成から導出</td></tr>
+    <tr><td class="k">出典照合</td><td>reaction.source, --known 索引</td><td>全反応</td>
+        <td>自前の導出(bond_breaking, formation_enthalpy 等)は自分の証拠にしない。それ以外の source_id を出典として記録</td>
+        <td>文献 DOI(253)/ NIST ASD(42)/ mendeleev(3)/ LXCat(手動、任意)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="note">
+  <strong>断面積はどの判定にも使っていません。</strong> 生成と篩は熱化学と構造規則だけで行い、
+  断面積との照合は <code>attestation</code> のラベルとして後段に置きます。
+  <br><br>
+  <strong>pip で入るのは3つだけ</strong>(mendeleev / chemicals / pyromat)。NIST ASD は API で自動、
+  WebBook・CCCBDB・LXCat は手動エクスポートです。分極率が5件しか無いのが、
+  DNT+ の long_range 段階が塞がる直接の原因です。
+</div>
+
 <h3>出力</h3>
 <pre>cases/{name}/{outputs,candidates}/
   layers/
