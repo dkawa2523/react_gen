@@ -1,0 +1,11 @@
+equation,reaction_type,family,process,origin,depth,state_verdict,consistency_verdict,thermochemistry_verdict,kinetics_verdict,reaction_evidence_verdict,kinetics_or_reaction_evidence_verdict,accepted_by,id
+2 CF2 -> C2F4,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_abc5c865f438
+CF + F -> CF2,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_d1e2eaf8406e
+CF2 + F -> CF3,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_82ec7771ab72
+CF3 + F -> CF4,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_060cde25fd8a
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,neutral,associative_ionization,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_4f890c9f1ce9
+CF + F2 -> CF2 + F,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_1e8be1d17031
+CF2 + F2 -> CF3 + F,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_93c29d07ff57
+CF3 + F2 -> F + CF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_cff50cb52bbd
+F + C2F4 -> CF2 + CF3,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_5960d80dc648
+2 F + M -> F2 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_e001c2cfb313

@@ -12,9 +12,3 @@ conditions:
   residence_time_s: 0.05
 
 surfaces: [SiO2, Y2O3]
-
-dnt:
-  energy_max_eV: 300.0
-  points: 300
-
-accept_status: [curated, literature_supported]

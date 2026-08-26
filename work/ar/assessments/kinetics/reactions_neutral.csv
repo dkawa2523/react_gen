@@ -1,0 +1,7 @@
+candidate,reaction_type,data_kind,unit,applicable_range,dataset_id,verdict,reason,id
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,rate_coefficient,m3/s,,ds_Ar4s_Ar4s_pooling_ionization,unknown,no usable cross section or rate coefficient,rxn_4f890c9f1ce9
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,,,,,unknown,no usable cross section or rate coefficient,rxn_89b3c1f5c922
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,,,,,unknown,no usable cross section or rate coefficient,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,,,,,unknown,no usable cross section or rate coefficient,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,,,,,unknown,no usable cross section or rate coefficient,rxn_a9821670c330
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,,,,,unknown,no usable cross section or rate coefficient,rxn_cc4cbdb651ed

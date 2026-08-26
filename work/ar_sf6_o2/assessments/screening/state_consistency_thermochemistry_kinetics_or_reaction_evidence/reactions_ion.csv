@@ -1,0 +1,48 @@
+equation,reaction_type,family,process,origin,depth,state_verdict,consistency_verdict,thermochemistry_verdict,kinetics_verdict,reaction_evidence_verdict,kinetics_or_reaction_evidence_verdict,accepted_by,id
+F- + F2 -> F + F2 + e,Collisional electron detachment,ion,collisional_detachment,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_dfc63c7a8750
+Ar+ + SF6 -> SF5+ + Ar + F,Dissociative charge transfer,ion,dissociative_charge_transfer,attested_only,0,pass,pass,pass,fail,pass,pass,reaction_evidence,rxn_20a52b517b95
+SF5+ + SF6 -> SF3+ + F2 + SF6,Ion-neutral reactive scattering,ion,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_3bd12e1a5c60
+Ar+ + O2 -> O2+ + Ar,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_2d29145e0f98
+O+ + O2 -> O2+ + O,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,fail,pass,pass,reaction_evidence,rxn_2bf32666fe5b
+F- + F -> 2 F + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_5d6b61e07430
+F- + SF4 -> F + SF4 + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_32172d6fc732
+F- + SF5 -> F + SF5 + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_3776f320f195
+F- + SF6 -> F + SF6 + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_2b92d53e3c18
+SF4+ + F- -> F + SF4,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_faa9a163f5e1
+SF4+ + SF4- -> 2 SF4,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_ba6cd6f7374d
+SF4+ + SF5- -> SF4 + SF5,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_68319c6d97f2
+SF4+ + SF6- -> SF4 + SF6,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_4a376aae9032
+SF5+ + F- -> F + SF5,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_c455213a3679
+SF5+ + SF4- -> SF4 + SF5,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_e9c07ab2160e
+SF5+ + SF5- -> 2 SF5,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_1aa142ee14b1
+SF5+ + SF6- -> SF5 + SF6,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_439740b280d8
+F- + SF2 -> F + SF2 + e,Collisional electron detachment,ion,collisional_detachment,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_f34acf59c7fa
+F+ + F- -> 2 F,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_2ec3305f897c
+F+ + SF2- -> F + SF2,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_f920d0e503ed
+F+ + SF3- -> F + SF3,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_8006a199d9f5
+F+ + SF4- -> F + SF4,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_b90ad78a9116
+F+ + SF5- -> F + SF5,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_a78a3c2953cf
+F+ + SF6- -> F + SF6,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_55506108b5a8
+SF2+ + F- -> F + SF2,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_f7e95cb217af
+SF2+ + SF2- -> 2 SF2,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_13a4b0133cd3
+SF2+ + SF3- -> SF2 + SF3,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_ddfda0ed8088
+SF2+ + SF4- -> SF2 + SF4,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_fefeac88ae77
+SF2+ + SF5- -> SF2 + SF5,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_2a12c9fab297
+SF2+ + SF6- -> SF2 + SF6,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_ada290859cd4
+SF3+ + F- -> F + SF3,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_e992c583f0be
+SF3+ + SF2- -> SF2 + SF3,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_7199250410bc
+SF3+ + SF3- -> 2 SF3,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_b18de08a976c
+SF3+ + SF4- -> SF3 + SF4,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_5a2d5433dddb
+SF3+ + SF5- -> SF3 + SF5,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_c900b497a659
+SF3+ + SF6- -> SF3 + SF6,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_f4d6da194f1e
+SF4+ + SF2- -> SF2 + SF4,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_81f8db5f90ee
+SF4+ + SF3- -> SF3 + SF4,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_e7a11d8aa9ab
+SF5+ + SF2- -> SF2 + SF5,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_6f148a715564
+SF5+ + SF3- -> SF3 + SF5,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_56879539a045
+F- + S -> F + S + e,Collisional electron detachment,ion,collisional_detachment,mechanical,4,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_15caafbf2197
+SF+ + F- -> F + SF,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,4,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_afe0831eda14
+SF+ + SF2- -> SF2 + SF,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,4,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_82e06ab1c0b5
+SF+ + SF3- -> SF3 + SF,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,4,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_c80d25e1fcc4
+SF+ + SF4- -> SF4 + SF,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,4,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_7a5da1a0ada8
+SF+ + SF5- -> SF5 + SF,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,4,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_cb701319cbd5
+SF+ + SF6- -> SF + SF6,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,4,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_5712fb05d036

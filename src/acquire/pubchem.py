@@ -37,6 +37,7 @@ class Identity:
     inchikey: str | None = None
     smiles: str | None = None
     synonyms: list[str] = field(default_factory=list)
+    matches: int = 0
     error: str | None = None
 
     @property
@@ -62,8 +63,14 @@ def _one(name: str) -> Identity:
     if payload is None:
         return Identity(species=name, error="no PubChem entry")
 
-    record = (payload.get("PropertyTable") or {}).get("Properties") or [{}]
-    first = record[0]
+    records = (payload.get("PropertyTable") or {}).get("Properties") or []
+    if len(records) != 1:
+        return Identity(
+            species=name,
+            matches=len(records),
+            error=f"ambiguous PubChem identity: {len(records)} matches",
+        )
+    first = records[0]
     return Identity(
         species=name,
         cid=first.get("CID"),
@@ -72,6 +79,7 @@ def _one(name: str) -> Identity:
         inchikey=first.get("InChIKey"),
         smiles=first.get("CanonicalSMILES"),
         synonyms=_synonyms(first.get("CID")),
+        matches=1,
     )
 
 

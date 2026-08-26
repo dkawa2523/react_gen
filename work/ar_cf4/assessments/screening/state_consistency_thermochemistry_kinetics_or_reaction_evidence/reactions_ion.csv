@@ -1,0 +1,4 @@
+equation,reaction_type,family,process,origin,depth,state_verdict,consistency_verdict,thermochemistry_verdict,kinetics_verdict,reaction_evidence_verdict,kinetics_or_reaction_evidence_verdict,accepted_by,id
+F- + F2 -> F + F2 + e,Collisional electron detachment,ion,collisional_detachment,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_dfc63c7a8750
+F- + F -> 2 F + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_5d6b61e07430
+F+ + F- -> 2 F,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_2ec3305f897c

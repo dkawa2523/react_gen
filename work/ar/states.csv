@@ -1,0 +1,8 @@
+species,formula,charge,excitation,resolution,lifetime_class,state_label,state_symbol,state_meaning,alternative_resolution_states,structure_scope,origin,depth,state_verdict,thermochemistry_verdict,selected,state_energy_eV,lifetime_s,mass_amu,enthalpy_formation_eV,ionization_energy_eV,electron_affinity_eV,id
+Ar,Ar,0,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,0,pass,pass,true,0.0,,39.948,0.0,15.759612,-11.5,Ar@ground
+Ar(4s),Ar,0,electronic,lumped,mixed_metastable_resonant,4s,4s,4s electronic-state manifold (lumped; mixed metastable/resonant),,not_applicable,attested_only,0,pass,pass,true,11.6,,39.948,11.6,4.16,,Ar@4s
+e,,-1,electron,resolved,not_applicable,electron,electron,free electron,,not_applicable,mechanical,0,pass,not_applicable,true,,,0.00054858,,,,e
+Ar(m),Ar,0,electronic,lumped,metastable,metastable,m,metastable electronic-state manifold (lumped),,not_applicable,mechanical,1,unknown,unknown,true,,,,,,,Ar@metastable
+Ar(r),Ar,0,electronic,lumped,resonant_radiative,resonant,r,resonant radiative electronic-state manifold (lumped),,not_applicable,mechanical,1,unknown,unknown,true,,,,,,,Ar@resonant
+Ar+,Ar,1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,pass,pass,true,0.0,,39.94745,15.75961,27.62966,,Ar+@ground
+Ar-,Ar,-1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,fail,unknown,true,,,,,,,Ar-@ground

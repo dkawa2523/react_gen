@@ -1,0 +1,110 @@
+equation,reaction_type,family,process,origin,depth,state_verdict,consistency_verdict,thermochemistry_verdict,kinetics_verdict,reaction_evidence_verdict,kinetics_or_reaction_evidence_verdict,accepted_by,id
+F- + F2 -> F + F2 + e,Collisional electron detachment,ion,collisional_detachment,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_dfc63c7a8750
+Ar+ + CF2 -> CF2+ + Ar,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_ffd115dacf3e
+Ar+ + CF3 -> CF3+ + Ar,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_dc52f04c4ba9
+Ar+ + CF4 -> CF4+ + Ar,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_e11398e3a515
+Ar+ + F -> F+ + Ar,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_06cb71dde6af
+CF2+ + Ar -> Ar+ + CF2,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_f8238941bae9
+CF2+ + CF3 -> CF3+ + CF2,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_7f8a8574079e
+CF2+ + CF4 -> CF4+ + CF2,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_c6aecba7b2eb
+CF2+ + F -> F+ + CF2,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_c30614ea7b87
+CF2- + CF3 -> CF3- + CF2,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_dda036dba88a
+CF2- + F -> F- + CF2,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_d2c8bba7cbfa
+CF3+ + Ar -> Ar+ + CF3,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_3a79f2f6925e
+CF3+ + CF2 -> CF2+ + CF3,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_65a363fd89f9
+CF3+ + CF4 -> CF4+ + CF3,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_464ca24d9077
+CF3+ + F -> F+ + CF3,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_ff1bf456aea8
+CF3- + CF2 -> CF2- + CF3,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_13c47011a5e3
+CF3- + F -> F- + CF3,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_34653e009757
+CF4+ + Ar -> Ar+ + CF4,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_181c3f19d367
+CF4+ + CF2 -> CF2+ + CF4,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_8edc75cf8179
+CF4+ + CF3 -> CF3+ + CF4,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_aba87f1fb6a5
+CF4+ + F -> F+ + CF4,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_76c13532b893
+F- + CF2 -> CF2- + F,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_b6bcf1a1bf59
+F- + CF3 -> CF3- + F,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_b7e53fd2b0f3
+Ar+ + CF2 -> Ar+ + C + F2,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_5d6e9596c4ca
+Ar+ + CF2 -> Ar+ + CF + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_3df4bfebf10b
+Ar+ + CF3 -> Ar+ + CF + F2,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_28cf50c4f654
+Ar+ + CF3 -> Ar+ + CF2 + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_5c556ed62e93
+CF2+ + CF2 -> CF2+ + CF + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_3cc694ce4d65
+CF2+ + CF3 -> CF2+ + CF + F2,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_af143306f799
+CF2+ + CF3 -> CF2+ + CF2 + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_bbce264bee7e
+CF3+ + CF2 -> CF3+ + CF + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_d33a24d20003
+CF3+ + CF3 -> CF3+ + CF + F2,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_9148b9eed489
+CF3+ + CF3 -> CF3+ + CF2 + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_8c73ad997029
+F- + CF2 -> F- + C + F2,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_90179d462d8b
+F- + CF2 -> F- + CF + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_40259d6c122a
+F- + CF3 -> F- + CF + F2,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_732508018ebb
+F- + CF3 -> F- + CF2 + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_32a9f43a324c
+F- + Ar -> Ar + F + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_6f368a55f7a0
+F- + CF2 -> CF2 + F + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_cb2ea7607fb1
+F- + CF3 -> CF3 + F + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_997da6e688da
+F- + CF4 -> F + CF4 + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_d3a27ffdf572
+F- + F -> 2 F + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_5d6b61e07430
+Ar+ + CF3 -> CF2+ + Ar + F,Dissociative charge transfer,ion,dissociative_charge_transfer,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_c07dba58fb1c
+CF2+ + CF3 -> CF2+ + CF2 + F,Dissociative charge transfer,ion,dissociative_charge_transfer,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_2d2a89ae7d77
+CF3+ + CF3 -> CF2+ + CF3 + F,Dissociative charge transfer,ion,dissociative_charge_transfer,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_de4a357b3e0a
+Ar+ + CF2 -> Ar+ + CF2,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_b09f211dfd9d
+Ar+ + CF3 -> Ar+ + CF3,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_c75b8eb84a01
+Ar+ + CF4 -> Ar+ + CF4,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_317a0bbcd744
+Ar+ + F -> Ar+ + F,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_00c77ffb3278
+CF2+ + Ar -> CF2+ + Ar,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_0c29910c3ff0
+CF2+ + CF3 -> CF2+ + CF3,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_2dd6a291f588
+CF2+ + CF4 -> CF2+ + CF4,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_f81ad9444b3b
+CF2+ + F -> CF2+ + F,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_15ecdfa9d34a
+CF3+ + Ar -> CF3+ + Ar,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_dfe8e26eb2cb
+CF3+ + CF2 -> CF3+ + CF2,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_8dcc7c940a7a
+CF3+ + CF4 -> CF3+ + CF4,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_9bdfefafe6ba
+CF3+ + F -> CF3+ + F,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_6a8093e2f545
+F- + Ar -> F- + Ar,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_4785dfab7c07
+F- + CF2 -> F- + CF2,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_783b1196ccd4
+F- + CF3 -> F- + CF3,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_b7c1b0f530a3
+F- + CF4 -> F- + CF4,Ion-neutral elastic scattering,ion,elastic,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_a37306cb32cb
+CF2+ + CF4 -> CF3+ + CF3,Ligand transfer,ion,ligand_transfer,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_da87f66ade25
+Ar+ + F- -> Ar + F,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_5a8abcb23ae7
+CF2+ + F- -> CF2 + F,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_d5994dea6ca4
+CF3+ + F- -> CF3 + F,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_d1b7b186e81d
+CF3+ + Ar -> CF2+ + Ar + F,Projectile-ion dissociation,ion,projectile_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_63917c498ded
+CF3+ + CF2 -> CF2+ + CF2 + F,Projectile-ion dissociation,ion,projectile_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_d6fcd2d4edd7
+CF3+ + CF3 -> CF2+ + CF3 + F,Projectile-ion dissociation,ion,projectile_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_f6efe34aa8f8
+CF3+ + CF4 -> CF2+ + F + CF4,Projectile-ion dissociation,ion,projectile_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_e84bd0268e59
+CF3+ + F -> CF2+ + 2 F,Projectile-ion dissociation,ion,projectile_dissociation,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_a2c4a86664d1
+Ar+ + Ar -> Ar+ + Ar,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_42da360d77cf
+CF2+ + CF2 -> CF2+ + CF2,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_0328e7426460
+CF2- + CF2 -> CF2- + CF2,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_2d47c6b37188
+CF3+ + CF3 -> CF3+ + CF3,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_e35204617ebc
+CF3- + CF3 -> CF3- + CF3,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_63dbad46310f
+CF4+ + CF4 -> CF4+ + CF4,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_3e0885db1c10
+F- + F -> F- + F,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_b7def00b5075
+F2- + F2 -> F2- + F2,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_9f946849838f
+C- + CF2 -> CF2- + C,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_a44fdabf40d6
+C- + CF3 -> CF3- + C,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_7cad9ec91944
+C- + F -> F- + C,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_a176888e3e6e
+CF2- + C -> C- + CF2,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_745cc36e367a
+CF3- + C -> C- + CF3,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_d5642d0a3564
+F+ + Ar -> Ar+ + F,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_6d651dff0678
+F+ + CF2 -> CF2+ + F,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_887a59e7840a
+F+ + CF3 -> CF3+ + F,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_a4bb12142715
+F+ + CF4 -> CF4+ + F,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_05ad817449a7
+F- + C -> C- + F,Charge exchange,ion,charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_b7eabc281518
+Ar+ + CF -> Ar+ + C + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_ffb778a5eeb6
+F+ + CF -> F+ + C + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_c145c01cb200
+F- + CF -> F- + C + F,Collision-induced target dissociation,ion,collision_induced_dissociation,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_1a0028cd4ae1
+F- + C -> C + F + e,Collisional electron detachment,ion,collisional_detachment,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_3a270a177f5b
+F- + CF -> CF + F + e,Collisional electron detachment,ion,collisional_detachment,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_8b941b644a4a
+Ar+ + C -> Ar+ + C,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_e444932d6baa
+Ar+ + CF -> Ar+ + CF,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_e7a711969214
+CF2+ + CF -> CF2+ + CF,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_7cfaf032aaf3
+CF3+ + CF -> CF3+ + CF,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_4fdcd4946dc2
+F+ + Ar -> F+ + Ar,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_47a718a0f975
+F+ + C -> F+ + C,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_43e905f5d676
+F+ + CF -> F+ + CF,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_ec3571ee2dac
+F+ + CF2 -> F+ + CF2,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_ceb0c54bf03c
+F+ + CF3 -> F+ + CF3,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_68fe31c0a081
+F+ + CF4 -> F+ + CF4,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_a8c6f7587ce9
+F- + C -> F- + C,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_d9c11bb2c2a4
+F- + CF -> F- + CF,Ion-neutral elastic scattering,ion,elastic,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_7a795ed58fac
+F+ + F- -> 2 F,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,3,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_2ec3305f897c
+C- + C -> C- + C,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_684268354bcf
+F+ + F -> F+ + F,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_a2b4345f13c1
+F2+ + F2 -> F2+ + F2,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_0b81c17717b7

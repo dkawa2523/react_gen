@@ -164,4 +164,4 @@ sources:
     requires_api_key: false
     redistribution_risk: unknown
     default_status: imported
-    notes: "User-provided CSV/TSV cross-section tables imported into prepared_registry assets with metadata sidecars."
+    notes: "User-provided CSV/TSV cross-section tables are converted to snapshots and matched to a generated bundle before overlay review."

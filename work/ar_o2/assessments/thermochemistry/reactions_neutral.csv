@@ -1,0 +1,36 @@
+candidate,reaction_type,delta_h_eV,delta_g_eV,threshold_eV,verdict,reason,id
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,-7.440389999999999,,,pass,reaction energy or threshold is available,rxn_4f890c9f1ce9
+O(¹D₂) + O2 -> O2(a¹Δg) + O,Neutral reactive scattering,-0.9895230000000002,,,pass,reaction energy or threshold is available,rxn_7305fd87ad82
+O(¹D₂) + O2 -> O2(b¹Σg+) + O,Neutral reactive scattering,-0.3395229999999998,,,pass,reaction energy or threshold is available,rxn_975e581a4893
+O2(a¹Δg) + O2 -> 2 O2,Neutral reactive scattering,-0.977,,,pass,reaction energy or threshold is available,rxn_2d2ad8dab8bd
+2 O + M -> O2 + M,Three-body association,-5.166154,-4.677816967714865,,pass,reaction energy or threshold is available,rxn_ba3ba6b31781
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,,,,fail,metastable energy is below the target ionization energy,rxn_89b3c1f5c922
+Ar(m) + O -> O+ + Ar + e,Penning ionization,,,,fail,metastable energy is below the target ionization energy,rxn_664ed39e8711
+Ar(m) + O2 -> O2+ + Ar + e,Penning ionization,,,,fail,metastable energy is below the target ionization energy,rxn_5e4e401081e7
+O2* + Ar -> Ar+ + O2 + e,Penning ionization,,,,fail,metastable energy is below the target ionization energy,rxn_6fbef0792ecd
+O2* + O -> O+ + O2 + e,Penning ionization,,,,fail,metastable energy is below the target ionization energy,rxn_97e7f57e6baa
+O2* + O2 -> O2+ + O2 + e,Penning ionization,,,,fail,metastable energy is below the target ionization energy,rxn_1afa97c5ae80
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a9821670c330
+Ar(m) + O -> Ar + O,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_cd3f064c57e9
+Ar(m) + O2 -> Ar + O2,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d033903105a0
+Ar(m) + O2(v) -> O2(v) + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3238e70d569e
+Ar(m) + O2* -> Ar(m) + O2,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_0664702fc8b3
+Ar(m) + O2* -> O2* + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_8ebdaeab3d31
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_cc4cbdb651ed
+Ar(r) + O -> Ar + O,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_2d3b511c5644
+Ar(r) + O2 -> Ar + O2,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_fa54f8a8e792
+Ar(r) + O2(v) -> O2(v) + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f93bf35caf1e
+Ar(r) + O2* -> Ar(r) + O2,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4ad9cf30bc80
+Ar(r) + O2* -> O2* + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_dc471d9f9a8c
+O2* + Ar -> Ar + O2,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_470de7c7998a
+O2* + O -> O + O2,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_953abc47a76a
+O2* + O2 -> 2 O2,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3d41fa9089a3
+O2* + O2(v) -> O2(v) + O2,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c561bbf02430
+Ar(m) + O2(v) -> Ar(m) + O2,Vibrational-translational (V-T) relaxation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6ca88b0a54fa
+Ar(r) + O2(v) -> Ar(r) + O2,Vibrational-translational (V-T) relaxation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_813c0cfa7ce0
+O2(v) + Ar -> Ar + O2,Vibrational-translational (V-T) relaxation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d24c19b6e6eb
+O2(v) + O -> O + O2,Vibrational-translational (V-T) relaxation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f5c7d2b1a05f
+O2(v) + O2 -> 2 O2,Vibrational-translational (V-T) relaxation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5fcbcf3fc37b
+O2* + O2(v) -> O2* + O2,Vibrational-translational (V-T) relaxation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_51dcf606e214

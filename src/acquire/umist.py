@@ -102,6 +102,8 @@ def records(rates: list[Rate], keep_order: int = 2) -> list[dict]:
             "reaction": rate.equation,
             "form": "arrhenius",
             "unit": "m3/s",
+            "independent_variable": "gas_temperature",
+            "channel_scope": "product_resolved",
             "parameters": {
                 "A": rate.a_si,
                 "n": rate.beta,

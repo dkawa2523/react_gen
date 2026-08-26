@@ -1,24 +1,8 @@
-"""Identify a species written in someone else's notation.
-
-Every database spells a species differently: ``Ar+``, ``Ar^+``, ``Ar_p``,
-``AR 1+``; ``O2(a1Dg)``, ``O2(a1Delta_g)``, ``O2*``. Folding the string cannot
-settle these, because ``O2*`` and ``O2(a1Dg)`` differ in what they *mean*, not
-in how they are spelled.
-
-So a name is parsed into what it asserts — composition, charge, and a state
-label if it names one — and matched structurally. Composition and charge are
-decidable. The state label is not: ``1s5`` (Paschen), ``3P2`` (term symbol) and
-``4s`` (configuration) all name argon levels and no rule relates them, so those
-equivalences live in the registry's ``aliases``.
-
-A name that fits several registered species resolves to ``ambiguous`` with the
-candidates listed. It is never silently assigned to one of them.
-"""
+"""Parse external species spellings into composition, charge and state claims."""
 
 from __future__ import annotations
 
 import re
-from collections.abc import Mapping
 from dataclasses import dataclass, field
 
 # Charge written after the formula. Digits *before* the sign are a subscript
@@ -57,19 +41,6 @@ class Name:
     charge: int = 0
     state: str | None = None
     excited: bool = False
-
-    @property
-    def key(self) -> tuple[tuple[tuple[str, int], ...], int]:
-        return (tuple(sorted(self.composition.items())), self.charge)
-
-
-@dataclass(frozen=True)
-class Match:
-    """The outcome of resolving one written name."""
-
-    status: str  # exact | ambiguous | unknown
-    species: str | None = None
-    candidates: tuple[str, ...] = ()
 
 
 def parse(text: str) -> Name:
@@ -148,71 +119,9 @@ def _tokenize(text: str) -> dict[str, int]:
     for element, digits in ELEMENT.findall(text):
         if element not in ELEMENTS:
             return {}
-        counts[element] = counts.get(element, 0) + (int(digits) if digits else 1)
+        count = int(digits) if digits else 1
+        if count < 1:
+            return {}
+        counts[element] = counts.get(element, 0) + count
         consumed += len(element) + len(digits)
     return counts if consumed == len(text) else {}
-
-
-class Index:
-    """Resolve written names against the registered species."""
-
-    def __init__(self, species: Mapping[str, object], aliases: Mapping[str, str]) -> None:
-        self._aliases = aliases
-        self._by_structure: dict[tuple, list[str]] = {}
-        self._states: dict[str, str | None] = {}
-        for species_id, item in species.items():
-            name = Name(
-                composition=dict(getattr(item, "composition", {}) or {}),
-                charge=int(getattr(item, "charge", 0)),
-            )
-            self._by_structure.setdefault(name.key, []).append(species_id)
-            state = getattr(item, "state", None)
-            self._states[species_id] = normalize_state(getattr(state, "label", None))
-
-    def resolve(self, text: str) -> Match:
-        if text in self._states:
-            return Match("exact", text)
-        if (aliased := self._aliases.get(fold(text))) is not None:
-            return Match("exact", aliased)
-
-        name = parse(text)
-        candidates = sorted(self._by_structure.get(name.key, ()))
-        if not candidates:
-            return Match("unknown")
-        if len(candidates) == 1:
-            return Match("exact", candidates[0])
-        return self._disambiguate(name, candidates)
-
-    def _disambiguate(self, name: Name, candidates: list[str]) -> Match:
-        """Several species share this composition and charge; the state decides."""
-
-        wanted = normalize_state(name.state)
-        if wanted is not None:
-            hit = [item for item in candidates if self._states.get(item) == wanted]
-            if len(hit) == 1:
-                return Match("exact", hit[0])
-        if not name.excited:
-            ground = [item for item in candidates if not self._states.get(item)]
-            if len(ground) == 1:
-                return Match("exact", ground[0])
-        return Match("ambiguous", None, tuple(candidates))
-
-
-def fold(text: str) -> str:
-    """Strip the punctuation that separates one spelling from another."""
-
-    return re.sub(r"[_\s\-()]", "", text).lower()
-
-
-# A species id is chemistry, not a filename: `F2*`, `O2(a1Dg)` and `CF3-` are
-# all legal ids and none of them is a legal name on Windows. Charge keeps a
-# readable spelling because these names are read back by eye; the rest goes.
-FILENAME_SAFE = {"+": "_p", "-": "_m", "*": "_x", "(": "", ")": "", " ": "_", "/": "_", ":": "_"}
-
-
-def slug(species_id: str) -> str:
-    """A species id as a filename, on every platform this runs on."""
-
-    for character, replacement in FILENAME_SAFE.items():
-        species_id = species_id.replace(character, replacement)
-    return species_id

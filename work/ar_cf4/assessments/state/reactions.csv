@@ -1,0 +1,907 @@
+candidate,reaction_type,verdict,reason,id
+e + CF4 -> CF3- + F,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_6add53007d4d
+e + CF4 -> F- + CF3,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_d5cbaabe8754
+e + F2 -> F- + F,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_41a18c13fd0a
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),pass,every non-electron reactant and product passes its State assessment,rxn_085bec441ad0
+e + C(¹D) -> C + e,Electron-impact deexcitation (superelastic),pass,every non-electron reactant and product passes its State assessment,rxn_9530f504d9e5
+e + C(¹S) -> C + e,Electron-impact deexcitation (superelastic),pass,every non-electron reactant and product passes its State assessment,rxn_7d224670cb65
+e + C2F3 -> CF2 + CF + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_e9a3bc3ff825
+e + C2F4 -> 2 CF2 + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_2401799501e7
+e + CF2 -> C + 2 F + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_aa74617768be
+e + CF4 -> CF2 + 2 F + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_1e49bb9b8128
+e + C2F4 -> C2F3+ + F + 2 e,Dissociative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_2b4bc884f137
+e + CF4 -> CF2+ + 2 F + 2 e,Dissociative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_3d2bff0614a8
+e + CF4 -> F+ + CF3 + 2 e,Dissociative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_10b57a76ce1d
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_49cd032be260
+e + C(¹D) -> C(¹D) + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_729e864828ae
+e + C(¹S) -> C(¹S) + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_93d0a1400049
+e + Ar -> Ar(4s) + e,Electron-impact excitation,pass,every non-electron reactant and product passes its State assessment,rxn_683f67de893f
+e + C -> C(¹D) + e,Electron-impact excitation,pass,every non-electron reactant and product passes its State assessment,rxn_05ea310bde2f
+e + C -> C(¹S) + e,Electron-impact excitation,pass,every non-electron reactant and product passes its State assessment,rxn_e9c8f0aba272
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_1a8a97d93128
+F- + F2 -> F + F2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_dfc63c7a8750
+2 CF2 -> C2F4,Bimolecular association,pass,every non-electron reactant and product passes its State assessment,rxn_abc5c865f438
+CF + F -> CF2,Bimolecular association,pass,every non-electron reactant and product passes its State assessment,rxn_d1e2eaf8406e
+CF2 + CF -> C2F3,Bimolecular association,pass,every non-electron reactant and product passes its State assessment,rxn_6e55ee5b6e15
+CF2 + F -> CF3,Bimolecular association,pass,every non-electron reactant and product passes its State assessment,rxn_82ec7771ab72
+CF3 + F -> CF4,Bimolecular association,pass,every non-electron reactant and product passes its State assessment,rxn_060cde25fd8a
+F + C2F3 -> C2F4,Bimolecular association,pass,every non-electron reactant and product passes its State assessment,rxn_2a7c42a66624
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_4f890c9f1ce9
+C + C2F4 -> CF + C2F3,Neutral reactive scattering,pass,every non-electron reactant and product passes its State assessment,rxn_4c5943388790
+CF + F2 -> CF2 + F,Neutral reactive scattering,pass,every non-electron reactant and product passes its State assessment,rxn_1e8be1d17031
+CF2 + F2 -> CF3 + F,Neutral reactive scattering,pass,every non-electron reactant and product passes its State assessment,rxn_93c29d07ff57
+CF3 + F2 -> F + CF4,Neutral reactive scattering,pass,every non-electron reactant and product passes its State assessment,rxn_cff50cb52bbd
+F + C2F4 -> CF2 + CF3,Neutral reactive scattering,pass,every non-electron reactant and product passes its State assessment,rxn_5960d80dc648
+F + [SiO2] -> 0.5 F2,Surface recombination,pass,every non-electron reactant and product passes its State assessment,rxn_05f35ce5be90
+F + [Si] -> 0.5 F2,Surface recombination,pass,every non-electron reactant and product passes its State assessment,rxn_c08e1cde84ca
+e + Ar -> Ar-,Electron attachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_4374da9c1d1c
+e + CF4 -> CF4-,Electron attachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_8890662a4716
+e + CF4 -> CF2 + F2 + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_1c368b1b9f67
+e + CF4 -> CF3 + F + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_e01a8d5147ca
+e + CF4 -> CF2- + F2,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_b0abeda1b204
+e + CF4 -> CF3- + F,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_e1773279104f
+e + CF4 -> F- + CF3,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_46b6f98027d9
+e + CF4 -> F2- + CF2,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_b820d11ebbfb
+e + CF4 -> CF2+ + F2 + 2 e,Dissociative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_9270da68b5d8
+e + CF4 -> CF3+ + F + 2 e,Dissociative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_4c038dd3c3f7
+e + Ar -> Ar + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_c8f95c3d8ede
+e + CF4 -> CF4 + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_34d7414ac2cf
+e + Ar -> Ar(m) + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_271084b2fc94
+e + CF4 -> CF4(v) + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1264e939ac75
+e + CF4 -> CF4* + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_888b1a9be272
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_a69a28bff768
+e + CF4 -> CF4+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_3c3488db3523
+CF2 + F2 + M -> CF4 + M,Three-body association,pass,every non-electron reactant and product passes its State assessment,rxn_08fbbd0367ab
+CF3 + F + M -> CF4 + M,Three-body association,pass,every non-electron reactant and product passes its State assessment,rxn_fae2a35c3cf8
+e + CF2 -> CF2-,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_fc076edc8d0d
+e + CF3 -> CF3-,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_6add7c2eef73
+e + F -> F-,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_8fa839560004
+e + F2 -> F2-,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_900787e68127
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ed39dd867e7c
+e + CF4(v) -> CF4 + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5d7c24fc17c1
+e + CF4* -> CF4 + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6329d95dcf00
+e + Ar- -> Ar + 2 e,Electron-impact detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_d83b0309c1b0
+e + CF2- -> CF2 + 2 e,Electron-impact detachment,pass,every non-electron reactant and product passes its State assessment,rxn_014e0556b6e3
+e + CF3- -> CF3 + 2 e,Electron-impact detachment,pass,every non-electron reactant and product passes its State assessment,rxn_5b166d957ba4
+e + CF4- -> CF4 + 2 e,Electron-impact detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_dc8aa6d2c4c8
+e + F- -> F + 2 e,Electron-impact detachment,pass,every non-electron reactant and product passes its State assessment,rxn_d9c95009df17
+e + F2- -> F2 + 2 e,Electron-impact detachment,pass,every non-electron reactant and product passes its State assessment,rxn_f97da82531fe
+e + CF2 -> C + F2 + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_591d5ef5f188
+e + CF2 -> CF + F + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_c5581ea425de
+e + CF3 -> CF + F2 + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_fe77399ff2fa
+e + CF3 -> CF2 + F + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_dd01176ea9aa
+e + F2 -> 2 F + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_68bca252f4bd
+e + CF2 -> C- + F2,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_110f122c4147
+e + CF2 -> CF- + F,Dissociative electron attachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_54ac37bfe660
+e + CF2 -> F- + CF,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_a315e7bb4493
+e + CF2 -> F2- + C,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_348d56e67d0d
+e + CF3 -> CF- + F2,Dissociative electron attachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_59eaef7776fc
+e + CF3 -> CF2- + F,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_2f5b482ab9b8
+e + CF3 -> F- + CF2,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_ecd6e028e4af
+e + CF3 -> F2- + CF,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_996a9e652c96
+e + F2 -> F- + F,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_6dfafc324ea8
+e + CF2 -> C+ + F2 + 2 e,Dissociative ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6336b784a421
+e + CF2 -> CF+ + F + 2 e,Dissociative ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_64862319082c
+e + CF3 -> CF+ + F2 + 2 e,Dissociative ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_da9e8e657e7c
+e + CF3 -> CF2+ + F + 2 e,Dissociative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_60237cd1c499
+e + F2 -> F+ + F + 2 e,Dissociative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_c9dace256cc3
+e + CF2+ -> C + F2,Dissociative recombination,pass,every non-electron reactant and product passes its State assessment,rxn_ae5d2a90619f
+e + CF2+ -> CF + F,Dissociative recombination,pass,every non-electron reactant and product passes its State assessment,rxn_465afab78ff2
+e + CF3+ -> CF + F2,Dissociative recombination,pass,every non-electron reactant and product passes its State assessment,rxn_13d86263bab3
+e + CF3+ -> CF2 + F,Dissociative recombination,pass,every non-electron reactant and product passes its State assessment,rxn_9c1ed5854f32
+e + CF4+ -> CF2 + F2,Dissociative recombination,pass,every non-electron reactant and product passes its State assessment,rxn_a59a2879ae7e
+e + CF4+ -> CF3 + F,Dissociative recombination,pass,every non-electron reactant and product passes its State assessment,rxn_ff1bd597dbc2
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_f4bf18f98733
+e + CF2 -> CF2 + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_cc094f67269d
+e + CF2+ -> CF2+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_be8ae67e4981
+e + CF2- -> CF2- + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_83a12e2696b8
+e + CF3 -> CF3 + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_e3434ac4545f
+e + CF3+ -> CF3+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_27e712b25302
+e + CF3- -> CF3- + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_a8168a19d4b1
+e + CF4(v) -> CF4(v) + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1656bc69a9f1
+e + CF4* -> CF4* + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_62d66062dd5a
+e + CF4+ -> CF4+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_2682a600bf49
+e + CF4- -> CF4- + e,Electron elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_73d9e88db8fb
+e + F -> F + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_d014713c4a78
+e + F- -> F- + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_35e7d26760ba
+e + F2 -> F2 + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_90dfe4335d02
+e + F2- -> F2- + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_594dacc8bf96
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5ccce802fea8
+e + CF2 -> CF2+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_4ee92d4ce3e7
+e + CF3 -> CF3+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_4294bf8b7acd
+e + CF4(v) -> CF4+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_010a6808d730
+e + CF4* -> CF4+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_709e4777a50d
+e + F -> F+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_0ac0463c2879
+e + F2 -> F2+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_209315ead1fb
+e + Ar+ -> Ar,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_b9b97c9cedf9
+e + CF2+ -> CF2,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_ec16906d3faf
+e + CF3+ -> CF3,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_de58a3cb230b
+e + CF4+ -> CF4,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_d8a4427b5aa3
+Ar+ + CF2 -> CF2+ + Ar,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_ffd115dacf3e
+Ar+ + CF3 -> CF3+ + Ar,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_dc52f04c4ba9
+Ar+ + CF4 -> CF4+ + Ar,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_e11398e3a515
+Ar+ + F -> F+ + Ar,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_06cb71dde6af
+Ar- + CF2 -> CF2- + Ar,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_7d999b4800f6
+Ar- + CF3 -> CF3- + Ar,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_406244d8c0fc
+Ar- + CF4 -> CF4- + Ar,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_2ba800f25aec
+Ar- + F -> F- + Ar,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_a8a44e0ec0d6
+CF2+ + Ar -> Ar+ + CF2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_f8238941bae9
+CF2+ + CF3 -> CF3+ + CF2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_7f8a8574079e
+CF2+ + CF4 -> CF4+ + CF2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_c6aecba7b2eb
+CF2+ + F -> F+ + CF2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_c30614ea7b87
+CF2- + Ar -> Ar- + CF2,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_459de62f66bf
+CF2- + CF3 -> CF3- + CF2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_dda036dba88a
+CF2- + CF4 -> CF4- + CF2,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_4967c09d99b2
+CF2- + F -> F- + CF2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_d2c8bba7cbfa
+CF3+ + Ar -> Ar+ + CF3,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_3a79f2f6925e
+CF3+ + CF2 -> CF2+ + CF3,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_65a363fd89f9
+CF3+ + CF4 -> CF4+ + CF3,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_464ca24d9077
+CF3+ + F -> F+ + CF3,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_ff1bf456aea8
+CF3- + Ar -> Ar- + CF3,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_86787460eb56
+CF3- + CF2 -> CF2- + CF3,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_13c47011a5e3
+CF3- + CF4 -> CF4- + CF3,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_102aaf6015cf
+CF3- + F -> F- + CF3,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_34653e009757
+CF4+ + Ar -> Ar+ + CF4,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_181c3f19d367
+CF4+ + CF2 -> CF2+ + CF4,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_8edc75cf8179
+CF4+ + CF3 -> CF3+ + CF4,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_aba87f1fb6a5
+CF4+ + F -> F+ + CF4,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_76c13532b893
+CF4- + Ar -> Ar- + CF4,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_1e6bda36df81
+CF4- + CF2 -> CF2- + CF4,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_f2131a456f50
+CF4- + CF3 -> CF3- + CF4,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_5a84fdcb9aae
+CF4- + F -> F- + CF4,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_7255c9620f3a
+F- + Ar -> Ar- + F,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_ec473c752d6b
+F- + CF2 -> CF2- + F,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_b6bcf1a1bf59
+F- + CF3 -> CF3- + F,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_b7e53fd2b0f3
+F- + CF4 -> CF4- + F,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_6d3cf23ca4d7
+F2- + Ar -> Ar- + F2,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_64adb3832196
+F2- + CF2 -> CF2- + F2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_18a9743431b5
+F2- + CF3 -> CF3- + F2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_1829cfcb0760
+F2- + CF4 -> CF4- + F2,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_014432b4e9ee
+F2- + F -> F- + F2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_54c338942507
+Ar+ + CF2 -> Ar+ + C + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_5d6e9596c4ca
+Ar+ + CF2 -> Ar+ + CF + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_3df4bfebf10b
+Ar+ + CF3 -> Ar+ + CF + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_28cf50c4f654
+Ar+ + CF3 -> Ar+ + CF2 + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_5c556ed62e93
+Ar- + CF2 -> Ar- + C + F2,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_e860cf350e49
+Ar- + CF2 -> Ar- + CF + F,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_9a1d19b4b4ce
+Ar- + CF3 -> Ar- + CF + F2,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_58bef55b9581
+Ar- + CF3 -> Ar- + CF2 + F,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_e2bf2f31c186
+CF2+ + CF2 -> CF2+ + C + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_287684950432
+CF2+ + CF2 -> CF2+ + CF + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_3cc694ce4d65
+CF2+ + CF3 -> CF2+ + CF + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_af143306f799
+CF2+ + CF3 -> CF2+ + CF2 + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_bbce264bee7e
+CF2- + CF2 -> CF2- + C + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_3be35e162350
+CF2- + CF2 -> CF2- + CF + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_539f1974f5cf
+CF2- + CF3 -> CF2- + CF + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_73040e6c7988
+CF2- + CF3 -> CF2- + CF2 + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_a6d26cc90940
+CF3+ + CF2 -> CF3+ + C + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_c94c414d6363
+CF3+ + CF2 -> CF3+ + CF + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_d33a24d20003
+CF3+ + CF3 -> CF3+ + CF + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_9148b9eed489
+CF3+ + CF3 -> CF3+ + CF2 + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_8c73ad997029
+CF3- + CF2 -> CF3- + C + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_9d5720f40390
+CF3- + CF2 -> CF3- + CF + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_b1da24452c68
+CF3- + CF3 -> CF3- + CF + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_49bf0d93f970
+CF3- + CF3 -> CF3- + CF2 + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_eee70cbb7831
+CF4+ + CF2 -> CF4+ + C + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_99a36c9b4fa8
+CF4+ + CF2 -> CF4+ + CF + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_3f6ebc4be8c4
+CF4+ + CF3 -> CF4+ + CF + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_ff12cabd48ef
+CF4+ + CF3 -> CF4+ + CF2 + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_6f5bbd1b3f46
+CF4- + CF2 -> CF4- + C + F2,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_f29203a3e045
+CF4- + CF2 -> CF4- + CF + F,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_b89fc93a8ada
+CF4- + CF3 -> CF4- + CF + F2,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_457496774590
+CF4- + CF3 -> CF4- + CF2 + F,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_d7cc3f14e781
+F- + CF2 -> F- + C + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_90179d462d8b
+F- + CF2 -> F- + CF + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_40259d6c122a
+F- + CF3 -> F- + CF + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_732508018ebb
+F- + CF3 -> F- + CF2 + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_32a9f43a324c
+F2- + CF2 -> F2- + C + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_0abdf051dd6b
+F2- + CF2 -> F2- + CF + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_db2836aeedca
+F2- + CF3 -> F2- + CF + F2,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_e94464bb5cb4
+F2- + CF3 -> F2- + CF2 + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_523cd8be34e0
+F2- + F2 -> F2- + 2 F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_a361745e15c2
+Ar- + Ar -> 2 Ar + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_754c5eca1437
+Ar- + CF2 -> Ar + CF2 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_16ed90881752
+Ar- + CF3 -> Ar + CF3 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_cef692962bb1
+Ar- + CF4 -> Ar + CF4 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_131f5b631f88
+Ar- + F -> Ar + F + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_863f85054c84
+CF2- + Ar -> Ar + CF2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_075753490d76
+CF2- + CF2 -> 2 CF2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_08599d586aa0
+CF2- + CF3 -> CF2 + CF3 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_81465c331702
+CF2- + CF4 -> CF2 + CF4 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_07a897b340a7
+CF2- + F -> CF2 + F + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_0d95b0a08e92
+CF3- + Ar -> Ar + CF3 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_4a332c448b60
+CF3- + CF2 -> CF2 + CF3 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_52c25e531da7
+CF3- + CF3 -> 2 CF3 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_4d933df67d58
+CF3- + CF4 -> CF3 + CF4 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_e4329beb8a8f
+CF3- + F -> CF3 + F + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_02a708795c36
+CF4- + Ar -> Ar + CF4 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_80c02c20c3b1
+CF4- + CF2 -> CF2 + CF4 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_17d66a562263
+CF4- + CF3 -> CF3 + CF4 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_c9e11a612fed
+CF4- + CF4 -> 2 CF4 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_2b7739cf5a8a
+CF4- + F -> F + CF4 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_360e895408c9
+F- + Ar -> Ar + F + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_6f368a55f7a0
+F- + CF2 -> CF2 + F + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_cb2ea7607fb1
+F- + CF3 -> CF3 + F + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_997da6e688da
+F- + CF4 -> F + CF4 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_d3a27ffdf572
+F- + F -> 2 F + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_5d6b61e07430
+F2- + Ar -> Ar + F2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_657338f9d068
+F2- + CF2 -> CF2 + F2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_f88a9b441739
+F2- + CF3 -> CF3 + F2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_cfa1616a1f65
+F2- + CF4 -> CF4 + F2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_9f83cd04bb89
+F2- + F -> F + F2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_7785d33526a4
+F2- + F2 -> 2 F2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_555409b7f5e3
+Ar+ + CF2 -> C+ + Ar + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c18c7930fbad
+Ar+ + CF2 -> CF+ + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_460c2eaf3f27
+Ar+ + CF3 -> CF+ + Ar + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5df67a5a0120
+Ar+ + CF3 -> CF2+ + Ar + F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_c07dba58fb1c
+Ar- + CF2 -> C- + Ar + F2,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_e0e0661c7ce7
+Ar- + CF2 -> CF- + Ar + F,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_5fa80dfdf083
+Ar- + CF3 -> CF- + Ar + F2,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_50b9a582536a
+Ar- + CF3 -> CF2- + Ar + F,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_1e8caf30d202
+CF2+ + CF2 -> C+ + CF2 + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_86e78041bcc1
+CF2+ + CF2 -> CF+ + CF2 + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_697dec9823d3
+CF2+ + CF3 -> CF+ + CF2 + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a4382b24d14e
+CF2+ + CF3 -> CF2+ + CF2 + F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_2d2a89ae7d77
+CF2- + CF2 -> C- + CF2 + F2,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_ca1de1af55a7
+CF2- + CF2 -> CF- + CF2 + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_81610d4d3f9d
+CF2- + CF3 -> CF- + CF2 + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3e123ee9e873
+CF2- + CF3 -> CF2- + CF2 + F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_62ccd8bc4ee5
+CF3+ + CF2 -> C+ + CF3 + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_eda77147539c
+CF3+ + CF2 -> CF+ + CF3 + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_54f14be0cf4b
+CF3+ + CF3 -> CF+ + CF3 + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b7b363bad75f
+CF3+ + CF3 -> CF2+ + CF3 + F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_de4a357b3e0a
+CF3- + CF2 -> C- + CF3 + F2,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_238088920bbc
+CF3- + CF2 -> CF- + CF3 + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8f54d0eb1a70
+CF3- + CF3 -> CF- + CF3 + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4574a7ab18d7
+CF3- + CF3 -> CF2- + CF3 + F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_0c21b9b27644
+CF4+ + CF2 -> C+ + CF4 + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e920b8f70ff0
+CF4+ + CF2 -> CF+ + F + CF4,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_eaa7ab170772
+CF4+ + CF3 -> CF+ + CF4 + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e82159e46ec7
+CF4+ + CF3 -> CF2+ + F + CF4,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_698c264d046d
+CF4- + CF2 -> C- + CF4 + F2,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_36eaa9bf61ec
+CF4- + CF2 -> CF- + F + CF4,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_49cfc52e6bb7
+CF4- + CF3 -> CF- + CF4 + F2,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_dc0764027022
+CF4- + CF3 -> CF2- + F + CF4,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_4603303c1d19
+F- + CF2 -> C- + F + F2,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_4b651d4c0642
+F- + CF2 -> CF- + 2 F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1d2008efeb6b
+F- + CF3 -> CF- + F + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_0088faeb191e
+F- + CF3 -> CF2- + 2 F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_30c08c7c713a
+F2- + CF2 -> C- + 2 F2,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_886c3adb16dd
+F2- + CF2 -> CF- + F + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ef7baa2d8547
+F2- + CF3 -> CF- + 2 F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f67a9273c879
+F2- + CF3 -> CF2- + F + F2,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_8bc4f0246ded
+F2- + F2 -> F- + F + F2,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_2b8da5a134bc
+Ar+ + CF2 -> Ar+ + CF2,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_b09f211dfd9d
+Ar+ + CF3 -> Ar+ + CF3,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_c75b8eb84a01
+Ar+ + CF4 -> Ar+ + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_317a0bbcd744
+Ar+ + F -> Ar+ + F,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_00c77ffb3278
+Ar- + CF2 -> Ar- + CF2,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_241437cc768f
+Ar- + CF3 -> Ar- + CF3,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_e2d028df7ada
+Ar- + CF4 -> Ar- + CF4,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_b8e712ff9cbc
+Ar- + F -> Ar- + F,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_706ec3b0dab4
+CF2+ + Ar -> CF2+ + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_0c29910c3ff0
+CF2+ + CF3 -> CF2+ + CF3,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_2dd6a291f588
+CF2+ + CF4 -> CF2+ + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_f81ad9444b3b
+CF2+ + F -> CF2+ + F,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_15ecdfa9d34a
+CF2- + Ar -> CF2- + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_96cb31144d3b
+CF2- + CF3 -> CF2- + CF3,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_5a8a710e7111
+CF2- + CF4 -> CF2- + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_24eb11b81c2d
+CF2- + F -> CF2- + F,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_18180a45e8be
+CF3+ + Ar -> CF3+ + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_dfe8e26eb2cb
+CF3+ + CF2 -> CF3+ + CF2,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_8dcc7c940a7a
+CF3+ + CF4 -> CF3+ + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_9bdfefafe6ba
+CF3+ + F -> CF3+ + F,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_6a8093e2f545
+CF3- + Ar -> CF3- + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_a11cbd02cf33
+CF3- + CF2 -> CF3- + CF2,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_beb0b15030fb
+CF3- + CF4 -> CF3- + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_2c6cb8931ae7
+CF3- + F -> CF3- + F,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_9ca24116455c
+CF4+ + Ar -> CF4+ + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_006dd216022e
+CF4+ + CF2 -> CF4+ + CF2,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_e2363d97c2fa
+CF4+ + CF3 -> CF4+ + CF3,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_38769bac55c1
+CF4+ + F -> CF4+ + F,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_307de1bd20e6
+CF4- + Ar -> CF4- + Ar,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_366e49d49e5f
+CF4- + CF2 -> CF4- + CF2,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_ab17a0327ef9
+CF4- + CF3 -> CF4- + CF3,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_f56ac5943262
+CF4- + F -> CF4- + F,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_81de63ad7713
+F- + Ar -> F- + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_4785dfab7c07
+F- + CF2 -> F- + CF2,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_783b1196ccd4
+F- + CF3 -> F- + CF3,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_b7c1b0f530a3
+F- + CF4 -> F- + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_a37306cb32cb
+F2- + Ar -> F2- + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_00fae586aadf
+F2- + CF2 -> F2- + CF2,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_4cf7d9cef5d5
+F2- + CF3 -> F2- + CF3,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_98e76867d825
+F2- + CF4 -> F2- + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_2e88795faabc
+F2- + F -> F2- + F,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_aaa232452058
+Ar+ + Ar(m) -> Ar+ + Ar,Ion-induced deexcitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_32e0ff81482e
+Ar+ + Ar(r) -> Ar+ + Ar,Ion-induced deexcitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8bb2a60a7fbc
+Ar- + Ar(m) -> Ar- + Ar,Ion-induced deexcitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_ffe8fc60e569
+Ar- + Ar(r) -> Ar- + Ar,Ion-induced deexcitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_634f6e55908a
+CF4+ + CF4(v) -> CF4+ + CF4,Ion-induced deexcitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2c7e41388667
+CF4+ + CF4* -> CF4+ + CF4,Ion-induced deexcitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ef77b76fe668
+CF4- + CF4(v) -> CF4- + CF4,Ion-induced deexcitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_bf9e640de858
+CF4- + CF4* -> CF4- + CF4,Ion-induced deexcitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_be5672acebda
+Ar+ + Ar -> Ar+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c93e3d600f78
+Ar+ + Ar -> Ar+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f07d0ba16e30
+Ar+ + CF4 -> Ar+ + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_692760b97072
+Ar+ + CF4 -> Ar+ + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_15930bbbc43d
+Ar- + Ar -> Ar- + Ar(m),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_fab0902a6843
+Ar- + Ar -> Ar- + Ar(r),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_26b94c20754e
+Ar- + CF4 -> Ar- + CF4(v),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_0f574df3c0a0
+Ar- + CF4 -> Ar- + CF4*,Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_5d86deba43c5
+CF2+ + Ar -> CF2+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_09e6cb4ac2a0
+CF2+ + Ar -> CF2+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8df3929d15eb
+CF2+ + CF4 -> CF2+ + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_68590b3b39de
+CF2+ + CF4 -> CF2+ + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_49fddb998cdb
+CF2- + Ar -> CF2- + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_082ac50f0ba2
+CF2- + Ar -> CF2- + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_810bd0f73186
+CF2- + CF4 -> CF2- + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6d3eb9cf9288
+CF2- + CF4 -> CF2- + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_da25eeb2d198
+CF3+ + Ar -> CF3+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_931f15fc15a9
+CF3+ + Ar -> CF3+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_57f6609b5759
+CF3+ + CF4 -> CF3+ + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_790ba6ead3cf
+CF3+ + CF4 -> CF3+ + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fd100af6614d
+CF3- + Ar -> CF3- + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c659bf39c446
+CF3- + Ar -> CF3- + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_dc2777244aa7
+CF3- + CF4 -> CF3- + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_26b710d7a72c
+CF3- + CF4 -> CF3- + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_eebc3b01fa61
+CF4+ + Ar -> CF4+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_0e88ffca880f
+CF4+ + Ar -> CF4+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5d96cdb0104e
+CF4+ + CF4 -> CF4+ + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b1ae56031d8d
+CF4+ + CF4 -> CF4+ + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_93e7004a8f4e
+CF4- + Ar -> CF4- + Ar(m),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_aada55501bf5
+CF4- + Ar -> CF4- + Ar(r),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_a8cd623a8c5d
+CF4- + CF4 -> CF4- + CF4(v),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_8e55f2672b55
+CF4- + CF4 -> CF4- + CF4*,Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_e371262c360d
+F- + Ar -> F- + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_222778c68495
+F- + Ar -> F- + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5942bf61f3be
+F- + CF4 -> F- + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1aff1bfed00e
+F- + CF4 -> F- + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e8ea73acdf7b
+F2- + Ar -> F2- + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_da59ca819762
+F2- + Ar -> F2- + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1855ac1f9f46
+F2- + CF4 -> F2- + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2b6d1ff46dd2
+F2- + CF4 -> F2- + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_910ebee26d8c
+Ar+ + CF4 -> ArF+ + CF3,Ligand transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6b03d2af7132
+Ar- + CF4 -> ArF- + CF3,Ligand transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_ee463b0c74b5
+CF2+ + CF4 -> CF3+ + CF3,Ligand transfer,pass,every non-electron reactant and product passes its State assessment,rxn_da87f66ade25
+CF2- + CF4 -> CF3- + CF3,Ligand transfer,pass,every non-electron reactant and product passes its State assessment,rxn_bac14ef897ca
+F- + CF4 -> F2- + CF3,Ligand transfer,pass,every non-electron reactant and product passes its State assessment,rxn_c0969db83a54
+Ar+ + Ar- -> 2 Ar,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_7f218ecf9f30
+Ar+ + CF2- -> Ar + CF2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_74eb7bde3e0f
+Ar+ + CF3- -> Ar + CF3,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_2e196f4a1f86
+Ar+ + CF4- -> Ar + CF4,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_3992e127d9f2
+Ar+ + F- -> Ar + F,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_5a8abcb23ae7
+Ar+ + F2- -> Ar + F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_332f20e828db
+CF2+ + Ar- -> Ar + CF2,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_4f0208815635
+CF2+ + CF2- -> 2 CF2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_92dfd266b852
+CF2+ + CF3- -> CF2 + CF3,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_5f5d8abc0390
+CF2+ + CF4- -> CF2 + CF4,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_fbbd41b596b7
+CF2+ + F- -> CF2 + F,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_d5994dea6ca4
+CF2+ + F2- -> CF2 + F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_5c2ee2b9c501
+CF3+ + Ar- -> Ar + CF3,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_176528b3e0e5
+CF3+ + CF2- -> CF2 + CF3,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_4ec9a6b7a9c3
+CF3+ + CF3- -> 2 CF3,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_4dfb0eb5ae48
+CF3+ + CF4- -> CF3 + CF4,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_2f4a503b734f
+CF3+ + F- -> CF3 + F,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_d1b7b186e81d
+CF3+ + F2- -> CF3 + F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_b543b086584e
+CF4+ + Ar- -> Ar + CF4,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_25941ac8862a
+CF4+ + CF2- -> CF2 + CF4,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_f732af307505
+CF4+ + CF3- -> CF3 + CF4,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_f3209d8d3bc9
+CF4+ + CF4- -> 2 CF4,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_662c9ffdcd42
+CF4+ + F- -> F + CF4,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_84daaff23b22
+CF4+ + F2- -> CF4 + F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_96918d466676
+CF2+ + Ar -> C+ + Ar + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_20fa99baba8f
+CF2+ + Ar -> CF+ + Ar + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f1a3b60c41ce
+CF2+ + CF2 -> C+ + CF2 + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_98dd320bd6e4
+CF2+ + CF2 -> CF+ + CF2 + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_743f67b37419
+CF2+ + CF3 -> C+ + CF3 + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_049792fa3aab
+CF2+ + CF3 -> CF+ + CF3 + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_56536329af45
+CF2+ + CF4 -> C+ + CF4 + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8e45b71f51ec
+CF2+ + CF4 -> CF+ + F + CF4,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3e93f4adf218
+CF2+ + F -> C+ + F + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_99c7292759eb
+CF2+ + F -> CF+ + 2 F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_629329a452cb
+CF2- + Ar -> C- + Ar + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_ebb2b87d67e0
+CF2- + Ar -> CF- + Ar + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_04f5c31d6851
+CF2- + CF2 -> C- + CF2 + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_6457e2c12dff
+CF2- + CF2 -> CF- + CF2 + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b57d90c42830
+CF2- + CF3 -> C- + CF3 + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_2584b7f46b68
+CF2- + CF3 -> CF- + CF3 + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a34913be4a23
+CF2- + CF4 -> C- + CF4 + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_00493a89684f
+CF2- + CF4 -> CF- + F + CF4,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6c653b361a93
+CF2- + F -> C- + F + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_66419ed25545
+CF2- + F -> CF- + 2 F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_de05417261cc
+CF3+ + Ar -> CF+ + Ar + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2be762f69809
+CF3+ + Ar -> CF2+ + Ar + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_63917c498ded
+CF3+ + CF2 -> CF+ + CF2 + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e28f83c7c4d8
+CF3+ + CF2 -> CF2+ + CF2 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_d6fcd2d4edd7
+CF3+ + CF3 -> CF+ + CF3 + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c9f7617dcec2
+CF3+ + CF3 -> CF2+ + CF3 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_f6efe34aa8f8
+CF3+ + CF4 -> CF+ + CF4 + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1914ff6cf416
+CF3+ + CF4 -> CF2+ + F + CF4,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_e84bd0268e59
+CF3+ + F -> CF+ + F + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fbe6a617f005
+CF3+ + F -> CF2+ + 2 F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_a2c4a86664d1
+CF3- + Ar -> CF- + Ar + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_20084e89cb92
+CF3- + Ar -> CF2- + Ar + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_86d14fb31733
+CF3- + CF2 -> CF- + CF2 + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4729525b39bd
+CF3- + CF2 -> CF2- + CF2 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_6ed22daa8b87
+CF3- + CF3 -> CF- + CF3 + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e14e19b949a0
+CF3- + CF3 -> CF2- + CF3 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_589657a61a21
+CF3- + CF4 -> CF- + CF4 + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f2adb48688b7
+CF3- + CF4 -> CF2- + F + CF4,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_8b523020839e
+CF3- + F -> CF- + F + F2,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c0a1812b3210
+CF3- + F -> CF2- + 2 F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_93b5dcc71346
+CF4+ + Ar -> CF2+ + Ar + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_58a347f62e97
+CF4+ + Ar -> CF3+ + Ar + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_8f4ce4f4406a
+CF4+ + CF2 -> CF2+ + CF2 + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_63ea36a6a3bb
+CF4+ + CF2 -> CF3+ + CF2 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_944461b382a3
+CF4+ + CF3 -> CF2+ + CF3 + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_3f2e4eef12dd
+CF4+ + CF3 -> CF3+ + CF3 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_ddb071b1ad04
+CF4+ + CF4 -> CF2+ + CF4 + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_c26fec7c7522
+CF4+ + CF4 -> CF3+ + F + CF4,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_8e1f932b0c54
+CF4+ + F -> CF2+ + F + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_28a7364fb16b
+CF4+ + F -> CF3+ + 2 F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_defecce5505f
+CF4- + Ar -> CF2- + Ar + F2,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_5aac477a9b13
+CF4- + Ar -> CF3- + Ar + F,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_1642c29a234b
+CF4- + CF2 -> CF2- + CF2 + F2,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_0060fa9da861
+CF4- + CF2 -> CF3- + CF2 + F,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_9c23add57638
+CF4- + CF3 -> CF2- + CF3 + F2,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_1cf5bee6007d
+CF4- + CF3 -> CF3- + CF3 + F,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_7159937c8ef9
+CF4- + CF4 -> CF2- + CF4 + F2,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_37fd8fb75db5
+CF4- + CF4 -> CF3- + F + CF4,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_ee68d1503b8b
+CF4- + F -> CF2- + F + F2,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_d91f39d92568
+CF4- + F -> CF3- + 2 F,Projectile-ion dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_e79a0509ba69
+F2- + Ar -> F- + Ar + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_51b172ff0eff
+F2- + CF2 -> F- + CF2 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_e269febfb34b
+F2- + CF3 -> F- + CF3 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_60e3eb19d76b
+F2- + CF4 -> F- + F + CF4,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_0911a68f442d
+F2- + F -> F- + 2 F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_ab62f2634ad8
+F2- + F2 -> F- + F + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_98c8f5296d58
+Ar+ + Ar -> Ar+ + Ar,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_42da360d77cf
+Ar- + Ar -> Ar- + Ar,Resonant charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_2d9ccfcce5d9
+CF2+ + CF2 -> CF2+ + CF2,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_0328e7426460
+CF2- + CF2 -> CF2- + CF2,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_2d47c6b37188
+CF3+ + CF3 -> CF3+ + CF3,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_e35204617ebc
+CF3- + CF3 -> CF3- + CF3,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_63dbad46310f
+CF4+ + CF4 -> CF4+ + CF4,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_3e0885db1c10
+CF4- + CF4 -> CF4- + CF4,Resonant charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_b487bc403057
+F- + F -> F- + F,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_b7def00b5075
+F2- + F2 -> F2- + F2,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_9f946849838f
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_89b3c1f5c922
+Ar(m) + CF2 -> CF2+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_66f3e014f0ec
+Ar(m) + CF3 -> CF3+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6ea0ddd2fd6a
+Ar(m) + CF4 -> CF4+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f43403436a59
+Ar(m) + F -> F+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f98e65819a12
+Ar(m) + F2 -> F2+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_558cafb64dcf
+CF4* + Ar -> Ar+ + CF4 + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_071f29cae12d
+CF4* + CF2 -> CF2+ + CF4 + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2edd88577081
+CF4* + CF3 -> CF3+ + CF4 + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_216fc8ad3058
+CF4* + CF4 -> CF4+ + CF4 + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b0d6bed1c5e3
+CF4* + F -> F+ + CF4 + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_cc39b0d053de
+CF4* + F2 -> F2+ + CF4 + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fb077c67152b
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a9821670c330
+Ar(m) + CF2 -> Ar + CF2,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5855c9ce7c01
+Ar(m) + CF3 -> Ar + CF3,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_7895338b6843
+Ar(m) + CF4 -> Ar + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c0425fc2ece4
+Ar(m) + CF4(v) -> CF4(v) + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_92b73f649900
+Ar(m) + CF4* -> Ar(m) + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3d23a3b65053
+Ar(m) + CF4* -> CF4* + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_78ddc7a34547
+Ar(m) + F -> Ar + F,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9998e67277f7
+Ar(m) + F2 -> Ar + F2,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d0f99c83396a
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_cc4cbdb651ed
+Ar(r) + CF2 -> Ar + CF2,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e853df9e6f8b
+Ar(r) + CF3 -> Ar + CF3,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_bb95c3b32bdd
+Ar(r) + CF4 -> Ar + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_307a802dc69e
+Ar(r) + CF4(v) -> CF4(v) + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_bbc73f948a07
+Ar(r) + CF4* -> Ar(r) + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_708ee806153a
+Ar(r) + CF4* -> CF4* + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_53a546441566
+Ar(r) + F -> Ar + F,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1c5abc924591
+Ar(r) + F2 -> Ar + F2,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ee6e7218462c
+CF4* + Ar -> Ar + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_28f6ec6a64e8
+CF4* + CF2 -> CF2 + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b0d28e32b87e
+CF4* + CF3 -> CF3 + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_64e1fb64f728
+CF4* + CF4 -> 2 CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_43be7a9f441e
+CF4* + CF4(v) -> CF4(v) + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9eb6b757799d
+CF4* + F -> F + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1436b6d2ca3c
+CF4* + F2 -> CF4 + F2,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_32a3601ac10f
+CF2 + CF4 -> 2 CF3,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_3545ea328875
+CF2 + F -> CF + F2,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_3005c462ddb7
+CF3 + F -> CF2 + F2,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_452ed18f6320
+CF4(v) + CF2 -> 2 CF3,Radical abstraction,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f4d309c01138
+CF4(v) + F -> CF3 + F2,Radical abstraction,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2bf3b81427ee
+CF4* + CF2 -> 2 CF3,Radical abstraction,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_744f6a48a232
+CF4* + F -> CF3 + F2,Radical abstraction,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_425e42021059
+F + CF4 -> CF3 + F2,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_f1c358dc9776
+2 F + M -> F2 + M,Three-body association,pass,every non-electron reactant and product passes its State assessment,rxn_e001c2cfb313
+C + F2 + M -> CF2 + M,Three-body association,pass,every non-electron reactant and product passes its State assessment,rxn_c0713fcb91a6
+CF + F + M -> CF2 + M,Three-body association,pass,every non-electron reactant and product passes its State assessment,rxn_b8a576033f18
+CF + F2 + M -> CF3 + M,Three-body association,pass,every non-electron reactant and product passes its State assessment,rxn_af1aab2bfc75
+CF2 + F + M -> CF3 + M,Three-body association,pass,every non-electron reactant and product passes its State assessment,rxn_2aaaf2106aea
+Ar(m) + CF4(v) -> Ar(m) + CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_641722fe4310
+Ar(r) + CF4(v) -> Ar(r) + CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_506cacbd9101
+CF4(v) + Ar -> Ar + CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e8716edbde66
+CF4(v) + CF2 -> CF2 + CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_98a297575639
+CF4(v) + CF3 -> CF3 + CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8a56b7172e5b
+CF4(v) + CF4 -> 2 CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_373b2e38c772
+CF4(v) + F -> F + CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_60861688f824
+CF4(v) + F2 -> CF4 + F2,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d9339c185a37
+CF4* + CF4(v) -> CF4* + CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2a58c2c45521
+e + C -> C-,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_3853e2a7e99d
+e + CF -> CF-,Electron attachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5be48098aa6c
+e + C- -> C + 2 e,Electron-impact detachment,pass,every non-electron reactant and product passes its State assessment,rxn_ad1698ec4b08
+e + CF- -> CF + 2 e,Electron-impact detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4306ce027744
+e + CF -> C + F + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_7293b3dabd72
+e + CF -> C- + F,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_5bf32d98fab4
+e + CF -> F- + C,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_625198a28317
+e + ArF- -> Ar + F + 2 e,Dissociative electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4b92cf2ca31b
+e + CF -> C+ + F + 2 e,Dissociative ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_930388434bfa
+e + ArF+ -> Ar + F,Dissociative recombination,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_da1d834a0e58
+e + CF+ -> C + F,Dissociative recombination,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_dd9afcc3cd9f
+e + F2+ -> 2 F,Dissociative recombination,pass,every non-electron reactant and product passes its State assessment,rxn_6d3db2467a2d
+e + ArF+ -> ArF+ + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_59cc3e31b193
+e + ArF- -> ArF- + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4cf23051d253
+e + C -> C + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_e2bd2667c9b8
+e + C+ -> C+ + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_09f1cb2a3e07
+e + C- -> C- + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_419d56bb9cfe
+e + CF -> CF + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_0464ab5556e8
+e + CF+ -> CF+ + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d7818029b6f1
+e + CF- -> CF- + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b92b541755c3
+e + F+ -> F+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_9d75d6b4d8bd
+e + F2+ -> F2+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_45c367f6bfab
+e + C -> C+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ec98e75f9eca
+e + CF -> CF+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5a9db85ad5e4
+e + C+ -> C,Electron-ion recombination,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_417b48a350cb
+e + CF+ -> CF,Electron-ion recombination,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_828b8f807475
+e + F+ -> F,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_d606d592dce3
+e + F2+ -> F2,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_b864a75a4ed7
+Ar+ + C -> C+ + Ar,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_40b102ff9b6e
+Ar+ + CF -> CF+ + Ar,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1c4357e65520
+Ar- + C -> C- + Ar,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_3f979de09326
+Ar- + CF -> CF- + Ar,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_be76555fdbae
+C+ + Ar -> Ar+ + C,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fce3e2e403d7
+C+ + CF -> CF+ + C,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d0f6ae23e043
+C+ + CF2 -> CF2+ + C,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_958c26a99796
+C+ + CF3 -> CF3+ + C,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5dcd64305673
+C+ + CF4 -> CF4+ + C,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fc1e5b17409c
+C+ + F -> F+ + C,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ec71a7b20689
+C- + Ar -> Ar- + C,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_b30d3bc54e89
+C- + CF -> CF- + C,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c6f72f4d3f29
+C- + CF2 -> CF2- + C,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_a44fdabf40d6
+C- + CF3 -> CF3- + C,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_7cad9ec91944
+C- + CF4 -> CF4- + C,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_7dddb1c73766
+C- + F -> F- + C,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_a176888e3e6e
+CF+ + Ar -> Ar+ + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_babe76fc18bb
+CF+ + C -> C+ + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_991b47650452
+CF+ + CF2 -> CF2+ + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4522a28150b2
+CF+ + CF3 -> CF3+ + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_7a51abf08e31
+CF+ + CF4 -> CF4+ + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_eb0d40295029
+CF+ + F -> F+ + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8a47c8d48458
+CF- + Ar -> Ar- + CF,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_62997930a917
+CF- + C -> C- + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d06dc8e1273a
+CF- + CF2 -> CF2- + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_bdd47eb309ec
+CF- + CF3 -> CF3- + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8e5be504ceaf
+CF- + CF4 -> CF4- + CF,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_89560a71b4e1
+CF- + F -> F- + CF,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_de3fa1819c94
+CF2+ + C -> C+ + CF2,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e32b514424a7
+CF2+ + CF -> CF+ + CF2,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3f0f3eb23d89
+CF2- + C -> C- + CF2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_745cc36e367a
+CF2- + CF -> CF- + CF2,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_eac075e33e14
+CF3+ + C -> C+ + CF3,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_92df6199135b
+CF3+ + CF -> CF+ + CF3,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fdc9c50964e6
+CF3- + C -> C- + CF3,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_d5642d0a3564
+CF3- + CF -> CF- + CF3,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c56943019b29
+CF4+ + C -> C+ + CF4,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_280fdd41fc45
+CF4+ + CF -> CF+ + CF4,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1d026bbcd0b0
+CF4- + C -> C- + CF4,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_290bdc576317
+CF4- + CF -> CF- + CF4,Charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_71fc2835aa47
+F+ + Ar -> Ar+ + F,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_6d651dff0678
+F+ + C -> C+ + F,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_cadc29b5c1e5
+F+ + CF -> CF+ + F,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_7000194f4e47
+F+ + CF2 -> CF2+ + F,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_887a59e7840a
+F+ + CF3 -> CF3+ + F,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_a4bb12142715
+F+ + CF4 -> CF4+ + F,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_05ad817449a7
+F- + C -> C- + F,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_b7eabc281518
+F- + CF -> CF- + F,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_0c08768992ee
+F2+ + Ar -> Ar+ + F2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_13e1ceaf20a8
+F2+ + C -> C+ + F2,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_22b5cc0fe81e
+F2+ + CF -> CF+ + F2,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_31c1e6c30acf
+F2+ + CF2 -> CF2+ + F2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_08febb43a5a3
+F2+ + CF3 -> CF3+ + F2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_517c6a2c7ca4
+F2+ + CF4 -> CF4+ + F2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_c4cb700c9226
+F2+ + F -> F+ + F2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_be4e89a15df3
+F2- + C -> C- + F2,Charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_453460c0000a
+F2- + CF -> CF- + F2,Charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_50e333326930
+Ar+ + CF -> Ar+ + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_ffb778a5eeb6
+Ar- + CF -> Ar- + C + F,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_11258b78a1d9
+C+ + CF -> C+ + C + F,Collision-induced target dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f5031071a846
+C- + CF -> C- + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_db05d5cc3e28
+CF+ + CF -> CF+ + C + F,Collision-induced target dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5bdb2165e761
+CF- + CF -> CF- + C + F,Collision-induced target dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1ef4041b995f
+CF2+ + CF -> CF2+ + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_6ad58f600c4d
+CF2- + CF -> CF2- + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_8017798cb6ee
+CF3+ + CF -> CF3+ + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_40bc247ddd1b
+CF3- + CF -> CF3- + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_f9f53d641ad9
+CF4+ + CF -> CF4+ + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_0392fac6fc47
+CF4- + CF -> CF4- + C + F,Collision-induced target dissociation,fail,at least one non-electron reactant or product fails its State assessment,rxn_f8ca0ea2b92b
+F+ + CF -> F+ + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_c145c01cb200
+F- + CF -> F- + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_1a0028cd4ae1
+F2+ + CF -> F2+ + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_a6415d52802a
+F2- + CF -> F2- + C + F,Collision-induced target dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_0a62da689c8f
+Ar- + C -> Ar + C + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_d3018f07b67c
+Ar- + CF -> Ar + CF + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_8f0f09751558
+ArF- + Ar -> 2 Ar + F + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6744b6d453cb
+ArF- + C -> Ar + C + F + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_50dfdb3b4666
+ArF- + CF -> Ar + CF + F + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2fc1321917bc
+ArF- + CF2 -> Ar + CF2 + F + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_70fb442e3beb
+ArF- + CF3 -> Ar + CF3 + F + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c7f5b6be2a70
+ArF- + CF4 -> Ar + F + CF4 + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b43392e9042e
+ArF- + F -> Ar + 2 F + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a76921130725
+C- + Ar -> Ar + C + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_b6d944a07875
+C- + C -> 2 C + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_d75f1ecbffde
+C- + CF -> C + CF + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_753daddb0f43
+C- + CF2 -> C + CF2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_db3f3cc556c0
+C- + CF3 -> C + CF3 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_e225bf6b7941
+C- + CF4 -> C + CF4 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_810e732d6d1d
+C- + F -> C + F + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_731cf5a562e1
+CF- + Ar -> Ar + CF + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2c7e4edbd945
+CF- + C -> C + CF + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e4a8e501302d
+CF- + CF -> 2 CF + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e7fa88ee1445
+CF- + CF2 -> CF2 + CF + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_07da49e179c6
+CF- + CF3 -> CF3 + CF + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_bf0c0a538322
+CF- + CF4 -> CF + CF4 + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6b629708a47f
+CF- + F -> CF + F + e,Collisional electron detachment,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d74470e54e7d
+CF2- + C -> C + CF2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_c5d6f549a799
+CF2- + CF -> CF2 + CF + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_603fa8b513b9
+CF3- + C -> C + CF3 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_ebda7bbb4457
+CF3- + CF -> CF3 + CF + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_28fb97bd42ac
+CF4- + C -> C + CF4 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_72c5d6551ed0
+CF4- + CF -> CF + CF4 + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_5a2cf71cc1b4
+F- + C -> C + F + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_3a270a177f5b
+F- + CF -> CF + F + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_8b941b644a4a
+F2- + C -> C + F2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_c7ca3e309f71
+F2- + CF -> CF + F2 + e,Collisional electron detachment,pass,every non-electron reactant and product passes its State assessment,rxn_cf893a138a1c
+Ar+ + CF -> C+ + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_356dca93599b
+Ar- + CF -> C- + Ar + F,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_5ac0a669a66d
+ArF+ + Ar -> Ar+ + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b4ce74714fd5
+ArF+ + C -> C+ + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1992a389646b
+ArF+ + CF -> CF+ + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a2f007b432b3
+ArF+ + CF2 -> CF2+ + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fd390db12267
+ArF+ + CF3 -> CF3+ + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a3d478d0d15b
+ArF+ + CF4 -> CF4+ + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_13733a0d561a
+ArF+ + F -> F+ + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3b2758dd534f
+ArF- + Ar -> Ar- + Ar + F,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_c716665905ce
+ArF- + C -> C- + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_88de9dba991e
+ArF- + CF -> CF- + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_179a0c61ef91
+ArF- + CF2 -> CF2- + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1a5e804d3eaf
+ArF- + CF3 -> CF3- + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_62c58da788da
+ArF- + CF4 -> CF4- + Ar + F,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_60942a3b5927
+ArF- + F -> F- + Ar + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a8efe521d7e1
+C+ + CF -> C+ + C + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6e9cd2ae943a
+C- + CF -> C- + C + F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_1ae81863631f
+CF+ + CF -> C+ + CF + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_628b5c91b2e8
+CF- + CF -> C- + CF + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9fd1361f55e5
+CF2+ + CF -> C+ + CF2 + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_dc834642ac42
+CF2- + CF -> C- + CF2 + F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_1090c22d995e
+CF3+ + CF -> C+ + CF3 + F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5b46cd96c3bc
+CF3- + CF -> C- + CF3 + F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_e74fb7811841
+CF4+ + CF -> C+ + F + CF4,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_44bd996ecdcf
+CF4- + CF -> C- + F + CF4,Dissociative charge transfer,fail,at least one non-electron reactant or product fails its State assessment,rxn_87188e6a544e
+F+ + CF -> C+ + 2 F,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_97107e70e64d
+F- + CF -> C- + 2 F,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_e1d65abe7a46
+F2+ + CF -> C+ + F + F2,Dissociative charge transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_bb47fd811cd7
+F2- + CF -> C- + F + F2,Dissociative charge transfer,pass,every non-electron reactant and product passes its State assessment,rxn_4da54f239fd7
+Ar+ + C -> Ar+ + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_e444932d6baa
+Ar+ + CF -> Ar+ + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_e7a711969214
+Ar- + C -> Ar- + C,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_f852353c335c
+Ar- + CF -> Ar- + CF,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_7b0fcab07d7c
+ArF+ + Ar -> ArF+ + Ar,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_7e93cb044179
+ArF+ + C -> ArF+ + C,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_432b5266d32f
+ArF+ + CF -> ArF+ + CF,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_377b916d1f67
+ArF+ + CF2 -> ArF+ + CF2,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_0d9d1acee473
+ArF+ + CF3 -> ArF+ + CF3,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_39f6fadaf49f
+ArF+ + CF4 -> ArF+ + CF4,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_11fb49c23484
+ArF+ + F -> ArF+ + F,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8253da6b4b06
+ArF- + Ar -> ArF- + Ar,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3ba2bb18b43f
+ArF- + C -> ArF- + C,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9d78e59be171
+ArF- + CF -> ArF- + CF,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1e54acee42e2
+ArF- + CF2 -> ArF- + CF2,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f41b11b58009
+ArF- + CF3 -> ArF- + CF3,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e3c92420de3a
+ArF- + CF4 -> ArF- + CF4,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_93b8dceeab71
+ArF- + F -> ArF- + F,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d979d0c08b96
+C+ + Ar -> C+ + Ar,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b5d1433793d2
+C+ + CF -> C+ + CF,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_22eabcd3add1
+C+ + CF2 -> C+ + CF2,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6df087071952
+C+ + CF3 -> C+ + CF3,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e82d25b04675
+C+ + CF4 -> C+ + CF4,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2c9c2e16a3e1
+C+ + F -> C+ + F,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1d8c87e1f9b3
+C- + Ar -> C- + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_9e29091ffc7d
+C- + CF -> C- + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_60f7b25d80a6
+C- + CF2 -> C- + CF2,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_340bfb744250
+C- + CF3 -> C- + CF3,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_9dc12e745b9b
+C- + CF4 -> C- + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_1b446c07ebd9
+C- + F -> C- + F,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_a8332982222b
+CF+ + Ar -> CF+ + Ar,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_dc17b19e80c8
+CF+ + C -> CF+ + C,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_17c01f2aba34
+CF+ + CF2 -> CF+ + CF2,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ce10c179dabc
+CF+ + CF3 -> CF+ + CF3,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_52fef77f0e0c
+CF+ + CF4 -> CF+ + CF4,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_29c249031ba6
+CF+ + F -> CF+ + F,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_907b2406b357
+CF- + Ar -> CF- + Ar,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6d317da343f8
+CF- + C -> CF- + C,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_addbe74952bf
+CF- + CF2 -> CF- + CF2,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5b37fd05e813
+CF- + CF3 -> CF- + CF3,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c7e7784ca195
+CF- + CF4 -> CF- + CF4,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f405a4fba50c
+CF- + F -> CF- + F,Ion-neutral elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_984e4c54a76c
+CF2+ + C -> CF2+ + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_269538a6c8f6
+CF2+ + CF -> CF2+ + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_7cfaf032aaf3
+CF2- + C -> CF2- + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_6cc55102610e
+CF2- + CF -> CF2- + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_de5a5d4f97d3
+CF3+ + C -> CF3+ + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_7ace5129d489
+CF3+ + CF -> CF3+ + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_4fdcd4946dc2
+CF3- + C -> CF3- + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_9abdcf046224
+CF3- + CF -> CF3- + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_07c82b8d1984
+CF4+ + C -> CF4+ + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_bfef2cc62ad0
+CF4+ + CF -> CF4+ + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_ebfa02d73940
+CF4- + C -> CF4- + C,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_b6391934b323
+CF4- + CF -> CF4- + CF,Ion-neutral elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_58ee0d2575ed
+F+ + Ar -> F+ + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_47a718a0f975
+F+ + C -> F+ + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_43e905f5d676
+F+ + CF -> F+ + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_ec3571ee2dac
+F+ + CF2 -> F+ + CF2,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_ceb0c54bf03c
+F+ + CF3 -> F+ + CF3,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_68fe31c0a081
+F+ + CF4 -> F+ + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_a8c6f7587ce9
+F- + C -> F- + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_d9c11bb2c2a4
+F- + CF -> F- + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_7a795ed58fac
+F2+ + Ar -> F2+ + Ar,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_252921df5bc4
+F2+ + C -> F2+ + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_7e06fc9536ed
+F2+ + CF -> F2+ + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_e2c7655df1e7
+F2+ + CF2 -> F2+ + CF2,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_4d69f5077b01
+F2+ + CF3 -> F2+ + CF3,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_3e5a0ffe5722
+F2+ + CF4 -> F2+ + CF4,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_f657cd19200d
+F2+ + F -> F2+ + F,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_f005649aef4a
+F2- + C -> F2- + C,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_b53a6f50c6f9
+F2- + CF -> F2- + CF,Ion-neutral elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_86720ab06058
+C+ + Ar -> C+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e8502f2c2f45
+C+ + Ar -> C+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_db30b583d4cb
+C+ + CF4 -> C+ + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_687cc3cd4e54
+C+ + CF4 -> C+ + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2c6332b20103
+C- + Ar -> C- + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9df0f99ad935
+C- + Ar -> C- + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6dc2b4045589
+C- + CF4 -> C- + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ccb6ee2b8c88
+C- + CF4 -> C- + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6e2fa4af8441
+CF+ + Ar -> CF+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_0a1e20849251
+CF+ + Ar -> CF+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_241f5e44819b
+CF+ + CF4 -> CF+ + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_0bdb73f9c9a5
+CF+ + CF4 -> CF+ + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1660aca0668e
+CF- + Ar -> CF- + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_288c21f28189
+CF- + Ar -> CF- + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d3527b687c52
+CF- + CF4 -> CF- + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d216494583d3
+CF- + CF4 -> CF- + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_49141a92cad2
+F+ + Ar -> F+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6ac634aa59dc
+F+ + Ar -> F+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d5599fe1815c
+F+ + CF4 -> F+ + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_75af17252a2e
+F+ + CF4 -> F+ + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3e80194e9a3e
+F2+ + Ar -> F2+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2ca3d1a41761
+F2+ + Ar -> F2+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ab8465968383
+F2+ + CF4 -> F2+ + CF4(v),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_cddfd8f8c3f7
+F2+ + CF4 -> F2+ + CF4*,Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_89876675f4f1
+C+ + CF4 -> CF+ + CF3,Ligand transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c65b9d2d0b24
+C- + CF4 -> CF- + CF3,Ligand transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_74b6f0139a77
+CF+ + CF4 -> CF2+ + CF3,Ligand transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_196befb3d452
+CF- + CF4 -> CF2- + CF3,Ligand transfer,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8e47bb1efab8
+F+ + CF4 -> F2+ + CF3,Ligand transfer,pass,every non-electron reactant and product passes its State assessment,rxn_d2cdfc30c7a1
+Ar+ + ArF- -> 2 Ar + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_95d330f145b0
+Ar+ + C- -> Ar + C,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_f13f51108aa6
+Ar+ + CF- -> Ar + CF,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3799a322c41c
+ArF+ + Ar- -> 2 Ar + F,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_9e604538d14a
+ArF+ + ArF- -> 2 Ar + 2 F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1cf5f73ffe65
+ArF+ + C- -> Ar + C + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8e21efe29f0f
+ArF+ + CF- -> Ar + CF + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e8d4fe401337
+ArF+ + CF2- -> Ar + CF2 + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_26c7940675b6
+ArF+ + CF3- -> Ar + CF3 + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1de61630c0a3
+ArF+ + CF4- -> Ar + F + CF4,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_077294aba09d
+ArF+ + F- -> Ar + 2 F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_84db5733757b
+ArF+ + F2- -> Ar + F + F2,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1fcb1ad29f13
+C+ + Ar- -> Ar + C,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_71cd742529a4
+C+ + ArF- -> Ar + C + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_733787982d12
+C+ + C- -> 2 C,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e80b0e8194b3
+C+ + CF- -> C + CF,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_22ce18fa7c09
+C+ + CF2- -> C + CF2,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2ea9df6bbdff
+C+ + CF3- -> C + CF3,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e7b5660d54e3
+C+ + CF4- -> C + CF4,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_be08861567a6
+C+ + F- -> C + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_aa296778e8e1
+C+ + F2- -> C + F2,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_46e0129aecba
+CF+ + Ar- -> Ar + CF,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_38a75590fd31
+CF+ + ArF- -> Ar + CF + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b3a0526d8943
+CF+ + C- -> C + CF,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9ddc276f53b7
+CF+ + CF- -> 2 CF,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a1270a1b1ed2
+CF+ + CF2- -> CF2 + CF,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_abc7dbfcf184
+CF+ + CF3- -> CF3 + CF,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6b52b1188703
+CF+ + CF4- -> CF + CF4,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_3f312b91e048
+CF+ + F- -> CF + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_73999add70c3
+CF+ + F2- -> CF + F2,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_72506a8aade5
+CF2+ + ArF- -> Ar + CF2 + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8ebc03e38358
+CF2+ + C- -> C + CF2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_f13802aa6f07
+CF2+ + CF- -> CF2 + CF,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_947acd7246b5
+CF3+ + ArF- -> Ar + CF3 + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b076083f2d5d
+CF3+ + C- -> C + CF3,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_012d8f9d1c26
+CF3+ + CF- -> CF3 + CF,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a1880c1a1e78
+CF4+ + ArF- -> Ar + F + CF4,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1b0756ddd37d
+CF4+ + C- -> C + CF4,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_a50cc41c0358
+CF4+ + CF- -> CF + CF4,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_81f9c22afcde
+F+ + Ar- -> Ar + F,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_9ca5b9bf6eab
+F+ + ArF- -> Ar + 2 F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ba3675aa20ad
+F+ + C- -> C + F,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_8447f170914e
+F+ + CF- -> CF + F,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1ef11a66dc6b
+F+ + CF2- -> CF2 + F,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_7cf06b78dd9a
+F+ + CF3- -> CF3 + F,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_7718d0591749
+F+ + CF4- -> F + CF4,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_2cf751eafd0c
+F+ + F- -> 2 F,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_2ec3305f897c
+F+ + F2- -> F + F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_74d2bb79156b
+F2+ + Ar- -> Ar + F2,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_00929261496b
+F2+ + ArF- -> Ar + F + F2,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d9c8eecd60d0
+F2+ + C- -> C + F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_58a8cbec341b
+F2+ + CF- -> CF + F2,Ion-ion mutual neutralization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2b577fc65fa8
+F2+ + CF2- -> CF2 + F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_fd3097f0bab2
+F2+ + CF3- -> CF3 + F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_47704667fa2d
+F2+ + CF4- -> CF4 + F2,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_ed7cc0f089ea
+F2+ + F- -> F + F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_0b9d841cf67a
+F2+ + F2- -> 2 F2,Ion-ion mutual neutralization,pass,every non-electron reactant and product passes its State assessment,rxn_e7843d54f24a
+CF+ + Ar -> C+ + Ar + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1837ae6adbdb
+CF+ + C -> C+ + C + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_71c80e275323
+CF+ + CF -> C+ + CF + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a45315ba1dd3
+CF+ + CF2 -> C+ + CF2 + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_788eebf7c529
+CF+ + CF3 -> C+ + CF3 + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_cf190d53b2fe
+CF+ + CF4 -> C+ + F + CF4,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9b5002329c2f
+CF+ + F -> C+ + 2 F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9d8763dcaf2c
+CF- + Ar -> C- + Ar + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_84c9a030f21f
+CF- + C -> C- + C + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_d5abf2897f54
+CF- + CF -> C- + CF + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_11c7572d69d5
+CF- + CF2 -> C- + CF2 + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_b33e51b2f0d5
+CF- + CF3 -> C- + CF3 + F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fff8d7cd4d2e
+CF- + CF4 -> C- + F + CF4,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f5c1e27d9559
+CF- + F -> C- + 2 F,Projectile-ion dissociation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3d102af5bb1c
+F2+ + Ar -> F+ + Ar + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_89e04b6ebc8e
+F2+ + C -> F+ + C + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_d0db79eaf464
+F2+ + CF -> F+ + CF + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_1710c1118602
+F2+ + CF2 -> F+ + CF2 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_d983dc211417
+F2+ + CF3 -> F+ + CF3 + F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_7f4711c9cbe1
+F2+ + CF4 -> F+ + F + CF4,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_fa46a583b485
+F2+ + F -> F+ + 2 F,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_69b487eb4389
+F2+ + F2 -> F+ + F + F2,Projectile-ion dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_4595b2e45c6a
+C+ + C -> C+ + C,Resonant charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_21c5d08c697f
+C- + C -> C- + C,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_684268354bcf
+CF+ + CF -> CF+ + CF,Resonant charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_beb7dcb15645
+CF- + CF -> CF- + CF,Resonant charge exchange,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ac48f6e0dc3b
+F+ + F -> F+ + F,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_a2b4345f13c1
+F2+ + F2 -> F2+ + F2,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_0b81c17717b7
+Ar(m) + C -> C+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c86ce1c97037
+Ar(m) + CF -> CF+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8c2ba050c71c
+CF4* + C -> C+ + CF4 + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_798683efb7d9
+CF4* + CF -> CF+ + CF4 + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_0b255443a60d
+Ar(m) + C -> Ar + C,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_04a95a98f4d4
+Ar(m) + CF -> Ar + CF,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_7c97762e7b19
+Ar(r) + C -> Ar + C,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_99c11390f988
+Ar(r) + CF -> Ar + CF,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fe721c925ec3
+CF4* + C -> C + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5428ef7411b6
+CF4* + CF -> CF + CF4,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fa51d3631021
+C + CF2 -> 2 CF,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_c99d7e5a69fd
+C + CF3 -> CF2 + CF,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_2b2bdc346e7f
+C + CF4 -> CF3 + CF,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_e8152b8eb458
+C + F2 -> CF + F,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_6c4f2888e3e2
+CF + CF4 -> CF2 + CF3,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_23113cd63538
+CF + F -> C + F2,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_3c2eeb8f47bd
+CF3 + CF -> 2 CF2,Radical abstraction,pass,every non-electron reactant and product passes its State assessment,rxn_62c12947d4fe
+CF4(v) + C -> CF3 + CF,Radical abstraction,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_51a5130cd55f
+CF4(v) + CF -> CF2 + CF3,Radical abstraction,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_09a2c41cfc3b
+CF4* + C -> CF3 + CF,Radical abstraction,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_e7df8e8cdf03
+CF4* + CF -> CF2 + CF3,Radical abstraction,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5d35f928ad6c
+C + F + M -> CF + M,Three-body association,pass,every non-electron reactant and product passes its State assessment,rxn_751ff33f93b2
+CF4(v) + C -> C + CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4804884f8bd6
+CF4(v) + CF -> CF + CF4,Vibrational-translational (V-T) relaxation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1998619e1c52

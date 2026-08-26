@@ -1,0 +1,4 @@
+candidate,reaction_type,delta_h_eV,delta_g_eV,threshold_eV,verdict,reason,id
+F + [SiO2] -> 0.5 F2,Surface recombination,-0.822654,-0.5794065235448695,,pass,reaction energy or threshold is available,rxn_05f35ce5be90
+O + [SiO2] -> 0.5 O2,Surface recombination,-2.583077,-2.3389084838574323,,pass,reaction energy or threshold is available,rxn_fa8b8f6b3770
+O + [Y2O3] -> 0.5 O2,Surface recombination,-2.583077,-2.3389084838574323,,pass,reaction energy or threshold is available,rxn_08c94f4c2b6a

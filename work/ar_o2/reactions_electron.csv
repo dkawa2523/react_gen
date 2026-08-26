@@ -1,0 +1,63 @@
+equation,reaction_type,family,process,origin,depth,consistency_verdict,state_verdict,thermochemistry_verdict,reaction_evidence_verdict,kinetics_verdict,delta_h_eV,delta_g_eV,threshold_eV,kinetic_data,selected,exclusion_reason,id
+e + O2 -> O- + O,Electron attachment,electron,attachment,attested_only,0,pass,pass,pass,pass,unknown,3.705577,,3.66,,true,,rxn_84e8fa1d3d48
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,pass,unknown,-11.6,,0.0,,true,,rxn_085bec441ad0
+e + O(¹D₂) -> O + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,pass,unknown,-1.966523,,0.0,,true,,rxn_4b45a93b7f18
+e + O(¹S) -> O + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,pass,unknown,-4.1897459999999995,,0.0,,true,,rxn_2be53d0776c7
+e + O2(a¹Δg) -> O2 + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,pass,unknown,-0.977,,0.0,,true,,rxn_3ce8fb5e8663
+e + O2(b¹Σg+) -> O2 + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,pass,unknown,-1.627,,0.0,,true,,rxn_727d49330314
+e + O2 -> O(¹D₂) + O + e,Electron-impact dissociation,electron,dissociation,attested_only,0,pass,pass,pass,pass,unknown,7.132676999999999,,8.57,,true,,rxn_123a76ecfe44
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_49cd032be260
+e + O(¹D₂) -> O(¹D₂) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_bee14e8a1be8
+e + O(¹S) -> O(¹S) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_37c2816ca17f
+e + O2(a¹Δg) -> O2(a¹Δg) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_0e230572e278
+e + O2(b¹Σg+) -> O2(b¹Σg+) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_d802cff550ac
+e + Ar -> Ar(4s) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,pass,unknown,11.6,,11.6,,true,,rxn_683f67de893f
+e + O -> O(¹D₂) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,pass,unknown,1.966523,,1.967,,true,,rxn_322a79119d6f
+e + O -> O(¹S) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,pass,unknown,4.1897459999999995,,4.189746,,true,,rxn_40ffa48445f6
+e + O2 -> O2(a¹Δg) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,pass,unknown,0.977,,0.977,,true,,rxn_989eea6d35bc
+e + O2 -> O2(b¹Σg+) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,pass,unknown,1.627,,1.627,,true,,rxn_409cb5fe9d2a
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,attested_only,0,pass,pass,pass,pass,unknown,4.159610000000001,,4.16,,true,,rxn_1a8a97d93128
+e + O(¹D₂) -> O+ + 2 e,Electron-impact ionization,electron,ionization,attested_only,0,pass,pass,pass,pass,unknown,11.651055000000001,,11.6511,,true,,rxn_a883c2a5062f
+e + O2(a¹Δg) -> O2+ + 2 e,Electron-impact ionization,electron,ionization,attested_only,0,pass,pass,pass,pass,unknown,11.092699999999999,,11.0927,,true,,rxn_5e1b7cd24431
+e + O2(b¹Σg+) -> O2+ + 2 e,Electron-impact ionization,electron,ionization,attested_only,0,pass,pass,pass,pass,unknown,10.442699999999999,,10.4427,,true,,rxn_b87c4049e16f
+e + Ar -> Ar-,Electron attachment,electron,attachment,mechanical,1,pass,fail,fail,unknown,unknown,,,,,true,,rxn_4374da9c1d1c
+e + O2 -> O2-,Electron attachment,electron,attachment,mechanical,1,pass,pass,pass,unknown,unknown,,,,,true,,rxn_a515648ebf7f
+e + O2 -> 2 O + e,Electron-impact dissociation,electron,dissociation,mechanical,1,pass,pass,pass,pass,unknown,5.166154,,5.12,,true,,rxn_4d8f6edbf3ae
+e + O2 -> O- + O,Dissociative electron attachment,electron,dissociative_attachment,mechanical,1,pass,pass,pass,unknown,unknown,3.705577,,,,true,,rxn_332f5a51e689
+e + O2 -> O+ + O + 2 e,Dissociative ionization,electron,dissociative_ionization,mechanical,1,pass,pass,pass,unknown,unknown,18.783732,,,,true,,rxn_1dc9f78c977a
+e + Ar -> Ar + e,Electron elastic scattering,electron,elastic,mechanical,1,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_c8f95c3d8ede
+e + O2 -> O2 + e,Electron elastic scattering,electron,elastic,mechanical,1,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_5f0e9e57072b
+e + Ar -> Ar(m) + e,Electron-impact excitation,electron,excitation,mechanical,1,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,electron,excitation,mechanical,1,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_271084b2fc94
+e + O2 -> O2(v) + e,Electron-impact excitation,electron,excitation,mechanical,1,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ddfd4cfd2bad
+e + O2 -> O2* + e,Electron-impact excitation,electron,excitation,mechanical,1,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4f5cc5cb071e
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,1,pass,pass,pass,pass,unknown,15.75961,,15.75961,,true,,rxn_a69a28bff768
+e + O2 -> O2+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,1,pass,pass,pass,pass,unknown,12.0697,,12.0697,,true,,rxn_1ca03209bf56
+e + O -> O-,Electron attachment,electron,attachment,mechanical,2,pass,pass,pass,unknown,unknown,-1.4605769999999998,,,,true,,rxn_f2d5b52e7a92
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),electron,deexcitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),electron,deexcitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ed39dd867e7c
+e + O2(v) -> O2 + e,Electron-impact deexcitation (superelastic),electron,deexcitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3a3dcf92975f
+e + O2* -> O2 + e,Electron-impact deexcitation (superelastic),electron,deexcitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_6c5f72d907c5
+e + Ar- -> Ar + 2 e,Electron-impact detachment,electron,detachment,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_d83b0309c1b0
+e + O- -> O + 2 e,Electron-impact detachment,electron,detachment,mechanical,2,pass,pass,pass,unknown,unknown,1.4605769999999998,,,,true,,rxn_08399feb356b
+e + O2- -> O2 + 2 e,Electron-impact detachment,electron,detachment,mechanical,2,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_2c4965e684b5
+e + O2+ -> 2 O,Dissociative recombination,electron,dissociative_recombination,mechanical,2,pass,pass,pass,pass,pass,-6.9035459999999995,,,rate_coefficient,true,,rxn_0344fa41a70f
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,pass,pass,unknown,unknown,0.0,,,,true,,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_f4bf18f98733
+e + O -> O + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_ec1ff806cd78
+e + O+ -> O+ + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,pass,pass,unknown,unknown,0.0,,,,true,,rxn_ced7ed171430
+e + O- -> O- + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,pass,pass,unknown,unknown,0.0,,,,true,,rxn_c605c558423a
+e + O2(v) -> O2(v) + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_098eb6a80062
+e + O2* -> O2* + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_f3a308be1edd
+e + O2+ -> O2+ + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,pass,pass,unknown,unknown,0.0,,,,true,,rxn_4392ff7146da
+e + O2- -> O2- + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_88181a7e6efe
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5ccce802fea8
+e + O -> O+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,2,pass,pass,pass,pass,unknown,13.617578000000002,,13.618055,,true,,rxn_02b625c9d811
+e + O2(v) -> O2+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_2400ffdfb3a5
+e + O2* -> O2+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_1367abd723f8
+e + Ar+ -> Ar,Electron-ion recombination,electron,recombination,mechanical,2,pass,pass,pass,unknown,unknown,-15.75961,,,,true,,rxn_b9b97c9cedf9
+e + O+ -> O,Electron-ion recombination,electron,recombination,mechanical,2,pass,pass,pass,unknown,unknown,-13.617578000000002,,,,true,,rxn_a065d9985ac4
+e + O2+ -> O2,Electron-ion recombination,electron,recombination,mechanical,2,pass,pass,pass,unknown,unknown,-12.0697,,,,true,,rxn_fe3ef2a625bf

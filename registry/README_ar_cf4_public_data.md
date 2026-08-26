@@ -1,6 +1,7 @@
-# Ar/CF4 public-data starter registry
+# Ar/CF4 public-data starter Registry
 
-This registry update replaces the synthetic placeholder data with a public-data-based starter set for Ar/CF4 low-pressure plasma reaction-network generation and DNT+/DNT+DM preprocessing.
+This directory is a read-only evidence source for Ar/CF4 low-pressure plasma
+candidate assessment. Candidate generation does not depend on these records.
 
 ## Scope
 
@@ -10,12 +11,18 @@ This registry update replaces the synthetic placeholder data with a public-data-
 
 ## Curation policy
 
-- Numeric electron/ion cross-section curves are **not** bundled. Reaction YAML files store channel identities, products, thresholds or reaction energies, and source labels. `data.cross_section.path` is left `null` until a dedicated LXCat/NIST/literature importer is used.
-- DNT+/DNT+DM cross-section calculation is **not** performed here. The generator produces `cases/ar_cf4/outputs/dnt_tasks.yaml`.
-- Values marked `estimated` are startup engineering seeds for network expansion or DNT task generation. Replace them with curated values before production simulation.
+- Numeric electron/ion cross-section curves are **not** bundled. Reaction YAML
+  files store channel identities, products, thresholds or reaction energies,
+  and source labels. Import numerical data through `acquire` and `rgen ingest`.
+- DNT+/DNT+DM cross-section calculation and DNT input generation are outside
+  this repository. Ion-neutral species and channel records remain useful as
+  evidence for mechanically generated candidates.
+- Values marked `estimated` may support `exploratory_simulation` only. Replace
+  them with reviewed data before strict simulation.
 
 ## Known remaining gaps
 
-- CF2 dipole moment is not curated and is intentionally left missing, so DNT+DM tasks involving neutral CF2 remain `missing_properties`.
-- CF4 polarizability is curated from NIST CCCBDB. CF4 collision radius and CF3/CF2 estimated polarizability/collision-radius values are DNT-preprocessing seeds, not final recommended pair potentials.
+- CF2 dipole moment is not curated and remains unknown.
+- CF4 polarizability is curated from NIST CCCBDB. Estimated collision-radius
+  and fragment transport properties are not final recommended pair potentials.
 - Full numerical electron-collision cross-section tables need import from LXCat/Bordage/Phelps/NIST/literature.

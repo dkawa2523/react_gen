@@ -1,16 +1,18 @@
-"""Thermochemistry: NASA polynomials, and what they let us decide.
+"""Pure thermochemical calculations over reviewed state evidence.
 
-Two things follow from having a polynomial on both sides of a reaction: the
-reverse coefficient, by detailed balance, and the Gibbs energy, which says
-whether the forward direction is favoured at all. Both are derived, not
-acquired, so neither is an entry in the acquisition backlog.
+NASA polynomials on every thermal ground-state participant provide reaction
+Gibbs energy and an equilibrium constant. A reverse coefficient additionally
+needs a compatible forward rate and a channel for which detailed balance is
+meaningful; that channel-level decision belongs to ``assessment``.
 """
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from math import exp, log
 
-from reactgen.model import ELECTRON, Reaction, Species, Thermo
+from reactgen.model import ELECTRON, ReactionCandidate
+from reactgen.records import RegistryReaction, Species, StateRecord, Thermo
 
 GAS_CONSTANT = 8.314462618  # J/(mol K)
 STANDARD_PRESSURE = 101325.0  # Pa
@@ -18,17 +20,25 @@ AVOGADRO = 6.02214076e23
 JOULE_PER_EV = 1.602176634e-19
 
 
-def formation_delta(reaction: Reaction, species: dict[str, Species]) -> float | None:
+ReactionLike = RegistryReaction | ReactionCandidate
+ThermoEvidence = Species | StateRecord
+
+
+def formation_delta(
+    reaction: ReactionLike,
+    species: Mapping[str, ThermoEvidence],
+) -> float | None:
     """Reaction enthalpy from formation enthalpies, or None where one is missing.
 
     ``E(products) - E(reactants)``, so a positive value is endothermic. The
-    electron carries none by the usual convention, which makes an electron
-    impact channel the same arithmetic as any other: ``e + CF4 -> e + CF3 + F``
-    costs the bond, and ``e + A -> 2e + A+`` costs the ionization energy.
+    electron carries no formation enthalpy by the usual convention. This is
+    sufficient for a reaction-energy difference, but not for an equilibrium
+    constant: an electron energy distribution is not a gas-temperature NASA
+    species.
 
     Not a screen. An electron brings whatever energy it has, so a positive value
-    here says where the channel opens rather than that it is shut — but it has
-    to be recorded for `audit` to check an acquired threshold against it, and
+    here says where the channel opens rather than that it is shut, but it has
+    to be recorded for the assessment to check an acquired threshold against it, and
     for a reviewer to see how far uphill a channel sits.
     """
 
@@ -38,7 +48,8 @@ def formation_delta(reaction: Reaction, species: dict[str, Species]) -> float | 
             if term.species == ELECTRON:
                 continue
             found = species.get(term.species)
-            value = None if found is None else found.value("enthalpy_formation_eV")
+            prop = None if found is None else found.properties.get("enthalpy_formation_eV")
+            value = prop.value if prop is not None and prop.unit in {None, "eV"} else None
             if value is None:
                 return None
             total += sign * term.n * value
@@ -58,7 +69,9 @@ def entropy_R(thermo: Thermo, temperature_K: float) -> float:
 
 
 def deltas(
-    reaction: Reaction, species: dict[str, Species], temperature_K: float
+    reaction: ReactionLike,
+    species: Mapping[str, ThermoEvidence],
+    temperature_K: float,
 ) -> tuple[float, float] | None:
     """Dimensionless reaction enthalpy and entropy, or None without polynomials."""
 
@@ -74,7 +87,9 @@ def deltas(
 
 
 def gibbs_energy_eV(
-    reaction: Reaction, species: dict[str, Species], temperature_K: float
+    reaction: ReactionLike,
+    species: Mapping[str, ThermoEvidence],
+    temperature_K: float,
 ) -> float | None:
     """Delta G of the forward reaction, in eV per event."""
 
@@ -86,33 +101,48 @@ def gibbs_energy_eV(
 
 
 def equilibrium_constant(
-    reaction: Reaction, species: dict[str, Species], temperature_K: float
+    reaction: ReactionLike,
+    species: Mapping[str, ThermoEvidence],
+    temperature_K: float,
 ) -> float | None:
-    """Concentration-based K in m^3 units, or None without polynomials."""
+    """Concentration-form equilibrium constant, or None without valid polynomials."""
 
     found = deltas(reaction, species, temperature_K)
     if found is None:
         return None
     delta_h, delta_s = found
     concentration = STANDARD_PRESSURE / (GAS_CONSTANT * temperature_K) * AVOGADRO
-    return exp(delta_s - delta_h) * concentration**-reaction.delta_moles
+    delta_moles = sum(term.n for term in reaction.products) - sum(
+        term.n for term in reaction.reactants
+    )
+    return exp(delta_s - delta_h) * concentration**-delta_moles
 
 
 def reverse_rate(
-    forward: float, reaction: Reaction, species: dict[str, Species], temperature_K: float
+    forward: float,
+    reaction: ReactionLike,
+    species: Mapping[str, ThermoEvidence],
+    temperature_K: float,
 ) -> float | None:
     constant = equilibrium_constant(reaction, species, temperature_K)
     return None if not constant else forward / constant
 
 
 def _term_thermo(
-    species_id: str, species: dict[str, Species], temperature_K: float
+    species_id: str,
+    species: Mapping[str, ThermoEvidence],
+    temperature_K: float,
 ) -> tuple[float, float] | None:
-    """Dimensionless enthalpy and entropy; the electron carries neither."""
+    """Ground-state thermal H/RT and S/R; nonthermal states are not inferred."""
 
     if species_id == ELECTRON:
-        return (0.0, 0.0)
+        return None
     found = species.get(species_id)
     if found is None or found.thermo is None:
+        return None
+    state_kind = found.candidate.state.kind if isinstance(found, StateRecord) else found.state.kind
+    if state_kind != "ground":
+        return None
+    if not found.thermo.t_min <= temperature_K <= found.thermo.t_max:
         return None
     return (enthalpy_RT(found.thermo, temperature_K), entropy_R(found.thermo, temperature_K))

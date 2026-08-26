@@ -1,0 +1,236 @@
+metadata:
+  schema_version: 4
+  generator_version: 0.5.0
+  case: ar_o2
+  case_digest: 2428dc0773aab9f8b7904b93426161d044d41a64af5d3b307096c6f123747f92
+  evidence_snapshot_hash: 1d5e4e60e5d4f32b272e88448828d386ebf202dee1bb1d178b093d982005605f
+  complete: true
+  stop_reason: closure
+  limits:
+    max_depth: 6
+    max_species: 300
+    max_reactions: 5000
+    max_charge_abs: 1
+    max_leaving_atoms: 2
+  counts:
+    states: 19
+    reactions: 185
+    mechanical_states: 14
+    mechanical_reactions: 158
+policy: review
+readiness:
+  candidate_complete: true
+  evidence_ready: false
+  kinetic_data_ready: false
+  direct_rate_ready: false
+  energy_source_ready: false
+  reverse_rate_ready: false
+  required_transforms: []
+selected_states:
+- Ar+@ground
+- Ar-@ground
+- Ar@4s
+- Ar@ground
+- Ar@metastable
+- Ar@resonant
+- O+@ground
+- O-@ground
+- O2+@ground
+- O2-@ground
+- O2@a1dg
+- O2@b1sg+
+- O2@electronic
+- O2@ground
+- O2@vibrational
+- O@1d2
+- O@1s
+- O@ground
+- e
+selected_reactions:
+- rxn_02b625c9d811
+- rxn_0344fa41a70f
+- rxn_03cc6169a934
+- rxn_0664702fc8b3
+- rxn_07117cb5ce40
+- rxn_08399feb356b
+- rxn_085bec441ad0
+- rxn_08c94f4c2b6a
+- rxn_08e2f48ee28d
+- rxn_098eb6a80062
+- rxn_0c51497b3a6c
+- rxn_0e230572e278
+- rxn_1025dffb221c
+- rxn_10beb5bc00af
+- rxn_116c2a39f075
+- rxn_123a76ecfe44
+- rxn_1367abd723f8
+- rxn_15fac312b7fa
+- rxn_18e7a7fd5b5b
+- rxn_192278ce671f
+- rxn_19e271a11252
+- rxn_1a8a97d93128
+- rxn_1aaa5217616d
+- rxn_1afa97c5ae80
+- rxn_1ca03209bf56
+- rxn_1cb8cdec1cfe
+- rxn_1cc12a118d26
+- rxn_1dc9f78c977a
+- rxn_217ec02f8a25
+- rxn_223a68face62
+- rxn_2400ffdfb3a5
+- rxn_26b94c20754e
+- rxn_271084b2fc94
+- rxn_2927232caf86
+- rxn_2be53d0776c7
+- rxn_2bf32666fe5b
+- rxn_2c4965e684b5
+- rxn_2c4a5b821b8e
+- rxn_2d29145e0f98
+- rxn_2d2ad8dab8bd
+- rxn_2d3b511c5644
+- rxn_2d9ccfcce5d9
+- rxn_322a79119d6f
+- rxn_3238e70d569e
+- rxn_325d242a60fa
+- rxn_32887c53cfc0
+- rxn_32e0ff81482e
+- rxn_332f5a51e689
+- rxn_33a5160d5967
+- rxn_37b2f906b55b
+- rxn_37bbce670254
+- rxn_37c2816ca17f
+- rxn_3a3dcf92975f
+- rxn_3afea6ddf67b
+- rxn_3ce8fb5e8663
+- rxn_3d41fa9089a3
+- rxn_3f735a110e81
+- rxn_409cb5fe9d2a
+- rxn_40ffa48445f6
+- rxn_42da360d77cf
+- rxn_4374da9c1d1c
+- rxn_4392ff7146da
+- rxn_43949eda804d
+- rxn_4487814bfc3e
+- rxn_44de2b53da2e
+- rxn_470cf8775707
+- rxn_470de7c7998a
+- rxn_49cd032be260
+- rxn_4a11bdf2a171
+- rxn_4ad9cf30bc80
+- rxn_4b45a93b7f18
+- rxn_4d8f6edbf3ae
+- rxn_4db0a6c546c7
+- rxn_4e056b8323ea
+- rxn_4f5cc5cb071e
+- rxn_4f890c9f1ce9
+- rxn_51dcf606e214
+- rxn_5a307f1b77b9
+- rxn_5c1d1862d883
+- rxn_5ccce802fea8
+- rxn_5d5111d16a78
+- rxn_5e1b7cd24431
+- rxn_5e4e401081e7
+- rxn_5f0e9e57072b
+- rxn_5fcbcf3fc37b
+- rxn_634f6e55908a
+- rxn_641dfc3def66
+- rxn_644e62d637ce
+- rxn_650299e93852
+- rxn_6544183a7e7e
+- rxn_664ed39e8711
+- rxn_683f67de893f
+- rxn_688c1b736a68
+- rxn_69470fb52c9e
+- rxn_6c5f72d907c5
+- rxn_6ca88b0a54fa
+- rxn_6ece5fa184d7
+- rxn_6fbef0792ecd
+- rxn_70a5390f4242
+- rxn_727d49330314
+- rxn_7281eb34b270
+- rxn_7305fd87ad82
+- rxn_754c5eca1437
+- rxn_75a6567cee43
+- rxn_763194797e8c
+- rxn_7cb2c47d47e0
+- rxn_7f1253ebcfb9
+- rxn_7f218ecf9f30
+- rxn_813c0cfa7ce0
+- rxn_81849ac06cf9
+- rxn_84e8fa1d3d48
+- rxn_86e8fb853dd8
+- rxn_88181a7e6efe
+- rxn_88b106712082
+- rxn_89b3c1f5c922
+- rxn_8bb2a60a7fbc
+- rxn_8e59537d4986
+- rxn_8ebdaeab3d31
+- rxn_953abc47a76a
+- rxn_975e581a4893
+- rxn_97e7f57e6baa
+- rxn_9806fd0ca7ab
+- rxn_981ebdf563ba
+- rxn_989eea6d35bc
+- rxn_9934f424f8c0
+- rxn_9938203e8724
+- rxn_9c71d4efc801
+- rxn_a065d9985ac4
+- rxn_a339d2371429
+- rxn_a515648ebf7f
+- rxn_a69a28bff768
+- rxn_a883c2a5062f
+- rxn_a8c8162d07bf
+- rxn_a94bfb506276
+- rxn_a9821670c330
+- rxn_ac67529bdd89
+- rxn_ad2d57546439
+- rxn_b23dfcecb0fc
+- rxn_b4bebcad19c6
+- rxn_b87c4049e16f
+- rxn_b9b97c9cedf9
+- rxn_b9dcc46f86f8
+- rxn_ba3ba6b31781
+- rxn_baee40490ad8
+- rxn_bee14e8a1be8
+- rxn_c561bbf02430
+- rxn_c605c558423a
+- rxn_c8bbb52f16db
+- rxn_c8f95c3d8ede
+- rxn_c93e3d600f78
+- rxn_cbe14dbb7875
+- rxn_cc4cbdb651ed
+- rxn_cd3f064c57e9
+- rxn_ce746e5f7015
+- rxn_ced7ed171430
+- rxn_d033903105a0
+- rxn_d24c19b6e6eb
+- rxn_d802cff550ac
+- rxn_d83b0309c1b0
+- rxn_dae5325eb31b
+- rxn_dbb28e568d13
+- rxn_dc471d9f9a8c
+- rxn_dc4f1eaed1a8
+- rxn_ddfd4cfd2bad
+- rxn_de2e4db00652
+- rxn_dff2bd46b5c5
+- rxn_ec1ff806cd78
+- rxn_ed39dd867e7c
+- rxn_f01e2fa9b40b
+- rxn_f07d0ba16e30
+- rxn_f2d5b52e7a92
+- rxn_f362c4374a2b
+- rxn_f3a308be1edd
+- rxn_f4bf18f98733
+- rxn_f5c7d2b1a05f
+- rxn_f75feb2eb0bc
+- rxn_f7f35bdddeea
+- rxn_f93bf35caf1e
+- rxn_fa2f9066d8c2
+- rxn_fa54f8a8e792
+- rxn_fa8b8f6b3770
+- rxn_fab0902a6843
+- rxn_fe0ea6173b83
+- rxn_fe3ef2a625bf
+- rxn_ffe8fc60e569
+not_selected_states: {}
+not_selected_reactions: {}

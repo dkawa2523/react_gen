@@ -1,10 +1,7 @@
 name: ar
 gases: [Ar]
 
-# A pure argon inductively coupled discharge: the simplest case the workflow
-# has, and the one where every reaction in the list is curated. Useful as a
-# reference point, because anything the generator adds here would be an
-# invention rather than a gap being filled.
+# A pure argon discharge used as the smallest formula-driven generation case.
 conditions:
   pressure_Pa: 1.3
   gas_temperature_K: 400.0
@@ -14,5 +11,3 @@ conditions:
   surface_area_m2: 0.52
 
 surfaces: [SiO2]
-
-accept_status: [curated, literature_supported]

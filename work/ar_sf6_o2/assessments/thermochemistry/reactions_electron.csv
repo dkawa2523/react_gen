@@ -1,0 +1,315 @@
+candidate,reaction_type,delta_h_eV,delta_g_eV,threshold_eV,verdict,reason,id
+e + F2 -> F- + F,Electron attachment,-1.755821274685823,,0.0,pass,reaction energy or threshold is available,rxn_41a18c13fd0a
+e + O2 -> O- + O,Electron attachment,3.705577,,3.66,pass,reaction energy or threshold is available,rxn_84e8fa1d3d48
+e + SF5 -> F- + SF4,Electron attachment,-1.0730652746858222,,0.0,pass,reaction energy or threshold is available,rxn_bcc8fe63af38
+e + SF6 -> F- + F + SF4,Electron attachment,2.9837587253141766,,5.4,pass,reaction energy or threshold is available,rxn_63c9a5497cf1
+e + SF6 -> F- + SF5,Electron attachment,0.6556947253141754,,2.0,pass,reaction energy or threshold is available,rxn_afbcbb5bf112
+e + SF6 -> F2- + SF4,Electron attachment,,,5.4,pass,reaction energy or threshold is available,rxn_64e971aca697
+e + SF6 -> SF2- + 4 F,Electron attachment,,,12.0,pass,reaction energy or threshold is available,rxn_b7378861e5ce
+e + SF6 -> SF3- + 3 F,Electron attachment,,,11.2,pass,reaction energy or threshold is available,rxn_b46ef585f02e
+e + SF6 -> SF4- + 2 F,Electron attachment,,,5.4,pass,reaction energy or threshold is available,rxn_aa50cb9817ba
+e + SF6 -> SF5- + F,Electron attachment,,,0.0,pass,reaction energy or threshold is available,rxn_0d7ad2c6ac40
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),-11.6,,0.0,pass,reaction energy or threshold is available,rxn_085bec441ad0
+e + O(¹D₂) -> O + e,Electron-impact deexcitation (superelastic),-1.966523,,0.0,pass,reaction energy or threshold is available,rxn_4b45a93b7f18
+e + O(¹S) -> O + e,Electron-impact deexcitation (superelastic),-4.1897459999999995,,0.0,pass,reaction energy or threshold is available,rxn_2be53d0776c7
+e + O2(a¹Δg) -> O2 + e,Electron-impact deexcitation (superelastic),-0.977,,0.0,pass,reaction energy or threshold is available,rxn_3ce8fb5e8663
+e + O2(b¹Σg+) -> O2 + e,Electron-impact deexcitation (superelastic),-1.627,,0.0,pass,reaction energy or threshold is available,rxn_727d49330314
+e + S(¹D) -> S + e,Electron-impact deexcitation (superelastic),-1.1454410000000004,,0.0,pass,reaction energy or threshold is available,rxn_6248d2ae34f8
+e + S(¹S) -> S + e,Electron-impact deexcitation (superelastic),-2.749964,,0.0,pass,reaction energy or threshold is available,rxn_260303df7a8d
+e + O2 -> O(¹D₂) + O + e,Electron-impact dissociation,7.132676999999999,,8.57,pass,reaction energy or threshold is available,rxn_123a76ecfe44
+e + SF6 -> 2 F + SF2 + F2 + e,Electron-impact dissociation,11.220337999999998,,18.6,pass,reaction energy or threshold is available,rxn_47a504099cad
+e + SF6 -> 2 F + SF4 + e,Electron-impact dissociation,6.384887999999999,,12.1,pass,reaction energy or threshold is available,rxn_287eef0e196e
+e + SF6 -> 3 F + SF + F2 + e,Electron-impact dissociation,,,22.7,pass,reaction energy or threshold is available,rxn_300af5571dff
+e + SF6 -> 3 F + SF3 + e,Electron-impact dissociation,,,15.9,pass,reaction energy or threshold is available,rxn_1e041fba58da
+e + SF6 -> F+ + F + SF4 + 2 e,Dissociative ionization,23.807769725314174,,23.0,pass,reaction energy or threshold is available,rxn_e81dc7ddf993
+e + SF6 -> S+ + 4 F + F2 + 2 e,Dissociative ionization,,,18.0,pass,reaction energy or threshold is available,rxn_e620761e82c5
+e + SF6 -> SF+ + 3 F + F2 + 2 e,Dissociative ionization,,,37.5,pass,reaction energy or threshold is available,rxn_85122c3bf4e1
+e + SF6 -> SF2+ + 2 F + F2 + 2 e,Dissociative ionization,,,28.0,pass,reaction energy or threshold is available,rxn_c06ee32be57d
+e + SF6 -> SF3+ + 3 F + 2 e,Dissociative ionization,,,20.5,pass,reaction energy or threshold is available,rxn_7dd0a7f249c9
+e + SF6 -> SF4+ + 2 F + 2 e,Dissociative ionization,,,20.0,pass,reaction energy or threshold is available,rxn_f2ec2624c9bd
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_49cd032be260
+e + O(¹D₂) -> O(¹D₂) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_bee14e8a1be8
+e + O(¹S) -> O(¹S) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_37c2816ca17f
+e + O2(a¹Δg) -> O2(a¹Δg) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_0e230572e278
+e + O2(b¹Σg+) -> O2(b¹Σg+) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_d802cff550ac
+e + S(¹D) -> S(¹D) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_3aeb3c856e68
+e + S(¹S) -> S(¹S) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_24ab1c33354e
+e + Ar -> Ar(4s) + e,Electron-impact excitation,11.6,,11.6,pass,reaction energy or threshold is available,rxn_683f67de893f
+e + O -> O(¹D₂) + e,Electron-impact excitation,1.966523,,1.967,pass,reaction energy or threshold is available,rxn_322a79119d6f
+e + O -> O(¹S) + e,Electron-impact excitation,4.1897459999999995,,4.189746,pass,reaction energy or threshold is available,rxn_40ffa48445f6
+e + O2 -> O2(a¹Δg) + e,Electron-impact excitation,0.977,,0.977,pass,reaction energy or threshold is available,rxn_989eea6d35bc
+e + O2 -> O2(b¹Σg+) + e,Electron-impact excitation,1.627,,1.627,pass,reaction energy or threshold is available,rxn_409cb5fe9d2a
+e + S -> S(¹D) + e,Electron-impact excitation,1.1454410000000004,,1.145442,pass,reaction energy or threshold is available,rxn_87db8cd81fe5
+e + S -> S(¹S) + e,Electron-impact excitation,2.749964,,2.749964,pass,reaction energy or threshold is available,rxn_ecc6742e63a0
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,4.159610000000001,,4.16,pass,reaction energy or threshold is available,rxn_1a8a97d93128
+e + O(¹D₂) -> O+ + 2 e,Electron-impact ionization,11.651055000000001,,11.6511,pass,reaction energy or threshold is available,rxn_a883c2a5062f
+e + O2(a¹Δg) -> O2+ + 2 e,Electron-impact ionization,11.092699999999999,,11.0927,pass,reaction energy or threshold is available,rxn_5e1b7cd24431
+e + O2(b¹Σg+) -> O2+ + 2 e,Electron-impact ionization,10.442699999999999,,10.4427,pass,reaction energy or threshold is available,rxn_b87c4049e16f
+e + Ar -> Ar-,Electron attachment,,,,fail,direct attachment cannot create the explicitly unbound parent anion,rxn_4374da9c1d1c
+e + O2 -> O2-,Electron attachment,,,,pass,reaction energy or threshold is available,rxn_a515648ebf7f
+e + SF6 -> SF6-,Electron attachment,,,0.0,pass,reaction energy or threshold is available,rxn_c8d961344770
+e + O2 -> 2 O + e,Electron-impact dissociation,5.166154,,5.12,pass,reaction energy or threshold is available,rxn_4d8f6edbf3ae
+e + SF6 -> F + SF5 + e,Electron-impact dissociation,4.056823999999999,,9.6,pass,reaction energy or threshold is available,rxn_57bc017668fe
+e + SF6 -> SF4 + F2 + e,Electron-impact dissociation,4.739579999999999,,,pass,reaction energy or threshold is available,rxn_5821b503a060
+e + O2 -> O- + O,Dissociative electron attachment,3.705577,,,pass,reaction energy or threshold is available,rxn_332f5a51e689
+e + SF6 -> F- + SF5,Dissociative electron attachment,0.6556947253141754,,,pass,reaction energy or threshold is available,rxn_d1b634e2f32b
+e + SF6 -> F2- + SF4,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c0ba518df9c5
+e + SF6 -> SF4- + F2,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6536e251d22e
+e + SF6 -> SF5- + F,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_1fbc832e061a
+e + O2 -> O+ + O + 2 e,Dissociative ionization,18.783732,,,pass,reaction energy or threshold is available,rxn_1dc9f78c977a
+e + SF6 -> SF4+ + F2 + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_988a4e1bb79d
+e + SF6 -> SF5+ + F + 2 e,Dissociative ionization,,,16.0,pass,reaction energy or threshold is available,rxn_e85a3e39c348
+e + Ar -> Ar + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_c8f95c3d8ede
+e + O2 -> O2 + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_5f0e9e57072b
+e + SF6 -> SF6 + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_6a629dd07190
+e + Ar -> Ar(m) + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_271084b2fc94
+e + O2 -> O2(v) + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ddfd4cfd2bad
+e + O2 -> O2* + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4f5cc5cb071e
+e + SF6 -> SF6(v) + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_72ce47489e94
+e + SF6 -> SF6* + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_1a0e4d47f87d
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,15.75961,,15.75961,pass,reaction energy or threshold is available,rxn_a69a28bff768
+e + O2 -> O2+ + 2 e,Electron-impact ionization,12.0697,,12.0697,pass,reaction energy or threshold is available,rxn_1ca03209bf56
+e + SF6 -> SF6+ + 2 e,Electron-impact ionization,,,,pass,reaction energy or threshold is available,rxn_09b4827bc0d8
+e + F -> F-,Electron attachment,-3.401129274685823,,,pass,reaction energy or threshold is available,rxn_8fa839560004
+e + F2 -> F2-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_900787e68127
+e + O -> O-,Electron attachment,-1.4605769999999998,,,pass,reaction energy or threshold is available,rxn_f2d5b52e7a92
+e + SF4 -> SF4-,Electron attachment,,,,pass,reaction energy or threshold is available,rxn_0223ada15f9f
+e + SF5 -> SF5-,Electron attachment,,,,pass,reaction energy or threshold is available,rxn_138054b7babe
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ed39dd867e7c
+e + O2(v) -> O2 + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3a3dcf92975f
+e + O2* -> O2 + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6c5f72d907c5
+e + SF6(v) -> SF6 + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_745265260c96
+e + SF6* -> SF6 + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a0bc75c5102a
+e + Ar- -> Ar + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d83b0309c1b0
+e + F- -> F + 2 e,Electron-impact detachment,3.401129274685823,,,pass,reaction energy or threshold is available,rxn_d9c95009df17
+e + F2- -> F2 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f97da82531fe
+e + O- -> O + 2 e,Electron-impact detachment,1.4605769999999998,,,pass,reaction energy or threshold is available,rxn_08399feb356b
+e + O2- -> O2 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_2c4965e684b5
+e + SF4- -> SF4 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c2b413a94c34
+e + SF5- -> SF5 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_90ff9739acd0
+e + SF6- -> SF6 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_2cf05cb6bd8e
+e + F2 -> 2 F + e,Electron-impact dissociation,1.645308,,4.34,pass,reaction energy or threshold is available,rxn_68bca252f4bd
+e + SF4 -> F + SF3 + e,Electron-impact dissociation,,,8.5,pass,reaction energy or threshold is available,rxn_a5118f39fa42
+e + SF4 -> SF2 + F2 + e,Electron-impact dissociation,4.83545,,,pass,reaction energy or threshold is available,rxn_21bf364d9349
+e + SF5 -> F + SF4 + e,Electron-impact dissociation,2.3280640000000004,,5.0,pass,reaction energy or threshold is available,rxn_c15478b3fca5
+e + SF5 -> SF3 + F2 + e,Electron-impact dissociation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_9ef8296c3872
+e + F2 -> F- + F,Dissociative electron attachment,-1.755821274685823,,,pass,reaction energy or threshold is available,rxn_6dfafc324ea8
+e + SF4 -> F- + SF3,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3b5c19088613
+e + SF4 -> F2- + SF2,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c0324b09801e
+e + SF4 -> SF2- + F2,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_828bb29d0ab8
+e + SF4 -> SF3- + F,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_e0eff8f2bb68
+e + SF5 -> F- + SF4,Dissociative electron attachment,-1.0730652746858222,,,pass,reaction energy or threshold is available,rxn_6a3fb1cbfcbd
+e + SF5 -> F2- + SF3,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_72689af2c4b4
+e + SF5 -> SF3- + F2,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d2ef1ce170e8
+e + SF5 -> SF4- + F,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f826f9bdf4be
+e + F2 -> F+ + F + 2 e,Dissociative ionization,19.068189725314177,,,pass,reaction energy or threshold is available,rxn_c9dace256cc3
+e + SF4 -> SF2+ + F2 + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f808d8740185
+e + SF4 -> SF3+ + F + 2 e,Dissociative ionization,,,14.5,pass,reaction energy or threshold is available,rxn_3486967fa3e6
+e + SF5 -> SF3+ + F2 + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_54db57bb285a
+e + SF5 -> SF4+ + F + 2 e,Dissociative ionization,,,15.0,pass,reaction energy or threshold is available,rxn_b95e3f10a4f3
+e + O2+ -> 2 O,Dissociative recombination,-6.9035459999999995,,,pass,reaction energy or threshold is available,rxn_0344fa41a70f
+e + SF4+ -> F + SF3,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b9d4e6ba7453
+e + SF4+ -> SF2 + F2,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f88d0cb03bca
+e + SF5+ -> F + SF4,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_40b348bb158f
+e + SF5+ -> SF3 + F2,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b71ec8f65cd1
+e + SF6+ -> F + SF5,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_e641693b4633
+e + SF6+ -> SF4 + F2,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4fd9423e1662
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f4bf18f98733
+e + F -> F + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_d014713c4a78
+e + F- -> F- + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_35e7d26760ba
+e + F2 -> F2 + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_90dfe4335d02
+e + F2- -> F2- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_594dacc8bf96
+e + O -> O + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_ec1ff806cd78
+e + O+ -> O+ + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_ced7ed171430
+e + O- -> O- + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_c605c558423a
+e + O2(v) -> O2(v) + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_098eb6a80062
+e + O2* -> O2* + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f3a308be1edd
+e + O2+ -> O2+ + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_4392ff7146da
+e + O2- -> O2- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_88181a7e6efe
+e + SF4 -> SF4 + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_c308ed67a1ee
+e + SF4+ -> SF4+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_08a1ce8d71bd
+e + SF4- -> SF4- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3408ad585b95
+e + SF5 -> SF5 + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_e5be6ea862fa
+e + SF5+ -> SF5+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_eb7f6a6e7edb
+e + SF5- -> SF5- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5e1cc61882e5
+e + SF6(v) -> SF6(v) + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6fa58093c6db
+e + SF6* -> SF6* + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c42cd3c1a672
+e + SF6+ -> SF6+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_9613d375153a
+e + SF6- -> SF6- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a86ee86e5656
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5ccce802fea8
+e + F -> F+ + 2 e,Electron-impact ionization,17.422881725314177,,17.42282,pass,reaction energy or threshold is available,rxn_0ac0463c2879
+e + F2 -> F2+ + 2 e,Electron-impact ionization,,,15.69,pass,reaction energy or threshold is available,rxn_209315ead1fb
+e + O -> O+ + 2 e,Electron-impact ionization,13.617578000000002,,13.618055,pass,reaction energy or threshold is available,rxn_02b625c9d811
+e + O2(v) -> O2+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_2400ffdfb3a5
+e + O2* -> O2+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_1367abd723f8
+e + SF4 -> SF4+ + 2 e,Electron-impact ionization,,,12.0,pass,reaction energy or threshold is available,rxn_81b72c4107a5
+e + SF5 -> SF5+ + 2 e,Electron-impact ionization,,,9.6,pass,reaction energy or threshold is available,rxn_cd8ddb1dd16e
+e + SF6(v) -> SF6+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a2095b8900f0
+e + SF6* -> SF6+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c805ccf5f0e9
+e + Ar+ -> Ar,Electron-ion recombination,-15.75961,,,pass,reaction energy or threshold is available,rxn_b9b97c9cedf9
+e + O+ -> O,Electron-ion recombination,-13.617578000000002,,,pass,reaction energy or threshold is available,rxn_a065d9985ac4
+e + O2+ -> O2,Electron-ion recombination,-12.0697,,,pass,reaction energy or threshold is available,rxn_fe3ef2a625bf
+e + SF4+ -> SF4,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f906559f20b2
+e + SF5+ -> SF5,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f9ccaf67990c
+e + SF6+ -> SF6,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_0f4c5d05bc62
+e + O2F -> O2F-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_33999e0123a8
+e + OF -> OF-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d5f8b6a0240c
+e + SF2 -> SF2-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ba019a9da859
+e + SF3 -> SF3-,Electron attachment,,,,pass,reaction energy or threshold is available,rxn_b68a571eebe7
+e + SOF5 -> SOF5-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_69e451e38c8b
+e + O2F- -> O2F + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_906b3940de46
+e + OF- -> OF + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_28c6d07ba7da
+e + SF2- -> SF2 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ecde06ecb190
+e + SF3- -> SF3 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3bc614d41589
+e + SOF3- -> SOF3 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a832e0afa8bb
+e + SOF4- -> SOF4 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_210ea159223f
+e + SOF5- -> SOF5 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_796488d6f8f6
+e + O2F -> F + O2 + e,Electron-impact dissociation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_1dbb548357d4
+e + O2F -> O + OF + e,Electron-impact dissociation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_741242275bc2
+e + OF -> F + O + e,Electron-impact dissociation,2.27766,,4.3,pass,reaction energy or threshold is available,rxn_e83a63fdd1b3
+e + SF2 -> F + SF + e,Electron-impact dissociation,,,8.0,pass,reaction energy or threshold is available,rxn_99a9d7a397b1
+e + SF2 -> S + F2 + e,Electron-impact dissociation,5.9475370000000005,,,pass,reaction energy or threshold is available,rxn_dc916a51e341
+e + SF3 -> F + SF2 + e,Electron-impact dissociation,,,5.0,pass,reaction energy or threshold is available,rxn_d4ae67d3f229
+e + SF3 -> SF + F2 + e,Electron-impact dissociation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_87644633a3bd
+e + O2F -> F- + O2,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_73521090a762
+e + O2F -> O- + OF,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_553b18687e88
+e + O2F -> O2- + F,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6f7e30cf734d
+e + O2F -> OF- + O,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_7f7c9607f04f
+e + OF -> F- + O,Dissociative electron attachment,-1.1234692746858232,,,pass,reaction energy or threshold is available,rxn_eb8f504704e4
+e + OF -> O- + F,Dissociative electron attachment,0.817083,,,pass,reaction energy or threshold is available,rxn_2a8f8fba7eff
+e + SF2 -> F- + SF,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d159a8b5f2ad
+e + SF2 -> F2- + S,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b22936120faf
+e + SF2 -> S- + F2,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_31f4c5440ad9
+e + SF2 -> SF- + F,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_fc30c3bafa3b
+e + SF3 -> F- + SF2,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5755b6ce2966
+e + SF3 -> F2- + SF,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_09340caa7945
+e + SF3 -> SF- + F2,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_80001d314636
+e + SF3 -> SF2- + F,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c3840bdf8d78
+e + ArF- -> Ar + F + 2 e,Dissociative electron detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4b92cf2ca31b
+e + O2F -> F+ + O2 + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_1c12e9edc663
+e + O2F -> OF+ + O + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ef9b3963e1b5
+e + OF -> O+ + F + 2 e,Dissociative ionization,15.895238,,,pass,reaction energy or threshold is available,rxn_b5442207f15e
+e + SF2 -> S+ + F2 + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_69993710655b
+e + SF2 -> SF+ + F + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3edaa6c4acef
+e + SF3 -> SF+ + F2 + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_386822735e5f
+e + SF3 -> SF2+ + F + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_0867d297296c
+e + ArF+ -> Ar + F,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_da1d834a0e58
+e + F2+ -> 2 F,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6d3db2467a2d
+e + O2F+ -> F + O2,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b278321de98f
+e + O2F+ -> O + OF,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_033d9b930abb
+e + OF+ -> F + O,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_80af642379f0
+e + SF2+ -> F + SF,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_512cdf87464c
+e + SF2+ -> S + F2,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5dd6c91fe4dd
+e + SF3+ -> F + SF2,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f034533f2b60
+e + SF3+ -> SF + F2,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4f2da9b08323
+e + ArF+ -> ArF+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_59cc3e31b193
+e + ArF- -> ArF- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4cf23051d253
+e + F+ -> F+ + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_9d75d6b4d8bd
+e + F2+ -> F2+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_45c367f6bfab
+e + O2F -> O2F + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_363bda81d6b6
+e + O2F+ -> O2F+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_217b03cedbba
+e + O2F- -> O2F- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_2eb1d1784583
+e + OF -> OF + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_cc963afb82a3
+e + OF+ -> OF+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_0e66b1db8eee
+e + OF- -> OF- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_30cc968963f8
+e + SF2 -> SF2 + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_6e52b62aa3d3
+e + SF2+ -> SF2+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_0263740a928f
+e + SF2- -> SF2- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_9ea01bc8be05
+e + SF3 -> SF3 + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_25835887a749
+e + SF3+ -> SF3+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_650fb0e8afe7
+e + SF3- -> SF3- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5ef410497ee4
+e + SOF3+ -> SOF3+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_cd169601def3
+e + SOF3- -> SOF3- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4288a3734508
+e + SOF4+ -> SOF4+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_de70e2382579
+e + SOF4- -> SOF4- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_e524d7e20368
+e + SOF5 -> SOF5 + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ac0b7d2bf030
+e + SOF5+ -> SOF5+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c811f7dabe81
+e + SOF5- -> SOF5- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c48f50da7ca6
+e + O2F -> O2F+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_dd9d918e20b5
+e + OF -> OF+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_18f7a91fdadb
+e + SF2 -> SF2+ + 2 e,Electron-impact ionization,,,10.8,pass,reaction energy or threshold is available,rxn_0da79acf3b0b
+e + SF3 -> SF3+ + 2 e,Electron-impact ionization,,,8.18,pass,reaction energy or threshold is available,rxn_a32df399fbfe
+e + SOF5 -> SOF5+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b26815dc493e
+e + F+ -> F,Electron-ion recombination,-17.422881725314177,,,pass,reaction energy or threshold is available,rxn_d606d592dce3
+e + F2+ -> F2,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b864a75a4ed7
+e + O2F+ -> O2F,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d1ad6274b293
+e + OF+ -> OF,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d67f2c49d3f5
+e + SF2+ -> SF2,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c5e11ab870d4
+e + SF3+ -> SF3,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_78c172d7e1d5
+e + SOF3+ -> SOF3,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_2eb217c0556f
+e + SOF4+ -> SOF4,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_144172f8230a
+e + SOF5+ -> SOF5,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b113278b22e0
+e + O2F2 -> O2F2-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a8a49069d347
+e + OF2 -> OF2-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ef4ffe49bd6b
+e + S -> S-,Electron attachment,,,,pass,reaction energy or threshold is available,rxn_32f181f3b169
+e + SF -> SF-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_95b75c1b3432
+e + SOF3 -> SOF3-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_21c110505cbc
+e + SOF4 -> SOF4-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_58f52fe1a538
+e + S- -> S + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a3b408f29a64
+e + SF- -> SF + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6d4d835832dd
+e + SOF- -> SOF + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3ecead1f1da2
+e + OF2 -> F + OF + e,Electron-impact dissociation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_752e00b0f397
+e + OF2 -> O + F2 + e,Electron-impact dissociation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_559616e60787
+e + SF -> F + S + e,Electron-impact dissociation,,,7.9,pass,reaction energy or threshold is available,rxn_d5d036b9feb9
+e + OF2 -> F- + OF,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5c821e02890e
+e + OF2 -> F2- + O,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f1a7a08a935f
+e + OF2 -> O- + F2,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_9ca6e498693f
+e + OF2 -> OF- + F,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_8ff84babe076
+e + SF -> F- + S,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3f451d5fcd6f
+e + SF -> S- + F,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a313f0dc37d2
+e + OF2 -> O+ + F2 + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_52f9bacad4d4
+e + OF2 -> OF+ + F + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_95d2f7e04fcf
+e + SF -> S+ + F + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_15af37ce02b1
+e + SF+ -> F + S,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6623987e0185
+e + O2F2 -> O2F2 + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d23fbcac3f47
+e + OF2 -> OF2 + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3483aa5accf4
+e + S -> S + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_82314957c610
+e + S+ -> S+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_73bed5ea59b7
+e + S- -> S- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ecc6652a86ed
+e + SF -> SF + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_00b44c97c766
+e + SF+ -> SF+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c9f40d3af566
+e + SF- -> SF- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_69b004987395
+e + SOF+ -> SOF+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_49d1596c8069
+e + SOF- -> SOF- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_22fae58ff10c
+e + SOF3 -> SOF3 + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d0cd43bf4724
+e + SOF4 -> SOF4 + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_50b761d832d6
+e + O2F2 -> O2F2+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3b386c3c6216
+e + OF2 -> OF2+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_bb31e44815e2
+e + S -> S+ + 2 e,Electron-impact ionization,,,10.36001,pass,reaction energy or threshold is available,rxn_e25c2b5151e3
+e + SF -> SF+ + 2 e,Electron-impact ionization,,,10.3,pass,reaction energy or threshold is available,rxn_1949520122bc
+e + SOF3 -> SOF3+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_79a11710eb55
+e + SOF4 -> SOF4+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_73734419f638
+e + S+ -> S,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b35b302e2884
+e + SF+ -> SF,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_90e5c3f41514
+e + SOF+ -> SOF,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_0509c109376f
+e + SO -> SO-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_febcff4c66fc
+e + SOF -> SOF-,Electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_61afbff171e0
+e + O2F2- -> O2F2 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c521b86c33e7
+e + OF2- -> OF2 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a8faf3aba717
+e + SO- -> SO + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f3d3775906b4
+e + SO -> O + S + e,Electron-impact dissociation,5.390758,,,pass,reaction energy or threshold is available,rxn_adcf4af49ad7
+e + SO -> O- + S,Dissociative electron attachment,3.930181,,,pass,reaction energy or threshold is available,rxn_9bd74d29fdda
+e + SO -> S- + O,Dissociative electron attachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_1032458ae0f1
+e + SO -> S+ + O + 2 e,Dissociative ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_fae1fad451f7
+e + OF2+ -> F + OF,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_0b0651214c20
+e + OF2+ -> O + F2,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b7d2cd33613f
+e + SO+ -> O + S,Dissociative recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_27436b7cf0b8
+e + O2F2+ -> O2F2+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b56fdf06f327
+e + O2F2- -> O2F2- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5158c76e3279
+e + OF2+ -> OF2+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_96c2b4921790
+e + OF2- -> OF2- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_230834655a0e
+e + SO -> SO + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_dcc1d198ce27
+e + SO+ -> SO+ + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6ebe4cfd62d5
+e + SO- -> SO- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_e5bc7120fda8
+e + SOF -> SOF + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_df8dec5795cc
+e + SO -> SO+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_e7a0b1667c6b
+e + SOF -> SOF+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_07279e2b51e4
+e + O2F2+ -> O2F2,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4db5e0682c13
+e + OF2+ -> OF2,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_8113fca77d00
+e + SO+ -> SO,Electron-ion recombination,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_b2fe201a0d72

@@ -1,0 +1,370 @@
+equation,reaction_type,family,process,origin,depth,consistency_verdict,state_verdict,thermochemistry_verdict,reaction_evidence_verdict,kinetics_verdict,delta_h_eV,delta_g_eV,threshold_eV,kinetic_data,selected,exclusion_reason,id
+F + S -> SF,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_db78850fb861
+F + SF -> SF2,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,,-3.5016650884663028,,rate_coefficient,true,,rxn_6ee9099a83e1
+F + SF2 -> SF3,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,,-2.416677893620253,,rate_coefficient,true,,rxn_46af65e4dabe
+F + SF3 -> SF4,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,,-2.9109927366079167,,rate_coefficient,true,,rxn_c00702fee265
+F + SF4 -> SF5,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,-2.3280640000000004,-1.6857063127381302,,rate_coefficient,true,,rxn_19dab5d2e0c4
+F + SF5 -> SF6,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,-4.056823999999999,-3.3370901953466827,,rate_coefficient,true,,rxn_5bfe69250255
+F + SO -> SOF,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_c9c7ad054217
+F + SO2 -> SO2F,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_275ea1423d5c
+F + SO2F -> SO2F2,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_ecb990bb00f1
+F + SOF -> SOF2,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_d3a5693674c0
+F + SOF2 -> SOF3,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_3178fdf9a766
+F + SOF3 -> SOF4,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_80e7f44d048b
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,neutral,associative_ionization,attested_only,0,pass,pass,pass,pass,unknown,-7.440389999999999,,,,true,,rxn_4f890c9f1ce9
+SOF4 -> F + SOF3,Neutral-impact dissociation,neutral,dissociation,attested_only,0,pass,pass,unknown,pass,unknown,,,,,true,,rxn_840ce4f8f791
+2 OF -> 2 F + O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-0.6108340000000001,-0.9905130585372376,,rate_coefficient,true,,rxn_3fd7fc6eb871
+2 OF -> F2 + O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-2.256142,-2.1493261056269763,,rate_coefficient,true,,rxn_15283e9b47bc
+2 SF -> S + SF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_c6b15919995b
+2 SF3 -> SF2 + SF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,,-0.4943148429876641,,rate_coefficient,true,,rxn_f0863ea7cc36
+2 SF5 -> SF4 + SF6,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-1.7287599999999976,-1.6513838826085525,,rate_coefficient,true,,rxn_b9152eee2ba6
+O + F2 -> F + OF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-0.6323519999999998,-0.6848389074990747,,rate_coefficient,true,,rxn_43434e2fb943
+O + OF -> F + O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-2.8884939999999997,-2.8341650131260505,,rate_coefficient,true,,rxn_96c427471270
+O + SF -> F + SO,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,,-1.8227082927748417,,rate_coefficient,true,,rxn_9e9b7bce706a
+O + SF -> SOF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_377aaf89c3ff
+O + SF2 -> F + SOF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_30b0b545871f
+O + SF2 -> SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-5.14585,-4.565123010556577,,rate_coefficient,true,,rxn_fad7033783b1
+O + SF3 -> F + SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,,-2.1484451169363243,,rate_coefficient,true,,rxn_281b3b5b2bb5
+O + SF3 -> SOF3,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_d7c8fa42f296
+O + SF4 -> SOF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_08c48b5134c6
+O + SF5 -> F + SOF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_8491aa21f02a
+O + SO -> SO2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-5.724487,-5.150187573095953,,rate_coefficient,true,,rxn_53db127e6a2c
+O + SO2F2 -> O2 + SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-0.3584910000000008,-0.5217083671722778,,rate_coefficient,true,,rxn_dece05c03842
+O + SOF -> F + SO2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_91b40ed25f0a
+O + SOF2 -> SO2F2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-4.807662999999999,-4.156108600542589,,rate_coefficient,true,,rxn_b019ee525e19
+O + SOF3 -> F + SO2F2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_598ff281bd1e
+O(¹D₂) + F2 -> F + OF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-2.5988749999999996,,,rate_coefficient,true,,rxn_1b2a2d78690b
+O(¹D₂) + O2 -> O2(a¹Δg) + O,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-0.9895230000000002,,,rate_coefficient,true,,rxn_7305fd87ad82
+O(¹D₂) + O2 -> O2(b¹Σg+) + O,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-0.3395229999999998,,,rate_coefficient,true,,rxn_975e581a4893
+O(¹D₂) + OF -> F + O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-4.855017,,,rate_coefficient,true,,rxn_ec4e7fcd004a
+O(¹D₂) + SF -> F + SO,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_a07ca5fa738a
+O(¹D₂) + SF -> SOF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_69ffb02e80ad
+O(¹D₂) + SF2 -> F + SOF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_94720177c316
+O(¹D₂) + SF2 -> SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-7.112373000000001,,,rate_coefficient,true,,rxn_0fec93f8715f
+O(¹D₂) + SF3 -> F + SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_ecc129e89499
+O(¹D₂) + SF3 -> SOF3,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_29ab5c9fa6ac
+O(¹D₂) + SF4 -> SOF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_1f1b9a7ed3c7
+O(¹D₂) + SF5 -> F + SOF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_bf56ab4a0b14
+O(¹D₂) + SO -> SO2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-7.6910099999999995,,,rate_coefficient,true,,rxn_8200ce02168a
+O(¹D₂) + SO2F2 -> O2 + SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-2.3250140000000012,,,rate_coefficient,true,,rxn_78cbf6463ee3
+O(¹D₂) + SOF -> F + SO2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_ec5e4fd220a5
+O(¹D₂) + SOF2 -> SO2F2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-6.774185999999999,,,rate_coefficient,true,,rxn_ca4a817b1d6d
+O(¹D₂) + SOF3 -> F + SO2F2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_4511f0d76351
+O2(a¹Δg) + O2 -> 2 O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,unknown,-0.977,,,,true,,rxn_2d2ad8dab8bd
+S + F2 -> F + SF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,,,,rate_coefficient,true,,rxn_e741df540cef
+SF + F2 -> F + SF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,,-2.342852041376564,,rate_coefficient,true,,rxn_ede25873bb47
+SF2 + F2 -> F + SF3,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,,-1.2578648465305144,,rate_coefficient,true,,rxn_467c6f7a4496
+SF3 + F2 -> F + SF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,,-1.7521796895181783,,rate_coefficient,true,,rxn_be8d06d1c8c9
+SF4 + F2 -> F + SF5,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-0.6827560000000004,-0.5268932656483911,,rate_coefficient,true,,rxn_24fd15d4f6bb
+SF5 + F2 -> F + SF6,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,-2.411515999999999,-2.1782771482569436,,rate_coefficient,true,,rxn_d2af76c89858
+2 O + M -> O2 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,pass,unknown,-5.166154,-4.677816967714865,,,true,,rxn_ba3ba6b31781
+F + SF5 + M -> SF6 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,unknown,unknown,-4.056823999999999,-3.3370901953466827,,,true,,rxn_f3f0a2fc02a1
+SF4 + F2 + M -> SF6 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,unknown,unknown,-4.739579999999999,-3.863983460995074,,,true,,rxn_7a7e9edec03a
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_89b3c1f5c922
+Ar(m) + F -> F+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_f98e65819a12
+Ar(m) + F2 -> F2+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_558cafb64dcf
+Ar(m) + O -> O+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_664ed39e8711
+Ar(m) + O2 -> O2+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_5e4e401081e7
+Ar(m) + SF4 -> SF4+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_8fc9823a84db
+Ar(m) + SF5 -> SF5+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,pass,unknown,unknown,,,,,true,,rxn_1c2915a03275
+Ar(m) + SF6 -> SF6+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_fb79ded31646
+O2* + Ar -> Ar+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_6fbef0792ecd
+O2* + F -> F+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_5fbfa5c5a556
+O2* + F2 -> F2+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d4a39fa91b8b
+O2* + O -> O+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_97e7f57e6baa
+O2* + O2 -> O2+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_1afa97c5ae80
+O2* + SF4 -> SF4+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_15d2152a8167
+O2* + SF5 -> SF5+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_b43efc93f128
+O2* + SF6 -> SF6+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_79b1bb4f4e37
+SF6* + Ar -> Ar+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_69738c580a74
+SF6* + F -> F+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_398a57349134
+SF6* + F2 -> F2+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_38f0ea04e1cb
+SF6* + O -> O+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_21b51d39f9a2
+SF6* + O2 -> O2+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_85fcd290dfd0
+SF6* + SF4 -> SF4+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_996d4e2f782c
+SF6* + SF5 -> SF5+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d4b5e2674268
+SF6* + SF6 -> SF6+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d7e646284a83
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a9821670c330
+Ar(m) + F -> Ar + F,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_9998e67277f7
+Ar(m) + F2 -> Ar + F2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d0f99c83396a
+Ar(m) + O -> Ar + O,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_cd3f064c57e9
+Ar(m) + O2 -> Ar + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d033903105a0
+Ar(m) + O2(v) -> O2(v) + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3238e70d569e
+Ar(m) + O2* -> Ar(m) + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_0664702fc8b3
+Ar(m) + O2* -> O2* + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_8ebdaeab3d31
+Ar(m) + SF4 -> Ar + SF4,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_afa3bd036177
+Ar(m) + SF5 -> Ar + SF5,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d73ca7152550
+Ar(m) + SF6 -> Ar + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_e7b1024f6460
+Ar(m) + SF6(v) -> SF6(v) + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_8d52517f39fb
+Ar(m) + SF6* -> Ar(m) + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4436c900b13c
+Ar(m) + SF6* -> SF6* + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_05fe191d14d9
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_cc4cbdb651ed
+Ar(r) + F -> Ar + F,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_1c5abc924591
+Ar(r) + F2 -> Ar + F2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ee6e7218462c
+Ar(r) + O -> Ar + O,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_2d3b511c5644
+Ar(r) + O2 -> Ar + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_fa54f8a8e792
+Ar(r) + O2(v) -> O2(v) + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_f93bf35caf1e
+Ar(r) + O2* -> Ar(r) + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4ad9cf30bc80
+Ar(r) + O2* -> O2* + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_dc471d9f9a8c
+Ar(r) + SF4 -> Ar + SF4,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_96306b581261
+Ar(r) + SF5 -> Ar + SF5,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_81a2d1a7e93f
+Ar(r) + SF6 -> Ar + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_7fa08d87c6a0
+Ar(r) + SF6(v) -> SF6(v) + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5a6066ea9c77
+Ar(r) + SF6* -> Ar(r) + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_380ea194d608
+Ar(r) + SF6* -> SF6* + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a436140feb6d
+O2(v) + SF6* -> O2(v) + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d3e61e5a505d
+O2* + Ar -> Ar + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_470de7c7998a
+O2* + F -> F + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ca6e817ada3a
+O2* + F2 -> F2 + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d1f3dbc4708f
+O2* + O -> O + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_953abc47a76a
+O2* + O2 -> 2 O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3d41fa9089a3
+O2* + O2(v) -> O2(v) + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_c561bbf02430
+O2* + SF4 -> SF4 + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3392e0995ea4
+O2* + SF5 -> SF5 + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ddab5075d338
+O2* + SF6 -> O2 + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_000226fc6367
+O2* + SF6(v) -> SF6(v) + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a05bb65a1d92
+O2* + SF6* -> O2* + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a1dac18fcc75
+O2* + SF6* -> SF6* + O2,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ac1e3b443563
+SF6* + Ar -> Ar + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_96ad5ab9d80e
+SF6* + F -> F + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_58d565e7eb1b
+SF6* + F2 -> F2 + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_294e3c960eb7
+SF6* + O -> O + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_471b61ca7da2
+SF6* + O2 -> O2 + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_654905af9bb1
+SF6* + SF4 -> SF4 + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_8bb65db1753c
+SF6* + SF5 -> SF5 + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_2bf4fdbf7df9
+SF6* + SF6 -> 2 SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_c5c496f6f37e
+SF6* + SF6(v) -> SF6(v) + SF6,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5af725758125
+F + O2 -> O + OF,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,2.8884939999999997,2.8341650131260505,,,true,,rxn_1666ef8795a6
+F + SF4 -> SF3 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,,1.7521796895181783,,,true,,rxn_39174d2640ae
+F + SF5 -> SF4 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,0.6827559999999995,0.5268932656483913,,,true,,rxn_a046e8752fbb
+F + SF6 -> SF5 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,2.411515999999999,2.1782771482569436,,,true,,rxn_7d39e94932cd
+O + F2 -> F + OF,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,-0.6323519999999998,-0.6848389074990747,,,true,,rxn_7796bc74ef60
+O + SF4 -> OF + SF3,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,,1.067340782019103,,,true,,rxn_4178dd815947
+O + SF5 -> OF + SF4,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,0.05040400000000034,-0.15794564185068385,,,true,,rxn_a28567b1d681
+O + SF6 -> OF + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,1.7791639999999997,1.493438240757869,,,true,,rxn_c5b700b0169c
+O2(v) + F -> O + OF,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_37d9758affce
+O2(v) + SF4 -> O2F + SF3,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5fd131d8901b
+O2(v) + SF5 -> O2F + SF4,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_49825dfd074c
+O2* + F -> O + OF,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_983ccf122816
+O2* + SF4 -> O2F + SF3,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a8cf9e939373
+O2* + SF5 -> O2F + SF4,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_cbf048ba24ba
+SF4 + O2 -> O2F + SF3,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_327bcecf67a4
+SF4 + SF6 -> 2 SF5,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,1.7287599999999994,1.6513838826085525,,,true,,rxn_f26bc3222b90
+SF5 + O2 -> O2F + SF4,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_21c36a32b56c
+SF6(v) + F -> SF5 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_8974a6b692a9
+SF6(v) + O -> OF + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5730b415c952
+SF6(v) + SF4 -> 2 SF5,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_fea4af669851
+SF6* + F -> SF5 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_68008ab11b34
+SF6* + O -> OF + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_abded30c5fe2
+SF6* + SF4 -> 2 SF5,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_1be3ed8a6ee8
+2 F + M -> F2 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,pass,unknown,-1.645308,-1.158813047089739,,,true,,rxn_e001c2cfb313
+F + SF3 + M -> SF4 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,,-2.9109927366079167,,,true,,rxn_7ab88b74bf77
+F + SF4 + M -> SF5 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,-2.3280640000000004,-1.6857063127381302,,,true,,rxn_ec785adf412b
+SF2 + F2 + M -> SF4 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,-4.83545,-4.168857583138431,,,true,,rxn_10ffc203a800
+SF3 + F2 + M -> SF5 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,,-3.437886002256308,,,true,,rxn_fd4d4c321d63
+Ar(m) + O2(v) -> Ar(m) + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_6ca88b0a54fa
+Ar(m) + SF6(v) -> Ar(m) + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_f9df7a852b1b
+Ar(r) + O2(v) -> Ar(r) + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_813c0cfa7ce0
+Ar(r) + SF6(v) -> Ar(r) + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_817e720e6dae
+O2(v) + Ar -> Ar + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d24c19b6e6eb
+O2(v) + F -> F + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_6db7dde5032a
+O2(v) + F2 -> F2 + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_182cf6d696ed
+O2(v) + O -> O + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_f5c7d2b1a05f
+O2(v) + O2 -> 2 O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5fcbcf3fc37b
+O2(v) + SF4 -> SF4 + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3f9d8854ad1e
+O2(v) + SF5 -> SF5 + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_c81a5b287d73
+O2(v) + SF6 -> O2 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_56b9092eac05
+O2(v) + SF6(v) -> O2(v) + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_7f1c35f76d1a
+O2(v) + SF6(v) -> SF6(v) + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4a54bb736f2c
+O2(v) + SF6* -> SF6* + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ab7e3282b8f6
+O2* + O2(v) -> O2* + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_51dcf606e214
+O2* + SF6(v) -> O2* + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a95426cb7241
+SF6(v) + Ar -> Ar + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_98bf7df9b930
+SF6(v) + F -> F + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_82c70784babd
+SF6(v) + F2 -> F2 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_cef54f58301b
+SF6(v) + O -> O + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_6614d312d150
+SF6(v) + O2 -> O2 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4112717f56b0
+SF6(v) + SF4 -> SF4 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4c55253a0321
+SF6(v) + SF5 -> SF5 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a9cad4a41920
+SF6(v) + SF6 -> 2 SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_13fea2d7eef9
+SF6* + SF6(v) -> SF6* + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_9cc02e476aeb
+Ar(m) + O2F -> O2F+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_8a8fec865d19
+Ar(m) + OF -> OF+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a86cde27f56f
+Ar(m) + SF2 -> SF2+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_197bd712673b
+Ar(m) + SF3 -> SF3+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,pass,unknown,unknown,,,,,true,,rxn_db259f2d4b1d
+Ar(m) + SOF5 -> SOF5+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4d733362703d
+O2* + O2F -> O2F+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_1175cf429eda
+O2* + OF -> OF+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_05e1b97d00d2
+O2* + SF2 -> SF2+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a950e6f8b7dd
+O2* + SF3 -> SF3+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_21c4b1486345
+O2* + SOF5 -> SOF5+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_6b88208dcf39
+SF6* + O2F -> O2F+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_98485326f976
+SF6* + OF -> OF+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3fd2ade2e78c
+SF6* + SF2 -> SF2+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_edac4384beb0
+SF6* + SF3 -> SF3+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_00bc71988b9f
+SF6* + SOF5 -> SOF5+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ee556fd13c70
+Ar(m) + O2F -> Ar + O2F,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_22326ba6724e
+Ar(m) + OF -> Ar + OF,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_fb088eae96a2
+Ar(m) + SF2 -> Ar + SF2,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_cf1d0a63befb
+Ar(m) + SF3 -> Ar + SF3,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_74d240eb9b34
+Ar(m) + SOF5 -> Ar + SOF5,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_bd43a3e6ffbc
+Ar(r) + O2F -> Ar + O2F,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d54efd5f1211
+Ar(r) + OF -> Ar + OF,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_bf5cba8df6bf
+Ar(r) + SF2 -> Ar + SF2,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_de24576e2b40
+Ar(r) + SF3 -> Ar + SF3,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_1cf6e7789a2c
+Ar(r) + SOF5 -> Ar + SOF5,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_839b587ea00c
+O2* + O2F -> O2F + O2,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d8901bd6cb78
+O2* + OF -> OF + O2,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_013592c757d5
+O2* + SF2 -> SF2 + O2,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_c952e179ae62
+O2* + SF3 -> SF3 + O2,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_2a9ef42678c9
+O2* + SOF5 -> SOF5 + O2,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_601a4a03830f
+SF6* + O2F -> O2F + SF6,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_564a326bb7e2
+SF6* + OF -> OF + SF6,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_85a1dd174c27
+SF6* + SF2 -> SF2 + SF6,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_27dda91d8658
+SF6* + SF3 -> SF3 + SF6,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_df11f0edba47
+SF6* + SOF5 -> SOF5 + SF6,Excited-state quenching,neutral,quenching,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_429ba17c5fff
+F + O2F -> 2 OF,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4327084d9cac
+F + SF2 -> SF + F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,,2.342852041376564,,,true,,rxn_d398f35c9e7f
+F + SF3 -> SF2 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,,1.2578648465305144,,,true,,rxn_97b17d8b1307
+O + SF2 -> OF + SF,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,,1.6580131338774893,,,true,,rxn_51a42b156845
+O + SF3 -> OF + SF2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,,0.5730259390314388,,,true,,rxn_21fc1e0b5cd9
+O2(v) + SF2 -> O2F + SF,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_7db8fc0567d7
+O2(v) + SF3 -> O2F + SF2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_7604783acda5
+O2* + SF2 -> O2F + SF,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_b1dd6eaaae62
+O2* + SF3 -> O2F + SF2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_0e0d54748653
+O2F + F2 -> OF + OF2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5f95ebeb4e91
+O2F + O -> OF + O2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_2c6757e192e6
+O2F + SF3 -> SF2 + O2F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d1d6aeec131d
+O2F + SF4 -> SF3 + O2F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_eae0c5d8c4fb
+O2F + SF5 -> SF4 + O2F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_fb62ce407899
+O2F + SF6 -> SF5 + O2F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_598d2fd899ee
+SF2 + O2 -> O2F + SF,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d7181de15be2
+SF2 + SF4 -> 2 SF3,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,,0.4943148429876641,,,true,,rxn_162ee4941331
+SF2 + SF5 -> SF3 + SF4,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,,-0.7309715808821227,,,true,,rxn_2df9e6ff91a8
+SF2 + SF6 -> SF3 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,,0.9204123017264301,,,true,,rxn_f984a8f06d36
+SF3 + O2 -> O2F + SF2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_44010bcf43dd
+SF3 + SF5 -> 2 SF4,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,,-1.2252864238697867,,,true,,rxn_2b1bcab815cb
+SF3 + SF6 -> SF4 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,,0.4260974587387655,,,true,,rxn_811df43df65e
+SF6(v) + O2F -> SF5 + O2F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_0673a17ced4a
+SF6(v) + SF2 -> SF3 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_bb292d424d29
+SF6(v) + SF3 -> SF4 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_14454c5b1508
+SF6* + O2F -> SF5 + O2F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ae6c7075d52b
+SF6* + SF2 -> SF3 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_7da911535b73
+SF6* + SF3 -> SF4 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_b3e1ce7875bd
+F + O + M -> OF + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,-2.27766,-1.843651954588814,,,true,,rxn_a0ae3f2f2b97
+F + O2 + M -> O2F + M,Three-body association,neutral,three_body_association,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_15edf707b328
+F + SF + M -> SF2 + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,,-3.5016650884663028,,,true,,rxn_368e63fa8efc
+F + SF2 + M -> SF3 + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,,-2.416677893620253,,,true,,rxn_a1cccfd39500
+O + OF + M -> O2F + M,Three-body association,neutral,three_body_association,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_c1fb5abd39f1
+S + F2 + M -> SF2 + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,-5.9475370000000005,,,,true,,rxn_3171303b13d7
+SF + F2 + M -> SF3 + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,,-4.7595299349968165,,,true,,rxn_256eefe30c6c
+O2(v) + O2F -> O2F + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_639cfa65771c
+O2(v) + OF -> OF + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3f4173a9298e
+O2(v) + SF2 -> SF2 + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_dde59fedc77e
+O2(v) + SF3 -> SF3 + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_95c2249dc6e8
+O2(v) + SOF5 -> SOF5 + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_c69f5b570653
+SF6(v) + O2F -> O2F + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_eee1f6c871df
+SF6(v) + OF -> OF + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_2a7555ab2760
+SF6(v) + SF2 -> SF2 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_2ac93b0af16c
+SF6(v) + SF3 -> SF3 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5914f684a09b
+SF6(v) + SOF5 -> SOF5 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,3,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4264918067f1
+Ar(m) + O2F2 -> O2F2+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3d7502134436
+Ar(m) + OF2 -> OF2+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_7d08e4d3e216
+Ar(m) + S -> S+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,pass,unknown,unknown,,,,,true,,rxn_be8610b69742
+Ar(m) + SF -> SF+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_2ecd76cfdd0b
+Ar(m) + SOF3 -> SOF3+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ed1f442785b5
+Ar(m) + SOF4 -> SOF4+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_79747a1f5257
+O2* + O2F2 -> O2F2+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_42b39b939000
+O2* + OF2 -> OF2+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d32a0d209522
+O2* + S -> S+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_044692e0a013
+O2* + SF -> SF+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_2fa14c767d74
+O2* + SOF3 -> SOF3+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_fcb22eade06d
+O2* + SOF4 -> SOF4+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_345f6c0ce7d5
+SF6* + O2F2 -> O2F2+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_b1a375507032
+SF6* + OF2 -> OF2+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_e9f9519a6d83
+SF6* + S -> S+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_1ac1a284feb1
+SF6* + SF -> SF+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_e9f156a5fe74
+SF6* + SOF3 -> SOF3+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_484b6cf357c4
+SF6* + SOF4 -> SOF4+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_aea60fe6fd22
+Ar(m) + O2F2 -> Ar + O2F2,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_fa5f1f3bf193
+Ar(m) + OF2 -> Ar + OF2,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_03ecd8445926
+Ar(m) + S -> Ar + S,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_423820d9fd3e
+Ar(m) + SF -> Ar + SF,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_e567c3c70d21
+Ar(m) + SOF3 -> Ar + SOF3,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_e0e628b698d7
+Ar(m) + SOF4 -> Ar + SOF4,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_fea10c34e485
+Ar(r) + O2F2 -> Ar + O2F2,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3a21a3b7bfe4
+Ar(r) + OF2 -> Ar + OF2,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_8cf9ba45d3ea
+Ar(r) + S -> Ar + S,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_b6e7b0ec8a1e
+Ar(r) + SF -> Ar + SF,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ceea8d2f079b
+Ar(r) + SOF3 -> Ar + SOF3,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_af4efb152edd
+Ar(r) + SOF4 -> Ar + SOF4,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_44ce0cb0965f
+O2* + O2F2 -> O2 + O2F2,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ae78cdb77df2
+O2* + OF2 -> O2 + OF2,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_05003f8d527a
+O2* + S -> S + O2,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_00ab8d1bccbf
+O2* + SF -> SF + O2,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_82a113cc8661
+O2* + SOF3 -> SOF3 + O2,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_39e364adf5ab
+O2* + SOF4 -> O2 + SOF4,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_97f1179c8d09
+SF6* + O2F2 -> O2F2 + SF6,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_946ae9ad0103
+SF6* + OF2 -> OF2 + SF6,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a38a45a0c1df
+SF6* + S -> S + SF6,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_c358c4fa150c
+SF6* + SF -> SF + SF6,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a891a3fbe47c
+SF6* + SOF3 -> SOF3 + SF6,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_0ace8b270afc
+SF6* + SOF4 -> SF6 + SOF4,Excited-state quenching,neutral,quenching,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_60bc9af937ec
+F + SF -> S + F2,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_8de219796feb
+O + SF -> OF + S,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_8bd1d113ba41
+O2(v) + S -> O + SO,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_1b459037ff92
+O2* + S -> O + SO,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5f1929b590a0
+O2F + S -> OF + SO,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ece21d32411c
+O2F + SF -> OF + SOF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_d2e122030b2a
+OF + S -> O + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_d5e76a18cc93
+S + F2 -> F + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_9f129fa1c62b
+S + O2 -> O + SO,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,-0.22460400000000025,,,,true,,rxn_a3d30f18cba9
+S + SF2 -> 2 SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_4b489472ff8b
+S + SF3 -> SF2 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_b29b3fbb764d
+S + SF4 -> SF3 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_bdb013943eee
+S + SF5 -> SF4 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_113469fcd367
+S + SF6 -> SF5 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_cdcae9588a16
+SF + SF6 -> SF2 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,,-0.1645748931196212,,,true,,rxn_3a1681def8e9
+SF3 + SF -> 2 SF2,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,,-1.0849871948460499,,,true,,rxn_c1eb13ac71db
+SF4 + SF -> SF2 + SF3,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,,-0.5906723518583867,,,true,,rxn_3909e22c35c4
+SF5 + SF -> SF2 + SF4,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,,-1.8159587757281737,,,true,,rxn_d09b618fe5e7
+SF6(v) + S -> SF5 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_7e62eb09db4f
+SF6(v) + SF -> SF2 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a4cd655a20f6
+SF6* + S -> SF5 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_0b32bdf57cd8
+SF6* + SF -> SF2 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_0840967bf3bc
+F + OF + M -> OF2 + M,Three-body association,neutral,three_body_association,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_1afc8c62d031
+F + S + M -> SF + M,Three-body association,neutral,three_body_association,mechanical,4,pass,pass,unknown,unknown,unknown,,,,,true,,rxn_5cee3a92bf14
+O + F2 + M -> OF2 + M,Three-body association,neutral,three_body_association,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_c9c09a65bc5c
+O2(v) + O2F2 -> O2 + O2F2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_35894de95191
+O2(v) + OF2 -> O2 + OF2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_05bdccf828b8
+O2(v) + S -> S + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_995b394ed33a
+O2(v) + SF -> SF + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_969bd6f0ba02
+O2(v) + SOF3 -> SOF3 + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_12ce13444e67
+O2(v) + SOF4 -> O2 + SOF4,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_1706a658d341
+SF6(v) + O2F2 -> O2F2 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4cc334b85118
+SF6(v) + OF2 -> OF2 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_e7cfc49267ca
+SF6(v) + S -> S + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_09ac25fae1b9
+SF6(v) + SF -> SF + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_71409edda06d
+SF6(v) + SOF3 -> SOF3 + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_841ded806d7d
+SF6(v) + SOF4 -> SF6 + SOF4,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,4,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_57947f41cdb8
+Ar(m) + SO -> SO+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_517b41c6bfe9
+Ar(m) + SOF -> SOF+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_24b83a59146f
+O2* + SO -> SO+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_64aa3d9c708a
+O2* + SOF -> SOF+ + O2 + e,Penning ionization,neutral,penning_ionization,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_eeea80e33863
+SF6* + SO -> SO+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_3d27af8ed879
+SF6* + SOF -> SOF+ + SF6 + e,Penning ionization,neutral,penning_ionization,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_0105b2125b79
+Ar(m) + SO -> Ar + SO,Excited-state quenching,neutral,quenching,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_959b9cc2ace7
+Ar(m) + SOF -> Ar + SOF,Excited-state quenching,neutral,quenching,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_dff453de9215
+Ar(r) + SO -> Ar + SO,Excited-state quenching,neutral,quenching,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a77d59472721
+Ar(r) + SOF -> Ar + SOF,Excited-state quenching,neutral,quenching,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_8cf502917625
+O2* + SO -> O2 + SO,Excited-state quenching,neutral,quenching,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_dbc77b821852
+O2* + SOF -> SOF + O2,Excited-state quenching,neutral,quenching,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_db5937f6db16
+SF6* + SO -> SF6 + SO,Excited-state quenching,neutral,quenching,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_7125f7b46d71
+SF6* + SOF -> SOF + SF6,Excited-state quenching,neutral,quenching,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_61cc94f0374d
+O + S + M -> SO + M,Three-body association,neutral,three_body_association,mechanical,5,pass,pass,pass,unknown,unknown,-5.390758,,,,true,,rxn_c7688fda2c3e
+O2(v) + SO -> O2 + SO,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_f37f5b5c6ab3
+O2(v) + SOF -> SOF + O2,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_864bec55d17c
+SF6(v) + SO -> SF6 + SO,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_f24b17ff3897
+SF6(v) + SOF -> SOF + SF6,Vibrational-translational (V-T) relaxation,neutral,v_t_relaxation,mechanical,5,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_280329400807

@@ -2,20 +2,20 @@ schema_version: 1
 id: Ar_4s
 display_name: Ar(4s)
 aliases:
-- Ar*
-- Ar(1s5)
-- argon metastable
+- Ar(4s)
+- argon 4s manifold
 composition:
   Ar: 1
 charge: 0
 classes:
 - neutral
 - atom
-- metastable
 - excited
+- mixed_lifetime
 state:
   kind: excited
-  label: 3p5 4s manifold
+  label: 4s
+  configuration: 3p5 4s
   excitation_energy_eV: 11.6
   resolution: lumped
   members:
@@ -60,8 +60,10 @@ metadata:
   notes:
   - The four 3p5 4s levels (1s5 11.548, 1s4 11.624, 1s3 11.723, 1s2 11.828 eV in NIST
     ASD) are carried as one lumped manifold at 11.6 eV.
-  - Two of the four levels are metastable; resolving them requires separate radiative
-    and quenching data and must replace this record, not sit beside it.
+  - Two levels are metastable and two are resonant. This mixed umbrella is compatible
+    evidence for Ar(m) and Ar(r), but exact evidence for neither submanifold.
+  - Resolving the manifold requires separate radiative and quenching data and must
+    replace the umbrella in a numerical selection, not sit beside it.
   - Collision radius and polarizability of the excited state are acquisition gaps.
 thermo:
   high:

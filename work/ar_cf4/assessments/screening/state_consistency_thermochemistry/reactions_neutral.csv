@@ -1,0 +1,29 @@
+equation,reaction_type,family,process,origin,depth,state_verdict,consistency_verdict,thermochemistry_verdict,kinetics_verdict,reaction_evidence_verdict,kinetics_or_reaction_evidence_verdict,accepted_by,id
+2 CF2 -> C2F4,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_abc5c865f438
+CF + F -> CF2,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_d1e2eaf8406e
+CF2 + F -> CF3,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_82ec7771ab72
+CF3 + F -> CF4,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_060cde25fd8a
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,neutral,associative_ionization,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_4f890c9f1ce9
+CF + F2 -> CF2 + F,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_1e8be1d17031
+CF2 + F2 -> CF3 + F,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_93c29d07ff57
+CF3 + F2 -> F + CF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_cff50cb52bbd
+F + C2F4 -> CF2 + CF3,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_5960d80dc648
+CF2 + F2 + M -> CF4 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,unknown,unknown,unknown,,rxn_08fbbd0367ab
+CF3 + F + M -> CF4 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,unknown,unknown,unknown,,rxn_fae2a35c3cf8
+CF2 + CF4 -> 2 CF3,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_3545ea328875
+CF2 + F -> CF + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_3005c462ddb7
+CF3 + F -> CF2 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_452ed18f6320
+F + CF4 -> CF3 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_f1c358dc9776
+2 F + M -> F2 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_e001c2cfb313
+C + F2 + M -> CF2 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_c0713fcb91a6
+CF + F + M -> CF2 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_b8a576033f18
+CF + F2 + M -> CF3 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_af1aab2bfc75
+CF2 + F + M -> CF3 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_2aaaf2106aea
+C + CF2 -> 2 CF,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_c99d7e5a69fd
+C + CF3 -> CF2 + CF,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_2b2bdc346e7f
+C + CF4 -> CF3 + CF,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_e8152b8eb458
+C + F2 -> CF + F,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_6c4f2888e3e2
+CF + CF4 -> CF2 + CF3,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_23113cd63538
+CF + F -> C + F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_3c2eeb8f47bd
+CF3 + CF -> 2 CF2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_62c12947d4fe
+C + F + M -> CF + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_751ff33f93b2

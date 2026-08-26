@@ -1,0 +1,11 @@
+entity,step,applicability,input,retained,rejected_at_step,total,retained_percent
+state,all,applied,37,37,0,37,100.0
+state,state,applied,37,26,11,37,70.27
+state,consistency,applied,26,26,0,37,70.27
+state,thermochemistry,applied,26,17,9,37,45.946
+state,kinetics_or_reaction_evidence,not_applicable,17,17,0,37,45.946
+reaction,all,applied,906,906,0,906,100.0
+reaction,state,applied,906,418,488,906,46.137
+reaction,consistency,applied,418,418,0,906,46.137
+reaction,thermochemistry,applied,418,196,222,906,21.634
+reaction,kinetics_or_reaction_evidence,applied,196,47,149,906,5.188

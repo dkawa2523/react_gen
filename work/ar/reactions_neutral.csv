@@ -1,0 +1,7 @@
+equation,reaction_type,family,process,origin,depth,consistency_verdict,state_verdict,thermochemistry_verdict,reaction_evidence_verdict,kinetics_verdict,delta_h_eV,delta_g_eV,threshold_eV,kinetic_data,selected,exclusion_reason,id
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,neutral,associative_ionization,attested_only,0,pass,pass,pass,pass,unknown,-7.440389999999999,,,,true,,rxn_4f890c9f1ce9
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,neutral,penning_ionization,mechanical,2,pass,unknown,fail,unknown,unknown,,,,,true,,rxn_89b3c1f5c922
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_a9821670c330
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,neutral,quenching,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_cc4cbdb651ed

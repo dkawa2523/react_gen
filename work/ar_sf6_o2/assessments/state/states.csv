@@ -1,0 +1,84 @@
+candidate,excitation,resolution,lifetime_class,state_meaning,alternative_resolution_states,evidence,verdict,reason,id
+Ar,ground,resolved,not_applicable,electronic ground state,,exact: Ar,pass,an exact reviewed state record exists,Ar@ground
+Ar(4s),electronic,lumped,mixed_metastable_resonant,4s electronic-state manifold (lumped; mixed metastable/resonant),,exact: Ar_4s,pass,an exact reviewed state record exists,Ar@4s
+O(¹D₂),electronic,resolved,metastable,resolved spectroscopic state ¹D₂,,exact: O_1D,pass,an exact reviewed state record exists,O@1d2
+O(¹S),electronic,resolved,metastable,resolved spectroscopic state ¹S,,exact: O_1S,pass,an exact reviewed state record exists,O@1s
+O2,ground,resolved,not_applicable,electronic ground state,,exact: O2,pass,an exact reviewed state record exists,O2@ground
+O2(a¹Δg),electronic,resolved,metastable,resolved spectroscopic state a¹Δg,O2*,exact: O2_a1Delta,pass,an exact reviewed state record exists,O2@a1dg
+O2(b¹Σg+),electronic,resolved,metastable,resolved spectroscopic state b¹Σg+,O2*,exact: O2_b1Sigma,pass,an exact reviewed state record exists,O2@b1sg+
+S(¹D),electronic,resolved,metastable,resolved spectroscopic state ¹D,,exact: S_1D,pass,an exact reviewed state record exists,S@1d
+S(¹S),electronic,resolved,metastable,resolved spectroscopic state ¹S,,exact: S_1S,pass,an exact reviewed state record exists,S@1s
+SF6,ground,resolved,not_applicable,electronic ground state,,exact: SF6,pass,an exact reviewed state record exists,SF6@ground
+SO2,ground,resolved,not_applicable,electronic ground state,,exact: SO2,pass,an exact reviewed state record exists,SO2@ground
+SO2F,ground,resolved,not_applicable,electronic ground state,,exact: SO2F,pass,an exact reviewed state record exists,SO2F@ground
+SO2F2,ground,resolved,not_applicable,electronic ground state,,exact: SO2F2,pass,an exact reviewed state record exists,SO2F2@ground
+SOF2,ground,resolved,not_applicable,electronic ground state,,exact: SOF2,pass,an exact reviewed state record exists,SOF2@ground
+e,electron,resolved,not_applicable,free electron,,exact: e,pass,electron is explicitly represented,e
+Ar(m),electronic,lumped,metastable,metastable electronic-state manifold (lumped),,compatible: Ar_4s,unknown,related state records exist but do not attest this candidate representation,Ar@metastable
+Ar(r),electronic,lumped,resonant_radiative,resonant radiative electronic-state manifold (lumped),,compatible: Ar_4s,unknown,related state records exist but do not attest this candidate representation,Ar@resonant
+Ar+,ground,resolved,not_applicable,electronic ground state,,exact: Ar+,pass,an exact reviewed state record exists,Ar+@ground
+Ar-,ground,resolved,not_applicable,electronic ground state,,none,fail,electron affinity evidence excludes a bound parent anion,Ar-@ground
+F,ground,resolved,not_applicable,electronic ground state,,exact: F,pass,an exact reviewed state record exists,F@ground
+F-,ground,resolved,not_applicable,electronic ground state,,exact: F-,pass,an exact reviewed state record exists,F-@ground
+F2,ground,resolved,not_applicable,electronic ground state,,exact: F2,pass,an exact reviewed state record exists,F2@ground
+F2-,ground,resolved,not_applicable,electronic ground state,,exact: F2-,pass,an exact reviewed state record exists,F2-@ground
+O,ground,resolved,not_applicable,electronic ground state,,exact: O,pass,an exact reviewed state record exists,O@ground
+O+,ground,resolved,not_applicable,electronic ground state,,exact: O+,pass,an exact reviewed state record exists,O+@ground
+O-,ground,resolved,not_applicable,electronic ground state,,exact: O-,pass,an exact reviewed state record exists,O-@ground
+O2(v),vibrational,lumped,not_applicable,vibrationally excited manifold (lumped),,none,unknown,no state record matches this candidate,O2@vibrational
+O2*,electronic,lumped,unspecified,electronic-state manifold (lumped; lifetime unspecified),O2(a¹Δg); O2(b¹Σg+),compatible: O2_a1Delta; O2_b1Sigma,unknown,resolved alternatives exist; select one resolution before simulation,O2@electronic
+O2+,ground,resolved,not_applicable,electronic ground state,,exact: O2+,pass,an exact reviewed state record exists,O2+@ground
+O2-,ground,resolved,not_applicable,electronic ground state,,none,pass,positive electron affinity supports a bound parent anion,O2-@ground
+SF4,ground,resolved,not_applicable,electronic ground state,,exact: SF4,pass,an exact reviewed state record exists,SF4@ground
+SF4+,ground,resolved,not_applicable,electronic ground state,,exact: SF4+,pass,an exact reviewed state record exists,SF4+@ground
+SF4-,ground,resolved,not_applicable,electronic ground state,,exact: SF4-,pass,an exact reviewed state record exists,SF4-@ground
+SF5,ground,resolved,not_applicable,electronic ground state,,exact: SF5,pass,an exact reviewed state record exists,SF5@ground
+SF5+,ground,resolved,not_applicable,electronic ground state,,exact: SF5+,pass,an exact reviewed state record exists,SF5+@ground
+SF5-,ground,resolved,not_applicable,electronic ground state,,exact: SF5-,pass,an exact reviewed state record exists,SF5-@ground
+SF6(v),vibrational,lumped,not_applicable,vibrationally excited manifold (lumped),,none,unknown,no state record matches this candidate,SF6@vibrational
+SF6*,electronic,lumped,unspecified,electronic-state manifold (lumped; lifetime unspecified),,none,unknown,no state record matches this candidate,SF6@electronic
+SF6+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,SF6+@ground
+SF6-,ground,resolved,not_applicable,electronic ground state,,exact: SF6-,pass,an exact reviewed state record exists,SF6-@ground
+ArF+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,ArF+@ground
+ArF-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,ArF-@ground
+F+,ground,resolved,not_applicable,electronic ground state,,exact: F+,pass,an exact reviewed state record exists,F+@ground
+F2+,ground,resolved,not_applicable,electronic ground state,,exact: F2+,pass,an exact reviewed state record exists,F2+@ground
+O2F,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,O2F@ground
+O2F+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,O2F+@ground
+O2F-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,O2F-@ground
+OF,ground,resolved,not_applicable,electronic ground state,,exact: FO,pass,an exact reviewed state record exists,OF@ground
+OF+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,OF+@ground
+OF-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,OF-@ground
+SF2,ground,resolved,not_applicable,electronic ground state,,exact: SF2,pass,an exact reviewed state record exists,SF2@ground
+SF2+,ground,resolved,not_applicable,electronic ground state,,exact: SF2+,pass,an exact reviewed state record exists,SF2+@ground
+SF2-,ground,resolved,not_applicable,electronic ground state,,exact: SF2-,pass,an exact reviewed state record exists,SF2-@ground
+SF3,ground,resolved,not_applicable,electronic ground state,,exact: SF3,pass,an exact reviewed state record exists,SF3@ground
+SF3+,ground,resolved,not_applicable,electronic ground state,,exact: SF3+,pass,an exact reviewed state record exists,SF3+@ground
+SF3-,ground,resolved,not_applicable,electronic ground state,,exact: SF3-,pass,an exact reviewed state record exists,SF3-@ground
+SOF3+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,SOF3+@ground
+SOF3-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,SOF3-@ground
+SOF4+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,SOF4+@ground
+SOF4-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,SOF4-@ground
+SOF5,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,SOF5@ground
+SOF5+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,SOF5+@ground
+SOF5-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,SOF5-@ground
+O2F2,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,O2F2@ground
+OF2,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,OF2@ground
+S,ground,resolved,not_applicable,electronic ground state,,exact: S,pass,an exact reviewed state record exists,S@ground
+S+,ground,resolved,not_applicable,electronic ground state,,exact: S+,pass,an exact reviewed state record exists,S+@ground
+S-,ground,resolved,not_applicable,electronic ground state,,none,pass,positive electron affinity supports a bound parent anion,S-@ground
+SF,ground,resolved,not_applicable,electronic ground state,,exact: SF,pass,an exact reviewed state record exists,SF@ground
+SF+,ground,resolved,not_applicable,electronic ground state,,exact: SF+,pass,an exact reviewed state record exists,SF+@ground
+SF-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,SF-@ground
+SOF+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,SOF+@ground
+SOF-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,SOF-@ground
+SOF3,ground,resolved,not_applicable,electronic ground state,,exact: SOF3,pass,an exact reviewed state record exists,SOF3@ground
+SOF4,ground,resolved,not_applicable,electronic ground state,,exact: SOF4,pass,an exact reviewed state record exists,SOF4@ground
+O2F2+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,O2F2+@ground
+O2F2-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,O2F2-@ground
+OF2+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,OF2+@ground
+OF2-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,OF2-@ground
+SO,ground,resolved,not_applicable,electronic ground state,,exact: SO,pass,an exact reviewed state record exists,SO@ground
+SO+,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record matches this candidate,SO+@ground
+SO-,ground,resolved,not_applicable,electronic ground state,,none,unknown,no state record or electron affinity,SO-@ground
+SOF,ground,resolved,not_applicable,electronic ground state,,exact: SOF,pass,an exact reviewed state record exists,SOF@ground

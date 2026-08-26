@@ -1,0 +1,84 @@
+candidate,excitation,resolution,lifetime_class,state_meaning,alternative_resolution_states,verdict,reason,id
+Ar,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,Ar@ground
+Ar(4s),electronic,lumped,mixed_metastable_resonant,4s electronic-state manifold (lumped; mixed metastable/resonant),,pass,candidate representation is well formed,Ar@4s
+O(¹D₂),electronic,resolved,metastable,resolved spectroscopic state ¹D₂,,pass,candidate representation is well formed,O@1d2
+O(¹S),electronic,resolved,metastable,resolved spectroscopic state ¹S,,pass,candidate representation is well formed,O@1s
+O2,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O2@ground
+O2(a¹Δg),electronic,resolved,metastable,resolved spectroscopic state a¹Δg,O2*,pass,candidate representation is well formed,O2@a1dg
+O2(b¹Σg+),electronic,resolved,metastable,resolved spectroscopic state b¹Σg+,O2*,pass,candidate representation is well formed,O2@b1sg+
+S(¹D),electronic,resolved,metastable,resolved spectroscopic state ¹D,,pass,candidate representation is well formed,S@1d
+S(¹S),electronic,resolved,metastable,resolved spectroscopic state ¹S,,pass,candidate representation is well formed,S@1s
+SF6,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF6@ground
+SO2,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SO2@ground
+SO2F,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SO2F@ground
+SO2F2,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SO2F2@ground
+SOF2,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF2@ground
+e,electron,resolved,not_applicable,free electron,,pass,,e
+Ar(m),electronic,lumped,metastable,metastable electronic-state manifold (lumped),,pass,candidate representation is well formed,Ar@metastable
+Ar(r),electronic,lumped,resonant_radiative,resonant radiative electronic-state manifold (lumped),,pass,candidate representation is well formed,Ar@resonant
+Ar+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,Ar+@ground
+Ar-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,Ar-@ground
+F,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,F@ground
+F-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,F-@ground
+F2,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,F2@ground
+F2-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,F2-@ground
+O,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O@ground
+O+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O+@ground
+O-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O-@ground
+O2(v),vibrational,lumped,not_applicable,vibrationally excited manifold (lumped),,pass,candidate representation is well formed,O2@vibrational
+O2*,electronic,lumped,unspecified,electronic-state manifold (lumped; lifetime unspecified),O2(a¹Δg); O2(b¹Σg+),pass,candidate representation is well formed,O2@electronic
+O2+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O2+@ground
+O2-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O2-@ground
+SF4,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF4@ground
+SF4+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF4+@ground
+SF4-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF4-@ground
+SF5,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF5@ground
+SF5+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF5+@ground
+SF5-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF5-@ground
+SF6(v),vibrational,lumped,not_applicable,vibrationally excited manifold (lumped),,pass,candidate representation is well formed,SF6@vibrational
+SF6*,electronic,lumped,unspecified,electronic-state manifold (lumped; lifetime unspecified),,pass,candidate representation is well formed,SF6@electronic
+SF6+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF6+@ground
+SF6-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF6-@ground
+ArF+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,ArF+@ground
+ArF-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,ArF-@ground
+F+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,F+@ground
+F2+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,F2+@ground
+O2F,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O2F@ground
+O2F+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O2F+@ground
+O2F-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O2F-@ground
+OF,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,OF@ground
+OF+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,OF+@ground
+OF-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,OF-@ground
+SF2,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF2@ground
+SF2+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF2+@ground
+SF2-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF2-@ground
+SF3,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF3@ground
+SF3+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF3+@ground
+SF3-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF3-@ground
+SOF3+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF3+@ground
+SOF3-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF3-@ground
+SOF4+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF4+@ground
+SOF4-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF4-@ground
+SOF5,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF5@ground
+SOF5+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF5+@ground
+SOF5-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF5-@ground
+O2F2,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O2F2@ground
+OF2,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,OF2@ground
+S,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,S@ground
+S+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,S+@ground
+S-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,S-@ground
+SF,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF@ground
+SF+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF+@ground
+SF-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SF-@ground
+SOF+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF+@ground
+SOF-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF-@ground
+SOF3,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF3@ground
+SOF4,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF4@ground
+O2F2+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O2F2+@ground
+O2F2-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,O2F2-@ground
+OF2+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,OF2+@ground
+OF2-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,OF2-@ground
+SO,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SO@ground
+SO+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SO+@ground
+SO-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SO-@ground
+SOF,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,SOF@ground

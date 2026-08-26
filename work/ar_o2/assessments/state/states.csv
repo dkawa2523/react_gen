@@ -1,0 +1,20 @@
+candidate,excitation,resolution,lifetime_class,state_meaning,alternative_resolution_states,evidence,verdict,reason,id
+Ar,ground,resolved,not_applicable,electronic ground state,,exact: Ar,pass,an exact reviewed state record exists,Ar@ground
+Ar(4s),electronic,lumped,mixed_metastable_resonant,4s electronic-state manifold (lumped; mixed metastable/resonant),,exact: Ar_4s,pass,an exact reviewed state record exists,Ar@4s
+O(¹D₂),electronic,resolved,metastable,resolved spectroscopic state ¹D₂,,exact: O_1D,pass,an exact reviewed state record exists,O@1d2
+O(¹S),electronic,resolved,metastable,resolved spectroscopic state ¹S,,exact: O_1S,pass,an exact reviewed state record exists,O@1s
+O2,ground,resolved,not_applicable,electronic ground state,,exact: O2,pass,an exact reviewed state record exists,O2@ground
+O2(a¹Δg),electronic,resolved,metastable,resolved spectroscopic state a¹Δg,O2*,exact: O2_a1Delta,pass,an exact reviewed state record exists,O2@a1dg
+O2(b¹Σg+),electronic,resolved,metastable,resolved spectroscopic state b¹Σg+,O2*,exact: O2_b1Sigma,pass,an exact reviewed state record exists,O2@b1sg+
+e,electron,resolved,not_applicable,free electron,,exact: e,pass,electron is explicitly represented,e
+Ar(m),electronic,lumped,metastable,metastable electronic-state manifold (lumped),,compatible: Ar_4s,unknown,related state records exist but do not attest this candidate representation,Ar@metastable
+Ar(r),electronic,lumped,resonant_radiative,resonant radiative electronic-state manifold (lumped),,compatible: Ar_4s,unknown,related state records exist but do not attest this candidate representation,Ar@resonant
+Ar+,ground,resolved,not_applicable,electronic ground state,,exact: Ar+,pass,an exact reviewed state record exists,Ar+@ground
+Ar-,ground,resolved,not_applicable,electronic ground state,,none,fail,electron affinity evidence excludes a bound parent anion,Ar-@ground
+O,ground,resolved,not_applicable,electronic ground state,,exact: O,pass,an exact reviewed state record exists,O@ground
+O+,ground,resolved,not_applicable,electronic ground state,,exact: O+,pass,an exact reviewed state record exists,O+@ground
+O-,ground,resolved,not_applicable,electronic ground state,,exact: O-,pass,an exact reviewed state record exists,O-@ground
+O2(v),vibrational,lumped,not_applicable,vibrationally excited manifold (lumped),,none,unknown,no state record matches this candidate,O2@vibrational
+O2*,electronic,lumped,unspecified,electronic-state manifold (lumped; lifetime unspecified),O2(a¹Δg); O2(b¹Σg+),compatible: O2_a1Delta; O2_b1Sigma,unknown,resolved alternatives exist; select one resolution before simulation,O2@electronic
+O2+,ground,resolved,not_applicable,electronic ground state,,exact: O2+,pass,an exact reviewed state record exists,O2+@ground
+O2-,ground,resolved,not_applicable,electronic ground state,,none,pass,positive electron affinity supports a bound parent anion,O2-@ground

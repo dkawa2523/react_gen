@@ -1,0 +1,100 @@
+candidate,reaction_type,verdict,reason,id
+2 CF2 -> C2F4,Bimolecular association,pass,reaction is stoichiometrically and electrically consistent,rxn_abc5c865f438
+CF + F -> CF2,Bimolecular association,pass,reaction is stoichiometrically and electrically consistent,rxn_d1e2eaf8406e
+CF2 + CF -> C2F3,Bimolecular association,pass,reaction is stoichiometrically and electrically consistent,rxn_6e55ee5b6e15
+CF2 + F -> CF3,Bimolecular association,pass,reaction is stoichiometrically and electrically consistent,rxn_82ec7771ab72
+CF3 + F -> CF4,Bimolecular association,pass,reaction is stoichiometrically and electrically consistent,rxn_060cde25fd8a
+F + C2F3 -> C2F4,Bimolecular association,pass,reaction is stoichiometrically and electrically consistent,rxn_2a7c42a66624
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_4f890c9f1ce9
+C + C2F4 -> CF + C2F3,Neutral reactive scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_4c5943388790
+CF + F2 -> CF2 + F,Neutral reactive scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_1e8be1d17031
+CF2 + F2 -> CF3 + F,Neutral reactive scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_93c29d07ff57
+CF3 + F2 -> F + CF4,Neutral reactive scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_cff50cb52bbd
+F + C2F4 -> CF2 + CF3,Neutral reactive scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_5960d80dc648
+CF2 + F2 + M -> CF4 + M,Three-body association,pass,reaction is stoichiometrically and electrically consistent,rxn_08fbbd0367ab
+CF3 + F + M -> CF4 + M,Three-body association,pass,reaction is stoichiometrically and electrically consistent,rxn_fae2a35c3cf8
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_89b3c1f5c922
+Ar(m) + CF2 -> CF2+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_66f3e014f0ec
+Ar(m) + CF3 -> CF3+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_6ea0ddd2fd6a
+Ar(m) + CF4 -> CF4+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_f43403436a59
+Ar(m) + F -> F+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_f98e65819a12
+Ar(m) + F2 -> F2+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_558cafb64dcf
+CF4* + Ar -> Ar+ + CF4 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_071f29cae12d
+CF4* + CF2 -> CF2+ + CF4 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_2edd88577081
+CF4* + CF3 -> CF3+ + CF4 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_216fc8ad3058
+CF4* + CF4 -> CF4+ + CF4 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_b0d6bed1c5e3
+CF4* + F -> F+ + CF4 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_cc39b0d053de
+CF4* + F2 -> F2+ + CF4 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_fb077c67152b
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_a9821670c330
+Ar(m) + CF2 -> Ar + CF2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_5855c9ce7c01
+Ar(m) + CF3 -> Ar + CF3,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_7895338b6843
+Ar(m) + CF4 -> Ar + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_c0425fc2ece4
+Ar(m) + CF4(v) -> CF4(v) + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_92b73f649900
+Ar(m) + CF4* -> Ar(m) + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_3d23a3b65053
+Ar(m) + CF4* -> CF4* + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_78ddc7a34547
+Ar(m) + F -> Ar + F,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_9998e67277f7
+Ar(m) + F2 -> Ar + F2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_d0f99c83396a
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_cc4cbdb651ed
+Ar(r) + CF2 -> Ar + CF2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_e853df9e6f8b
+Ar(r) + CF3 -> Ar + CF3,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_bb95c3b32bdd
+Ar(r) + CF4 -> Ar + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_307a802dc69e
+Ar(r) + CF4(v) -> CF4(v) + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_bbc73f948a07
+Ar(r) + CF4* -> Ar(r) + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_708ee806153a
+Ar(r) + CF4* -> CF4* + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_53a546441566
+Ar(r) + F -> Ar + F,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_1c5abc924591
+Ar(r) + F2 -> Ar + F2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_ee6e7218462c
+CF4* + Ar -> Ar + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_28f6ec6a64e8
+CF4* + CF2 -> CF2 + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_b0d28e32b87e
+CF4* + CF3 -> CF3 + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_64e1fb64f728
+CF4* + CF4 -> 2 CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_43be7a9f441e
+CF4* + CF4(v) -> CF4(v) + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_9eb6b757799d
+CF4* + F -> F + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_1436b6d2ca3c
+CF4* + F2 -> CF4 + F2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_32a3601ac10f
+CF2 + CF4 -> 2 CF3,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_3545ea328875
+CF2 + F -> CF + F2,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_3005c462ddb7
+CF3 + F -> CF2 + F2,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_452ed18f6320
+CF4(v) + CF2 -> 2 CF3,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_f4d309c01138
+CF4(v) + F -> CF3 + F2,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_2bf3b81427ee
+CF4* + CF2 -> 2 CF3,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_744f6a48a232
+CF4* + F -> CF3 + F2,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_425e42021059
+F + CF4 -> CF3 + F2,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_f1c358dc9776
+2 F + M -> F2 + M,Three-body association,pass,reaction is stoichiometrically and electrically consistent,rxn_e001c2cfb313
+C + F2 + M -> CF2 + M,Three-body association,pass,reaction is stoichiometrically and electrically consistent,rxn_c0713fcb91a6
+CF + F + M -> CF2 + M,Three-body association,pass,reaction is stoichiometrically and electrically consistent,rxn_b8a576033f18
+CF + F2 + M -> CF3 + M,Three-body association,pass,reaction is stoichiometrically and electrically consistent,rxn_af1aab2bfc75
+CF2 + F + M -> CF3 + M,Three-body association,pass,reaction is stoichiometrically and electrically consistent,rxn_2aaaf2106aea
+Ar(m) + CF4(v) -> Ar(m) + CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_641722fe4310
+Ar(r) + CF4(v) -> Ar(r) + CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_506cacbd9101
+CF4(v) + Ar -> Ar + CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_e8716edbde66
+CF4(v) + CF2 -> CF2 + CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_98a297575639
+CF4(v) + CF3 -> CF3 + CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_8a56b7172e5b
+CF4(v) + CF4 -> 2 CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_373b2e38c772
+CF4(v) + F -> F + CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_60861688f824
+CF4(v) + F2 -> CF4 + F2,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_d9339c185a37
+CF4* + CF4(v) -> CF4* + CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_2a58c2c45521
+Ar(m) + C -> C+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_c86ce1c97037
+Ar(m) + CF -> CF+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_8c2ba050c71c
+CF4* + C -> C+ + CF4 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_798683efb7d9
+CF4* + CF -> CF+ + CF4 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_0b255443a60d
+Ar(m) + C -> Ar + C,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_04a95a98f4d4
+Ar(m) + CF -> Ar + CF,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_7c97762e7b19
+Ar(r) + C -> Ar + C,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_99c11390f988
+Ar(r) + CF -> Ar + CF,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_fe721c925ec3
+CF4* + C -> C + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_5428ef7411b6
+CF4* + CF -> CF + CF4,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_fa51d3631021
+C + CF2 -> 2 CF,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_c99d7e5a69fd
+C + CF3 -> CF2 + CF,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_2b2bdc346e7f
+C + CF4 -> CF3 + CF,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_e8152b8eb458
+C + F2 -> CF + F,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_6c4f2888e3e2
+CF + CF4 -> CF2 + CF3,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_23113cd63538
+CF + F -> C + F2,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_3c2eeb8f47bd
+CF3 + CF -> 2 CF2,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_62c12947d4fe
+CF4(v) + C -> CF3 + CF,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_51a5130cd55f
+CF4(v) + CF -> CF2 + CF3,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_09a2c41cfc3b
+CF4* + C -> CF3 + CF,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_e7df8e8cdf03
+CF4* + CF -> CF2 + CF3,Radical abstraction,pass,reaction is stoichiometrically and electrically consistent,rxn_5d35f928ad6c
+C + F + M -> CF + M,Three-body association,pass,reaction is stoichiometrically and electrically consistent,rxn_751ff33f93b2
+CF4(v) + C -> C + CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_4804884f8bd6
+CF4(v) + CF -> CF + CF4,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_1998619e1c52

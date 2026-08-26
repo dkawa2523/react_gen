@@ -1,0 +1,8 @@
+candidate,excitation,resolution,lifetime_class,state_meaning,alternative_resolution_states,verdict,reason,id
+Ar,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,Ar@ground
+Ar(4s),electronic,lumped,mixed_metastable_resonant,4s electronic-state manifold (lumped; mixed metastable/resonant),,pass,candidate representation is well formed,Ar@4s
+e,electron,resolved,not_applicable,free electron,,pass,,e
+Ar(m),electronic,lumped,metastable,metastable electronic-state manifold (lumped),,pass,candidate representation is well formed,Ar@metastable
+Ar(r),electronic,lumped,resonant_radiative,resonant radiative electronic-state manifold (lumped),,pass,candidate representation is well formed,Ar@resonant
+Ar+,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,Ar+@ground
+Ar-,ground,resolved,not_applicable,electronic ground state,,pass,candidate representation is well formed,Ar-@ground

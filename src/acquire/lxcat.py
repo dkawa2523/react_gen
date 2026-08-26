@@ -37,6 +37,25 @@ KINDS = {
 }
 
 
+def process_type(kind: str) -> str:
+    return {
+        "ELASTIC": "elastic",
+        "EFFECTIVE": "elastic",
+        "IONIZATION": "ionization",
+        "ATTACHMENT": "attachment",
+        "EXCITATION": "excitation",
+        "ROTATION": "excitation",
+        "VIBRATION": "excitation",
+    }.get(kind.upper(), kind.lower())
+
+
+def observable(kind: str) -> str:
+    return {
+        "ELASTIC": "elastic",
+        "EFFECTIVE": "effective_momentum_transfer",
+    }.get(kind.upper(), "reaction")
+
+
 @dataclass
 class Process:
     kind: str

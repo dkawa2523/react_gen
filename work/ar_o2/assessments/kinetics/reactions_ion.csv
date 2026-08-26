@@ -1,0 +1,87 @@
+candidate,reaction_type,data_kind,unit,applicable_range,dataset_id,verdict,reason,id
+Ar+ + O -> O+ + Ar,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_baee40490ad8
+Ar+ + O2 -> O2+ + Ar,Charge exchange,rate_coefficient,m3/s,,ds_Arp_O2_charge_transfer_rate_1977,pass,a compatible numerical dataset covers the case conditions,rxn_2d29145e0f98
+Ar- + O -> O- + Ar,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_1025dffb221c
+Ar- + O2 -> O2- + Ar,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_19e271a11252
+O+ + Ar -> Ar+ + O,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_81849ac06cf9
+O+ + O2 -> O2+ + O,Charge exchange,rate_coefficient,m3/s,gas_temperature 300.0..300.0 K,ds_Op_O2_charge_transfer_rate_300K,fail,available datasets are outside their declared range,rxn_2bf32666fe5b
+O- + Ar -> Ar- + O,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_5d5111d16a78
+O- + O2 -> O2- + O,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_b4bebcad19c6
+O2+ + Ar -> Ar+ + O2,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_88b106712082
+O2+ + O -> O+ + O2,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_37bbce670254
+O2- + Ar -> Ar- + O2,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_3f735a110e81
+O2- + O -> O- + O2,Charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_9806fd0ca7ab
+Ar- + Ar -> 2 Ar + e,Collisional electron detachment,,,,,unknown,no usable cross section or rate coefficient,rxn_754c5eca1437
+Ar- + O -> Ar + O + e,Collisional electron detachment,,,,,unknown,no usable cross section or rate coefficient,rxn_75a6567cee43
+Ar- + O2 -> Ar + O2 + e,Collisional electron detachment,,,,,unknown,no usable cross section or rate coefficient,rxn_9934f424f8c0
+O- + Ar -> Ar + O + e,Collisional electron detachment,,,,,unknown,no usable cross section or rate coefficient,rxn_4db0a6c546c7
+O- + O -> 2 O + e,Collisional electron detachment,,,,,unknown,no usable cross section or rate coefficient,rxn_a8c8162d07bf
+O- + O2 -> O + O2 + e,Collisional electron detachment,,,,,unknown,no usable cross section or rate coefficient,rxn_2c4a5b821b8e
+O2- + Ar -> Ar + O2 + e,Collisional electron detachment,,,,,unknown,no usable cross section or rate coefficient,rxn_cbe14dbb7875
+O2- + O -> O + O2 + e,Collisional electron detachment,,,,,unknown,no usable cross section or rate coefficient,rxn_2927232caf86
+O2- + O2 -> 2 O2 + e,Collisional electron detachment,,,,,unknown,no usable cross section or rate coefficient,rxn_69470fb52c9e
+Ar+ + O -> Ar+ + O,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_b23dfcecb0fc
+Ar+ + O2 -> Ar+ + O2,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_116c2a39f075
+Ar- + O -> Ar- + O,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_981ebdf563ba
+Ar- + O2 -> Ar- + O2,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_37b2f906b55b
+O+ + Ar -> O+ + Ar,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_c8bbb52f16db
+O+ + O2 -> O+ + O2,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_217ec02f8a25
+O- + Ar -> O- + Ar,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_1cb8cdec1cfe
+O- + O2 -> O- + O2,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_4e056b8323ea
+O2+ + Ar -> O2+ + Ar,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_644e62d637ce
+O2+ + O -> O2+ + O,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_33a5160d5967
+O2- + Ar -> O2- + Ar,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_b9dcc46f86f8
+O2- + O -> O2- + O,Ion-neutral elastic scattering,,,,,unknown,no usable cross section or rate coefficient,rxn_470cf8775707
+Ar+ + Ar(m) -> Ar+ + Ar,Ion-induced deexcitation,,,,,unknown,no usable cross section or rate coefficient,rxn_32e0ff81482e
+Ar+ + Ar(r) -> Ar+ + Ar,Ion-induced deexcitation,,,,,unknown,no usable cross section or rate coefficient,rxn_8bb2a60a7fbc
+Ar- + Ar(m) -> Ar- + Ar,Ion-induced deexcitation,,,,,unknown,no usable cross section or rate coefficient,rxn_ffe8fc60e569
+Ar- + Ar(r) -> Ar- + Ar,Ion-induced deexcitation,,,,,unknown,no usable cross section or rate coefficient,rxn_634f6e55908a
+O2+ + O2(v) -> O2+ + O2,Ion-induced deexcitation,,,,,unknown,no usable cross section or rate coefficient,rxn_a339d2371429
+O2+ + O2* -> O2+ + O2,Ion-induced deexcitation,,,,,unknown,no usable cross section or rate coefficient,rxn_dbb28e568d13
+O2- + O2(v) -> O2- + O2,Ion-induced deexcitation,,,,,unknown,no usable cross section or rate coefficient,rxn_43949eda804d
+O2- + O2* -> O2- + O2,Ion-induced deexcitation,,,,,unknown,no usable cross section or rate coefficient,rxn_ac67529bdd89
+Ar+ + Ar -> Ar+ + Ar(m),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_c93e3d600f78
+Ar+ + Ar -> Ar+ + Ar(r),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_f07d0ba16e30
+Ar+ + O2 -> Ar+ + O2(v),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_192278ce671f
+Ar+ + O2 -> Ar+ + O2*,Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_0c51497b3a6c
+Ar- + Ar -> Ar- + Ar(m),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_fab0902a6843
+Ar- + Ar -> Ar- + Ar(r),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_26b94c20754e
+Ar- + O2 -> Ar- + O2(v),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_763194797e8c
+Ar- + O2 -> Ar- + O2*,Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_de2e4db00652
+O+ + Ar -> O+ + Ar(m),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_3afea6ddf67b
+O+ + Ar -> O+ + Ar(r),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_dae5325eb31b
+O+ + O2 -> O+ + O2(v),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_32887c53cfc0
+O+ + O2 -> O+ + O2*,Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_325d242a60fa
+O- + Ar -> O- + Ar(m),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_5c1d1862d883
+O- + Ar -> O- + Ar(r),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_dc4f1eaed1a8
+O- + O2 -> O- + O2(v),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_9938203e8724
+O- + O2 -> O- + O2*,Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_1aaa5217616d
+O2+ + Ar -> O2+ + Ar(m),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_6ece5fa184d7
+O2+ + Ar -> O2+ + Ar(r),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_18e7a7fd5b5b
+O2+ + O2 -> O2+ + O2(v),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_a94bfb506276
+O2+ + O2 -> O2+ + O2*,Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_f75feb2eb0bc
+O2- + Ar -> O2- + Ar(m),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_8e59537d4986
+O2- + Ar -> O2- + Ar(r),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_7cb2c47d47e0
+O2- + O2 -> O2- + O2(v),Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_44de2b53da2e
+O2- + O2 -> O2- + O2*,Ion-induced excitation,,,,,unknown,no usable cross section or rate coefficient,rxn_07117cb5ce40
+Ar+ + Ar- -> 2 Ar,Ion-ion mutual neutralization,,,,,unknown,no usable cross section or rate coefficient,rxn_7f218ecf9f30
+Ar+ + O- -> Ar + O,Ion-ion mutual neutralization,,,,,unknown,no usable cross section or rate coefficient,rxn_7f1253ebcfb9
+Ar+ + O2- -> Ar + O2,Ion-ion mutual neutralization,,,,,unknown,no usable cross section or rate coefficient,rxn_5a307f1b77b9
+O+ + Ar- -> Ar + O,Ion-ion mutual neutralization,,,,,unknown,no usable cross section or rate coefficient,rxn_70a5390f4242
+O+ + O- -> 2 O,Ion-ion mutual neutralization,,,,,unknown,no usable cross section or rate coefficient,rxn_10beb5bc00af
+O+ + O2- -> O + O2,Ion-ion mutual neutralization,,,,,unknown,no usable cross section or rate coefficient,rxn_f362c4374a2b
+O2+ + Ar- -> Ar + O2,Ion-ion mutual neutralization,,,,,unknown,no usable cross section or rate coefficient,rxn_1cc12a118d26
+O2+ + O- -> O + O2,Ion-ion mutual neutralization,,,,,unknown,no usable cross section or rate coefficient,rxn_08e2f48ee28d
+O2+ + O2- -> 2 O2,Ion-ion mutual neutralization,,,,,unknown,no usable cross section or rate coefficient,rxn_15fac312b7fa
+O2+ + Ar -> O+ + Ar + O,Projectile-ion dissociation,,,,,unknown,no usable cross section or rate coefficient,rxn_4487814bfc3e
+O2+ + O -> O+ + 2 O,Projectile-ion dissociation,,,,,unknown,no usable cross section or rate coefficient,rxn_ad2d57546439
+O2+ + O2 -> O+ + O + O2,Projectile-ion dissociation,,,,,unknown,no usable cross section or rate coefficient,rxn_f01e2fa9b40b
+O2- + Ar -> O- + Ar + O,Projectile-ion dissociation,,,,,unknown,no usable cross section or rate coefficient,rxn_f7f35bdddeea
+O2- + O -> O- + 2 O,Projectile-ion dissociation,,,,,unknown,no usable cross section or rate coefficient,rxn_688c1b736a68
+O2- + O2 -> O- + O + O2,Projectile-ion dissociation,,,,,unknown,no usable cross section or rate coefficient,rxn_fe0ea6173b83
+Ar+ + Ar -> Ar+ + Ar,Resonant charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_42da360d77cf
+Ar- + Ar -> Ar- + Ar,Resonant charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_2d9ccfcce5d9
+O+ + O -> O+ + O,Resonant charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_7281eb34b270
+O- + O -> O- + O,Resonant charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_650299e93852
+O2+ + O2 -> O2+ + O2,Resonant charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_223a68face62
+O2- + O2 -> O2- + O2,Resonant charge exchange,,,,,unknown,no usable cross section or rate coefficient,rxn_641dfc3def66

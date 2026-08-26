@@ -1,0 +1,76 @@
+metadata:
+  schema_version: 4
+  generator_version: 0.5.0
+  case: ar
+  case_digest: 91b75c224af7511fb8356581453877d22958bd22df9b32ddb37f4603ff9b0a7a
+  evidence_snapshot_hash: 1d5e4e60e5d4f32b272e88448828d386ebf202dee1bb1d178b093d982005605f
+  complete: true
+  stop_reason: closure
+  limits:
+    max_depth: 6
+    max_species: 300
+    max_reactions: 5000
+    max_charge_abs: 1
+    max_leaving_atoms: 2
+  counts:
+    states: 7
+    reactions: 37
+    mechanical_states: 6
+    mechanical_reactions: 32
+policy: review
+readiness:
+  candidate_complete: true
+  evidence_ready: false
+  kinetic_data_ready: false
+  direct_rate_ready: false
+  energy_source_ready: false
+  reverse_rate_ready: false
+  required_transforms: []
+selected_states:
+- Ar+@ground
+- Ar-@ground
+- Ar@4s
+- Ar@ground
+- Ar@metastable
+- Ar@resonant
+- e
+selected_reactions:
+- rxn_03cc6169a934
+- rxn_085bec441ad0
+- rxn_1a8a97d93128
+- rxn_26b94c20754e
+- rxn_271084b2fc94
+- rxn_2d9ccfcce5d9
+- rxn_32e0ff81482e
+- rxn_42da360d77cf
+- rxn_4374da9c1d1c
+- rxn_49cd032be260
+- rxn_4a11bdf2a171
+- rxn_4f890c9f1ce9
+- rxn_5ccce802fea8
+- rxn_634f6e55908a
+- rxn_6544183a7e7e
+- rxn_683f67de893f
+- rxn_754c5eca1437
+- rxn_7f218ecf9f30
+- rxn_86e8fb853dd8
+- rxn_89b3c1f5c922
+- rxn_8bb2a60a7fbc
+- rxn_9c71d4efc801
+- rxn_a69a28bff768
+- rxn_a9821670c330
+- rxn_b9b97c9cedf9
+- rxn_c8f95c3d8ede
+- rxn_c93e3d600f78
+- rxn_cc4cbdb651ed
+- rxn_ce746e5f7015
+- rxn_d83b0309c1b0
+- rxn_dff2bd46b5c5
+- rxn_ed39dd867e7c
+- rxn_f07d0ba16e30
+- rxn_f4bf18f98733
+- rxn_fa2f9066d8c2
+- rxn_fab0902a6843
+- rxn_ffe8fc60e569
+not_selected_states: {}
+not_selected_reactions: {}

@@ -1,0 +1,7 @@
+candidate,reaction_type,delta_h_eV,delta_g_eV,threshold_eV,verdict,reason,id
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,-7.440389999999999,,,pass,reaction energy or threshold is available,rxn_4f890c9f1ce9
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,,,,fail,metastable energy is below the target ionization energy,rxn_89b3c1f5c922
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a9821670c330
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_cc4cbdb651ed

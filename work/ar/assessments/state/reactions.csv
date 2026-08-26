@@ -1,0 +1,38 @@
+candidate,reaction_type,verdict,reason,id
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),pass,every non-electron reactant and product passes its State assessment,rxn_085bec441ad0
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_49cd032be260
+e + Ar -> Ar(4s) + e,Electron-impact excitation,pass,every non-electron reactant and product passes its State assessment,rxn_683f67de893f
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_1a8a97d93128
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_4f890c9f1ce9
+e + Ar -> Ar-,Electron attachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_4374da9c1d1c
+e + Ar -> Ar + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_c8f95c3d8ede
+e + Ar -> Ar(m) + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_271084b2fc94
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_a69a28bff768
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ed39dd867e7c
+e + Ar- -> Ar + 2 e,Electron-impact detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_d83b0309c1b0
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_f4bf18f98733
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5ccce802fea8
+e + Ar+ -> Ar,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_b9b97c9cedf9
+Ar- + Ar -> 2 Ar + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_754c5eca1437
+Ar+ + Ar(m) -> Ar+ + Ar,Ion-induced deexcitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_32e0ff81482e
+Ar+ + Ar(r) -> Ar+ + Ar,Ion-induced deexcitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8bb2a60a7fbc
+Ar- + Ar(m) -> Ar- + Ar,Ion-induced deexcitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_ffe8fc60e569
+Ar- + Ar(r) -> Ar- + Ar,Ion-induced deexcitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_634f6e55908a
+Ar+ + Ar -> Ar+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c93e3d600f78
+Ar+ + Ar -> Ar+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f07d0ba16e30
+Ar- + Ar -> Ar- + Ar(m),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_fab0902a6843
+Ar- + Ar -> Ar- + Ar(r),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_26b94c20754e
+Ar+ + Ar- -> 2 Ar,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_7f218ecf9f30
+Ar+ + Ar -> Ar+ + Ar,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_42da360d77cf
+Ar- + Ar -> Ar- + Ar,Resonant charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_2d9ccfcce5d9
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_89b3c1f5c922
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a9821670c330
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_cc4cbdb651ed

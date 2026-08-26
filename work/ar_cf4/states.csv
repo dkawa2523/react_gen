@@ -1,0 +1,38 @@
+species,formula,charge,excitation,resolution,lifetime_class,state_label,state_symbol,state_meaning,alternative_resolution_states,structure_scope,origin,depth,state_verdict,thermochemistry_verdict,selected,state_energy_eV,lifetime_s,mass_amu,enthalpy_formation_eV,ionization_energy_eV,electron_affinity_eV,id
+Ar,Ar,0,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,0,pass,pass,true,0.0,,39.948,0.0,15.759612,-11.5,Ar@ground
+Ar(4s),Ar,0,electronic,lumped,mixed_metastable_resonant,4s,4s,4s electronic-state manifold (lumped; mixed metastable/resonant),,not_applicable,attested_only,0,pass,pass,true,11.6,,39.948,11.6,4.16,,Ar@4s
+C(¹D),C,0,electronic,resolved,metastable,1d,¹D,resolved spectroscopic state ¹D,,not_applicable,attested_only,0,pass,pass,true,1.263728,,12.011,8.693593,,,C@1d
+C(¹S),C,0,electronic,resolved,metastable,1s,¹S,resolved spectroscopic state ¹S,,not_applicable,attested_only,0,pass,pass,true,2.684014,,12.011,10.113879,,,C@1s
+C2F3,C2F3,0,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,attested_only,0,pass,unknown,true,0.0,,,,,,C2F3@ground
+C2F3+,C2F3,1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,attested_only,0,pass,unknown,true,0.0,,,,,,C2F3+@ground
+C2F4,C2F4,0,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,attested_only,0,pass,pass,true,0.0,,,-6.998784,,,C2F4@ground
+CF4,CF4,0,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,mechanical,0,pass,pass,true,0.0,,88.0043,-9.673802,14.7,,CF4@ground
+e,,-1,electron,resolved,not_applicable,electron,electron,free electron,,not_applicable,mechanical,0,pass,not_applicable,true,,,0.00054858,,,,e
+Ar(m),Ar,0,electronic,lumped,metastable,metastable,m,metastable electronic-state manifold (lumped),,not_applicable,mechanical,1,unknown,unknown,true,,,,,,,Ar@metastable
+Ar(r),Ar,0,electronic,lumped,resonant_radiative,resonant,r,resonant radiative electronic-state manifold (lumped),,not_applicable,mechanical,1,unknown,unknown,true,,,,,,,Ar@resonant
+Ar+,Ar,1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,pass,pass,true,0.0,,39.94745,15.75961,27.62966,,Ar+@ground
+Ar-,Ar,-1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,fail,unknown,true,,,,,,,Ar-@ground
+CF2,CF2,0,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,mechanical,1,pass,pass,true,0.0,,50.0075,-1.8862970774399115,11.362,0.179,CF2@ground
+CF2+,CF2,1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,mechanical,1,pass,pass,true,0.0,,50.0069514,9.475702922560089,,,CF2+@ground
+CF2-,CF2,-1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,mechanical,1,pass,unknown,true,,,,,,,CF2-@ground
+CF3,CF3,0,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,mechanical,1,pass,pass,true,0.0,,69.0059,-4.852447,9.05,1.82,CF3@ground
+CF3+,CF3,1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,mechanical,1,pass,pass,true,0.0,,69.0053514,4.17589126605252,,,CF3+@ground
+CF3-,CF3,-1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,mechanical,1,pass,unknown,true,0.0,,69.0064486,-6.694108733947481,,1.82,CF3-@ground
+CF4(v),CF4,0,vibrational,lumped,not_applicable,vibrational,v,vibrationally excited manifold (lumped),,formula_only,mechanical,1,unknown,unknown,true,,,,,,,CF4@vibrational
+CF4*,CF4,0,electronic,lumped,unspecified,electronic,*,electronic-state manifold (lumped; lifetime unspecified),,formula_only,mechanical,1,unknown,unknown,true,,,,,,,CF4@electronic
+CF4+,CF4,1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,mechanical,1,pass,unknown,true,0.0,,88.0037514,5.028063556775134,,,CF4+@ground
+CF4-,CF4,-1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_only,mechanical,1,fail,unknown,true,,,,,,,CF4-@ground
+F,F,0,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,pass,pass,true,0.0,,18.9984032,0.822654,17.42282,3.40119,F@ground
+F-,F,-1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,pass,pass,true,0.0,,18.9989518,-2.578475274685823,,3.401191,F-@ground
+F2,F2,0,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,1,pass,pass,true,0.0,,,0.0,,,F2@ground
+F2-,F2,-1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,1,pass,unknown,true,0.0,,,,,,F2-@ground
+ArF+,ArF,1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,2,unknown,unknown,true,,,,,,,ArF+@ground
+ArF-,ArF,-1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,2,unknown,unknown,true,,,,,,,ArF-@ground
+C,C,0,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,2,pass,pass,true,0.0,,,7.429865,11.260288,1.262119,C@ground
+C+,C,1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,2,unknown,unknown,true,,,,,,,C+@ground
+C-,C,-1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,2,pass,unknown,true,,,,,,,C-@ground
+CF,CF,0,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,2,pass,pass,true,0.0,,,2.645818,,,CF@ground
+CF+,CF,1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,2,unknown,unknown,true,,,,,,,CF+@ground
+CF-,CF,-1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,2,unknown,unknown,true,,,,,,,CF-@ground
+F+,F,1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,2,pass,pass,true,0.0,,18.9978546,18.245535725314177,,,F+@ground
+F2+,F2,1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,2,pass,unknown,true,0.0,,,,,,F2+@ground

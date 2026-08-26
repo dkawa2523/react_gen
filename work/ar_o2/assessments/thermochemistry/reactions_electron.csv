@@ -1,0 +1,63 @@
+candidate,reaction_type,delta_h_eV,delta_g_eV,threshold_eV,verdict,reason,id
+e + O2 -> O- + O,Electron attachment,3.705577,,3.66,pass,reaction energy or threshold is available,rxn_84e8fa1d3d48
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),-11.6,,0.0,pass,reaction energy or threshold is available,rxn_085bec441ad0
+e + O(¹D₂) -> O + e,Electron-impact deexcitation (superelastic),-1.966523,,0.0,pass,reaction energy or threshold is available,rxn_4b45a93b7f18
+e + O(¹S) -> O + e,Electron-impact deexcitation (superelastic),-4.1897459999999995,,0.0,pass,reaction energy or threshold is available,rxn_2be53d0776c7
+e + O2(a¹Δg) -> O2 + e,Electron-impact deexcitation (superelastic),-0.977,,0.0,pass,reaction energy or threshold is available,rxn_3ce8fb5e8663
+e + O2(b¹Σg+) -> O2 + e,Electron-impact deexcitation (superelastic),-1.627,,0.0,pass,reaction energy or threshold is available,rxn_727d49330314
+e + O2 -> O(¹D₂) + O + e,Electron-impact dissociation,7.132676999999999,,8.57,pass,reaction energy or threshold is available,rxn_123a76ecfe44
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_49cd032be260
+e + O(¹D₂) -> O(¹D₂) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_bee14e8a1be8
+e + O(¹S) -> O(¹S) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_37c2816ca17f
+e + O2(a¹Δg) -> O2(a¹Δg) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_0e230572e278
+e + O2(b¹Σg+) -> O2(b¹Σg+) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_d802cff550ac
+e + Ar -> Ar(4s) + e,Electron-impact excitation,11.6,,11.6,pass,reaction energy or threshold is available,rxn_683f67de893f
+e + O -> O(¹D₂) + e,Electron-impact excitation,1.966523,,1.967,pass,reaction energy or threshold is available,rxn_322a79119d6f
+e + O -> O(¹S) + e,Electron-impact excitation,4.1897459999999995,,4.189746,pass,reaction energy or threshold is available,rxn_40ffa48445f6
+e + O2 -> O2(a¹Δg) + e,Electron-impact excitation,0.977,,0.977,pass,reaction energy or threshold is available,rxn_989eea6d35bc
+e + O2 -> O2(b¹Σg+) + e,Electron-impact excitation,1.627,,1.627,pass,reaction energy or threshold is available,rxn_409cb5fe9d2a
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,4.159610000000001,,4.16,pass,reaction energy or threshold is available,rxn_1a8a97d93128
+e + O(¹D₂) -> O+ + 2 e,Electron-impact ionization,11.651055000000001,,11.6511,pass,reaction energy or threshold is available,rxn_a883c2a5062f
+e + O2(a¹Δg) -> O2+ + 2 e,Electron-impact ionization,11.092699999999999,,11.0927,pass,reaction energy or threshold is available,rxn_5e1b7cd24431
+e + O2(b¹Σg+) -> O2+ + 2 e,Electron-impact ionization,10.442699999999999,,10.4427,pass,reaction energy or threshold is available,rxn_b87c4049e16f
+e + Ar -> Ar-,Electron attachment,,,,fail,direct attachment cannot create the explicitly unbound parent anion,rxn_4374da9c1d1c
+e + O2 -> O2-,Electron attachment,,,,pass,reaction energy or threshold is available,rxn_a515648ebf7f
+e + O2 -> 2 O + e,Electron-impact dissociation,5.166154,,5.12,pass,reaction energy or threshold is available,rxn_4d8f6edbf3ae
+e + O2 -> O- + O,Dissociative electron attachment,3.705577,,,pass,reaction energy or threshold is available,rxn_332f5a51e689
+e + O2 -> O+ + O + 2 e,Dissociative ionization,18.783732,,,pass,reaction energy or threshold is available,rxn_1dc9f78c977a
+e + Ar -> Ar + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_c8f95c3d8ede
+e + O2 -> O2 + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_5f0e9e57072b
+e + Ar -> Ar(m) + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_271084b2fc94
+e + O2 -> O2(v) + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ddfd4cfd2bad
+e + O2 -> O2* + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4f5cc5cb071e
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,15.75961,,15.75961,pass,reaction energy or threshold is available,rxn_a69a28bff768
+e + O2 -> O2+ + 2 e,Electron-impact ionization,12.0697,,12.0697,pass,reaction energy or threshold is available,rxn_1ca03209bf56
+e + O -> O-,Electron attachment,-1.4605769999999998,,,pass,reaction energy or threshold is available,rxn_f2d5b52e7a92
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ed39dd867e7c
+e + O2(v) -> O2 + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_3a3dcf92975f
+e + O2* -> O2 + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6c5f72d907c5
+e + Ar- -> Ar + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d83b0309c1b0
+e + O- -> O + 2 e,Electron-impact detachment,1.4605769999999998,,,pass,reaction energy or threshold is available,rxn_08399feb356b
+e + O2- -> O2 + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_2c4965e684b5
+e + O2+ -> 2 O,Dissociative recombination,-6.9035459999999995,,,pass,reaction energy or threshold is available,rxn_0344fa41a70f
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f4bf18f98733
+e + O -> O + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_ec1ff806cd78
+e + O+ -> O+ + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_ced7ed171430
+e + O- -> O- + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_c605c558423a
+e + O2(v) -> O2(v) + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_098eb6a80062
+e + O2* -> O2* + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f3a308be1edd
+e + O2+ -> O2+ + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_4392ff7146da
+e + O2- -> O2- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_88181a7e6efe
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5ccce802fea8
+e + O -> O+ + 2 e,Electron-impact ionization,13.617578000000002,,13.618055,pass,reaction energy or threshold is available,rxn_02b625c9d811
+e + O2(v) -> O2+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_2400ffdfb3a5
+e + O2* -> O2+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_1367abd723f8
+e + Ar+ -> Ar,Electron-ion recombination,-15.75961,,,pass,reaction energy or threshold is available,rxn_b9b97c9cedf9
+e + O+ -> O,Electron-ion recombination,-13.617578000000002,,,pass,reaction energy or threshold is available,rxn_a065d9985ac4
+e + O2+ -> O2,Electron-ion recombination,-12.0697,,,pass,reaction energy or threshold is available,rxn_fe3ef2a625bf

@@ -4,5 +4,4 @@ channels:
 - id: Arp_F2_charge_transfer
   type: charge_transfer
   products: [{species: Ar, n: 1}, {species: 'F2+', n: 1}]
-  dnt_class: long_range_charge_exchange
   status: curated

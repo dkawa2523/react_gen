@@ -26,9 +26,8 @@ k_L scales as sqrt(alpha), a low alpha gives a low rate, and a bound that can
 be exceeded is not a bound. Feeding these into the registry would quietly turn
 a guarantee into a guess.
 
-What they are good for is ranking: which of 1180 ion-neutral pairs are worth
-computing first is a question an estimate can answer, and that is the question
-DNT+ is actually asked.
+What they are good for is a documented exploratory collision-property estimate.
+They remain estimated evidence and are never promoted to measured kinetics.
 """
 
 from __future__ import annotations

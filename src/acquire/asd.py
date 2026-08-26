@@ -1,6 +1,6 @@
 """Read atomic energy levels from the NIST Atomic Spectra Database.
 
-The levels themselves settle what the structural rules in `discover.fragments`
+The levels provide evidence for the compact hypotheses in `reactgen.generate`
 can only name. That module splits an atom into a metastable ``X_m`` and a
 radiating ``X_r`` from the shell it starts in; this one reads the levels and
 says which is which, and at what energy, by applying the same selection rule to

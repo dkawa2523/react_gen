@@ -1,0 +1,3 @@
+equation,reaction_type,family,process,origin,depth,state_verdict,consistency_verdict,thermochemistry_verdict,kinetics_verdict,reaction_evidence_verdict,kinetics_or_reaction_evidence_verdict,accepted_by,id
+Ar+ + O2 -> O2+ + Ar,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_2d29145e0f98
+O+ + O2 -> O2+ + O,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,fail,pass,pass,reaction_evidence,rxn_2bf32666fe5b

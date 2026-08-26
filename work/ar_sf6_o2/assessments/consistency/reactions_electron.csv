@@ -1,0 +1,315 @@
+candidate,reaction_type,verdict,reason,id
+e + F2 -> F- + F,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_41a18c13fd0a
+e + O2 -> O- + O,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_84e8fa1d3d48
+e + SF5 -> F- + SF4,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_bcc8fe63af38
+e + SF6 -> F- + F + SF4,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_63c9a5497cf1
+e + SF6 -> F- + SF5,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_afbcbb5bf112
+e + SF6 -> F2- + SF4,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_64e971aca697
+e + SF6 -> SF2- + 4 F,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_b7378861e5ce
+e + SF6 -> SF3- + 3 F,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_b46ef585f02e
+e + SF6 -> SF4- + 2 F,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_aa50cb9817ba
+e + SF6 -> SF5- + F,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_0d7ad2c6ac40
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_085bec441ad0
+e + O(¹D₂) -> O + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_4b45a93b7f18
+e + O(¹S) -> O + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_2be53d0776c7
+e + O2(a¹Δg) -> O2 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_3ce8fb5e8663
+e + O2(b¹Σg+) -> O2 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_727d49330314
+e + S(¹D) -> S + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_6248d2ae34f8
+e + S(¹S) -> S + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_260303df7a8d
+e + O2 -> O(¹D₂) + O + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_123a76ecfe44
+e + SF6 -> 2 F + SF2 + F2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_47a504099cad
+e + SF6 -> 2 F + SF4 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_287eef0e196e
+e + SF6 -> 3 F + SF + F2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_300af5571dff
+e + SF6 -> 3 F + SF3 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_1e041fba58da
+e + SF6 -> F+ + F + SF4 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_e81dc7ddf993
+e + SF6 -> S+ + 4 F + F2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_e620761e82c5
+e + SF6 -> SF+ + 3 F + F2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_85122c3bf4e1
+e + SF6 -> SF2+ + 2 F + F2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_c06ee32be57d
+e + SF6 -> SF3+ + 3 F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_7dd0a7f249c9
+e + SF6 -> SF4+ + 2 F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_f2ec2624c9bd
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_49cd032be260
+e + O(¹D₂) -> O(¹D₂) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_bee14e8a1be8
+e + O(¹S) -> O(¹S) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_37c2816ca17f
+e + O2(a¹Δg) -> O2(a¹Δg) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_0e230572e278
+e + O2(b¹Σg+) -> O2(b¹Σg+) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_d802cff550ac
+e + S(¹D) -> S(¹D) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_3aeb3c856e68
+e + S(¹S) -> S(¹S) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_24ab1c33354e
+e + Ar -> Ar(4s) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_683f67de893f
+e + O -> O(¹D₂) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_322a79119d6f
+e + O -> O(¹S) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_40ffa48445f6
+e + O2 -> O2(a¹Δg) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_989eea6d35bc
+e + O2 -> O2(b¹Σg+) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_409cb5fe9d2a
+e + S -> S(¹D) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_87db8cd81fe5
+e + S -> S(¹S) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_ecc6742e63a0
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1a8a97d93128
+e + O(¹D₂) -> O+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_a883c2a5062f
+e + O2(a¹Δg) -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_5e1b7cd24431
+e + O2(b¹Σg+) -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_b87c4049e16f
+e + Ar -> Ar-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_4374da9c1d1c
+e + O2 -> O2-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_a515648ebf7f
+e + SF6 -> SF6-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_c8d961344770
+e + O2 -> 2 O + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_4d8f6edbf3ae
+e + SF6 -> F + SF5 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_57bc017668fe
+e + SF6 -> SF4 + F2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_5821b503a060
+e + O2 -> O- + O,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_332f5a51e689
+e + SF6 -> F- + SF5,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_d1b634e2f32b
+e + SF6 -> F2- + SF4,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_c0ba518df9c5
+e + SF6 -> SF4- + F2,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_6536e251d22e
+e + SF6 -> SF5- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_1fbc832e061a
+e + O2 -> O+ + O + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1dc9f78c977a
+e + SF6 -> SF4+ + F2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_988a4e1bb79d
+e + SF6 -> SF5+ + F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_e85a3e39c348
+e + Ar -> Ar + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c8f95c3d8ede
+e + O2 -> O2 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_5f0e9e57072b
+e + SF6 -> SF6 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_6a629dd07190
+e + Ar -> Ar(m) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_271084b2fc94
+e + O2 -> O2(v) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_ddfd4cfd2bad
+e + O2 -> O2* + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_4f5cc5cb071e
+e + SF6 -> SF6(v) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_72ce47489e94
+e + SF6 -> SF6* + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_1a0e4d47f87d
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_a69a28bff768
+e + O2 -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1ca03209bf56
+e + SF6 -> SF6+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_09b4827bc0d8
+e + F -> F-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_8fa839560004
+e + F2 -> F2-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_900787e68127
+e + O -> O-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_f2d5b52e7a92
+e + SF4 -> SF4-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_0223ada15f9f
+e + SF5 -> SF5-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_138054b7babe
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_ed39dd867e7c
+e + O2(v) -> O2 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_3a3dcf92975f
+e + O2* -> O2 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_6c5f72d907c5
+e + SF6(v) -> SF6 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_745265260c96
+e + SF6* -> SF6 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_a0bc75c5102a
+e + Ar- -> Ar + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_d83b0309c1b0
+e + F- -> F + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_d9c95009df17
+e + F2- -> F2 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_f97da82531fe
+e + O- -> O + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_08399feb356b
+e + O2- -> O2 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_2c4965e684b5
+e + SF4- -> SF4 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_c2b413a94c34
+e + SF5- -> SF5 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_90ff9739acd0
+e + SF6- -> SF6 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_2cf05cb6bd8e
+e + F2 -> 2 F + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_68bca252f4bd
+e + SF4 -> F + SF3 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_a5118f39fa42
+e + SF4 -> SF2 + F2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_21bf364d9349
+e + SF5 -> F + SF4 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_c15478b3fca5
+e + SF5 -> SF3 + F2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_9ef8296c3872
+e + F2 -> F- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_6dfafc324ea8
+e + SF4 -> F- + SF3,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_3b5c19088613
+e + SF4 -> F2- + SF2,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_c0324b09801e
+e + SF4 -> SF2- + F2,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_828bb29d0ab8
+e + SF4 -> SF3- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_e0eff8f2bb68
+e + SF5 -> F- + SF4,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_6a3fb1cbfcbd
+e + SF5 -> F2- + SF3,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_72689af2c4b4
+e + SF5 -> SF3- + F2,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_d2ef1ce170e8
+e + SF5 -> SF4- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_f826f9bdf4be
+e + F2 -> F+ + F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_c9dace256cc3
+e + SF4 -> SF2+ + F2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_f808d8740185
+e + SF4 -> SF3+ + F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_3486967fa3e6
+e + SF5 -> SF3+ + F2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_54db57bb285a
+e + SF5 -> SF4+ + F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_b95e3f10a4f3
+e + O2+ -> 2 O,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_0344fa41a70f
+e + SF4+ -> F + SF3,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b9d4e6ba7453
+e + SF4+ -> SF2 + F2,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_f88d0cb03bca
+e + SF5+ -> F + SF4,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_40b348bb158f
+e + SF5+ -> SF3 + F2,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b71ec8f65cd1
+e + SF6+ -> F + SF5,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_e641693b4633
+e + SF6+ -> SF4 + F2,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_4fd9423e1662
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_f4bf18f98733
+e + F -> F + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_d014713c4a78
+e + F- -> F- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_35e7d26760ba
+e + F2 -> F2 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_90dfe4335d02
+e + F2- -> F2- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_594dacc8bf96
+e + O -> O + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_ec1ff806cd78
+e + O+ -> O+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_ced7ed171430
+e + O- -> O- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c605c558423a
+e + O2(v) -> O2(v) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_098eb6a80062
+e + O2* -> O2* + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_f3a308be1edd
+e + O2+ -> O2+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_4392ff7146da
+e + O2- -> O2- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_88181a7e6efe
+e + SF4 -> SF4 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c308ed67a1ee
+e + SF4+ -> SF4+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_08a1ce8d71bd
+e + SF4- -> SF4- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_3408ad585b95
+e + SF5 -> SF5 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_e5be6ea862fa
+e + SF5+ -> SF5+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_eb7f6a6e7edb
+e + SF5- -> SF5- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_5e1cc61882e5
+e + SF6(v) -> SF6(v) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_6fa58093c6db
+e + SF6* -> SF6* + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c42cd3c1a672
+e + SF6+ -> SF6+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_9613d375153a
+e + SF6- -> SF6- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_a86ee86e5656
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_5ccce802fea8
+e + F -> F+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_0ac0463c2879
+e + F2 -> F2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_209315ead1fb
+e + O -> O+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_02b625c9d811
+e + O2(v) -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_2400ffdfb3a5
+e + O2* -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1367abd723f8
+e + SF4 -> SF4+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_81b72c4107a5
+e + SF5 -> SF5+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_cd8ddb1dd16e
+e + SF6(v) -> SF6+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_a2095b8900f0
+e + SF6* -> SF6+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_c805ccf5f0e9
+e + Ar+ -> Ar,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b9b97c9cedf9
+e + O+ -> O,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_a065d9985ac4
+e + O2+ -> O2,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_fe3ef2a625bf
+e + SF4+ -> SF4,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_f906559f20b2
+e + SF5+ -> SF5,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_f9ccaf67990c
+e + SF6+ -> SF6,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_0f4c5d05bc62
+e + O2F -> O2F-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_33999e0123a8
+e + OF -> OF-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_d5f8b6a0240c
+e + SF2 -> SF2-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_ba019a9da859
+e + SF3 -> SF3-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_b68a571eebe7
+e + SOF5 -> SOF5-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_69e451e38c8b
+e + O2F- -> O2F + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_906b3940de46
+e + OF- -> OF + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_28c6d07ba7da
+e + SF2- -> SF2 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_ecde06ecb190
+e + SF3- -> SF3 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_3bc614d41589
+e + SOF3- -> SOF3 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_a832e0afa8bb
+e + SOF4- -> SOF4 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_210ea159223f
+e + SOF5- -> SOF5 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_796488d6f8f6
+e + O2F -> F + O2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_1dbb548357d4
+e + O2F -> O + OF + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_741242275bc2
+e + OF -> F + O + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_e83a63fdd1b3
+e + SF2 -> F + SF + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_99a9d7a397b1
+e + SF2 -> S + F2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_dc916a51e341
+e + SF3 -> F + SF2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_d4ae67d3f229
+e + SF3 -> SF + F2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_87644633a3bd
+e + O2F -> F- + O2,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_73521090a762
+e + O2F -> O- + OF,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_553b18687e88
+e + O2F -> O2- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_6f7e30cf734d
+e + O2F -> OF- + O,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_7f7c9607f04f
+e + OF -> F- + O,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_eb8f504704e4
+e + OF -> O- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_2a8f8fba7eff
+e + SF2 -> F- + SF,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_d159a8b5f2ad
+e + SF2 -> F2- + S,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_b22936120faf
+e + SF2 -> S- + F2,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_31f4c5440ad9
+e + SF2 -> SF- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_fc30c3bafa3b
+e + SF3 -> F- + SF2,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_5755b6ce2966
+e + SF3 -> F2- + SF,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_09340caa7945
+e + SF3 -> SF- + F2,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_80001d314636
+e + SF3 -> SF2- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_c3840bdf8d78
+e + ArF- -> Ar + F + 2 e,Dissociative electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_4b92cf2ca31b
+e + O2F -> F+ + O2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1c12e9edc663
+e + O2F -> OF+ + O + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_ef9b3963e1b5
+e + OF -> O+ + F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_b5442207f15e
+e + SF2 -> S+ + F2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_69993710655b
+e + SF2 -> SF+ + F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_3edaa6c4acef
+e + SF3 -> SF+ + F2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_386822735e5f
+e + SF3 -> SF2+ + F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_0867d297296c
+e + ArF+ -> Ar + F,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_da1d834a0e58
+e + F2+ -> 2 F,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_6d3db2467a2d
+e + O2F+ -> F + O2,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b278321de98f
+e + O2F+ -> O + OF,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_033d9b930abb
+e + OF+ -> F + O,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_80af642379f0
+e + SF2+ -> F + SF,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_512cdf87464c
+e + SF2+ -> S + F2,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_5dd6c91fe4dd
+e + SF3+ -> F + SF2,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_f034533f2b60
+e + SF3+ -> SF + F2,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_4f2da9b08323
+e + ArF+ -> ArF+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_59cc3e31b193
+e + ArF- -> ArF- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_4cf23051d253
+e + F+ -> F+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_9d75d6b4d8bd
+e + F2+ -> F2+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_45c367f6bfab
+e + O2F -> O2F + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_363bda81d6b6
+e + O2F+ -> O2F+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_217b03cedbba
+e + O2F- -> O2F- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_2eb1d1784583
+e + OF -> OF + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_cc963afb82a3
+e + OF+ -> OF+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_0e66b1db8eee
+e + OF- -> OF- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_30cc968963f8
+e + SF2 -> SF2 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_6e52b62aa3d3
+e + SF2+ -> SF2+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_0263740a928f
+e + SF2- -> SF2- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_9ea01bc8be05
+e + SF3 -> SF3 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_25835887a749
+e + SF3+ -> SF3+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_650fb0e8afe7
+e + SF3- -> SF3- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_5ef410497ee4
+e + SOF3+ -> SOF3+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_cd169601def3
+e + SOF3- -> SOF3- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_4288a3734508
+e + SOF4+ -> SOF4+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_de70e2382579
+e + SOF4- -> SOF4- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_e524d7e20368
+e + SOF5 -> SOF5 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_ac0b7d2bf030
+e + SOF5+ -> SOF5+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c811f7dabe81
+e + SOF5- -> SOF5- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c48f50da7ca6
+e + O2F -> O2F+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_dd9d918e20b5
+e + OF -> OF+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_18f7a91fdadb
+e + SF2 -> SF2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_0da79acf3b0b
+e + SF3 -> SF3+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_a32df399fbfe
+e + SOF5 -> SOF5+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_b26815dc493e
+e + F+ -> F,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_d606d592dce3
+e + F2+ -> F2,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b864a75a4ed7
+e + O2F+ -> O2F,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_d1ad6274b293
+e + OF+ -> OF,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_d67f2c49d3f5
+e + SF2+ -> SF2,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_c5e11ab870d4
+e + SF3+ -> SF3,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_78c172d7e1d5
+e + SOF3+ -> SOF3,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_2eb217c0556f
+e + SOF4+ -> SOF4,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_144172f8230a
+e + SOF5+ -> SOF5,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b113278b22e0
+e + O2F2 -> O2F2-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_a8a49069d347
+e + OF2 -> OF2-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_ef4ffe49bd6b
+e + S -> S-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_32f181f3b169
+e + SF -> SF-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_95b75c1b3432
+e + SOF3 -> SOF3-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_21c110505cbc
+e + SOF4 -> SOF4-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_58f52fe1a538
+e + S- -> S + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_a3b408f29a64
+e + SF- -> SF + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_6d4d835832dd
+e + SOF- -> SOF + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_3ecead1f1da2
+e + OF2 -> F + OF + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_752e00b0f397
+e + OF2 -> O + F2 + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_559616e60787
+e + SF -> F + S + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_d5d036b9feb9
+e + OF2 -> F- + OF,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_5c821e02890e
+e + OF2 -> F2- + O,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_f1a7a08a935f
+e + OF2 -> O- + F2,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_9ca6e498693f
+e + OF2 -> OF- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_8ff84babe076
+e + SF -> F- + S,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_3f451d5fcd6f
+e + SF -> S- + F,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_a313f0dc37d2
+e + OF2 -> O+ + F2 + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_52f9bacad4d4
+e + OF2 -> OF+ + F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_95d2f7e04fcf
+e + SF -> S+ + F + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_15af37ce02b1
+e + SF+ -> F + S,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_6623987e0185
+e + O2F2 -> O2F2 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_d23fbcac3f47
+e + OF2 -> OF2 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_3483aa5accf4
+e + S -> S + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_82314957c610
+e + S+ -> S+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_73bed5ea59b7
+e + S- -> S- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_ecc6652a86ed
+e + SF -> SF + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_00b44c97c766
+e + SF+ -> SF+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c9f40d3af566
+e + SF- -> SF- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_69b004987395
+e + SOF+ -> SOF+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_49d1596c8069
+e + SOF- -> SOF- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_22fae58ff10c
+e + SOF3 -> SOF3 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_d0cd43bf4724
+e + SOF4 -> SOF4 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_50b761d832d6
+e + O2F2 -> O2F2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_3b386c3c6216
+e + OF2 -> OF2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_bb31e44815e2
+e + S -> S+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_e25c2b5151e3
+e + SF -> SF+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1949520122bc
+e + SOF3 -> SOF3+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_79a11710eb55
+e + SOF4 -> SOF4+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_73734419f638
+e + S+ -> S,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b35b302e2884
+e + SF+ -> SF,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_90e5c3f41514
+e + SOF+ -> SOF,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_0509c109376f
+e + SO -> SO-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_febcff4c66fc
+e + SOF -> SOF-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_61afbff171e0
+e + O2F2- -> O2F2 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_c521b86c33e7
+e + OF2- -> OF2 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_a8faf3aba717
+e + SO- -> SO + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_f3d3775906b4
+e + SO -> O + S + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_adcf4af49ad7
+e + SO -> O- + S,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_9bd74d29fdda
+e + SO -> S- + O,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_1032458ae0f1
+e + SO -> S+ + O + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_fae1fad451f7
+e + OF2+ -> F + OF,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_0b0651214c20
+e + OF2+ -> O + F2,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b7d2cd33613f
+e + SO+ -> O + S,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_27436b7cf0b8
+e + O2F2+ -> O2F2+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_b56fdf06f327
+e + O2F2- -> O2F2- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_5158c76e3279
+e + OF2+ -> OF2+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_96c2b4921790
+e + OF2- -> OF2- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_230834655a0e
+e + SO -> SO + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_dcc1d198ce27
+e + SO+ -> SO+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_6ebe4cfd62d5
+e + SO- -> SO- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_e5bc7120fda8
+e + SOF -> SOF + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_df8dec5795cc
+e + SO -> SO+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_e7a0b1667c6b
+e + SOF -> SOF+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_07279e2b51e4
+e + O2F2+ -> O2F2,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_4db5e0682c13
+e + OF2+ -> OF2,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_8113fca77d00
+e + SO+ -> SO,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b2fe201a0d72

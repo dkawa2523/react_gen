@@ -1,0 +1,63 @@
+candidate,reaction_type,matched_source,channel_scope,verdict,reason,id
+e + O2 -> O- + O,Electron attachment,registry:e_O2_attachment_Om_O,product_resolved,pass,an exact state-resolved equation is listed,rxn_84e8fa1d3d48
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),registry:e_Ar4s_superelastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_085bec441ad0
+e + O(¹D₂) -> O + e,Electron-impact deexcitation (superelastic),registry:e_O_1D_superelastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_4b45a93b7f18
+e + O(¹S) -> O + e,Electron-impact deexcitation (superelastic),"NIST Atomic Spectra Database, energy levels (energy1.pl)",product_resolved,pass,an exact state-resolved equation is listed,rxn_2be53d0776c7
+e + O2(a¹Δg) -> O2 + e,Electron-impact deexcitation (superelastic),registry:e_O2_a1Delta_superelastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_3ce8fb5e8663
+e + O2(b¹Σg+) -> O2 + e,Electron-impact deexcitation (superelastic),registry:e_O2_b1Sigma_superelastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_727d49330314
+e + O2 -> O(¹D₂) + O + e,Electron-impact dissociation,"J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).",product_resolved,pass,an exact state-resolved equation is listed,rxn_123a76ecfe44
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,registry:e_Ar4s_elastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_49cd032be260
+e + O(¹D₂) -> O(¹D₂) + e,Electron elastic scattering,registry:e_O_1D_elastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_bee14e8a1be8
+e + O(¹S) -> O(¹S) + e,Electron elastic scattering,"NIST Atomic Spectra Database, energy levels (energy1.pl)",product_resolved,pass,an exact state-resolved equation is listed,rxn_37c2816ca17f
+e + O2(a¹Δg) -> O2(a¹Δg) + e,Electron elastic scattering,registry:e_O2_a1Delta_elastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_0e230572e278
+e + O2(b¹Σg+) -> O2(b¹Σg+) + e,Electron elastic scattering,registry:e_O2_b1Sigma_elastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_d802cff550ac
+e + Ar -> Ar(4s) + e,Electron-impact excitation,registry:e_Ar_excitation_4s_lumped,product_resolved,pass,an exact state-resolved equation is listed,rxn_683f67de893f
+e + O -> O(¹D₂) + e,Electron-impact excitation,"J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).",product_resolved,pass,an exact state-resolved equation is listed,rxn_322a79119d6f
+e + O -> O(¹S) + e,Electron-impact excitation,"NIST Atomic Spectra Database, energy levels (energy1.pl)",product_resolved,pass,an exact state-resolved equation is listed,rxn_40ffa48445f6
+e + O2 -> O2(a¹Δg) + e,Electron-impact excitation,registry:e_O2_excitation_O2_a1Delta,product_resolved,pass,an exact state-resolved equation is listed,rxn_989eea6d35bc
+e + O2 -> O2(b¹Σg+) + e,Electron-impact excitation,registry:e_O2_excitation_O2_b1Sigma,product_resolved,pass,an exact state-resolved equation is listed,rxn_409cb5fe9d2a
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,registry:e_Ar4s_stepwise_ionization,product_resolved,pass,an exact state-resolved equation is listed,rxn_1a8a97d93128
+e + O(¹D₂) -> O+ + 2 e,Electron-impact ionization,registry:e_O_1D_ionization,product_resolved,pass,an exact state-resolved equation is listed,rxn_a883c2a5062f
+e + O2(a¹Δg) -> O2+ + 2 e,Electron-impact ionization,registry:e_O2_a1Delta_ionization,product_resolved,pass,an exact state-resolved equation is listed,rxn_5e1b7cd24431
+e + O2(b¹Σg+) -> O2+ + 2 e,Electron-impact ionization,registry:e_O2_b1Sigma_ionization,product_resolved,pass,an exact state-resolved equation is listed,rxn_b87c4049e16f
+e + Ar -> Ar-,Electron attachment,,,unknown,no source lists this exact equation,rxn_4374da9c1d1c
+e + O2 -> O2-,Electron attachment,,,unknown,no source lists this exact equation,rxn_a515648ebf7f
+e + O2 -> 2 O + e,Electron-impact dissociation,"J. Son et al., Plasma Chemistry and Plasma Processing 34, 239-257 (2014).",product_resolved,pass,an exact state-resolved equation is listed,rxn_4d8f6edbf3ae
+e + O2 -> O- + O,Dissociative electron attachment,registry:e_O2_attachment_Om_O,product_resolved,unknown,the equation is listed only for a different physical process,rxn_332f5a51e689
+e + O2 -> O+ + O + 2 e,Dissociative ionization,,,unknown,no source lists this exact equation,rxn_1dc9f78c977a
+e + Ar -> Ar + e,Electron elastic scattering,registry:e_Ar_elastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_c8f95c3d8ede
+e + O2 -> O2 + e,Electron elastic scattering,registry:e_O2_elastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_5f0e9e57072b
+e + Ar -> Ar(m) + e,Electron-impact excitation,,,unknown,no source lists this exact equation,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,,,unknown,no source lists this exact equation,rxn_271084b2fc94
+e + O2 -> O2(v) + e,Electron-impact excitation,,,unknown,no source lists this exact equation,rxn_ddfd4cfd2bad
+e + O2 -> O2* + e,Electron-impact excitation,,,unknown,no source lists this exact equation,rxn_4f5cc5cb071e
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,registry:e_Ar_ionization,product_resolved,pass,an exact state-resolved equation is listed,rxn_a69a28bff768
+e + O2 -> O2+ + 2 e,Electron-impact ionization,registry:e_O2_ionization,product_resolved,pass,an exact state-resolved equation is listed,rxn_1ca03209bf56
+e + O -> O-,Electron attachment,,,unknown,no source lists this exact equation,rxn_f2d5b52e7a92
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),,,unknown,no source lists this exact equation,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),,,unknown,no source lists this exact equation,rxn_ed39dd867e7c
+e + O2(v) -> O2 + e,Electron-impact deexcitation (superelastic),,,unknown,no source lists this exact equation,rxn_3a3dcf92975f
+e + O2* -> O2 + e,Electron-impact deexcitation (superelastic),,,unknown,no source lists this exact equation,rxn_6c5f72d907c5
+e + Ar- -> Ar + 2 e,Electron-impact detachment,,,unknown,no source lists this exact equation,rxn_d83b0309c1b0
+e + O- -> O + 2 e,Electron-impact detachment,,,unknown,no source lists this exact equation,rxn_08399feb356b
+e + O2- -> O2 + 2 e,Electron-impact detachment,,,unknown,no source lists this exact equation,rxn_2c4965e684b5
+e + O2+ -> 2 O,Dissociative recombination,registry:e_O2p_dissociative_recombination,product_resolved,pass,an exact state-resolved equation is listed,rxn_0344fa41a70f
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_f4bf18f98733
+e + O -> O + e,Electron elastic scattering,registry:e_O_elastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_ec1ff806cd78
+e + O+ -> O+ + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_ced7ed171430
+e + O- -> O- + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_c605c558423a
+e + O2(v) -> O2(v) + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_098eb6a80062
+e + O2* -> O2* + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_f3a308be1edd
+e + O2+ -> O2+ + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_4392ff7146da
+e + O2- -> O2- + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_88181a7e6efe
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,,,unknown,no source lists this exact equation,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,,,unknown,no source lists this exact equation,rxn_5ccce802fea8
+e + O -> O+ + 2 e,Electron-impact ionization,registry:e_O_ionization,product_resolved,pass,an exact state-resolved equation is listed,rxn_02b625c9d811
+e + O2(v) -> O2+ + 2 e,Electron-impact ionization,,,unknown,no source lists this exact equation,rxn_2400ffdfb3a5
+e + O2* -> O2+ + 2 e,Electron-impact ionization,,,unknown,no source lists this exact equation,rxn_1367abd723f8
+e + Ar+ -> Ar,Electron-ion recombination,,,unknown,no source lists this exact equation,rxn_b9b97c9cedf9
+e + O+ -> O,Electron-ion recombination,,,unknown,no source lists this exact equation,rxn_a065d9985ac4
+e + O2+ -> O2,Electron-ion recombination,,,unknown,no source lists this exact equation,rxn_fe3ef2a625bf

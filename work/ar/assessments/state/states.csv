@@ -1,0 +1,8 @@
+candidate,excitation,resolution,lifetime_class,state_meaning,alternative_resolution_states,evidence,verdict,reason,id
+Ar,ground,resolved,not_applicable,electronic ground state,,exact: Ar,pass,an exact reviewed state record exists,Ar@ground
+Ar(4s),electronic,lumped,mixed_metastable_resonant,4s electronic-state manifold (lumped; mixed metastable/resonant),,exact: Ar_4s,pass,an exact reviewed state record exists,Ar@4s
+e,electron,resolved,not_applicable,free electron,,exact: e,pass,electron is explicitly represented,e
+Ar(m),electronic,lumped,metastable,metastable electronic-state manifold (lumped),,compatible: Ar_4s,unknown,related state records exist but do not attest this candidate representation,Ar@metastable
+Ar(r),electronic,lumped,resonant_radiative,resonant radiative electronic-state manifold (lumped),,compatible: Ar_4s,unknown,related state records exist but do not attest this candidate representation,Ar@resonant
+Ar+,ground,resolved,not_applicable,electronic ground state,,exact: Ar+,pass,an exact reviewed state record exists,Ar+@ground
+Ar-,ground,resolved,not_applicable,electronic ground state,,none,fail,electron affinity evidence excludes a bound parent anion,Ar-@ground

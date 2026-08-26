@@ -2,10 +2,10 @@
 
     python -m acquire lxcat export.txt --out work/ar
     python -m acquire umist rate22.rates --out work/umist
-    python -m acquire pubchem species.yaml --out external_data/identity
+    python -m acquire pubchem states.yaml --out external_data/identity
 
-The output of either is fed to `rgen ingest`, which matches it onto registered
-reactions and queues whatever is ambiguous.
+The output of either is fed to `rgen ingest --bundle outputs`, which matches it
+onto canonical candidates and queues whatever is ambiguous.
 """
 
 from __future__ import annotations
@@ -98,7 +98,7 @@ def main(argv: list[str] | None = None) -> int:
         "additivity",
         help="estimate polarizability for species no compilation holds (marked estimated)",
     )
-    guess.add_argument("species", type=Path, help="a bundle's species.yaml")
+    guess.add_argument("species", type=Path, help="a bundle's states.yaml")
     guess.add_argument("--out", type=Path, required=True)
     guess.add_argument("--page", type=Path, help="a saved CCCBDB list page, instead of fetching")
     guess.set_defaults(run=_additivity)
@@ -109,7 +109,7 @@ def main(argv: list[str] | None = None) -> int:
     fit.add_argument(
         "species",
         type=Path,
-        help="a bundle's species.yaml, or any list with composition and charge",
+        help="a bundle's states.yaml, or any list with composition and charge",
     )
     fit.add_argument("--out", type=Path, required=True)
     fit.set_defaults(run=_nasa)
@@ -141,8 +141,12 @@ def _lxcat(args) -> int:
         records.append(
             {
                 "reaction": process.equation or None,
+                "type": lxcat.process_type(process.kind),
                 "form": "table",
                 "unit": "m2",
+                "independent_variable": "electron_energy",
+                "observable": lxcat.observable(process.kind),
+                "channel_scope": "product_resolved",
                 "asset": asset,
                 "threshold_eV": process.threshold_eV,
                 "status": "imported",
@@ -157,7 +161,7 @@ def _lxcat(args) -> int:
     )
     print(f"  processes   {len(processes)}")
     print(f"  snapshot    {path}")
-    print(f"  next        rgen ingest {path} --overlay work/overlay.yaml")
+    print(f"  next        rgen ingest {path} --bundle outputs --overlay work/overlay.yaml")
     return 0 if processes else 1
 
 
@@ -194,7 +198,7 @@ def _umist(args) -> int:
     print(f"  reactions     {len(rates)}")
     print(f"  two-body      {len(records)}  (others need a third body the registry must name)")
     print(f"  snapshot      {path}")
-    print(f"  next          rgen ingest {path} --overlay work/overlay.yaml")
+    print(f"  next          rgen ingest {path} --bundle outputs --overlay work/overlay.yaml")
     return 0 if records else 1
 
 
@@ -206,7 +210,7 @@ def _atoms(args) -> int:
     found = atoms.fetch(args.symbols)
     path = snapshot.write(
         args.out,
-        "species_property",
+        "state_property",
         {"source_type": "mendeleev", "citation": citation},
         atoms.records(found, citation),
     )
@@ -225,7 +229,7 @@ def _asd(args) -> int:
     found = asd.fetch(args.symbols)
     path = snapshot.write(
         args.out,
-        "species_property",
+        "state_property",
         {"source_type": "nist_asd", "citation": citation},
         asd.records(found, citation),
     )
@@ -250,12 +254,12 @@ def _molecular(args) -> int:
         print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
         return 1
     wanted = yaml.safe_load(args.species.read_text(encoding="utf-8")) or []
-    names = [item["id"] if isinstance(item, dict) else str(item) for item in _listed(wanted)]
+    names = [_query_name(item) for item in _listed(wanted)]
     citation = "chemicals package bundled molecular property tables"
     found = molecular.fetch(names)
     path = snapshot.write(
         args.out,
-        "species_property",
+        "state_property",
         {"source_type": "chemicals", "citation": citation},
         molecular.records(found, citation),
     )
@@ -292,7 +296,7 @@ def _cccbdb(args) -> int:
     citation = f"NIST CCCBDB experimental polarizability list, {cccbdb.LIST_URL}"
     written = cccbdb.records(found, wanted, citation)
     path = snapshot.write(
-        args.out, "species_property", {"source_type": "cccbdb", "citation": citation}, written
+        args.out, "state_property", {"source_type": "cccbdb", "citation": citation}, written
     )
     print(f"  {len(found)} species listed, {len(written)} of the {len(wanted)} asked for")
     missing = sorted(set(wanted.values()) - {item["species"] for item in written})
@@ -323,7 +327,7 @@ def _additivity(args) -> int:
     written = additivity.records(found, citation)
     path = snapshot.write(
         args.out,
-        "species_property",
+        "state_property",
         {"source_type": "additivity_fit", "citation": citation},
         written,
     )
@@ -344,7 +348,7 @@ def _nasa(args) -> int:
     found = nasa.fetch([item for item in wanted if isinstance(item, dict)])
     written = nasa.records(found, citation)
     path = snapshot.write(
-        args.out, "species_thermo", {"source_type": "cantera", "citation": citation}, written
+        args.out, "state_thermochemistry", {"source_type": "cantera", "citation": citation}, written
     )
     for item in found:
         if item.unusable:
@@ -361,26 +365,32 @@ def _nasa(args) -> int:
 
 
 def _listed(document) -> list:
-    """The species entries of a bundle's species.yaml, or a plain list as given."""
+    """The state entries of a bundle, or a plain list as given."""
 
     if isinstance(document, dict):
-        return list(document.get("species") or [])
+        return list(document.get("states") or [])
     return list(document)
+
+
+def _query_name(item) -> str:
+    if not isinstance(item, dict):
+        return str(item)
+    return str(item.get("query") or item.get("id") or "").partition("@")[0]
 
 
 def _vibration(args) -> int:
     if not vibration.available():
         print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    wanted = yaml.safe_load(args.species.read_text(encoding="utf-8")) or []
-    names = [item["id"] if isinstance(item, dict) else str(item) for item in wanted]
-    linear = {n["id"]: n.get("linear", False) for n in wanted if isinstance(n, dict)}
-    atoms_of = {n["id"]: n.get("atoms", 2) for n in wanted if isinstance(n, dict)}
+    wanted = _listed(yaml.safe_load(args.species.read_text(encoding="utf-8")) or [])
+    names = [_query_name(item) for item in wanted]
+    linear = {_query_name(n): n.get("linear", False) for n in wanted if isinstance(n, dict)}
+    atoms_of = {_query_name(n): n.get("atoms", 2) for n in wanted if isinstance(n, dict)}
     citation = "chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500 K"
     found = vibration.fetch(names, linear, atoms_of)
     path = snapshot.write(
         args.out,
-        "species_property",
+        "state_property",
         {"source_type": "chemicals_cp_fit", "citation": citation},
         vibration.records(found, citation),
     )
@@ -398,10 +408,10 @@ def _ideal_gas(args) -> int:
         print('  pyromat is not installed: python -m pip install -e ".[thermo]"')
         return 1
     requested = yaml.safe_load(args.species.read_text(encoding="utf-8")) or {}
-    wanted = requested if isinstance(requested, list) else requested.get("species") or []
-    names = [item if isinstance(item, str) else item["query"] for item in wanted]
+    wanted = _listed(requested)
+    names = [_query_name(item) for item in wanted]
     composition = {
-        item["query"]: item["composition"]
+        _query_name(item): item["composition"]
         for item in wanted
         if isinstance(item, dict) and item.get("composition")
     }
@@ -409,7 +419,7 @@ def _ideal_gas(args) -> int:
     found = ideal_gas.fetch(names, composition)
     path = snapshot.write(
         args.out,
-        "species_property",
+        "state_property",
         {"source_type": "pyromat", "citation": citation},
         ideal_gas.records(found, citation),
     )
@@ -426,10 +436,10 @@ def _thermo(args) -> int:
         print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
         return 1
     requested = yaml.safe_load(args.species.read_text(encoding="utf-8")) or {}
-    wanted = requested if isinstance(requested, list) else requested.get("species") or []
-    names = [item if isinstance(item, str) else item["query"] for item in wanted]
+    wanted = _listed(requested)
+    names = [_query_name(item) for item in wanted]
     composition = {
-        item["query"]: item["composition"]
+        _query_name(item): item["composition"]
         for item in wanted
         if isinstance(item, dict) and item.get("composition")
     }
@@ -438,7 +448,7 @@ def _thermo(args) -> int:
     citation = "chemicals package, bundled thermodynamic tables"
     path = snapshot.write(
         args.out,
-        "species_property",
+        "state_property",
         {"source_type": "chemicals", "citation": citation},
         thermo.records(found, citation),
     )
@@ -447,17 +457,15 @@ def _thermo(args) -> int:
         if not item.known:
             print(f"    unresolved  {item.species}  {item.error or 'no enthalpy tabulated'}")
     print(f"  snapshot      {path}")
-    print(f"  next          rgen ingest {path} --overlay work/overlay.yaml")
+    print(f"  next          rgen ingest {path} --bundle outputs --overlay work/overlay.yaml")
     return 0
 
 
 def _pubchem(args) -> int:
     requested = yaml.safe_load(args.species.read_text(encoding="utf-8")) or {}
-    wanted = requested if isinstance(requested, list) else requested.get("species") or []
-    names = [item if isinstance(item, str) else item["query"] for item in wanted]
-    registered = {
-        item["query"]: item for item in wanted if isinstance(item, dict) and item.get("query")
-    }
+    wanted = _listed(requested)
+    names = [_query_name(item) for item in wanted]
+    registered = {_query_name(item): item for item in wanted if isinstance(item, dict)}
 
     found = pubchem.fetch(names)
     args.out.mkdir(parents=True, exist_ok=True)
@@ -481,7 +489,7 @@ def _pubchem(args) -> int:
     )
     path = snapshot.write(
         args.out,
-        "species_property",
+        "state_property",
         {"source_type": "pubchem", "citation": "PubChem PUG REST, identity only"},
         records,
     )

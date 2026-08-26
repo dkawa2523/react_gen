@@ -2,25 +2,20 @@
 root_packages =
     reactgen
     acquire
-    discover
 include_external_packages = True
 
 [importlinter:contract:reactgen-layers]
-name = reactgen modules import only from the layers below them
+name = generation and assessment dependencies point inward
 type = layers
 layers =
     reactgen.cli
-    reactgen.export
-    reactgen.plan | reactgen.lock | reactgen.ingest | reactgen.coverage | reactgen.dnt | reactgen.graph | reactgen.known
-    reactgen.audit | reactgen.quality
-    reactgen.rank
-    reactgen.physics
-    reactgen.expand
-    reactgen.thermo | reactgen.balance
-    reactgen.registry
-    reactgen.case
-    reactgen.layers
-    reactgen.processes | reactgen.model
+    reactgen.adopt | reactgen.derive | reactgen.export | reactgen.ingest | reactgen.plan
+    reactgen.pipeline
+    reactgen.assessment
+    reactgen.evidence | reactgen.generate
+    reactgen.balance | reactgen.case | reactgen.chemistry | reactgen.registry | reactgen.thermo
+    reactgen.records
+    reactgen.naming | reactgen.model
 
 [importlinter:contract:reactgen-offline]
 name = reactgen never reaches the network or the acquisition tools
@@ -28,15 +23,7 @@ type = forbidden
 source_modules =
     reactgen
 forbidden_modules =
+    acquire
     http
     urllib
     socket
-
-[importlinter:contract:optional-packages-stay-optional]
-name = the core never imports acquisition or discovery
-type = forbidden
-source_modules =
-    reactgen
-forbidden_modules =
-    acquire
-    discover

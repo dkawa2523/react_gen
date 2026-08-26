@@ -13,4 +13,4 @@ connection and parse foreign formats, and the generator may do neither.
     cli        the commands
 """
 
-__version__ = "0.1.0"
+__version__ = "0.4.0"

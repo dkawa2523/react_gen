@@ -14,9 +14,11 @@ Which properties carry over is a physical question with different answers:
 
     formation enthalpy                 shifts by the level energy, since the
                                        state is the substance holding that much
-                                       more energy. Most of the registry's
-                                       states carry it already; the rule is
-                                       here so none is left out.
+                                       more energy. This scalar supports an
+                                       energy balance; a complete ground-state
+                                       NASA polynomial is not copied because
+                                       state-resolved partition functions are
+                                       different physics.
 
     ionization energy, affinity        shift by the level energy with the
                                        opposite sign, and the registry carries
@@ -35,7 +37,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 
-from reactgen.model import Property, Species
+from reactgen.records import Property, Species
 from reactgen.registry import Registry
 
 ELECTRON_MASS_AMU = 0.000548579909
@@ -85,9 +87,8 @@ CARRIED = (
 def carried_from(parent: Species, energy_eV: float | None) -> dict[str, Property]:
     """The properties a state of `parent` holds, ready to attach to it.
 
-    Shared with the proposer, which invents `SF4_v` while the run is walking and
-    cannot come back for an overlay afterwards. Same rule in both places, so a
-    state invented during a walk and one sitting in the registry answer alike.
+    This is an explicit derived-data operation. Registry loading never inserts
+    these values implicitly.
     """
 
     out = {
@@ -133,7 +134,6 @@ def overlay(registry: Registry) -> dict:
     """An overlay filling every state property its ground state already answers."""
 
     properties: dict[str, dict] = {}
-    thermo: dict[str, dict] = {}
     elements = element_masses(registry)
     for species in registry.species.values():
         if species.value("mass_amu") is not None:
@@ -144,6 +144,7 @@ def overlay(registry: Registry) -> dict:
                 "value": mass,
                 "unit": "amu",
                 "source": "sum of atomic masses in the registry, less the electron mass",
+                "evidence_tier": "derived",
             }
     for state_id, parent_id in parents(registry).items():
         state, parent = registry.species[state_id], registry.species[parent_id]
@@ -154,10 +155,9 @@ def overlay(registry: Registry) -> dict:
                     "value": prop.value,
                     "unit": prop.unit,
                     "source": prop.source,
+                    "evidence_tier": "derived",
                 }
-        if state.thermo is None and parent.thermo is not None and energy is not None:
-            thermo[state_id] = _shifted(parent, parent_id, energy)
-    return {"properties": properties, "thermo": thermo}
+    return {"properties": properties}
 
 
 def merged(acquired: dict, filled: dict) -> dict:
@@ -175,30 +175,3 @@ def merged(acquired: dict, filled: dict) -> dict:
                 for name, value in entry.items():
                     held.setdefault(name, value)
     return out
-
-
-def _shifted(parent, parent_id: str, energy_eV: float) -> dict:
-    """The parent's polynomial with the level energy folded into the enthalpy term.
-
-    In a NASA fit H(T)/RT carries its constant as a6/T, so a level sitting
-    `energy` above the ground state raises a6 by energy/R in kelvin. Cp and S
-    are untouched: the manifold has the parent's heat capacity, which is the
-    whole reason a state can borrow its polynomial at all.
-    """
-
-    kelvin = energy_eV * 11604.518
-    low = list(parent.thermo.low)
-    high = list(parent.thermo.high)
-    low[5] += kelvin
-    high[5] += kelvin
-    return {
-        "low": low,
-        "high": high,
-        "t_min": parent.thermo.t_min,
-        "t_mid": parent.thermo.t_mid,
-        "t_max": parent.thermo.t_max,
-        "source": (
-            f"{parent_id} polynomial with the {energy_eV:.4g} eV level energy "
-            f"added to the enthalpy constant"
-        ),
-    }

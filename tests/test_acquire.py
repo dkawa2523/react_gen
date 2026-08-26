@@ -9,8 +9,11 @@ import yaml
 
 from acquire import lxcat, snapshot
 from acquire.cli import main
+from reactgen import export as bundle_export
 from reactgen import ingest
-from reactgen.registry import Registry
+from reactgen.case import Case
+from reactgen.evidence import EvidenceCatalog
+from reactgen.pipeline import run
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mini"
 
@@ -75,27 +78,31 @@ def test_converted_export_matches_registered_reactions(export, tmp_path):
     assert document["kind"] == "cross_section"
     assert len(document["records"]) == 2
 
+    catalog = EvidenceCatalog.load(FIXTURE)
+    generated = run(Case("argon", ("Ar",)), catalog)
+    bundle_export.write(tmp_path / "bundle", generated)
     report = ingest.ingest(
         tmp_path / "work" / "snapshot.yaml",
-        Registry.load(FIXTURE),
+        tmp_path / "bundle",
         tmp_path / "work" / "overlay.yaml",
     )
     assert report.accepted == 2
-    assert report.ok
 
 
 def test_overlay_assets_resolve_against_the_overlay(export, tmp_path):
     work = tmp_path / "work"
     main(["lxcat", str(export), "--out", str(work)])
-    ingest.ingest(work / "snapshot.yaml", Registry.load(FIXTURE), work / "overlay.yaml")
+    catalog = EvidenceCatalog.load(FIXTURE)
+    generated = run(Case("argon", ("Ar",)), catalog)
+    bundle_export.write(work / "bundle", generated)
+    ingest.ingest(work / "snapshot.yaml", work / "bundle", work / "overlay.yaml")
 
-    merged = Registry.load(FIXTURE, overlay=work / "overlay.yaml")
-    reaction = next(
-        r for r in merged.channels[("electron", "e", "Ar")] if r.id == "e_Ar_ionization"
-    )
-    dataset = reaction.best("cross_section")
-    assert dataset is not None
-    assert merged.table(dataset.asset) == [(15.7596, 0.0), (100.0, 2.7e-20)]
+    overlay = yaml.safe_load((work / "overlay.yaml").read_text(encoding="utf-8"))
+    datasets = [item for group in overlay["datasets"].values() for item in group]
+    ionization = next(item for item in datasets if "ionization" in Path(item["asset"]["path"]).name)
+    asset = (work / ionization["asset"]["path"]).resolve()
+    assert not Path(ionization["asset"]["path"]).is_absolute()
+    assert "1.575960e+01,0.000000e+00" in asset.read_text(encoding="utf-8")
 
 
 def test_table_asset_is_written_next_to_the_snapshot(tmp_path):
@@ -451,6 +458,34 @@ def test_nasa9_is_refused_rather_than_truncated():
     assert item.nasa7 == (None, None)
     assert not item.known
     assert "NASA9" in item.unusable
+
+
+def test_nasa_cli_reads_the_new_states_bundle(monkeypatch, tmp_path):
+    from acquire import nasa
+
+    states = tmp_path / "states.yaml"
+    states.write_text(
+        yaml.safe_dump(
+            {
+                "metadata": {"schema_version": 4},
+                "states": [
+                    {
+                        "id": "Ar@ground",
+                        "composition": {"Ar": 1},
+                        "charge": 0,
+                        "state": {"kind": "ground", "resolution": "resolved"},
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    received = []
+    monkeypatch.setattr(nasa, "available", lambda: True)
+    monkeypatch.setattr(nasa, "fetch", lambda items: received.extend(items) or [])
+    monkeypatch.setattr(nasa, "records", lambda items, citation: [])
+    assert main(["nasa", str(states), "--out", str(tmp_path / "nasa")]) == 0
+    assert [item["id"] for item in received] == ["Ar@ground"]
 
 
 def test_chemicals_answers_for_a_polar_molecule():

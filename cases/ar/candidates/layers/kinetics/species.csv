@@ -1,4 +1,0 @@
-id,formula,charge,state_kind,depth,status,reactions,ready,missing,n_Ar,mass_amu,polarizability_A3,dipole_moment_D,collision_radius_A,well_depth_K,enthalpy_formation_eV,entropy_J_mol_K,ionization_energy_eV,electron_affinity_eV,vibrational_quantum_eV
-Ar,Ar,0,ground,0,curated,5,yes,,1,39.948,1.6411,0.0,1.7037,123.55,0.0,154.8,15.759612,-11.5,
-Ar+,Ar,1,ground,1,curated,2,no,polarizability_A3,1,39.94745,,0.0,,,15.75961,,27.62966,,
-Ar_4s,Ar,0,excited,1,literature_supported,5,yes,,1,39.948,1.6423,0.0,1.7037,123.55,11.6,,4.16,,

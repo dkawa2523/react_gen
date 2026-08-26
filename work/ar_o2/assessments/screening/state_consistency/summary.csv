@@ -1,0 +1,7 @@
+entity,step,applicability,input,retained,rejected_at_step,total,retained_percent
+state,all,applied,19,19,0,19,100.0
+state,state,applied,19,14,5,19,73.684
+state,consistency,applied,14,14,0,19,73.684
+reaction,all,applied,185,185,0,185,100.0
+reaction,state,applied,185,91,94,185,49.189
+reaction,consistency,applied,91,91,0,185,49.189

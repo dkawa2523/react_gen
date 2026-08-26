@@ -1,0 +1,3 @@
+equation,reaction_type,family,process,origin,depth,consistency_verdict,state_verdict,thermochemistry_verdict,reaction_evidence_verdict,kinetics_verdict,delta_h_eV,delta_g_eV,threshold_eV,kinetic_data,selected,exclusion_reason,id
+F + [SiO2] -> 0.5 F2,Surface recombination,surface,surface_recombination,attested_only,0,pass,pass,pass,pass,unknown,-0.822654,-0.6098625876257331,,,true,,rxn_05f35ce5be90
+F + [Si] -> 0.5 F2,Surface recombination,surface,surface_recombination,attested_only,0,pass,pass,pass,pass,unknown,-0.822654,-0.6098625876257331,,,true,,rxn_c08e1cde84ca

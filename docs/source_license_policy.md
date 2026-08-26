@@ -1,7 +1,7 @@
 # Source And License Policy
 
-This project separates local generation, prepare-time enrichment, external data
-acquisition, and curated registry promotion. The goal is to prevent public,
+This project separates local generation, reviewed overlays, external data
+acquisition, and explicit Registry adoption. The goal is to prevent public,
 commercial, API-keyed, or license-restricted data from being treated as bundled
 or production-ready by accident.
 
@@ -26,27 +26,15 @@ which local snapshot paths should be produced.
 Each source entry records:
 
 - source category
-- whether it is allowed in core generation, enrich, or external tools
+- whether it is allowed in core generation, an overlay, or external tools
 - whether license review or API keys are required
 - redistribution risk
 - default status for imported values
 - notes for reviewers
 
-Validate it with:
-
-```powershell
-python -m external_data_tools.source_catalog_check external_data/source_catalog.yaml
-```
-
-If `python` points to the Windows Store alias, use:
-
-```powershell
-py -m external_data_tools.source_catalog_check external_data/source_catalog.yaml
-```
-
 ## Policy Rules
 
-- `reactgen generate` may use only local registry-compatible files. It must not
+- `rgen generate` may use only local Registry-compatible files. It must not
   call public APIs, download files, or require optional source packages.
 - Public API sources and commercial/license-restricted sources must never have
   `allowed_in_core_generate: true`.
@@ -55,12 +43,12 @@ py -m external_data_tools.source_catalog_check external_data/source_catalog.yaml
 - Optional Python package sources must not be declared as core runtime
   dependencies in `pyproject.toml`.
 - External data tools may create raw caches or snapshots, but those outputs
-  require human review before prepare/enrich use.
+  require human review before overlay use or Registry adoption.
 - External downloads must come from explicit user-provided URL manifests; no
   scraping, crawler behavior, hidden API discovery, or login automation is
   allowed in this repository.
 - Prepared or imported data must not enter curated `registry/` without an
-  explicit `reactgen promote --apply` decision.
+  explicit, reviewed `rgen adopt OVERLAY --registry PATH` decision.
 
 ## Status Guidance
 

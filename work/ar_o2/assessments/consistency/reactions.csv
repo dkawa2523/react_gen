@@ -1,0 +1,186 @@
+candidate,reaction_type,verdict,reason,id
+e + O2 -> O- + O,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_84e8fa1d3d48
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_085bec441ad0
+e + O(¹D₂) -> O + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_4b45a93b7f18
+e + O(¹S) -> O + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_2be53d0776c7
+e + O2(a¹Δg) -> O2 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_3ce8fb5e8663
+e + O2(b¹Σg+) -> O2 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_727d49330314
+e + O2 -> O(¹D₂) + O + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_123a76ecfe44
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_49cd032be260
+e + O(¹D₂) -> O(¹D₂) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_bee14e8a1be8
+e + O(¹S) -> O(¹S) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_37c2816ca17f
+e + O2(a¹Δg) -> O2(a¹Δg) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_0e230572e278
+e + O2(b¹Σg+) -> O2(b¹Σg+) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_d802cff550ac
+e + Ar -> Ar(4s) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_683f67de893f
+e + O -> O(¹D₂) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_322a79119d6f
+e + O -> O(¹S) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_40ffa48445f6
+e + O2 -> O2(a¹Δg) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_989eea6d35bc
+e + O2 -> O2(b¹Σg+) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_409cb5fe9d2a
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1a8a97d93128
+e + O(¹D₂) -> O+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_a883c2a5062f
+e + O2(a¹Δg) -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_5e1b7cd24431
+e + O2(b¹Σg+) -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_b87c4049e16f
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_4f890c9f1ce9
+O(¹D₂) + O2 -> O2(a¹Δg) + O,Neutral reactive scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_7305fd87ad82
+O(¹D₂) + O2 -> O2(b¹Σg+) + O,Neutral reactive scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_975e581a4893
+O2(a¹Δg) + O2 -> 2 O2,Neutral reactive scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_2d2ad8dab8bd
+O + [SiO2] -> 0.5 O2,Surface recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_fa8b8f6b3770
+O + [Y2O3] -> 0.5 O2,Surface recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_08c94f4c2b6a
+e + Ar -> Ar-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_4374da9c1d1c
+e + O2 -> O2-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_a515648ebf7f
+e + O2 -> 2 O + e,Electron-impact dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_4d8f6edbf3ae
+e + O2 -> O- + O,Dissociative electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_332f5a51e689
+e + O2 -> O+ + O + 2 e,Dissociative ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1dc9f78c977a
+e + Ar -> Ar + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c8f95c3d8ede
+e + O2 -> O2 + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_5f0e9e57072b
+e + Ar -> Ar(m) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_271084b2fc94
+e + O2 -> O2(v) + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_ddfd4cfd2bad
+e + O2 -> O2* + e,Electron-impact excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_4f5cc5cb071e
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_a69a28bff768
+e + O2 -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1ca03209bf56
+2 O + M -> O2 + M,Three-body association,pass,reaction is stoichiometrically and electrically consistent,rxn_ba3ba6b31781
+e + O -> O-,Electron attachment,pass,reaction is stoichiometrically and electrically consistent,rxn_f2d5b52e7a92
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_ed39dd867e7c
+e + O2(v) -> O2 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_3a3dcf92975f
+e + O2* -> O2 + e,Electron-impact deexcitation (superelastic),pass,reaction is stoichiometrically and electrically consistent,rxn_6c5f72d907c5
+e + Ar- -> Ar + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_d83b0309c1b0
+e + O- -> O + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_08399feb356b
+e + O2- -> O2 + 2 e,Electron-impact detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_2c4965e684b5
+e + O2+ -> 2 O,Dissociative recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_0344fa41a70f
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_f4bf18f98733
+e + O -> O + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_ec1ff806cd78
+e + O+ -> O+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_ced7ed171430
+e + O- -> O- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c605c558423a
+e + O2(v) -> O2(v) + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_098eb6a80062
+e + O2* -> O2* + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_f3a308be1edd
+e + O2+ -> O2+ + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_4392ff7146da
+e + O2- -> O2- + e,Electron elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_88181a7e6efe
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_5ccce802fea8
+e + O -> O+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_02b625c9d811
+e + O2(v) -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_2400ffdfb3a5
+e + O2* -> O2+ + 2 e,Electron-impact ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1367abd723f8
+e + Ar+ -> Ar,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_b9b97c9cedf9
+e + O+ -> O,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_a065d9985ac4
+e + O2+ -> O2,Electron-ion recombination,pass,reaction is stoichiometrically and electrically consistent,rxn_fe3ef2a625bf
+Ar+ + O -> O+ + Ar,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_baee40490ad8
+Ar+ + O2 -> O2+ + Ar,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_2d29145e0f98
+Ar- + O -> O- + Ar,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_1025dffb221c
+Ar- + O2 -> O2- + Ar,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_19e271a11252
+O+ + Ar -> Ar+ + O,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_81849ac06cf9
+O+ + O2 -> O2+ + O,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_2bf32666fe5b
+O- + Ar -> Ar- + O,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_5d5111d16a78
+O- + O2 -> O2- + O,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_b4bebcad19c6
+O2+ + Ar -> Ar+ + O2,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_88b106712082
+O2+ + O -> O+ + O2,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_37bbce670254
+O2- + Ar -> Ar- + O2,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_3f735a110e81
+O2- + O -> O- + O2,Charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_9806fd0ca7ab
+Ar- + Ar -> 2 Ar + e,Collisional electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_754c5eca1437
+Ar- + O -> Ar + O + e,Collisional electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_75a6567cee43
+Ar- + O2 -> Ar + O2 + e,Collisional electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_9934f424f8c0
+O- + Ar -> Ar + O + e,Collisional electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_4db0a6c546c7
+O- + O -> 2 O + e,Collisional electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_a8c8162d07bf
+O- + O2 -> O + O2 + e,Collisional electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_2c4a5b821b8e
+O2- + Ar -> Ar + O2 + e,Collisional electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_cbe14dbb7875
+O2- + O -> O + O2 + e,Collisional electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_2927232caf86
+O2- + O2 -> 2 O2 + e,Collisional electron detachment,pass,reaction is stoichiometrically and electrically consistent,rxn_69470fb52c9e
+Ar+ + O -> Ar+ + O,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_b23dfcecb0fc
+Ar+ + O2 -> Ar+ + O2,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_116c2a39f075
+Ar- + O -> Ar- + O,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_981ebdf563ba
+Ar- + O2 -> Ar- + O2,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_37b2f906b55b
+O+ + Ar -> O+ + Ar,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_c8bbb52f16db
+O+ + O2 -> O+ + O2,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_217ec02f8a25
+O- + Ar -> O- + Ar,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_1cb8cdec1cfe
+O- + O2 -> O- + O2,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_4e056b8323ea
+O2+ + Ar -> O2+ + Ar,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_644e62d637ce
+O2+ + O -> O2+ + O,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_33a5160d5967
+O2- + Ar -> O2- + Ar,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_b9dcc46f86f8
+O2- + O -> O2- + O,Ion-neutral elastic scattering,pass,reaction is stoichiometrically and electrically consistent,rxn_470cf8775707
+Ar+ + Ar(m) -> Ar+ + Ar,Ion-induced deexcitation,pass,reaction is stoichiometrically and electrically consistent,rxn_32e0ff81482e
+Ar+ + Ar(r) -> Ar+ + Ar,Ion-induced deexcitation,pass,reaction is stoichiometrically and electrically consistent,rxn_8bb2a60a7fbc
+Ar- + Ar(m) -> Ar- + Ar,Ion-induced deexcitation,pass,reaction is stoichiometrically and electrically consistent,rxn_ffe8fc60e569
+Ar- + Ar(r) -> Ar- + Ar,Ion-induced deexcitation,pass,reaction is stoichiometrically and electrically consistent,rxn_634f6e55908a
+O2+ + O2(v) -> O2+ + O2,Ion-induced deexcitation,pass,reaction is stoichiometrically and electrically consistent,rxn_a339d2371429
+O2+ + O2* -> O2+ + O2,Ion-induced deexcitation,pass,reaction is stoichiometrically and electrically consistent,rxn_dbb28e568d13
+O2- + O2(v) -> O2- + O2,Ion-induced deexcitation,pass,reaction is stoichiometrically and electrically consistent,rxn_43949eda804d
+O2- + O2* -> O2- + O2,Ion-induced deexcitation,pass,reaction is stoichiometrically and electrically consistent,rxn_ac67529bdd89
+Ar+ + Ar -> Ar+ + Ar(m),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_c93e3d600f78
+Ar+ + Ar -> Ar+ + Ar(r),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_f07d0ba16e30
+Ar+ + O2 -> Ar+ + O2(v),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_192278ce671f
+Ar+ + O2 -> Ar+ + O2*,Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_0c51497b3a6c
+Ar- + Ar -> Ar- + Ar(m),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_fab0902a6843
+Ar- + Ar -> Ar- + Ar(r),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_26b94c20754e
+Ar- + O2 -> Ar- + O2(v),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_763194797e8c
+Ar- + O2 -> Ar- + O2*,Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_de2e4db00652
+O+ + Ar -> O+ + Ar(m),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_3afea6ddf67b
+O+ + Ar -> O+ + Ar(r),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_dae5325eb31b
+O+ + O2 -> O+ + O2(v),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_32887c53cfc0
+O+ + O2 -> O+ + O2*,Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_325d242a60fa
+O- + Ar -> O- + Ar(m),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_5c1d1862d883
+O- + Ar -> O- + Ar(r),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_dc4f1eaed1a8
+O- + O2 -> O- + O2(v),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_9938203e8724
+O- + O2 -> O- + O2*,Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_1aaa5217616d
+O2+ + Ar -> O2+ + Ar(m),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_6ece5fa184d7
+O2+ + Ar -> O2+ + Ar(r),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_18e7a7fd5b5b
+O2+ + O2 -> O2+ + O2(v),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_a94bfb506276
+O2+ + O2 -> O2+ + O2*,Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_f75feb2eb0bc
+O2- + Ar -> O2- + Ar(m),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_8e59537d4986
+O2- + Ar -> O2- + Ar(r),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_7cb2c47d47e0
+O2- + O2 -> O2- + O2(v),Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_44de2b53da2e
+O2- + O2 -> O2- + O2*,Ion-induced excitation,pass,reaction is stoichiometrically and electrically consistent,rxn_07117cb5ce40
+Ar+ + Ar- -> 2 Ar,Ion-ion mutual neutralization,pass,reaction is stoichiometrically and electrically consistent,rxn_7f218ecf9f30
+Ar+ + O- -> Ar + O,Ion-ion mutual neutralization,pass,reaction is stoichiometrically and electrically consistent,rxn_7f1253ebcfb9
+Ar+ + O2- -> Ar + O2,Ion-ion mutual neutralization,pass,reaction is stoichiometrically and electrically consistent,rxn_5a307f1b77b9
+O+ + Ar- -> Ar + O,Ion-ion mutual neutralization,pass,reaction is stoichiometrically and electrically consistent,rxn_70a5390f4242
+O+ + O- -> 2 O,Ion-ion mutual neutralization,pass,reaction is stoichiometrically and electrically consistent,rxn_10beb5bc00af
+O+ + O2- -> O + O2,Ion-ion mutual neutralization,pass,reaction is stoichiometrically and electrically consistent,rxn_f362c4374a2b
+O2+ + Ar- -> Ar + O2,Ion-ion mutual neutralization,pass,reaction is stoichiometrically and electrically consistent,rxn_1cc12a118d26
+O2+ + O- -> O + O2,Ion-ion mutual neutralization,pass,reaction is stoichiometrically and electrically consistent,rxn_08e2f48ee28d
+O2+ + O2- -> 2 O2,Ion-ion mutual neutralization,pass,reaction is stoichiometrically and electrically consistent,rxn_15fac312b7fa
+O2+ + Ar -> O+ + Ar + O,Projectile-ion dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_4487814bfc3e
+O2+ + O -> O+ + 2 O,Projectile-ion dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_ad2d57546439
+O2+ + O2 -> O+ + O + O2,Projectile-ion dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_f01e2fa9b40b
+O2- + Ar -> O- + Ar + O,Projectile-ion dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_f7f35bdddeea
+O2- + O -> O- + 2 O,Projectile-ion dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_688c1b736a68
+O2- + O2 -> O- + O + O2,Projectile-ion dissociation,pass,reaction is stoichiometrically and electrically consistent,rxn_fe0ea6173b83
+Ar+ + Ar -> Ar+ + Ar,Resonant charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_42da360d77cf
+Ar- + Ar -> Ar- + Ar,Resonant charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_2d9ccfcce5d9
+O+ + O -> O+ + O,Resonant charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_7281eb34b270
+O- + O -> O- + O,Resonant charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_650299e93852
+O2+ + O2 -> O2+ + O2,Resonant charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_223a68face62
+O2- + O2 -> O2- + O2,Resonant charge exchange,pass,reaction is stoichiometrically and electrically consistent,rxn_641dfc3def66
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_89b3c1f5c922
+Ar(m) + O -> O+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_664ed39e8711
+Ar(m) + O2 -> O2+ + Ar + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_5e4e401081e7
+O2* + Ar -> Ar+ + O2 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_6fbef0792ecd
+O2* + O -> O+ + O2 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_97e7f57e6baa
+O2* + O2 -> O2+ + O2 + e,Penning ionization,pass,reaction is stoichiometrically and electrically consistent,rxn_1afa97c5ae80
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_a9821670c330
+Ar(m) + O -> Ar + O,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_cd3f064c57e9
+Ar(m) + O2 -> Ar + O2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_d033903105a0
+Ar(m) + O2(v) -> O2(v) + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_3238e70d569e
+Ar(m) + O2* -> Ar(m) + O2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_0664702fc8b3
+Ar(m) + O2* -> O2* + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_8ebdaeab3d31
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_cc4cbdb651ed
+Ar(r) + O -> Ar + O,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_2d3b511c5644
+Ar(r) + O2 -> Ar + O2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_fa54f8a8e792
+Ar(r) + O2(v) -> O2(v) + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_f93bf35caf1e
+Ar(r) + O2* -> Ar(r) + O2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_4ad9cf30bc80
+Ar(r) + O2* -> O2* + Ar,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_dc471d9f9a8c
+O2* + Ar -> Ar + O2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_470de7c7998a
+O2* + O -> O + O2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_953abc47a76a
+O2* + O2 -> 2 O2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_3d41fa9089a3
+O2* + O2(v) -> O2(v) + O2,Excited-state quenching,pass,reaction is stoichiometrically and electrically consistent,rxn_c561bbf02430
+Ar(m) + O2(v) -> Ar(m) + O2,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_6ca88b0a54fa
+Ar(r) + O2(v) -> Ar(r) + O2,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_813c0cfa7ce0
+O2(v) + Ar -> Ar + O2,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_d24c19b6e6eb
+O2(v) + O -> O + O2,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_f5c7d2b1a05f
+O2(v) + O2 -> 2 O2,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_5fcbcf3fc37b
+O2* + O2(v) -> O2* + O2,Vibrational-translational (V-T) relaxation,pass,reaction is stoichiometrically and electrically consistent,rxn_51dcf606e214

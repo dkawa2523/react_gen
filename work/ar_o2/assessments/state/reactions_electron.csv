@@ -1,0 +1,63 @@
+candidate,reaction_type,verdict,reason,id
+e + O2 -> O- + O,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_84e8fa1d3d48
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),pass,every non-electron reactant and product passes its State assessment,rxn_085bec441ad0
+e + O(¹D₂) -> O + e,Electron-impact deexcitation (superelastic),pass,every non-electron reactant and product passes its State assessment,rxn_4b45a93b7f18
+e + O(¹S) -> O + e,Electron-impact deexcitation (superelastic),pass,every non-electron reactant and product passes its State assessment,rxn_2be53d0776c7
+e + O2(a¹Δg) -> O2 + e,Electron-impact deexcitation (superelastic),pass,every non-electron reactant and product passes its State assessment,rxn_3ce8fb5e8663
+e + O2(b¹Σg+) -> O2 + e,Electron-impact deexcitation (superelastic),pass,every non-electron reactant and product passes its State assessment,rxn_727d49330314
+e + O2 -> O(¹D₂) + O + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_123a76ecfe44
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_49cd032be260
+e + O(¹D₂) -> O(¹D₂) + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_bee14e8a1be8
+e + O(¹S) -> O(¹S) + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_37c2816ca17f
+e + O2(a¹Δg) -> O2(a¹Δg) + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_0e230572e278
+e + O2(b¹Σg+) -> O2(b¹Σg+) + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_d802cff550ac
+e + Ar -> Ar(4s) + e,Electron-impact excitation,pass,every non-electron reactant and product passes its State assessment,rxn_683f67de893f
+e + O -> O(¹D₂) + e,Electron-impact excitation,pass,every non-electron reactant and product passes its State assessment,rxn_322a79119d6f
+e + O -> O(¹S) + e,Electron-impact excitation,pass,every non-electron reactant and product passes its State assessment,rxn_40ffa48445f6
+e + O2 -> O2(a¹Δg) + e,Electron-impact excitation,pass,every non-electron reactant and product passes its State assessment,rxn_989eea6d35bc
+e + O2 -> O2(b¹Σg+) + e,Electron-impact excitation,pass,every non-electron reactant and product passes its State assessment,rxn_409cb5fe9d2a
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_1a8a97d93128
+e + O(¹D₂) -> O+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_a883c2a5062f
+e + O2(a¹Δg) -> O2+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_5e1b7cd24431
+e + O2(b¹Σg+) -> O2+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_b87c4049e16f
+e + Ar -> Ar-,Electron attachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_4374da9c1d1c
+e + O2 -> O2-,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_a515648ebf7f
+e + O2 -> 2 O + e,Electron-impact dissociation,pass,every non-electron reactant and product passes its State assessment,rxn_4d8f6edbf3ae
+e + O2 -> O- + O,Dissociative electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_332f5a51e689
+e + O2 -> O+ + O + 2 e,Dissociative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_1dc9f78c977a
+e + Ar -> Ar + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_c8f95c3d8ede
+e + O2 -> O2 + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_5f0e9e57072b
+e + Ar -> Ar(m) + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_271084b2fc94
+e + O2 -> O2(v) + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ddfd4cfd2bad
+e + O2 -> O2* + e,Electron-impact excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4f5cc5cb071e
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_a69a28bff768
+e + O2 -> O2+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_1ca03209bf56
+e + O -> O-,Electron attachment,pass,every non-electron reactant and product passes its State assessment,rxn_f2d5b52e7a92
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_ed39dd867e7c
+e + O2(v) -> O2 + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_3a3dcf92975f
+e + O2* -> O2 + e,Electron-impact deexcitation (superelastic),unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6c5f72d907c5
+e + Ar- -> Ar + 2 e,Electron-impact detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_d83b0309c1b0
+e + O- -> O + 2 e,Electron-impact detachment,pass,every non-electron reactant and product passes its State assessment,rxn_08399feb356b
+e + O2- -> O2 + 2 e,Electron-impact detachment,pass,every non-electron reactant and product passes its State assessment,rxn_2c4965e684b5
+e + O2+ -> 2 O,Dissociative recombination,pass,every non-electron reactant and product passes its State assessment,rxn_0344fa41a70f
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,fail,at least one non-electron reactant or product fails its State assessment,rxn_f4bf18f98733
+e + O -> O + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_ec1ff806cd78
+e + O+ -> O+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_ced7ed171430
+e + O- -> O- + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_c605c558423a
+e + O2(v) -> O2(v) + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_098eb6a80062
+e + O2* -> O2* + e,Electron elastic scattering,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f3a308be1edd
+e + O2+ -> O2+ + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_4392ff7146da
+e + O2- -> O2- + e,Electron elastic scattering,pass,every non-electron reactant and product passes its State assessment,rxn_88181a7e6efe
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_5ccce802fea8
+e + O -> O+ + 2 e,Electron-impact ionization,pass,every non-electron reactant and product passes its State assessment,rxn_02b625c9d811
+e + O2(v) -> O2+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_2400ffdfb3a5
+e + O2* -> O2+ + 2 e,Electron-impact ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_1367abd723f8
+e + Ar+ -> Ar,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_b9b97c9cedf9
+e + O+ -> O,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_a065d9985ac4
+e + O2+ -> O2,Electron-ion recombination,pass,every non-electron reactant and product passes its State assessment,rxn_fe3ef2a625bf

@@ -1,0 +1,20 @@
+species,formula,charge,excitation,resolution,lifetime_class,state_label,state_symbol,state_meaning,alternative_resolution_states,structure_scope,origin,depth,state_verdict,thermochemistry_verdict,selected,state_energy_eV,lifetime_s,mass_amu,enthalpy_formation_eV,ionization_energy_eV,electron_affinity_eV,id
+Ar,Ar,0,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,0,pass,pass,true,0.0,,39.948,0.0,15.759612,-11.5,Ar@ground
+Ar(4s),Ar,0,electronic,lumped,mixed_metastable_resonant,4s,4s,4s electronic-state manifold (lumped; mixed metastable/resonant),,not_applicable,attested_only,0,pass,pass,true,11.6,,39.948,11.6,4.16,,Ar@4s
+O(¹D₂),O,0,electronic,resolved,metastable,1d2,¹D₂,resolved spectroscopic state ¹D₂,,not_applicable,attested_only,0,pass,pass,true,1.967,,15.9994,4.5496,,,O@1d2
+O(¹S),O,0,electronic,resolved,metastable,1s,¹S,resolved spectroscopic state ¹S,,not_applicable,attested_only,0,pass,pass,true,4.189746,,15.9994,6.772823,,,O@1s
+O2,O2,0,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,0,pass,pass,true,0.0,,31.9988,0.0,12.0697,0.448,O2@ground
+O2(a¹Δg),O2,0,electronic,resolved,metastable,a1dg,a¹Δg,resolved spectroscopic state a¹Δg,O2*,formula_determined,attested_only,0,pass,pass,true,0.977,,31.9988,0.977,,,O2@a1dg
+O2(b¹Σg+),O2,0,electronic,resolved,metastable,b1sg+,b¹Σg+,resolved spectroscopic state b¹Σg+,O2*,formula_determined,attested_only,0,pass,pass,true,1.627,,31.9988,1.627,,,O2@b1sg+
+e,,-1,electron,resolved,not_applicable,electron,electron,free electron,,not_applicable,mechanical,0,pass,not_applicable,true,,,0.00054858,,,,e
+Ar(m),Ar,0,electronic,lumped,metastable,metastable,m,metastable electronic-state manifold (lumped),,not_applicable,mechanical,1,unknown,unknown,true,,,,,,,Ar@metastable
+Ar(r),Ar,0,electronic,lumped,resonant_radiative,resonant,r,resonant radiative electronic-state manifold (lumped),,not_applicable,mechanical,1,unknown,unknown,true,,,,,,,Ar@resonant
+Ar+,Ar,1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,pass,pass,true,0.0,,39.94745,15.75961,27.62966,,Ar+@ground
+Ar-,Ar,-1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,fail,unknown,true,,,,,,,Ar-@ground
+O,O,0,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,pass,pass,true,0.0,,15.9994,2.583077,13.618055,1.461113,O@ground
+O+,O,1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,pass,pass,true,0.0,,15.9988514,16.200655,35.12112,,O+@ground
+O-,O,-1,ground,resolved,not_applicable,ground,,electronic ground state,,not_applicable,mechanical,1,pass,pass,true,0.0,,15.9999486,1.1225,,1.461112,O-@ground
+O2(v),O2,0,vibrational,lumped,not_applicable,vibrational,v,vibrationally excited manifold (lumped),,formula_determined,mechanical,1,unknown,unknown,true,,,,,,,O2@vibrational
+O2*,O2,0,electronic,lumped,unspecified,electronic,*,electronic-state manifold (lumped; lifetime unspecified),O2(a¹Δg); O2(b¹Σg+),formula_determined,mechanical,1,unknown,unknown,true,,,,,,,O2@electronic
+O2+,O2,1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,1,pass,pass,true,0.0,,31.9982514,12.0697,,,O2+@ground
+O2-,O2,-1,ground,resolved,not_applicable,ground,,electronic ground state,,formula_determined,mechanical,1,pass,unknown,true,,,,,,,O2-@ground

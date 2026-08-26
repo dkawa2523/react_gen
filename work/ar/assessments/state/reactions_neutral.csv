@@ -1,0 +1,7 @@
+candidate,reaction_type,verdict,reason,id
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,pass,every non-electron reactant and product passes its State assessment,rxn_4f890c9f1ce9
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_89b3c1f5c922
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_a9821670c330
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_cc4cbdb651ed

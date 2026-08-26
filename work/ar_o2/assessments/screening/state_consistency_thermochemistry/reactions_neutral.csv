@@ -1,0 +1,6 @@
+equation,reaction_type,family,process,origin,depth,state_verdict,consistency_verdict,thermochemistry_verdict,kinetics_verdict,reaction_evidence_verdict,kinetics_or_reaction_evidence_verdict,accepted_by,id
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,neutral,associative_ionization,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_4f890c9f1ce9
+O(¹D₂) + O2 -> O2(a¹Δg) + O,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_7305fd87ad82
+O(¹D₂) + O2 -> O2(b¹Σg+) + O,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_975e581a4893
+O2(a¹Δg) + O2 -> 2 O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_2d2ad8dab8bd
+2 O + M -> O2 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_ba3ba6b31781

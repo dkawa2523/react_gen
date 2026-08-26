@@ -1,0 +1,84 @@
+candidate,excitation,resolution,lifetime_class,state_meaning,alternative_resolution_states,verdict,reason,id
+Ar,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,Ar@ground
+Ar(4s),electronic,lumped,mixed_metastable_resonant,4s electronic-state manifold (lumped; mixed metastable/resonant),,pass,thermochemical representation is available,Ar@4s
+O(¹D₂),electronic,resolved,metastable,resolved spectroscopic state ¹D₂,,pass,thermochemical representation is available,O@1d2
+O(¹S),electronic,resolved,metastable,resolved spectroscopic state ¹S,,pass,thermochemical representation is available,O@1s
+O2,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,O2@ground
+O2(a¹Δg),electronic,resolved,metastable,resolved spectroscopic state a¹Δg,O2*,pass,thermochemical representation is available,O2@a1dg
+O2(b¹Σg+),electronic,resolved,metastable,resolved spectroscopic state b¹Σg+,O2*,pass,thermochemical representation is available,O2@b1sg+
+S(¹D),electronic,resolved,metastable,resolved spectroscopic state ¹D,,pass,thermochemical representation is available,S@1d
+S(¹S),electronic,resolved,metastable,resolved spectroscopic state ¹S,,pass,thermochemical representation is available,S@1s
+SF6,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF6@ground
+SO2,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SO2@ground
+SO2F,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SO2F@ground
+SO2F2,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SO2F2@ground
+SOF2,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SOF2@ground
+e,electron,resolved,not_applicable,free electron,,not_applicable,,e
+Ar(m),electronic,lumped,metastable,metastable electronic-state manifold (lumped),,unknown,formation enthalpy or NASA coefficients are missing,Ar@metastable
+Ar(r),electronic,lumped,resonant_radiative,resonant radiative electronic-state manifold (lumped),,unknown,formation enthalpy or NASA coefficients are missing,Ar@resonant
+Ar+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,Ar+@ground
+Ar-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,Ar-@ground
+F,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,F@ground
+F-,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,F-@ground
+F2,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,F2@ground
+F2-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,F2-@ground
+O,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,O@ground
+O+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,O+@ground
+O-,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,O-@ground
+O2(v),vibrational,lumped,not_applicable,vibrationally excited manifold (lumped),,unknown,formation enthalpy or NASA coefficients are missing,O2@vibrational
+O2*,electronic,lumped,unspecified,electronic-state manifold (lumped; lifetime unspecified),O2(a¹Δg); O2(b¹Σg+),unknown,formation enthalpy or NASA coefficients are missing,O2@electronic
+O2+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,O2+@ground
+O2-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,O2-@ground
+SF4,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF4@ground
+SF4+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF4+@ground
+SF4-,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF4-@ground
+SF5,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF5@ground
+SF5+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF5+@ground
+SF5-,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF5-@ground
+SF6(v),vibrational,lumped,not_applicable,vibrationally excited manifold (lumped),,unknown,formation enthalpy or NASA coefficients are missing,SF6@vibrational
+SF6*,electronic,lumped,unspecified,electronic-state manifold (lumped; lifetime unspecified),,unknown,formation enthalpy or NASA coefficients are missing,SF6@electronic
+SF6+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SF6+@ground
+SF6-,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF6-@ground
+ArF+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,ArF+@ground
+ArF-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,ArF-@ground
+F+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,F+@ground
+F2+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,F2+@ground
+O2F,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,O2F@ground
+O2F+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,O2F+@ground
+O2F-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,O2F-@ground
+OF,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,OF@ground
+OF+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,OF+@ground
+OF-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,OF-@ground
+SF2,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF2@ground
+SF2+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF2+@ground
+SF2-,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF2-@ground
+SF3,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF3@ground
+SF3+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF3+@ground
+SF3-,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF3-@ground
+SOF3+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF3+@ground
+SOF3-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF3-@ground
+SOF4+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF4+@ground
+SOF4-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF4-@ground
+SOF5,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF5@ground
+SOF5+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF5+@ground
+SOF5-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF5-@ground
+O2F2,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,O2F2@ground
+OF2,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,OF2@ground
+S,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,S@ground
+S+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,S+@ground
+S-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,S-@ground
+SF,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF@ground
+SF+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SF+@ground
+SF-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SF-@ground
+SOF+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF+@ground
+SOF-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF-@ground
+SOF3,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF3@ground
+SOF4,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF4@ground
+O2F2+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,O2F2+@ground
+O2F2-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,O2F2-@ground
+OF2+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,OF2+@ground
+OF2-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,OF2-@ground
+SO,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,SO@ground
+SO+,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SO+@ground
+SO-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SO-@ground
+SOF,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,SOF@ground

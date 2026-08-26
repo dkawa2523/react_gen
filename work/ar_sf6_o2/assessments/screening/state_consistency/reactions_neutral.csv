@@ -1,0 +1,106 @@
+equation,reaction_type,family,process,origin,depth,state_verdict,consistency_verdict,thermochemistry_verdict,kinetics_verdict,reaction_evidence_verdict,kinetics_or_reaction_evidence_verdict,accepted_by,id
+F + S -> SF,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_db78850fb861
+F + SF -> SF2,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_6ee9099a83e1
+F + SF2 -> SF3,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_46af65e4dabe
+F + SF3 -> SF4,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_c00702fee265
+F + SF4 -> SF5,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_19dab5d2e0c4
+F + SF5 -> SF6,Bimolecular association,neutral,association,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_5bfe69250255
+F + SO -> SOF,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_c9c7ad054217
+F + SO2 -> SO2F,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_275ea1423d5c
+F + SO2F -> SO2F2,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_ecb990bb00f1
+F + SOF -> SOF2,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_d3a5693674c0
+F + SOF2 -> SOF3,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_3178fdf9a766
+F + SOF3 -> SOF4,Bimolecular association,neutral,association,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_80e7f44d048b
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,neutral,associative_ionization,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_4f890c9f1ce9
+SOF4 -> F + SOF3,Neutral-impact dissociation,neutral,dissociation,attested_only,0,pass,pass,unknown,unknown,pass,pass,reaction_evidence,rxn_840ce4f8f791
+2 OF -> 2 F + O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_3fd7fc6eb871
+2 OF -> F2 + O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_15283e9b47bc
+2 SF -> S + SF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_c6b15919995b
+2 SF3 -> SF2 + SF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_f0863ea7cc36
+2 SF5 -> SF4 + SF6,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_b9152eee2ba6
+O + F2 -> F + OF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_43434e2fb943
+O + OF -> F + O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_96c427471270
+O + SF -> F + SO,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_9e9b7bce706a
+O + SF -> SOF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_377aaf89c3ff
+O + SF2 -> F + SOF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_30b0b545871f
+O + SF2 -> SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_fad7033783b1
+O + SF3 -> F + SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_281b3b5b2bb5
+O + SF3 -> SOF3,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_d7c8fa42f296
+O + SF4 -> SOF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_08c48b5134c6
+O + SF5 -> F + SOF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_8491aa21f02a
+O + SO -> SO2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_53db127e6a2c
+O + SO2F2 -> O2 + SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_dece05c03842
+O + SOF -> F + SO2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_91b40ed25f0a
+O + SOF2 -> SO2F2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_b019ee525e19
+O + SOF3 -> F + SO2F2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_598ff281bd1e
+O(¹D₂) + F2 -> F + OF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_1b2a2d78690b
+O(¹D₂) + O2 -> O2(a¹Δg) + O,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_7305fd87ad82
+O(¹D₂) + O2 -> O2(b¹Σg+) + O,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_975e581a4893
+O(¹D₂) + OF -> F + O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_ec4e7fcd004a
+O(¹D₂) + SF -> F + SO,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_a07ca5fa738a
+O(¹D₂) + SF -> SOF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_69ffb02e80ad
+O(¹D₂) + SF2 -> F + SOF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_94720177c316
+O(¹D₂) + SF2 -> SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_0fec93f8715f
+O(¹D₂) + SF3 -> F + SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_ecc129e89499
+O(¹D₂) + SF3 -> SOF3,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_29ab5c9fa6ac
+O(¹D₂) + SF4 -> SOF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_1f1b9a7ed3c7
+O(¹D₂) + SF5 -> F + SOF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_bf56ab4a0b14
+O(¹D₂) + SO -> SO2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_8200ce02168a
+O(¹D₂) + SO2F2 -> O2 + SOF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_78cbf6463ee3
+O(¹D₂) + SOF -> F + SO2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_ec5e4fd220a5
+O(¹D₂) + SOF2 -> SO2F2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_ca4a817b1d6d
+O(¹D₂) + SOF3 -> F + SO2F2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_4511f0d76351
+O2(a¹Δg) + O2 -> 2 O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_2d2ad8dab8bd
+S + F2 -> F + SF,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,unknown,pass,pass,pass,kinetics; reaction_evidence,rxn_e741df540cef
+SF + F2 -> F + SF2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_ede25873bb47
+SF2 + F2 -> F + SF3,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_467c6f7a4496
+SF3 + F2 -> F + SF4,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_be8d06d1c8c9
+SF4 + F2 -> F + SF5,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_24fd15d4f6bb
+SF5 + F2 -> F + SF6,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_d2af76c89858
+2 O + M -> O2 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_ba3ba6b31781
+F + SF5 + M -> SF6 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,unknown,unknown,unknown,,rxn_f3f0a2fc02a1
+SF4 + F2 + M -> SF6 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,unknown,unknown,unknown,,rxn_7a7e9edec03a
+F + O2 -> O + OF,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_1666ef8795a6
+F + SF4 -> SF3 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_39174d2640ae
+F + SF5 -> SF4 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_a046e8752fbb
+F + SF6 -> SF5 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_7d39e94932cd
+O + F2 -> F + OF,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_7796bc74ef60
+O + SF4 -> OF + SF3,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_4178dd815947
+O + SF5 -> OF + SF4,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_a28567b1d681
+O + SF6 -> OF + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_c5b700b0169c
+SF4 + SF6 -> 2 SF5,Radical abstraction,neutral,radical_abstraction,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_f26bc3222b90
+2 F + M -> F2 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_e001c2cfb313
+F + SF3 + M -> SF4 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_7ab88b74bf77
+F + SF4 + M -> SF5 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_ec785adf412b
+SF2 + F2 + M -> SF4 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_10ffc203a800
+SF3 + F2 + M -> SF5 + M,Three-body association,neutral,three_body_association,mechanical,2,pass,pass,pass,unknown,unknown,unknown,,rxn_fd4d4c321d63
+F + SF2 -> SF + F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_d398f35c9e7f
+F + SF3 -> SF2 + F2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_97b17d8b1307
+O + SF2 -> OF + SF,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_51a42b156845
+O + SF3 -> OF + SF2,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_21fc1e0b5cd9
+SF2 + SF4 -> 2 SF3,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_162ee4941331
+SF2 + SF5 -> SF3 + SF4,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_2df9e6ff91a8
+SF2 + SF6 -> SF3 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_f984a8f06d36
+SF3 + SF5 -> 2 SF4,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_2b1bcab815cb
+SF3 + SF6 -> SF4 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_811df43df65e
+F + O + M -> OF + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_a0ae3f2f2b97
+F + SF + M -> SF2 + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_368e63fa8efc
+F + SF2 + M -> SF3 + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_a1cccfd39500
+S + F2 + M -> SF2 + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_3171303b13d7
+SF + F2 + M -> SF3 + M,Three-body association,neutral,three_body_association,mechanical,3,pass,pass,pass,unknown,unknown,unknown,,rxn_256eefe30c6c
+F + SF -> S + F2,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_8de219796feb
+O + SF -> OF + S,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_8bd1d113ba41
+OF + S -> O + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_d5e76a18cc93
+S + F2 -> F + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_9f129fa1c62b
+S + O2 -> O + SO,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,unknown,,rxn_a3d30f18cba9
+S + SF2 -> 2 SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_4b489472ff8b
+S + SF3 -> SF2 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_b29b3fbb764d
+S + SF4 -> SF3 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_bdb013943eee
+S + SF5 -> SF4 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_113469fcd367
+S + SF6 -> SF5 + SF,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_cdcae9588a16
+SF + SF6 -> SF2 + SF5,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,unknown,,rxn_3a1681def8e9
+SF3 + SF -> 2 SF2,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,unknown,,rxn_c1eb13ac71db
+SF4 + SF -> SF2 + SF3,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,unknown,,rxn_3909e22c35c4
+SF5 + SF -> SF2 + SF4,Radical abstraction,neutral,radical_abstraction,mechanical,4,pass,pass,pass,unknown,unknown,unknown,,rxn_d09b618fe5e7
+F + S + M -> SF + M,Three-body association,neutral,three_body_association,mechanical,4,pass,pass,unknown,unknown,unknown,unknown,,rxn_5cee3a92bf14
+O + S + M -> SO + M,Three-body association,neutral,three_body_association,mechanical,5,pass,pass,pass,unknown,unknown,unknown,,rxn_c7688fda2c3e

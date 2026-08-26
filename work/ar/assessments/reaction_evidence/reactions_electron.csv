@@ -1,0 +1,20 @@
+candidate,reaction_type,matched_source,channel_scope,verdict,reason,id
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),registry:e_Ar4s_superelastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_085bec441ad0
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,registry:e_Ar4s_elastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_49cd032be260
+e + Ar -> Ar(4s) + e,Electron-impact excitation,registry:e_Ar_excitation_4s_lumped,product_resolved,pass,an exact state-resolved equation is listed,rxn_683f67de893f
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,registry:e_Ar4s_stepwise_ionization,product_resolved,pass,an exact state-resolved equation is listed,rxn_1a8a97d93128
+e + Ar -> Ar-,Electron attachment,,,unknown,no source lists this exact equation,rxn_4374da9c1d1c
+e + Ar -> Ar + e,Electron elastic scattering,registry:e_Ar_elastic,product_resolved,pass,an exact state-resolved equation is listed,rxn_c8f95c3d8ede
+e + Ar -> Ar(m) + e,Electron-impact excitation,,,unknown,no source lists this exact equation,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,,,unknown,no source lists this exact equation,rxn_271084b2fc94
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,registry:e_Ar_ionization,product_resolved,pass,an exact state-resolved equation is listed,rxn_a69a28bff768
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),,,unknown,no source lists this exact equation,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),,,unknown,no source lists this exact equation,rxn_ed39dd867e7c
+e + Ar- -> Ar + 2 e,Electron-impact detachment,,,unknown,no source lists this exact equation,rxn_d83b0309c1b0
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,,,unknown,no source lists this exact equation,rxn_f4bf18f98733
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,,,unknown,no source lists this exact equation,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,,,unknown,no source lists this exact equation,rxn_5ccce802fea8
+e + Ar+ -> Ar,Electron-ion recombination,,,unknown,no source lists this exact equation,rxn_b9b97c9cedf9

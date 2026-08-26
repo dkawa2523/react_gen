@@ -1,4 +1,0 @@
-id,t_min,t_mid,t_max,a1_low,a2_low,a3_low,a4_low,a5_low,a6_low,a7_low,a1_high,a2_high,a3_high,a4_high,a5_high,a6_high,a7_high,source
-Ar,300.0,1000.0,5000.0,2.5,0.0,0.0,0.0,0.0,-745.375,4.366,2.5,0.0,0.0,0.0,0.0,-745.375,4.366,"cantera bundled thermodynamic data, listed as AR in air.yaml"
-Ar+,298.15,1000.0,6000.0,2.59316097,-0.00132892944,5.26503944e-06,-5.97956691e-09,2.18967862e-12,182878.368,5.44980575,2.86999547,-0.000142547242,9.36688776e-09,2.92580859e-12,-3.58247941e-16,182702.617,3.5322998,"cantera bundled thermodynamic data, listed as Ar+ in nasa_gas.yaml"
-Ar_4s,300.0,1000.0,5000.0,2.5,0.0,0.0,0.0,0.0,133867.0338,4.366,2.5,0.0,0.0,0.0,0.0,133867.0338,4.366,Ar polynomial with the 11.6 eV level energy added to the enthalpy constant

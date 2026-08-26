@@ -1,0 +1,13 @@
+candidate,reaction_type,verdict,reason,id
+Ar- + Ar -> 2 Ar + e,Collisional electron detachment,fail,at least one non-electron reactant or product fails its State assessment,rxn_754c5eca1437
+Ar+ + Ar(m) -> Ar+ + Ar,Ion-induced deexcitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_32e0ff81482e
+Ar+ + Ar(r) -> Ar+ + Ar,Ion-induced deexcitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_8bb2a60a7fbc
+Ar- + Ar(m) -> Ar- + Ar,Ion-induced deexcitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_ffe8fc60e569
+Ar- + Ar(r) -> Ar- + Ar,Ion-induced deexcitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_634f6e55908a
+Ar+ + Ar -> Ar+ + Ar(m),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_c93e3d600f78
+Ar+ + Ar -> Ar+ + Ar(r),Ion-induced excitation,unknown,at least one non-electron reactant or product has an unknown State assessment,rxn_f07d0ba16e30
+Ar- + Ar -> Ar- + Ar(m),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_fab0902a6843
+Ar- + Ar -> Ar- + Ar(r),Ion-induced excitation,fail,at least one non-electron reactant or product fails its State assessment,rxn_26b94c20754e
+Ar+ + Ar- -> 2 Ar,Ion-ion mutual neutralization,fail,at least one non-electron reactant or product fails its State assessment,rxn_7f218ecf9f30
+Ar+ + Ar -> Ar+ + Ar,Resonant charge exchange,pass,every non-electron reactant and product passes its State assessment,rxn_42da360d77cf
+Ar- + Ar -> Ar- + Ar,Resonant charge exchange,fail,at least one non-electron reactant or product fails its State assessment,rxn_2d9ccfcce5d9

@@ -1,0 +1,2439 @@
+metadata:
+  schema_version: 4
+  generator_version: 0.5.0
+  case: ar_o2
+  case_digest: 2428dc0773aab9f8b7904b93426161d044d41a64af5d3b307096c6f123747f92
+  evidence_snapshot_hash: 1d5e4e60e5d4f32b272e88448828d386ebf202dee1bb1d178b093d982005605f
+  complete: true
+  stop_reason: closure
+  limits:
+    max_depth: 6
+    max_species: 300
+    max_reactions: 5000
+    max_charge_abs: 1
+    max_leaving_atoms: 2
+  counts:
+    states: 19
+    reactions: 185
+    mechanical_states: 14
+    mechanical_reactions: 158
+states:
+- id: Ar+@ground
+  composition:
+    Ar: 1
+  charge: 1
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  state_axes:
+    excitation: ground
+    lifetime_class: not_applicable
+    canonical_label: ground
+    structure_scope: not_applicable
+  classes:
+  - cation
+  - ion
+  chemical_character:
+    formula_scope: atom
+    electronic: open_shell
+    generation_roles: []
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.ionization.v1
+  - ion.charge_exchange.v1
+  - neutral.penning_ionization.v1
+  evidence:
+    match: exact
+    records:
+    - id: Ar+
+      origin: registry
+      status: curated
+      tier: reviewed
+      source:
+        source_id: registry:Ar+
+      state:
+        kind: ground
+        resolution: resolved
+        label: ''
+      energy_eV: 0.0
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic-ion symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 15.75961
+          unit: eV
+          source: derived from Ar IE, NIST Atomic Spectra Database / Basic Atomic
+            Spectroscopic Data
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: 27.62966
+          unit: eV
+          source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 39.94745
+          unit: amu
+          source: Ar atomic mass minus electron mass
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: null
+          unit: A3
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 2.59316097
+        - -0.00132892944
+        - 5.26503944e-06
+        - -5.97956691e-09
+        - 2.18967862e-12
+        - 182878.368
+        - 5.44980575
+        high:
+        - 2.86999547
+        - -0.000142547242
+        - 9.36688776e-09
+        - 2.92580859e-12
+        - -3.58247941e-16
+        - 182702.617
+        - 3.5322998
+        t_min: 298.15
+        t_mid: 1000.0
+        t_max: 6000.0
+        source: cantera bundled thermodynamic data, listed as Ar+ in nasa_gas.yaml
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:Ar+
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:Ar+
+      message: thermochemical representation is available
+- id: Ar-@ground
+  composition:
+    Ar: 1
+  charge: -1
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  state_axes:
+    excitation: ground
+    lifetime_class: not_applicable
+    canonical_label: ground
+    structure_scope: not_applicable
+  classes:
+  - anion
+  - ion
+  chemical_character:
+    formula_scope: atom
+    electronic: open_shell
+    generation_roles: []
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.attachment.v1
+  - ion.charge_exchange.v1
+  evidence:
+    match: none
+    records: []
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: fail
+      basis:
+      - registry:Ar
+      message: electron affinity evidence excludes a bound parent anion
+    thermochemistry:
+      verdict: unknown
+      basis: []
+      message: formation enthalpy or NASA coefficients are missing
+- id: Ar@4s
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: electronic
+    resolution: lumped
+    label: 4s
+  state_axes:
+    excitation: electronic
+    lifetime_class: mixed_metastable_resonant
+    canonical_label: 4s
+    structure_scope: not_applicable
+  classes:
+  - atom
+  - excited
+  - mixed_lifetime
+  - neutral
+  chemical_character:
+    formula_scope: atom
+    electronic: closed_shell
+    generation_roles: []
+  origin: attested_only
+  depth: 0
+  introduced_by:
+  - registry:Ar_4s
+  evidence:
+    match: exact
+    records:
+    - id: Ar_4s
+      origin: registry
+      status: literature_supported
+      tier: reviewed
+      source: &id001
+        source_id: registry:Ar_4s
+      state:
+        kind: electronic
+        resolution: lumped
+        label: 4s
+      energy_eV: 11.6
+      existence: confirmed
+      quantum:
+        configuration: 3p5 4s
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: 1.7037
+          unit: A
+          source: unchanged from Ar on excitation; chemicals package bundled molecular
+            property tables, CAS 7440-37-1
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic species
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 11.6
+          unit: eV
+          source: Ar enthalpy plus the 11.6 eV level energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: 4.16
+          unit: eV
+          source: 15.7596 eV Ar ionization limit minus the 11.6 eV manifold energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 39.948
+          unit: amu
+          source: NIST Chemistry WebBook SRD 69
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 1.6423
+          unit: A3
+          source: unchanged from Ar on excitation; mendeleev package, bundled periodic
+            table, dipole polarizability in atomic units
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        well_depth_K:
+          value: 123.55
+          unit: K
+          source: unchanged from Ar on excitation; chemicals package bundled molecular
+            property tables, CAS 7440-37-1
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 2.5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 133867.0338
+        - 4.366
+        high:
+        - 2.5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 133867.0338
+        - 4.366
+        t_min: 300.0
+        t_mid: 1000.0
+        t_max: 5000.0
+        source: Ar polynomial with the 11.6 eV level energy added to the enthalpy
+          constant
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:Ar_4s
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:Ar_4s
+      message: thermochemical representation is available
+- id: Ar@ground
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  state_axes:
+    excitation: ground
+    lifetime_class: not_applicable
+    canonical_label: ground
+    structure_scope: not_applicable
+  classes:
+  - feed
+  - neutral
+  chemical_character:
+    formula_scope: atom
+    electronic: closed_shell
+    generation_roles:
+    - feed
+  origin: mechanical
+  depth: 0
+  introduced_by:
+  - electron.deexcitation.v1
+  - electron.detachment.v1
+  - electron.recombination.v1
+  - input
+  - ion.charge_exchange.v1
+  - ion.deexcitation.v1
+  - ion.mutual_neutralization.v1
+  - neutral.relaxation.v1
+  evidence:
+    match: exact
+    records:
+    - id: Ar
+      origin: registry
+      status: curated
+      tier: reviewed
+      source:
+        source_id: registry:Ar
+      state:
+        kind: ground
+        resolution: resolved
+        label: ''
+      energy_eV: 0.0
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: 1.7037
+          unit: A
+          source: chemicals package bundled molecular property tables, CAS 7440-37-1
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: -11.5
+          unit: eV
+          source: mendeleev package, bundled periodic table
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 0.0
+          unit: eV
+          source: chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula
+            verified against the registry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        entropy_J_mol_K:
+          value: 154.8
+          unit: J/mol/K
+          source: chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula
+            verified against the registry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: 15.759612
+          unit: eV
+          source: mendeleev package, bundled periodic table
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 39.948
+          unit: amu
+          source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 1.6411
+          unit: A3
+          source: Experimental/static polarizability literature seed; CCCBDB/NIST
+            polarizability tables for review
+          qualifier: null
+          uncertainty: null
+          tier: curated
+        well_depth_K:
+          value: 123.55
+          unit: K
+          source: chemicals package bundled molecular property tables, CAS 7440-37-1
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 2.5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - -745.375
+        - 4.366
+        high:
+        - 2.5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - -745.375
+        - 4.366
+        t_min: 300.0
+        t_mid: 1000.0
+        t_max: 5000.0
+        source: cantera bundled thermodynamic data, listed as AR in air.yaml
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:Ar
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:Ar
+      message: thermochemical representation is available
+- id: Ar@metastable
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: metastable
+    resolution: lumped
+    label: ''
+  state_axes:
+    excitation: electronic
+    lifetime_class: metastable
+    canonical_label: metastable
+    structure_scope: not_applicable
+  classes:
+  - excited
+  - neutral
+  chemical_character:
+    formula_scope: atom
+    electronic: closed_shell
+    generation_roles: []
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.excitation.v1
+  evidence:
+    match: compatible
+    records:
+    - id: Ar_4s
+      origin: registry
+      status: literature_supported
+      tier: reviewed
+      source: *id001
+      state:
+        kind: electronic
+        resolution: lumped
+        label: 4s
+      energy_eV: 11.6
+      existence: confirmed
+      quantum:
+        configuration: 3p5 4s
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: 1.7037
+          unit: A
+          source: unchanged from Ar on excitation; chemicals package bundled molecular
+            property tables, CAS 7440-37-1
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic species
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 11.6
+          unit: eV
+          source: Ar enthalpy plus the 11.6 eV level energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: 4.16
+          unit: eV
+          source: 15.7596 eV Ar ionization limit minus the 11.6 eV manifold energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 39.948
+          unit: amu
+          source: NIST Chemistry WebBook SRD 69
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 1.6423
+          unit: A3
+          source: unchanged from Ar on excitation; mendeleev package, bundled periodic
+            table, dipole polarizability in atomic units
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        well_depth_K:
+          value: 123.55
+          unit: K
+          source: unchanged from Ar on excitation; chemicals package bundled molecular
+            property tables, CAS 7440-37-1
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 2.5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 133867.0338
+        - 4.366
+        high:
+        - 2.5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 133867.0338
+        - 4.366
+        t_min: 300.0
+        t_mid: 1000.0
+        t_max: 5000.0
+        source: Ar polynomial with the 11.6 eV level energy added to the enthalpy
+          constant
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: unknown
+      basis:
+      - registry:Ar_4s
+      message: related state records exist but do not attest this candidate representation
+    thermochemistry:
+      verdict: unknown
+      basis: []
+      message: formation enthalpy or NASA coefficients are missing
+- id: Ar@resonant
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: resonant
+    resolution: lumped
+    label: ''
+  state_axes:
+    excitation: electronic
+    lifetime_class: resonant_radiative
+    canonical_label: resonant
+    structure_scope: not_applicable
+  classes:
+  - excited
+  - neutral
+  chemical_character:
+    formula_scope: atom
+    electronic: closed_shell
+    generation_roles: []
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.excitation.v1
+  evidence:
+    match: compatible
+    records:
+    - id: Ar_4s
+      origin: registry
+      status: literature_supported
+      tier: reviewed
+      source: *id001
+      state:
+        kind: electronic
+        resolution: lumped
+        label: 4s
+      energy_eV: 11.6
+      existence: confirmed
+      quantum:
+        configuration: 3p5 4s
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: 1.7037
+          unit: A
+          source: unchanged from Ar on excitation; chemicals package bundled molecular
+            property tables, CAS 7440-37-1
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic species
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 11.6
+          unit: eV
+          source: Ar enthalpy plus the 11.6 eV level energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: 4.16
+          unit: eV
+          source: 15.7596 eV Ar ionization limit minus the 11.6 eV manifold energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 39.948
+          unit: amu
+          source: NIST Chemistry WebBook SRD 69
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 1.6423
+          unit: A3
+          source: unchanged from Ar on excitation; mendeleev package, bundled periodic
+            table, dipole polarizability in atomic units
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        well_depth_K:
+          value: 123.55
+          unit: K
+          source: unchanged from Ar on excitation; chemicals package bundled molecular
+            property tables, CAS 7440-37-1
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 2.5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 133867.0338
+        - 4.366
+        high:
+        - 2.5
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 133867.0338
+        - 4.366
+        t_min: 300.0
+        t_mid: 1000.0
+        t_max: 5000.0
+        source: Ar polynomial with the 11.6 eV level energy added to the enthalpy
+          constant
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: unknown
+      basis:
+      - registry:Ar_4s
+      message: related state records exist but do not attest this candidate representation
+    thermochemistry:
+      verdict: unknown
+      basis: []
+      message: formation enthalpy or NASA coefficients are missing
+- id: O+@ground
+  composition:
+    O: 1
+  charge: 1
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  state_axes:
+    excitation: ground
+    lifetime_class: not_applicable
+    canonical_label: ground
+    structure_scope: not_applicable
+  classes:
+  - cation
+  - fragment
+  - ion
+  chemical_character:
+    formula_scope: atom
+    electronic: open_shell
+    generation_roles:
+    - fragment
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.dissociative_ionization.v1
+  - electron.ionization.v1
+  - ion.charge_exchange.v1
+  - ion.projectile_dissociation.v1
+  - neutral.penning_ionization.v1
+  evidence:
+    match: exact
+    records:
+    - id: O+
+      origin: registry
+      status: curated
+      tier: reviewed
+      source:
+        source_id: registry:O+
+      state:
+        kind: ground
+        resolution: resolved
+        label: ''
+      energy_eV: 0.0
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: null
+          unit: A
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic-ion symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 16.200655
+          unit: eV
+          source: derived from NIST O atom enthalpy and ionization energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: 35.12112
+          unit: eV
+          source: NIST Atomic Spectra Database, O+ ionization energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 15.9988514
+          unit: amu
+          source: O atomic mass minus electron mass
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: null
+          unit: A3
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo: null
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O+
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:O+
+      message: thermochemical representation is available
+- id: O-@ground
+  composition:
+    O: 1
+  charge: -1
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  state_axes:
+    excitation: ground
+    lifetime_class: not_applicable
+    canonical_label: ground
+    structure_scope: not_applicable
+  classes:
+  - anion
+  - fragment
+  - ion
+  chemical_character:
+    formula_scope: atom
+    electronic: open_shell
+    generation_roles:
+    - fragment
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.attachment.v1
+  - electron.dissociative_attachment.v1
+  - ion.charge_exchange.v1
+  - ion.projectile_dissociation.v1
+  evidence:
+    match: exact
+    records:
+    - id: O-
+      origin: registry
+      status: curated
+      tier: reviewed
+      source:
+        source_id: registry:O-
+      state:
+        kind: ground
+        resolution: resolved
+        label: ''
+      energy_eV: 0.0
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: null
+          unit: A
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic-ion symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: 1.461112
+          unit: eV
+          source: NIST Chemistry WebBook evaluated atomic oxygen electron affinity
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 1.1225
+          unit: eV
+          source: NIST Chemistry WebBook value 108.3 kJ/mol converted per molecule
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 15.9999486
+          unit: amu
+          source: O atomic mass plus electron mass
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: null
+          unit: A3
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 2.90805921
+        - -0.00169804907
+        - 2.98069956e-06
+        - -2.43835127e-09
+        - 7.61229313e-13
+        - 11413.8341
+        - 2.80339084
+        high:
+        - 2.54474868
+        - -4.66695419e-05
+        - 1.8491231e-08
+        - -3.18159131e-12
+        - 1.98962894e-16
+        - 11482.2713
+        - 4.52131005
+        t_min: 298.15
+        t_mid: 1000.0
+        t_max: 6000.0
+        source: cantera bundled thermodynamic data, listed as O- in nasa_gas.yaml
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O-
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:O-
+      message: thermochemical representation is available
+- id: O2+@ground
+  composition:
+    O: 2
+  charge: 1
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  state_axes:
+    excitation: ground
+    lifetime_class: not_applicable
+    canonical_label: ground
+    structure_scope: formula_determined
+  classes:
+  - cation
+  - ion
+  chemical_character:
+    formula_scope: diatomic
+    electronic: open_shell
+    generation_roles: []
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.ionization.v1
+  - ion.charge_exchange.v1
+  - neutral.penning_ionization.v1
+  evidence:
+    match: exact
+    records:
+    - id: O2+
+      origin: registry
+      status: curated
+      tier: reviewed
+      source:
+        source_id: registry:O2+
+      state:
+        kind: ground
+        resolution: resolved
+        label: ''
+      energy_eV: 0.0
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: null
+          unit: A
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: homonuclear molecular-ion symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 12.0697
+          unit: eV
+          source: derived from O2 reference enthalpy and NIST evaluated ionization
+            energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 31.9982514
+          unit: amu
+          source: O2 molecular mass minus electron mass
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: null
+          unit: A3
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo: null
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O2+
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:O2+
+      message: thermochemical representation is available
+- id: O2-@ground
+  composition:
+    O: 2
+  charge: -1
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  state_axes:
+    excitation: ground
+    lifetime_class: not_applicable
+    canonical_label: ground
+    structure_scope: formula_determined
+  classes:
+  - anion
+  - ion
+  chemical_character:
+    formula_scope: diatomic
+    electronic: open_shell
+    generation_roles: []
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.attachment.v1
+  - ion.charge_exchange.v1
+  evidence:
+    match: none
+    records: []
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O2
+      message: positive electron affinity supports a bound parent anion
+    thermochemistry:
+      verdict: unknown
+      basis: []
+      message: formation enthalpy or NASA coefficients are missing
+- id: O2@a1dg
+  composition:
+    O: 2
+  charge: 0
+  state:
+    kind: resolved
+    resolution: resolved
+    label: a1dg
+  state_axes:
+    excitation: electronic
+    lifetime_class: metastable
+    canonical_label: a1dg
+    structure_scope: formula_determined
+  classes:
+  - metastable
+  - molecule
+  - neutral
+  chemical_character:
+    formula_scope: diatomic
+    electronic: open_shell
+    generation_roles: []
+  origin: attested_only
+  depth: 0
+  introduced_by:
+  - registry:O2_a1Delta
+  evidence:
+    match: exact
+    records:
+    - id: O2_a1Delta
+      origin: registry
+      status: curated
+      tier: reviewed
+      source: &id002
+        source_id: registry:O2_a1Delta
+      state:
+        kind: resolved
+        resolution: resolved
+        label: a1dg
+      energy_eV: 0.977
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: 1.6486
+          unit: A
+          source: unchanged from O2 on excitation; chemicals package bundled molecular
+            property tables, CAS 7782-44-7
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: homonuclear diatomic symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 0.977
+          unit: eV
+          source: evaluated O2 a1Delta_g excitation energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 31.9988
+          unit: amu
+          source: NIST Chemistry WebBook SRD 69
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 1.562
+          unit: A3
+          source: unchanged from O2 on excitation; NIST CCCBDB experimental polarizability
+            list
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        well_depth_K:
+          value: 119.66
+          unit: K
+          source: unchanged from O2 on excitation; chemicals package bundled molecular
+            property tables, CAS 7782-44-7
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 3.78245636
+        - -0.00299673416
+        - 9.84730201e-06
+        - -9.68129509e-09
+        - 3.24372837e-12
+        - 10273.670526
+        - 3.65767573
+        high:
+        - 3.28253784
+        - 0.00148308754
+        - -7.57966669e-07
+        - 2.09470555e-10
+        - -2.16717794e-14
+        - 10249.156366
+        - 5.45323129
+        t_min: 200.0
+        t_mid: 1000.0
+        t_max: 3500.0
+        source: O2 polynomial with the 0.977 eV level energy added to the enthalpy
+          constant
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O2_a1Delta
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:O2_a1Delta
+      message: thermochemical representation is available
+- id: O2@b1sg+
+  composition:
+    O: 2
+  charge: 0
+  state:
+    kind: resolved
+    resolution: resolved
+    label: b1sg+
+  state_axes:
+    excitation: electronic
+    lifetime_class: metastable
+    canonical_label: b1sg+
+    structure_scope: formula_determined
+  classes:
+  - metastable
+  - molecule
+  - neutral
+  chemical_character:
+    formula_scope: diatomic
+    electronic: open_shell
+    generation_roles: []
+  origin: attested_only
+  depth: 0
+  introduced_by:
+  - registry:O2_b1Sigma
+  evidence:
+    match: exact
+    records:
+    - id: O2_b1Sigma
+      origin: registry
+      status: curated
+      tier: reviewed
+      source: &id003
+        source_id: registry:O2_b1Sigma
+      state:
+        kind: resolved
+        resolution: resolved
+        label: b1sg+
+      energy_eV: 1.627
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: 1.6486
+          unit: A
+          source: unchanged from O2 on excitation; chemicals package bundled molecular
+            property tables, CAS 7782-44-7
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: homonuclear diatomic symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 1.627
+          unit: eV
+          source: evaluated O2 b1Sigma_g+ excitation energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 31.9988
+          unit: amu
+          source: NIST Chemistry WebBook SRD 69
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 1.562
+          unit: A3
+          source: unchanged from O2 on excitation; NIST CCCBDB experimental polarizability
+            list
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        well_depth_K:
+          value: 119.66
+          unit: K
+          source: unchanged from O2 on excitation; chemicals package bundled molecular
+            property tables, CAS 7782-44-7
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 3.78245636
+        - -0.00299673416
+        - 9.84730201e-06
+        - -9.68129509e-09
+        - 3.24372837e-12
+        - 17816.607226
+        - 3.65767573
+        high:
+        - 3.28253784
+        - 0.00148308754
+        - -7.57966669e-07
+        - 2.09470555e-10
+        - -2.16717794e-14
+        - 17792.093066
+        - 5.45323129
+        t_min: 200.0
+        t_mid: 1000.0
+        t_max: 3500.0
+        source: O2 polynomial with the 1.627 eV level energy added to the enthalpy
+          constant
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O2_b1Sigma
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:O2_b1Sigma
+      message: thermochemical representation is available
+- id: O2@electronic
+  composition:
+    O: 2
+  charge: 0
+  state:
+    kind: electronic
+    resolution: lumped
+    label: ''
+  state_axes:
+    excitation: electronic
+    lifetime_class: unspecified
+    canonical_label: electronic
+    structure_scope: formula_determined
+  classes:
+  - excited
+  - neutral
+  chemical_character:
+    formula_scope: diatomic
+    electronic: open_shell
+    generation_roles: []
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.excitation.v1
+  evidence:
+    match: compatible
+    records:
+    - id: O2_a1Delta
+      origin: registry
+      status: curated
+      tier: reviewed
+      source: *id002
+      state:
+        kind: resolved
+        resolution: resolved
+        label: a1dg
+      energy_eV: 0.977
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: 1.6486
+          unit: A
+          source: unchanged from O2 on excitation; chemicals package bundled molecular
+            property tables, CAS 7782-44-7
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: homonuclear diatomic symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 0.977
+          unit: eV
+          source: evaluated O2 a1Delta_g excitation energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 31.9988
+          unit: amu
+          source: NIST Chemistry WebBook SRD 69
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 1.562
+          unit: A3
+          source: unchanged from O2 on excitation; NIST CCCBDB experimental polarizability
+            list
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        well_depth_K:
+          value: 119.66
+          unit: K
+          source: unchanged from O2 on excitation; chemicals package bundled molecular
+            property tables, CAS 7782-44-7
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 3.78245636
+        - -0.00299673416
+        - 9.84730201e-06
+        - -9.68129509e-09
+        - 3.24372837e-12
+        - 10273.670526
+        - 3.65767573
+        high:
+        - 3.28253784
+        - 0.00148308754
+        - -7.57966669e-07
+        - 2.09470555e-10
+        - -2.16717794e-14
+        - 10249.156366
+        - 5.45323129
+        t_min: 200.0
+        t_mid: 1000.0
+        t_max: 3500.0
+        source: O2 polynomial with the 0.977 eV level energy added to the enthalpy
+          constant
+        tier: reviewed
+    - id: O2_b1Sigma
+      origin: registry
+      status: curated
+      tier: reviewed
+      source: *id003
+      state:
+        kind: resolved
+        resolution: resolved
+        label: b1sg+
+      energy_eV: 1.627
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: 1.6486
+          unit: A
+          source: unchanged from O2 on excitation; chemicals package bundled molecular
+            property tables, CAS 7782-44-7
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: homonuclear diatomic symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 1.627
+          unit: eV
+          source: evaluated O2 b1Sigma_g+ excitation energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 31.9988
+          unit: amu
+          source: NIST Chemistry WebBook SRD 69
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 1.562
+          unit: A3
+          source: unchanged from O2 on excitation; NIST CCCBDB experimental polarizability
+            list
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        well_depth_K:
+          value: 119.66
+          unit: K
+          source: unchanged from O2 on excitation; chemicals package bundled molecular
+            property tables, CAS 7782-44-7
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 3.78245636
+        - -0.00299673416
+        - 9.84730201e-06
+        - -9.68129509e-09
+        - 3.24372837e-12
+        - 17816.607226
+        - 3.65767573
+        high:
+        - 3.28253784
+        - 0.00148308754
+        - -7.57966669e-07
+        - 2.09470555e-10
+        - -2.16717794e-14
+        - 17792.093066
+        - 5.45323129
+        t_min: 200.0
+        t_mid: 1000.0
+        t_max: 3500.0
+        source: O2 polynomial with the 1.627 eV level energy added to the enthalpy
+          constant
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: unknown
+      basis:
+      - candidate resolution
+      message: resolved alternatives exist; select one resolution before simulation
+    thermochemistry:
+      verdict: unknown
+      basis: []
+      message: formation enthalpy or NASA coefficients are missing
+- id: O2@ground
+  composition:
+    O: 2
+  charge: 0
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  state_axes:
+    excitation: ground
+    lifetime_class: not_applicable
+    canonical_label: ground
+    structure_scope: formula_determined
+  classes:
+  - feed
+  - neutral
+  chemical_character:
+    formula_scope: diatomic
+    electronic: open_shell
+    generation_roles:
+    - feed
+  origin: mechanical
+  depth: 0
+  introduced_by:
+  - electron.deexcitation.v1
+  - electron.detachment.v1
+  - electron.recombination.v1
+  - input
+  - ion.charge_exchange.v1
+  - ion.deexcitation.v1
+  - ion.mutual_neutralization.v1
+  - neutral.relaxation.v1
+  evidence:
+    match: exact
+    records:
+    - id: O2
+      origin: registry
+      status: curated
+      tier: reviewed
+      source:
+        source_id: registry:O2
+      state:
+        kind: ground
+        resolution: resolved
+        label: ''
+      energy_eV: 0.0
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: 1.73
+          unit: A
+          source: half of the 3.46 A literature kinetic diameter tabulated in NIST
+            publication 928548
+          qualifier: null
+          uncertainty: null
+          tier: estimated
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: homonuclear diatomic symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: 0.448
+          unit: eV
+          source: NIST Chemistry WebBook SRD 69
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 0.0
+          unit: eV
+          source: chemicals package bundled thermodynamic tables, CAS 7782-44-7, formula
+            verified against the registry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        entropy_J_mol_K:
+          value: 205.2
+          unit: J/mol/K
+          source: chemicals package bundled thermodynamic tables, CAS 7782-44-7, formula
+            verified against the registry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: 12.0697
+          unit: eV
+          source: NIST Chemistry WebBook SRD 69 evaluated ionization energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 31.9988
+          unit: amu
+          source: NIST Chemistry WebBook SRD 69
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 1.562
+          unit: A3
+          source: NIST CCCBDB experimental polarizability list
+          qualifier: null
+          uncertainty: null
+          tier: curated
+        vibrational_quantum_eV:
+          value: 0.1853
+          unit: eV
+          source: chemicals TRC gas heat capacity, effective Einstein mode fitted
+            300-1500 K
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        well_depth_K:
+          value: 119.66
+          unit: K
+          source: chemicals package bundled molecular property tables, CAS 7782-44-7
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 3.78245636
+        - -0.00299673416
+        - 9.84730201e-06
+        - -9.68129509e-09
+        - 3.24372837e-12
+        - -1063.94356
+        - 3.65767573
+        high:
+        - 3.28253784
+        - 0.00148308754
+        - -7.57966669e-07
+        - 2.09470555e-10
+        - -2.16717794e-14
+        - -1088.45772
+        - 5.45323129
+        t_min: 200.0
+        t_mid: 1000.0
+        t_max: 3500.0
+        source: cantera bundled thermodynamic data, listed as O2 in air.yaml
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O2
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:O2
+      message: thermochemical representation is available
+- id: O2@vibrational
+  composition:
+    O: 2
+  charge: 0
+  state:
+    kind: vibrational
+    resolution: lumped
+    label: ''
+  state_axes:
+    excitation: vibrational
+    lifetime_class: not_applicable
+    canonical_label: vibrational
+    structure_scope: formula_determined
+  classes:
+  - excited
+  - neutral
+  chemical_character:
+    formula_scope: diatomic
+    electronic: open_shell
+    generation_roles: []
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.excitation.v1
+  evidence:
+    match: none
+    records: []
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: unknown
+      basis: []
+      message: no state record matches this candidate
+    thermochemistry:
+      verdict: unknown
+      basis: []
+      message: formation enthalpy or NASA coefficients are missing
+- id: O@1d2
+  composition:
+    O: 1
+  charge: 0
+  state:
+    kind: resolved
+    resolution: resolved
+    label: 1d2
+  state_axes:
+    excitation: electronic
+    lifetime_class: metastable
+    canonical_label: 1d2
+    structure_scope: not_applicable
+  classes:
+  - atom
+  - metastable
+  - neutral
+  - radical
+  chemical_character:
+    formula_scope: atom
+    electronic: open_shell
+    generation_roles: []
+  origin: attested_only
+  depth: 0
+  introduced_by:
+  - registry:O_1D
+  evidence:
+    match: exact
+    records:
+    - id: O_1D
+      origin: registry
+      status: curated
+      tier: reviewed
+      source:
+        source_id: registry:O_1D
+      state:
+        kind: resolved
+        resolution: resolved
+        label: 1d2
+      energy_eV: 1.967
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: null
+          unit: A
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 4.5496
+          unit: eV
+          source: NIST ground-state enthalpy plus NIST ASD O(1D2) excitation energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 15.9994
+          unit: amu
+          source: NIST Atomic Data for Oxygen
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 0.7854
+          unit: A3
+          source: unchanged from O on excitation; mendeleev package, bundled periodic
+            table, dipole polarizability in atomic units
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 3.1682671
+        - -0.00327931884
+        - 6.64306396e-06
+        - -6.12806624e-09
+        - 2.11265971e-12
+        - 51948.346106
+        - 2.05193346
+        high:
+        - 2.56942078
+        - -8.59741137e-05
+        - 4.19484589e-08
+        - -1.00177799e-11
+        - 1.22833691e-15
+        - 52043.666006
+        - 4.78433864
+        t_min: 200.0
+        t_mid: 1000.0
+        t_max: 3500.0
+        source: O polynomial with the 1.967 eV level energy added to the enthalpy
+          constant
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O_1D
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:O_1D
+      message: thermochemical representation is available
+- id: O@1s
+  composition:
+    O: 1
+  charge: 0
+  state:
+    kind: resolved
+    resolution: resolved
+    label: 1s
+  state_axes:
+    excitation: electronic
+    lifetime_class: metastable
+    canonical_label: 1s
+    structure_scope: not_applicable
+  classes:
+  - atom
+  - metastable
+  - neutral
+  chemical_character:
+    formula_scope: atom
+    electronic: open_shell
+    generation_roles: []
+  origin: attested_only
+  depth: 0
+  introduced_by:
+  - registry:O_1S
+  evidence:
+    match: exact
+    records:
+    - id: O_1S
+      origin: registry
+      status: literature_supported
+      tier: reviewed
+      source:
+        source_id: registry:O_1S
+      state:
+        kind: resolved
+        resolution: resolved
+        label: 1s
+      energy_eV: 4.189746
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: null
+          unit: A
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 6.772823
+          unit: eV
+          source: O enthalpy plus the level energy
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: null
+          unit: eV
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 15.9994
+          unit: amu
+          source: same nucleus as O
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 0.7854
+          unit: A3
+          source: unchanged from O on excitation; mendeleev package, bundled periodic
+            table, dipole polarizability in atomic units
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 3.1682671
+        - -0.00327931884
+        - 6.64306396e-06
+        - -6.12806624e-09
+        - 2.11265971e-12
+        - 77742.242072428
+        - 2.05193346
+        high:
+        - 2.56942078
+        - -8.59741137e-05
+        - 4.19484589e-08
+        - -1.00177799e-11
+        - 1.22833691e-15
+        - 77837.561972428
+        - 4.78433864
+        t_min: 200.0
+        t_mid: 1000.0
+        t_max: 3500.0
+        source: O polynomial with the 4.19 eV level energy added to the enthalpy constant
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O_1S
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:O_1S
+      message: thermochemical representation is available
+- id: O@ground
+  composition:
+    O: 1
+  charge: 0
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  state_axes:
+    excitation: ground
+    lifetime_class: not_applicable
+    canonical_label: ground
+    structure_scope: not_applicable
+  classes:
+  - fragment
+  - neutral
+  - reactive_candidate
+  chemical_character:
+    formula_scope: atom
+    electronic: open_shell
+    generation_roles:
+    - fragment
+  origin: mechanical
+  depth: 1
+  introduced_by:
+  - electron.detachment.v1
+  - electron.dissociation.v1
+  - electron.dissociative_attachment.v1
+  - electron.dissociative_recombination.v1
+  - electron.recombination.v1
+  - ion.charge_exchange.v1
+  - ion.mutual_neutralization.v1
+  - ion.projectile_dissociation.v1
+  evidence:
+    match: exact
+    records:
+    - id: O
+      origin: registry
+      status: curated
+      tier: reviewed
+      source:
+        source_id: registry:O
+      state:
+        kind: ground
+        resolution: resolved
+        label: ''
+      energy_eV: 0.0
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        collision_radius_A:
+          value: null
+          unit: A
+          source: null
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        dipole_moment_D:
+          value: 0.0
+          unit: D
+          source: atomic symmetry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        electron_affinity_eV:
+          value: 1.461113
+          unit: eV
+          source: mendeleev package, bundled periodic table
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        enthalpy_formation_eV:
+          value: 2.583077
+          unit: eV
+          source: chemicals package bundled thermodynamic tables, CAS 17778-80-2,
+            formula verified against the registry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        entropy_J_mol_K:
+          value: 161.1
+          unit: J/mol/K
+          source: chemicals package bundled thermodynamic tables, CAS 17778-80-2,
+            formula verified against the registry
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        ionization_energy_eV:
+          value: 13.618055
+          unit: eV
+          source: mendeleev package, bundled periodic table
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        mass_amu:
+          value: 15.9994
+          unit: amu
+          source: NIST Atomic Data for Oxygen
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+        polarizability_A3:
+          value: 0.7854
+          unit: A3
+          source: mendeleev package, bundled periodic table, dipole polarizability
+            in atomic units
+          qualifier: null
+          uncertainty: null
+          tier: reviewed
+      thermo:
+        low:
+        - 3.1682671
+        - -0.00327931884
+        - 6.64306396e-06
+        - -6.12806624e-09
+        - 2.11265971e-12
+        - 29122.2592
+        - 2.05193346
+        high:
+        - 2.56942078
+        - -8.59741137e-05
+        - 4.19484589e-08
+        - -1.00177799e-11
+        - 1.22833691e-15
+        - 29217.5791
+        - 4.78433864
+        t_min: 200.0
+        t_mid: 1000.0
+        t_max: 3500.0
+        source: cantera bundled thermodynamic data, listed as O in air.yaml
+        tier: reviewed
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - parsed formula
+      - integer charge
+      message: candidate representation is well formed
+    state:
+      verdict: pass
+      basis:
+      - registry:O
+      message: an exact reviewed state record exists
+    thermochemistry:
+      verdict: pass
+      basis:
+      - registry:O
+      message: thermochemical representation is available
+- id: e
+  composition: {}
+  charge: -1
+  state:
+    kind: electron
+    resolution: resolved
+    label: electron
+  state_axes:
+    excitation: electron
+    lifetime_class: not_applicable
+    canonical_label: electron
+    structure_scope: not_applicable
+  classes:
+  - electron
+  chemical_character:
+    formula_scope: particle
+    electronic: open_shell
+    generation_roles: []
+  origin: mechanical
+  depth: 0
+  introduced_by:
+  - input
+  evidence:
+    match: exact
+    records:
+    - id: e
+      origin: registry
+      status: curated
+      tier: reviewed
+      source:
+        source_id: registry:e
+      state:
+        kind: electron
+        resolution: resolved
+        label: electron
+      energy_eV: null
+      existence: confirmed
+      quantum:
+        configuration: null
+        term: null
+        J: null
+        parity: null
+        degeneracy: null
+      lifetime_s: null
+      properties:
+        mass_amu:
+          value: 0.00054858
+          unit: amu
+          source: physical constant
+          qualifier: null
+          uncertainty: null
+          tier: curated
+      thermo: null
+  assessments:
+    consistency:
+      verdict: pass
+      basis:
+      - electron carrier
+      message: ''
+    state:
+      verdict: pass
+      basis:
+      - physical carrier
+      message: electron is explicitly represented
+    thermochemistry:
+      verdict: not_applicable
+      basis:
+      - zero reference convention
+      message: ''

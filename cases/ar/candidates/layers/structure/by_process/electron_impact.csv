@@ -1,7 +1,0 @@
-bodies,reactants,products,id,family,type,depth,status,verdict
-2,e + Ar,e + Ar,e_Ar_elastic,electron,elastic,0,curated,conserved
-2,e + Ar,e + Ar_4s,e_Ar_excitation_4s_lumped,electron,excitation,0,curated,conserved
-2,e + Ar,e + Ar+,e_Ar_ionization,electron,ionization,0,curated,conserved
-2,e + Ar_4s,e + Ar,e_Ar4s_superelastic,electron,deexcitation,1,literature_supported,conserved
-2,e + Ar_4s,e + Ar_4s,e_Ar4s_elastic,electron,elastic,1,literature_supported,conserved
-2,e + Ar_4s,e + Ar+,e_Ar4s_stepwise_ionization,electron,ionization,1,literature_supported,conserved

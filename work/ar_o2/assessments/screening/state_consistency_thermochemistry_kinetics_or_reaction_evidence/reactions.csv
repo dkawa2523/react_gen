@@ -1,0 +1,39 @@
+equation,reaction_type,family,process,origin,depth,state_verdict,consistency_verdict,thermochemistry_verdict,kinetics_verdict,reaction_evidence_verdict,kinetics_or_reaction_evidence_verdict,accepted_by,id
+e + O2 -> O- + O,Electron attachment,electron,attachment,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_84e8fa1d3d48
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_085bec441ad0
+e + O(¹D₂) -> O + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_4b45a93b7f18
+e + O(¹S) -> O + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_2be53d0776c7
+e + O2(a¹Δg) -> O2 + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_3ce8fb5e8663
+e + O2(b¹Σg+) -> O2 + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_727d49330314
+e + O2 -> O(¹D₂) + O + e,Electron-impact dissociation,electron,dissociation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_123a76ecfe44
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_49cd032be260
+e + O(¹D₂) -> O(¹D₂) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_bee14e8a1be8
+e + O(¹S) -> O(¹S) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_37c2816ca17f
+e + O2(a¹Δg) -> O2(a¹Δg) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_0e230572e278
+e + O2(b¹Σg+) -> O2(b¹Σg+) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_d802cff550ac
+e + Ar -> Ar(4s) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_683f67de893f
+e + O -> O(¹D₂) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_322a79119d6f
+e + O -> O(¹S) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_40ffa48445f6
+e + O2 -> O2(a¹Δg) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_989eea6d35bc
+e + O2 -> O2(b¹Σg+) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_409cb5fe9d2a
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_1a8a97d93128
+e + O(¹D₂) -> O+ + 2 e,Electron-impact ionization,electron,ionization,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_a883c2a5062f
+e + O2(a¹Δg) -> O2+ + 2 e,Electron-impact ionization,electron,ionization,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_5e1b7cd24431
+e + O2(b¹Σg+) -> O2+ + 2 e,Electron-impact ionization,electron,ionization,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_b87c4049e16f
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,neutral,associative_ionization,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_4f890c9f1ce9
+O(¹D₂) + O2 -> O2(a¹Δg) + O,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_7305fd87ad82
+O(¹D₂) + O2 -> O2(b¹Σg+) + O,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_975e581a4893
+O2(a¹Δg) + O2 -> 2 O2,Neutral reactive scattering,neutral,reactive_scattering,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_2d2ad8dab8bd
+O + [SiO2] -> 0.5 O2,Surface recombination,surface,surface_recombination,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_fa8b8f6b3770
+O + [Y2O3] -> 0.5 O2,Surface recombination,surface,surface_recombination,attested_only,0,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_08c94f4c2b6a
+e + O2 -> 2 O + e,Electron-impact dissociation,electron,dissociation,mechanical,1,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_4d8f6edbf3ae
+e + Ar -> Ar + e,Electron elastic scattering,electron,elastic,mechanical,1,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_c8f95c3d8ede
+e + O2 -> O2 + e,Electron elastic scattering,electron,elastic,mechanical,1,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_5f0e9e57072b
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,1,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_a69a28bff768
+e + O2 -> O2+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,1,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_1ca03209bf56
+2 O + M -> O2 + M,Three-body association,neutral,three_body_association,mechanical,1,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_ba3ba6b31781
+e + O2+ -> 2 O,Dissociative recombination,electron,dissociative_recombination,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_0344fa41a70f
+e + O -> O + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_ec1ff806cd78
+e + O -> O+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,2,pass,pass,pass,unknown,pass,pass,reaction_evidence,rxn_02b625c9d811
+Ar+ + O2 -> O2+ + Ar,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,pass,pass,pass,kinetics; reaction_evidence,rxn_2d29145e0f98
+O+ + O2 -> O2+ + O,Charge exchange,ion,charge_exchange,mechanical,2,pass,pass,pass,fail,pass,pass,reaction_evidence,rxn_2bf32666fe5b

@@ -1,0 +1,65 @@
+metric,layer,entity,category,count,total
+assessment_verdict,consistency,state,pass,7,7
+assessment_verdict,consistency,state,fail,0,7
+assessment_verdict,consistency,state,unknown,0,7
+assessment_verdict,consistency,state,not_applicable,0,7
+assessment_verdict,consistency,reaction,pass,37,37
+assessment_verdict,consistency,reaction,fail,0,37
+assessment_verdict,consistency,reaction,unknown,0,37
+assessment_verdict,consistency,reaction,not_applicable,0,37
+assessment_verdict,state,state,pass,4,7
+assessment_verdict,state,state,fail,1,7
+assessment_verdict,state,state,unknown,2,7
+assessment_verdict,state,state,not_applicable,0,7
+assessment_verdict,state,reaction,pass,10,37
+assessment_verdict,state,reaction,fail,10,37
+assessment_verdict,state,reaction,unknown,17,37
+assessment_verdict,state,reaction,not_applicable,0,37
+assessment_verdict,thermochemistry,state,pass,3,7
+assessment_verdict,thermochemistry,state,fail,0,7
+assessment_verdict,thermochemistry,state,unknown,3,7
+assessment_verdict,thermochemistry,state,not_applicable,1,7
+assessment_verdict,thermochemistry,reaction,pass,11,37
+assessment_verdict,thermochemistry,reaction,fail,2,37
+assessment_verdict,thermochemistry,reaction,unknown,24,37
+assessment_verdict,thermochemistry,reaction,not_applicable,0,37
+assessment_verdict,reaction_evidence,state,pass,0,0
+assessment_verdict,reaction_evidence,state,fail,0,0
+assessment_verdict,reaction_evidence,state,unknown,0,0
+assessment_verdict,reaction_evidence,state,not_applicable,0,0
+assessment_verdict,reaction_evidence,reaction,pass,7,37
+assessment_verdict,reaction_evidence,reaction,fail,0,37
+assessment_verdict,reaction_evidence,reaction,unknown,30,37
+assessment_verdict,reaction_evidence,reaction,not_applicable,0,37
+assessment_verdict,kinetics,state,pass,0,0
+assessment_verdict,kinetics,state,fail,0,0
+assessment_verdict,kinetics,state,unknown,0,0
+assessment_verdict,kinetics,state,not_applicable,0,0
+assessment_verdict,kinetics,reaction,pass,0,37
+assessment_verdict,kinetics,reaction,fail,0,37
+assessment_verdict,kinetics,reaction,unknown,37,37
+assessment_verdict,kinetics,reaction,not_applicable,0,37
+reaction_readiness,cumulative,reaction,All reaction candidates,37,37
+reaction_readiness,cumulative,reaction,Consistency pass,37,37
+reaction_readiness,cumulative,reaction,+ State pass,10,37
+reaction_readiness,cumulative,reaction,+ Thermochemistry pass,10,37
+reaction_readiness,cumulative,reaction,+ Reaction evidence pass,7,37
+reaction_readiness,cumulative,reaction,+ Kinetics pass,0,37
+state_charge,all,state,negative (-1),2,7
+state_charge,all,state,neutral (0),4,7
+state_charge,all,state,positive (+1),1,7
+state_excitation,all,state,electron,1,7
+state_excitation,all,state,electronic,3,7
+state_excitation,all,state,ground,3,7
+state_resolution,all,state,lumped,3,7
+state_resolution,all,state,resolved,4,7
+state_lifetime_class,all,state,metastable,1,7
+state_lifetime_class,all,state,mixed_metastable_resonant,1,7
+state_lifetime_class,all,state,not_applicable,4,7
+state_lifetime_class,all,state,resonant_radiative,1,7
+reaction_family,all,reaction,electron,19,37
+reaction_family,all,reaction,ion,12,37
+reaction_family,all,reaction,neutral,6,37
+reaction_depth,all,reaction,0,5,37
+reaction_depth,all,reaction,1,5,37
+reaction_depth,all,reaction,2,27,37

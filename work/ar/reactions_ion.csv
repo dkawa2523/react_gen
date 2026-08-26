@@ -1,0 +1,13 @@
+equation,reaction_type,family,process,origin,depth,consistency_verdict,state_verdict,thermochemistry_verdict,reaction_evidence_verdict,kinetics_verdict,delta_h_eV,delta_g_eV,threshold_eV,kinetic_data,selected,exclusion_reason,id
+Ar- + Ar -> 2 Ar + e,Collisional electron detachment,ion,collisional_detachment,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_754c5eca1437
+Ar+ + Ar(m) -> Ar+ + Ar,Ion-induced deexcitation,ion,ion_induced_deexcitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_32e0ff81482e
+Ar+ + Ar(r) -> Ar+ + Ar,Ion-induced deexcitation,ion,ion_induced_deexcitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_8bb2a60a7fbc
+Ar- + Ar(m) -> Ar- + Ar,Ion-induced deexcitation,ion,ion_induced_deexcitation,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_ffe8fc60e569
+Ar- + Ar(r) -> Ar- + Ar,Ion-induced deexcitation,ion,ion_induced_deexcitation,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_634f6e55908a
+Ar+ + Ar -> Ar+ + Ar(m),Ion-induced excitation,ion,ion_induced_excitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_c93e3d600f78
+Ar+ + Ar -> Ar+ + Ar(r),Ion-induced excitation,ion,ion_induced_excitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_f07d0ba16e30
+Ar- + Ar -> Ar- + Ar(m),Ion-induced excitation,ion,ion_induced_excitation,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_fab0902a6843
+Ar- + Ar -> Ar- + Ar(r),Ion-induced excitation,ion,ion_induced_excitation,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_26b94c20754e
+Ar+ + Ar- -> 2 Ar,Ion-ion mutual neutralization,ion,mutual_neutralization,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_7f218ecf9f30
+Ar+ + Ar -> Ar+ + Ar,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,pass,pass,unknown,unknown,0.0,8.648714265686214e-16,,,true,,rxn_42da360d77cf
+Ar- + Ar -> Ar- + Ar,Resonant charge exchange,ion,resonant_charge_exchange,mechanical,2,pass,fail,pass,unknown,unknown,,,,,true,,rxn_2d9ccfcce5d9

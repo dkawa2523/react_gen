@@ -1,0 +1,13 @@
+species,formula,charge,excitation,resolution,lifetime_class,state_meaning,alternative_resolution_states,origin,depth,id
+Ar+,Ar,1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,Ar+@ground
+Ar(4s),Ar,0,electronic,lumped,mixed_metastable_resonant,4s electronic-state manifold (lumped; mixed metastable/resonant),,attested_only,0,Ar@4s
+Ar,Ar,0,ground,resolved,not_applicable,electronic ground state,,mechanical,0,Ar@ground
+O+,O,1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,O+@ground
+O-,O,-1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,O-@ground
+O2+,O2,1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,O2+@ground
+O2(a¹Δg),O2,0,electronic,resolved,metastable,resolved spectroscopic state a¹Δg,O2*,attested_only,0,O2@a1dg
+O2(b¹Σg+),O2,0,electronic,resolved,metastable,resolved spectroscopic state b¹Σg+,O2*,attested_only,0,O2@b1sg+
+O2,O2,0,ground,resolved,not_applicable,electronic ground state,,mechanical,0,O2@ground
+O(¹D₂),O,0,electronic,resolved,metastable,resolved spectroscopic state ¹D₂,,attested_only,0,O@1d2
+O(¹S),O,0,electronic,resolved,metastable,resolved spectroscopic state ¹S,,attested_only,0,O@1s
+O,O,0,ground,resolved,not_applicable,electronic ground state,,mechanical,1,O@ground

@@ -30,8 +30,3 @@ def quality_pr(session: nox.Session) -> None:
 @nox.session(name="quality-nightly")
 def quality_nightly(session: nox.Session) -> None:
     _run_quality(session, "quality-nightly")
-
-
-@nox.session(name="quality-baseline")
-def quality_baseline(session: nox.Session) -> None:
-    _run_quality(session, "quality-baseline")

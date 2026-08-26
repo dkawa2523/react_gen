@@ -11,7 +11,7 @@ This note documents the first public-data realization of the Ar/CF4 registry.
 ## Important limitations
 
 - Numeric cross-section curves are not embedded. Cross-section import from LXCat/NIST/literature remains a separate task.
-- CF4 primary polarizability is curated from NIST CCCBDB; CF4 collision-radius and CF3/CF2 polarizability/collision-radius values marked `estimated` are engineering seeds for DNT task generation, not final recommended pair-potential constants.
+- CF4 primary polarizability is curated from NIST CCCBDB; CF4 collision-radius and CF3/CF2 polarizability/collision-radius values marked `estimated` are transport hypotheses, not final recommended pair-potential constants.
 - CF2 dipole moment is not curated and remains missing.
 - Parent CF4+ channels are retained only as estimated/surrogate bookkeeping because CF4 ionization/charge transfer is strongly fragmenting.
 
@@ -20,4 +20,4 @@ This note documents the first public-data realization of the Ar/CF4 registry.
 1. LXCat/Bordage CF4 electron cross-section set.
 2. Phelps/Biagi/Pancheshnyi Ar electron and Ar+ transport data.
 3. Peko et al. absolute cross sections for CF3+ + CF4, F+ + CF4, and F- + CF4.
-4. DNT+ generated cross sections for estimated ion-neutral pairs lacking measurements.
+4. Reviewed ion-neutral measurements for channels that currently have estimates only.

@@ -1,0 +1,84 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://plasma-reactgen.local/schemas/bundle.schema.yaml
+title: plasma-reactgen 0.5 public bundle document
+oneOf:
+  - title: states.yaml
+    type: object
+    required: [metadata, states]
+    properties:
+      metadata: {$ref: "#/$defs/metadata"}
+      states:
+        type: array
+        items:
+          type: object
+          required:
+            - id
+            - composition
+            - charge
+            - state
+            - state_axes
+            - chemical_character
+            - origin
+            - evidence
+            - assessments
+  - title: reactions.yaml
+    type: object
+    required: [metadata, reactions]
+    properties:
+      metadata: {$ref: "#/$defs/metadata"}
+      reactions:
+        type: array
+        items:
+          type: object
+          required:
+            - id
+            - equation
+            - reactants
+            - products
+            - family
+            - process
+            - origin
+            - numerical_capabilities
+            - evidence
+            - assessments
+  - title: selected.yaml
+    type: object
+    required:
+      - metadata
+      - policy
+      - readiness
+      - selected_states
+      - selected_reactions
+      - not_selected_states
+      - not_selected_reactions
+    properties:
+      metadata: {$ref: "#/$defs/metadata"}
+      readiness:
+        type: object
+        required:
+          - candidate_complete
+          - evidence_ready
+          - kinetic_data_ready
+          - direct_rate_ready
+          - energy_source_ready
+          - reverse_rate_ready
+$defs:
+  metadata:
+    type: object
+    required:
+      - schema_version
+      - generator_version
+      - case_digest
+      - evidence_snapshot_hash
+      - complete
+      - stop_reason
+      - limits
+      - counts
+    properties:
+      schema_version: {const: 4}
+  assessment:
+    type: object
+    required: [verdict, basis, message]
+    properties:
+      verdict:
+        enum: [pass, fail, unknown, not_applicable]

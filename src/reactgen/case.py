@@ -1,23 +1,14 @@
-"""The user's input: which gases, under which process conditions.
-
-Conditions are optional. When given they evaluate temperature-dependent rates,
-check each dataset against its declared validity range, turn a wall sticking
-coefficient into a loss frequency, and rank reactions by an upper bound on how
-fast they can run. They never silently remove a reaction.
-"""
+"""Neutral formula inputs, assessment conditions, surfaces and safety limits."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import isfinite
 from pathlib import Path
 
 import yaml
 
-from reactgen import processes
-
 BOLTZMANN = 1.380649e-23
-
-DEFAULT_STATUS = ("curated", "literature_supported", "imported", "estimated")
 
 _FIELD_OF_QUANTITY = {
     "gas_temperature": "gas_temperature_K",
@@ -37,6 +28,39 @@ class Conditions:
     volume_m3: float | None = None
     surface_area_m2: float | None = None
     residence_time_s: float | None = None
+
+    def __post_init__(self) -> None:
+        values = {
+            name: value
+            for name, value in (
+                ("pressure_Pa", self.pressure_Pa),
+                ("gas_temperature_K", self.gas_temperature_K),
+                ("electron_temperature_eV", self.electron_temperature_eV),
+                ("electron_density_m3", self.electron_density_m3),
+                ("reduced_field_Td", self.reduced_field_Td),
+                ("volume_m3", self.volume_m3),
+                ("surface_area_m2", self.surface_area_m2),
+                ("residence_time_s", self.residence_time_s),
+            )
+            if value is not None
+        }
+        for name, value in values.items():
+            if not isfinite(value):
+                raise ValueError(f"conditions.{name} must be finite")
+        for name in (
+            "pressure_Pa",
+            "gas_temperature_K",
+            "electron_temperature_eV",
+            "volume_m3",
+            "residence_time_s",
+        ):
+            checked = values.get(name)
+            if checked is not None and checked <= 0.0:
+                raise ValueError(f"conditions.{name} must be positive")
+        for name in ("electron_density_m3", "reduced_field_Td", "surface_area_m2"):
+            checked = values.get(name)
+            if checked is not None and checked < 0.0:
+                raise ValueError(f"conditions.{name} must be non-negative")
 
     def value_of(self, quantity: str) -> float | None:
         return getattr(self, _FIELD_OF_QUANTITY.get(quantity, ""), None)
@@ -58,23 +82,22 @@ class Conditions:
 
 @dataclass(frozen=True)
 class Limits:
-    max_depth: int | None = None
+    max_depth: int = 6
     max_species: int = 300
     max_reactions: int = 5000
+    max_charge_abs: int = 1
+    max_leaving_atoms: int = 2
 
-
-@dataclass(frozen=True)
-class DntGrid:
-    """Energy grid the DNT+ inputs are written on.
-
-    The default spans a capacitively coupled sheath; raise ``energy_max_eV``
-    for high reduced fields rather than trusting it silently.
-    """
-
-    energy_min_eV: float = 0.01
-    energy_max_eV: float = 100.0
-    points: int = 200
-    spacing: str = "log"
+    def __post_init__(self) -> None:
+        values = (
+            self.max_depth,
+            self.max_species,
+            self.max_reactions,
+            self.max_charge_abs,
+            self.max_leaving_atoms,
+        )
+        if any(value < 1 for value in values):
+            raise ValueError("all generation limits must be positive integers")
 
 
 @dataclass(frozen=True)
@@ -84,27 +107,26 @@ class Case:
     conditions: Conditions = Conditions()
     surfaces: tuple[str, ...] = ()
     limits: Limits = Limits()
-    dnt: DntGrid = DntGrid()
-    accept_status: tuple[str, ...] = DEFAULT_STATUS
-    accept_processes: tuple[str, ...] | None = None
-
-    def accepts(self, reaction_type: str) -> bool:
-        """Whether a collision family the case did not ask for is let through.
-
-        Naming none accepts every one, which is what a curated registry wants.
-        """
-
-        return self.accept_processes is None or processes.allows(
-            self.accept_processes, reaction_type
-        )
 
     @classmethod
     def load(cls, path: str | Path) -> Case:
         path = Path(path)
         data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        removed = {
+            "fraction",
+            "fractions",
+            "dnt",
+            "accept_status",
+            "accept_processes",
+        }
+        obsolete = sorted(set(data).intersection(removed))
+        if obsolete:
+            raise ValueError(f"{path}: removed case fields: {', '.join(obsolete)}")
         gases = data.get("gases") or []
-        if not gases:
+        if not isinstance(gases, list) or not gases:
             raise ValueError(f"{path}: 'gases' must list at least one input gas")
+        if any(not isinstance(gas, str) for gas in gases):
+            raise ValueError(f"{path}: every input gas must be a chemical-formula string")
         limits = data.get("limits") or {}
         return cls(
             name=data.get("name") or path.parent.name,
@@ -112,23 +134,13 @@ class Case:
             conditions=Conditions(**_floats(data.get("conditions") or {})),
             surfaces=tuple(data.get("surfaces") or []),
             limits=Limits(
-                max_depth=limits.get("max_depth"),
+                max_depth=int(limits.get("max_depth", 6)),
                 max_species=int(limits.get("max_species", 300)),
                 max_reactions=int(limits.get("max_reactions", 5000)),
+                max_charge_abs=int(limits.get("max_charge_abs", 1)),
+                max_leaving_atoms=int(limits.get("max_leaving_atoms", 2)),
             ),
-            dnt=DntGrid(**(data.get("dnt") or {})),
-            accept_status=tuple(data.get("accept_status") or DEFAULT_STATUS),
-            accept_processes=_processes(data.get("accept_processes")),
         )
-
-
-def _processes(names: list[str] | None) -> tuple[str, ...] | None:
-    if not names:
-        return None
-    unknown = sorted(set(names) - set(processes.NAMES))
-    if unknown:
-        raise ValueError(f"unknown collision families {unknown}; known: {list(processes.NAMES)}")
-    return tuple(names)
 
 
 def _floats(data: dict) -> dict:

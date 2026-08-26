@@ -1,0 +1,8 @@
+candidate,excitation,resolution,lifetime_class,state_meaning,alternative_resolution_states,verdict,reason,id
+Ar,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,Ar@ground
+Ar(4s),electronic,lumped,mixed_metastable_resonant,4s electronic-state manifold (lumped; mixed metastable/resonant),,pass,thermochemical representation is available,Ar@4s
+e,electron,resolved,not_applicable,free electron,,not_applicable,,e
+Ar(m),electronic,lumped,metastable,metastable electronic-state manifold (lumped),,unknown,formation enthalpy or NASA coefficients are missing,Ar@metastable
+Ar(r),electronic,lumped,resonant_radiative,resonant radiative electronic-state manifold (lumped),,unknown,formation enthalpy or NASA coefficients are missing,Ar@resonant
+Ar+,ground,resolved,not_applicable,electronic ground state,,pass,thermochemical representation is available,Ar+@ground
+Ar-,ground,resolved,not_applicable,electronic ground state,,unknown,formation enthalpy or NASA coefficients are missing,Ar-@ground

@@ -1,0 +1,9 @@
+entity,step,applicability,input,retained,rejected_at_step,total,retained_percent
+state,all,applied,7,7,0,7,100.0
+state,state,applied,7,4,3,7,57.143
+state,consistency,applied,4,4,0,7,57.143
+state,thermochemistry,applied,4,3,1,7,42.857
+reaction,all,applied,37,37,0,37,100.0
+reaction,state,applied,37,10,27,37,27.027
+reaction,consistency,applied,10,10,0,37,27.027
+reaction,thermochemistry,applied,10,10,0,37,27.027

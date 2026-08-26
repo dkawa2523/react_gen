@@ -1,0 +1,38 @@
+candidate,reaction_type,delta_h_eV,delta_g_eV,threshold_eV,verdict,reason,id
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),-11.6,,0.0,pass,reaction energy or threshold is available,rxn_085bec441ad0
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_49cd032be260
+e + Ar -> Ar(4s) + e,Electron-impact excitation,11.6,,11.6,pass,reaction energy or threshold is available,rxn_683f67de893f
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,4.159610000000001,,4.16,pass,reaction energy or threshold is available,rxn_1a8a97d93128
+2 Ar(4s) -> Ar+ + Ar + e,Associative ionization,-7.440389999999999,,,pass,reaction energy or threshold is available,rxn_4f890c9f1ce9
+e + Ar -> Ar-,Electron attachment,,,,fail,direct attachment cannot create the explicitly unbound parent anion,rxn_4374da9c1d1c
+e + Ar -> Ar + e,Electron elastic scattering,0.0,,0.0,pass,reaction energy or threshold is available,rxn_c8f95c3d8ede
+e + Ar -> Ar(m) + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_271084b2fc94
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,15.75961,,15.75961,pass,reaction energy or threshold is available,rxn_a69a28bff768
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ed39dd867e7c
+e + Ar- -> Ar + 2 e,Electron-impact detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_d83b0309c1b0
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,0.0,,,pass,reaction energy or threshold is available,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f4bf18f98733
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_5ccce802fea8
+e + Ar+ -> Ar,Electron-ion recombination,-15.75961,,,pass,reaction energy or threshold is available,rxn_b9b97c9cedf9
+Ar- + Ar -> 2 Ar + e,Collisional electron detachment,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_754c5eca1437
+Ar+ + Ar(m) -> Ar+ + Ar,Ion-induced deexcitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_32e0ff81482e
+Ar+ + Ar(r) -> Ar+ + Ar,Ion-induced deexcitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_8bb2a60a7fbc
+Ar- + Ar(m) -> Ar- + Ar,Ion-induced deexcitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_ffe8fc60e569
+Ar- + Ar(r) -> Ar- + Ar,Ion-induced deexcitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_634f6e55908a
+Ar+ + Ar -> Ar+ + Ar(m),Ion-induced excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_c93e3d600f78
+Ar+ + Ar -> Ar+ + Ar(r),Ion-induced excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_f07d0ba16e30
+Ar- + Ar -> Ar- + Ar(m),Ion-induced excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_fab0902a6843
+Ar- + Ar -> Ar- + Ar(r),Ion-induced excitation,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_26b94c20754e
+Ar+ + Ar- -> 2 Ar,Ion-ion mutual neutralization,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_7f218ecf9f30
+Ar+ + Ar -> Ar+ + Ar,Resonant charge exchange,0.0,8.648714265686214e-16,,pass,reaction energy or threshold is available,rxn_42da360d77cf
+Ar- + Ar -> Ar- + Ar,Resonant charge exchange,,,,pass,reaction energy or threshold is available,rxn_2d9ccfcce5d9
+Ar(m) + Ar -> Ar+ + Ar + e,Penning ionization,,,,fail,metastable energy is below the target ionization energy,rxn_89b3c1f5c922
+Ar(m) + Ar -> 2 Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_03cc6169a934
+Ar(m) + Ar(r) -> Ar(m) + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_9c71d4efc801
+Ar(m) + Ar(r) -> Ar(r) + Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_a9821670c330
+Ar(r) + Ar -> 2 Ar,Excited-state quenching,,,,unknown,one or more reactant or product states lack compatible thermochemistry,rxn_cc4cbdb651ed

@@ -1,0 +1,27 @@
+species,formula,charge,excitation,resolution,lifetime_class,state_meaning,alternative_resolution_states,origin,depth,id
+Ar+,Ar,1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,Ar+@ground
+Ar(4s),Ar,0,electronic,lumped,mixed_metastable_resonant,4s electronic-state manifold (lumped; mixed metastable/resonant),,attested_only,0,Ar@4s
+Ar,Ar,0,ground,resolved,not_applicable,electronic ground state,,mechanical,0,Ar@ground
+C-,C,-1,ground,resolved,not_applicable,electronic ground state,,mechanical,2,C-@ground
+C2F3+,C2F3,1,ground,resolved,not_applicable,electronic ground state,,attested_only,0,C2F3+@ground
+C2F3,C2F3,0,ground,resolved,not_applicable,electronic ground state,,attested_only,0,C2F3@ground
+C2F4,C2F4,0,ground,resolved,not_applicable,electronic ground state,,attested_only,0,C2F4@ground
+C(¹D),C,0,electronic,resolved,metastable,resolved spectroscopic state ¹D,,attested_only,0,C@1d
+C(¹S),C,0,electronic,resolved,metastable,resolved spectroscopic state ¹S,,attested_only,0,C@1s
+C,C,0,ground,resolved,not_applicable,electronic ground state,,mechanical,2,C@ground
+CF2+,CF2,1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,CF2+@ground
+CF2-,CF2,-1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,CF2-@ground
+CF2,CF2,0,ground,resolved,not_applicable,electronic ground state,,mechanical,1,CF2@ground
+CF3+,CF3,1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,CF3+@ground
+CF3-,CF3,-1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,CF3-@ground
+CF3,CF3,0,ground,resolved,not_applicable,electronic ground state,,mechanical,1,CF3@ground
+CF4+,CF4,1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,CF4+@ground
+CF4,CF4,0,ground,resolved,not_applicable,electronic ground state,,mechanical,0,CF4@ground
+CF,CF,0,ground,resolved,not_applicable,electronic ground state,,mechanical,2,CF@ground
+F+,F,1,ground,resolved,not_applicable,electronic ground state,,mechanical,2,F+@ground
+F-,F,-1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,F-@ground
+F2+,F2,1,ground,resolved,not_applicable,electronic ground state,,mechanical,2,F2+@ground
+F2-,F2,-1,ground,resolved,not_applicable,electronic ground state,,mechanical,1,F2-@ground
+F2,F2,0,ground,resolved,not_applicable,electronic ground state,,mechanical,1,F2@ground
+F,F,0,ground,resolved,not_applicable,electronic ground state,,mechanical,1,F@ground
+e,,-1,electron,resolved,not_applicable,free electron,,mechanical,0,e

@@ -1,0 +1,4 @@
+candidate,reaction_type,data_kind,unit,applicable_range,dataset_id,verdict,reason,id
+F + [SiO2] -> 0.5 F2,Surface recombination,sticking_coefficient,dimensionless,,ds_F_SiO2_gamma,unknown,no usable cross section or rate coefficient,rxn_05f35ce5be90
+O + [SiO2] -> 0.5 O2,Surface recombination,sticking_coefficient,dimensionless,,ds_O_SiO2_gamma,unknown,no usable cross section or rate coefficient,rxn_fa8b8f6b3770
+O + [Y2O3] -> 0.5 O2,Surface recombination,sticking_coefficient,dimensionless,,ds_O_Y2O3_gamma,unknown,no usable cross section or rate coefficient,rxn_08c94f4c2b6a

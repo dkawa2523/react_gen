@@ -3,11 +3,8 @@ pair:
   family: ion_neutral
   projectile: 'Ar+'
   target: Ar
-  potential:
-    short_range: {model: born_mayer, A_eV: 1200.0, b_A: 0.31, source: fixture}
 channels:
 - id: Arp_Ar_charge_transfer
   type: charge_transfer
   products: [{species: Ar, n: 1}, {species: 'Ar+', n: 1}]
-  dnt_class: long_range_charge_exchange
   status: curated

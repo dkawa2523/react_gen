@@ -1,0 +1,20 @@
+equation,reaction_type,family,process,origin,depth,consistency_verdict,state_verdict,thermochemistry_verdict,reaction_evidence_verdict,kinetics_verdict,delta_h_eV,delta_g_eV,threshold_eV,kinetic_data,selected,exclusion_reason,id
+e + Ar(4s) -> Ar + e,Electron-impact deexcitation (superelastic),electron,deexcitation,attested_only,0,pass,pass,pass,pass,unknown,-11.6,,0.0,,true,,rxn_085bec441ad0
+e + Ar(4s) -> Ar(4s) + e,Electron elastic scattering,electron,elastic,attested_only,0,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_49cd032be260
+e + Ar -> Ar(4s) + e,Electron-impact excitation,electron,excitation,attested_only,0,pass,pass,pass,pass,unknown,11.6,,11.6,,true,,rxn_683f67de893f
+e + Ar(4s) -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,attested_only,0,pass,pass,pass,pass,unknown,4.159610000000001,,4.16,,true,,rxn_1a8a97d93128
+e + Ar -> Ar-,Electron attachment,electron,attachment,mechanical,1,pass,fail,fail,unknown,unknown,,,,,true,,rxn_4374da9c1d1c
+e + Ar -> Ar + e,Electron elastic scattering,electron,elastic,mechanical,1,pass,pass,pass,pass,unknown,0.0,,0.0,,true,,rxn_c8f95c3d8ede
+e + Ar -> Ar(m) + e,Electron-impact excitation,electron,excitation,mechanical,1,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_86e8fb853dd8
+e + Ar -> Ar(r) + e,Electron-impact excitation,electron,excitation,mechanical,1,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_271084b2fc94
+e + Ar -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,1,pass,pass,pass,pass,unknown,15.75961,,15.75961,,true,,rxn_a69a28bff768
+e + Ar(m) -> Ar + e,Electron-impact deexcitation (superelastic),electron,deexcitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_fa2f9066d8c2
+e + Ar(r) -> Ar + e,Electron-impact deexcitation (superelastic),electron,deexcitation,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_ed39dd867e7c
+e + Ar- -> Ar + 2 e,Electron-impact detachment,electron,detachment,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_d83b0309c1b0
+e + Ar(m) -> Ar(m) + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_6544183a7e7e
+e + Ar(r) -> Ar(r) + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_4a11bdf2a171
+e + Ar+ -> Ar+ + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,pass,pass,unknown,unknown,0.0,,,,true,,rxn_ce746e5f7015
+e + Ar- -> Ar- + e,Electron elastic scattering,electron,elastic,mechanical,2,pass,fail,unknown,unknown,unknown,,,,,true,,rxn_f4bf18f98733
+e + Ar(m) -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_dff2bd46b5c5
+e + Ar(r) -> Ar+ + 2 e,Electron-impact ionization,electron,ionization,mechanical,2,pass,unknown,unknown,unknown,unknown,,,,,true,,rxn_5ccce802fea8
+e + Ar+ -> Ar,Electron-ion recombination,electron,recombination,mechanical,2,pass,pass,pass,unknown,unknown,-15.75961,,,,true,,rxn_b9b97c9cedf9

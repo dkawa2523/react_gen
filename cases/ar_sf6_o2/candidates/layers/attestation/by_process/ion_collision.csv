@@ -1,6 +1,0 @@
-bodies,reactants,products,id,family,type,depth,status,verdict
-2,Ar+ + O2,Ar + O2+,Arp_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,registry
-2,Ar+ + SF6,Ar + SF5+ + F,Arp_SF6_dissociative_charge_transfer_SF5p_F,ion_neutral,dissociative_charge_transfer,1,literature_supported,registry
-2,Ar+ + SF6*,Ar + SF5+ + F,cand_Arp_SF6*_diss_Ar_SF5p_F,ion_neutral,dissociative_charge_transfer,1,candidate,registry
-2,O+ + O2,O + O2+,Op_O2_charge_transfer,ion_neutral,charge_transfer,1,literature_supported,registry
-2,SF5+ + SF6,SF3+ + SF6 + F2,SF5p_SF6_to_SF3p_SF6_F2,ion_neutral,reactive_scattering,1,literature_supported,"registry, doi:10.1116/1.4853675"
