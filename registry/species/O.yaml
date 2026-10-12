@@ -1,4 +1,5 @@
 schema_version: 1
+phase: gas
 id: O
 display_name: O
 composition:
@@ -12,7 +13,25 @@ state:
   kind: ground
   label: 3P2
   excitation_energy_eV: 0.0
+  existence: confirmed
+  existence_source: NIST ASD 5.12, O I ground level 3P2; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=O&unc_out=on&units=1
+  status: reviewed
+  configuration: 1s2 2s2 2p4
+  term: 3P
+  J: '2'
+  parity: even
+  degeneracy: 5
+  source:
+    citation: NIST ASD 5.12, O I level at 0 eV, J=2, g=5; https://physics.nist.gov/cgi-bin/ASD/energy1.pl?de=0&spectrum=O+I&units=1&format=3&output=0&page_size=15&multiplet_ordered=0&conf_out=on&term_out=on&level_out=on&unc_out=on&j_out=on&g_out=on&biblio=on&temp=&submit=Retrieve+Data
 properties:
+  excitation_energy_eV:
+    value: 0.0
+    unit: eV
+    source: NIST ASD 5.12, O I 3P2 ground-level zero reference; https://physics.nist.gov/PhysRefData/ASD/Html/levelshelp.html
+    evidence_tier: reviewed
+    uncertainty:
+      absolute: 0.0
+      unit: eV
   mass_amu:
     value: 15.9994
     unit: amu
@@ -38,7 +57,11 @@ properties:
   ionization_energy_eV:
     value: 13.618055
     unit: eV
-    source: mendeleev package, bundled periodic table
+    source: NIST ASD 5.12, O I ground to O II ground, L74,L3760; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=O&unc_out=on&units=1
+    evidence_tier: reviewed
+    uncertainty:
+      absolute: 0.000007
+      unit: eV
   electron_affinity_eV:
     value: 1.461113
     unit: eV
@@ -52,6 +75,9 @@ metadata:
   status: curated
   notes:
   - Ground-state atomic oxygen produced by O2 dissociation.
+  - The reviewed identity is the O I 3P2 level. Its g=5 does not set thermal
+    populations of the 3P1 and 3P0 fine-structure levels. Other properties and
+    the imported thermal O polynomial retain their independent qualifications.
 thermo:
   high:
   - 2.56942078

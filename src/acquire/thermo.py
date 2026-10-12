@@ -1,17 +1,8 @@
-"""Read formation enthalpy and standard entropy from the `chemicals` package.
+"""Read gas-phase formation enthalpy and standard entropy from ``chemicals``.
 
-`chemicals` ships its thermodynamic tables inside the distribution, so this
-needs no network, no scraping and no unstable download url — the reason the
-other bulk sources stayed manual. It also covers radicals such as CF3, which
-compound databases do not index at all.
-
-Two values per species are enough to screen a reaction:
-
-    Delta G(T) = Delta H - T Delta S
-
-which decides whether a neutral-neutral channel is open before anyone measures
-a rate. The package is an optional dependency; without it this returns nothing
-rather than failing.
+Formula lookup is verified against the requested composition. These standard
+quantities do not determine a reaction barrier, rate or occurrence under plasma
+conditions. Values remain imported until their own domain review.
 """
 
 from __future__ import annotations
@@ -31,6 +22,9 @@ class Thermo:
     enthalpy_eV: float | None = None
     entropy_J_mol_K: float | None = None
     error: str | None = None
+    enthalpy_method: str | None = None
+    entropy_method: str | None = None
+    package_version: str | None = None
 
     @property
     def known(self) -> bool:
@@ -61,7 +55,8 @@ def fetch(names: list[str], composition: dict[str, dict[str, int]] | None = None
 
 
 def _one(name: str, wanted: dict[str, int] | None) -> Thermo:
-    from chemicals import CAS_from_any, Hfg, S0g, search_chemical
+    import chemicals
+    from chemicals import CAS_from_any, Hfg, Hfg_methods, S0g, S0g_methods, search_chemical
 
     try:
         cas = CAS_from_any(name)
@@ -72,13 +67,22 @@ def _one(name: str, wanted: dict[str, int] | None) -> Thermo:
     if wanted and parse_formula(formula) != wanted:
         return Thermo(name, cas, formula, error=f"resolves to {formula}, a different compound")
 
-    enthalpy = Hfg(cas)
+    # Pin the selected upstream table, rather than saving a value with only a
+    # package-level citation. Explicit method bypasses a separate constants
+    # cache and names the exact table which supplied this declaration.
+    enthalpy_methods, entropy_methods = Hfg_methods(cas), S0g_methods(cas)
+    enthalpy_method = enthalpy_methods[0] if enthalpy_methods else None
+    entropy_method = entropy_methods[0] if entropy_methods else None
+    enthalpy = Hfg(cas, method=enthalpy_method) if enthalpy_method is not None else None
     return Thermo(
         species=name,
         cas=cas,
         formula=formula,
         enthalpy_eV=None if enthalpy is None else enthalpy / JOULE_PER_EV,
-        entropy_J_mol_K=S0g(cas),
+        entropy_J_mol_K=S0g(cas, method=entropy_method) if entropy_method is not None else None,
+        enthalpy_method=enthalpy_method,
+        entropy_method=entropy_method,
+        package_version=chemicals.__version__,
     )
 
 
@@ -95,10 +99,31 @@ def records(found: list[Thermo], citation: str) -> list[dict]:
 
 
 def _record(item: Thermo, name: str, value: float, unit: str, citation: str) -> dict:
+    method = item.enthalpy_method if name == "enthalpy_formation_eV" else item.entropy_method
+    reference = {}
+    if name == "enthalpy_formation_eV":
+        # ATcT's Hfg column is explicitly the 298.15 K column; CRC's standard
+        # table is also specified at 298.15 K. Other table temperatures and
+        # their pressures/electron conventions remain unstated, pending review.
+        # https://atct.anl.gov/Thermochemical%20Data/version%201.112/
+        # https://chemicals.readthedocs.io/chemicals.heat_capacity.html
+        reference["formation_reference"] = {
+            "temperature_K": 298.15 if method in {"ATCT_G", "CRC"} else None,
+            "basis": "standard_elements",
+        }
     return {
         "species": item.species,
         "property": name,
         "value": value,
         "unit": unit,
-        "source": {"citation": f"{citation}, CAS {item.cas}"},
+        "phase": "gas",
+        "source_species": item.formula,
+        "source": {
+            "provider": "chemicals",
+            "collection": method,
+            "release": item.package_version,
+            "record_id": f"{item.cas}:{name}",
+            "citation": f"{citation}, CAS {item.cas}" + (f", table {method}" if method else ""),
+        },
+        **reference,
     }

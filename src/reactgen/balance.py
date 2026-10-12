@@ -6,9 +6,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 
 from reactgen.model import ELECTRON, StateCandidate, Term
+from reactgen.model import STOICHIOMETRY_TOLERANCE as TOLERANCE
 from reactgen.records import RegistryReaction, Species
-
-TOLERANCE = 1e-9
 
 
 @dataclass(frozen=True)

@@ -38,11 +38,21 @@ channels:
           (2014).
         url: https://doi.org/10.1116/1.4853675
         record_id: R38
+        primary_url: https://www.researchgate.net/publication/259780759_Modeling_of_inductively_coupled_plasma_SF6O-2Ar_plasma_discharge_Effect_of_O-2_on_the_plasma_kinetic_properties
+        source_table: Table III, author proof copy p. 4
+        applicability_review: Temperature and pressure applicability of this tabulated
+          constant are not specified. Reactor operating points are not an elementary
+          rate validity range; cited underlying measurements remain to be reviewed.
+        model_review: Source-model bimolecular reaction coefficient; expression, units
+          and enumerated reactants checked against the author-uploaded proof. Generic-table
+          expansion is not an independent measurement of each channel.
       status: literature_supported
       preferred: true
       notes:
       - Generic source-table rule expanded only over the species enumerated in its
         footnote.
+      reaction_order: 2
+      observable: reaction_rate
 metadata:
   status: literature_supported
   notes:

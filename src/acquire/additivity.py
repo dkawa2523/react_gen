@@ -1,42 +1,17 @@
-"""Polarizability estimated by element additivity, for species no source holds.
+"""Gas-phase ground-state polarizability estimates from composition additivity.
 
-Every radical this project needs -- CF, CF2, CF3, SF, SF2, SF4, SF5, SO, SOF,
-SOF3, SOF4 -- is absent from every polarizability compilation that exists.
-Measured, not assumed: `chemicals` and `thermo` hold no polarizability table at
-all, `mendeleev` answers for atoms, the CCCBDB experimental list covers 261
-closed-shell species and none of these, and CCCBDB's calculated pages offer
-only PM6 (-22% to +14% against measurement) and Miller's group additivity,
-which returns 1.294 A3 for CF3 against 3.041 for CF4 -- a ratio no molecule has.
-
-So this fits the additivity itself, on the 243 CCCBDB species whose elements
-this registry uses:
-
-    alpha = c0 + sum_i n_i c_i
-
-Leave-one-out over that set gives a median error of 4.4%, a 90th percentile of
-18%, and a worst case above 100%. Against the anchors that matter it lands at
-+0.9% on SF6, -4.6% on CF4, +6.6% on SOF2.
-
-It is not part of `tools/refresh_properties.py` and `rgen adopt` should not be
-pointed at its output. The reason is the kinetics layer, whose whole claim is
-that its rate is an upper bound -- "this reaction is no faster than this". The
-fit is trained entirely on closed-shell molecules, and a radical is more
-polarizable than its closed-shell analogue, so these numbers are low. Since
-k_L scales as sqrt(alpha), a low alpha gives a low rate, and a bound that can
-be exceeded is not a bound. Feeding these into the registry would quietly turn
-a guarantee into a guess.
-
-What they are good for is a documented exploratory collision-property estimate.
-They remain estimated evidence and are never promoted to measured kinetics.
+The model alpha = c0 + sum(n_i*c_i) is an explicit approximation, not a
+measurement, bound, identity determination or reaction-rate calculation.
+It does not distinguish structures of the same composition. CCCBDB describes
+its target collection as gas-phase atoms and small molecules:
+https://cccbdb.nist.gov/
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-# Leave-one-out error over the CCCBDB training set, carried into every record.
-LOO_MEDIAN = 0.044
-LOO_90TH = 0.181
+from reactgen.chemistry import parse_state_id
 
 
 @dataclass(frozen=True)
@@ -47,6 +22,8 @@ class Estimate:
     polarizability_A3: float
     training_size: int
     error: str | None = None
+    phase: str = "gas"
+    structure: str | None = None
 
     @property
     def known(self) -> bool:
@@ -56,10 +33,11 @@ class Estimate:
 def fit(training: list[tuple[dict[str, int], float]]) -> tuple[dict[str, float], float] | None:
     """Least-squares element contributions and an intercept, or None if underdetermined."""
 
-    import numpy as np
-
     if len(training) < 20:
         return None
+
+    import numpy as np
+
     elements = sorted({element for composition, _ in training for element in composition})
     design = np.array(
         [
@@ -86,6 +64,17 @@ def estimate(
     contributions, intercept = fitted
     out = []
     for name, composition in wanted:
+        state = parse_state_id(name)
+        if state is None or state.charge or state.state.kind != "ground" or state.phase != "gas":
+            out.append(
+                Estimate(name, 0.0, len(training), "model requires neutral gas ground state")
+            )
+            continue
+        if state.composition != composition:
+            out.append(
+                Estimate(name, 0.0, len(training), "composition contradicts target identity")
+            )
+            continue
         missing = [element for element in composition if element not in contributions]
         if missing:
             out.append(Estimate(name, 0.0, len(training), f"no contribution fitted for {missing}"))
@@ -94,7 +83,7 @@ def estimate(
         if value <= 0:
             out.append(Estimate(name, 0.0, len(training), "fit returned a non-physical value"))
             continue
-        out.append(Estimate(name, round(value, 4), len(training)))
+        out.append(Estimate(name, round(value, 4), len(training), structure=state.structure))
     return out
 
 
@@ -108,11 +97,14 @@ def records(found: list[Estimate], citation: str) -> list[dict]:
             "value": item.polarizability_A3,
             "unit": "A3",
             "quality": "estimated",
+            "status": "estimated",
+            "phase": item.phase,
+            "structure": item.structure,
             "source": {
                 "citation": (
                     f"{citation}; element additivity fitted to {item.training_size} CCCBDB "
-                    f"species, leave-one-out median {LOO_MEDIAN:.1%} and 90th percentile "
-                    f"{LOO_90TH:.1%}; trained on closed-shell molecules, so a radical is low"
+                    "species; gas-phase ground-state estimate; dependence on structure "
+                    "is neglected, target accuracy has not been established"
                 )
             },
         }

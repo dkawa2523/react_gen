@@ -4,7 +4,7 @@ Importer tools are developer-side utilities for converting external public data
 into local registry YAML files and local assets. They are not part of the core
 generation runtime.
 
-The core generator does not call importers during `reactgen generate`, and normal
+The core generator does not call importers during `rgen analyze`, and normal
 generation must not require network access or external API availability.
 
 ## Importer contract
@@ -25,8 +25,8 @@ download or provide external data
   -> run importer
   -> inspect generated registry YAML/assets
   -> promote accepted files into registry
-  -> run reactgen dev-check
-  -> run normal reactgen generate
+  -> run rgen check --registry registry
+  -> run normal rgen analyze with explicit --evidence
 ```
 
 No importer is shipped until it can produce validated, reviewable output.

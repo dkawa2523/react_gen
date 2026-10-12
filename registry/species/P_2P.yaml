@@ -29,7 +29,9 @@ properties:
     source: unchanged from P on excitation; mendeleev package, bundled periodic table,
       dipole polarizability in atomic units
     unit: A3
-    value: 3.7046
+    value: null
+    qualifier: excitation_changes_this_property
+    evidence_tier: imported
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -68,3 +70,4 @@ thermo:
   t_max: 317.3
   t_mid: 317.3
   t_min: 195.4
+phase: gas

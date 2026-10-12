@@ -1,44 +1,20 @@
-"""Properties an excited state inherits from the species it is a state of.
+"""Explicit derived mass and resolved-level formation-energy offsets.
 
-Half the registry is states rather than substances: `CF4_v`, `Ar_4s`, `O2_a1Delta`
-are argon and oxygen and carbon tetrafluoride, in a different level. No
-compilation tabulates them, and none should -- they are the same molecule.
-
-Which properties carry over is a physical question with different answers:
-
-    polarizability, dipole moment,     unchanged to the accuracy anything here
-    collision radius, well depth       needs. Vibrational excitation moves the
-                                       nuclei within one electronic state, and
-                                       a low-lying metastable leaves the charge
-                                       distribution close to the ground state.
-
-    formation enthalpy                 shifts by the level energy, since the
-                                       state is the substance holding that much
-                                       more energy. This scalar supports an
-                                       energy balance; a complete ground-state
-                                       NASA polynomial is not copied because
-                                       state-resolved partition functions are
-                                       different physics.
-
-    ionization energy, affinity        shift by the level energy with the
-                                       opposite sign, and the registry carries
-                                       those where they are known.
-
-Nothing is inherited across a charge change. A cation is smaller and less
-polarizable than its neutral and an anion is larger, by tens of percent, so
-`CF3+` may not take `CF3`'s polarizability -- and that is exactly the case a
-naive "same composition" rule would get wrong.
-
-The output is an overlay rather than a registry edit, so a derived value stays
-labelled as derived and a curated one is never overwritten.
+Composition sums neglect chemical binding mass defects; carrying mass across
+excitation additionally neglects E/c^2. Electronic response and transport
+properties require their own evidence. No equilibrium populations or excited
+NASA partition functions are inferred by this operation.
 """
 
 from __future__ import annotations
 
-from dataclasses import replace
+from dataclasses import asdict, replace
+from math import isfinite
 
+from reactgen.evidence import registry_state_candidate
 from reactgen.records import Property, Species
 from reactgen.registry import Registry
+from reactgen.units import energy_eV as energy_in_eV
 
 ELECTRON_MASS_AMU = 0.000548579909
 
@@ -46,25 +22,19 @@ ELECTRON_MASS_AMU = 0.000548579909
 def element_masses(registry: Registry) -> dict[str, float]:
     """Atomic mass per element, from the registry's own single-atom species."""
 
-    found = {}
+    offered: dict[str, set[float]] = {}
     for species in registry.species.values():
         if species.charge or len(species.composition) != 1:
             continue
         ((element, count),) = species.composition.items()
-        mass = species.value("mass_amu")
+        mass = _mass_amu(species)
         if count == 1 and mass is not None and species.state.kind == "ground":
-            found[element] = mass
-    return found
+            offered.setdefault(element, set()).add(mass)
+    return {element: next(iter(values)) for element, values in offered.items() if len(values) == 1}
 
 
 def mass_of(composition: dict[str, int], charge: int, elements: dict[str, float]) -> float | None:
-    """Mass from the atoms present, less the electrons the charge stands for.
-
-    Arithmetic, not a lookup: a mass that cannot be stated leaves a species with
-    no reduced mass, and every collision rate and wall loss in the run is formed
-    from one. The electron term is 0.0005 amu and matters to nothing here, but
-    leaving it out would make `Ar+` and `Ar` the same number, which they are not.
-    """
+    """Sum atom masses minus missing electrons, neglecting binding mass defects."""
 
     if not composition or any(element not in elements for element in composition):
         return None
@@ -72,23 +42,21 @@ def mass_of(composition: dict[str, int], charge: int, elements: dict[str, float]
     return round(total - charge * ELECTRON_MASS_AMU, 6)
 
 
-# Unchanged between a species and its own excited or vibrational levels. Mass is
-# first because it is the one a proposed state cannot do without: without it
-# there is no reduced mass, so no collision rate and no wall loss either.
-CARRIED = (
-    "mass_amu",
-    "polarizability_A3",
-    "dipole_moment_D",
-    "collision_radius_A",
-    "well_depth_K",
-)
+# Excitation changes electronic response and transport interactions. Only mass
+# can be carried with the explicit approximation that the excitation energy's
+# relativistic mass contribution is neglected.
+CARRIED = ("mass_amu",)
 
 
-def carried_from(parent: Species, energy_eV: float | None) -> dict[str, Property]:
+def carried_from(
+    parent: Species, energy_eV: float | None, energy_source: str | None = None
+) -> dict[str, Property]:
     """The properties a state of `parent` holds, ready to attach to it.
 
     This is an explicit derived-data operation. Registry loading never inserts
-    these values implicitly.
+    these values implicitly. A resolved level offset is carried into formation
+    enthalpy only at 0 K: finite-T changes in vibrational/rotational thermal
+    contributions are not supplied by the electronic level energy.
     """
 
     out = {
@@ -96,42 +64,87 @@ def carried_from(parent: Species, energy_eV: float | None) -> dict[str, Property
             parent.properties[name],
             source=f"unchanged from {parent.id} on excitation; "
             f"{(parent.properties[name].source or '').split(';')[0]}",
+            tier="derived",
         )
         for name in CARRIED
-        if parent.properties.get(name) is not None and parent.value(name) is not None
+        if _mass_amu(parent) is not None
     }
-    enthalpy = parent.value("enthalpy_formation_eV")
-    if enthalpy is not None and energy_eV is not None:
+    prop = parent.properties.get("enthalpy_formation_eV")
+    enthalpy = (
+        energy_in_eV(prop.value, prop.unit)
+        if prop and prop.value is not None and prop.tier in {"curated", "reviewed", "derived"}
+        else None
+    )
+    if (
+        enthalpy is not None
+        and energy_eV is not None
+        and prop is not None
+        and prop.reviewed_for("enthalpy_formation_eV")
+        and prop.formation_reference is not None
+        and prop.formation_reference.complete
+        and prop.formation_reference.temperature_K == 0
+        and prop.qualifier is None
+    ):
         out["enthalpy_formation_eV"] = Property(
             value=round(enthalpy + energy_eV, 6),
             unit="eV",
-            source=f"{parent.id} enthalpy plus the {energy_eV:.4g} eV level energy",
+            source=f"{parent.id} enthalpy plus the {energy_eV:.4g} eV level energy"
+            + (f"; {energy_source}" if energy_source else ""),
+            tier="derived",
+            formation_reference=prop.formation_reference,
+            status="derived",
+            method="calculated",
+            review_scope=("enthalpy_formation_eV",),
+            source_declaration={
+                "operation": "resolved_level_formation_offset",
+                "parent_species": parent.id,
+                "parent_formation_enthalpy": asdict(prop),
+                "level_energy_eV": energy_eV,
+                "level_source": energy_source,
+                "reference_temperature_K": 0.0,
+            },
         )
     return out
+
+
+def _mass_amu(species: Species) -> float | None:
+    prop = species.properties.get("mass_amu")
+    if prop is None or prop.unit != "amu" or prop.value is None:
+        return None
+    return prop.value if isfinite(prop.value) and prop.value > 0 else None
 
 
 def parents(registry: Registry) -> dict[str, str]:
     """Each non-ground state mapped to the ground state of the same substance."""
 
-    ground: dict[tuple[tuple[tuple[str, int], ...], int], str] = {}
+    ground: dict[tuple, list[str]] = {}
     for species in registry.species.values():
         if species.state.kind == "ground":
-            ground.setdefault(
-                (tuple(sorted(species.composition.items())), species.charge), species.id
+            key = (
+                tuple(sorted(species.composition.items())),
+                species.charge,
+                species.phase,
+                species.structure,
             )
+            ground.setdefault(key, []).append(species.id)
     found = {}
     for species in registry.species.values():
         if species.state.kind == "ground":
             continue
-        key = (tuple(sorted(species.composition.items())), species.charge)
-        parent = ground.get(key)
-        if parent is not None and parent != species.id:
-            found[species.id] = parent
+        key = (
+            tuple(sorted(species.composition.items())),
+            species.charge,
+            species.phase,
+            species.structure,
+        )
+        matches = ground.get(key, [])
+        if len(matches) == 1 and matches[0] != species.id:
+            found[species.id] = matches[0]
     return found
 
 
 def overlay(registry: Registry) -> dict:
-    """An overlay filling every state property its ground state already answers."""
+    """Derive mass gaps and individually resolved formation-energy offsets."""
 
     properties: dict[str, dict] = {}
     elements = element_masses(registry)
@@ -140,7 +153,7 @@ def overlay(registry: Registry) -> dict:
             continue
         mass = mass_of(species.composition, species.charge, elements)
         if mass is not None:
-            properties.setdefault(species.id, {})["mass_amu"] = {
+            properties.setdefault(registry_state_candidate(species).id, {})["mass_amu"] = {
                 "value": mass,
                 "unit": "amu",
                 "source": "sum of atomic masses in the registry, less the electron mass",
@@ -148,21 +161,45 @@ def overlay(registry: Registry) -> dict:
             }
     for state_id, parent_id in parents(registry).items():
         state, parent = registry.species[state_id], registry.species[parent_id]
-        energy = state.state.energy_eV
-        for name, prop in carried_from(parent, energy).items():
+        excitation = state.properties.get("excitation_energy_eV")
+        energy = (
+            energy_in_eV(excitation.value, excitation.unit)
+            if state.state.resolution == "resolved"
+            and state.phase != "unknown"
+            and excitation is not None
+            and excitation.value is not None
+            and excitation.tier in {"curated", "reviewed"}
+            and excitation.qualifier is None
+            else None
+        )
+        for name, prop in carried_from(
+            parent, energy, excitation.source if excitation else None
+        ).items():
             if state.value(name) is None:
-                properties.setdefault(state_id, {})[name] = {
+                entry: dict[str, object] = {
                     "value": prop.value,
                     "unit": prop.unit,
                     "source": prop.source,
                     "evidence_tier": "derived",
                 }
+                if prop.formation_reference is not None:
+                    entry["formation_reference"] = asdict(prop.formation_reference)
+                    entry["method"] = prop.method
+                    entry["review_scope"] = list(prop.review_scope)
+                    entry["source_declaration"] = prop.source_declaration
+                properties.setdefault(registry_state_candidate(state).id, {})[name] = entry
     return {"properties": properties}
 
 
 def merged(acquired: dict, filled: dict) -> dict:
     """The acquired overlay with derived entries added where it was silent."""
 
+    for section in ("properties", "thermo"):
+        if section in acquired and not isinstance(acquired[section], dict):
+            raise ValueError(f"overlay.{section} must be a mapping")
+    for state_id, properties in acquired.get("properties", {}).items():
+        if not isinstance(properties, dict):
+            raise ValueError(f"overlay.properties.{state_id} must be a mapping")
     out = {key: dict(value) for key, value in (acquired or {}).items() if isinstance(value, dict)}
     out.update({key: value for key, value in (acquired or {}).items() if key not in out})
     for section in ("properties", "thermo"):

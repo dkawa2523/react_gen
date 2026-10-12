@@ -37,10 +37,20 @@ channels:
           (2014).
         url: https://doi.org/10.1116/1.4853675
         record_id: R121
+        primary_url: https://www.researchgate.net/publication/259780759_Modeling_of_inductively_coupled_plasma_SF6O-2Ar_plasma_discharge_Effect_of_O-2_on_the_plasma_kinetic_properties
+        source_table: Table VII, author proof copy p. 7; oxygen-state footnote a
+        applicability_review: Temperature and pressure applicability of this tabulated
+          constant are not specified. Reactor operating points are not an elementary
+          rate validity range; cited underlying measurements remain to be reviewed.
+        model_review: Source-model bimolecular reaction coefficient; expression, units
+          and products checked against the author-uploaded proof. No uncertainty or
+          general temperature dependence is established by this constant.
       status: literature_supported
       preferred: true
+      reaction_order: 2
+      observable: reaction_rate
 - id: SF_O1D_R136
-  type: reactive_scattering
+  type: association
   products:
   - species: SOF
     n: 1
@@ -70,8 +80,23 @@ channels:
           (2014).
         url: https://doi.org/10.1116/1.4853675
         record_id: R136
+        primary_url: https://www.researchgate.net/publication/259780759_Modeling_of_inductively_coupled_plasma_SF6O-2Ar_plasma_discharge_Effect_of_O-2_on_the_plasma_kinetic_properties
+        source_table: Table VII, author proof copy p. 7; oxygen-state footnote a
+        applicability_review: Temperature and pressure applicability of this tabulated
+          constant are not specified. Reactor operating points are not an elementary
+          rate validity range; cited underlying measurements remain to be reviewed.
+        model_review: Source-model bimolecular reaction coefficient; expression, units
+          and products checked against the author-uploaded proof. No uncertainty or
+          general temperature dependence is established by this constant.
       status: literature_supported
       preferred: true
+      reaction_order: 2
+      observable: reaction_rate
+  stabilization: unspecified
+  notes:
+  - The source-model equation is a 2-to-1 association with a bimolecular coefficient.
+    Neither a photon nor a third body is identified; the stabilization mechanism and
+    its condition dependence remain unresolved.
 metadata:
   status: literature_supported
   notes:

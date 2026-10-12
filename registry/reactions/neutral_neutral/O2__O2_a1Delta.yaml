@@ -9,35 +9,50 @@ channels:
   products:
   - species: O2
     n: 2
-  status: literature_supported
+  status: needs_review
   deltaE_products_minus_reactants_eV: -0.977
   data:
     datasets:
     - id: ds_O2a_O2_self_quenching_rate_1988
       kind: rate_coefficient
       representation: constant
-      independent_variable: null
-      dependent_variable: rate_coefficient
+      independent_variable: gas_temperature
+      observable: reaction_rate
+      channel_scope: total_process
       unit: m3/s
+      reaction_order: 2
       parameters:
         value: 1.5e-24
-        uncertainty: 2.0e-25
         source_value: 1.5e-18
         source_uncertainty: 0.2e-18
-        source_unit: cm3/s
+      parameter_units:
+        value: m3/s
+        source_value: cm3/s
+        source_uncertainty: cm3/s
+      uncertainty:
+        absolute: 2.0e-25
+        note: Reported +/- 0.2e-18 cm3/s; confidence level is not specified in the accessible abstract.
       validity:
-        conditions:
-          temperature: room_temperature
+        quantity: gas_temperature
+        unit: K
+        minimum: null
+        maximum: null
       source:
         source_type: literature
         source_id: doi:10.1016/0301-0104(88)80027-2
-        citation: Chemical Physics 122, 463-470 (1988).
+        citation: J. Wildt et al., Laser excitation of O2(b1Sigma_g+, v=0,1,2), Chemical Physics 122, 463-470 (1988), abstract.
         url: https://doi.org/10.1016/0301-0104(88)80027-2
+        primary_abstract_url: https://www.sciencedirect.com/science/article/abs/pii/0301010488800272
+        measurement: Decay of the a-to-X 1270 nm emission band at different O2 pressures determines excited-state self-quenching; exact ground-state product branching is not verified in the abstract.
+        applicability_review: Numerical measurement temperature is not verified in the accessible primary abstract.
+        legacy_temperature_annotation: room_temperature was recorded previously but is not verified from the abstract.
       status: literature_supported
       preferred: true
       notes:
       - Point value only; no unsupported temperature dependence is assumed.
+      - Supplying gas_temperature_K does not establish applicability until the source measurement temperature or range is verified.
 metadata:
   status: curated
   notes:
   - Gas-phase self-quenching closes one measured loss path; wall loss remains reactor-specific.
+  - The candidate equation is retained; the accessible primary abstract does not establish the full exact-state product channel.

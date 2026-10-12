@@ -32,10 +32,18 @@ def quality_fast() -> None:
 
 def quality_pr() -> None:
     quality_fast()
-    executable = Path(sys.executable).with_name(
-        "lint-imports.exe" if sys.platform == "win32" else "lint-imports"
+    # Invoke the package's console entry point with the active Python. This
+    # avoids depending on a generated launcher beside that interpreter.
+    _run(
+        [
+            sys.executable,
+            "-c",
+            "from importlinter.cli import lint_imports_command; lint_imports_command()",
+            "--config",
+            ".importlinter",
+            "--no-cache",
+        ]
     )
-    _run([str(executable), "--config", ".importlinter", "--no-cache"])
 
 
 def quality_nightly() -> None:
@@ -47,8 +55,11 @@ def quality_nightly() -> None:
                 sys.executable,
                 "-m",
                 "reactgen.cli",
-                "generate",
+                "analyze",
+                "--input",
                 str(case),
+                "--evidence",
+                str(ROOT / "registry"),
                 "--out",
                 str(out),
             ],

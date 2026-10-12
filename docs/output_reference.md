@@ -1,732 +1,140 @@
-# 出力形式仕様
+# 公開出力仕様：schema 5
 
-本書は、`rgen generate ... --csv`が出力する正規YAML、状態・反応CSV、判定CSV、集計CSVの正式仕様である。
-数値計算へ採用する前の確認、データ取得対象の整理、第三者への結果引き渡しに使用する。
+0.7.4の正規科学結果は `result.yaml` 一つです。schemaの実装元は[result.schema.yaml](../src/reactgen/result.schema.yaml)で、[schemas/bundle.schema.yaml](../schemas/bundle.schema.yaml)はそこを参照します。保存と読込みは同じ検査を使います。0.7以降の追加項目は任意項目で、0.6・0.7のschema 5結果も読み込めます。保存した旧IDや判定は読込みで再生成・再評価しません。0.5の3分割YAMLや選択policyを現行形式として読みません。
 
-仕様対象はファイル名、ディレクトリ、CSV列名と列順、YAML schema、IDによる集合関係である。
-`*.svg`、`*.png`、`network.html`は同じ正規データから作る補助表示であり、本書の互換仕様には含めない。
-補助表示の追加・レイアウト変更は、YAML・CSVの形式変更とは扱わない。
+## 正規結果
 
-| 対象 | 値 |
+| キー | 意味 |
 |---|---|
-| generator version | `0.5.0` |
-| bundle schema version | `4` |
-| 物理量の基本表記 | SI単位。状態・反応energyは主にeV |
+| input | 正規化したgases、表示name、物理conditions、surfaces、計算limits、明示したdata_selection |
+| metadata | schema/generator version、証拠のfingerprint、生成範囲、命題の意味 |
+| summary | 全候補の件数と判定・数値利用結果の集計。機構全体のready指標ではない |
+| states | 全状態候補、同定情報、正規化した証拠、3判定 |
+| reactions | 全反応候補、式・過程、正規化した証拠、5判定、熱化学値、data_use |
+| helper_views | states.csvとreactions.csvの期待SHA-256 |
 
-## 1. 最初に確認するファイル
+`metadata.generation` は `scope`、`limits`、`stop_reason`、`completion.mechanical`、`completion.attested` と両者の完了結果を持ちます。completeは全実在反応を網羅したことを表しません。入力・出典・乱数なしの同じ計算は同じ結果になります。
 
-| 確認したい内容 | ファイル | 位置付け |
-|---|---|---|
-| 状態候補の全体 | `states.csv` | 状態名、状態解像度、物性、判定の一覧 |
-| 反応候補の全体 | `reactions.csv` | 反応式、反応分類、5判定、数値利用可否の一覧 |
-| 電子衝突だけ | `reactions_electron.csv` | `family=electron`の抽出表 |
-| イオン衝突だけ | `reactions_ion.csv` | `family=ion`の抽出表 |
-| 中性気相反応だけ | `reactions_neutral.csv` | `family=neutral`の抽出表 |
-| 表面反応だけ | `reactions_surface.csv` | `family=surface`の抽出表 |
-| 判定理由 | `assessments/<判定名>/` | 判定ごとの状態表、反応表、件数集計 |
-| 段階的な絞り込み | `assessments/screening/` | 複数判定を順に通したpass-only view |
-| 全体集計 | `assessments/statistics.csv` | 判定別件数、累積残存数、候補構成 |
-| 再現・証拠の詳細 | `states.yaml`、`reactions.yaml` | 正規データ。CSVより情報量が多い |
-| 選択結果 | `selected.yaml` | policyによる採用ID、除外理由、readiness |
+状態は `id, composition, charge, state(kind/resolution/label), phase, structure` で対象を表し、`classes, origin, depth, introduced_by` は生成・表現の情報です。`state_axes` はそこから導いた表示軸です。反応は正の化学量論数を持つ `reactants/products`、`family/process`、`third_body/surface`、`stabilization`、生成情報を持ちます。IDは正規化したチャネルから計算し、式と参照先が一致することを検査します。
 
-`states.yaml`、`reactions.yaml`、`selected.yaml`が正規bundleである。CSVは同じ内容を確認しやすくした表形式viewであり、
-独立した候補集合ではない。CSVを出力しない通常実行ではYAML 3ファイルだけを出力する。
+通常のIDは `CF4@ground` や `Ar+@ground` です。多価は `Ar^2+@ground` と書き、`Ar2+@ground` と区別します。通常表現で区別できない相・構造・kind・resolutionには明示suffixを付けます。IDの内部構成を利用者が理解する必要はありませんが、API照合と図のseed/target指定には完全なIDを使います。
 
-## 2. 出力ディレクトリ
+## 判定と数値利用
 
-```text
-<case>/
-  states.yaml
-  reactions.yaml
-  selected.yaml
-  states.csv
-  reactions.csv
-  reactions_electron.csv
-  reactions_ion.csv
-  reactions_neutral.csv
-  reactions_surface.csv
-  assessments/
-    statistics.csv
-    consistency/
-    state/
-    thermochemistry/
-    reaction_evidence/
-    kinetics/
-    screening/
-      state_consistency/
-      state_consistency_thermochemistry/
-      state_consistency_thermochemistry_kinetics_or_reaction_evidence/
-```
+判定は `{verdict, basis, message, proposition, scope, requirements, dependencies}` です。新規結果は命題と個別の適用範囲を必ず持ちます。旧schema 5結果の追加項目は省略可能で、欠ける意味を再判定・補完しません。verdictは `pass / fail / unknown / not_applicable` の4値です。各命題の適用範囲は個別 `scope` と[現行責務](core_design.md)で定義します。metadataは判定区分全体の説明です。basisは重複しない出典・処理根拠、messageはその命題についての理由です。同一のpassを、別の命題へ流用しません。
 
-各個別判定ディレクトリには次の表形式ファイルがある。
+現行の状態 `thermochemistry` は競合していない審査された形成量または有効なNASA表現の有無、反応 `thermochemistry` は比較できるエネルギー関係を表します。状態側のpassは指定温度での利用可能性・利用者の採用要求・存在を保証しません。共通の表示名だけで同じ判定と解釈せず、`proposition` とmessageで確認対象を読み取ります。
 
-| ファイル | 内容 |
+| proposition | 確認対象 |
 |---|---|
-| `states.csv` | 状態へ適用するConsistency、State、Thermochemistryだけに出力 |
-| `reactions.csv` | その判定に対する全反応候補と判定理由 |
-| `reactions_electron.csv` | 電子衝突反応だけを抽出 |
-| `reactions_ion.csv` | イオン衝突反応だけを抽出 |
-| `reactions_neutral.csv` | 中性気相反応だけを抽出 |
-| `reactions_surface.csv` | 表面反応だけを抽出 |
-| `summary.csv` | 状態、反応、両者合計の4値判定件数 |
-| `family_summary.csv` | 反応family別の4値判定件数 |
+| state_representation_consistency | 候補の組成・整数電荷の表現整合 |
+| equation_consistency | 保存則と宣言過程の式patternの整合 |
+| participant_state_support | 参加状態の各命題の集約（存在保証とは異なる） |
+| channel_evidence_support | 当該対象・過程・scopeのチャネル主張への資料支持 |
+| rate_coefficient_availability | 保存DataUseによる指定条件での係数利用可否 |
+| state_existence_support | 当該状態の存在を支持する根拠 |
+| ground_anion_electron_binding | 対応する基底アニオンの電子束縛 |
+| thermochemical_representation_availability | 競合していない審査された熱化学表現の有無 |
+| elastic_internal_energy_identity | elasticの左右が同じ物理対象であることと内部エネルギー差ゼロ |
+| ionization_threshold_lower_bound | 対応するIEと宣言thresholdの下限関係 |
+| penning_energy_requirement | 対応する準位・生成物のPenningエネルギー条件 |
+| charge_transfer_energy_defect_consistency | 対応する親・生成物の電荷交換エネルギー欠損の整合 |
+| reaction_energy_relation | その他の反応の比較できるエネルギー関係 |
 
-family別CSVは`reactions.csv`の分割表である。4ファイルの反応IDを合わせると、元の`reactions.csv`の反応IDと一致する。
-該当反応がないfamilyも、列見出しだけのCSVとして出力される。
+`requirements`は`{responsibility, target, quantity, reason}`の配列です。必要な対象と量・条件、作業の区分と理由を保存します。`user_inputs`だけが実際に受理する条件名を指し、出典の定義・適用条件やモデル未対応を入力項目にしません。`dependencies`は`[state_id, assessment_key]`の配列で、参加状態の集約が参照する保存判定を指します。参照先が存在しない結果は拒否します。kineticsの要件は正規DataUseを参照し、同じ情報を二重管理しません。
 
-CSVの共通形式は次のとおりである。
+宣言値の整合、モデル内の判定、現象の成立は別です。不確かさ未宣言は測定誤差ゼロではありません。名目点を比較した場合はその範囲をscope/messageへ記録し、区間比較も宣言された範囲の関係として返します。信頼水準・相関・確率分布を推定しません。
 
-| 項目 | 仕様 |
+電子解離・非電子単分子解離・2粒子会合は、宣言familyに対応する式patternを確認します。対応外の誘起機構は`unknown`です。会合・解離の`consistency=pass`にも、安定化や励起起源を式から決められない旨をmessageへ残します。反応の発生や係数の利用可否は別の判定です。
+
+`data_use` は以下を保持します。
+
+- `status`: coefficient、needs_input、needs_transform、unavailable、conflict。
+- `dataset_id/kind`: 採用した表現。採用不可ならnull。
+- `value/unit`: 評価した値と単位。係数以外の確率値はstatusと併せて読む。
+- `required_inputs/required_transforms/reason`: 足りない具体情報と操作、結果の理由。
+- `estimated`: 推定によるデータかどうか。
+- `datasets`: valid、invalid、out_of_range、needs_input、reference_only、unreviewed、conflictと各datasetの理由。
+- `selection`: 入力の明示した量別採用要求。未指定なら空mapping。
+- `disagreements`: 他の適格な記録との数値不一致、または同一IDの内容競合があるdataset ID。採用ID自身は含めない。
+
+同じIDで異なる内容を見つけた場合も、元レコードはevidenceに保持します。単なる利用可否から状態・反応の実在や機構の予測可能性を結論しません。
+
+datasetの`invalid`には、数値形式の不正だけでなく、総過程データと特定生成物チャネルの不適合も含みます。原数値が誤りであることや現象の不存在を一律に意味しません。`reason`で対象と不適合の理由を確認し、元の測定値と条件はevidenceで読めます。
+
+読込み時はstatusと具体値・単位・選択dataset・不足の関係も検証します。`coefficient`は具体的な速度係数と採用datasetを必要とし、未解決の入力・変換を持ちません。選択した値とdataset評価の値・単位・不足が矛盾する結果を拒否します。ゼロ係数やゼロ確率は有効な数値で、nullと区別します。
+
+明示要求がある結果では、`selection` が正規入力と一致し、採用IDとkindがevidenceの記録を指し、`prefer`・`only`・固定recordの要求に従うことも検査します。不一致IDは保存されたdataset評価に存在する必要があります。選択情報の追加前のschema 5結果は、従来の必須項目で読めます。
+
+## 数値の採用要求
+
+`input.data_selection.quantities` の対象は `rate_coefficient`、`cross_section`、`sticking_coefficient` です。各対象は次の項目を持ちます。物性、NASAモデル、存在根拠の範囲指定は未対応で、入力境界で拒否します。
+
+| 項目 | 規則 |
 |---|---|
-| 文字コード | UTF-8、BOMなし |
-| 区切り | comma。値のquoteとescapeは標準CSV規則 |
-| 改行 | LF |
-| 先頭行 | 本書で定義する列名。列順も仕様に含む |
-| 空の値 | 空文字。未取得、非適用、競合は判定列・理由列と併読する |
-| boolean | `true`または`false` |
-| 行順 | depth、目視名、canonical IDによる決定的順序 |
-| 集合の参照キー | 状態・反応とも末尾の`id`列 |
+| mode | prefer（既定）またはonly |
+| methods | measured / evaluated / calculated / estimated / unknown のリスト |
+| providers | 記録のprovenance.provider識別子のリスト |
+| collections | 記録のprovenance.collection識別子のリスト |
+| record | 固定する数値dataset ID。異なる量やonly制限と矛盾するID指定はエラー |
 
-## 3. 共通の判定値
+`prefer` は、指定した軸をmethods→providers→collectionsの順で比較し、各リスト内の順を優先します。リスト外はその軸の共通の後順位です。`only` は指定したすべての軸を満たす記録に制限し、リスト順を順位として使いません。`only` には少なくとも一つの軸またはrecordが必要です。record指定は分析全体の量別要求として各反応へ適用され、指定IDを持たない反応の同量はunavailableになります。適格性検査は免除しません。識別子は明示値を使い、出典台帳への登録を要求しません。
 
-すべての判定は次の4値を使用する。
+全記録を評価してから要求を適用します。優先記録が不正・範囲外なら他の適格な記録へ進めます。優先記録の適用条件が不足している場合は、その不足を残します。同順位の記録の異なる値は `conflict` で、明示優先から一つを採用できた場合も `disagreements` を保持します。出典の優先は、数値資格、科学的な同定、適用条件とは別です。対応する量に要求がない場合だけ、旧dataset `preferred` の互換処理を使い、理由へ移行案内を記録します。0.8で撤去する予定です。
 
-| 値 | 意味 | 取り扱い |
-|---|---|---|
-| `pass` | 判定に必要な条件と証拠を満たす | その判定について利用可能 |
-| `fail` | 物理的不整合、明確な非実在、条件範囲外などを確認 | 原則として当該用途から除外 |
-| `unknown` | 証拠または数値が不足し、合否を決められない | 候補として保持し、追加調査対象とする |
-| `not_applicable` | その対象へ判定を適用しない | 合格・不合格のどちらにも数えない |
+異なる次数・物理量のデータは同じ数値でも同等としません。複数の速度則が適用できるときは採用根拠が必要です。`required_inputs` の `rate_law_selection` は出典・採用宣言の不足、`dataset_applicability_conditions` は出典の適用条件不足です。通常入力のキーではありません。非重複の適用域は競合とせず、条件入力による絞り込みを要求します。競合の場合も不足情報を保持します。
 
-`unknown`は`fail`ではない。Registryに記録がないことだけを理由に、生成候補を物理的に存在しないとは判断しない。
+## 熱化学値と出典
 
-## 4. 反応式の表記
+`thermochemistry` は取得できた計算値と、現行の資格規則で受理した宣言値を保持します。`delta_h_eV, delta_g_eV, threshold_eV` は一反応イベントあたりのeVです。数密度形の平衡定数は `equilibrium_constant_number_density`、その密度次数は `equilibrium_constant_density_power=Δν`、単位は `m^(-3Δν)` です。`standard_pressure_Pa` は使用したNASA標準状態です。物理的な比較が未確定でも、単に得られた値を隠しません。
 
-### 4.1 記号
+`delta_h_eV`は共通の明示参照条件での形成量の差です。`delta_h_reference_temperature_K`・`delta_h_standard_pressure_Pa`を併記します。参照不足・不一致ではΔHを返さず、判定messageに理由を残します。`temperature_K`はNASA由来の標準G/K計算に使った温度で、ΔH参照温度とは別です。`delta_g_eV`は標準状態モデルの量で、混合組成や非平衡の反応方向を返した値ではありません。
 
-| 表記 | 意味 | 例 |
-|---|---|---|
-| `e` | 自由電子 | `e + Ar -> Ar+ + 2 e` |
-| `+` | 同じ側にある反応参加粒子の区切り | `Ar+ + O2` |
-| `->` | 候補反応の向き | `O + O + M -> O2 + M` |
-| 数字 | 化学量論係数 | `2 O`、`2 e` |
-| 上付きでない`+`、`-` | 目視用の電荷 | `Ar+`、`O2-` |
-| `(v)` | 未分解の振動励起状態群 | `O2(v)` |
-| `*` | 準位未指定の電子励起状態群 | `CF4*` |
-| `(m)` | 未分解の準安定電子状態群 | `Ar(m)` |
-| `(r)` | 未分解の共鳴・放射性電子状態群 | `Ar(r)` |
-| 項記号 | 分解済みの分光状態 | `O(¹D₂)`、`O2(a¹Δg)` |
-| `M` | 反応前後で明示的に消費されない第三体 | `2 O + M -> O2 + M` |
-| `[material]` | 表面材料または表面reservoir | `... + [SiO2]` |
+`Property.formation_reference`は`temperature_K`（0以上）、`basis: standard_elements`、`standard_pressure_Pa`（正値）、任意の`electron_convention: ion|electron`、`electron_enthalpy_eV`（非負）を保持します。欠落欄は不明として保存できます。比較には参加種の温度・基準・圧の一致が必要で、有限温度のイオンの規約も一致する必要があります。0 Kでは両電子規約が一致します。有限温度のion規約で自由電子の化学量論が変わる場合は、電子形成量の明示も必要です。未知の規約・無言の温度補正・電子熱モデルで不足を埋めません。
 
-### 4.2 参加粒子の表示順
+evidenceには宣言値、tier、status、出典、存在根拠、membership、thermoの相・標準圧力、datasetの次数・単位・不確かさ・asset情報を残します。`provenance` は明示されたprovider、collection、release、record_id、citation、URL等です。`source_declaration` は原宣言、`method` は科学的方法、`review_scope` は宣言された審査範囲を保全します。provider名から方法や品質を推定しません。これらの保存だけで各宣言を承認しません。実測SHA-256と宣言SHA-256は別々に保存します。読込みで保持可能なdataset等の非有限宣言はevidence内で文字列として保持し、計算に採用した数値は有限値だけにします。
 
-表示順は読みやすさのための規則であり、化学量論、反応ID、証拠照合を変更しない。
+明示scopeは存在宣言の `state_existence`、個別Propertyの物性名、NASAの `thermochemical_model`、反応記録の `channel_assertion`、`threshold_eV`、`delta_e_eV` をそれぞれ制限します。scope外と `status: rejected/conflicting` の宣言は、資格あるtierでも計算に採用しません。Property・NASAのstatusもevidenceへ保存します。Propertyの `qualifier` は非束縛等の科学的内容として区別します。空または省略scopeの旧記録は各型の既存資格を維持し、数値snapshotでは対応する数値量へ限定します。scope省略だけで科学的な承認を与えません。
 
-| 側 | 表示順 |
-|---|---|
-| 反応物 | 電子 → 正イオン → 負イオン → 励起中性種 → 活性中性種・原子 → 安定中性種 → `M`・surface |
-| 生成物 | 正イオン → 負イオン → 励起中性種 → 活性中性種・原子 → 安定中性種 → 電子 → `M` |
+scopeは承認する命題、statusは科学宣言自体の受理・拒否状態です。親状態記録の拒否・競合はその宣言全体の利用停止で、個別Property・NASAの審査から復活させません。部分的に否定・未確定の存在主張と適格な物性を別資格で扱う場合は独立記録へ分けます。宣言の拒否を現象の不存在とは解釈しません。
 
-| 分類 | 表示例 |
-|---|---|
-| 電子励起 | `e + Ar -> Ar(4s) + e` |
-| 電子衝突電離 | `e + Ar -> Ar+ + 2 e` |
-| 電子脱離 | `e + Ar- -> Ar + 2 e` |
-| 電荷交換 | `Ar+ + O2 -> O2+ + Ar` |
-| Penning電離 | `Ar(m) + O2 -> O2+ + Ar + e` |
-| 三体会合 | `2 O + M -> O2 + M` |
+同じ反応IDに複数の科学記録を保持し、channelと各energy Propertyの資格・競合を主張ごとに評価します。競合・不正な量は除外し、当該量を使うエネルギー命題だけを未確定にします。別量だけの不一致をチャネル根拠や独立計算へ広げません。除外した量は判定messageへ残します。入力overlayの `reaction_records` とRegistry channelの `records` は、正規結果では共通の `reactions[].evidence.records` に保存します。純粋な主張のrecordは `datasets: []` で、数値を併記したsnapshotの数値は独立した数値保存経路からevidenceへ届きます。反応の量の定義・独立出典・不確かさは共通Propertyで保持します。新モデルの参照条件とProperty/NASAの利用者選択は用途に応じた拡張です。
 
-### 4.3 IDと表示名
+同一対象の存在根拠が相反した場合は、照合のexactを保ち、存在判定をunknownとして根拠の相反を示します。独立物性・NASAは自身の資格で評価します。assetの実測SHA-256は保存時の観測を保持し、再分析では実際に使うbytesを照合します。旧保存結果の読込みは再分析せず、保存された判定をそのまま扱います。
 
-| 種類 | 例 | 用途 |
-|---|---|---|
-| 表示名 | `Ar+`、`Ar(m)`、`O2(a¹Δg)` | CSVでの目視確認 |
-| canonical state ID | `Ar+@ground`、`Ar@metastable`、`O2@a1dg` | 照合、参照、一意性確保 |
-| reaction ID | `rxn_683f67de893f` | 反応channelの一意な参照 |
+励起値の数値資格はevidence内の `properties.excitation_energy_eV` の値・単位・tier・sourceで表します。`energy_eV` が存在する同一レコード内で、換算後のProperty値と矛盾する二重宣言は拒否します。別レコード間の値の競合は保持して評価します。存在のstatus更新でこのPropertyを昇格させません。正規化された絶対不確かさは親の値と同じ単位で表します。
 
-reaction IDはfamily、process、第三体、surface、両辺の集約済み化学量論から決定される。
-CSV上の表示順を変更してもreaction IDは変わらない。
+科学記録の正規IDと出典の原 `record_id` は別です。新しい状態snapshotの原IDはprovider・collection・release・source_idの名前空間から `source-state`、原IDがない宣言は `local-state` IDにします。正規状態記録の `id` は対象、`record_id` は科学宣言を識別します。保存済みoverlay・Registry・旧schema 5結果のIDは再生成しません。
 
-## 5. 状態記号と状態軸
+反応の科学記録は原IDから `source-reaction`、原IDなしで `local-reaction`、明示snapshot `id` から `reaction-record` IDを作り、正規結果の候補反応IDと区別します。数値記録は明示した正規 `id` を保持し、省略時は同じ原ID名前空間と科学内容に基づくIDを生成します。明示scopeの数値資格はその `kind` に限り、他の主張の審査を数値承認へ流用しません。
 
-### 5.1 代表的な表示
+標準acquisitionの日時・原本保存先、同じ検証済みasset bytesの保存場所だけが異なる再取得は科学的競合とせず、各原宣言を残します。検証できないbytesは同一と推測せず、未知の物理条件・注記、値、方法、資格の差は比較へ残します。evidenceの科学IDは、この併記や競合保存によって複数回現れる場合があります。候補状態・反応のID重複とは区別します。
 
-| 表示 | 状態の意味 | 解像度 |
-|---|---|---|
-| `Ar`、`O2` | 電子基底状態 | `resolved` |
-| `Ar+`、`O2-` | 基底状態として扱う正・負イオン | `resolved` |
-| `e` | 自由電子 | `resolved` |
-| `O2(v)`、`CF4(v)` | 振動励起状態をまとめたmanifold | `lumped` |
-| `CF4*`、`SF6*` | 準位と寿命を特定しない電子励起manifold | `lumped` |
-| `Ar(m)` | 準安定電子状態をまとめたmanifold | `lumped` |
-| `Ar(r)` | 共鳴・放射性電子状態をまとめたmanifold | `lumped` |
-| `Ar(4s)` | 4s配置の混合manifold。準安定2準位と共鳴2準位を含む | `lumped` |
-| `O(¹D₂)` | 分光学的に特定した原子状態 | `resolved` |
-| `O2(a¹Δg)` | 分光学的に特定した分子状態 | `resolved` |
+### 量の定義と独立した反応エネルギー
 
-`Ar(4s)`は`Ar(m)`または`Ar(r)`と同一ではない。`Ar(4s)`の証拠は両者に関連するが、
-完全一致しない状態の固有物性値としては転記されない。
+`Property.definition`は明示された量の定義です。IE/EAは`atomic`、`adiabatic`、`vertical`を区別し、groundのエネルギー評価は適合する定義と物理対象だけを使います。定義不明の分子値、垂直値、未対応の相・対象はその比較へ適用しません。単位がeVでも別測定量を同一視しません。
 
-### 5.2 `excitation`
+反応科学記録およびRegistry channelの`energy_properties`は`threshold_eV`と`delta_e_eV`をキーにしたProperty mappingです。Propertyは`value/unit`、`definition`、独立の`tier/status/review_scope`、`method/provenance/source_declaration`、任意の`uncertainty`を持ちます。閾値の定義は`channel_threshold`と`appearance_energy`、差は`products_minus_reactants`を区別します。appearance energyを衝突閾値へ流用せず、未対応qualifierから数値限界を推測しません。これらの定義だけでは測定の時間窓・エネルギーframe等を保証しません。
 
-| 値 | 意味 |
-|---|---|
-| `ground` | 電子基底状態として扱う |
-| `electronic` | 電子励起状態 |
-| `vibrational` | 振動励起状態 |
-| `electron` | 自由電子。重粒子の内部状態ではない |
+旧外部`threshold_eV`と`deltaE_products_minus_reactants_eV`は入口adapterで一度だけPropertyへ変換し、元の値・資格・宣言を保存します。定義や測定誤差は補いません。新Propertyと旧scalarの重複は換算値の一致が必要です。明示したPropertyは親channelのtierで承認しません。内部の`ReactionRecord`/`RegistryReaction`のconstructorと`dataclasses.replace`では`energy_properties`を使い、旧scalar keywordを残す内部互換経路はありません。scalarの読取getterは同じPropertyから導きます。
 
-### 5.3 `resolution`
+## 補助表・図
 
-| 値 | 意味 | 注意点 |
-|---|---|---|
-| `resolved` | 項記号、準位名、または基底状態として個別に表現 | 状態固有の数値が必要 |
-| `lumped` | 複数準位または未分解状態群を一つにまとめた表現 | 対応するresolved状態と同時計上しない |
 
-### 5.4 `lifetime_class`
+CSVは同じresultから作る補助表示です。状態表は可読名の `state`、相・構造、判定、理由、末尾 `id`。反応表は可読反応式、過程、5判定、エネルギー、数値利用結果、必要入力・変換、理由、末尾IDです。各判定は`*_verdict`、`*_proposition`、`*_scope`、`*_reason`で保存済み結論・命題・個別の適用範囲・理由を表示します。未宣言のpropositionを表示のために創作しません。数値の不足は`user_inputs`、`source_information`、`source_selection`、`external_models`、`transforms`、`unsupported_inputs`へ分け、入力可能な条件は実際の条件キーで表示します。詳細な出典や内部生成情報はYAMLで確認できます。空の一覧も同じCSVヘッダーを持ちます。
 
-| 値 | 意味 |
-|---|---|
-| `not_applicable` | 基底状態、振動状態、電子など、当該分類を使用しない |
-| `metastable` | 放射遷移が抑制された比較的長寿命の状態またはmanifold |
-| `resonant_radiative` | 許容放射遷移を持つ共鳴状態またはmanifold |
-| `mixed_metastable_resonant` | 準安定状態と共鳴状態を両方含むumbrella manifold |
-| `unspecified` | 電子励起は表すが、寿命・放射特性を特定していない |
+新規保存は`metadata.helper_view_format: 3`を持ちます。CSVは各判定の`*_requirements`、`*_dependencies`（JSONセル）、採用`dataset_id/quantity`、`conditions/data_selection/disagreements`、全`thermochemical_values`を追加します。個別scopeと既存値を含め、その表示内容はhashの対象です。形式2は当時のmetadata scopeと列、形式省略の旧結果は形式1の列・hashをそのまま再現します。旧判定を再計算せず、未記録項目を創作しません。新情報が必要なら原入力と証拠から明示的に再分析します。
 
-### 5.5 `structure_scope`
+`rgen needs RESULT`は概要、対象・量・責務による既知の必要情報`work`、保存判定・データ除外の指摘群`needs`を返します。`summary.known_prerequisites`は異なる対象・量・作業の組合せ数、`derived_findings`は既存結果から派生した指摘数、`findings_without_prerequisites`は具体的要件を記録していない指摘数です。`work.target_tasks`は各分類内の対象別必要情報数で、同じ原因・一括解消を保証しません。`--detail`の`details`は全対象・理由、`work_details`は必要情報ごとの理由・影響判定を持ちます。状態参照やDataUseの同じ不足を作業として重複計数しません。失敗した命題、範囲外データ、資料不足、同定、未対応モデルを区別し、`fail`を無条件の修復・削除要求にしません。
 
-| 値 | 意味 |
-|---|---|
-| `not_applicable` | 電子または単原子種。構造異性体の区別を必要としない |
-| `formula_determined` | 二原子分子など、化学式だけで結合骨格の曖昧性が小さい |
-| `formula_only` | 組成だけを表し、構造異性体、結合配置、配座を同定していない |
+`rgen view`はCSV、offline HTML、matrix PNG、pathway PNGを保存結果から生成します。ネットワークの判定未選択表示は `unknown` と区別し、verdictフィルターを無効にします。行列は8000列以下で `matrix.png`、超過時は `matrix.html` と範囲ごとの `matrix-NNN-内容hash.png` を生成します。反応列を間引かず、全ページの範囲・総数を索引に示します。索引は全画像の保存後に公開し、失敗時は旧索引の参照を保持します。判定の累積gateや機構ready判定は追加しません。経路の電子seed、第三体・表面の前提、図から言えないことはREADMEで説明します。
 
-`formula_only`は「構造が存在しない」という意味ではない。化学式から一意な構造を断定していないことを示す。
+## 保存の整合と移行
 
-### 5.6 `alternative_resolution_states`
+正規YAMLの公開は単一replaceです。複数のCSVを同時にatomic公開する保証はありません。CSV失敗時は `PartialOutputError` とCLI終了コード1で「正規結果は保存済み、CSV未完了」を示します。正規結果単独の読込みは可能です。API `export.read(..., verify_views=True)` はCSVの欠損・hash不一致を検出し、`rgen view RESULT --kind csv --out DIR` で再生成できます。
 
-| 表示例 | 意味 |
-|---|---|
-| `O2(a¹Δg); O2(b¹Σg+)` | 現在行のlumped状態と同じ励起種別を、resolved状態で表した候補 |
-| `O2*` | 現在行のresolved状態に対応するlumped候補 |
-| 空欄 | 出力集合内に反対解像度の候補がない |
+`helper_views`の宣言hash自体も、保存形式に従って正規内容から導いたCSVと一致する必要があります。CSVへ表示される判定・値・理由等を手編集して古いhashを残した結果は、CSV確認を省略した読込みでも拒否します。旧形式1に含まれなかった反応判定のmessage等はこのCSV hash検査の対象外で、YAML全体の署名ではありません。正規結果の変更は再分析で行い、補助CSVだけが古い場合に再生成します。全YAML入口は同一mapping内の明示した重複キーを拒否します。
 
-この列は同一状態を断定するものではなく、計算モデルで重複採用を避けるための関係表示である。
+schemaは型・必要フィールド・語彙を確認し、共通validatorは有限値、重複ID、IDと物理同定、反応の参照、入力と生成供給状態、集計・完了の矛盾も拒否します。形式受理は科学的承認ではありません。
 
-## 6. `states.csv`の列
-
-| 列 | 内容 | 空欄の意味 |
-|---|---|---|
-| `species` | 目視用の状態名 | 通常は空欄にならない |
-| `formula` | 元素組成から組み立てた化学式 | 電子では空欄になり得る |
-| `charge` | 素電荷単位の整数電荷 | `0`は中性 |
-| `excitation` | 基底、電子励起、振動励起、電子の区分 | 通常は空欄にならない |
-| `resolution` | `resolved`または`lumped` | 通常は空欄にならない |
-| `lifetime_class` | 寿命・放射特性の分類 | 非適用は`not_applicable` |
-| `state_label` | canonicalな機械用状態ラベル | 表示記号とは異なる |
-| `state_symbol` | `m`、`r`、`v`、`*`、項記号など | 基底状態では空欄 |
-| `state_meaning` | 状態表現の説明 | 通常は空欄にならない |
-| `alternative_resolution_states` | 反対解像度の関連候補 | 該当候補がなければ空欄 |
-| `structure_scope` | 化学式から構造を確定できる範囲 | 通常は空欄にならない |
-| `origin` | 候補が機械生成か証拠由来か | 通常は空欄にならない |
-| `depth` | frontier生成深さ | `0`は入力または証拠から直接導入 |
-| `state_verdict` | State判定 | 実在性、bound性、状態証拠を確認 |
-| `thermochemistry_verdict` | 状態の熱化学表現に対する判定 | 数値不足は`unknown` |
-| `selected` | 現在のpolicyで選択されたか | `true`または`false` |
-| `state_energy_eV` | 参照基準からの状態エネルギー | exact証拠がなければ空欄 |
-| `lifetime_s` | 状態寿命 | 未取得または非適用なら空欄 |
-| `mass_amu` | 原子質量単位での質量 | 未取得なら空欄 |
-| `enthalpy_formation_eV` | 生成エンタルピー | 未取得なら空欄 |
-| `ionization_energy_eV` | 当該状態からの電離エネルギー | 未取得なら空欄 |
-| `electron_affinity_eV` | 電子親和力 | 未取得または非束縛なら値・qualifierをYAMLで確認 |
-| `id` | canonical state ID | 一意参照用 |
-
-数値の`0`と空欄は異なる。`0`は既知のゼロ、空欄は未取得、非適用、または複数証拠が一致しない場合を表す。
-
-## 7. 状態証拠の照合区分
-
-State判定ディレクトリの`states.csv`では、`evidence`列に照合結果と証拠IDを表示する。
-
-| 区分 | 意味 | 例 |
-|---|---|---|
-| `exact` | 組成、電荷、状態表現が候補と一致 | `exact: Ar_4s` |
-| `compatible` | 関連状態だが、候補と同一の状態表現ではない | `compatible: Ar_4s` for `Ar(m)` |
-| `ambiguous` | 複数候補または競合があり一意に決められない | 自動採用しない |
-| `none` | 照合できる状態証拠がない | State判定は通常`unknown` |
-
-compatible証拠の数値は、候補固有の`state_energy_eV`や`lifetime_s`へ転記されない。
-
-## 8. 状態判定ディレクトリの列
-
-### 8.1 状態に適用する判定
-
-| ディレクトリ | 主な列 | 判定内容 |
-|---|---|---|
-| `consistency/` | `candidate`、状態軸、`verdict`、`reason` | 化学式、組成、電荷、表現形式 |
-| `state/` | 上記 + `evidence` | 状態の実在証拠、bound性、寿命、解像度 |
-| `thermochemistry/` | 状態軸、`verdict`、`reason` | 生成熱またはNASA表現の有無と品質 |
-
-共通列は次のとおりである。
-
-| 列 | 内容 |
-|---|---|
-| `candidate` | 目視用状態名 |
-| `excitation` | 励起種別 |
-| `resolution` | 状態解像度 |
-| `lifetime_class` | 寿命・放射特性 |
-| `state_meaning` | 状態表現の説明 |
-| `alternative_resolution_states` | 代替解像度候補 |
-| `verdict` | 4値判定 |
-| `reason` | 判定理由 |
-| `id` | canonical state ID |
-
-### 8.2 状態に適用しない判定
-
-| ディレクトリ | `states.csv`の扱い |
-|---|---|
-| `reaction_evidence/` | 反応式に対する判定のため、状態行は出力しない |
-| `kinetics/` | 反応datasetに対する判定のため、状態行は出力しない |
-
-両ディレクトリには`states.csv`を作らない。状態へ適用しない判定の空表を正式出力に含めないためである。
-
-## 9. `reactions.csv`の列
-
-| 列 | 内容 | 読み方 |
-|---|---|---|
-| `equation` | 目視用反応式 | 状態記号と化学量論係数を含む |
-| `reaction_type` | 人が読みやすい英語の反応名 | 表示用。詳細分類は`process` |
-| `family` | 電子、イオン、中性、surfaceの大分類 | family別CSVの分割基準 |
-| `process` | 安定した機械用process名 | 証拠照合とreaction IDに使用 |
-| `origin` | `mechanical`または`attested_only` | 候補の導入経路 |
-| `depth` | 候補生成frontierの深さ | 時間順序や重要度ではない |
-| `consistency_verdict` | 保存則・表現整合性 | 元素、電荷、係数など |
-| `state_verdict` | 参加する非電子状態のState判定を集約 | 反応速度や既知反応性は表さない |
-| `thermochemistry_verdict` | 反応エネルギー・thresholdの判定 | 発熱反応だけをpassにする判定ではない |
-| `reaction_evidence_verdict` | 同一channelの既知記録 | 速度係数の利用可否とは別 |
-| `kinetics_verdict` | 断面積・速度係数datasetの利用可否 | 単位、範囲、channel対応を含む |
-| `delta_h_eV` | 反応エンタルピー | 正は吸熱、負は発熱 |
-| `delta_g_eV` | 指定温度でのGibbs energy差 | 条件とNASA等がそろう場合だけ出力 |
-| `threshold_eV` | channel threshold | 速度係数そのものではない |
-| `kinetic_data` | 利用可能な数値形式の要約 | `cross_section`、`rate_coefficient`、`estimated`等 |
-| `selected` | policyで選択されたか | `review`では原則すべて`true` |
-| `exclusion_reason` | 非選択の最初の理由 | 選択済みなら空欄 |
-| `id` | deterministic reaction ID | 全出力を横断する参照キー |
-
-### 9.1 `origin`
-
-| 値 | 意味 |
-|---|---|
-| `mechanical` | 入力ガスと有限生成文法から生成した候補 |
-| `attested_only` | 機械生成集合にはなかったが、Registryまたはsnapshotの既知記録から和集合した候補 |
-
-`attested_only`は自動的に数値計算可能という意味ではない。State、Reaction evidence、Kineticsの各判定を確認する。
-
-### 9.2 `depth`
-
-| 値 | 意味 |
-|---|---|
-| `0` | 入力状態、電子、または証拠から直接導入した候補 |
-| `1`以上 | 生成frontierで新しい状態・反応を導入した深さ |
-
-depthは反応時間、反応回数、支配経路、反応速度、重要度を表さない。
-
-## 10. 反応family
-
-| family | 対象 | 反応物側の代表形 | family別CSV |
-|---|---|---|---|
-| `electron` | 電子衝突、電子–イオン反応 | `e + A`、`e + A+` | `reactions_electron.csv` |
-| `ion` | イオン–中性、イオン–イオン衝突 | `A+ + B`、`A+ + B-` | `reactions_ion.csv` |
-| `neutral` | 中性粒子間の気相反応 | `A* + B`、`R + AB` | `reactions_neutral.csv` |
-| `surface` | 材料表面を必要とする反応 | `A + [material]` | `reactions_surface.csv` |
-
-surface反応は中性気相反応へ含めない。材料、活性site、被覆率、ion assistanceなどが別途必要になるためである。
-
-## 11. 電子衝突process
-
-| `process` | `reaction_type` | 意味 |
-|---|---|---|
-| `elastic` | Electron elastic scattering | 内部状態と化学種を変えない弾性散乱 |
-| `excitation` | Electron-impact excitation | 電子衝突による振動・電子励起 |
-| `deexcitation` | Electron-impact deexcitation (superelastic) | 励起状態から低い状態への超弾性衝突 |
-| `ionization` | Electron-impact ionization | 電子衝突による電離 |
-| `attachment` | Electron attachment | 親分子・原子への電子付着 |
-| `dissociation` | Electron-impact dissociation | 電荷を変えない電子衝突解離 |
-| `dissociative_ionization` | Dissociative ionization | 解離と電離が同時に起こるchannel |
-| `dissociative_attachment` | Dissociative electron attachment | 電子付着に伴い解離するchannel |
-| `detachment` | Electron-impact detachment | 負イオンから電子を脱離するchannel |
-| `dissociative_detachment` | Dissociative electron detachment | 解離を伴う電子脱離channel |
-| `recombination` | Electron-ion recombination | 電子と正イオンの非解離再結合 |
-| `dissociative_recombination` | Dissociative recombination | 電子–分子イオン再結合後に解離するchannel |
-
-電子衝突断面積`σ(ε)`は速度係数ではない。速度係数にはEEDFとの積分が必要になる。
-
-```text
-k = integral sigma(epsilon) v(epsilon) f(epsilon) d epsilon
-```
-
-## 12. イオン衝突process
-
-| `process` | `reaction_type` | 意味 |
-|---|---|---|
-| `elastic` | Ion-neutral elastic scattering | イオン–中性粒子の弾性・運動量移行channel |
-| `charge_exchange` | Charge exchange | 非共鳴を含む電荷交換 |
-| `resonant_charge_exchange` | Resonant charge exchange | 同一組成など、エネルギー差が小さい共鳴電荷交換 |
-| `dissociative_charge_transfer` | Dissociative charge transfer | 電荷移行と標的または生成物の解離 |
-| `collision_induced_dissociation` | Collision-induced target dissociation | 衝突による標的中性種の解離 |
-| `projectile_dissociation` | Projectile-ion dissociation | projectile ion側の解離 |
-| `ligand_transfer` | Ligand transfer | 原子またはligandの移行 |
-| `reactive_scattering` | Ion-neutral reactive scattering | 組成交換を伴うbounded reactive channel |
-| `ion_induced_excitation` | Ion-induced excitation | イオン衝突による状態励起 |
-| `ion_induced_deexcitation` | Ion-induced deexcitation | イオン衝突による状態緩和 |
-| `collisional_detachment` | Collisional electron detachment | 負イオンからの衝突電子脱離 |
-| `mutual_neutralization` | Ion-ion mutual neutralization | 正負イオンの相互中和 |
-
-イオン衝突候補が存在することは、DNT+等の断面積モデルを実装したことを意味しない。
-本出力は反応種と反応channelの候補を表し、数値利用可否はKinetics判定で別に示す。
-
-## 13. 中性気相process
-
-| `process` | `reaction_type` | 意味 |
-|---|---|---|
-| `association` | Bimolecular association | 二体会合候補。既定生成では制限される |
-| `three_body_association` | Three-body association | 第三体`M`が余剰エネルギーを受け取る会合 |
-| `associative_ionization` | Associative ionization | 励起種などの会合に伴う電離 |
-| `dissociation` | Neutral-impact dissociation | 中性衝突による解離 |
-| `penning_ionization` | Penning ionization | 励起種の内部エネルギーによる相手中性種の電離 |
-| `quenching` | Excited-state quenching | 励起状態の衝突失活 |
-| `v_t_relaxation` | Vibrational-translational (V-T) relaxation | 振動エネルギーから並進エネルギーへの緩和 |
-| `radical_abstraction` | Radical abstraction | radicalによる原子・ligand引き抜き |
-| `reactive_scattering` | Neutral reactive scattering | 中性粒子間の組成交換・反応散乱 |
-
-候補生成では、radical、励起種、振動励起種、入力ground speciesなどを含む有限pairだけを評価する。
-全中性種の無制限な直積ではない。
-
-## 14. surface process
-
-| `process` | `reaction_type` | 意味 |
-|---|---|---|
-| `surface_recombination` | Surface recombination | 表面を介した再結合またはgas-phase speciesの表面消費 |
-
-surface反応の元素収支は、gas phaseだけでは閉じない場合がある。surface reservoir、材料、site種を含む証拠を確認する。
-
-## 15. 5つの判定レイヤー
-
-判定は表示上の順序を持つが、個別判定は独立に実行される。前段が`unknown`でも後段判定を省略しない。
-
-| 判定 | 主な確認事項 | `pass`が意味する範囲 |
-|---|---|---|
-| `consistency` | 化学量論係数、状態参照、元素保存、電荷保存、第三体、surface | 表現と保存則が整合する |
-| `state` | 状態実在性、bound性、寿命、状態energy、lumped/resolved | 参加状態がState判定を通る |
-| `thermochemistry` | 生成熱、NASA、IE、EA、threshold、反応energy | 利用可能なenergy情報がある、またはhard feasibilityを判断できる |
-| `reaction_evidence` | 同一式、状態、family、process、第三体、surface、channel scope | 同一channelの既知記録がある |
-| `kinetics` | 断面積・速度係数、単位、独立変数、範囲、channel、不確かさ | 条件に適用可能な数値datasetがある |
-
-反応の`state_verdict`は、反応物と生成物に現れる非電子状態のState判定を集約した値である。
-
-| 参加状態の内訳 | 反応の`state_verdict` |
-|---|---|
-| 全状態が`pass` | `pass` |
-| 一つ以上が`fail` | `fail` |
-| `fail`はないが一つ以上が`unknown` | `unknown` |
-
-反応のState判定は、反応自体が既知か、速いか、重要かを表さない。
-
-## 16. 判定別反応CSVの列
-
-### 16.1 Consistency
-
-| 列 | 内容 |
-|---|---|
-| `candidate` | 反応式 |
-| `reaction_type` | 表示用反応名 |
-| `verdict` | 保存則・構造整合の4値判定 |
-| `reason` | 判定理由 |
-| `id` | reaction ID |
-
-### 16.2 State
-
-列構成はConsistency反応表と同じである。`reason`には参加状態のうち、failまたはunknownとなった状態判定の集約理由が入る。
-
-### 16.3 Thermochemistry
-
-| 列 | 内容 |
-|---|---|
-| `candidate` | 反応式 |
-| `reaction_type` | 表示用反応名 |
-| `delta_h_eV` | 反応エンタルピー |
-| `delta_g_eV` | 指定条件でのGibbs energy差 |
-| `threshold_eV` | 反応threshold |
-| `verdict` | 熱化学判定 |
-| `reason` | 利用したenergy情報または不足理由 |
-| `id` | reaction ID |
-
-反応熱は次の符号規約を用いる。
-
-```text
-Delta H = sum(nu Hf(products)) - sum(nu Hf(reactants))
-```
-
-| `delta_h_eV` | 意味 |
-|---|---|
-| 負 | 発熱側 |
-| 正 | 吸熱側 |
-| 空欄 | 必要な状態熱化学が不足 |
-
-### 16.4 Reaction evidence
-
-| 列 | 内容 |
-|---|---|
-| `candidate` | 反応式 |
-| `reaction_type` | 表示用反応名 |
-| `matched_source` | 照合したRegistry、snapshot等のsource ID |
-| `channel_scope` | total processかproduct-resolved channelか |
-| `verdict` | 既知反応照合の4値判定 |
-| `reason` | exact、related、競合、未照合などの理由 |
-| `id` | reaction ID |
-
-| `channel_scope` | 意味 |
-|---|---|
-| `product_resolved` | 生成物channelまで指定したdatasetまたは反応記録 |
-| `total` | 複数生成物channelを合計したtotal process |
-| 空欄 | channel scopeを持つ証拠がない |
-
-total processのdatasetを、根拠なく一つのproduct-resolved channelへ割り当てない。
-
-### 16.5 Kinetics
-
-| 列 | 内容 |
-|---|---|
-| `candidate` | 反応式 |
-| `reaction_type` | 表示用反応名 |
-| `data_kind` | datasetの数値形式 |
-| `unit` | dataset値の単位 |
-| `applicable_range` | 温度、collision energy等の適用範囲 |
-| `dataset_id` | 数値datasetのID |
-| `verdict` | 数値利用可否の4値判定 |
-| `reason` | 欠損、競合、範囲外、利用可能などの理由 |
-| `id` | reaction ID |
-
-| `data_kind` | 意味 |
-|---|---|
-| `cross_section` | collision energy等に対する断面積table |
-| `rate_coefficient` | 直接利用できる速度係数またはその式 |
-| `sticking_coefficient` | surfaceへの付着・反応確率 |
-| 複数値 | 複数種類のdataset候補がある |
-| 空欄 | 照合した数値datasetがない |
-
-Kinetics判定では、単位、独立変数、適用範囲、channel対応、tableの単調性・非負性なども確認する。
-
-## 17. 累積スクリーニング
-
-screeningはCandidateSetを削除する処理ではない。個別判定から作るpass-onlyの派生viewである。
-
-| ディレクトリ | 反応に要求する条件 |
-|---|---|
-| `state_consistency/` | State pass AND Consistency pass |
-| `state_consistency_thermochemistry/` | 上記 AND Thermochemistry pass |
-| `state_consistency_thermochemistry_kinetics_or_reaction_evidence/` | 上記 AND (Kinetics pass OR Reaction evidence pass) |
-
-最後の段階はKineticsとReaction evidenceのANDではない。少なくとも一方がpassなら保持する。
-
-### 17.1 screening `states.csv`
-
-| 列 | 内容 |
-|---|---|
-| `species` | 状態表示名 |
-| `formula` | 化学式 |
-| `charge` | 電荷 |
-| `excitation` | 励起種別 |
-| `resolution` | 状態解像度 |
-| `lifetime_class` | 寿命・放射特性 |
-| `state_meaning` | 状態の説明 |
-| `alternative_resolution_states` | 代替解像度候補 |
-| `origin` | 候補由来 |
-| `depth` | 生成深さ |
-| `id` | state ID |
-
-KineticsとReaction evidenceは状態へ適用しないため、最終二判定を加えても状態数を直接減らさない。
-
-### 17.2 screening `reactions.csv`
-
-| 列 | 内容 |
-|---|---|
-| `equation` | 反応式 |
-| `reaction_type` | 表示用反応名 |
-| `family` | 反応大分類 |
-| `process` | 機械用process名 |
-| `origin` | 候補由来 |
-| `depth` | 生成深さ |
-| `state_verdict` | 参加状態の集約判定 |
-| `consistency_verdict` | 保存則・表現整合判定 |
-| `thermochemistry_verdict` | 熱化学判定 |
-| `kinetics_verdict` | 数値dataset判定 |
-| `reaction_evidence_verdict` | 既知反応照合判定 |
-| `kinetics_or_reaction_evidence_verdict` | KineticsとReaction evidenceのOR結果 |
-| `accepted_by` | 最後のOR条件を通した判定名 |
-| `id` | reaction ID |
-
-`accepted_by`は`kinetics`、`reaction_evidence`、または両方をセミコロン区切りで表示する。
-
-## 18. 集計CSV
-
-### 18.1 `summary.csv`
-
-| 列 | 内容 |
-|---|---|
-| `entity` | `state`、`reaction`、`all` |
-| `pass` | pass件数 |
-| `fail` | fail件数 |
-| `unknown` | unknown件数 |
-| `not_applicable` | 非適用件数 |
-| `total` | 対象総数 |
-
-### 18.2 `family_summary.csv`
-
-| 列 | 内容 |
-|---|---|
-| `family` | `electron`、`ion`、`neutral`、`surface` |
-| `pass` | family内のpass件数 |
-| `fail` | family内のfail件数 |
-| `unknown` | family内のunknown件数 |
-| `not_applicable` | family内の非適用件数 |
-| `total` | family内の総反応数 |
-
-### 18.3 screening `summary.csv`
-
-| 列 | 内容 |
-|---|---|
-| `entity` | `state`または`reaction` |
-| `step` | `all`または、この行までに追加した判定gate名 |
-| `applicability` | 状態・反応への適用方法。通常は`required`、非適用なら`not_applicable` |
-| `input` | このstepへ入った候補数 |
-| `retained` | このstepを通過した候補数 |
-| `rejected_at_step` | このstepで除外された候補数 |
-| `total` | screening前の候補総数 |
-| `retained_percent` | `100 × retained / total`。小数点以下3桁へ丸める |
-
-### 18.4 `assessments/statistics.csv`
-
-| 列 | 内容 |
-|---|---|
-| `metric` | 集計指標名 |
-| `layer` | 判定名、`cumulative`、または`all` |
-| `entity` | `state`または`reaction` |
-| `category` | verdict、family、電荷、励起種別など |
-| `count` | category件数 |
-| `total` | 分母 |
-
-| `metric` | 集計内容 |
-|---|---|
-| `assessment_verdict` | 個別判定の4値件数 |
-| `reaction_readiness` | 判定を順にpassした累積反応数 |
-| `state_charge` | 状態の電荷構成 |
-| `state_excitation` | 状態の励起種別構成 |
-| `state_resolution` | lumped/resolved構成 |
-| `state_lifetime_class` | 寿命・放射特性構成 |
-| `reaction_family` | 反応family構成 |
-| `reaction_depth` | 反応生成depth構成 |
-
-## 19. YAMLで確認できる追加情報
-
-### 19.1 `states.yaml`
-
-| 項目 | 内容 |
-|---|---|
-| `composition` | 元素と原子数 |
-| `state` | 内部state kind、resolution、label |
-| `state_axes` | excitation、lifetime class、canonical label、structure scope |
-| `classes` | ion、fragment、feed、mixed lifetime等の生成・分類タグ |
-| `chemical_character.formula_scope` | `particle`、`atom`、`diatomic`、`central_ligand`、`formula_only` |
-| `chemical_character.electronic` | `open_shell`、`closed_shell`、`unknown` |
-| `introduced_by` | 状態を導入した生成rule |
-| `evidence.records` | 証拠record、source、tier、状態energy、寿命、物性 |
-| `assessments` | 各判定のverdict、basis、message |
-
-### 19.2 `reactions.yaml`
-
-| 項目 | 内容 |
-|---|---|
-| `reactants`、`products` | canonical state IDと係数 |
-| `family`、`process` | 反応channel分類 |
-| `generation_rule` | 候補を生成または導入したrule |
-| `third_body`、`surface` | 第三体・表面条件 |
-| `kinetic_effects` | `fast_product`等の運動論的注記 |
-| `thermochemistry` | 利用可能なenergy値 |
-| `numerical_capabilities.thermochemistry` | threshold、反応熱、平衡、逆速度への利用能力 |
-| `numerical_capabilities.kinetics` | 断面積、直接rate、必要変換、利用dataset ID |
-| `evidence` | exact channel、related total process、dataset参照 |
-| `assessments` | 5判定のverdict、basis、message |
-
-### 19.3 metadata
-
-| 項目 | 内容 |
-|---|---|
-| `schema_version` | bundle schema version |
-| `generator_version` | 生成器version |
-| `case_digest` | case入力内容のdigest |
-| `evidence_snapshot_hash` | 読み込んだ証拠内容のhash |
-| `complete` | 設定した生成文法がclosureまで到達したか |
-| `stop_reason` | closureまたは上限打切り理由 |
-| `limits` | depth、状態数、反応数、電荷、fragment上限 |
-| `counts` | 全候補数とmechanical候補数 |
-
-`complete: true`は、設定した有限生成文法がclosureした意味である。自然界の全反応を網羅した意味ではない。
-
-## 20. 選択結果とreadiness
-
-### 20.1 主なpolicy
-
-| policy | 選択条件の要点 |
-|---|---|
-| `review` | 全候補を表示・選択 |
-| `chemistry_candidate` | Consistency pass |
-| `acquisition` | hard failがなく、必要判定にunknownがある |
-| `exploratory_simulation` | Consistency、State、Thermochemistryにfailがなく、利用可能kineticsまたはestimateがある |
-| `strict_simulation` | Consistency、State、Reaction evidence、Kinetics pass、非estimate |
-| `energy_balance` | strictに加えて反応エンタルピー利用可能 |
-| `resolved_state_model` | strictに加えてresolved状態だけを使用 |
-
-### 20.2 readiness
-
-| 項目 | 意味 |
-|---|---|
-| `candidate_complete` | 生成が上限打切りでない |
-| `evidence_ready` | 選択反応の必要判定がpass |
-| `kinetic_data_ready` | 選択反応に断面積または直接rateがある |
-| `direct_rate_ready` | 直接利用できるrate coefficientがある |
-| `energy_source_ready` | 反応エンタルピーをenergy equationへ利用できる |
-| `reverse_rate_ready` | 適用可能なforward rateと熱力学から逆速度を構成できる |
-| `required_transforms` | EEDF積分など、利用前に必要な変換 |
-
-## 21. 確認時の注意
-
-| 誤読しやすい項目 | 正しい解釈 |
-|---|---|
-| 候補にある | 起こり得るchannelとして列挙された。実在・速度・重要性は別判定 |
-| `unknown` | 不合格ではなく、判断に必要な証拠不足 |
-| `reaction_evidence=pass` | 既知記録がある。数値datasetが利用可能とは限らない |
-| `kinetics=pass` | 宣言条件で使える数値がある。現在のplasmaで重要とは限らない |
-| `threshold_eV`あり | 反応開始energyがある。rate coefficientがあるとは限らない |
-| `cross_section`あり | EEDF積分前の断面積。直接ODEへ入れるrateではない |
-| `depth`が小さい | 生成文法上早く導入された。反応が速い・重要という意味ではない |
-| `complete=true` | 有限生成規則がclosureした。自然界を完全網羅した意味ではない |
-| lumpedとresolvedが共存 | 代替モデル候補。通常は同時計上しない |
-| `formula_only` | 構造未同定。物理的非実在を意味しない |
-| `Ar(4s)`と`Ar(m)` | 関連するが同一状態ではない |
-
-## 22. 推奨する確認順序
-
-| 手順 | 確認内容 | 使用ファイル |
-|---:|---|---|
-| 1 | 生成が打切りでないか | `selected.yaml`、YAML metadata |
-| 2 | 状態名、電荷、励起、解像度を確認 | `states.csv` |
-| 3 | lumped/resolvedの重複候補を確認 | `alternative_resolution_states` |
-| 4 | 元素・電荷保存を確認 | `assessments/consistency/reactions.csv` |
-| 5 | 参加状態の実在性を確認 | `assessments/state/` |
-| 6 | 反応energyとthresholdを確認 | `assessments/thermochemistry/` |
-| 7 | 既知反応記録を確認 | `assessments/reaction_evidence/` |
-| 8 | 断面積・速度係数・適用範囲を確認 | `assessments/kinetics/` |
-| 9 | 用途に応じた残存集合を確認 | `assessments/screening/`または`selected.yaml` |
-
-CSVで空欄または要約となっている値は、同じ`id`を使ってYAMLのevidence、basis、message、dataset参照まで確認する。
+schema4への対応は `tools/migrate_v4.py` に限定します。原本と出典を保存して新分析を行い、旧判定・選択・ready flagを採用しません。通常処理に旧形式のfallbackを持ちません。移行手順・対象と撤去時期は[README](../README.md)を参照してください。

@@ -1,4 +1,5 @@
 schema_version: 1
+phase: gas
 id: O2
 display_name: O2
 aliases:
@@ -14,7 +15,22 @@ state:
   kind: ground
   label: X3Sigma_g-
   excitation_energy_eV: 0.0
+  existence: confirmed
+  existence_source: NIST Chemistry WebBook SRD 69, Huber and Herzberg diatomic
+    compilation, observed X3Sigma_g- electronic ground state of O2;
+    https://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447&Units=SI&Mask=1000#Diatomic
+  status: reviewed
+  term: X3Sigma_g-
 properties:
+  excitation_energy_eV:
+    value: 0.0
+    unit: eV
+    source: Ground-state excitation zero reference for the NIST WebBook
+      X3Sigma_g- electronic state; https://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447&Units=SI&Mask=1000#Diatomic
+    evidence_tier: reviewed
+    uncertainty:
+      absolute: 0.0
+      unit: eV
   mass_amu:
     value: 31.9988
     unit: amu
@@ -67,6 +83,9 @@ metadata:
   - Ground-state O2 record shared by every gas mixture.
   - Collision radius is a transparent DNT preprocessing estimate, not a fundamental
     constant.
+  - NASA7 review checks the neutral gas-phase thermal O2 fit against the
+    versioned Cantera file, not the underlying experimental accuracy. It does
+    not review individual scalar properties or state-specific O2(a/b) fits.
 thermo:
   high:
   - 3.28253784
@@ -84,7 +103,12 @@ thermo:
   - 3.24372837e-12
   - -1063.94356
   - 3.65767573
-  source: cantera bundled thermodynamic data, listed as O2 in air.yaml
+  source: 'Cantera 3.2.0 data/air.yaml, O2, NASA7 note TPIS89;
+    https://github.com/Cantera/cantera/blob/v3.2.0/data/air.yaml;
+    reference-pressure default 1 atm: https://cantera.org/3.2/yaml/species.html'
   t_max: 3500.0
   t_mid: 1000.0
   t_min: 200.0
+  phase: gas
+  standard_pressure_Pa: 101325.0
+  evidence_tier: reviewed

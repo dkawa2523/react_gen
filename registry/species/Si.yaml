@@ -45,24 +45,31 @@ metadata:
   status: literature_supported
   notes:
   - Ground-state atom acquired for the gases that produce it.
+  - 'Replaced condensed-phase NASA fit with the gas-phase fit; source nasa_gas.yaml,
+    Cantera 3.2.0. Phase verification: https://cantera.org/stable/yaml/species.html'
 thermo:
-  high:
-  - 2.4753989
-  - 0.00088112187
-  - -2.0939481e-07
-  - 4.2757187e-12
-  - 1.6006564e-14
-  - -812.5562
-  - -12.188747
   low:
-  - 0.84197538
-  - 0.0083710416
-  - -1.307703e-05
-  - 9.7593603e-09
-  - -2.727938e-12
-  - -524.86288
-  - -4.5272678
-  source: cantera bundled thermodynamic data, listed as SI(D) in SiF4_NH3_mec.yaml
-  t_max: 1685.0
+  - 3.7647615
+  - -0.00712070985
+  - 1.57318301e-05
+  - -1.53824969e-08
+  - 5.53194933e-12
+  - 53205.0782
+  - 0.302168772
+  high:
+  - 2.58061157
+  - -0.000206044654
+  - 1.93051677e-07
+  - -4.56485107e-11
+  - 3.36411716e-15
+  - 53382.9933
+  - 5.60657423
+  t_min: 200.0
   t_mid: 1000.0
-  t_min: 300.0
+  t_max: 6000.0
+  source: Cantera gas compilation; composition, charge and gas phase verified, listed
+    as Si in nasa_gas.yaml
+  phase: gas
+  standard_pressure_Pa: 101325.0
+  evidence_tier: reviewed
+phase: gas

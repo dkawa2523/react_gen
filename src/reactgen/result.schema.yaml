@@ -1,0 +1,856 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "reactgen canonical analysis result version 5",
+  "type": "object",
+  "properties": {
+    "input": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "gases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "minItems": 1
+        },
+        "conditions": {
+          "type": "object",
+          "properties": {
+            "gas_temperature_K": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "electron_temperature_eV": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "reduced_field_Td": {
+              "type": "number",
+              "minimum": 0
+            },
+            "ion_energy_eV": {
+              "type": "number",
+              "minimum": 0
+            },
+            "ion_temperature_K": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "surface_temperature_K": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "electron_energy_eV": {
+              "type": "number",
+              "minimum": 0
+            },
+            "collision_energy_eV": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "surfaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "max_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_species": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_reactions": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_charge_abs": {
+              "const": 1
+            },
+            "max_leaving_atoms": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "max_depth",
+            "max_species",
+            "max_reactions",
+            "max_charge_abs",
+            "max_leaving_atoms"
+          ],
+          "additionalProperties": false
+        },
+        "data_selection": {
+          "$ref": "#/$defs/data_selection"
+        }
+      },
+      "required": [
+        "name",
+        "gases",
+        "conditions",
+        "surfaces",
+        "limits"
+      ],
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": 5
+        },
+        "generator_version": {
+          "type": "string"
+        },
+        "helper_view_format": {
+          "enum": [1, 2, 3]
+        },
+        "evidence_snapshot_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "generation": {
+          "type": "object",
+          "properties": {
+            "complete": {
+              "type": "boolean"
+            },
+            "completion": {
+              "type": "object",
+              "properties": {
+                "mechanical": {
+                  "type": "boolean"
+                },
+                "attested": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "mechanical",
+                "attested"
+              ],
+              "additionalProperties": false
+            },
+            "stop_reason": {
+              "type": "string"
+            },
+            "limits": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "scope": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "complete",
+            "completion",
+            "stop_reason",
+            "limits",
+            "scope"
+          ],
+          "additionalProperties": false
+        },
+        "judgment_scope": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "generator_version",
+        "evidence_snapshot_hash",
+        "generation",
+        "judgment_scope"
+      ],
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "state_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reaction_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "judgments": {
+          "type": "object",
+          "properties": {
+            "states": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            },
+            "reactions": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "required": [
+            "states",
+            "reactions"
+          ],
+          "additionalProperties": false
+        },
+        "data_use": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "interpretation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "state_count",
+        "reaction_count",
+        "judgments",
+        "data_use",
+        "interpretation"
+      ],
+      "additionalProperties": false
+    },
+    "states": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/state"
+      }
+    },
+    "reactions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reaction"
+      }
+    },
+    "helper_views": {
+      "type": "object",
+      "properties": {
+        "states.csv": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reactions.csv": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "states.csv",
+        "reactions.csv"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "input",
+    "metadata",
+    "summary",
+    "states",
+    "reactions",
+    "helper_views"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "assessment": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "enum": [
+            "pass",
+            "fail",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "basis": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "message": {
+          "type": "string"
+        },
+        "proposition": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/requirement"},
+          "uniqueItems": true
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "verdict",
+        "basis",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "requirement": {
+      "type": "object",
+      "properties": {
+        "responsibility": {"type": "string", "minLength": 1},
+        "target": {"type": "string", "minLength": 1},
+        "quantity": {"type": "string", "minLength": 1},
+        "reason": {"type": "string"}
+      },
+      "required": ["responsibility", "target", "quantity", "reason"],
+      "additionalProperties": false
+    },
+    "state": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "composition": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "charge": {
+          "type": "integer"
+        },
+        "state": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "resolution": {
+              "enum": [
+                "lumped",
+                "resolved"
+              ]
+            },
+            "label": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "resolution",
+            "label"
+          ],
+          "additionalProperties": false
+        },
+        "classes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "origin": {
+          "type": "string"
+        },
+        "depth": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "introduced_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "phase": {
+          "type": "string"
+        },
+        "structure": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state_axes": {
+          "type": "object",
+          "properties": {
+            "excitation": {
+              "type": "string"
+            },
+            "lifetime_class": {
+              "type": "string"
+            },
+            "canonical_label": {
+              "type": "string"
+            },
+            "structure_scope": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "excitation",
+            "lifetime_class",
+            "canonical_label",
+            "structure_scope"
+          ],
+          "additionalProperties": false
+        },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "assessments": {
+          "type": "object",
+          "properties": {
+            "consistency": {
+              "$ref": "#/$defs/assessment"
+            },
+            "state": {
+              "$ref": "#/$defs/assessment"
+            },
+            "thermochemistry": {
+              "$ref": "#/$defs/assessment"
+            }
+          },
+          "required": [
+            "consistency",
+            "state",
+            "thermochemistry"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "composition",
+        "charge",
+        "state",
+        "classes",
+        "origin",
+        "depth",
+        "introduced_by",
+        "phase",
+        "structure",
+        "state_axes",
+        "evidence",
+        "assessments"
+      ],
+      "additionalProperties": false
+    },
+    "reaction": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "reactants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/term"
+          },
+          "minItems": 1
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/term"
+          },
+          "minItems": 1
+        },
+        "family": {
+          "enum": [
+            "electron",
+            "ion",
+            "neutral",
+            "surface"
+          ]
+        },
+        "process": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "generation_rule": {
+          "type": "string"
+        },
+        "depth": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "third_body": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "surface": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kinetic_effects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "stabilization": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "equation": {
+          "type": "string"
+        },
+        "reaction_type": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "assessments": {
+          "type": "object",
+          "properties": {
+            "consistency": {
+              "$ref": "#/$defs/assessment"
+            },
+            "state": {
+              "$ref": "#/$defs/assessment"
+            },
+            "thermochemistry": {
+              "$ref": "#/$defs/assessment"
+            },
+            "reaction_evidence": {
+              "$ref": "#/$defs/assessment"
+            },
+            "kinetics": {
+              "$ref": "#/$defs/assessment"
+            }
+          },
+          "required": [
+            "consistency",
+            "state",
+            "thermochemistry",
+            "reaction_evidence",
+            "kinetics"
+          ],
+          "additionalProperties": false
+        },
+        "thermochemistry": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "data_use": {
+          "$ref": "#/$defs/data_use"
+        }
+      },
+      "required": [
+        "id",
+        "reactants",
+        "products",
+        "family",
+        "process",
+        "origin",
+        "generation_rule",
+        "depth",
+        "third_body",
+        "surface",
+        "kinetic_effects",
+        "stabilization",
+        "equation",
+        "reaction_type",
+        "evidence",
+        "assessments",
+        "thermochemistry",
+        "data_use"
+      ],
+      "additionalProperties": false
+    },
+    "term": {
+      "type": "object",
+      "properties": {
+        "species": {
+          "type": "string"
+        },
+        "n": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "species",
+        "n"
+      ],
+      "additionalProperties": false
+    },
+    "data_use": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "coefficient",
+            "needs_input",
+            "needs_transform",
+            "unavailable",
+            "conflict"
+          ]
+        },
+        "dataset_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "rate_coefficient",
+            "cross_section",
+            "sticking_coefficient",
+            null
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "required_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "required_transforms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": "string"
+        },
+        "estimated": {
+          "type": "boolean"
+        },
+        "datasets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dataset_assessment"
+          }
+        },
+        "selection": {
+          "$ref": "#/$defs/data_selection"
+        },
+        "disagreements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "status",
+        "dataset_id",
+        "kind",
+        "value",
+        "unit",
+        "required_inputs",
+        "required_transforms",
+        "reason",
+        "estimated",
+        "datasets"
+      ],
+      "additionalProperties": false
+    },
+    "dataset_assessment": {
+      "type": "object",
+      "properties": {
+        "dataset_id": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "valid",
+            "invalid",
+            "out_of_range",
+            "needs_input",
+            "reference_only",
+            "unreviewed",
+            "conflict"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "required_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "required_transforms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "dataset_id",
+        "status",
+        "reason",
+        "value",
+        "unit",
+        "required_inputs",
+        "required_transforms"
+      ],
+      "additionalProperties": false
+    },
+    "quantity_selection": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "enum": [
+            "prefer",
+            "only"
+          ]
+        },
+        "record": {
+          "type": "string",
+          "minLength": 1
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "enum": [
+              "evaluated",
+              "measured",
+              "calculated",
+              "estimated",
+              "unknown"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "providers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "collections": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "data_selection": {
+      "type": "object",
+      "properties": {
+        "quantities": {
+          "type": "object",
+          "properties": {
+            "rate_coefficient": {
+              "$ref": "#/$defs/quantity_selection"
+            },
+            "cross_section": {
+              "$ref": "#/$defs/quantity_selection"
+            },
+            "sticking_coefficient": {
+              "$ref": "#/$defs/quantity_selection"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

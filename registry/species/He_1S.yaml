@@ -29,7 +29,9 @@ properties:
     source: unchanged from He on excitation; mendeleev package, bundled periodic table,
       dipole polarizability in atomic units
     unit: A3
-    value: 0.2051
+    value: null
+    qualifier: excitation_changes_this_property
+    evidence_tier: imported
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -38,7 +40,9 @@ properties:
     source: unchanged from He on excitation; chemicals package bundled molecular property
       tables, CAS 7440-59-7
     unit: A
-    value: 1.2755
+    value: null
+    qualifier: excitation_changes_this_property
+    evidence_tier: imported
   electron_affinity_eV:
     value: null
     unit: eV
@@ -47,7 +51,9 @@ properties:
     source: unchanged from He on excitation; chemicals package bundled molecular property
       tables, CAS 7440-59-7
     unit: K
-    value: 10.22
+    value: null
+    qualifier: excitation_changes_this_property
+    evidence_tier: imported
 metadata:
   status: literature_supported
   notes:
@@ -74,3 +80,4 @@ thermo:
   t_max: 6000.0
   t_mid: 6000.0
   t_min: 200.0
+phase: gas

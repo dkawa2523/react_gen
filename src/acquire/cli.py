@@ -2,17 +2,19 @@
 
     python -m acquire lxcat export.txt --out work/ar
     python -m acquire umist rate22.rates --out work/umist
-    python -m acquire pubchem states.yaml --out external_data/identity
+    python -m acquire pubchem result.yaml --out external_data/identity
 
-The output of either is fed to `rgen ingest --bundle outputs`, which matches it
+The output of either is fed to `rgen ingest --result result`, which matches it
 onto canonical candidates and queues whatever is ambiguous.
 """
 
 from __future__ import annotations
 
 import argparse
+import sys
 from collections import Counter
 from dataclasses import asdict
+from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
@@ -33,6 +35,7 @@ from acquire import (
     umist,
     vibration,
 )
+from reactgen import yamlio
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -46,15 +49,26 @@ def main(argv: list[str] | None = None) -> int:
     convert.set_defaults(run=_lxcat)
 
     grab = commands.add_parser("fetch", help="download the file a catalog source names")
-    grab.add_argument("source", help="source id in external_data/sources.yaml")
-    grab.add_argument("--catalog", type=Path, default=Path("external_data/sources.yaml"))
+    grab.add_argument("source", help="source id in external_data/source_catalog.yaml")
+    grab.add_argument("--catalog", type=Path, default=Path("external_data/source_catalog.yaml"))
     grab.add_argument("--out", type=Path, required=True)
     grab.set_defaults(run=_fetch)
+
+    sources = commands.add_parser(
+        "sources", help="show local source capabilities and access routes"
+    )
+    sources.add_argument("--catalog", type=Path, default=Path("external_data/source_catalog.yaml"))
+    sources.set_defaults(run=_sources)
 
     rates = commands.add_parser("umist", help="convert a UMIST RATE release into a snapshot")
     rates.add_argument("release", type=Path)
     rates.add_argument("--out", type=Path, required=True)
     rates.add_argument("--citation", default="UMIST RATE release, cite the version")
+    rates.add_argument(
+        "--format-version",
+        choices=("RATE12", "RATE22"),
+        help="declare the fit layout when automatic detection is ambiguous",
+    )
     rates.set_defaults(run=_umist)
 
     table = commands.add_parser("atoms", help="read atomic IE and EA from `mendeleev`")
@@ -74,7 +88,7 @@ def main(argv: list[str] | None = None) -> int:
     vibrate.add_argument("--out", type=Path, required=True)
     vibrate.set_defaults(run=_vibration)
 
-    gas = commands.add_parser("idealgas", help="read formation enthalpy from `pyromat`")
+    gas = commands.add_parser("idealgas", help="read ideal-gas enthalpy h(T) from `pyromat`")
     gas.add_argument("species", type=Path, help="YAML list of species")
     gas.add_argument("--out", type=Path, required=True)
     gas.set_defaults(run=_ideal_gas)
@@ -98,7 +112,7 @@ def main(argv: list[str] | None = None) -> int:
         "additivity",
         help="estimate polarizability for species no compilation holds (marked estimated)",
     )
-    guess.add_argument("species", type=Path, help="a bundle's states.yaml")
+    guess.add_argument("species", type=Path, help="an analysis result's result.yaml")
     guess.add_argument("--out", type=Path, required=True)
     guess.add_argument("--page", type=Path, help="a saved CCCBDB list page, instead of fetching")
     guess.set_defaults(run=_additivity)
@@ -109,7 +123,7 @@ def main(argv: list[str] | None = None) -> int:
     fit.add_argument(
         "species",
         type=Path,
-        help="a bundle's states.yaml, or any list with composition and charge",
+        help="an analysis result's result.yaml, or any list with composition and charge",
     )
     fit.add_argument("--out", type=Path, required=True)
     fit.set_defaults(run=_nasa)
@@ -125,11 +139,17 @@ def main(argv: list[str] | None = None) -> int:
     identity.set_defaults(run=_pubchem)
 
     args = parser.parse_args(argv)
-    return args.run(args)
+    try:
+        return int(args.run(args))
+    except (OSError, TypeError, ValueError, yaml.YAMLError) as error:
+        print(f"error: {error}", file=sys.stderr)
+        return 2
 
 
 def _lxcat(args) -> int:
+    snapshot.input_acquisition(args.export)
     processes = lxcat.parse(args.export)
+    scopes = [lxcat.channel_scope(process) for process in processes]
     records = []
     for index, process in enumerate(processes):
         asset = snapshot.write_table(
@@ -145,29 +165,38 @@ def _lxcat(args) -> int:
                 "form": "table",
                 "unit": "m2",
                 "independent_variable": "electron_energy",
-                "observable": lxcat.observable(process.kind),
-                "channel_scope": "product_resolved",
+                "observable": lxcat.observable(process.kind, process.headers),
+                "channel_scope": scopes[index],
                 "asset": asset,
                 "threshold_eV": process.threshold_eV,
                 "status": "imported",
                 "notes": process.headers.get("COMMENT"),
+                "source_declaration": {
+                    "kind": process.kind,
+                    "target": process.target,
+                    "headers": dict(process.headers),
+                },
             }
         )
     path = snapshot.write(
         args.out,
         "cross_section",
-        {"source_type": "lxcat_export", "citation": args.citation},
+        {"source_type": "lxcat_export", "provider": "lxcat", "citation": args.citation},
         records,
+        input_path=args.export,
     )
     print(f"  processes   {len(processes)}")
     print(f"  snapshot    {path}")
-    print(f"  next        rgen ingest {path} --bundle outputs --overlay work/overlay.yaml")
+    print(f"  next        rgen ingest {path} --result result --overlay work/overlay.yaml")
     return 0 if processes else 1
 
 
 def _fetch(args) -> int:
-    catalog = yaml.safe_load(args.catalog.read_text(encoding="utf-8")) or {}
-    entry = next((s for s in catalog.get("sources") or [] if s["id"] == args.source), None)
+    catalog = _source_catalog(args.catalog)
+    entry = next(
+        (s for s in catalog.get("sources") or [] if s.get("source_id", s.get("id")) == args.source),
+        None,
+    )
     if entry is None or not entry.get("file"):
         print(f"  {args.source}: the catalog names no direct file for this source")
         return 1
@@ -181,24 +210,78 @@ def _fetch(args) -> int:
     args.out.mkdir(parents=True, exist_ok=True)
     path = args.out / Path(entry["file"]).name
     path.write_bytes(got.body or b"")
+    (args.out / "acquisition.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "source_id": args.source,
+                **{
+                    name: entry[name]
+                    for name in ("provider", "collection", "release")
+                    if entry.get(name) is not None
+                },
+                "requested_url": entry["file"],
+                "final_url": got.url,
+                "sha256": got.sha256,
+                "retrieved_at": datetime.now(UTC).isoformat(),
+                "format": entry.get("format"),
+                "format_version": entry.get("format_version"),
+                "file": path.name,
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
     print(f"  fetched       {path}  sha256 {got.sha256}")
     print(f"  next          acquire {entry.get('format', 'FORMAT')} {path} --out work/")
     return 0
 
 
+def _sources(args) -> int:
+    catalog = _source_catalog(args.catalog)
+    print(yaml.safe_dump(catalog, sort_keys=False, allow_unicode=True).rstrip())
+    return 0
+
+
+def _source_catalog(path: Path) -> dict:
+    catalog = yamlio.load(path.read_text(encoding="utf-8"))
+    if not isinstance(catalog, dict) or not isinstance(catalog.get("sources"), list):
+        raise ValueError("source catalog must contain a sources list")
+    identifiers = set()
+    for entry in catalog["sources"]:
+        identifier = _catalog_identifier(entry)
+        if identifier in identifiers:
+            raise ValueError(f"source catalog repeats source_id: {identifier}")
+        identifiers.add(identifier)
+    return catalog
+
+
+def _catalog_identifier(entry: object) -> str:
+    if not isinstance(entry, dict):
+        raise ValueError("source catalog entries must be mappings")
+    identifier = entry.get("source_id", entry.get("id"))
+    if not isinstance(identifier, str) or not identifier.strip():
+        raise ValueError("source catalog entries require a nonempty source_id")
+    for name in ("provider", "collection", "release", "file", "format", "format_version"):
+        value = entry.get(name)
+        if value is not None and (not isinstance(value, str) or not value.strip()):
+            raise ValueError(f"source catalog {identifier}: {name} must be nonempty text")
+    return identifier
+
+
 def _umist(args) -> int:
-    rates = umist.parse(args.release)
+    rates = umist.parse(args.release, args.format_version)
     records = umist.records(rates)
     path = snapshot.write(
         args.out,
         "rate_coefficient",
-        {"source_type": "umist", "citation": args.citation},
+        {"source_type": "umist", "provider": "umist", "citation": args.citation},
         records,
+        input_path=args.release,
     )
     print(f"  reactions     {len(rates)}")
     print(f"  two-body      {len(records)}  (others need a third body the registry must name)")
     print(f"  snapshot      {path}")
-    print(f"  next          rgen ingest {path} --bundle outputs --overlay work/overlay.yaml")
+    print(f"  next          rgen ingest {path} --result result --overlay work/overlay.yaml")
     return 0 if records else 1
 
 
@@ -211,7 +294,7 @@ def _atoms(args) -> int:
     path = snapshot.write(
         args.out,
         "state_property",
-        {"source_type": "mendeleev", "citation": citation},
+        {"source_type": "mendeleev", "provider": "mendeleev", "citation": citation},
         atoms.records(found, citation),
     )
     for atom in found:
@@ -230,7 +313,7 @@ def _asd(args) -> int:
     path = snapshot.write(
         args.out,
         "state_property",
-        {"source_type": "nist_asd", "citation": citation},
+        {"source_type": "nist_asd", "provider": "nist_asd", "citation": citation},
         asd.records(found, citation),
     )
     for item in found:
@@ -253,14 +336,25 @@ def _molecular(args) -> int:
     if not molecular.available():
         print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    wanted = yaml.safe_load(args.species.read_text(encoding="utf-8")) or []
-    names = [_query_name(item) for item in _listed(wanted)]
+    wanted = yamlio.load(args.species.read_text(encoding="utf-8")) or []
+    items = _listed(wanted)
+    names = [
+        _query_name(item)
+        for item in items
+        if not isinstance(item, dict)
+        or (not item.get("charge") and (item.get("state") or {}).get("kind", "ground") == "ground")
+    ]
+    composition = {
+        _query_name(item): item["composition"]
+        for item in items
+        if isinstance(item, dict) and item.get("composition")
+    }
     citation = "chemicals package bundled molecular property tables"
-    found = molecular.fetch(names)
+    found = molecular.fetch(names, composition)
     path = snapshot.write(
         args.out,
         "state_property",
-        {"source_type": "chemicals", "citation": citation},
+        {"source_type": "chemicals", "provider": "chemicals", "citation": citation},
         molecular.records(found, citation),
     )
     for item in found:
@@ -278,8 +372,15 @@ def _molecular(args) -> int:
 
 def _cccbdb(args) -> int:
     wanted: dict[tuple, str] = {}
-    for item in _listed(yaml.safe_load(args.species.read_text(encoding="utf-8")) or []):
+    identities: dict[tuple, str] = {}
+    for item in _listed(yamlio.load(args.species.read_text(encoding="utf-8")) or []):
         named = isinstance(item, dict)
+        if named and (
+            item.get("charge")
+            or (item.get("state") or {}).get("kind", "ground") != "ground"
+            or item.get("phase", "gas") != "gas"
+        ):
+            continue
         composition = (item.get("composition") or {}) if named else {}
         key: tuple | None = (
             tuple(sorted((str(k), int(v)) for k, v in composition.items()))
@@ -288,15 +389,20 @@ def _cccbdb(args) -> int:
         )
         if key is not None:
             wanted.setdefault(key, str(item["id"]) if named else str(item))
+            if named and (identity := item.get("source_species") or item.get("structure")):
+                identities[key] = str(identity)
     saved = args.page.read_text(encoding="utf-8") if args.page else None
     found, error = cccbdb.fetch(saved)
     if error:
         print(f"  could not read {cccbdb.LIST_URL}: {error}")
         return 1
     citation = f"NIST CCCBDB experimental polarizability list, {cccbdb.LIST_URL}"
-    written = cccbdb.records(found, wanted, citation)
+    written = cccbdb.records(found, wanted, citation, identities)
     path = snapshot.write(
-        args.out, "state_property", {"source_type": "cccbdb", "citation": citation}, written
+        args.out,
+        "state_property",
+        {"source_type": "cccbdb", "provider": "nist_cccbdb", "citation": citation},
+        written,
     )
     print(f"  {len(found)} species listed, {len(written)} of the {len(wanted)} asked for")
     missing = sorted(set(wanted.values()) - {item["species"] for item in written})
@@ -317,25 +423,45 @@ def _additivity(args) -> int:
         for item in listed
         if (key := cccbdb.composition(item.formula)) is not None
     ]
+    targets = [
+        item
+        for item in _listed(yamlio.load(args.species.read_text(encoding="utf-8")) or [])
+        if isinstance(item, dict)
+        and item.get("composition")
+        and not item.get("charge")
+        and (item.get("state") or {}).get("kind", "ground") == "ground"
+    ]
     wanted = [
-        (str(item["id"]), {str(k): int(v) for k, v in (item.get("composition") or {}).items()})
-        for item in _listed(yaml.safe_load(args.species.read_text(encoding="utf-8")) or [])
-        if isinstance(item, dict) and item.get("composition") and not item.get("charge")
+        (str(item["id"]), dict(item["composition"]))
+        for item in targets
+        if item.get("phase") == "gas"
     ]
     found = additivity.estimate(wanted, training)
+    found.extend(
+        additivity.Estimate(
+            str(item["id"]),
+            0.0,
+            len(training),
+            "gas phase must be explicit; other phases are outside this model",
+        )
+        for item in targets
+        if item.get("phase") != "gas"
+    )
     citation = f"NIST CCCBDB experimental polarizability list, {cccbdb.LIST_URL}"
     written = additivity.records(found, citation)
     path = snapshot.write(
         args.out,
         "state_property",
-        {"source_type": "additivity_fit", "citation": citation},
+        {"source_type": "additivity_fit", "provider": "internal_additivity", "citation": citation},
         written,
     )
     for item in found:
         if item.known:
             print(f"  {item.species:10} {item.polarizability_A3:6.3f} A3   estimated")
+        else:
+            print(f"  {item.species:10} not estimated: {item.error}")
     print(f"  fitted on {len(training)} species; {len(written)} estimates written to {path}")
-    print("  these are estimates: do not `rgen adopt` them into the registry")
+    print("  estimated gas polarizability; structure dependence is omitted; no rates calculated")
     return 0
 
 
@@ -343,21 +469,21 @@ def _nasa(args) -> int:
     if not nasa.available():
         print('  cantera is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    wanted = _listed(yaml.safe_load(args.species.read_text(encoding="utf-8")) or [])
+    wanted = _listed(yamlio.load(args.species.read_text(encoding="utf-8")) or [])
     citation = "cantera bundled thermodynamic data"
     found = nasa.fetch([item for item in wanted if isinstance(item, dict)])
     written = nasa.records(found, citation)
     path = snapshot.write(
-        args.out, "state_thermochemistry", {"source_type": "cantera", "citation": citation}, written
+        args.out,
+        "state_thermochemistry",
+        {"source_type": "cantera", "provider": "cantera", "citation": citation},
+        written,
     )
     for item in found:
         if item.unusable:
             print(f"  {item.species:10} skipped: {item.unusable}")
-    deferred = [item.species for item in found if item.deferred]
-    absent = [item.species for item in found if item.error and not item.deferred]
+    absent = [item.species for item in found if item.error]
     print(f"  {len(written)} of {len(found)} species carry a NASA7 fit")
-    if deferred:
-        print(f"  left to `rgen derive`: {' '.join(sorted(deferred))}")
     if absent:
         print(f"  no bundled fit for: {' '.join(sorted(absent))}")
     print(f"  wrote {path}")
@@ -365,7 +491,7 @@ def _nasa(args) -> int:
 
 
 def _listed(document) -> list:
-    """The state entries of a bundle, or a plain list as given."""
+    """The states of an analysis result, or an explicit species list."""
 
     if isinstance(document, dict):
         return list(document.get("states") or [])
@@ -382,7 +508,7 @@ def _vibration(args) -> int:
     if not vibration.available():
         print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    wanted = _listed(yaml.safe_load(args.species.read_text(encoding="utf-8")) or [])
+    wanted = _listed(yamlio.load(args.species.read_text(encoding="utf-8")) or [])
     names = [_query_name(item) for item in wanted]
     linear = {_query_name(n): n.get("linear", False) for n in wanted if isinstance(n, dict)}
     atoms_of = {_query_name(n): n.get("atoms", 2) for n in wanted if isinstance(n, dict)}
@@ -391,7 +517,7 @@ def _vibration(args) -> int:
     path = snapshot.write(
         args.out,
         "state_property",
-        {"source_type": "chemicals_cp_fit", "citation": citation},
+        {"source_type": "chemicals_cp_fit", "provider": "internal_vibration", "citation": citation},
         vibration.records(found, citation),
     )
     for item in found:
@@ -407,7 +533,7 @@ def _ideal_gas(args) -> int:
     if not ideal_gas.available():
         print('  pyromat is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    requested = yaml.safe_load(args.species.read_text(encoding="utf-8")) or {}
+    requested = yamlio.load(args.species.read_text(encoding="utf-8")) or {}
     wanted = _listed(requested)
     names = [_query_name(item) for item in wanted]
     composition = {
@@ -415,12 +541,12 @@ def _ideal_gas(args) -> int:
         for item in wanted
         if isinstance(item, dict) and item.get("composition")
     }
-    citation = "pyromat, NASA Glenn ideal-gas tables"
+    citation = "PyroMat ideal-gas model, enthalpy at the declared temperature and reference"
     found = ideal_gas.fetch(names, composition)
     path = snapshot.write(
         args.out,
         "state_property",
-        {"source_type": "pyromat", "citation": citation},
+        {"source_type": "pyromat", "provider": "pyromat", "citation": citation},
         ideal_gas.records(found, citation),
     )
     print(f"  resolved      {sum(1 for f in found if f.known)} / {len(found)}")
@@ -435,7 +561,7 @@ def _thermo(args) -> int:
     if not thermo.available():
         print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    requested = yaml.safe_load(args.species.read_text(encoding="utf-8")) or {}
+    requested = yamlio.load(args.species.read_text(encoding="utf-8")) or {}
     wanted = _listed(requested)
     names = [_query_name(item) for item in wanted]
     composition = {
@@ -449,7 +575,7 @@ def _thermo(args) -> int:
     path = snapshot.write(
         args.out,
         "state_property",
-        {"source_type": "chemicals", "citation": citation},
+        {"source_type": "chemicals", "provider": "chemicals", "citation": citation},
         thermo.records(found, citation),
     )
     print(f"  resolved      {sum(1 for item in found if item.known)} / {len(found)}")
@@ -457,12 +583,12 @@ def _thermo(args) -> int:
         if not item.known:
             print(f"    unresolved  {item.species}  {item.error or 'no enthalpy tabulated'}")
     print(f"  snapshot      {path}")
-    print(f"  next          rgen ingest {path} --bundle outputs --overlay work/overlay.yaml")
+    print(f"  next          rgen ingest {path} --result result --overlay work/overlay.yaml")
     return 0
 
 
 def _pubchem(args) -> int:
-    requested = yaml.safe_load(args.species.read_text(encoding="utf-8")) or {}
+    requested = yamlio.load(args.species.read_text(encoding="utf-8")) or {}
     wanted = _listed(requested)
     names = [_query_name(item) for item in wanted]
     registered = {_query_name(item): item for item in wanted if isinstance(item, dict)}
@@ -490,7 +616,11 @@ def _pubchem(args) -> int:
     path = snapshot.write(
         args.out,
         "state_property",
-        {"source_type": "pubchem", "citation": "PubChem PUG REST, identity only"},
+        {
+            "source_type": "pubchem",
+            "provider": "pubchem",
+            "citation": "PubChem PUG REST, identity only",
+        },
         records,
     )
 

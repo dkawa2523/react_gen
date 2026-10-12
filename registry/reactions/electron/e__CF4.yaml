@@ -92,7 +92,7 @@ channels:
       status: needs_import
       note: Measured threshold 15.0 eV and partial cross section for CF2 radical production.
 - id: e_CF4_attachment_Fm
-  type: attachment
+  type: dissociative_attachment
   products:
   - species: CF3
     n: 1
@@ -111,9 +111,11 @@ channels:
   notes:
   - F- resonance/yield structure should be taken from a dedicated attachment dataset.
   - 'DEA appearance energy for F- from CF4: 4.7 ± 0.1 eV (Bjarnason et al. 2013).'
+  - 'Classification corrected from attachment: electron capture produces dissociation
+    fragments; parent-anion binding is not this channel''s condition.'
   threshold_eV: 4.7
 - id: e_CF4_attachment_CF3m
-  type: attachment
+  type: dissociative_attachment
   products:
   - species: CF3-
     n: 1
@@ -131,6 +133,8 @@ channels:
   notes:
   - Keep estimated until a curated attachment cross-section is imported.
   - 'DEA appearance energy for CF3- from CF4: 4.5 ± 0.1 eV (Bjarnason et al. 2013).'
+  - 'Classification corrected from attachment: electron capture produces dissociation
+    fragments; parent-anion binding is not this channel''s condition.'
   threshold_eV: 4.5
 - id: e_CF4_dissociative_ionization_CF3p
   type: dissociative_ionization

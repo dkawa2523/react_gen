@@ -9,7 +9,7 @@ channels:
   products:
   - species: O
     n: 2
-  status: literature_supported
+  status: needs_review
   deltaE_products_minus_reactants_eV: null
   data:
     datasets:
@@ -18,7 +18,10 @@ channels:
       representation: constant
       independent_variable: null
       dependent_variable: rate_coefficient
+      observable: reaction_rate
+      channel_scope: total_process
       unit: m3/s
+      reaction_order: 2
       parameters:
         value: 8.2e-15
         source_value: 8.2e-9
@@ -28,6 +31,9 @@ channels:
         source_id: doi:10.1016/0020-7381(77)80050-8
         citation: P. Gaucherel and B. Rowe, International Journal of Mass Spectrometry and Ion Physics 25, 211-227 (1977).
         url: https://doi.org/10.1016/0020-7381(77)80050-8
+        primary_abstract_url: https://www.sciencedirect.com/science/article/abs/pii/0020738177800508
+        measurement: Rarefied plasma-jet recombination coefficient 8.2e-9 cm3/s for O2+ + e -> O + O; electronic product states are not resolved in the abstract.
+        applicability_review: Numerical electron and ion temperatures, electron-energy distribution, parent-ion internal-state population and product-state branching are not verified in the accessible primary abstract.
       status: literature_supported
       preferred: true
       notes:
@@ -35,6 +41,7 @@ channels:
   notes:
   - This loss channel consumes O2+ produced by ionization or charge transfer.
   - Product-state branching and temperature dependence remain unresolved.
+  - The candidate equation is retained; the accessible primary abstract does not establish the full exact-state product channel.
 metadata:
   status: curated
   notes:

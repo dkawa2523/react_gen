@@ -9,13 +9,16 @@ name = generation and assessment dependencies point inward
 type = layers
 layers =
     reactgen.cli
-    reactgen.adopt | reactgen.derive | reactgen.export | reactgen.ingest | reactgen.plan
+    reactgen.adopt | reactgen.derive | reactgen.ingest | reactgen.views | reactgen.needs
+    reactgen.export
     reactgen.pipeline
     reactgen.assessment
+    reactgen.numeric
     reactgen.evidence | reactgen.generate
-    reactgen.balance | reactgen.case | reactgen.chemistry | reactgen.registry | reactgen.thermo
+    reactgen.balance | reactgen.case | reactgen.registry | reactgen.thermo | reactgen.presentation
+    reactgen.chemistry
     reactgen.records
-    reactgen.naming | reactgen.model
+    reactgen.naming | reactgen.model | reactgen.units | reactgen.yamlio | reactgen.selection
 
 [importlinter:contract:reactgen-offline]
 name = reactgen never reaches the network or the acquisition tools
@@ -27,3 +30,6 @@ forbidden_modules =
     http
     urllib
     socket
+ignore_imports =
+    # urllib.parse is used only for local canonical-ID text encoding.
+    reactgen.chemistry -> urllib

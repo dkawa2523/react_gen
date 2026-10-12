@@ -1,1008 +1,714 @@
-"""Policy, bundle, CLI and canonical-ingest behavior."""
+"""Public analysis, canonical persistence, saved views and explicit migration."""
 
 from __future__ import annotations
 
-import csv
-import json
-import shutil
+import hashlib
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
 import yaml
-from PIL import Image
 
-from reactgen import adopt, export, ingest
-from reactgen.assessment import Evaluation
-from reactgen.case import Case, Conditions, Limits
+from reactgen import export, ingest, needs
+from reactgen.case import Case, Conditions
+from reactgen.chemistry import parse_state_id
 from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
-from reactgen.model import Assessment, CandidateSet
-from reactgen.pipeline import run, select
-from reactgen.registry import Registry
+from reactgen.pipeline import analyze
+from tools.migrate_v4 import migrate
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mini"
 
 
-def _case(gases: tuple[str, ...] = ("Ar",), limits: Limits | None = None) -> Case:
-    return Case("test", gases, limits=limits or Limits())
+def result():
+    return analyze(Case("analysis", ("Ar",)), EvidenceCatalog.load(None))
 
 
-def test_registry_does_not_change_the_mechanical_set() -> None:
-    case = _case(("Ar", "F2"))
-    empty = run(case, EvidenceCatalog.load(None))
-    filled = run(case, EvidenceCatalog.load(FIXTURE))
-    empty_keys = {
-        reaction.key
-        for reaction in empty.candidates.reactions.values()
-        if reaction.origin == "mechanical"
-    }
-    filled_keys = {
-        reaction.key
-        for reaction in filled.candidates.reactions.values()
-        if reaction.origin == "mechanical"
-    }
-    assert empty_keys == filled_keys
+def dump(path: Path, value: dict) -> None:
+    path.write_text(yaml.safe_dump(value), encoding="utf-8")
 
 
-def test_three_body_source_vocabulary_merges_into_the_mechanical_channel() -> None:
-    result = run(_case(("O2",)), EvidenceCatalog.load(Path("registry")))
-    association = [
-        reaction
-        for reaction in result.candidates.reactions.values()
-        if reaction.equation == "2 O@ground + M -> O2@ground + M"
-    ]
-    assert len(association) == 1
-    reaction = association[0]
-    assert (reaction.family, reaction.process, reaction.origin) == (
-        "neutral",
-        "three_body_association",
-        "mechanical",
-    )
-    assert (
-        result.evaluation.reaction_assessments[reaction.id]["reaction_evidence"].verdict == "pass"
-    )
+def test_evidence_does_not_change_mechanical_candidates() -> None:
+    case = Case("test", ("Ar", "F2"))
+    empty = analyze(case, EvidenceCatalog.load(None))
+    filled = analyze(case, EvidenceCatalog.load(FIXTURE))
+
+    def mechanical(analysis):
+        return {
+            item.key
+            for item in analysis.candidates.reactions.values()
+            if item.origin == "mechanical"
+        }
+
+    assert mechanical(empty) == mechanical(filled)
 
 
-def test_review_keeps_every_candidate_and_strict_excludes_unknown_kinetics() -> None:
-    result = run(_case(), EvidenceCatalog.load(None))
-    assert result.evaluation.state_assessments["Ar@ground"]["state"].verdict == "unknown"
-    assert set(result.selection.reaction_ids) == set(result.candidates.reactions)
-    strict = select(result.candidates, result.evaluation, "strict_simulation")
-    assert not strict.reaction_ids
-    assert all(
-        any(
-            layer in reason
-            for layer in ("state", "thermochemistry", "reaction_evidence", "kinetics")
-        )
-        for reason in strict.excluded_reactions.values()
-    )
+def test_no_evidence_retains_candidates_and_scopes_conclusions() -> None:
+    analysis = result()
+    assert analysis.evaluation.state_assessments["Ar@ground"]["state"].verdict == "unknown"
+    document = export.document(analysis)
+    assert len(document["reactions"]) == len(analysis.candidates.reactions)
+    assert set(document["metadata"]["generation"]["completion"]) == {"mechanical", "attested"}
+    assert "selection" not in document
+    assert "readiness" not in document
+    assert "predictive" in document["summary"]["interpretation"]
 
 
-def test_energy_policy_requires_thermochemistry() -> None:
-    result = run(_case(), EvidenceCatalog.load(FIXTURE))
-    energy = select(result.candidates, result.evaluation, "energy_balance")
-    assert all(
-        result.evaluation.thermo_capabilities[reaction_id].reaction_enthalpy_ready
-        for reaction_id in energy.reaction_ids
-    )
+def test_three_files_are_deterministic_and_share_the_same_conclusions(tmp_path: Path) -> None:
+    analysis = result()
+    first, second = tmp_path / "first", tmp_path / "second"
+    export.write(first, analysis)
+    export.write(second, analysis)
+    assert {path.name for path in first.iterdir()} == set(export.PUBLIC_FILES)
+    for name in export.PUBLIC_FILES:
+        assert (first / name).read_bytes() == (second / name).read_bytes()
+    document = export.read(first, verify_views=True)
+    assert document["input"]["gases"] == ["Ar"]
+    assert document["metadata"]["schema_version"] == 5
+    assert document["summary"]["reaction_count"] == len(document["reactions"])
 
 
-def test_exploratory_policy_allows_unknown_consistency_but_not_failure() -> None:
-    result = run(_case(), EvidenceCatalog.load(None))
-    reaction_id = next(iter(result.candidates.reactions))
-    passed = Assessment("pass")
-    unknown = Assessment("unknown")
-    evaluation = Evaluation(
-        state_assessments=result.evaluation.state_assessments,
-        reaction_assessments={
-            reaction_id: {
-                "consistency": unknown,
-                "state": unknown,
-                "thermochemistry": unknown,
-                "reaction_evidence": unknown,
-                "kinetics": passed,
+@pytest.mark.parametrize("change", ["hash", "content", "missing", "extra"])
+def test_saved_result_rejects_view_hashes_detached_from_canonical_content(
+    tmp_path: Path, change: str, monkeypatch
+) -> None:
+    export.write(tmp_path, result())
+    document = export.read(tmp_path, verify_views=True)
+    if change == "hash":
+        expected = document["helper_views"]["states.csv"]
+        document["helper_views"]["states.csv"] = ("0" if expected[0] != "0" else "1") + expected[1:]
+    elif change == "content":
+        document["states"][0]["assessments"]["state"]["message"] = "Changed canonical reason"
+    elif change == "missing":
+        del document["helper_views"]["states.csv"]
+    else:
+        document["helper_views"]["extra.csv"] = "0" * 64
+    dump(tmp_path / "result.yaml", document)
+
+    def forbidden(*args):
+        raise AssertionError("integrity validation must not reanalyze")
+
+    monkeypatch.setattr("reactgen.pipeline.analyze", forbidden)
+    for verify_views in (False, True):
+        with pytest.raises(ValueError, match="helper_views|helper view hashes"):
+            export.read(tmp_path, verify_views=verify_views)
+
+
+def selected_data_use(status: str = "coefficient") -> dict:
+    inputs = ["gas_temperature"] if status == "needs_input" else []
+    transforms = ["surface_flux_conversion"] if status == "needs_transform" else []
+    unit = "1" if transforms else "m3/s"
+    return {
+        "status": status,
+        "reason": "test numerical result",
+        "dataset_id": "selected",
+        "kind": "sticking_coefficient" if transforms else "rate_coefficient",
+        "value": 0,
+        "unit": unit,
+        "required_inputs": inputs,
+        "required_transforms": transforms,
+        "estimated": False,
+        "datasets": [
+            {
+                "dataset_id": "selected",
+                "status": "needs_input" if inputs else "valid",
+                "reason": "test applicable dataset",
+                "value": 0,
+                "unit": unit,
+                "required_inputs": list(inputs),
+                "required_transforms": list(transforms),
             }
-        },
-        state_evidence=result.evaluation.state_evidence,
-        reaction_evidence=result.evaluation.reaction_evidence,
-        thermochemistry=result.evaluation.thermochemistry,
-        estimated_kinetics=result.evaluation.estimated_kinetics,
-        thermo_capabilities=result.evaluation.thermo_capabilities,
-        kinetics_capabilities=result.evaluation.kinetics_capabilities,
-    )
-    one_reaction = CandidateSet(
-        states=result.candidates.states,
-        reactions={reaction_id: result.candidates.reactions[reaction_id]},
-    )
-    assert select(one_reaction, evaluation, "exploratory_simulation").reaction_ids == (reaction_id,)
-
-    evaluation.reaction_assessments[reaction_id]["consistency"] = Assessment("fail")
-    assert not select(one_reaction, evaluation, "exploratory_simulation").reaction_ids
-
-    evaluation.reaction_assessments[reaction_id]["consistency"] = Assessment("pass")
-    evaluation.reaction_assessments[reaction_id]["state"] = Assessment("fail")
-    assert not select(one_reaction, evaluation, "acquisition").reaction_ids
-
-
-def test_simulation_policies_reject_thermochemical_failure() -> None:
-    result = run(_case(), EvidenceCatalog.load(None))
-    reaction_id = next(iter(result.candidates.reactions))
-    passed = Assessment("pass")
-    evaluation = result.evaluation
-    evaluation.reaction_assessments[reaction_id] = {
-        "consistency": passed,
-        "state": passed,
-        "thermochemistry": Assessment("fail"),
-        "reaction_evidence": passed,
-        "kinetics": passed,
+        ],
     }
-    one_reaction = CandidateSet(
-        states=result.candidates.states,
-        reactions={reaction_id: result.candidates.reactions[reaction_id]},
-    )
-    assert not select(one_reaction, evaluation, "exploratory_simulation").reaction_ids
-    assert not select(one_reaction, evaluation, "strict_simulation").reaction_ids
 
 
-def test_bundle_is_exactly_three_deterministic_files(tmp_path: Path) -> None:
-    result = run(_case(), EvidenceCatalog.load(None))
-    first = tmp_path / "first"
-    second = tmp_path / "second"
-    export.write(first, result)
-    export.write(second, result)
-    assert sorted(path.name for path in first.iterdir()) == [
-        "reactions.yaml",
-        "selected.yaml",
-        "states.yaml",
-    ]
-    assert {path.name: path.read_bytes() for path in first.iterdir()} == {
-        path.name: path.read_bytes() for path in second.iterdir()
+def document_with_use(use: dict) -> dict:
+    document = export.document(result())
+    reaction = document["reactions"][0]
+    reaction["data_use"] = use
+    # Saved numerical selections must refer to the scientific evidence they
+    # select. This fixture preserves that link without rerunning any model.
+    reaction["evidence"]["overlay_datasets"] = [{"id": "selected", "kind": use["kind"]}]
+    document["summary"] = export.summary(document["states"], document["reactions"])
+    document["helper_views"] = {
+        name: hashlib.sha256(content.encode("utf-8")).hexdigest()
+        for name, content in export.csv_views(document).items()
     }
-    selected = yaml.safe_load((first / "selected.yaml").read_text(encoding="utf-8"))
-    assert selected["metadata"]["complete"] is True
-    assert selected["metadata"]["generator_version"] == "0.5.0"
-    assert selected["metadata"]["schema_version"] == 4
-    assert "readiness" in selected
-    assert "not_selected_states" in selected
-    assert "not_selected_reactions" in selected
+    return document
 
 
-def test_optional_review_views_are_grouped_deterministic_and_follow_policy(
-    tmp_path: Path,
+@pytest.mark.parametrize("status", ["coefficient", "needs_input", "needs_transform"])
+def test_saved_use_accepts_zero_and_selected_values_without_rerunning_calculations(
+    tmp_path: Path, status: str, monkeypatch
 ) -> None:
-    result = run(_case(), EvidenceCatalog.load(None), "strict_simulation")
-    first = tmp_path / "first"
-    second = tmp_path / "second"
-    export.write(first, result, include_csv=True)
-    export.write(second, result, include_csv=True)
+    document = document_with_use(selected_data_use(status))
+    dump(tmp_path / "result.yaml", document)
 
-    expected_files = _expected_review_files()
-    assert _relative_files(first) == expected_files
-    assert {
-        path.relative_to(first).as_posix(): path.read_bytes()
-        for path in first.rglob("*")
-        if path.is_file()
-    } == {
-        path.relative_to(second).as_posix(): path.read_bytes()
-        for path in second.rglob("*")
-        if path.is_file()
-    }
+    def forbidden(*args):
+        raise AssertionError("saved values must not be recalculated")
 
-    with (first / "states.csv").open(encoding="utf-8", newline="") as stream:
-        states = list(csv.DictReader(stream))
-    with (first / "reactions.csv").open(encoding="utf-8", newline="") as stream:
-        reactions = list(csv.DictReader(stream))
-
-    assert len(states) == len(result.candidates.states)
-    assert len(reactions) == len(result.candidates.reactions)
-    assert states[0]["id"] == "Ar@ground"
-    assert [int(row["depth"]) for row in reactions] == sorted(
-        int(row["depth"]) for row in reactions
-    )
-    assert {row["selected"] for row in reactions} == {"false"}
-    assert {row["consistency_verdict"] for row in reactions} == {"pass"}
-    assert all(row["exclusion_reason"] for row in reactions)
-    assert list(states[0]) == [
-        "species",
-        "formula",
-        "charge",
-        "excitation",
-        "resolution",
-        "lifetime_class",
-        "state_label",
-        "state_symbol",
-        "state_meaning",
-        "alternative_resolution_states",
-        "structure_scope",
-        "origin",
-        "depth",
-        "state_verdict",
-        "thermochemistry_verdict",
-        "selected",
-        "state_energy_eV",
-        "lifetime_s",
-        "mass_amu",
-        "enthalpy_formation_eV",
-        "ionization_energy_eV",
-        "electron_affinity_eV",
-        "id",
-    ]
-    assert list(reactions[0]) == [
-        "equation",
-        "reaction_type",
-        "family",
-        "process",
-        "origin",
-        "depth",
-        "consistency_verdict",
-        "state_verdict",
-        "thermochemistry_verdict",
-        "reaction_evidence_verdict",
-        "kinetics_verdict",
-        "delta_h_eV",
-        "delta_g_eV",
-        "threshold_eV",
-        "kinetic_data",
-        "selected",
-        "exclusion_reason",
-        "id",
-    ]
-    family_files = {
-        "electron": "reactions_electron.csv",
-        "ion": "reactions_ion.csv",
-        "neutral": "reactions_neutral.csv",
-        "surface": "reactions_surface.csv",
-    }
-    reaction_ids_by_family = {
-        family: {row["id"] for row in reactions if row["family"] == family}
-        for family in family_files
-    }
-    for family, filename in family_files.items():
-        with (first / filename).open(encoding="utf-8", newline="") as stream:
-            reader = csv.DictReader(stream)
-            rows = list(reader)
-        assert reader.fieldnames == list(reactions[0])
-        assert {row["id"] for row in rows} == reaction_ids_by_family[family]
-    argon_ion = next(row for row in states if row["id"] == "Ar+@ground")
-    assert argon_ion["species"] == "Ar+"
-    argon_metastable = next(row for row in states if row["id"] == "Ar@metastable")
-    assert (
-        argon_metastable["species"],
-        argon_metastable["state_label"],
-        argon_metastable["state_symbol"],
-    ) == (
-        "Ar(m)",
-        "metastable",
-        "m",
-    )
-    assert (argon_metastable["excitation"], argon_metastable["lifetime_class"]) == (
-        "electronic",
-        "metastable",
-    )
-    assert argon_metastable["state_meaning"] == ("metastable electronic-state manifold (lumped)")
-    argon_resonant = next(row for row in states if row["id"] == "Ar@resonant")
-    assert (
-        argon_resonant["species"],
-        argon_resonant["state_label"],
-        argon_resonant["state_symbol"],
-    ) == (
-        "Ar(r)",
-        "resonant",
-        "r",
-    )
-    assert all("@" not in row["equation"] for row in reactions)
-    assert all(row["reaction_type"] for row in reactions)
-    assert any(row["reaction_type"] == "Electron-impact ionization" for row in reactions)
-
-    with (first / "assessments/state/states.csv").open(encoding="utf-8", newline="") as stream:
-        state_layer = list(csv.DictReader(stream))
-    assert len(state_layer) == len(states)
-    assert list(state_layer[0]) == [
-        "candidate",
-        "excitation",
-        "resolution",
-        "lifetime_class",
-        "state_meaning",
-        "alternative_resolution_states",
-        "evidence",
-        "verdict",
-        "reason",
-        "id",
-    ]
-    assessment_expectations = {
-        "consistency": (
-            [
-                "candidate",
-                "excitation",
-                "resolution",
-                "lifetime_class",
-                "state_meaning",
-                "alternative_resolution_states",
-                "verdict",
-                "reason",
-                "id",
-            ],
-            ["candidate", "reaction_type", "verdict", "reason", "id"],
-            len(states),
-        ),
-        "state": (
-            [
-                "candidate",
-                "excitation",
-                "resolution",
-                "lifetime_class",
-                "state_meaning",
-                "alternative_resolution_states",
-                "evidence",
-                "verdict",
-                "reason",
-                "id",
-            ],
-            ["candidate", "reaction_type", "verdict", "reason", "id"],
-            len(states),
-        ),
-        "thermochemistry": (
-            [
-                "candidate",
-                "excitation",
-                "resolution",
-                "lifetime_class",
-                "state_meaning",
-                "alternative_resolution_states",
-                "verdict",
-                "reason",
-                "id",
-            ],
-            [
-                "candidate",
-                "reaction_type",
-                "delta_h_eV",
-                "delta_g_eV",
-                "threshold_eV",
-                "verdict",
-                "reason",
-                "id",
-            ],
-            len(states),
-        ),
-        "reaction_evidence": (
-            None,
-            [
-                "candidate",
-                "reaction_type",
-                "matched_source",
-                "channel_scope",
-                "verdict",
-                "reason",
-                "id",
-            ],
-            0,
-        ),
-        "kinetics": (
-            None,
-            [
-                "candidate",
-                "reaction_type",
-                "data_kind",
-                "unit",
-                "applicable_range",
-                "dataset_id",
-                "verdict",
-                "reason",
-                "id",
-            ],
-            0,
-        ),
-    }
-    for layer, (state_header, reaction_header, state_count) in assessment_expectations.items():
-        directory = first / "assessments" / layer
-        state_path = directory / "states.csv"
-        if state_header is None:
-            assert not state_path.exists()
-        else:
-            with state_path.open(encoding="utf-8", newline="") as stream:
-                state_reader = csv.DictReader(stream)
-                state_rows = list(state_reader)
-            assert len(state_rows) == state_count
-            assert state_reader.fieldnames == state_header
-        with (directory / "reactions.csv").open(encoding="utf-8", newline="") as stream:
-            reaction_reader = csv.DictReader(stream)
-            reaction_rows = list(reaction_reader)
-        assert len(reaction_rows) == len(reactions)
-        assert reaction_reader.fieldnames == reaction_header
-        for family, filename in family_files.items():
-            with (directory / filename).open(encoding="utf-8", newline="") as stream:
-                family_reader = csv.DictReader(stream)
-                family_rows = list(family_reader)
-            assert family_reader.fieldnames == reaction_header
-            assert {row["id"] for row in family_rows} == reaction_ids_by_family[family]
-        assert not (directory / "assessment.csv").exists()
-        with (directory / "summary.csv").open(encoding="utf-8", newline="") as stream:
-            summary = {row["entity"]: row for row in csv.DictReader(stream)}
-        assert int(summary["state"]["total"]) == state_count
-        assert int(summary["reaction"]["total"]) == len(reactions)
-        assert int(summary["all"]["total"]) == state_count + len(reactions)
-        for chart in (
-            "verdict_counts.svg",
-            "reaction_family.svg",
-        ):
-            svg = (directory / chart).read_text(encoding="utf-8")
-            assert svg.startswith("<svg")
-            assert layer.replace("_", " ").title() in svg
-        with (directory / "family_summary.csv").open(encoding="utf-8", newline="") as stream:
-            family_summary = list(csv.DictReader(stream))
-        assert family_summary
-        assert list(family_summary[0]) == [
-            "family",
-            "pass",
-            "fail",
-            "unknown",
-            "not_applicable",
-            "total",
-        ]
-        assert sum(int(row["total"]) for row in family_summary) == len(reactions)
-
-    screening_expectations = (
-        ("state_consistency", (("state",), ("consistency",))),
-        (
-            "state_consistency_thermochemistry",
-            (("state",), ("consistency",), ("thermochemistry",)),
-        ),
-        (
-            "state_consistency_thermochemistry_kinetics_or_reaction_evidence",
-            (
-                ("state",),
-                ("consistency",),
-                ("thermochemistry",),
-                ("kinetics", "reaction_evidence"),
-            ),
-        ),
-    )
-    for stage, gates in screening_expectations:
-        directory = first / "assessments" / "screening" / stage
-        with (directory / "states.csv").open(encoding="utf-8", newline="") as stream:
-            screened_state_reader = csv.DictReader(stream)
-            screened_states = list(screened_state_reader)
-        with (directory / "reactions.csv").open(encoding="utf-8", newline="") as stream:
-            screened_reaction_reader = csv.DictReader(stream)
-            screened_reactions = list(screened_reaction_reader)
-        expected_state_ids = {
-            state_id
-            for state_id, assessed in result.evaluation.state_assessments.items()
-            if all(
-                not any(layer in assessed for layer in gate)
-                or any(layer in assessed and assessed[layer].verdict == "pass" for layer in gate)
-                for gate in gates
-            )
-        }
-        expected_reaction_ids = {
-            reaction_id
-            for reaction_id, assessed in result.evaluation.reaction_assessments.items()
-            if all(any(assessed[layer].verdict == "pass" for layer in gate) for gate in gates)
-        }
-        assert {row["id"] for row in screened_states} == expected_state_ids
-        assert all(row["state_meaning"] for row in screened_states)
-        assert screened_state_reader.fieldnames is not None
-        assert "passed_layers" not in screened_state_reader.fieldnames
-        assert {row["id"] for row in screened_reactions} == expected_reaction_ids
-        for family, filename in family_files.items():
-            with (directory / filename).open(encoding="utf-8", newline="") as stream:
-                family_reader = csv.DictReader(stream)
-                family_rows = list(family_reader)
-            assert family_reader.fieldnames == screened_reaction_reader.fieldnames
-            assert {row["id"] for row in family_rows} == (
-                expected_reaction_ids & reaction_ids_by_family[family]
-            )
-        assert screened_reaction_reader.fieldnames is not None
-        assert {
-            "kinetics_verdict",
-            "reaction_evidence_verdict",
-            "kinetics_or_reaction_evidence_verdict",
-            "accepted_by",
-        } <= set(screened_reaction_reader.fieldnames)
-        assert "screen_rule" not in screened_reaction_reader.fieldnames
-        with (directory / "summary.csv").open(encoding="utf-8", newline="") as stream:
-            screening_summary = list(csv.DictReader(stream))
-        assert len(screening_summary) == 2 * (len(gates) + 1)
-        assert [row["step"] for row in screening_summary if row["entity"] == "reaction"] == [
-            "all",
-            *("_or_".join(gate) for gate in gates),
-        ]
-        svg = (directory / "retention.svg").read_text(encoding="utf-8")
-        assert svg.startswith("<svg")
-        assert "screening" in svg.lower()
-
-    explorer = first / "assessments" / "network.html"
-    html = explorer.read_text(encoding="utf-8")
-    payload = _network_payload(html)
-    assert payload["case"] == "test"
-    assert len(payload["states"]) == len(states)
-    assert len(payload["reactions"]) == len(reactions)
-    assert {reaction["id"] for reaction in payload["reactions"]} == {
-        reaction["id"] for reaction in reactions
-    }
-    assert len(payload["views"]) == 8
-    assert "click a state node" in html.lower()
-    assert "Reaction-state stoichiometric matrix" in html
-    assert "one reaction per column" in html.lower()
-    assert "Hierarchical pathways" in html
-    assert "all reactants" in html.lower()
-    assert "candidate generation depth is not used" in html.lower()
-    assert payload["seed_state_ids"] == ["Ar@ground", "e"]
-    assert payload["pathway_default_target"] is None or payload["pathway_default_target"] in {
-        state["id"] for state in payload["states"]
-    }
-    assert "Net producers" in html
-    assert "Zero-net participants" in html
-    assert "independent paging" in html
-    assert not list(first.rglob("network*.svg"))
-    assert not [path for path in first.rglob("network") if path.is_dir()]
-
-    with (first / "assessments/statistics.csv").open(encoding="utf-8", newline="") as stream:
-        statistics = list(csv.DictReader(stream))
-    assert list(statistics[0]) == ["metric", "layer", "entity", "category", "count", "total"]
-    assert {row["layer"] for row in statistics if row["metric"] == "assessment_verdict"} == set(
-        assessment_expectations
-    )
-    assert {row["metric"] for row in statistics} >= {
-        "reaction_readiness",
-        "state_charge",
-        "state_excitation",
-        "state_resolution",
-        "state_lifetime_class",
-        "reaction_family",
-        "reaction_depth",
-    }
-    statistics_svg = (first / "assessments/statistics.svg").read_text(encoding="utf-8")
-    assert "Overall assessment" in statistics_svg
-    assert "Cumulative pass-only coverage" in statistics_svg
-    assert "Independent reaction verdicts" in statistics_svg
-    composition_svg = (first / "assessments/composition.svg").read_text(encoding="utf-8")
-    assert "Generated candidate composition" in composition_svg
-    assert "States by charge" in composition_svg
-    assert "States by excitation" in composition_svg
-    assert "States by resolution" in composition_svg
-    assert "States by lifetime class" in composition_svg
-    assert "Reactions by family" in composition_svg
-    assert "Reactions by generation depth" in composition_svg
-
-    export.write(first, result)
-    assert sorted(path.name for path in first.iterdir()) == [
-        "reactions.yaml",
-        "selected.yaml",
-        "states.yaml",
-    ]
+    monkeypatch.setattr("reactgen.numeric.data_use", forbidden)
+    assert export.read(tmp_path)["reactions"][0]["data_use"]["value"] == 0
 
 
-def test_single_network_explorer_contains_every_reaction_without_image_pages(
-    tmp_path: Path,
+@pytest.mark.parametrize("status", ["unavailable", "conflict", "needs_input"])
+def test_saved_use_allows_unselected_results_and_missing_selection(status: str) -> None:
+    use = selected_data_use()
+    use.update(status=status, dataset_id=None, kind=None, value=None, unit=None)
+    if status in {"needs_input", "conflict"}:
+        use["required_inputs"] = ["rate_law_selection"]
+    export.validate(document_with_use(use))
+
+
+@pytest.mark.parametrize(
+    ("kind", "value", "unit"),
+    [
+        ("sticking_coefficient", 0.4, "1"),
+        ("cross_section", None, "m2"),
+    ],
+)
+def test_saved_use_retains_probabilities_or_curves_pending_conversion(
+    kind: str, value: float | None, unit: str
 ) -> None:
-    result = run(_case(("O2",)), EvidenceCatalog.load(None))
-    out = tmp_path / "oxygen"
-    export.write(out, result, include_csv=True)
-    explorers = list(out.rglob("network.html"))
-    assert explorers == [out / "assessments" / "network.html"]
-    payload = _network_payload(explorers[0].read_text(encoding="utf-8"))
-    assert len(payload["reactions"]) == len(result.candidates.reactions)
-    assert {reaction["id"] for reaction in payload["reactions"]} == set(result.candidates.reactions)
-    assert not list(out.rglob("page_*.svg"))
-    png = out / "assessments" / "network.png"
-    assert png.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
-    with Image.open(png) as image:
-        assert image.info["reactgen.reaction_count"] == str(len(result.candidates.reactions))
-        assert image.info["reactgen.scope"] == "all_candidates_no_sampling"
-    pathway = out / "assessments" / "pathways.png"
-    assert pathway.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
-    with Image.open(pathway) as image:
-        assert image.info["reactgen.scope"] == "target_centered_canonical_hyperpath"
-        assert int(image.info["reactgen.path_reaction_count"]) > 0
+    use = selected_data_use("needs_transform")
+    use.update(kind=kind, value=value, unit=unit)
+    use["datasets"][0].update(value=value, unit=unit)
+    export.validate(document_with_use(use))
 
 
-def test_state_csv_separates_identity_display_lifetime_and_resolution(tmp_path: Path) -> None:
-    result = run(
-        _case(("Ar", "O2")),
-        EvidenceCatalog.load(Path("registry")),
-    )
-    out = tmp_path / "bundle"
-    export.write(out, result, include_csv=True)
-    with (out / "states.csv").open(encoding="utf-8", newline="") as stream:
-        states = {row["id"]: row for row in csv.DictReader(stream)}
-
-    assert states["Ar@4s"]["species"] == "Ar(4s)"
-    assert states["Ar@4s"]["lifetime_class"] == "mixed_metastable_resonant"
-    assert states["Ar@4s"]["state_energy_eV"] == "11.6"
-    for state_id in ("Ar@metastable", "Ar@resonant"):
-        assert states[state_id]["state_energy_eV"] == ""
-
-    assert "O2(a¹Δg)" in states["O2@electronic"]["alternative_resolution_states"]
-    assert "O2(b¹Σg+)" in states["O2@electronic"]["alternative_resolution_states"]
-    assert states["O2@a1dg"]["alternative_resolution_states"] == "O2*"
-    assert states["O2@electronic"]["structure_scope"] == "formula_determined"
-
-    with (out / "reactions.csv").open(encoding="utf-8", newline="") as stream:
-        reactions = list(csv.DictReader(stream))
-    equations = {row["equation"] for row in reactions}
-    assert "e + Ar -> Ar(4s) + e" in equations
-    assert "Ar + e -> Ar(4s) + e" not in equations
-
-    reaction_document = yaml.safe_load((out / "reactions.yaml").read_text(encoding="utf-8"))
-    for reaction in reaction_document["reactions"]:
-        if reaction["family"] == "electron":
-            assert reaction["reactants"][0]["species"] == "e"
-            product_ids = [term["species"] for term in reaction["products"]]
-            if "e" in product_ids:
-                assert product_ids[-1] == "e"
-        if reaction["family"] == "ion":
-            first = reaction["reactants"][0]["species"]
-            assert result.candidates.states[first].charge != 0
-
-
-def test_cumulative_screen_accepts_kinetics_or_reaction_evidence(tmp_path: Path) -> None:
-    result = run(_case(), EvidenceCatalog.load(None))
-    reaction_id = next(iter(result.candidates.reactions))
-    assessed = result.evaluation.reaction_assessments[reaction_id]
-    for layer in ("state", "consistency", "thermochemistry"):
-        assessed[layer] = Assessment("pass")
-
-    final_stage = (
-        "assessments/screening/"
-        "state_consistency_thermochemistry_kinetics_or_reaction_evidence/reactions.csv"
-    )
-    for accepted_layer in ("kinetics", "reaction_evidence"):
-        assessed["kinetics"] = Assessment("unknown")
-        assessed["reaction_evidence"] = Assessment("unknown")
-        assessed[accepted_layer] = Assessment("pass")
-        out = tmp_path / accepted_layer
-        export.write(out, result, include_csv=True)
-        with (out / final_stage).open(encoding="utf-8", newline="") as stream:
-            rows = list(csv.DictReader(stream))
-        selected = next(row for row in rows if row["id"] == reaction_id)
-        assert selected["kinetics_or_reaction_evidence_verdict"] == "pass"
-        assert selected["accepted_by"] == accepted_layer
-
-    assessed["kinetics"] = Assessment("unknown")
-    assessed["reaction_evidence"] = Assessment("unknown")
-    out = tmp_path / "neither"
-    export.write(out, result, include_csv=True)
-    with (out / final_stage).open(encoding="utf-8", newline="") as stream:
-        assert reaction_id not in {row["id"] for row in csv.DictReader(stream)}
-
-
-def test_cli_csv_flag_adds_compact_csv_views(tmp_path: Path) -> None:
-    case_path = tmp_path / "case.yaml"
-    case_path.write_text("name: argon\ngases: [Ar]\n", encoding="utf-8")
-    out = tmp_path / "outputs"
-    assert main(["generate", str(case_path), "--out", str(out), "--csv"]) == 0
-    assert _relative_files(out) == _expected_review_files()
-
-
-def _relative_files(root: Path) -> list[str]:
-    return sorted(path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file())
-
-
-def test_cli_generates_without_a_registry_and_has_no_discover_command(
-    tmp_path: Path,
+@pytest.mark.parametrize(
+    ("status", "use_changes", "dataset_changes"),
+    [
+        ("coefficient", {"value": None}, {"value": None}),
+        ("coefficient", {"value": -1}, {"value": -1}),
+        ("coefficient", {"unit": None}, {"unit": None}),
+        ("coefficient", {"kind": None}, {}),
+        ("coefficient", {"dataset_id": None}, {}),
+        ("coefficient", {"dataset_id": "absent"}, {}),
+        ("coefficient", {}, {"status": "invalid"}),
+        ("coefficient", {}, {"value": 1}),
+        ("coefficient", {}, {"unit": "s-1"}),
+        ("coefficient", {"required_inputs": ["unknown"]}, {"required_inputs": ["unknown"]}),
+        ("coefficient", {"required_transforms": ["unknown"]}, {}),
+        ("coefficient", {"status": "needs_input"}, {}),
+        ("coefficient", {"status": "needs_transform"}, {}),
+        ("needs_transform", {"required_inputs": ["incident_flux"]}, {}),
+        ("coefficient", {"status": "unavailable"}, {}),
+        ("coefficient", {"status": "conflict"}, {}),
+        ("coefficient", {"status": "conflict", "dataset_id": None, "kind": None, "unit": None}, {}),
+        ("coefficient", {"kind": "sticking_coefficient", "unit": "1"}, {"unit": "1"}),
+        ("needs_transform", {"value": 1.1}, {"value": 1.1}),
+    ],
+)
+def test_saved_use_rejects_status_value_and_selection_contradictions(
+    status: str, use_changes: dict, dataset_changes: dict
 ) -> None:
-    case_path = tmp_path / "case.yaml"
-    case_path.write_text("name: argon\ngases: [Ar]\n", encoding="utf-8")
-    out = tmp_path / "outputs"
+    use = selected_data_use(status)
+    use.update(use_changes)
+    use["datasets"][0].update(dataset_changes)
+    with pytest.raises(ValueError, match="data_use|data_use selection"):
+        export.validate(document_with_use(use))
+
+
+def test_saved_use_rejects_duplicate_dataset_assessments() -> None:
+    use = selected_data_use()
+    use["datasets"].append(deepcopy(use["datasets"][0]))
+    with pytest.raises(ValueError, match="duplicate data_use dataset IDs"):
+        export.validate(document_with_use(use))
+
+
+@pytest.mark.parametrize(
+    "change", ["id", "charge", "phase", "reference", "verdict", "extra", "summary", "input"]
+)
+def test_saved_result_rejects_identity_and_schema_contradictions(change: str) -> None:
+    document = export.document(result())
+    if change == "id":
+        document["states"][0]["id"] = "bad"
+    elif change == "charge":
+        document["states"][0]["charge"] += 1
+    elif change == "phase":
+        document["states"][0]["phase"] = "solid"
+    elif change == "reference":
+        document["reactions"][0]["reactants"][0]["species"] = "missing"
+    elif change == "verdict":
+        document["reactions"][0]["assessments"]["kinetics"]["verdict"] = "ready"
+    elif change == "extra":
+        document["policy"] = "review"
+    elif change == "input":
+        document["input"]["gases"] = ["CF4"]
+    else:
+        document["summary"]["reaction_count"] += 1
+    with pytest.raises(ValueError, match=".+"):
+        export.validate(document)
+
+
+def test_failed_canonical_replace_preserves_previous_result(tmp_path: Path, monkeypatch) -> None:
+    export.write(tmp_path, result())
+    previous = (tmp_path / "result.yaml").read_bytes()
+    original = Path.replace
+
+    def replace(path, target):
+        if Path(target).name == "result.yaml":
+            raise OSError("injected commit failure")
+        return original(path, target)
+
+    monkeypatch.setattr(Path, "replace", replace)
+    with pytest.raises(OSError, match="commit failure"):
+        export.write(tmp_path, analyze(Case("changed", ("Ar",)), EvidenceCatalog.load(None)))
+    assert (tmp_path / "result.yaml").read_bytes() == previous
+    export.read(tmp_path, verify_views=True)
+    assert not list(tmp_path.glob("*.tmp"))
+
+
+def test_failed_csv_replace_leaves_canonical_readable_and_repairable(
+    tmp_path: Path, monkeypatch
+) -> None:
+    export.write(tmp_path, result())
+    original = Path.replace
+
+    def replace(path, target):
+        if Path(target).name == "states.csv":
+            raise OSError("injected view failure")
+        return original(path, target)
+
+    monkeypatch.setattr(Path, "replace", replace)
+    # Different gases change both views and establish an actual mixed-view case.
+    updated = analyze(Case("changed", ("Ar", "F2")), EvidenceCatalog.load(None))
+    with pytest.raises(export.PartialOutputError, match="result.yaml saved"):
+        export.write(tmp_path, updated)
+    document = export.read(tmp_path)
+    assert document["input"]["gases"] == ["Ar", "F2"]
+    with pytest.raises(ValueError, match="stale"):
+        export.read(tmp_path, verify_views=True)
+    monkeypatch.setattr(Path, "replace", original)
+    export.rebuild_views(document, tmp_path)
+    export.read(tmp_path, verify_views=True)
+
+
+@pytest.mark.parametrize(
+    "document",
+    [
+        {"gases": "Ar"},
+        {"gases": []},
+        {"gases": ["Ar"], "surfaces": "SiO2"},
+        {"gases": ["Ar"], "conditions": {"pressure_Pa": 1}},
+        {"gases": ["Ar"], "conditions": {"gas_temperature_K": True}},
+        {"gases": ["Ar"], "conditions": {"gas_temperature_K": float("nan")}},
+        {"gases": ["Ar"], "conditions": {"electron_temperature_eV": 0}},
+        {"gases": ["Ar"], "limits": {"max_depth": 1.5}},
+        {"gases": ["Ar"], "limits": {"max_species": True}},
+        {"gases": ["Ar"], "limits": {"max_charge_abs": 2}},
+        {"gases": ["Ar"], "scenario": "etch"},
+    ],
+)
+def test_input_boundary_rejects_unusable_or_ambiguous_fields(document: dict) -> None:
+    with pytest.raises(ValueError, match=".+"):
+        Case.from_document(document)
+
+
+def test_input_normalization_and_supported_quantity_values() -> None:
+    case = Case.from_document(
+        {"gases": ["AR", "Ar", "F2"], "conditions": {"gas_temperature_K": "3.0e2"}}
+    )
+    assert case.gases == ("Ar", "F2")
+    assert case.conditions.value_of("gas_temperature") == 300
+    assert Conditions(ion_energy_eV=2).value_of("ion_energy") == 2
+
+
+def test_formula_and_file_cli_share_one_result(tmp_path: Path) -> None:
+    input_path = tmp_path / "input.yaml"
+    dump(input_path, {"gases": ["Ar"]})
+    first, second = tmp_path / "first", tmp_path / "second"
+    assert main(["analyze", "Ar", "--out", str(first)]) == 0
+    assert main(["analyze", "--input", str(input_path), "--out", str(second)]) == 0
+    assert (first / "result.yaml").read_bytes() == (second / "result.yaml").read_bytes()
+    assert main(["analyze", "Ar", "--input", str(input_path), "--out", str(second)]) == 2
+    assert main(["analyze", "--out", str(second)]) == 2
+
+
+def test_explicit_missing_evidence_is_an_error(tmp_path: Path) -> None:
+    out = tmp_path / "result"
+    assert main(["analyze", "Ar", "--evidence", str(tmp_path / "missing"), "--out", str(out)]) == 2
+    assert not out.exists()
+
+
+def test_partial_generation_is_saved_with_explicit_scopes(tmp_path: Path) -> None:
+    input_path = tmp_path / "input.yaml"
+    dump(input_path, {"gases": ["SF6"], "limits": {"max_depth": 1}})
+    assert main(["analyze", "--input", str(input_path), "--out", str(tmp_path / "out")]) == 1
+    generation = export.read(tmp_path / "out")["metadata"]["generation"]
+    assert generation["complete"] is False
+    assert generation["completion"]["mechanical"] is False
+    assert generation["stop_reason"] == "max_depth=1"
+
+
+def test_needs_keeps_repair_work_even_if_another_judgment_failed() -> None:
+    document = export.document(result())
+    item = document["reactions"][0]
+    item["assessments"]["kinetics"] = {"verdict": "fail", "message": "invalid dataset", "basis": []}
+    item["assessments"]["reaction_evidence"] = {
+        "verdict": "unknown",
+        "message": "missing channel proof",
+        "basis": [],
+    }
+    backlog = needs.build(document, detail=True)["details"]
+    assert any(
+        row["id"] == item["id"] and row["responsibility"] == "failed_proposition" for row in backlog
+    )
+    assert any(
+        row["id"] == item["id"] and row["judgment"] == "reaction_evidence" for row in backlog
+    )
+
+
+def test_saved_views_and_needs_never_reanalyze(tmp_path: Path, monkeypatch) -> None:
+    export.write(tmp_path / "out", result())
+
+    def forbidden(*args):
+        raise AssertionError("saved views must not analyze")
+
+    monkeypatch.setattr("reactgen.cli.analyze", forbidden)
+    assert main(["needs", str(tmp_path / "out")]) == 0
     assert (
-        main(
-            [
-                "generate",
-                str(case_path),
-                "--registry",
-                str(tmp_path / "missing"),
-                "--out",
-                str(out),
-            ]
-        )
+        main(["view", str(tmp_path / "out"), "--kind", "csv", "--out", str(tmp_path / "tables")])
         == 0
     )
 
 
-def _expected_review_files() -> list[str]:
-    files = [
-        "assessments/composition.svg",
-        "assessments/network.html",
-        "assessments/network.png",
-        "assessments/pathways.png",
-        "assessments/statistics.csv",
-        "assessments/statistics.svg",
-        "reactions.csv",
-        "reactions_electron.csv",
-        "reactions_ion.csv",
-        "reactions_neutral.csv",
-        "reactions_surface.csv",
-        "reactions.yaml",
-        "selected.yaml",
-        "states.csv",
-        "states.yaml",
-    ]
-    for layer in (
-        "consistency",
-        "state",
-        "thermochemistry",
-        "reaction_evidence",
-        "kinetics",
-    ):
-        files.extend(
-            f"assessments/{layer}/{filename}"
-            for filename in (
-                "family_summary.csv",
-                "reaction_family.svg",
-                "reactions.csv",
-                "reactions_electron.csv",
-                "reactions_ion.csv",
-                "reactions_neutral.csv",
-                "reactions_surface.csv",
-                "summary.csv",
-                "verdict_counts.svg",
-            )
-        )
-        if layer in ("consistency", "state", "thermochemistry"):
-            files.append(f"assessments/{layer}/states.csv")
-    for stage in (
-        "state_consistency",
-        "state_consistency_thermochemistry",
-        "state_consistency_thermochemistry_kinetics_or_reaction_evidence",
-    ):
-        files.extend(
-            f"assessments/screening/{stage}/{filename}"
-            for filename in (
-                "reactions.csv",
-                "reactions_electron.csv",
-                "reactions_ion.csv",
-                "reactions_neutral.csv",
-                "reactions_surface.csv",
-                "retention.svg",
-                "states.csv",
-                "summary.csv",
-            )
-        )
-    return sorted(files)
-
-
-def _network_payload(html: str) -> dict:
-    marker = '<script id="network-data" type="application/json">'
-    encoded = html.split(marker, maxsplit=1)[1].split("</script>", maxsplit=1)[0]
-    return json.loads(encoded)
-
-
-def test_removed_discover_cli_is_rejected() -> None:
-    with pytest.raises(SystemExit) as error:
-        main(["discover"])
-    assert error.value.code == 2
-
-
-def test_cli_rejects_invalid_gas_with_exit_2(tmp_path: Path) -> None:
-    case_path = tmp_path / "case.yaml"
-    case_path.write_text("gases: [Ar+]\n", encoding="utf-8")
-    assert main(["generate", str(case_path), "--out", str(tmp_path / "out")]) == 2
-
-
-def test_cli_rejects_removed_fraction_input(tmp_path: Path) -> None:
-    case_path = tmp_path / "case.yaml"
-    case_path.write_text("gases: [Ar, O2]\nfractions: [0.8, 0.2]\n", encoding="utf-8")
-    assert main(["generate", str(case_path), "--out", str(tmp_path / "out")]) == 2
-
-
-@pytest.mark.parametrize(
-    ("name", "value"),
-    [
-        ("pressure_Pa", 0.0),
-        ("gas_temperature_K", -1.0),
-        ("electron_temperature_eV", 0.0),
-        ("electron_density_m3", -1.0),
-        ("reduced_field_Td", -1.0),
-        ("volume_m3", 0.0),
-        ("surface_area_m2", -1.0),
-        ("residence_time_s", 0.0),
-    ],
-)
-def test_case_rejects_nonphysical_conditions(name: str, value: float) -> None:
-    with pytest.raises(ValueError, match=name):
-        Conditions(**{name: value})  # type: ignore[arg-type]
-
-
-def test_cli_reports_nonphysical_conditions_as_input_error(tmp_path: Path) -> None:
-    case_path = tmp_path / "case.yaml"
-    case_path.write_text(
-        "gases: [Ar]\nconditions:\n  gas_temperature_K: -300\n",
-        encoding="utf-8",
+def test_ingest_checks_declared_equation_even_with_explicit_id(tmp_path: Path) -> None:
+    analysis = result()
+    export.write(tmp_path / "out", analysis)
+    elastic = next(
+        item for item in analysis.candidates.reactions.values() if item.process == "elastic"
     )
-    assert main(["generate", str(case_path), "--out", str(tmp_path / "out")]) == 2
-
-
-def test_cli_returns_1_when_three_file_bundle_cannot_be_written(tmp_path: Path) -> None:
-    case_path = tmp_path / "case.yaml"
-    case_path.write_text("gases: [Ar]\n", encoding="utf-8")
-    out = tmp_path / "out"
-    out.mkdir()
-    (out / "unrelated.txt").write_text("keep", encoding="utf-8")
-    assert main(["generate", str(case_path), "--out", str(out)]) == 1
-    assert (out / "unrelated.txt").read_text(encoding="utf-8") == "keep"
-
-
-def test_ingest_matches_bundle_index_and_queues_total_process(tmp_path: Path) -> None:
-    result = run(_case(), EvidenceCatalog.load(None))
-    bundle = tmp_path / "bundle"
-    export.write(bundle, result)
     snapshot = tmp_path / "snapshot.yaml"
-    snapshot.write_text(
-        yaml.safe_dump(
-            {
-                "kind": "cross_section",
-                "source": {"source_id": "test"},
-                "records": [
-                    {
-                        "reaction": "e + Ar -> e + Ar",
-                        "type": "elastic",
-                        "form": "table",
-                        "unit": "m2",
-                        "independent_variable": "electron_energy",
-                        "observable": "elastic",
-                        "asset": "elastic.csv",
-                    },
-                    {
-                        "reaction": "e + Ar -> 2 e + Ar+",
-                        "type": "ionization",
-                        "form": "table",
-                        "unit": "m2",
-                        "independent_variable": "electron_energy",
-                        "observable": "reaction",
-                        "channel_scope": "total",
-                        "asset": "total.csv",
-                    },
-                ],
-            },
-            sort_keys=False,
-        ),
-        encoding="utf-8",
-    )
-    report = ingest.ingest(snapshot, bundle, tmp_path / "overlay.yaml")
-    assert report.accepted == 1
-    assert [item["reason"] for item in report.review] == [
-        "total process cannot be assigned to a product-resolved channel"
-    ]
-    repeated = ingest.ingest(snapshot, bundle, tmp_path / "overlay.yaml")
-    overlay = yaml.safe_load((tmp_path / "overlay.yaml").read_text(encoding="utf-8"))
-    assert repeated.accepted == 1
-    assert len(next(iter(overlay["datasets"].values()))) == 1
-
-
-def test_truncation_propagates_to_selection_metadata() -> None:
-    result = run(
-        _case(("SF6",), Limits(max_depth=1)),
-        EvidenceCatalog.load(None),
-    )
-    assert not result.candidates.complete
-    assert result.metadata["stop_reason"] == "max_depth=1"
-
-
-def test_only_adopt_promotes_canonical_overlay_ids_into_registry(tmp_path: Path) -> None:
-    registry_path = tmp_path / "registry"
-    shutil.copytree(FIXTURE, registry_path)
-    catalog = EvidenceCatalog.load(registry_path)
-    result = run(_case(), catalog)
-    elastic_id = next(
-        reaction.id
-        for reaction in result.candidates.reactions.values()
-        if reaction.equation == "e + Ar@ground -> e + Ar@ground"
-    )
-    asset = tmp_path / "elastic.csv"
-    asset.write_text("energy,cross_section\n1,1e-20\n10,2e-20\n", encoding="utf-8")
-    overlay = {
-        "properties": {
-            "Ar@ground": {
-                "test_property": {
-                    "value": 1.0,
-                    "unit": "1",
-                    "source": "reviewed test",
-                }
-            }
-        },
-        "datasets": {
-            elastic_id: [
+    dump(
+        snapshot,
+        {
+            "records": [
                 {
-                    "id": "reviewed_elastic_cross_section",
-                    "kind": "cross_section",
-                    "form": "table",
-                    "unit": "m2",
-                    "independent_variable": "electron_energy",
-                    "observable": "elastic",
-                    "asset": {"path": asset.name},
-                    "validity": {
-                        "quantity": "collision_energy",
-                        "minimum": 1.0,
-                        "maximum": 10.0,
-                        "unit": "eV",
-                    },
+                    "reaction_id": elastic.id,
+                    "reaction": "e + Ar -> 2 e + Ar+",
+                    "type": "ionization",
+                    "value": 1,
+                    "form": "constant",
+                    "unit": "m3/s",
+                },
+                {
+                    "species": "Ar@ground",
+                    "phase": "solid",
+                    "property": "mass_amu",
+                    "value": 40,
+                    "unit": "u",
+                },
+            ]
+        },
+    )
+    report = ingest.ingest(snapshot, tmp_path / "out", tmp_path / "overlay.yaml")
+    assert report.accepted == 0
+    assert [item["reason"] for item in report.review] == [
+        "reaction ID contradicts declared channel",
+        "physical identity mismatch",
+    ]
+
+
+def test_legacy_files_are_not_silently_overwritten(tmp_path: Path) -> None:
+    dump(tmp_path / "states.yaml", {"metadata": {"schema_version": 4}, "states": []})
+    with pytest.raises(ValueError, match="migration"):
+        export.write(tmp_path, result())
+
+
+def legacy(tmp_path: Path) -> tuple[Path, Path]:
+    input_path = tmp_path / "old_input.yaml"
+    dump(input_path, {"gases": ["Ar"], "conditions": {"pressure_Pa": 1, "gas_temperature_K": 300}})
+    bundle = tmp_path / "old_bundle"
+    bundle.mkdir()
+    state = {
+        "id": "Ar@ground",
+        "composition": {"Ar": 1},
+        "charge": 0,
+        "assessments": {"state": {"verdict": "pass"}},
+        "evidence": {"records": []},
+    }
+    dump(bundle / "states.yaml", {"metadata": {"schema_version": 4}, "states": [state]})
+    dump(bundle / "reactions.yaml", {"metadata": {"schema_version": 4}, "reactions": []})
+    dump(bundle / "selected.yaml", {"readiness": {"direct_rate_ready": True}})
+    return input_path, bundle
+
+
+def test_migration_preserves_originals_and_recomputes_judgments(tmp_path: Path) -> None:
+    input_path, bundle = legacy(tmp_path)
+    migrate(input_path, bundle, tmp_path / "new")
+    document = export.read(tmp_path / "new")
+    assert document["states"][0]["assessments"]["state"]["verdict"] == "unknown"
+    archived = yaml.safe_load(
+        (tmp_path / "new/migration/input_v4.yaml").read_text(encoding="utf-8")
+    )
+    assert archived["conditions"]["pressure_Pa"] == 1
+    assert "pressure_Pa" not in document["input"]["conditions"]
+    assert (tmp_path / "new/migration/selected.yaml").read_bytes() == (
+        bundle / "selected.yaml"
+    ).read_bytes()
+
+
+def test_migration_rejects_ambiguous_multivalent_identity(tmp_path: Path) -> None:
+    input_path, bundle = legacy(tmp_path)
+    document = yaml.safe_load((bundle / "states.yaml").read_text(encoding="utf-8"))
+    document["states"][0].update(id="Ar2+@ground", composition={"Ar": 1}, charge=2)
+    dump(bundle / "states.yaml", document)
+    with pytest.raises(ValueError, match="ambiguous legacy"):
+        migrate(input_path, bundle, tmp_path / "new")
+    assert not (tmp_path / "new").exists()
+
+
+def test_invalid_source_number_remains_repairable_without_blocking_other_results(
+    tmp_path: Path,
+) -> None:
+    snapshot = tmp_path / "source.yaml"
+    dump(
+        snapshot,
+        {
+            "records": [
+                {
+                    "reaction": "e + Ar -> e + Ar",
+                    "family": "electron",
+                    "type": "elastic",
+                    "form": "constant",
+                    "params": {"value": float("nan")},
+                    "unit": "m3/s",
                     "status": "reviewed",
+                    "source": {"citation": "test declaration"},
+                    "validity": {
+                        "quantity": "gas_temperature",
+                        "minimum": 100,
+                        "maximum": 1000,
+                        "unit": "K",
+                    },
                 }
             ]
         },
-    }
-    overlay_path = tmp_path / "overlay.yaml"
-    overlay_path.write_text(yaml.safe_dump(overlay, sort_keys=False), encoding="utf-8")
-    report = adopt.adopt(overlay_path, registry_path)
-    assert report.values == 2
-    promoted = Registry.load(registry_path)
-    assert promoted.species["Ar"].value("test_property") == 1.0
-    elastic = next(
-        reaction
-        for group in promoted.channels.values()
-        for reaction in group
-        if reaction.id == "e_Ar_elastic"
     )
-    assert {dataset.id for dataset in elastic.datasets} == {"reviewed_elastic_cross_section"}
-    adopted_asset = elastic.datasets[0].asset
-    assert adopted_asset is not None
-    assert adopted_asset.local_path is not None
-    assert adopted_asset.local_path.read_bytes() == asset.read_bytes()
+    analysis = analyze(
+        Case("test", ("Ar",), Conditions(gas_temperature_K=300)),
+        EvidenceCatalog.load_paths((snapshot,)),
+    )
+    export.write(tmp_path / "out", analysis)
+    document = export.read(tmp_path / "out")
+    elastic = next(item for item in document["reactions"] if item["process"] == "elastic")
+    assert elastic["data_use"]["status"] == "unavailable"
+    assert elastic["data_use"]["datasets"][0]["status"] == "invalid"
+    assert elastic["evidence"]["records"][0]["datasets"][0]["params"]["value"] == "nan"
+    assert document["summary"]["reaction_count"] > 0
 
 
-def test_exploratory_selection_does_not_mix_lumped_and_resolved_states(
+def test_needs_retains_invalid_dataset_when_an_alternative_is_selected() -> None:
+    document = export.document(result())
+    candidate = document["reactions"][0]
+    candidate["data_use"].update(
+        status="coefficient",
+        datasets=[
+            {
+                "dataset_id": "broken",
+                "status": "invalid",
+                "reason": "wrong units",
+            }
+        ],
+    )
+    assert any(
+        item["subject"] == "dataset" and item["id"] == "broken"
+        for item in needs.build(document, detail=True)["details"]
+    )
+
+
+def test_ingest_does_not_promote_unspecified_phase_to_gas(tmp_path: Path) -> None:
+    export.write(tmp_path / "out", result())
+    snapshot = tmp_path / "source.yaml"
+    dump(
+        snapshot,
+        {
+            "records": [
+                {"species": "Ar", "property": "enthalpy_formation_eV", "value": 1, "unit": "eV"}
+            ]
+        },
+    )
+    report = ingest.ingest(snapshot, tmp_path / "out", tmp_path / "overlay.yaml")
+    assert report.accepted == 0
+    assert report.review[0]["reason"] == "physical phase unspecified"
+
+
+def state_snapshot_record() -> dict:
+    return {
+        "species": "Ar@ground",
+        "phase": "gas",
+        "status": "reviewed",
+        "existence": "confirmed",
+        "existence_source": "explicit state identification",
+        "property": "mass_amu",
+        "value": 40,
+        "unit": "u",
+        "evidence_tier": "imported",
+        "thermo": {
+            "low": [2.5, 0, 0, 0, 0, 0, 0],
+            "high": [2.5, 0, 0, 0, 0, 0, 0],
+            "t_min": 300,
+            "t_mid": 1000,
+            "t_max": 5000,
+            "phase": "gas",
+            "standard_pressure_Pa": 101325,
+            "source": "independent fit declaration",
+            "evidence_tier": "reviewed",
+        },
+        "configuration": "declared configuration",
+        "term": "declared term",
+        "J": "0",
+        "parity": "even",
+        "degeneracy": 1,
+        "lifetime_s": 2,
+        "members": [],
+        "excitation_energy_eV": 0,
+    }
+
+
+def test_ingest_retains_all_state_payloads_and_their_independent_qualifications(
     tmp_path: Path,
 ) -> None:
-    asset = tmp_path / "cross_section.csv"
-    asset.write_text(
-        "energy_eV,cross_section_m2\n1,1e-20\n10,2e-20\n",
-        encoding="utf-8",
+    export.write(tmp_path / "out", result())
+    record = state_snapshot_record()
+    source = {"citation": "snapshot source", "license": "declared license"}
+    dump(tmp_path / "snapshot.yaml", {"source": source, "records": [record]})
+    overlay = tmp_path / "overlay.yaml"
+    report = ingest.ingest(tmp_path / "snapshot.yaml", tmp_path / "out", overlay)
+    assert report.accepted == 1
+    assert not report.review
+    held = yaml.safe_load(overlay.read_text(encoding="utf-8"))
+    identity = held["state_records"]["Ar@ground"][0]
+    for name in (
+        "existence",
+        "existence_source",
+        "configuration",
+        "term",
+        "J",
+        "parity",
+        "degeneracy",
+        "lifetime_s",
+        "members",
+        "excitation_energy_eV",
+    ):
+        assert identity[name] == record[name]
+    assert identity["source"] == source
+    assert identity["status"] == "reviewed"
+    assert identity["properties"]["mass_amu"]["tier"] == "imported"
+    assert identity["properties"]["excitation_energy_eV"]["tier"] == "imported"
+    assert held["state_records"]["Ar@ground"][0]["thermo"]["tier"] == "reviewed"
+    candidate = parse_state_id("Ar@ground")
+    assert candidate is not None
+    direct = EvidenceCatalog.load_paths((tmp_path / "snapshot.yaml",)).state(candidate).preferred
+    placed = EvidenceCatalog.load_paths((overlay,)).state(candidate).preferred
+    assert direct is not None
+    assert placed is not None
+    for name in (
+        "existence",
+        "existence_source",
+        "configuration",
+        "term",
+        "j",
+        "parity",
+        "degeneracy",
+        "lifetime_s",
+        "members",
+        "energy_eV",
+        "properties",
+        "thermo",
+    ):
+        assert getattr(placed, name) == getattr(direct, name)
+    assert all(placed.source[key] == value for key, value in direct.source.items())
+
+
+def test_ingest_preserves_the_supported_thermo_property_snapshot_form(tmp_path: Path) -> None:
+    export.write(tmp_path / "out", result())
+    fit = state_snapshot_record()["thermo"]
+    dump(
+        tmp_path / "snapshot.yaml",
+        {"records": [{"species": "Ar", "phase": "gas", "property": "thermo", "value": fit}]},
     )
-    snapshot = tmp_path / "states_and_channels.yaml"
-    records = [
-        {
-            "id": name,
-            "reaction": equation,
-            "family": "electron",
-            "type": "excitation",
-            "form": "table",
-            "unit": "m2",
-            "independent_variable": "electron_energy",
-            "observable": "reaction",
-            "asset": asset.name,
-            "validity": {
-                "quantity": "electron_temperature",
-                "minimum": 1.0,
-                "maximum": 10.0,
-                "unit": "eV",
-            },
-            "status": "reviewed",
-        }
-        for name, equation in (
-            ("lumped", "e + O2 -> e + O2*"),
-            ("resolved", "e + O2 -> e + O2(a1Delta_g)"),
-        )
-    ]
-    snapshot.write_text(
-        yaml.safe_dump(
-            {
-                "kind": "cross_section",
-                "source": {"source_id": "reviewed-test"},
-                "records": records,
-            },
-            sort_keys=False,
-        ),
-        encoding="utf-8",
-    )
-    case = Case(
-        "oxygen",
-        ("O2",),
-        conditions=Conditions(electron_temperature_eV=3.0),
-    )
-    result = run(
-        case,
-        EvidenceCatalog.load(None, known=(snapshot,)),
-        "exploratory_simulation",
-    )
-    selected_states = {
-        term.species
-        for reaction_id in result.selection.reaction_ids
-        for term in (
-            *result.candidates.reactions[reaction_id].reactants,
-            *result.candidates.reactions[reaction_id].products,
-        )
+    report = ingest.ingest(tmp_path / "snapshot.yaml", tmp_path / "out", tmp_path / "overlay.yaml")
+    assert report.accepted == 1
+    held = yaml.safe_load((tmp_path / "overlay.yaml").read_text(encoding="utf-8"))
+    assert set(held) == {"state_records"}
+    assert held["state_records"]["Ar@ground"][0]["thermo"]["source"] == fit["source"]
+    assert held["state_records"]["Ar@ground"][0]["thermo"]["tier"] == "reviewed"
+
+
+@pytest.mark.parametrize("section", ["states", "properties", "thermo"])
+def test_ingest_keeps_independent_state_declarations_without_partial_merging(
+    tmp_path: Path, section: str
+) -> None:
+    export.write(tmp_path / "out", result())
+    record = state_snapshot_record()
+    if section == "states":
+        previous = {"states": {"Ar@ground": {"term": "different declared term"}}}
+    elif section == "properties":
+        previous = {"properties": {"Ar@ground": {"mass_amu": {"value": 99, "unit": "u"}}}}
+    else:
+        previous = {"thermo": {"Ar@ground": {**record["thermo"], "source": "different source"}}}
+    source = {"citation": "snapshot source"}
+    dump(tmp_path / "snapshot.yaml", {"source": source, "records": [record]})
+    dump(tmp_path / "overlay.yaml", previous)
+    report = ingest.ingest(tmp_path / "snapshot.yaml", tmp_path / "out", tmp_path / "overlay.yaml")
+    assert report.accepted == 1
+    assert report.review == []
+    placed = yaml.safe_load((tmp_path / "overlay.yaml").read_text(encoding="utf-8"))
+    assert placed[section] == previous[section]
+    independent = placed["state_records"]["Ar@ground"][0]
+    assert independent["term"] == record["term"]
+    assert independent["properties"]["mass_amu"]["value"] == record["value"]
+    assert independent["thermo"]["source"] == record["thermo"]["source"]
+    assert independent["source_declaration"]["snapshot_source"] == source
+    assert independent["source_declaration"]["existence"] == record["existence"]
+
+
+def test_ingest_rejects_state_declarations_that_contradict_the_matched_identity(
+    tmp_path: Path,
+) -> None:
+    export.write(tmp_path / "out", result())
+    record = {**state_snapshot_record(), "state": {"kind": "electronic"}}
+    dump(tmp_path / "snapshot.yaml", {"records": [record]})
+    report = ingest.ingest(tmp_path / "snapshot.yaml", tmp_path / "out", tmp_path / "overlay.yaml")
+    assert report.accepted == 0
+    assert report.review[0]["reason"] == "physical state declaration mismatch"
+    assert report.review[0]["original_record"] == record
+    assert yaml.safe_load((tmp_path / "overlay.yaml").read_text(encoding="utf-8")) == {}
+
+
+def test_migration_preserves_declared_state_representation(tmp_path: Path) -> None:
+    from reactgen.chemistry import parse_state_id
+
+    input_path, bundle = legacy(tmp_path)
+    declaration = {"kind": "electronic", "resolution": "lumped", "label": "4s"}
+    state = {
+        "id": "Ar@4s",
+        "composition": {"Ar": 1},
+        "charge": 0,
+        "state": declaration,
+        "evidence": {
+            "match": "exact",
+            "records": [
+                {
+                    "state": declaration,
+                    "properties": {
+                        "mass_amu": {"value": 40, "unit": "u", "tier": "curated"},
+                    },
+                }
+            ],
+        },
     }
-    assert "O2@a1dg" in selected_states
-    assert "O2@electronic" not in selected_states
+    dump(bundle / "states.yaml", {"metadata": {"schema_version": 4}, "states": [state]})
+    migrate(input_path, bundle, tmp_path / "new")
+    snapshot = yaml.safe_load(
+        (tmp_path / "new/migration/evidence.yaml").read_text(encoding="utf-8")
+    )
+    parsed = parse_state_id(snapshot["records"][0]["species"])
+    assert parsed is not None
+    assert parsed.state.kind == "electronic"
+    assert parsed.state.resolution == "lumped"
+    assert parsed.phase == "unknown"
+    assert snapshot["records"][0]["evidence_tier"] == "imported"

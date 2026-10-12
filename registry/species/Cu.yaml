@@ -16,6 +16,8 @@ metadata:
   status: literature_supported
   notes:
   - Atomic copper identity for metal-plasma acquisition.
+  - 'Replaced condensed-phase NASA fit with the gas-phase fit; source nasa_gas.yaml,
+    Cantera 3.2.0. Phase verification: https://cantera.org/stable/yaml/species.html'
 properties:
   enthalpy_formation_eV:
     value: 3.496905
@@ -41,23 +43,28 @@ properties:
     unit: A3
     value: 6.8906
 thermo:
-  high:
-  - 3.4200891
-  - -0.00161201394
-  - 3.05145917e-06
-  - -2.11162788e-09
-  - 6.99858397e-13
-  - -990.295636
-  - -15.1932294
   low:
-  - 1.76672074
-  - 0.00734699432
-  - -1.5471296e-05
-  - 1.50539591e-08
-  - -5.24861335e-12
-  - -743.882087
-  - -7.70454044
-  source: cantera bundled thermodynamic data, listed as Cu(cr) in nasa_condensed.yaml
-  t_max: 1358.0
-  t_mid: 1000.0
+  - 2.50006597
+  - -6.77306412e-07
+  - 2.44116818e-09
+  - -3.61314758e-12
+  - 1.86303224e-15
+  - 39858.3358
+  - 5.76884604
+  high:
+  - 3.13522595
+  - -0.00113337547
+  - 5.72023041e-07
+  - -7.66326177e-11
+  - 2.83881466e-15
+  - 39617.724
+  - 2.25331944
   t_min: 200.0
+  t_mid: 1000.0
+  t_max: 6000.0
+  source: Cantera gas compilation; composition, charge and gas phase verified, listed
+    as Cu in nasa_gas.yaml
+  phase: gas
+  standard_pressure_Pa: 101325.0
+  evidence_tier: reviewed
+phase: gas

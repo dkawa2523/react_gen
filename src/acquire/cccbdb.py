@@ -1,23 +1,8 @@
-"""Experimental polarizability from the NIST CCCBDB list page.
+"""Read measured neutral-ground polarizabilities from a CCCBDB list page.
 
-CCCBDB is form-driven almost everywhere -- ask for one species, get one answer
--- which is why it was written off here as a manual export. Its *list* pages
-are not: `pollistx.asp` is a plain GET returning every experimental
-polarizability it holds, 261 species with a literature reference against each.
-Nothing needs typing in.
-
-This is the only source of molecular polarizability that exists for this
-project. `chemicals` tabulates none, `cantera`'s transport blocks reach nine
-species, and the Lorentz-Lorenz route needs a refractive index `chemicals` has
-for three of the fifty-seven neutrals here. `mendeleev` answers for atoms and
-stops there.
-
-What it does not solve is the gap that matters. The list is stable molecules:
-CF4, SF6, SO2, F2. The radicals a discharge is made of -- CF, CF2, CF3, SF,
-SF2, SF4, SO, SOF2, SOF4 -- are absent from it, and from every other
-compilation. CCCBDB has *calculated* polarizabilities for some of them, but
-only behind a per-species form and only as a method-and-basis-set choice, so
-they are not read here.
+Preserve the listed state, identity and reference. A composition match narrows
+the lookup but does not resolve competing structures. No calculated per-species
+values or excited/ionic substitutions are fetched implicitly.
 """
 
 from __future__ import annotations
@@ -25,6 +10,8 @@ from __future__ import annotations
 import re
 from collections import Counter
 from dataclasses import dataclass
+
+from reactgen.chemistry import parse_state_id
 
 LIST_URL = "https://cccbdb.nist.gov/pollistx.asp"
 # formula, name, electronic state, point group, value, reference
@@ -43,6 +30,8 @@ class Listed:
     name: str
     polarizability_A3: float
     reference: str = ""
+    electronic_state: str = ""
+    point_group: str = ""
 
 
 def parse(body: str) -> list[Listed]:
@@ -64,6 +53,8 @@ def parse(body: str) -> list[Listed]:
                 name=cells[1],
                 polarizability_A3=float(cells[COLUMNS - 1]),
                 reference=cells[COLUMNS] if len(cells) > COLUMNS else "",
+                electronic_state=cells[2],
+                point_group=cells[3],
             )
         )
     return found
@@ -110,20 +101,41 @@ def composition(formula: str) -> tuple[tuple[str, int], ...] | None:
     return tuple(sorted(counts.items()))
 
 
-def records(found: list[Listed], wanted: dict[tuple, str], citation: str) -> list[dict]:
+def records(
+    found: list[Listed],
+    wanted: dict[tuple, str],
+    citation: str,
+    source_species: dict[tuple, str] | None = None,
+) -> list[dict]:
     """Property records for `rgen ingest`, keyed by composition.
 
     `wanted` maps a composition to the id to record it under, so the caller
-    decides what may take a value. Only neutral ground states belong in it: an
-    ion is smaller or larger than its neutral by tens of percent, and an
-    excited state is filled by `rgen derive` instead.
+    decides what may take a value. Charge and excitation require separate
+    measurements. Multiple structures or states require an explicit source
+    species name; composition alone does not choose one.
     """
 
     out = []
+    identities: dict[tuple, set[tuple[str, str, str]]] = {}
+    for item in found:
+        if (key := composition(item.formula)) is not None:
+            identities.setdefault(key, set()).add(
+                (item.name, item.electronic_state, item.point_group)
+            )
     for item in found:
         key = composition(item.formula)
-        species_id = wanted.get(key) if key else None
+        if key is None:
+            continue
+        species_id = wanted.get(key)
         if species_id is None:
+            continue
+        identity = (source_species or {}).get(key)
+        if identity and item.name != identity:
+            continue
+        if not identity and len(identities[key]) > 1:
+            continue
+        state = parse_state_id(species_id)
+        if state is None or state.charge or state.state.kind != "ground" or state.phase != "gas":
             continue
         out.append(
             {
@@ -131,6 +143,10 @@ def records(found: list[Listed], wanted: dict[tuple, str], citation: str) -> lis
                 "property": "polarizability_A3",
                 "value": item.polarizability_A3,
                 "unit": "A3",
+                "phase": "gas",
+                "source_species": item.name,
+                "structure": identity or state.structure,
+                "electronic_state": item.electronic_state,
                 "source": {
                     "citation": f"{citation}; {item.name} listed as {item.formula}"
                     + (f", {item.reference}" if item.reference else "")

@@ -1,5 +1,164 @@
 # Changelog
 
+## 0.7.4 - 2026-10-12
+
+- Name every public assessment and save its individual scope, concrete missing
+  prerequisites and participant references. Keep binding, observed support,
+  computed quantities and reaction occurrence distinct.
+- Store reaction energies as independently qualified Properties. Preserve their
+  definitions and uncertainties; normalize legacy external scalars once without
+  retaining parallel internal values or inheriting new quantity approval.
+- Compare compatible energy declarations within their stated scopes, preserve
+  unknown molecular definitions, and localize physical-target mismatches.
+- Show saved values, conditions and next work in CLI and HTML. Keep source
+  choice, disagreements and internal generation history inspectable.
+- Deduplicate explicit prerequisites and preserve dependent conclusions. Add
+  CSV format 3 for individual scopes, requirements, references and selections;
+  continue to verify historical formats 1 and 2 without reassessment.
+
+## 0.7.3 - 2026-10-12
+
+- Share electron-binding logic between state support and attachment. Keep
+  contradictory positive affinity and unbound declarations unresolved; exclude
+  the conflicting quantity without interpreting short lifetime as unbinding.
+- Require explicit compatible formation references before subtracting formation
+  enthalpies, including finite-temperature ion/electron conventions. Preserve
+  incomplete declarations and independent NASA or ionization results.
+- Make evidence catalogs isolated snapshots, rebuild indexes for explicit
+  updates, and fingerprint actual in-memory scientific contents as well as files.
+- Summarize shortage findings by responsibility, proposition and saved outcome;
+  retain every affected target with `needs --detail`. Expose judgment propositions,
+  scopes, explanations and input responsibilities in CSV format 2. Continue to
+  verify and rebuild historical format 1 tables without reassessment.
+- Review current NASA/JPL source tables and keep unresolved product manifolds
+  separate from exact fine-structure levels. Source data does not complete a
+  predictive mechanism.
+
+## 0.7.2 - 2026-10-12
+
+- Preserve saved observed asset hashes independently of author declarations.
+  Validate the same bytes used for numerical table evaluation, including files
+  changed after loading. Compare verified asset content independently of its
+  storage path while retaining original declarations and acquisition locations.
+- Keep exact physical identity when reviewed existence assertions disagree.
+  Report the existence conflict as unknown without suppressing independently
+  qualified properties or thermochemical models. Preserve actual identity
+  ambiguity and rejected-record restrictions.
+- Localize reaction energy conflicts to the quantities used by each proposition.
+  Retain independent threshold, binding and Penning conclusions, and keep
+  conflicting declarations and separately available calculated values visible.
+- Keep schema 5 and the existing analysis inputs. Earlier saved results remain
+  historical results; reading them does not rerun scientific assessments.
+
+## 0.7.1 - 2026-10-12
+
+- Apply review scopes and rejected/conflicting status to state existence,
+  individual properties and thermochemical models at file and Python boundaries.
+- Share scientific source-ID namespaces across states, reactions and datasets;
+  preserve reacquisition declarations and reject one scientific ID assigned to
+  different physical targets.
+- Round-trip independent reaction assertions through snapshots, overlays and
+  Registry records without creating empty numerical datasets or guessing an
+  unknown process from a matching formula.
+
+## 0.7.0 - 2026-10-12
+
+- Add source-independent proposition names for state support, anion binding,
+  thermochemical representation availability and reaction energy checks. Match
+  corresponding ground states by composition, charge, phase, structure and
+  uniqueness; check elastic identities before asserting zero internal energy.
+- Preserve independent state declarations, properties and NASA fits through
+  snapshot ingestion, `state_records` overlays and Registry `records`. Separate
+  scientific record IDs from target IDs; retain original source declarations,
+  provider/collection/release identifiers, scientific method and review scope.
+- Compare NASA fits by physical contents, keeping both source records. Keep
+  quantity conflicts local, and do not turn a numeric-only overlay into channel
+  existence evidence or an unknown anion placeholder into negative evidence.
+- Restrict explicit reaction review scopes to channel assertions, threshold or
+  delta-energy claims. Numerical snapshots default to their quantity scope, so
+  coefficient approval does not qualify accompanying channel or energy claims.
+  Retain unscoped legacy channel declarations under their existing rules.
+- Retain every channel for Registry pairs spanning multiple files. Reject
+  repeated channel IDs with both file locations instead of overwriting records.
+- Namespace native numerical record IDs with their stated source, including
+  snapshot-level provenance. Preserve explicit canonical IDs and detect changed
+  contents of one native record as a conflict. Apply numerical review scopes
+  to the dataset's own quantity.
+  UMIST conversion retains native fit IDs for the common generator rather than
+  assigning a global ID from the row number without its release.
+- Add quantity-specific `data_selection` for rate coefficients, cross sections
+  and sticking probabilities: prefer or restrict methods, providers and
+  collections, or pin a dataset ID. Assess records before selection and preserve
+  pending applicability conditions, alternate values and ID conflicts. Property,
+  NASA and existence-evidence selection remain unsupported input errors.
+- Add optional proposition, selection and disagreement fields to schema 5.
+  Validate selected records and requests during result reads while preserving
+  compatibility with earlier schema 5 results. Legacy dataset `preferred` is
+  used only without a request for that quantity and is scheduled for removal in
+  0.8.
+- Preserve ASD level annotations and source rows; withhold unsupported absolute
+  energy and lifetime claims. Store PyroMat h(T) as enthalpy with its reference
+  information, rather than claiming formation enthalpy.
+- Parse UMIST RATE12/RATE22 fit layouts explicitly, retaining method, accuracy,
+  notes and raw rows. Reject malformed rows with locations and retain unresolved
+  additive rates as references. Do not infer LXCat product scope or an elastic
+  total/momentum-transfer observable; reject incomplete process blocks.
+- Consolidate source access and provided quantities in one local source catalog.
+  Preserve raw conversion inputs, full download hashes and acquisition metadata.
+  Acquisition, matching, adoption and scientific review remain separate actions.
+- Keep reacquisition context separate from scientific numerical identity and
+  conflict checks. Preserve distinct acquisition declarations without overwriting
+  the original record, and keep unknown physical conditions in comparisons.
+
+## 0.6.0 - 2026-10-11
+
+- Replace policy selection and cumulative screening with one offline `analyze`
+  pipeline and schema-5 `result.yaml`. CSV, needs and figures derive from that
+  result. Inputs are targets, explicit physical conditions and computation limits.
+- Separate candidate grammar, exact state/channel identity, proposition-specific
+  judgments and numerical data use. Missing evidence stays unknown; numerical
+  defects do not assert that a phenomenon is absent. Preserve phase, structure,
+  resolution, stabilization, source qualifications and asset integrity.
+- Close the bounded mechanical grammar independently of generation history;
+  report limits and mechanical/attested completion separately.
+- Compare rates only within the same observable, dimensions and order. Preserve
+  missing conditions, nonoverlapping applicability domains and explicit model
+  selection requirements; finite comparison points do not prove equivalence.
+- Match stabilization through both ingest paths; retain acquisition phase and
+  estimated quality. Preflight and stage adoption, restore changes after I/O
+  failures, and retain recovery backups when restoration itself fails.
+- Distinguish an unselected judgment from an unknown verdict in HTML. Partition
+  matrices above 8000 reactions without dropping columns and publish the index
+  after all page images are saved.
+- Review selected existing records against primary or official sources, retaining
+  unresolved measurement conditions and model scope. See the scientific review.
+- Reject duplicate YAML keys and malformed numeric/boolean declarations; keep
+  independent state assertions, attributes and property qualifications through
+  ingest and adoption using the same full physical identity as analysis.
+- Apply property uncertainty intervals consistently to IE, EA and Penning;
+  retain alternative rate laws with unresolved applicability conditions.
+- Validate CSV hashes against canonical content and numerical-use conclusions
+  against their selected dataset. Use the available safe LibYAML implementation
+  without dropping validation; expose a small result I/O benchmark tool.
+- Reject LXCat column-unit mismatches and malformed table rows before conversion,
+  preserving parsed numeric precision in CSV assets.
+- Select process patterns within their declared reaction family. Check heavy
+  unimolecular dissociation and two-entity association without inferring an
+  inducer, stabilization, elementary mechanism or numerical rate.
+- Repair source-backed association classifications and review Pateau coefficient
+  dimensions and Son's 700 K model values. Retain source applicability gaps;
+  review selected oxygen identities, individual energy properties and the O2
+  NASA7 fit without promoting unrelated data.
+- Select thermochemical records only for the reaction participants, eliminating
+  repeated selection of unrelated states while preserving all conclusions.
+- Retain loss and formula-level measurements without promoting them to
+  state-resolved product rates; require review of unresolved product branching.
+- Remove obsolete internal paths and old tracked output examples, update acquisition
+  documentation and CI artifacts. `generate`, old policies and schema-4 bundles
+  are no longer accepted by normal processing. Use `tools/migrate_v4.py` with a
+  new destination to preserve old inputs/evidence and recompute judgments; this
+  one-time tool is scheduled for removal in 0.8.
+
 ## 0.5.0 - 2026-08-24
 
 - Define the three canonical YAML files and all tabular CSV views as the stable

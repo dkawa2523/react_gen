@@ -1,4 +1,5 @@
 schema_version: 1
+phase: gas
 id: O+
 display_name: O+
 composition:
@@ -11,7 +12,25 @@ state:
   kind: ground
   label: 4S
   excitation_energy_eV: 0.0
+  existence: confirmed
+  existence_source: NIST ASD 5.12, O II ground level 4S odd J=3/2; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=O&unc_out=on&units=1
+  status: reviewed
+  configuration: 1s2 2s2 2p3
+  term: 4S
+  J: 3/2
+  parity: odd
+  degeneracy: 4
+  source:
+    citation: NIST ASD 5.12, O II level at 0 eV, J=3/2, g=4, L11267; https://physics.nist.gov/cgi-bin/ASD/energy1.pl?de=0&spectrum=O+II&units=1&format=3&output=0&page_size=15&multiplet_ordered=0&conf_out=on&term_out=on&level_out=on&unc_out=on&j_out=on&g_out=on&biblio=on&temp=&submit=Retrieve+Data
 properties:
+  excitation_energy_eV:
+    value: 0.0
+    unit: eV
+    source: NIST ASD 5.12, O II 4S odd J=3/2 ground-level zero reference; https://physics.nist.gov/PhysRefData/ASD/Html/levelshelp.html
+    evidence_tier: reviewed
+    uncertainty:
+      absolute: 0.0
+      unit: eV
   mass_amu:
     value: 15.9988514
     unit: amu
@@ -35,10 +54,18 @@ properties:
   ionization_energy_eV:
     value: 35.12112
     unit: eV
-    source: NIST Atomic Spectra Database, O+ ionization energy
+    source: NIST ASD 5.12, O II ground to O III ground, L11267,L10621; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=O&unc_out=on&units=1
+    evidence_tier: reviewed
+    uncertainty:
+      absolute: 0.00006
+      unit: eV
   electron_affinity_eV:
     value: null
     unit: eV
     source: null
 metadata:
   status: curated
+  notes:
+  - The ionization energy removes an electron from the O II ground level into
+    the O III ground level. It is not the neutral O threshold or an excited-ion
+    threshold. The formation enthalpy remains unreviewed.

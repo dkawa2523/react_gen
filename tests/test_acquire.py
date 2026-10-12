@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 from pathlib import Path
 
 import pytest
@@ -13,7 +14,7 @@ from reactgen import export as bundle_export
 from reactgen import ingest
 from reactgen.case import Case
 from reactgen.evidence import EvidenceCatalog
-from reactgen.pipeline import run
+from reactgen.pipeline import analyze
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mini"
 
@@ -65,10 +66,11 @@ def test_threshold_comes_from_the_param_line(export):
     assert ionization.target == "Ar"
 
 
-def test_a_block_without_a_table_is_dropped(tmp_path):
+def test_a_block_without_a_table_is_an_input_error(tmp_path):
     path = tmp_path / "empty.txt"
     path.write_text("ELASTIC\nAr\nPROCESS: E + Ar -> E + Ar, Elastic\n", encoding="utf-8")
-    assert lxcat.parse(path) == []
+    with pytest.raises(ValueError, match="process block has no table"):
+        lxcat.parse(path)
 
 
 def test_converted_export_matches_registered_reactions(export, tmp_path):
@@ -79,7 +81,7 @@ def test_converted_export_matches_registered_reactions(export, tmp_path):
     assert len(document["records"]) == 2
 
     catalog = EvidenceCatalog.load(FIXTURE)
-    generated = run(Case("argon", ("Ar",)), catalog)
+    generated = analyze(Case("argon", ("Ar",)), catalog)
     bundle_export.write(tmp_path / "bundle", generated)
     report = ingest.ingest(
         tmp_path / "work" / "snapshot.yaml",
@@ -93,7 +95,7 @@ def test_overlay_assets_resolve_against_the_overlay(export, tmp_path):
     work = tmp_path / "work"
     main(["lxcat", str(export), "--out", str(work)])
     catalog = EvidenceCatalog.load(FIXTURE)
-    generated = run(Case("argon", ("Ar",)), catalog)
+    generated = analyze(Case("argon", ("Ar",)), catalog)
     bundle_export.write(work / "bundle", generated)
     ingest.ingest(work / "snapshot.yaml", work / "bundle", work / "overlay.yaml")
 
@@ -102,21 +104,24 @@ def test_overlay_assets_resolve_against_the_overlay(export, tmp_path):
     ionization = next(item for item in datasets if "ionization" in Path(item["asset"]["path"]).name)
     asset = (work / ionization["asset"]["path"]).resolve()
     assert not Path(ionization["asset"]["path"]).is_absolute()
-    assert "1.575960e+01,0.000000e+00" in asset.read_text(encoding="utf-8")
+    with asset.open(encoding="utf-8", newline="") as stream:
+        table = list(csv.reader(stream))[1:]
+    assert (15.7596, 0.0) in [tuple(map(float, row)) for row in table]
 
 
 def test_table_asset_is_written_next_to_the_snapshot(tmp_path):
     relative = snapshot.write_table(tmp_path, "demo", [(1.0, 2.0)], "energy_eV,cross_section_m2")
     assert relative == "assets/demo.csv"
-    assert "1.000000e+00,2.000000e+00" in (tmp_path / relative).read_text(encoding="utf-8")
+    with (tmp_path / relative).open(encoding="utf-8", newline="") as stream:
+        assert list(csv.reader(stream)) == [["energy_eV", "cross_section_m2"], ["1.0", "2.0"]]
 
 
 # --------------------------------------------------------------------------- umist
 
 RELEASE = """\
-1:CE:Ar+:O2::Ar:O2+:::1.00e-11:0.00:0.00:10:41000:A:1:2012
-2:NN:O:O2::O:O2:::2.00e-12:0.00:1200.0:200:2000:C:1:2012
-3:TB:F:F:M:F2:M:::1.00e-33:0.00:0.00:10:300:D:1:2012
+1:CE:Ar+:O2:Ar:O2+:::1:1.00e-11:0.00:0.00:10:41000:M:A:2012
+2:NN:O:O2:O:O2:::1:2.00e-12:0.00:1200.0:200:2000:C:C:2012
+3:PH:F2:PHOTON:F:F:::1:1.00e-10:0.00:0.00:10:300:M:D:2012
 # a comment, and a blank line follow
 
 """
@@ -137,14 +142,14 @@ def test_umist_rows_become_si_arrhenius(tmp_path):
     assert rates["O + O2 -> O + O2"].activation_eV == pytest.approx(1200.0 / 11604.518)
 
 
-def test_three_body_rows_are_left_out(tmp_path):
+def test_photoprocesses_are_not_misread_as_thermal_arrhenius_rates(tmp_path):
     from acquire import umist
 
     path = tmp_path / "rate.rates"
     path.write_text(RELEASE, encoding="utf-8")
     equations = {item["reaction"] for item in umist.records(umist.parse(path))}
     assert "Ar+ + O2 -> Ar + O2+" in equations
-    assert not [name for name in equations if " M " in name]
+    assert not [name for name in equations if "PHOTON" in name]
 
 
 def test_the_astrochemical_range_travels_with_the_rate(tmp_path):
@@ -153,9 +158,14 @@ def test_the_astrochemical_range_travels_with_the_rate(tmp_path):
     from acquire import umist
 
     path = tmp_path / "rate.rates"
-    path.write_text("9:NN:O:O2::O:O2:::1.0e-12:0.0:0.0:10:300:C:1:2012\n", encoding="utf-8")
+    path.write_text("9:NN:O:O2:O:O2:::1:1.0e-12:0.0:0.0:10:300:C:C:2012\n", encoding="utf-8")
     record = umist.records(umist.parse(path))[0]
-    assert record["validity"] == {"minimum": 10.0, "maximum": 300.0, "unit": "K"}
+    assert record["validity"] == {
+        "quantity": "gas_temperature",
+        "minimum": 10.0,
+        "maximum": 300.0,
+        "unit": "K",
+    }
 
 
 # --------------------------------------------------------------------------- download
@@ -216,6 +226,31 @@ def test_records_carry_the_source_and_the_cas():
     written = thermo.records(found, "chemicals")
     assert {item["property"] for item in written} == {"enthalpy_formation_eV", "entropy_J_mol_K"}
     assert found[0].cas in written[0]["source"]["citation"]
+    enthalpy = next(item for item in written if item["property"] == "enthalpy_formation_eV")
+    assert enthalpy["source"]["collection"] == found[0].enthalpy_method
+    assert enthalpy["source"]["release"] == found[0].package_version
+    assert enthalpy["source"]["record_id"] == f"{found[0].cas}:enthalpy_formation_eV"
+    assert enthalpy["formation_reference"] == {
+        "temperature_K": 298.15,
+        "basis": "standard_elements",
+    }
+
+
+def test_thermo_adapter_preserves_unstated_reference_without_guessing_from_package_name():
+    from acquire import thermo
+
+    original = thermo.Thermo(
+        "synthetic",
+        "example",
+        "F",
+        enthalpy_eV=1,
+        enthalpy_method="another_table",
+        package_version="test",
+    )
+    written = thermo.records([original], "chemicals")[0]
+    assert written["formation_reference"]["temperature_K"] is None
+    assert "standard_pressure_Pa" not in written["formation_reference"]
+    assert "electron_convention" not in written["formation_reference"]
 
 
 def test_a_fuzzy_name_match_is_refused(monkeypatch):
@@ -357,6 +392,9 @@ def test_levels_are_recorded_against_the_ground_state_atom(monkeypatch):
     records = asd.records([_levels(monkeypatch, ARGON_LEVELS)], "NIST ASD")
     assert {item["species"] for item in records} == {"X"}
     assert "metastable_energy_eV" in {item["property"] for item in records}
+    assert "lowest_excitation_energy_eV" in {item["property"] for item in records}
+    assert "excitation_energy_eV" not in {item["property"] for item in records}
+    assert all(item["phase"] == "gas" and item["status"] == "imported" for item in records)
 
 
 def test_a_diatomic_quantum_comes_back_near_its_measured_one():
@@ -430,7 +468,67 @@ def test_charge_is_part_of_the_match():
     assert neutral.nasa7 != cation.nasa7
 
 
-def test_an_excited_state_is_left_to_derive():
+def test_gas_atom_is_never_given_a_condensed_polynomial():
+    from acquire import nasa
+
+    if not nasa.available():
+        pytest.skip("cantera is not installed")
+    sulfur = nasa.fetch([{"id": "S", "composition": {"S": 1}, "charge": 0}])[0]
+    assert sulfur.known
+    assert sulfur.origin == "nasa_gas.yaml"
+    assert sulfur.listed_as == "S"
+    assert sulfur.standard_pressure_Pa == 101325.0
+
+
+def test_competing_structures_are_not_chosen_by_source_order(monkeypatch):
+    from acquire import nasa
+
+    entries = [{"name": "ethanol", "thermo": {}}, {"name": "dimethyl ether", "thermo": {}}]
+    key = ((("C", 2), ("H", 6), ("O", 1)), 0)
+    item = {"id": "C2H6O", "composition": {"C": 2, "H": 6, "O": 1}, "charge": 0}
+    for choices in (entries, list(reversed(entries))):
+        result = nasa._one(item, {key: choices})
+        assert not result.known
+        assert "ambiguous" in result.error
+
+
+def test_umist_reads_every_declared_temperature_fit(tmp_path):
+    from acquire import umist
+
+    path = tmp_path / "rate.txt"
+    path.write_text(
+        "1:NN:O:O2:O:O2:::2:1e-12:0:0:10:100:M:A:ref1:2e-12:1:5:100:300:C:B:ref2\n",
+        encoding="utf-8",
+    )
+    rates = umist.parse(path)
+    assert [(rate.t_min, rate.t_max) for rate in rates] == [(10.0, 100.0), (100.0, 300.0)]
+    assert [rate.reference for rate in rates] == ["ref1", "ref2"]
+    assert len({record["source"]["record_id"] for record in umist.records(rates)}) == 2
+
+
+def test_molecular_lookup_rejects_a_formula_alias_for_another_compound():
+    from acquire import molecular
+
+    if not molecular.available():
+        pytest.skip("chemicals is not installed")
+    radical = molecular.fetch(["CF"])[0]
+    assert not radical.known
+    assert "different compound" in radical.error
+
+
+def test_cccbdb_cli_does_not_assign_neutral_values_to_ions(tmp_path):
+    states = tmp_path / "species.yaml"
+    states.write_text(
+        yaml.safe_dump({"states": [{"id": "Ar+@ground", "composition": {"Ar": 1}, "charge": 1}]}),
+        encoding="utf-8",
+    )
+    page = Path(__file__).parent / "fixtures" / "cccbdb_polarizability.html"
+    output = tmp_path / "acquired"
+    assert main(["cccbdb", str(states), "--page", str(page), "--out", str(output)]) == 0
+    assert yaml.safe_load((output / "snapshot.yaml").read_text(encoding="utf-8"))["records"] == []
+
+
+def test_an_excited_state_does_not_inherit_a_ground_nasa_fit():
     """O_1D and O match on composition, and sit 1.967 eV apart."""
 
     from acquire import nasa
@@ -441,7 +539,7 @@ def test_an_excited_state_is_left_to_derive():
         [{"id": "O_1D", "composition": {"O": 1}, "charge": 0, "state": {"kind": "excited"}}]
     )[0]
     assert not found.known
-    assert found.deferred
+    assert "independent evidence" in found.error
 
 
 def test_nasa9_is_refused_rather_than_truncated():
@@ -460,14 +558,14 @@ def test_nasa9_is_refused_rather_than_truncated():
     assert "NASA9" in item.unusable
 
 
-def test_nasa_cli_reads_the_new_states_bundle(monkeypatch, tmp_path):
+def test_nasa_cli_reads_analysis_state_entries(monkeypatch, tmp_path):
     from acquire import nasa
 
-    states = tmp_path / "states.yaml"
+    states = tmp_path / "result.yaml"
     states.write_text(
         yaml.safe_dump(
             {
-                "metadata": {"schema_version": 4},
+                "metadata": {"schema_version": 5},
                 "states": [
                     {
                         "id": "Ar@ground",
@@ -556,8 +654,34 @@ def test_only_what_the_caller_allows_takes_a_value():
     assert written[0]["unit"] == "A3"
 
 
-def test_the_fit_reproduces_the_anchors_it_was_trained_near():
-    """SF6 and CF4 are measured; a fit that misses them is not usable at all."""
+def test_cccbdb_competing_structures_require_an_explicit_source_identity():
+    from acquire import cccbdb
+
+    key = (("C", 2), ("H", 6), ("O", 1))
+    found = [
+        cccbdb.Listed("C2H6O", "ethanol", 5.2, electronic_state="1A"),
+        cccbdb.Listed("C2H6O", "dimethyl ether", 5.1, electronic_state="1A1"),
+    ]
+    assert cccbdb.records(found, {key: "C2H6O"}, "list") == []
+    result = cccbdb.records(found, {key: "C2H6O"}, "list", {key: "ethanol"})
+    assert len(result) == 1
+    assert result[0]["source_species"] == "ethanol"
+    assert result[0]["structure"] == "ethanol"
+
+
+def test_nasa7_rows_must_match_one_or_two_declared_temperature_regions():
+    from acquire import nasa
+
+    invalid = nasa.Polynomial("Ar", "NASA7", [200.0, 1000.0, 6000.0], [[1.0] * 7])
+    assert not invalid.known
+    invalid = nasa.Polynomial("Ar", "NASA7", [200.0, 1000.0, 2000.0, 6000.0], [[1.0] * 7] * 3)
+    assert not invalid.known
+
+
+def test_additivity_refuses_small_training_without_optional_numpy(monkeypatch):
+    """Insufficient input needs no numerical solver or optional dependency."""
+
+    import builtins
 
     from acquire import additivity, cccbdb
 
@@ -569,6 +693,14 @@ def test_the_fit_reproduces_the_anchors_it_was_trained_near():
         for item in cccbdb.parse(page)
         if (key := cccbdb.composition(item.formula)) is not None
     ]
+    original_import = builtins.__import__
+
+    def guarded_import(name, *args, **kwargs):
+        if name == "numpy":
+            raise ModuleNotFoundError("optional NumPy is unavailable")
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", guarded_import)
     # The fixture is deliberately small, so the guard has to refuse rather than fit.
     found = additivity.estimate([("CF3", {"C": 1, "F": 3})], training)
     assert not found[0].known
@@ -582,4 +714,33 @@ def test_an_estimate_says_it_is_one():
 
     written = additivity.records([additivity.Estimate("CF3", 2.47, 243)], "a list")
     assert written[0]["quality"] == "estimated"
-    assert "closed-shell" in written[0]["source"]["citation"]
+    assert written[0]["status"] == "estimated"
+    assert written[0]["phase"] == "gas"
+    assert "accuracy has not been established" in written[0]["source"]["citation"]
+
+
+def test_additivity_does_not_apply_to_another_phase_or_target_composition(monkeypatch):
+    from acquire import additivity
+
+    monkeypatch.setattr(additivity, "fit", lambda training: ({"Ar": 1.5}, 0.0))
+    requested = [("Ar@ground;phase=solid", {"Ar": 1}), ("CF3", {"Ar": 1})]
+    found = additivity.estimate(requested, [({"Ar": 1}, 1.5)])
+    assert all(not item.known for item in found)
+    assert additivity.records(found, "fit") == []
+
+
+def test_additivity_cli_reports_an_undeclared_phase_without_inventing_one(
+    tmp_path, monkeypatch, capsys
+):
+    from acquire import additivity, cccbdb
+
+    monkeypatch.setattr(cccbdb, "fetch", lambda offline: ([], None))
+    monkeypatch.setattr(additivity, "fit", lambda training: ({"Ar": 1.5}, 0.0))
+    states = tmp_path / "states.yaml"
+    states.write_text(
+        yaml.safe_dump({"states": [{"id": "Ar", "composition": {"Ar": 1}}]}), encoding="utf-8"
+    )
+    out = tmp_path / "acquired"
+    assert main(["additivity", str(states), "--out", str(out)]) == 0
+    assert "gas phase must be explicit" in capsys.readouterr().out
+    assert yaml.safe_load((out / "snapshot.yaml").read_text(encoding="utf-8"))["records"] == []

@@ -21,7 +21,9 @@ properties:
     source: unchanged from O2 on excitation; NIST CCCBDB experimental polarizability
       list
     unit: A3
-    value: 1.562
+    value: null
+    qualifier: excitation_changes_this_property
+    evidence_tier: imported
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -30,7 +32,9 @@ properties:
     source: unchanged from O2 on excitation; chemicals package bundled molecular property
       tables, CAS 7782-44-7
     unit: A
-    value: 1.6486
+    value: null
+    qualifier: excitation_changes_this_property
+    evidence_tier: imported
   enthalpy_formation_eV:
     value: 1.627
     unit: eV
@@ -47,7 +51,9 @@ properties:
     source: unchanged from O2 on excitation; chemicals package bundled molecular property
       tables, CAS 7782-44-7
     unit: K
-    value: 119.66
+    value: null
+    qualifier: excitation_changes_this_property
+    evidence_tier: imported
 metadata:
   status: curated
   notes:
@@ -73,3 +79,4 @@ thermo:
   t_max: 3500.0
   t_mid: 1000.0
   t_min: 200.0
+phase: gas

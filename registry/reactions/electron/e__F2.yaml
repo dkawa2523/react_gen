@@ -37,7 +37,7 @@ channels:
     record_id: R28
   threshold_eV: 15.69
 - id: e_F2_attachment_Fm_F
-  type: attachment
+  type: dissociative_attachment
   products:
   - species: F-
     n: 1
@@ -52,6 +52,9 @@ channels:
     url: https://doi.org/10.1116/1.4853675
     record_id: R37
   threshold_eV: 0.0
+  notes:
+  - 'Classification corrected from attachment: electron capture produces dissociation
+    fragments; parent-anion binding is not this channel''s condition.'
 metadata:
   status: literature_supported
   notes:

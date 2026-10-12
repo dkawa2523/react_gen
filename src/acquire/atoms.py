@@ -1,20 +1,9 @@
-"""Read atomic ionization energy and electron affinity from `mendeleev`.
+"""Read elemental ground-state properties from `mendeleev`.
 
-The safest source in this repository. A chemical *name* is ambiguous — asking
-for `CO` returns cobalt, asking for `CF` returns fluoromethane — but an element
-symbol is not, so nothing here needs the composition check every other importer
-carries.
-
-Electron affinity is the value that decides whether an atom binds an extra
-electron at all. Argon's is negative, which is why `e + Ar -> Ar-` is not a
-reaction, and knowing that lets a proposer refuse to write one.
-
-Dipole polarizability comes from the same table, and it is the only place in
-this repository where polarizability can be read rather than typed in by hand:
-neither `chemicals` nor `thermo` tabulates it, and the Lorentz-Lorenz route
-through refractive index answers for three species out of fifty-seven. For an
-atom the table is right -- argon lands at 1.642 A3 against a measured 1.641 --
-so every atomic species can be filled, and molecules stay a manual export.
+First ionization energies and electron affinities identify atomic quantities;
+they do not qualify an attachment channel, its stabilization or reaction rate.
+Source review and uncertainty remain separate from successful acquisition.
+Dipole polarizability is converted from atomic units to cubic angstroms.
 """
 
 from __future__ import annotations
@@ -35,7 +24,7 @@ class Atom:
 
     @property
     def binds_electron(self) -> bool | None:
-        """Whether an extra electron is bound. None when unknown."""
+        """The nominal atomic-EA sign; this does not evaluate uncertainty."""
         return None if self.affinity_eV is None else self.affinity_eV > 0
 
 
@@ -94,10 +83,14 @@ def records(found: list[Atom], citation: str) -> list[dict]:
 
 
 def _record(atom: Atom, name: str, value: float, unit: str, citation: str) -> dict:
-    return {
+    record = {
         "species": atom.symbol,
         "property": name,
         "value": value,
         "unit": unit,
+        "phase": "gas",
         "source": {"citation": citation},
     }
+    if name in {"ionization_energy_eV", "electron_affinity_eV"}:
+        record["definition"] = "atomic"
+    return record

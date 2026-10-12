@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 
 _EPSILON = 1.0e-12
@@ -9,7 +10,7 @@ _EPSILON = 1.0e-12
 
 @dataclass(frozen=True)
 class Reachability:
-    """Minimum AND-hypergraph distance from the feed states."""
+    """Minimum AND-hypergraph distance from explicitly available states."""
 
     seeds: tuple[str, ...]
     state_layers: dict[str, int]
@@ -28,18 +29,17 @@ class Pathway:
 
 
 def feed_state_ids(states: list[dict]) -> tuple[str, ...]:
-    """Return electron and explicitly marked input-gas states."""
+    """Return explicitly marked input gases; electron supply is not assumed."""
 
-    return tuple(
-        sorted(
-            state["id"]
-            for state in states
-            if state["id"] == "e" or "feed" in state.get("classes", [])
-        )
-    )
+    return tuple(sorted(state["id"] for state in states if "feed" in state.get("classes", [])))
 
 
-def reaction_reachability(states: list[dict], reactions: list[dict]) -> Reachability:
+def reaction_reachability(
+    states: list[dict],
+    reactions: list[dict],
+    *,
+    seeds: Iterable[str] | None = None,
+) -> Reachability:
     """Compute minimum production layers without using candidate generation depth.
 
     A reaction is reachable only after every explicit reactant is reachable. Only
@@ -48,8 +48,11 @@ def reaction_reachability(states: list[dict], reactions: list[dict]) -> Reachabi
     """
 
     state_ids = {state["id"] for state in states}
-    seeds = feed_state_ids(states)
-    state_layers = dict.fromkeys(seeds, 0)
+    selected_seeds = feed_state_ids(states) if seeds is None else tuple(sorted(set(seeds)))
+    unknown = set(selected_seeds) - state_ids
+    if unknown:
+        raise ValueError("unknown pathway seed states: " + ", ".join(sorted(unknown)))
+    state_layers = dict.fromkeys(selected_seeds, 0)
     reaction_layers: dict[str, int] = {}
     ordered = sorted(reactions, key=lambda reaction: reaction["id"])
 
@@ -72,7 +75,7 @@ def reaction_reachability(states: list[dict], reactions: list[dict]) -> Reachabi
                     changed = True
         if not changed:
             break
-    return Reachability(seeds, state_layers, reaction_layers)
+    return Reachability(selected_seeds, state_layers, reaction_layers)
 
 
 def choose_pathway_target(
@@ -211,9 +214,8 @@ def _target_priority(state: dict) -> int:
     if state["id"] == "e" or "feed" in state.get("classes", []):
         return 0
     if int(state["charge"]) == 0 and state["state"]["kind"] == "ground":
-        classes = {str(value).lower() for value in state.get("classes", [])}
         atom_count = sum(int(value) for value in state.get("composition", {}).values())
-        return 3 if "radical" in classes or atom_count == 1 else 4
+        return 3 if atom_count == 1 else 4
     if int(state["charge"]) != 0:
         return 2
     return 1

@@ -36,11 +36,13 @@ def pathway_png(
     states: list[dict],
     state_names: dict[str, str],
     reactions: list[dict],
+    seeds: tuple[str, ...] | None = None,
+    target: str | None = None,
 ) -> bytes:
     """Render one readable example; the HTML remains the target-selectable view."""
 
-    reachability = reaction_reachability(states, reactions)
-    pathway = select_pathway(states, reactions, reachability=reachability)
+    reachability = reaction_reachability(states, reactions, seeds=seeds)
+    pathway = select_pathway(states, reactions, target=target, reachability=reachability)
     state_by_id = {state["id"]: state for state in states}
     reaction_by_id = {reaction["id"]: reaction for reaction in reactions}
     fonts = _Fonts()
@@ -52,10 +54,16 @@ def pathway_png(
         draw.text((45, 92), view_label, MUTED, fonts.subtitle)
         draw.text(
             (45, 190),
-            "No non-feed target is reachable from all required reactants in this view.",
+            (
+                f"Requested target {target} is not reachable from the supplied seed states."
+                if target
+                else "No non-seed target is reachable from all required reactants."
+            ),
             INK,
             fonts.label_bold,
         )
+        draw.text((45, 238), _seed_note(reachability), MUTED, fonts.node_small)
+        draw.text((45, 270), _TOPOLOGY_NOTE, MUTED, fonts.node_small)
         return _save_png(image, case_name, view_label, pathway, reachability)
 
     path_states = [state_by_id[state_id] for state_id in pathway.state_ids]
@@ -66,7 +74,7 @@ def pathway_png(
     for level in levels.values():
         level_counts[level] = level_counts.get(level, 0) + 1
     max_rows = max(level_counts.values(), default=1)
-    top = 185
+    top = 245
     width = max(1300, 100 + max_level * COLUMN_GAP + 230)
     key_rows = ceil(len(path_reactions) / 2)
     network_bottom = top + (max_rows - 1) * ROW_GAP + NODE_HEIGHT
@@ -81,7 +89,7 @@ def pathway_png(
     draw.text(
         (45, 77),
         (
-            f"{target_name}  |  {minimum_steps} steps  |  "
+            f"{target_name}  |  {minimum_steps} step{'s' if minimum_steps != 1 else ''}  |  "
             f"{len(path_states)} states  |  {len(path_reactions)} reactions"
         ),
         INK,
@@ -94,6 +102,8 @@ def pathway_png(
         fonts.node_small,
     )
     _draw_legend(draw, fonts, 45, 132)
+    draw.text((45, 165), _seed_note(reachability), MUTED, fonts.node_small)
+    draw.text((45, 186), _TOPOLOGY_NOTE, MUTED, fonts.node_small)
     _draw_stage_labels(draw, fonts, max_level, top)
 
     positions = _node_positions(levels, edges, top, ROW_GAP, COLUMN_GAP)
@@ -138,13 +148,28 @@ def pathway_png(
     draw.text(
         (45, height - 42),
         (
-            f"Reachability overview only. {len(pathway.related_reaction_ids)} related reactions "
-            "and all exact equations remain in network.html."
+            f"Reachability overview only. Generate the network view for exact equations "
+            f"and {len(pathway.related_reaction_ids)} related reactions."
         ),
         MUTED,
         fonts.node_small,
     )
     return _save_png(image, case_name, view_label, pathway, reachability)
+
+
+_TOPOLOGY_NOTE = (
+    "All explicit reactants required; M and wall availability implicit; no rates or time."
+)
+
+
+def _seed_note(reachability: Reachability) -> str:
+    seeds = ", ".join(reachability.seeds[:6]) or "none"
+    if len(reachability.seeds) > 6:
+        seeds += f" (+{len(reachability.seeds) - 6} others; PNG metadata lists all)"
+    electron = (
+        "electron explicitly supplied" if "e" in reachability.seeds else "electron not supplied"
+    )
+    return f"Seeds: {seeds} | {electron}"
 
 
 def _pathway_layout(
@@ -421,6 +446,7 @@ def _save_png(
         sha256("\n".join(pathway.reaction_ids).encode()).hexdigest(),
     )
     metadata.add_text("reactgen.seed_states", ",".join(reachability.seeds))
+    metadata.add_text("reactgen.topology_assumptions", _TOPOLOGY_NOTE)
     image.save(output, format="PNG", optimize=True, pnginfo=metadata)
     return output.getvalue()
 

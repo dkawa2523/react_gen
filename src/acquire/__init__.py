@@ -5,7 +5,7 @@ connection and parse foreign formats, and the generator may do neither.
 
     lxcat      parse an LXCat export into per-process cross sections
     atoms      read atomic ionization energy and electron affinity
-    ideal_gas  read formation enthalpy from the NASA Glenn tables
+    ideal_gas  read explicitly referenced ideal-gas h(T) from PyroMat
     chemkin    parse a CHEMKIN thermodynamic file into NASA polynomials
     umist      parse a UMIST RATE release into rate records
     pubchem    fetch and verify species identity

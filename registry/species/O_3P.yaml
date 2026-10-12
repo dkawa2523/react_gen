@@ -1,0 +1,38 @@
+schema_version: 1
+id: O_3P
+display_name: O(3P; all J)
+composition:
+  O: 1
+charge: 0
+phase: gas
+classes:
+- neutral
+- atom
+- ground_term
+- fine_structure_manifold
+state:
+  kind: electronic
+  label: 3P
+  resolution: lumped
+  term: 3P
+  existence: confirmed
+  existence_source: NASA/JPL Evaluation 20, Table 1A and Note A7 identify the O(3P) product term in O(1D) quenching; the J-resolved branching is not supplied.
+  status: reviewed
+  method: evaluated
+  review_scope:
+  - state_existence
+  source:
+    provider: NASA_JPL
+    collection: evaluated_gas_kinetics
+    release: 25-1
+    record_id: A7
+    citation: Burkholder et al., Chemical Kinetics and Photochemical Data for Use in Atmospheric Studies, Evaluation 20, JPL Publication 25-1 (2025), Table 1A and Note A7.
+    url: https://science.jpl.nasa.gov/documents/1503/NASA_Data_Evaluation_20.pdf
+properties: {}
+thermo: null
+metadata:
+  status: reviewed
+  notes:
+  - This target is the O(3P) term summed over its fine-structure products. It is distinct from the O record identified as the 3P2 level.
+  - The electronic kind denotes a term manifold and does not assert a fixed excitation above 3P2. No representative energy, degeneracy, population, lifetime, formation quantity, or NASA fit is assigned.
+  - A term-summed reaction coefficient does not determine any individual J product rate or the population-weighted thermodynamics of this manifold.

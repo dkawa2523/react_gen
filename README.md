@@ -1,229 +1,160 @@
-# plasma-reactgen 0.5
+# plasma-reactgen 0.7.4
 
-入力ガスの化学式から、低温プラズマで検討すべき状態・反応種・反応式候補を
-Registryなしでも決定的に生成します。Registry、review済みoverlay、取得snapshotは
-候補を作る条件ではなく、生成後に状態の実在性、熱化学、既知反応、断面積・速度係数を
-照合する読み取り専用の証拠です。欠損は候補を消さず`unknown`として残します。
+入力ガスから、明示した文法範囲の状態・反応候補を生成し、ローカルの証拠と数値データを照合する調査ツールです。候補、確認できた命題、未確定の理由、数値の利用条件を一つの結果に残します。機構の網羅性や予測可能性は宣言しません。
 
-設計の詳細は[Core design](docs/core_design.md)、固定した改修方針と完了条件は
-[Implementation plan](docs/reaction_state_generation_implementation_plan.md)を参照してください。
-正式なYAML・CSV配置、状態記号、反応分類、列、判定値は
-[出力形式仕様](docs/output_reference.md)にまとめています。
+## 実行
 
-## 基本的な使い方
+Python 3.11以上を使用します。依存関係の正は `pyproject.toml` です。
 
-Caseには中性ground-state化学式だけを書きます。SMILES等の構造指定は要求しません。混合比`fraction`は
-候補の存在を決めないため入力しません。
+配布wheelは `python -m pip install plasma_reactgen-0.7.4-py3-none-any.whl` でインストールできます。Registry、入力例、開発文書を含むソース配布から使う場合は、次の手順で実行します。
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e ".[quality]"
+.\.venv\Scripts\rgen.exe analyze Ar CF4 --out result
+.\.venv\Scripts\rgen.exe analyze Ar CF4 --evidence registry --out result
+```
+
+証拠を省略すると空の証拠で調査します。`--evidence` はRegistryディレクトリ、取得snapshot、overlayファイルを繰り返し指定できます。明示したパスが存在しない場合はエラーです。読込み・照合はネットワークやRegistryの変更を伴いません。
+
+同じ入口を`.\.venv\Scripts\python.exe -m reactgen.cli ...`、取得を`.\.venv\Scripts\python.exe -m acquire.cli ...`としても起動できます。
+
+入力・証拠・保存結果のYAMLで同じキーを二重に記述した場合は、後の値で上書きせず位置付きの形式エラーにします。数値欄の非数値や採用指定の非booleanも、不足情報として扱いません。
+
+同じ処理を入力ファイルからも実行できます。直接指定との併用はできません。
 
 ```yaml
-name: ar_cf4
 gases: [Ar, CF4]
 conditions:
-  gas_temperature_K: 350.0
-  electron_temperature_eV: 4.0
-limits:
-  max_depth: 6
-  max_species: 300
-  max_reactions: 5000
+  gas_temperature_K: 350
+  electron_temperature_eV: 4
+surfaces: [SiO2, Si]
 ```
 
 ```powershell
-rgen generate cases/ar_cf4/case.yaml --out work/ar_cf4
-rgen generate cases/ar_cf4/case.yaml --registry registry --policy review --out work/ar_cf4
-rgen generate cases/ar_cf4/case.yaml --registry registry --policy review --csv --out work/ar_cf4
-rgen plan cases/ar_cf4/case.yaml --registry registry
-rgen check --registry registry
+.\.venv\Scripts\rgen.exe analyze --input input.yaml --evidence registry --out result
 ```
 
-`generate`は次の3ファイルを正規bundleとして一括更新します。
+必須入力は中性基底状態の化学式のリスト `gases` だけです。`name` は表示用です。任意の条件は `gas_temperature_K`、`electron_temperature_eV`、`ion_temperature_K`、`surface_temperature_K`、`reduced_field_Td`、`ion_energy_eV`、`electron_energy_eV`、`collision_energy_eV` です。温度と単一の衝突エネルギーを区別し、対応する熱化学計算やデータの評価・適用範囲にだけ使います。温度や単一エネルギーから分布を無言で仮定しません。`surfaces` は照合対象の材料名で、表面flux計算の入力ではありません。
 
-- `states.yaml`: 全状態候補、formula scope、証拠、Consistency・State・Thermochemistry判定
-- `reactions.yaml`: 全反応候補、5判定、数値dataset、数値利用能力
-- `selected.yaml`: policyによるID選択、状態・反応の非選択理由、readiness
+`limits` は `max_depth=12`、`max_species=300`、`max_reactions=10000`、`max_charge_abs=1`、`max_leaving_atoms=2` が既定です。すべて正の整数で、機械生成の電荷範囲は現在±1のみです。既知の多価イオンは証拠から追加できます。上限は完全性を左右する計算条件であり、物理条件ではありません。未知のキー、使わない圧力・密度・幾何量、用途preset、シナリオは受け付けません。
 
-`--csv`を指定すると、目視・表計算用の一覧と判定別directoryも出力します。
+複数の出典がある数値は、任意の `data_selection` で量ごとに採用方針を指定できます。例えば、測定値、評価値の順に速度係数を優先する入力は次のとおりです。
 
-- `states.csv`: 状態名、化学式、電荷、状態の意味、由来、判定、主要物性
-- `reactions.csv`: 反応式、分かりやすい反応種別、family/process、5判定、反応熱、kinetics利用可否、選択結果
-- `reactions_electron.csv / reactions_ion.csv / reactions_neutral.csv`: 上記反応表のfamily別view
-- `reactions_surface.csv`: surface反応を中性気相反応へ混在させないための独立view
-
-```text
-assessments/
-  composition.svg
-  network.html
-  network.png
-  pathways.png
-  statistics.csv
-  statistics.svg
-  consistency/
-  state/
-  thermochemistry/
-  reaction_evidence/
-  kinetics/
-  screening/
-    state_consistency/
-    state_consistency_thermochemistry/
-    state_consistency_thermochemistry_kinetics_or_reaction_evidence/
+```yaml
+gases: [Ar]
+conditions:
+  gas_temperature_K: 300
+data_selection:
+  quantities:
+    rate_coefficient:
+      mode: prefer
+      methods: [measured, evaluated]
 ```
 
-各判定directoryには次の表形式出力があります。
+対象量は `rate_coefficient`、`cross_section`、`sticking_coefficient` です。`prefer` は指定順に優先し、該当する適格データがなければ他の出典も調べます。`only` は指定した区分だけに制限します。区分は `methods`、`providers`、`collections` で、出典台帳にない独自providerも明示した識別子で指定できます。特定の数値記録を固定する場合は `record: datasetのID` を使います。これは全反応の指定量へ適用されるため、そのIDを持たない反応の同量は利用不可になります。軸の順序・複数軸の規則は[出力仕様](docs/output_reference.md)を参照してください。
 
-- `states.csv`: 状態へ適用するConsistency、State、Thermochemistryだけに出力
-- `reactions.csv`: その判定を適用した反応とreaction type・verdict・理由
-- `reactions_electron.csv / reactions_ion.csv / reactions_neutral.csv / reactions_surface.csv`:
-  `reactions.csv`をfamilyで欠落なく分割した同一列構成のview
-- `family_summary.csv`: 反応familyごとのverdict件数
-- `summary.csv`: 状態数・反応数と`pass / fail / unknown / not_applicable`の件数
-- `verdict_counts.svg`: 状態・反応の件数・比率と、その判定から直接言える要点
-- `reaction_family.svg`: 共通count scaleによる反応family別の量とverdict構成
+優先指定は、同定、単位、適用域、数値資格の確認を省略しません。優先出典の適用条件が未確定なら、その不足を返します。物性、NASAモデル、存在根拠の採用区分をこの入力で指定する機能は未対応で、対応外の量・項目はエラーにします。
 
-YAML・CSVの互換仕様は[出力形式仕様](docs/output_reference.md)を正とします。SVG、PNG、HTMLは
-同じデータから作る補助表示であり、そのレイアウトは正式な出力形式に含めません。
+## 結果の読み方
 
-3つの累積screening directoryにも、全反応の`reactions.csv`と同じfamily別4ファイルを出力します。
-該当反応が0件の場合も、列見出しだけを保持します。
+通常CLIは対象と入力条件、使える係数の具体例、必要な対象・量と次の作業を先に表示します。通常の出力は3ファイルです。
 
-`assessments/statistics.svg`は5判定を順にpassした反応数を累積表示し、最大のreadiness
-bottleneckと各判定単独のverdict構成を示します。`composition.svg`は状態の電荷・励起種別・解像度・寿命特性、
-反応family・生成depthという候補構成だけを分離表示します。元の集計値は`statistics.csv`です。
-`assessments/network.html`はcase全体で1ファイルだけのoffline network explorerです。全状態と全反応を
-一度だけ内包し、5つの個別判定と3つの累積screeningをselectorで切り替えます。既定のComplete matrixは、
-状態を行、反応を列とする化学量論incidence matrixです。各反応を必ず1列として表示し、反応物、生成物、
-正味係数ゼロ参加を異なる色と形で示します。下段の5本のbandは各判定の4値を同じ反応列へ対応させます。
-任意のmarkを選ぶと完全な反応hyperedgeへ移り、状態行または状態nodeを選ぶと状態近傍viewへ移ります。
-状態近傍viewは`Δν = νproducts - νreactants`により正味生成・正味消費・正味係数ゼロ参加へ分け、各区分を
-独立して7反応ずつpage表示します。正味係数ゼロは物理的に無変化とは限らず、transport、momentum、
-charge carrierなどのsubroleを明示します。反応式・状態名・ID検索、family・verdict・depth絞込み、
-100反応単位の一覧paginationも同じfileで扱います。
+- `result.yaml`: 入力、探索範囲と打切り、全候補、命題ごとの判定、出典・数値・利用条件を持つ唯一の正規結果。
+- `states.csv`: 状態、相・構造、判定と理由。
+- `reactions.csv`: 反応式、過程、判定、エネルギー値、数値の利用結果・不足。
 
-`assessments/network.png`は全候補を対象とする高解像度の静的化学量論matrixです。1反応1列でsamplingや
-species間edgeへの投影を行わず、PNG metadataにも状態数、反応数、反応ID digest、`all_candidates_no_sampling`
-scopeを記録します。PNGは全体構造、HTMLはzoom・filter・完全反応式の確認という責務分担です。
+CSVには各判定の命題、適用範囲、理由も表示します。利用者が入力できる条件、出典側で確認する情報、出典選択、分布等の外部モデル、未実装の変換を別列に示します。表示は保存された結論から作り、再判定しません。
 
-Network explorerの`Hierarchical pathways`は、選択した対象状態について、入力ground stateと電子からの
-最短到達経路を左から右へ表示します。通常のspecies間経路ではなく、全反応物が到達済みの場合だけ反応を
-進めるAND型hyperpathです。層は最小生成反応段数から求め、候補生成時の`depth`を物理的な時間順序として
-流用しません。同じ最短段数では5判定の利用可能性を決定的なtie-breakに使いますが、支配反応とは解釈
-しません。主図は状態名と役割、`R1`形式の反応番号と短い反応種別だけを示し、edgeはfamily色と方向だけに
-限定します。完全反応式、canonical ID、5判定は反応nodeのclick先へ分離します。選ばれなかった代替生成、
-対象消費、正味係数ゼロ参加反応も件数と完全な一覧を同じ画面に残します。表示中の対象経路は画面から
-PNG downloadできます。
-`assessments/pathways.png`は最終screeningで到達可能な代表対象を1枚だけ静的出力し、該当対象がなければ
-より前のscreeningへ戻します。対象、使用view、経路反応数、関連反応数をPNG metadataへ記録します。
+`pass` はその判定の命題について支持があること、`fail` はその命題との矛盾、`unknown` は不足・競合・モデル未対応等により結論できないこと、`not_applicable` は対象外を表します。新規結果の全判定に `proposition` と個別の `scope` を記録し、必要情報は対象・量・作業を持つ `requirements`、参加状態の集約は個別判定への `dependencies` で確認できます。速度データの不正は反応の不存在を意味せず、熱化学値の存在は反応の実現を証明しません。候補は不足・不正があっても結果に残ります。
 
-`assessments/screening/`は個別判定とは別の累積pass-only viewです。`State → Consistency`、
-`State → Consistency → Thermochemistry`、`State → Consistency → Thermochemistry →
-(Kinetics OR Reaction evidence)`の3段階を持ちます。各段階の`states.csv`と`reactions.csv`は、
-その段階までのgateを通過した候補だけを保持します。最後のgateはKineticsとReaction evidenceの
-両方を要求せず、どちらか一方がpassなら通過します。反応CSVには両判定、OR結果、`accepted_by`を
-別列で保持します。`summary.csv`は各stepの入力数・残存数・そのstepでの除外数を、
-`retention.svg`は同じ推移を状態と反応に分けて表示します。3つの残存反応集合は
-case共通の`assessments/network.html`から切り替えて確認できます。
-KineticsとReaction evidenceは状態へ適用せず、状態の累積件数を変えません。このscreeningは
-CandidateSetや正規YAMLを変更せず、fail/unknownの詳細は個別判定CSVに残ります。
+解離・会合の`consistency`は、宣言した反応族の保存則・式形を確認します。会合が安定化するか、解離が何によって励起されるか、どの条件で速度が使えるかは、その`pass`だけでは決まりません。
 
-CSVには行ごとのrun metadataやJSONを入れず、確認に必要な値だけを通常の列として出します。
-目視用の状態名は`Ar+`、`Ar(m)`（準安定）、`Ar(r)`（共鳴）、`CF4*`（電子励起）、
-`O2(v)`（振動励起）のような記号で表示します。既知の項記号は`O2(a¹Δg)`や`O(¹D₂)`とします。
-反応表には式の直後に`Electron-impact ionization`、`Resonant charge exchange`、
-`Excited-state quenching`などの英語の
-`reaction_type`を表示します。一意性が必要な
-`Ar+@ground`等は各表の最後の`id`列だけに保持します。完全な証拠recordと再現metadataは
-YAMLが正本です。選択結果は`states.csv`と`reactions.csv`の`selected`列および
-`selected.yaml`へ記録するため、重複する`selected.csv`は出力しません。
+`data_use.status=coefficient` の場合は、指定条件で実際に評価した係数と単位を返します。`needs_input` と `needs_transform` は必要な情報・変換を返します。`unavailable` と `conflict` は採用できない理由を返します。断面積だけではEEDF積分後の係数、sticking確率だけでは表面流束は得られません。
 
-反応式の表示順は化学量論やreaction IDと独立です。反応物側は電子、重粒子イオン、励起・活性中性種、
-安定中性種の順とし、生成物側は重粒子を先に、電子を最後にします。したがって電子衝突は
-`e + Ar -> Ar(4s) + e`、イオン衝突はprojectile ionを先頭とする形で全CSV・YAML・network表示を統一します。
+`data_use.selection` は明示した採用方針、`disagreements` は数値の不一致やIDの競合がある記録IDです。優先指定で一つを採用しても、他の出典の記録と不一致を結果へ残します。優先指定なしで異なる値が競合する場合は、順番だけで一つに決めません。
 
-状態略記は次の意味です。
+不足には利用者の条件と、出典側の修復を区別して示します。`gas_temperature` は対応する温度入力、`dataset_applicability_conditions` はデータの適用条件の確認、`rate_law_selection` は異なる速度則の採用根拠が必要という意味です。後二者を通常入力の仮条件で埋めません。
 
-| 表示 | 意味 |
-|---|---|
-| `O2` | 電子基底状態 |
-| `O2(v)` | 未分解の振動励起状態群 |
-| `CF4*` | 準位未指定の電子励起状態群 |
-| `Ar(m)` | 未分解の準安定電子状態群 |
-| `Ar(r)` | 未分解の共鳴・放射性電子状態群 |
-| `Ar(4s)` | 4s配置の混合状態群（準安定2準位と共鳴2準位を含む証拠側のumbrella） |
-| `O(¹D₂)`, `O2(a¹Δg)` | 証拠で名前が特定された分解済み状態 |
-| `Ar+`, `O-`, `e` | 正イオン、負イオン、自由電子 |
+形成エンタルピーの差は、参加種の共通参照温度・元素基準・標準圧力を確認できた場合に返します。イオンを含む有限温度の比較には電子規約も必要です。不明な既存値に298 K等を補わず、ΔHだけを計算不可にします。NASAからの標準ΔG/Kや、独立したIE・EAの結論はそれぞれの前提で評価します。
 
-`v / * / m / r`は一つの量子準位を断定せず、`resolution=lumped`の計算用候補を表します。
-構造異性体を表す記号ではありません。化学式だけから構造異性体を分離せず、外部証拠で同定できる場合だけ
-別のnamed stateとして扱います。`Ar(4s)`は`Ar(m)`または`Ar(r)`と同一ではなく、両方に関連する
-混合manifoldです。関連証拠はState判定へ表示しますが、完全一致しない状態の物性値としては採用しません。
-`states.csv`の`state_meaning`はこの意味を行ごとに明記します。
+IE/EAは断熱・垂直等の量の定義を区別します。定義不明の旧分子値や別定義の値は原宣言として保全し、その定義を必要とする比較だけを未確定にします。反応の閾値・内部エネルギー差も、各量自身の資格・出典・不確かさで評価します。宣言値の整合は測定精度や反応発生の保証ではありません。
 
-主要CSV列は次の区分です。
+正の電子親和力と電子非束縛の宣言が矛盾する場合は未確定とし、そのEAを数値計算へ採用しません。`unstable`・`transient`や短寿命の存在宣言だけでは電子非束縛を結論しません。
 
-- 状態同定：`species / formula / charge / excitation / resolution / lifetime_class /
-  state_label / state_symbol / state_meaning / alternative_resolution_states /
-  structure_scope / id`
-- 生成情報：`origin / depth`
-- 状態判定：`state_verdict / thermochemistry_verdict / selected`
-- 状態物性：`state_energy_eV / lifetime_s / mass_amu / enthalpy_formation_eV /
-  ionization_energy_eV / electron_affinity_eV`
-- 反応同定：`equation / reaction_type / family / process / id`
-- 反応判定：5種類の`*_verdict`、`selected / exclusion_reason`
-- 反応数値：`delta_h_eV / delta_g_eV / threshold_eV / kinetic_data`
+励起状態の消失率や化学式全体の係数は、特定準位の生成物係数とは区別します。生成物の対応が未確認なら原数値を証拠へ残し、そのチャネルの計算には採用しません。温度を入力しても、この同定不足は解消しません。
 
-`state_label`はcanonicalな機械用ラベル、`state_symbol`は`m / r / v / *`などの表示記号です。
-`excitation`はground・electronic・vibrational、`lifetime_class`はmetastable・radiative等を表し、
-状態解像度とは混ぜません。`alternative_resolution_states`は同じ組成・電荷・励起種別を
-lumped/resolvedの別表現で表す候補を示し、同時計上を避けるための列です。
-`structure_scope=formula_only`は化学式だけでは構造異性体まで同定していないことを示します。
+`generation.complete` は明示した機械文法と証拠追加の範囲で処理が完了したことです。全化学の探索完了ではありません。打切りでも決まった範囲を保存し、CLIは終了コード1を返します。形式・入力エラーは2です。
 
-反応の`state_verdict`は「反応物・生成物に現れる非電子状態それぞれのState判定」の集約です。
-反応自体の存在、起こりやすさ、速度を意味しません。
-`depth`は候補生成frontierの深さであり、時間順序、反応経路の段数、重要度ではありません。
-`origin=mechanical`は生成文法由来、`attested_only`は証拠源にだけ存在して和集合された候補です。
+## 保存結果からの補助表示
 
-判定値は`pass / fail / unknown / not_applicable`です。既定の`review`は全候補を
-表示します。候補集合と数値計算用の選択集合は別物です。
-
-生成時に化学式から確定できるのは元素組成、電荷、原子数、homolepticな中心原子–配位子型の
-開裂と電子数parityまでです。`fragment`は生成経路、`reactive_candidate`はodd-electron、
-非希ガス原子、または明確な`AXn`式での価電子不足を表し、spinの断定ではありません。
-これによりCF2、SiH2などを中性反応候補へ残しつつ、構造異性体、spin、準位の実在性は
-State証拠で判断します。非束縛anionやエネルギー不足のPenning反応も生成時に隠さず、
-後段で`fail`にします。
-
-圧力・温度・密度・換算電界・体積・表面積・滞留時間は有限性と符号をCase読込み時に検査します。
-family/processは候補、Registry、snapshotのすべてでcanonical化してからIDを作るため、
-`three_body/recombination`と`neutral/three_body_association`を別反応として重複させません。
-
-## 外部データ
-
-生成処理はネットワークへ接続しません。外部取得は`acquire`だけが担当します。
+再計算せず、不足・修復一覧や図を作れます。
 
 ```powershell
-acquire lxcat export.txt --out work/lxcat
-rgen ingest work/lxcat/snapshot.yaml --bundle work/ar_cf4 --overlay work/overlay.yaml
-rgen generate cases/ar_cf4/case.yaml --registry registry --overlay work/overlay.yaml
-rgen adopt work/overlay.yaml --registry registry
+.\.venv\Scripts\rgen.exe needs result
+.\.venv\Scripts\rgen.exe needs result --detail
+.\.venv\Scripts\rgen.exe view result --kind network --out result/views
+.\.venv\Scripts\rgen.exe view result --kind matrix --out result/views
+.\.venv\Scripts\rgen.exe view result --kind pathway --seed Ar@ground --seed e --target Ar+@ground --out result/views
+.\.venv\Scripts\rgen.exe view result --kind csv --out result
 ```
 
-`ingest`はbundleのcanonical IDへ照合するだけです。反応式が同じでもfamily・process・
-observableが違うデータは別物です。曖昧一致やtotal processの
-product-resolved channelへの割当てはreview queueへ送ります。Registryを書き換えるのは
-明示的な`adopt`だけです。
+`needs`は結論と不足の概要を先に返し、`work`に対象・量・責務で整理した具体的な必要情報、`needs`に保存判定やデータ除外の指摘を示します。既知の必要情報数、派生指摘数、具体的要件を持たない指摘数は別です。参加状態やDataUseから導いた同じ不足を作業として重複計数しません。`--detail`で全対象・理由・作業と影響先を確認できます。表示群数は作業数でも、一括解消の保証でもありません。判定の`fail`はその命題の失敗として示し、すべての用途で候補を修復・削除すべきという意味へ変換しません。
 
-公開形式は[単一のbundle schema](schemas/bundle.schema.yaml)で定義します。
+経路は全反応物を必要とするAND型の候補到達性です。既定の供給は入力ガスだけで、電子は明示した場合だけ供給します。`--seed` は既定供給を置換します。第三体・壁の利用可能性は図の暗黙の前提で、速度・時間・支配経路は分かりません。図は通常計算の依存先にしません。
+
+ネットワークの詳細は、命題と範囲、利用できた値・条件・参照条件、理由・不足、採用記録・不一致・出典を保存結果から表示します。生成履歴は折り畳みます。旧結果の命題や要件の空欄は「未記録」とし、推測補完しません。
+
+ネットワークの `All saved candidates` は判定未選択です。判定層を選んだときだけその命題のverdictを表示します。行列は8000反応以下で `matrix.png`、それを超えると全列を分割した `matrix.html` とPNGを返します。HTML索引から対象範囲を確認できます。
+
+## 証拠の管理
+
+```powershell
+.\.venv\Scripts\rgen.exe check --registry registry
+.\.venv\Scripts\rgen.exe ingest snapshot.yaml --result result --overlay overlay.yaml
+.\.venv\Scripts\rgen.exe analyze Ar CF4 --evidence registry --evidence overlay.yaml --out result
+.\.venv\Scripts\rgen.exe derive --registry registry --out derived.yaml
+.\.venv\Scripts\rgen.exe adopt overlay.yaml --registry registry --dry-run
+```
+
+取得は別パッケージ `acquire`、照合は `ingest`、永続的な採用は `adopt` です。照合済み件数は科学的承認件数ではありません。状態の存在を支持するには、物性とは別に明示的な存在根拠が必要です。相や構造が不足したsnapshot値を気相へ無言で割り当てません。出典の資格やライセンスは[データガイド](docs/registry_data_guide.md)と[出典方針](docs/source_license_policy.md)を参照してください。
+
+`adopt` は全件を事前検証し、通常の保存失敗では変更を復旧します。復旧にも失敗した場合は残ったbackupと失敗を報告します。[取得手順](external_data/README.md)と[個別データの科学レビュー](docs/scientific_data_review.md)を参照してください。
+
+照合・採用は相、構造、状態と解像度まで一致する対象へ行います。`ingest` は独立した状態記録をoverlayの `state_records` へ保存し、`adopt` はRegistry種ファイルの `records` へ追加します。同一対象の異なる出典・値・NASAモデルを単一mappingへ上書きしません。出典識別子、原宣言、方法、宣言された審査範囲も保存します。値の不一致と対象の同定不足は別に扱い、競合する独立宣言を入力順で選びません。形式は[データガイド](docs/registry_data_guide.md)を参照してください。
+
+反応主張はoverlayの `reaction_records`、Registryチャネルの `records` に独立保存します。純粋な反応根拠や閾値の宣言は数値datasetを作りません。係数等も宣言した入力は、反応主張と数値を別々に保持するため、`adopt`の書込み件数は一入力から複数になる場合があります。過程が不明な反応式を特定チャネルへ推測して割り当てず、必要な同定をreview queueへ返します。
+
+同じ原記録の再取得は、取得日時だけで競合にせず、各取得の原宣言を併記します。状態の存在・各物性・熱化学モデルの審査範囲を対応する主張へ適用し、出典の優先指定で資格を補いません。
+
+## 0.7からの変更
+
+0.7.2はschema 5と通常入力を維持します。保存済みの結果は過去の判定として読み、再計算しません。新しい分析では、同一対象の存在根拠が相反しても、独立に審査された物性の利用は別に評価します。エネルギー量の競合は、その量を使う判定だけを未確定にします。量の利用成功から状態・反応の存在を承認しません。
+
+数値表は保存した実測hashと作者の宣言hashを保持し、実際に利用する内容を照合します。表が変更された場合は旧資格のまま計算せず、同じ検証済み内容の保存場所だけが違う場合は科学的競合にしません。原宣言と取得場所は保持します。
+
+0.7.1で導入した審査範囲と拒否宣言の資格確認、原IDの名前空間、独立反応主張の保存は継続します。既存overlay・Registry・結果の保存IDは保持し、原IDが確認できない旧記録を推測で統合しません。
+
+## 0.6からの移行
+
+0.7の公開結果はschema 5の追加形式です。0.6のschema 5保存結果も読み込めます。新しい `proposition`、出典情報、採用方針・不一致は、新しい分析で保存します。再読込みは過去の判定を再計算しません。
+
+旧 `states/properties/thermo` overlayと単一のRegistry物性は読込みadapterで受け付けます。新規取得・照合・採用では独立記録を使ってください。datasetの `preferred` は、その量の `data_selection` がない場合だけ使う旧互換指定で、理由に移行案内を返します。0.8で撤去する予定です。
+
+## 0.5からの移行
+
+0.6は公開形式をschema 5へ変更しています。`generate`、7 policy、`selected.yaml`、累積screening、ready booleanは廃止しました。旧bundleを通常処理で読む互換経路はありません。
+
+```powershell
+.\.venv\Scripts\python.exe tools/migrate_v4.py --input old_input.yaml --bundle old_outputs --out new_result --evidence registry
+```
+
+移行先は新しいディレクトリを指定します。原入力・旧bundle・旧証拠を保存し、使わない旧条件は移行報告へ分けます。旧判定は引き継がず再評価します。旧証拠はimportedとして復元し、相・存在根拠・assetの位置が不明なら不明のまま残します。多価電荷などIDが矛盾する原本は修正が必要です。この一回限りの工具はv4のみを対象とし、0.8で撤去する予定です。
 
 ## 開発
 
 ```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -e ".[quality]"
-python -m pytest -q
-ruff check .
-mypy
-lint-imports --config .importlinter --no-cache
+.\.venv\Scripts\python.exe tools/quality.py quality-pr
 ```
 
-本ツールはBoltzmann方程式、DNT/DNT+、EEDF、プラズマ時間発展を解きません。
-それらで扱う反応種・channelは候補化しますが、断面積モデル自体は実装範囲外です。
-電子をground-state NASA speciesとみなした平衡定数や逆速度は導出しません。
+継続的な判断は[AGENTS.md](AGENTS.md)、現行責務は[Core design](docs/core_design.md)、公開形式は[出力仕様](docs/output_reference.md)、検証入口は[品質管理](docs/quality.md)を正とします。今回の変更は[実施記録](docs/reaction_state_generation_implementation_plan.md)、残件と優先順位・完了条件は[残件計画](docs/remaining_work_plan.md)に分けています。

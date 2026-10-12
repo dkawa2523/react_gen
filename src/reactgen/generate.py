@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from collections import Counter
 from dataclasses import replace
-from itertools import combinations
+from itertools import combinations, combinations_with_replacement
 
 from reactgen import naming
 from reactgen.case import Limits
@@ -67,7 +67,12 @@ def candidates(
 
 
 class _Generator:
-    """A small stateful frontier walk around otherwise pure template functions."""
+    """Reach a fixed point of the bounded, formula-level generation rules.
+
+    Classes record how a state was encountered; they are not physical facts or
+    rule eligibility.  Excitation and ligand-transfer partners are explicitly
+    scoped to input ground species.  Reaction existence is assessed elsewhere.
+    """
 
     def __init__(self, limits: Limits) -> None:
         self.limits = limits
@@ -86,6 +91,12 @@ class _Generator:
         self.feed: set[str] = set()
 
     def run(self, gases: list[tuple[str, dict[str, int]]]) -> CandidateSet:
+        required = 1 + len({tuple(sorted(composition.items())) for _, composition in gases})
+        if required > self.limits.max_species:
+            raise ValueError(
+                f"max_species={self.limits.max_species} cannot retain the electron "
+                f"and {required - 1} distinct input species; use at least {required}"
+            )
         self._add_state(electron_state())
         for _written, composition in sorted(gases):
             classes = {"feed", "neutral"}
@@ -101,31 +112,27 @@ class _Generator:
             )
             self.feed.add(self._add_state(state))
 
-        active = set(self.result.states)
-        frontier = set(self.feed)
         try:
             for depth in range(1, self.limits.max_depth + 1):
-                if not frontier:
-                    break
                 self._new_states = set()
                 snapshot = tuple(
                     self.result.states[state_id]
-                    for state_id in sorted(active)
+                    for state_id in sorted(self.result.states)
                     if state_id != ELECTRON
                 )
-                self._electron(frontier, depth)
-                self._ion(frontier, snapshot, depth)
-                self._neutral(frontier, snapshot, depth)
-                discovered = self._new_states - active
-                if not discovered:
-                    frontier = set()
+                # Revisit the bounded set when it grows: a new excited state can
+                # enable a channel between two already-known ground particles.
+                # The full pass avoids hidden dependency on processing order.
+                self._electron(snapshot, depth)
+                self._ion(snapshot, depth)
+                self._neutral(snapshot, depth)
+                if not self._new_states:
                     break
-                active.update(discovered)
-                frontier = discovered
                 if depth == self.limits.max_depth:
                     self._truncate(f"max_depth={self.limits.max_depth}")
         except _LimitReached as error:
             self._truncate(str(error))
+        self.result.completion["mechanical"] = self.result.complete
         return self.result
 
     def _truncate(self, reason: str) -> None:
@@ -211,6 +218,7 @@ class _Generator:
         *,
         third_body: str | None = None,
         kinetic_effects: tuple[str, ...] = (),
+        stabilization: str | None = None,
     ) -> None:
         candidate = ReactionCandidate(
             id="",
@@ -223,6 +231,7 @@ class _Generator:
             depth=depth,
             third_body=third_body,
             kinetic_effects=kinetic_effects,
+            stabilization=stabilization,
         )
         key = candidate.key
         if key in self._reaction_keys:
@@ -235,11 +244,9 @@ class _Generator:
 
     # Electron templates -----------------------------------------------------
 
-    def _electron(self, frontier: set[str], depth: int) -> None:
-        for state_id in sorted(frontier):
-            if state_id == ELECTRON:
-                continue
-            target = self.result.states[state_id]
+    def _electron(self, snapshot: tuple[StateCandidate, ...], depth: int) -> None:
+        for target in snapshot:
+            state_id = target.id
             self._reaction(
                 "electron",
                 "elastic",
@@ -306,9 +313,10 @@ class _Generator:
             (anion,),
             depth,
             "electron.attachment.v1",
+            stabilization="unspecified",
         )
 
-        if not target.classes.intersection({"fragment", "rearranged"}):
+        if target.id in self.feed:
             for excited in self._excited_states(target, depth):
                 self._reaction(
                     "electron",
@@ -350,15 +358,18 @@ class _Generator:
                 depth,
                 "electron.dissociation.v1",
             )
-            self._reaction(
-                "neutral",
-                "three_body_association",
-                tuple(neutral_products),
-                (target.id,),
-                depth,
-                "neutral.reverse_dissociation.v1",
-                third_body="M",
-            )
+            # Reverse association is represented only as a genuine three-body
+            # channel: two explicit collision partners and an implicit M.
+            if len(neutral_products) == 2:
+                self._reaction(
+                    "neutral",
+                    "three_body_association",
+                    tuple(neutral_products),
+                    (target.id,),
+                    depth,
+                    "neutral.reverse_dissociation.v1",
+                    third_body="M",
+                )
 
             cation = self._ground(
                 heavy,
@@ -478,7 +489,7 @@ class _Generator:
         ]
 
     def _electron_cation(self, ion: StateCandidate, depth: int) -> None:
-        if "complex_ion" not in ion.classes:
+        if not is_noble_ligand_complex(ion.composition):
             parent = self._ground(
                 ion.composition,
                 0,
@@ -493,6 +504,7 @@ class _Generator:
                 (parent,),
                 depth,
                 "electron.recombination.v1",
+                stabilization="unspecified",
             )
         for heavy, leaving in bond_splits(ion.composition, self.limits.max_leaving_atoms):
             products = [
@@ -524,7 +536,7 @@ class _Generator:
             )
 
     def _electron_anion(self, ion: StateCandidate, depth: int) -> None:
-        if "complex_ion" in ion.classes:
+        if is_noble_ligand_complex(ion.composition):
             for heavy, leaving in bond_splits(
                 ion.composition,
                 self.limits.max_leaving_atoms,
@@ -566,7 +578,7 @@ class _Generator:
 
     # Ion templates ----------------------------------------------------------
 
-    def _ion(self, frontier: set[str], snapshot: tuple[StateCandidate, ...], depth: int) -> None:
+    def _ion(self, snapshot: tuple[StateCandidate, ...], depth: int) -> None:
         ions = [
             item
             for item in snapshot
@@ -575,19 +587,15 @@ class _Generator:
         neutrals = [item for item in snapshot if item.charge == 0]
         for ion in ions:
             for neutral in neutrals:
-                if ion.id not in frontier and neutral.id not in frontier:
-                    continue
                 if not (
-                    "feed" in neutral.classes
+                    neutral.id in self.feed
                     or ion.composition == neutral.composition
                     or self._reactive_neutral(neutral)
                 ):
                     continue
-                self._ion_neutral(ion, neutral, snapshot, frontier, depth)
+                self._ion_neutral(ion, neutral, snapshot, depth)
 
         for left, right in combinations(ions, 2):
-            if left.id not in frontier and right.id not in frontier:
-                continue
             if left.charge * right.charge >= 0:
                 continue
             left_products = self._neutralized_products(left, depth)
@@ -607,7 +615,6 @@ class _Generator:
         ion: StateCandidate,
         neutral: StateCandidate,
         snapshot: tuple[StateCandidate, ...],
-        frontier: set[str],
         depth: int,
     ) -> None:
         if neutral.state.kind != "ground":
@@ -628,7 +635,7 @@ class _Generator:
             )
             return
 
-        if "complex_ion" in ion.classes:
+        if is_noble_ligand_complex(ion.composition):
             self._complex_ion_collision(ion, neutral, depth)
             return
 
@@ -707,10 +714,8 @@ class _Generator:
             neutral,
             ion_parent,
             depth,
-            split_target=neutral.id in frontier,
-            split_projectile=ion.id in frontier,
         )
-        if ion.id in frontier and "feed" in neutral.classes and "rearranged" not in ion.classes:
+        if neutral.id in self.feed:
             self._ion_transfer(ion, neutral, depth)
 
     def _ion_dissociation(
@@ -719,13 +724,8 @@ class _Generator:
         neutral: StateCandidate,
         ion_parent: str,
         depth: int,
-        *,
-        split_target: bool,
-        split_projectile: bool,
     ) -> None:
-        neutral_splits = (
-            bond_splits(neutral.composition, self.limits.max_leaving_atoms) if split_target else []
-        )
+        neutral_splits = bond_splits(neutral.composition, self.limits.max_leaving_atoms)
         for heavy, leaving in neutral_splits:
             neutral_fragments = [
                 self._ground(
@@ -772,9 +772,7 @@ class _Generator:
                 kinetic_effects=("fast_product",),
             )
 
-        ion_splits = (
-            bond_splits(ion.composition, self.limits.max_leaving_atoms) if split_projectile else []
-        )
+        ion_splits = bond_splits(ion.composition, self.limits.max_leaving_atoms)
         for heavy, leaving in ion_splits:
             charged = self._ground(
                 heavy,
@@ -896,7 +894,7 @@ class _Generator:
             )
 
     def _neutralized_products(self, ion: StateCandidate, depth: int) -> tuple[str, ...]:
-        if "complex_ion" not in ion.classes:
+        if not is_noble_ligand_complex(ion.composition):
             return (
                 self._ground(
                     ion.composition,
@@ -939,6 +937,32 @@ class _Generator:
             kinetic_effects=("momentum_transfer",),
         )
         for heavy, leaving in bond_splits(ion.composition, self.limits.max_leaving_atoms):
+            charged_fragment = self._ground(
+                heavy,
+                ion.charge,
+                depth,
+                "ion.projectile_dissociation.v1",
+                classes=frozenset({"fragment"}),
+            )
+            leaving_fragments = tuple(
+                self._ground(
+                    part,
+                    0,
+                    depth,
+                    "ion.projectile_dissociation.v1",
+                    classes=frozenset({"fragment"}),
+                )
+                for part in leaving_products(leaving)
+            )
+            self._reaction(
+                "ion",
+                "projectile_dissociation",
+                (ion.id, neutral.id),
+                (charged_fragment, *leaving_fragments, neutral.id),
+                depth,
+                "ion.projectile_dissociation.v1",
+                kinetic_effects=("fast_product",),
+            )
             neutral_fragments = [
                 self._ground(
                     part,
@@ -979,14 +1003,11 @@ class _Generator:
 
     def _neutral(
         self,
-        frontier: set[str],
         snapshot: tuple[StateCandidate, ...],
         depth: int,
     ) -> None:
         neutrals = [item for item in snapshot if item.charge == 0]
-        for left, right in combinations(neutrals, 2):
-            if left.id not in frontier and right.id not in frontier:
-                continue
+        for left, right in combinations_with_replacement(neutrals, 2):
             if not self._eligible_neutral_pair(left, right):
                 continue
             self._neutral_pair(left, right, depth)
@@ -996,15 +1017,11 @@ class _Generator:
             return True
         left_active = self._reactive_neutral(left)
         right_active = self._reactive_neutral(right)
-        left_partner = bool(left.classes & {"feed", "fragment"}) or left_active
-        right_partner = bool(right.classes & {"feed", "fragment"}) or right_active
-        return (left_active and right_partner) or (right_active and left_partner)
+        return left_active or right_active
 
     @staticmethod
     def _reactive_neutral(state: StateCandidate) -> bool:
-        return "reactive_candidate" in state.classes and (
-            "rearranged" not in state.classes or "fragment" in state.classes
-        )
+        return neutral_reactive_candidate(state.composition)
 
     def _neutral_pair(
         self,

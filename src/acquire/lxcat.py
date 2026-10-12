@@ -25,7 +25,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 RULE = re.compile(r"^-{5,}\s*$")
-HEADER = re.compile(r"^([A-Z][A-Z. ]*):\s*(.*)$")
+HEADER = re.compile(r"^([A-Z][A-Z._ ]*):\s*(.*)$")
 KINDS = {
     "ELASTIC",
     "EFFECTIVE",
@@ -49,11 +49,30 @@ def process_type(kind: str) -> str:
     }.get(kind.upper(), kind.lower())
 
 
-def observable(kind: str) -> str:
+def observable(kind: str, headers: dict[str, str] | None = None) -> str | None:
+    declared = (headers or {}).get("OBSERVABLE")
+    if declared is not None:
+        return declared.strip().lower().replace(" ", "_").replace("-", "_")
     return {
-        "ELASTIC": "elastic",
+        # The ELASTIC label alone does not identify total vs momentum-transfer
+        # cross section. Preserve the curve without inventing its observable.
+        "ELASTIC": None,
         "EFFECTIVE": "effective_momentum_transfer",
     }.get(kind.upper(), "reaction")
+
+
+def channel_scope(process: Process) -> str:
+    declared = (
+        process.headers.get("CHANNEL SCOPE")
+        or process.headers.get("CHANNEL_SCOPE")
+        or process.headers.get("SCOPE")
+    )
+    if declared is None:
+        return "unknown"
+    scope = declared.strip().lower().replace(" ", "_").replace("-", "_")
+    if scope not in {"product_resolved", "total", "total_process", "unknown"}:
+        raise ValueError(f"{process.label}: unsupported channel scope {declared!r}")
+    return scope
 
 
 @dataclass
@@ -83,6 +102,7 @@ def parse(path: str | Path) -> list[Process]:
         if RULE.match(text):
             in_table = not in_table
             if not in_table and current is not None:
+                _validate_columns(current)
                 processes.append(current)
                 current = None
             continue
@@ -91,22 +111,47 @@ def parse(path: str | Path) -> list[Process]:
                 _add_row(current, text)
             continue
         if text.upper() in KINDS:
+            _require_closed_process(current)
             current = Process(kind=text.upper())
             continue
         if current is not None:
             _add_header(current, text)
 
+    if in_table:
+        raise ValueError("LXCat table has no closing separator")
+    _require_closed_process(current)
     return [item for item in processes if item.table]
+
+
+def _require_closed_process(process: Process | None) -> None:
+    if process is not None:
+        raise ValueError(f"{process.label}: process block has no table")
 
 
 def _add_row(process: Process, text: str) -> None:
     parts = text.replace(",", " ").split()
-    if len(parts) < 2:
-        return
+    if len(parts) != 2:
+        raise ValueError(f"{process.label}: table row must contain exactly two numbers")
     try:
         process.table.append((float(parts[0]), float(parts[1])))
-    except ValueError:
-        return
+    except ValueError as error:
+        raise ValueError(f"{process.label}: table row is not numeric") from error
+
+
+def _validate_columns(process: Process) -> None:
+    """The supported LXCat/BOLSIG+ table has energy in eV and area in m2.
+
+    A headerless block uses that format's fixed units. An explicit declaration
+    must agree; unsupported units or quantities must never be relabelled as SI.
+    https://us.lxcat.net/notes/index.php?download=lxcat_team28
+    """
+    columns = process.headers.get("COLUMNS")
+    if columns is not None and not re.fullmatch(
+        r"energy\s*\(eV\)\s*\|\s*cross[\s-]*section\s*\(m(?:2|\^2|²)\)",
+        columns,
+        flags=re.IGNORECASE,
+    ):
+        raise ValueError(f"{process.label}: expected COLUMNS Energy (eV) | Cross section (m2)")
 
 
 def _add_header(process: Process, text: str) -> None:

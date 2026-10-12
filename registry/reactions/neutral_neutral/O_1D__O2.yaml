@@ -1,86 +1,355 @@
-schema_version: 1
+channels:
+- data:
+    channel_scope: total_process
+    datasets:
+    - channel_scope: total_process
+      evidence_tier: derived
+      id: ds_O1D_O2_quenching_b1Sigma_rate_jpl_19_5
+      independent_variable: gas_temperature
+      kind: rate_coefficient
+      notes:
+      - Branch rate is the evaluated total disappearance rate multiplied by the recommended
+        0.80 yield.
+      - Ea in K denotes Ea/kB; the negative value gives exp(+55/T). Tref=298 K is
+        a normalization convention with b=0.
+      - The saved expression and historical range remain inspectable, but no coefficient
+        is returned for an unresolved J-specific product branch.
+      observable: reaction_rate
+      parameter_units:
+        A: m3/s
+        Ea: K
+        branching_fraction: '1'
+        branching_fraction_uncertainty: '1'
+        source_total_A: cm3/s
+        total_A: m3/s
+      parameters:
+        A: 2.64e-17
+        Ea: -55.0
+        b: 0.0
+        branching_fraction: 0.8
+        branching_fraction_uncertainty: 0.2
+        source_total_A: 3.3e-11
+        total_A: 3.3e-17
+      preferred: true
+      reaction_order: 2
+      reference_temperature_K: 298.0
+      representation: arrhenius
+      source:
+        applicability_review: Historical 104-424 K is the experimental-data span,
+          not the current recommendation. This record is retained as nonapplicable
+          to the O(3P2)-specific target; the new term-summed target uses Note A3 100-400
+          K.
+        citation: NASA/JPL Evaluation 19-5, Table 1A and Note A3, O(1D) + O2.
+        product_state_scope: The source resolves O2 electronic products but sums O(3P)
+          over fine structure; it does not determine the O(3P2)-specific channel.
+        source_id: JPL-19-5:A3
+        source_type: evaluated_kinetics
+        total_rate_uncertainty: Table 1A declares f(298 K)=1.10 and g=10; not combined
+          with branch uncertainty here.
+        url: https://jpldataeval.jpl.nasa.gov/pdf/NASA-JPL%20Evaluation%2019-5.pdf
+        value_origin: Nominal electronic-state channel rate derived from evaluated
+          total loss times branching fraction.
+      status: literature_supported
+      uncertainty:
+        note: Source branching fraction is 0.80 +/- 0.20; no combined channel-rate
+          uncertainty is assigned.
+      unit: m3/s
+      validity:
+        maximum: 424.0
+        minimum: 104.0
+        quantity: gas_temperature
+        unit: K
+  deltaE_products_minus_reactants_eV: -0.34
+  id: O1D_O2_quenching_O2_b1Sigma
+  products:
+  - n: 1
+    species: O
+  - n: 1
+    species: O2_b1Sigma
+  status: needs_review
+  type: reactive_scattering
+- data:
+    channel_scope: total_process
+    datasets:
+    - channel_scope: total_process
+      evidence_tier: derived
+      id: ds_O1D_O2_quenching_a1Delta_rate_jpl_19_5
+      independent_variable: gas_temperature
+      kind: rate_coefficient
+      notes:
+      - The 0.20 branch is the balance of the evaluated b1Sigma yield and therefore
+        has a 0.0-0.4 range.
+      - Ea in K denotes Ea/kB; the negative value gives exp(+55/T). Tref=298 K is
+        a normalization convention with b=0.
+      - The saved expression and historical range remain inspectable, but no coefficient
+        is returned for an unresolved J-specific product branch.
+      observable: reaction_rate
+      parameter_units:
+        A: m3/s
+        Ea: K
+        branching_fraction: '1'
+        branching_fraction_maximum: '1'
+        branching_fraction_minimum: '1'
+        source_total_A: cm3/s
+        total_A: m3/s
+      parameters:
+        A: 6.6e-18
+        Ea: -55.0
+        b: 0.0
+        branching_fraction: 0.2
+        branching_fraction_maximum: 0.4
+        branching_fraction_minimum: 0.0
+        source_total_A: 3.3e-11
+        total_A: 3.3e-17
+      preferred: true
+      reaction_order: 2
+      reference_temperature_K: 298.0
+      representation: arrhenius
+      source:
+        applicability_review: Historical 104-424 K is the experimental-data span,
+          not the current recommendation. This record is retained as nonapplicable
+          to the O(3P2)-specific target; the new term-summed target uses Note A3 100-400
+          K.
+        branching_relation: The a1Delta yield is the complement of the b1Sigma yield,
+          not an independent branch measurement.
+        citation: NASA/JPL Evaluation 19-5, Table 1A and Note A3, O(1D) + O2.
+        product_state_scope: The source resolves O2 electronic products but sums O(3P)
+          over fine structure; it does not determine the O(3P2)-specific channel.
+        source_id: JPL-19-5:A3
+        source_type: evaluated_kinetics
+        total_rate_uncertainty: Table 1A declares f(298 K)=1.10 and g=10; not combined
+          with branch uncertainty here.
+        url: https://jpldataeval.jpl.nasa.gov/pdf/NASA-JPL%20Evaluation%2019-5.pdf
+        value_origin: Nominal electronic-state channel rate derived from evaluated
+          total loss times branching fraction.
+      status: literature_supported
+      uncertainty:
+        note: Source branching fraction is 0.20 with range 0.0-0.4; no combined channel-rate
+          uncertainty is assigned.
+      unit: m3/s
+      validity:
+        maximum: 424.0
+        minimum: 104.0
+        quantity: gas_temperature
+        unit: K
+  deltaE_products_minus_reactants_eV: -0.99
+  id: O1D_O2_quenching_O2_a1Delta
+  products:
+  - n: 1
+    species: O
+  - n: 1
+    species: O2_a1Delta
+  status: needs_review
+  type: reactive_scattering
+- data:
+    datasets:
+    - channel_scope: product_resolved
+      evidence_tier: derived
+      id: ds_O1D_O2_quenching_b1Sigma_rate_O3P_term_jpl_25_1
+      independent_variable: gas_temperature
+      kind: rate_coefficient
+      method: evaluated
+      notes:
+      - Branch rate is the evaluated total disappearance rate multiplied by the recommended
+        0.80 yield.
+      - Ea in K denotes Ea/kB; the negative value gives exp(+55/T). Tref=298 K is
+        a normalization convention with b=0.
+      observable: reaction_rate
+      parameter_units:
+        A: m3/s
+        Ea: K
+        branching_fraction: '1'
+        branching_fraction_uncertainty: '1'
+        source_f_298_K: '1'
+        source_g_K: K
+        source_total_A: cm3/s
+        total_A: m3/s
+      parameters:
+        A: 2.64e-17
+        Ea: -55.0
+        b: 0.0
+        branching_fraction: 0.8
+        branching_fraction_uncertainty: 0.2
+        source_f_298_K: 1.1
+        source_g_K: 10.0
+        source_total_A: 3.3e-11
+        total_A: 3.3e-17
+      preferred: true
+      reaction_order: 2
+      reference_temperature_K: 298.0
+      representation: arrhenius
+      review_scope:
+      - rate_coefficient
+      source:
+        accessed_date: '2026-10-12'
+        applicability_review: Note A3 recommends 100-400 K; the Table 1A experimental-data
+          range 104-424 K is retained separately and is not a validity interval.
+        citation: Burkholder et al., NASA/JPL Evaluation 20, JPL Publication 25-1
+          (2025), Table 1A, pp. 1-7 and Note A3, pp. 1-15 to 1-16.
+        collection: evaluated_gas_kinetics
+        experimental_temperature_range_K: 104-424
+        product_state_scope: O(3P) fine-structure products summed over J; O2 electronic
+          product yield summed over vibration. No J- or v-resolved branch is inferred.
+        provider: NASA_JPL
+        record_id: A3
+        release: 25-1
+        rights_review: Four factual evaluated expressions and their derivations are
+          transcribed; original PDF pages, tables, and prose are not redistributed.
+        source_file_sha256: 835496c8fd180b29ff9fc456e038dc8fd34e829e5f6e00346b0837ad71b4169c
+        source_id: JPL-25-1:A3
+        source_type: evaluated_kinetics
+        total_rate_uncertainty: 'Table 1A: f(T)=1.10 exp(10 K * abs(1/T - 1/298 K));
+          total-rate uncertainty is not combined with branching uncertainty.'
+        url: https://science.jpl.nasa.gov/documents/1503/NASA_Data_Evaluation_20.pdf
+        value_origin: Nominal electronic-term channel rate derived from evaluated
+          O(1D) loss times its recommended electronic-product branching fraction.
+      status: literature_supported
+      uncertainty:
+        note: Source branching fraction is 0.80 +/- 0.20; no combined channel-rate
+          uncertainty is assigned.
+      unit: m3/s
+      validity:
+        maximum: 400.0
+        minimum: 100.0
+        quantity: gas_temperature
+        unit: K
+  id: O1D_O2_quenching_O2_b1Sigma_O3P_term
+  method: evaluated
+  products:
+  - n: 1
+    species: O_3P
+  - n: 1
+    species: O2_b1Sigma
+  review_scope:
+  - channel_assertion
+  source_record:
+    accessed_date: '2026-10-12'
+    citation: Burkholder et al., NASA/JPL Evaluation 20, JPL Publication 25-1 (2025),
+      Table 1A, pp. 1-7 and Note A3, pp. 1-15 to 1-16.
+    collection: evaluated_gas_kinetics
+    provider: NASA_JPL
+    record_id: A3
+    release: 25-1
+    rights_review: Four factual evaluated expressions and their derivations are transcribed;
+      original PDF pages, tables, and prose are not redistributed.
+    source_file_sha256: 835496c8fd180b29ff9fc456e038dc8fd34e829e5f6e00346b0837ad71b4169c
+    source_id: JPL-25-1:A3
+    source_type: evaluated_kinetics
+    url: https://science.jpl.nasa.gov/documents/1503/NASA_Data_Evaluation_20.pdf
+  status: literature_supported
+  type: reactive_scattering
+- data:
+    datasets:
+    - channel_scope: product_resolved
+      evidence_tier: derived
+      id: ds_O1D_O2_quenching_a1Delta_rate_O3P_term_jpl_25_1
+      independent_variable: gas_temperature
+      kind: rate_coefficient
+      method: evaluated
+      notes:
+      - The 0.20 branch is the balance of the evaluated b1Sigma yield and therefore
+        has a 0.0-0.4 range.
+      - Ea in K denotes Ea/kB; the negative value gives exp(+55/T). Tref=298 K is
+        a normalization convention with b=0.
+      observable: reaction_rate
+      parameter_units:
+        A: m3/s
+        Ea: K
+        branching_fraction: '1'
+        branching_fraction_maximum: '1'
+        branching_fraction_minimum: '1'
+        source_f_298_K: '1'
+        source_g_K: K
+        source_total_A: cm3/s
+        total_A: m3/s
+      parameters:
+        A: 6.6e-18
+        Ea: -55.0
+        b: 0.0
+        branching_fraction: 0.2
+        branching_fraction_maximum: 0.4
+        branching_fraction_minimum: 0.0
+        source_f_298_K: 1.1
+        source_g_K: 10.0
+        source_total_A: 3.3e-11
+        total_A: 3.3e-17
+      preferred: true
+      reaction_order: 2
+      reference_temperature_K: 298.0
+      representation: arrhenius
+      review_scope:
+      - rate_coefficient
+      source:
+        accessed_date: '2026-10-12'
+        applicability_review: Note A3 recommends 100-400 K; the Table 1A experimental-data
+          range 104-424 K is retained separately and is not a validity interval.
+        branching_relation: The a1Delta yield is the complement of the b1Sigma yield,
+          not an independent branch measurement.
+        citation: Burkholder et al., NASA/JPL Evaluation 20, JPL Publication 25-1
+          (2025), Table 1A, pp. 1-7 and Note A3, pp. 1-15 to 1-16.
+        collection: evaluated_gas_kinetics
+        experimental_temperature_range_K: 104-424
+        product_state_scope: O(3P) fine-structure products summed over J; O2 electronic
+          product yield summed over vibration. No J- or v-resolved branch is inferred.
+        provider: NASA_JPL
+        record_id: A3
+        release: 25-1
+        rights_review: Four factual evaluated expressions and their derivations are
+          transcribed; original PDF pages, tables, and prose are not redistributed.
+        source_file_sha256: 835496c8fd180b29ff9fc456e038dc8fd34e829e5f6e00346b0837ad71b4169c
+        source_id: JPL-25-1:A3
+        source_type: evaluated_kinetics
+        total_rate_uncertainty: 'Table 1A: f(T)=1.10 exp(10 K * abs(1/T - 1/298 K));
+          total-rate uncertainty is not combined with branching uncertainty.'
+        url: https://science.jpl.nasa.gov/documents/1503/NASA_Data_Evaluation_20.pdf
+        value_origin: Nominal electronic-term channel rate derived from evaluated
+          O(1D) loss times its recommended electronic-product branching fraction.
+      status: literature_supported
+      uncertainty:
+        note: Source branching fraction is 0.20 with range 0.0-0.4; no combined channel-rate
+          uncertainty is assigned.
+      unit: m3/s
+      validity:
+        maximum: 400.0
+        minimum: 100.0
+        quantity: gas_temperature
+        unit: K
+  id: O1D_O2_quenching_O2_a1Delta_O3P_term
+  method: evaluated
+  products:
+  - n: 1
+    species: O_3P
+  - n: 1
+    species: O2_a1Delta
+  review_scope:
+  - channel_assertion
+  source_record:
+    accessed_date: '2026-10-12'
+    citation: Burkholder et al., NASA/JPL Evaluation 20, JPL Publication 25-1 (2025),
+      Table 1A, pp. 1-7 and Note A3, pp. 1-15 to 1-16.
+    collection: evaluated_gas_kinetics
+    provider: NASA_JPL
+    record_id: A3
+    release: 25-1
+    rights_review: Four factual evaluated expressions and their derivations are transcribed;
+      original PDF pages, tables, and prose are not redistributed.
+    source_file_sha256: 835496c8fd180b29ff9fc456e038dc8fd34e829e5f6e00346b0837ad71b4169c
+    source_id: JPL-25-1:A3
+    source_type: evaluated_kinetics
+    url: https://science.jpl.nasa.gov/documents/1503/NASA_Data_Evaluation_20.pdf
+  status: literature_supported
+  type: reactive_scattering
+metadata:
+  notes:
+  - The historical O(3P2) product candidates are retained with nonapplicable term-summed
+    source data.
+  - Two source-supported O(3P; all J) product channels share one evaluated total loss
+    rate and sum to unit branching at the recommended values.
+  - Current Note A3 validity is 100-400 K. Fine-structure, vibrational branching,
+    and correlated channel-rate uncertainties are not independently determined.
+  status: curated
 pair:
   family: neutral_neutral
   projectile: O_1D
   target: O2
-channels:
-- id: O1D_O2_quenching_O2_b1Sigma
-  type: reactive_scattering
-  products:
-  - species: O
-    n: 1
-  - species: O2_b1Sigma
-    n: 1
-  status: literature_supported
-  deltaE_products_minus_reactants_eV: -0.34
-  data:
-    datasets:
-    - id: ds_O1D_O2_quenching_b1Sigma_rate_jpl_19_5
-      kind: rate_coefficient
-      representation: arrhenius
-      independent_variable: gas_temperature
-      dependent_variable: rate_coefficient
-      unit: m3/s
-      parameters:
-        A: 2.64e-17
-        activation_temperature_K: -55.0
-        formula: k(T) = A * exp(-activation_temperature_K / T)
-        total_A: 3.3e-17
-        branching_fraction: 0.8
-        branching_fraction_uncertainty: 0.2
-      validity:
-        minimum: 104.0
-        maximum: 424.0
-        unit: K
-      source:
-        source_type: evaluated_kinetics
-        source_id: JPL-19-5:A3
-        citation: NASA/JPL Evaluation 19-5, O(1D) + O2, Note A3.
-        url: https://jpldataeval.jpl.nasa.gov/pdf/NASA-JPL%20Evaluation%2019-5.pdf
-      status: literature_supported
-      preferred: true
-      notes:
-      - Branch rate is the evaluated total disappearance rate multiplied by the recommended 0.80 yield.
-- id: O1D_O2_quenching_O2_a1Delta
-  type: reactive_scattering
-  products:
-  - species: O
-    n: 1
-  - species: O2_a1Delta
-    n: 1
-  status: literature_supported
-  deltaE_products_minus_reactants_eV: -0.99
-  data:
-    datasets:
-    - id: ds_O1D_O2_quenching_a1Delta_rate_jpl_19_5
-      kind: rate_coefficient
-      representation: arrhenius
-      independent_variable: gas_temperature
-      dependent_variable: rate_coefficient
-      unit: m3/s
-      parameters:
-        A: 6.6e-18
-        activation_temperature_K: -55.0
-        formula: k(T) = A * exp(-activation_temperature_K / T)
-        total_A: 3.3e-17
-        branching_fraction: 0.2
-        branching_fraction_range:
-        - 0.0
-        - 0.4
-      validity:
-        minimum: 104.0
-        maximum: 424.0
-        unit: K
-      source:
-        source_type: evaluated_kinetics
-        source_id: JPL-19-5:A3
-        citation: NASA/JPL Evaluation 19-5, O(1D) + O2, Note A3.
-        url: https://jpldataeval.jpl.nasa.gov/pdf/NASA-JPL%20Evaluation%2019-5.pdf
-      status: literature_supported
-      preferred: true
-      notes:
-      - The 0.20 branch is the balance of the evaluated b1Sigma yield and therefore has a 0.0-0.4 range.
-metadata:
-  status: curated
-  notes:
-  - Both product channels share one evaluated total loss rate and sum to unit branching at the recommended values.
+schema_version: 1

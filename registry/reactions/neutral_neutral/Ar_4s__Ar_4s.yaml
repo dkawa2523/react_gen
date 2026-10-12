@@ -5,7 +5,7 @@ pair:
   target: Ar_4s
 channels:
 - id: Ar4s_Ar4s_pooling_ionization
-  type: associative_ionization
+  type: penning_ionization
   products:
   - species: Ar+
     n: 1
@@ -13,9 +13,8 @@ channels:
     n: 1
   - species: e
     n: 1
-  status: literature_supported
+  status: needs_review
   reverse: not_applicable
-  deltaE_products_minus_reactants_eV: -7.44
   data:
     datasets:
     - id: ds_Ar4s_Ar4s_pooling_ionization
@@ -29,10 +28,19 @@ channels:
       status: needs_import
       preferred: true
   notes:
-  - Two 11.6 eV metastables carry 23.2 eV, above the 15.76 eV ionization limit, so
-    pooling is energetically open.
+  - Atomic Ar+ + Ar + e products are pooling/Penning ionization, not an associative
+    molecular-ion product. The source treats metastable and radiative populations
+    separately; this registry 4s umbrella has no declared population weights. The
+    exact lumped channel and a fixed energy release therefore require review.
+  source_record:
+    source_type: literature_model
+    source_id: doi:10.1088/1361-6595/ac3ba1
+    citation: Gudmundsson et al., Plasma Sources Sci. Technol. 30, 125011 (2021),
+      Table 1 and section 2.
+    url: https://doi.org/10.1088/1361-6595/ac3ba1
+    record_id: 'Table 1: pooling involving metastable and radiative levels'
 metadata:
-  status: literature_supported
+  status: needs_review
   notes:
-  - Metastable pooling is a significant ionization source in argon discharges and
-    is registered here as an equation with an explicit numerical gap.
+  - Keep the existing umbrella equation as a candidate; member-specific evidence does
+    not validate its lumped rate or excitation energy.

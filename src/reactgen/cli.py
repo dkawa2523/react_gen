@@ -8,11 +8,12 @@ from pathlib import Path
 
 import yaml
 
-from reactgen import adopt, derive, export, ingest, plan
+from reactgen import adopt, derive, export, ingest, needs, yamlio
 from reactgen.balance import imbalance
 from reactgen.case import Case
 from reactgen.evidence import EvidenceCatalog
-from reactgen.pipeline import POLICIES, run
+from reactgen.pipeline import analyze
+from reactgen.presentation import analysis_overview
 from reactgen.registry import Registry
 
 
@@ -20,31 +21,50 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="rgen", description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
 
-    build = commands.add_parser("generate", help="generate, assess and select candidates")
-    _case_arguments(build)
-    build.add_argument("--policy", choices=POLICIES, default="review")
-    build.add_argument("--out", type=Path, default=None)
-    build.add_argument(
-        "--csv",
-        action="store_true",
-        help="also write compact CSV views and per-assessment summaries and SVG graphs",
+    build = commands.add_parser(
+        "analyze", help="investigate candidate states, channels and numerical data"
     )
-    build.set_defaults(run=_generate)
+    build.add_argument("gases", nargs="*", help="neutral ground-state formulas")
+    build.add_argument(
+        "--input", type=Path, help="validated physical input YAML, instead of gas arguments"
+    )
+    build.add_argument(
+        "--evidence",
+        type=Path,
+        action="append",
+        default=[],
+        help="local Registry directory or snapshot/overlay file; repeatable",
+    )
+    build.add_argument("--out", type=Path, default=Path("result"))
+    build.set_defaults(run=_analyze)
 
     verify = commands.add_parser("check", help="validate curated Registry structure")
     verify.add_argument("--registry", type=Path, required=True)
     verify.set_defaults(run=_check)
 
-    backlog = commands.add_parser("plan", help="list unknown evidence for a case")
-    _case_arguments(backlog)
-    backlog.set_defaults(run=_plan)
+    backlog = commands.add_parser(
+        "needs", help="summarize conclusions and next work from a saved result"
+    )
+    backlog.add_argument("result", type=Path)
+    backlog.add_argument(
+        "--detail", action="store_true", help="include every affected target and saved reason"
+    )
+    backlog.set_defaults(run=_needs)
+
+    view = commands.add_parser("view", help="derive optional views from the saved canonical result")
+    view.add_argument("result", type=Path)
+    view.add_argument("--kind", choices=("csv", "network", "matrix", "pathway"), required=True)
+    view.add_argument("--out", type=Path, required=True)
+    view.add_argument("--seed", action="append", default=[])
+    view.add_argument("--target", default=None)
+    view.set_defaults(run=_view)
 
     absorb = commands.add_parser(
         "ingest",
-        help="match a local data snapshot onto a generated candidate bundle",
+        help="match a local data snapshot onto canonical candidate identities",
     )
     absorb.add_argument("snapshot", type=Path)
-    absorb.add_argument("--bundle", type=Path, required=True)
+    absorb.add_argument("--result", type=Path, required=True)
     absorb.add_argument("--overlay", type=Path, default=Path("overlay.yaml"))
     absorb.set_defaults(run=_ingest)
 
@@ -53,7 +73,7 @@ def main(argv: list[str] | None = None) -> int:
         help="derive reviewed excited-state properties in an overlay",
     )
     infer.add_argument("--registry", type=Path, required=True)
-    infer.add_argument("--overlay", type=Path, default=Path("overlay.yaml"))
+    infer.add_argument("--overlay", type=Path, default=None)
     infer.add_argument("--out", type=Path, required=True)
     infer.set_defaults(run=_derive)
 
@@ -74,65 +94,63 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
 
-def _case_arguments(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("case", type=Path)
-    parser.add_argument("--registry", type=Path, default=Path("registry"))
-    parser.add_argument("--overlay", type=Path, default=None)
-    parser.add_argument(
-        "--known",
-        type=Path,
-        action="append",
-        default=[],
-        help="local reaction or numerical-data snapshot; repeatable",
-    )
-
-
-def _generate(args: argparse.Namespace) -> int:
-    case = Case.load(args.case)
-    catalog = EvidenceCatalog.load(
-        args.registry,
-        overlay=args.overlay,
-        known=tuple(args.known),
-    )
-    result = run(case, catalog, args.policy)
-
-    outdir = args.out or args.case.parent / "outputs"
+def _analyze(args: argparse.Namespace) -> int:
+    if bool(args.input) == bool(args.gases):
+        raise ValueError("provide gas formulas or --input, exactly one")
+    case = Case.load(args.input) if args.input else Case("analysis", tuple(args.gases))
+    catalog = EvidenceCatalog.load_paths(tuple(args.evidence))
+    result = analyze(case, catalog)
     try:
-        export.write(outdir, result, include_csv=args.csv)
-    except OSError as error:
-        print(f"error: cannot write bundle: {error}", file=sys.stderr)
+        export.write(args.out, result)
+    except export.PartialOutputError as error:
+        print(f"error: {error}", file=sys.stderr)
         return 1
-    mechanical_states = sum(
-        state.origin == "mechanical" for state in result.candidates.states.values()
-    )
-    mechanical_reactions = sum(
-        reaction.origin == "mechanical" for reaction in result.candidates.reactions.values()
-    )
-    print(outdir)
-    print(f"  states       {len(result.candidates.states)} ({mechanical_states} mechanical)")
-    print(f"  reactions    {len(result.candidates.reactions)} ({mechanical_reactions} mechanical)")
-    print(f"  selected     {len(result.selection.reaction_ids)} ({args.policy})")
-    print(f"  complete     {result.candidates.complete}")
-    if not result.candidates.complete:
-        print(f"  stop_reason  {result.candidates.stop_reason}")
+    except OSError as error:
+        print(f"error: cannot save result: {error}", file=sys.stderr)
+        return 1
+    # Read the committed source of truth: success output describes the same
+    # values and conclusions as the persisted result and every later view.
+    document = export.read(args.out)
+    print("\n".join(analysis_overview(document, needs.build(document))))
+    print(f'Next work details: rgen needs "{args.out}" --detail')
+    print("Results:")
+    for name in export.PUBLIC_FILES:
+        print(f"  {args.out / name}")
     return 0 if result.candidates.complete else 1
 
 
-def _plan(args: argparse.Namespace) -> int:
-    case = Case.load(args.case)
-    catalog = EvidenceCatalog.load(
-        args.registry,
-        overlay=args.overlay,
-        known=tuple(args.known),
+def _needs(args: argparse.Namespace) -> int:
+    yaml.safe_dump(
+        needs.build(export.read(args.result), detail=args.detail),
+        sys.stdout,
+        sort_keys=False,
+        allow_unicode=True,
     )
-    result = run(case, catalog, "acquisition")
-    yaml.safe_dump(plan.build(result), sys.stdout, sort_keys=False, allow_unicode=True)
-    return 0 if result.candidates.complete else 1
+    return 0
+
+
+def _view(args: argparse.Namespace) -> int:
+    document = export.read(args.result)
+    if args.kind == "csv":
+        if args.seed or args.target:
+            raise ValueError("--seed and --target apply to pathway/network views")
+        export.rebuild_views(document, args.out)
+    else:
+        from reactgen.views import view
+
+        path = view(document, args.out, args.kind, seeds=tuple(args.seed), target=args.target)
+        if args.kind == "matrix" and path.suffix == ".html":
+            print(f"Split matrix: open {path} to view every reaction panel")
+        else:
+            print(path)
+        return 0
+    print(args.out)
+    return 0
 
 
 def _ingest(args: argparse.Namespace) -> int:
-    report = ingest.ingest(args.snapshot, args.bundle, args.overlay)
-    print(f"  accepted    {report.accepted} -> {args.overlay}")
+    report = ingest.ingest(args.snapshot, args.result, args.overlay)
+    print(f"  matched     {report.accepted} -> {args.overlay} (matching does not approve evidence)")
     print(f"  review      {len(report.review)} -> {args.overlay.with_name('review_queue.yaml')}")
     for item in report.review[:10]:
         print(f"    {item['reason']:18} {item['wrote']}")
@@ -158,17 +176,19 @@ def _check(args: argparse.Namespace) -> int:
 def _derive(args: argparse.Namespace) -> int:
     registry = Registry.load(args.registry)
     filled = derive.overlay(registry)
-    merged = derive.merged(_document(args.overlay), filled)
+    merged = derive.merged(_document(args.overlay) if args.overlay else {}, filled)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
         yaml.safe_dump(merged, sort_keys=True, allow_unicode=True),
         encoding="utf-8",
     )
     values = sum(len(entry) for entry in filled["properties"].values())
-    print(f"  states      {len(derive.parents(registry))}")
-    print(f"  properties  {values}")
-    print(f"  thermo      {len(filled['thermo'])}")
+    print(f"  derived     {values} property values across {len(filled['properties'])} states")
     print(f"  overlay     {args.out}")
+    print(
+        "  scope       mass and resolved-level formation enthalpy; "
+        "missing prerequisites remain unresolved"
+    )
     return 0
 
 
@@ -178,7 +198,7 @@ def _adopt(args: argparse.Namespace) -> int:
         print(f"  {species_id:14} {' '.join(names)}")
     print(f"  wrote       {report.values} entries across {len(report.written)} subjects")
     if report.held:
-        print(f"  kept        {report.held} existing curated values")
+        print(f"  kept        {report.held} existing entries")
     if report.unplaced:
         print(f"  no Registry record for {' '.join(report.unplaced)}")
     if args.dry_run:
@@ -188,8 +208,13 @@ def _adopt(args: argparse.Namespace) -> int:
 
 def _document(path: Path) -> dict:
     if not path.is_file():
+        raise FileNotFoundError(path)
+    document = yamlio.load(path.read_text(encoding="utf-8"))
+    if document is None:
         return {}
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    if not isinstance(document, dict):
+        raise ValueError("overlay must be a mapping")
+    return document
 
 
 if __name__ == "__main__":

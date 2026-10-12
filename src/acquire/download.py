@@ -54,13 +54,14 @@ def fetch(url: str, expect: str | None = None) -> Fetched:
     try:
         with urlopen(request, timeout=TIMEOUT_S) as response:  # noqa: S310 - checked above
             body = response.read()
+            final_url = response.geturl()
     except (HTTPError, URLError, OSError) as error:
         return Fetched(url, error=f"{type(error).__name__}: {error}")
 
     problem = _wrong_content(body, expect)
     if problem:
         return Fetched(url, error=problem)
-    return Fetched(url, body, hashlib.sha256(body).hexdigest()[:16])
+    return Fetched(final_url, body, hashlib.sha256(body).hexdigest())
 
 
 def _wrong_content(body: bytes, expect: str | None) -> str | None:

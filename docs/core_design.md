@@ -1,223 +1,130 @@
-# Core design 0.5
+# 現行実装の責務
 
-## 一方向の処理
+0.7.4の目的は、物理対象と必要条件を入力し、候補・根拠・数値の利用結果を調査することです。通常の入口はCLI `analyze`、内部の入口は `pipeline.analyze(Case, EvidenceCatalog)` です。同じ目的の入口は同じ処理と `AnalysisResult` を共有します。データベース固有の形式は入口で正規化し、出典を変えても同じ命題は同じ評価処理へ渡します。
 
-```text
-Case(gases, conditions, limits)
-  -> generate: 化学式と有限テンプレートによるCandidateSet
-  -> evidence: 証拠の正規化・索引・attested-only和集合
-  -> assessment: 独立した5判定
-  -> policy: CandidateSetを変更しないID選択
-  -> export: canonical YAML bundle + optional flat CSV views
+## 依存方向
+
+```mermaid
+flowchart LR
+  A[入力の検証・正規化] --> B[有界文法の候補]
+  B --> D[証拠との同定・既知候補の追加]
+  C[ローカル出典の正規化] --> D
+  D --> E[命題の判定・具体値の計算]
+  E --> F[単一の AnalysisResult]
+  F --> G[result.yaml]
+  G --> H[CSV・不足一覧・図]
 ```
 
-生成はRegistry、熱化学、断面積、速度係数を参照しません。`acquire`だけが外部データを
-取得し、`reactgen`はofflineで動作します。Registryへの書込みは`rgen adopt`だけです。
-`complete: true`は設定した生成文法がclosureした意味で、自然界の全反応を含むという意味では
-ありません。上限打切りだけを`complete: false`として明示します。
+`case` が入力境界、`model` が候補型、`records` が出典付き科学データ、`units` が単位規則です。`generate` と `evidence` は独立し、`assessment` が両者の関係を評価します。`numeric` はデータの利用可否・選択・数値評価、`selection` は利用者の採用要求、`thermo` は熱化学式を担当します。`pipeline` は順序を組み立て、`Case.data_selection` を評価へ渡します。`export` が正規保存と読込みを担い、`needs` と `views` は保存結果を表示します。ネットワーク取得は `acquire` に閉じています。
 
-## ファイル責務
+YAML読込みは`yamlio`にまとめ、明示した重複キーを構築前に拒否します。既存のalias・mergeの明示上書き規則は維持します。LibYAMLがある環境ではsafe実装を使い、無い環境でも同じ検証を行います。数値形式の変換は`records.normalized_number`で行い、内部型では数値以外を受け付けません。形式不正と、数値として保存できるが科学的に不正な宣言を区別します。
 
-| ファイル | 責務 |
-|---|---|
-| `model.py` | Registry非依存のCandidate、canonical family/process、Channel key |
-| `records.py` | Registry・snapshot・overlayを統一した読み取り専用証拠recordと数値値型 |
-| `chemistry.py` | 化学式、状態ID、有限な組成操作 |
-| `generate.py` | seed、電子・イオン・中性テンプレート、frontier、上限 |
-| `registry.py` | Registry YAMLの読込み。暗黙の派生や書込みは行わない |
-| `evidence.py` | 証拠の正規化、StateKey/EquationKey索引、照合、和集合 |
-| `balance.py` | Registryと候補で共用する元素・電荷保存計算 |
-| `thermo.py` | 生成熱、NASA多項式、Gibbs energy、平衡・逆速度の純粋計算 |
-| `assessment.py` | 5判定と熱化学・速度論の利用能力 |
-| `pipeline.py` | 唯一の実行経路と用途別ID選択 |
-| `export.py` | 3 YAML、任意の一覧CSV、5判定別CSVの一括書出し |
-| `ingest.py` | snapshotとbundle canonical indexの照合 |
-| `derive.py` | 明示的な派生値overlayの作成 |
-| `adopt.py` | review済みoverlayのRegistry採用 |
-| `cli.py` | 公開CLIと終了コード |
+## 決まることと決まらないこと
 
-抽象assessor、plugin、互換pipeline、診断frameworkは置きません。5判定は
-`assessment.py`の明示的な関数として読める状態を維持します。
+| 処理 | 決まること | 決まらないこと |
+|---|---|---|
+| 入力境界 | 型・単位・対応語彙、使う条件、明示上限 | 未入力の物理条件 |
+| 候補生成 | 文法に従う組成・状態・反応式候補 | 実在性、構造、障壁、速度、全化学の網羅性 |
+| 証拠同定 | 電荷・相・構造・状態・解像度の対応と競合 | 曖昧さを解消する無根拠の選択 |
+| consistency | 保存則と宣言した過程の式パターン | 反応の実現、エネルギー散逸機構 |
+| state | 名前付き命題の存在支持、または基底アニオンの電子束縛支持 | EAだけからの観測存在・寿命・他崩壊経路への安定性、解像度の採用方針 |
+| 状態のthermochemistry | 競合していない審査された形成量または有効なNASA表現が少なくとも一つある | 指定温度の利用可否、利用者の採用要求、存在、反応障壁 |
+| 反応のthermochemistry | 資格ある値と比較可能なエネルギー関係の整合。計算値は判定と別に返す | 値があるだけの実現性、EEDF、反応障壁 |
+| reaction_evidence | 当該product-resolvedチャネルの根拠 | total過程の分岐、機構全体の完成 |
+| kinetics / data_use | 全データの妥当性・適用性、採用可能な具体値・不足 | 未実装の積分、分布・flux・時間発展 |
+| 数値の出典選択 | 適格な記録から明示要求に合う採用候補 | 記録の科学的承認、同定不足・適用条件不足の解消 |
+| 図の経路 | 明示供給からのAND型候補到達性 | 時間順序、支配反応、観測可能性 |
 
-## 生成文法の科学的境界
+各層の否定は、その命題についての否定です。不正な速度データを現象の不存在へ読み替えません。無関係な励起準位の追加で別の状態の存在判定は変わりません。lumpedとresolvedの重複はmembershipを根拠に記述し、存在判定や自動選択と混ぜません。状態を移すquenching等で別の非基底準位・電子項が終状態になる場合は、現行のground終状態template外としてconsistencyをunknownにします。保存則や相・構造の不一致は別に検出し、式形から準位のエネルギー順序を推測しません。
 
-`chemistry.py`が構造操作を行うのはatom、diatomic、homoleptic中心原子–配位子型だけです。それ以外は
-`formula_only`として保持し、化学式から存在しない結合を推定して開裂・交換しません。
-状態の`fragment`と`rearranged`は生成経路上の役割です。radical性はodd-electronなら
-`open_shell`、既知の少数のeven-electron種だけtableで補い、残りは`unknown`にします。
+現行の状態と反応の`thermochemistry`は上表のように異なる命題です。状態側は温度入力を取らず、表現有無のpassから指定温度のH/G計算を保証しません。`Assessment.proposition` は `thermochemical_representation_availability` と、反応の `ionization_threshold_lower_bound` 等のエネルギー関係を区別します。状態の `state` も存在根拠とEAからの基底アニオン束縛の命題を区別します。全判定に新しい必須契約を課すものではありません。
 
-中性反応の生成ではspin判定と反応候補性を分けます。odd-electron、非希ガス原子、または
-明確な`AXn`式で価電子が未充足のCF2、SiH2、SFxなどを`reactive_candidate`とします。
-中性二体反応はfeed、一次fragment、reactive candidate、励起状態を含むpairに限定し、
-rearranged-only生成物の無制限な連鎖は行いません。解離には対応する有限な
-`three_body_association`候補を置きます。
-中性希ガス化合物は組成操作で作りません。荷電希ガスへの一配位子移動でできるcomplex ionは
-直接neutral groundへ戻さず、解離再結合・解離電荷移行・衝突解離候補として扱います。
+反応の `delta_h_eV` は共通の明示参照条件にある形成量の差です。`Property.formation_reference` が参照温度、標準元素基準、標準圧力、イオンを含む有限温度で必要な電子規約・電子形成量を保持します。不足・不一致はこのΔHだけを抑止し、他の独立量を抑止しません。`delta_h_reference_temperature_K` と `delta_h_standard_pressure_Pa` を併記し、NASAの標準G計算温度 `temperature_K` と区別します。形成ΔHから出現閾値・障壁・発生を決めません。反応threshold・deltaEは `energy_properties` の独立Propertyに保持し、値の読取getter以外のscalarを内部に二重管理しません。旧外部scalarは読込みadapterで一度だけ正規化し、原宣言を保全します。明示した量の資格をチャネルのtierから昇格させません。
 
-この境界は、CF2がフルオロカーボン膜形成で重要である実験報告
-([Inayoshi et al., DOI 10.1116/1.580977](https://doi.org/10.1116/1.580977))、
-SiH3とHがSiH4 PECVDの主要気相種・成長前駆体である測定
-([Abe et al., DOI 10.1063/1.4974821](https://doi.org/10.1063/1.4974821))、
-SF6プラズマのSiエッチング速度がF原子fluxと相関する実験
-([Kokkoris et al., DOI 10.1016/j.mee.2004.02.059](https://doi.org/10.1016/j.mee.2004.02.059))
-を考慮しています。ただし膜成長・エッチングのsurface channelは材料、活性site、被覆率、
-ion assistanceを必要とするため、ガス化学式だけから生成せずRegistry証拠として和集合します。
+EAからの電子束縛は一つの共通処理を状態と付着で使います。正のEA範囲と電子非束縛宣言の矛盾は未確定とし、そのEAだけを数値利用から除外します。`unstable/transient`は電子非束縛の語彙ではありません。短寿命の存在宣言だけでは束縛や不存在を決めず、独立した存在根拠・EAを保持します。
 
-## 証拠境界
+`consistency`はfamilyから適用する式patternを選びます。電子衝突の解離と、電子を含まない単分子解離を区別し、中性・イオンの2粒子→1粒子会合には保存則と式形だけを確認します。未対応の誘起機構・高分子数会合は`unknown`、保存則違反や定義済みpatternとの矛盾は`fail`です。式形の`pass`から素反応、発生条件、速度次数、会合の安定化、解離の励起起源・エネルギー配分を決めません。これらの不足は数値データや熱化学の責務で保持します。
 
-EvidenceCatalogは読込み時に次の形式を`StateRecord`、`ReactionRecord`、
-`NumericDataset`へ一度だけ変換します。
+## 判定の意味と不足の保存
 
-1. curated Registry
-2. reviewed overlay
-3. imported snapshot
-4. derived data
-5. estimated data
+利用者へ返す全判定は `Assessment.proposition` と個別の `scope` を持ちます。存在支持、電子束縛、表現の有無、式形、エネルギー関係、根拠支持、係数利用を区別します。反応の `participant_state_support` は各参加状態の名前付き命題の集約で、`dependencies` が保存された状態の判定を指します。EAによる電子束縛のpassは付着側でも同じ結論で、安定化・速度・発生を追加の成立条件にしません。
 
-StateKeyとEquationKeyの索引も読込み時に一度だけ作ります。family/processは候補、Registry、
-snapshotの入口で同じcanonical語彙へ変換してからChannel keyを作ります。照合はEquationKeyから
-family・processを確認し、datasetではさらにobservable・channel scopeを確認します。候補ごとにRegistry全体を
-再走査しません。overlayはRegistryの欠損だけを補い、curated値を上書きしません。
+`Requirement` は未確定の結論を決めるための対象・量・作業・理由です。情報の利用可否を確認した処理が返し、入力、出典情報、資料審査、同定、モデル未対応を区別します。全関数へ契約を付ける型ではありません。数値利用の不足は既存DataUseを正とし、kineticsへ同じ要件を複写しません。汎用の反応発生命題が未実装ならモデル未対応として返し、計算できたΔH/Gを消したり、資料欠測へ読み替えたりしません。
 
-## 5判定
+`Property.definition` は量ごとの意味を保持します。現在のIE/EA利用には対応するgas・ground対象とatomicまたはadiabaticの定義が必要で、同定された単原子groundの旧値もその対象の範囲で扱います。vertical値や定義不明な分子値は原資料へ残し、groundエネルギー比較へ流用しません。原子取得はその量のatomic定義を保存します。出典形式だけで定義を補いません。背景は[NIST gas-phase ion thermochemistry](https://webbook.nist.gov/chemistry/ion/)、不確かさの解釈は[NIST TN 1297](https://www.nist.gov/pml/nist-technical-note-1297/nist-tn-1297-7-reporting-uncertainty)を参照してください。
 
-判定は表示上`Consistency -> State -> Thermochemistry -> Reaction evidence -> Kinetics/Data`
-の順ですが、すべて独立に実行します。前段の`unknown`を理由に後段を省略しません。
+CSV・CLI・HTML・needsは保存された命題・値・条件・不足から導き、英文messageを解析して科学的に再判定しません。具体的な必要情報は対象・量・責務でまとめ、明示参照から派生した同じ作業を重複計数しません。各対象と理由・影響先は詳細に保持し、分類の一致を原因の一致と扱いません。
 
-| 判定 | 内容 |
-|---|---|
-| Consistency | 化学量論係数、state参照、元素保存、電荷保存、surface reservoir |
-| State | exact/compatible/ambiguous、bound/unbound/transient、状態energy・寿命、lumped/resolved |
-| Thermochemistry | 生成熱、ground-state NASA、IE/EA、threshold、Penning/charge-transfer energy |
-| Reaction evidence | exact state-resolved equation、family、process、third body、surface、total/channel区別 |
-| Kinetics/Data | kind、observable、反応次数と単位、独立変数、範囲、channel scope、品質、競合 |
+## 生成と同定
 
-反応の`state_verdict`は反応物・生成物に現れる非電子状態それぞれのState判定を集約します。全状態がpassなら
-pass、一つでもfailならfail、failはないがunknownがあればunknownです。反応の存在や速度を判定する列では
-ありません。
+`EvidenceCatalog`は変更不能な証拠snapshotです。入力記録を独立して保持し、公開取得・照合で返す記録も独立したコピーにします。取得記録の辞書を編集しても元の索引は変わりません。更新は新しいcatalogの構築・読込み、または`dataclasses.replace`で行い、索引と実際の記録内容のfingerprintを再構築します。fingerprintは正規科学内容・数値記録・材料と読込み元のファイル内容を含み、手動構築した異なる証拠も区別します。評価時のasset完全性確認とは別の責務です。
 
-反応熱とGibbs energyは次で評価します。
+生成資格は組成規則と明示した入力範囲で決め、feed/fragment/rearranged等の履歴で物理性質を決めません。状態・反応が増えなくなるまで規則を再適用します。pairの両側解離と、既存テンプレートの自己衝突を調べます。新しいpooling等の機構を推測で追加しません。上限に達した場合はclosureとは報告しません。
 
-```text
-Delta H_r(T) = sum(nu h_products) - sum(nu h_reactants)
-Delta G_r(T) = Delta H_r(T) - T Delta S_r(T)
-K(T) = exp(-Delta G_r / RT)
-```
+入力種の励起とion ligand-transferの相手は入力ground-state種という文法範囲を持ちます。neutral abstractionは別の組成規則で相手を決めます。既知状態や反応を証拠から追加した後に、機械生成をもう一度自動で閉包しません。`completion.mechanical` と `completion.attested` を別に記録し、総候補上限は証拠追加にも適用します。
 
-電子衝突断面積は直接rateではありません。
+候補IDは組成、電荷、状態ラベルと、必要な相・構造・種別・解像度を区別します。多価電荷は `Ar^2+`、二原子の一価電荷は `Ar2+` です。構造・相が不足したレコードは同一化しません。NASAの気相値を固相や同式の別構造から選びません。
 
-```text
-k = integral sigma(epsilon) v(epsilon) f(epsilon) d epsilon
-```
+EA、IE、電荷交換が必要とする対応基底状態は、組成、電荷、相、構造と基底状態の一致に加えて一意性を要求します。電荷交換の生成物もこの対応を確認します。elasticの内部エネルギー差ゼロは、左右の物理対象が同一の場合だけ返します。過程名や候補の挿入順からエネルギー関係を補いません。
 
-このため`reactions.yaml`は次を区別します。
+式では第三体と壁を明示し、直接付着・再結合の安定化が不明なら `stabilization=unspecified` と記録します。原子・電荷が保存される式から光子や壁へのエネルギー収支まで成立したとは判断しません。
 
-- `cross_section_ready`
-- `direct_rate_ready`
-- `required_transforms: [eedf_integration]`
-- `reaction_enthalpy_ready`
-- `electron_energy_loss_ready`
-- `equilibrium_constant_ready` / `reverse_rate_ready`
+## 数値と根拠
 
-thresholdだけでは重粒子のエネルギー源項や逆反応をreadyにしません。電子を0エンタルピーの
-参照として反応熱には使えますが、gas-temperatureのNASA speciesとして平衡計算には入れません。
-逆速度は平衡定数だけでなく、適用可能なforward rate、同じ状態解像度、third-bodyを含まない
-同じ反応次数のthermal channelがそろう場合だけreadyにします。現時点では
-charge exchange、ligand transfer、radical abstraction、reactive scatteringだけを対象とし、
-電子衝突、相互中和、解離性過程から逆速度を自動導出しません。
-励起状態もlevel energyを生成熱へ加えることはできますが、ground-state NASA多項式を複製して
-entropy・partition functionまで既知とはみなしません。
+単位、対象、適用域、出典資格、ファイルの保存実測hashと作者の宣言hashを保持します。数値表は、保存実測hashと宣言hashを照合した同じbytesから解析・計算します。再読込みで保存hashを現在値へ置換せず、読込み後のfile変更でも旧資格のまま新値を使いません。採用コピーも保存したbytesを検証し、宣言hash不一致の原記録を保全しても計算資格を与えません。Property、存在根拠、反応レコード、数値datasetを相互に自動昇格しません。overlayのnullは有効な値を遮らず、負の宣言や競合は消しません。
 
-Kinetics/Dataはasset参照の存在だけでpassにしません。tableは2点以上、有限値、独立変数の
-狭義単調増加、非負値、宣言範囲、既知threshold以下の非零値を確認します。
+`SourceRef` はprovider、collection、release、原record ID、citation、URL等の明示された出典識別子を持ちます。`method` は measured / evaluated / calculated / estimated / unknown、`tier` は数値や存在根拠の資格、`review_scope` は宣言された審査対象です。取得先名から方法や資格を推定しません。`source_declaration` には入口の原宣言・補足を保全します。
 
-## Policyとreadiness
+明示した `review_scope` は、存在宣言では `state_existence`、各Propertyではその物性名、NASAでは `thermochemical_model` の資格を制限します。反応記録は `channel_assertion`、`threshold_eV`、`delta_e_eV` をそれぞれ確認します。scopeは承認を与える命題、statusは科学宣言自体の受理・拒否状態です。資格を持つtierでもscope外の命題と `status: rejected/conflicting` の宣言は採用しません。親科学記録が拒否・競合状態なら、その中のProperty・NASAも利用せず、個別量の審査で記録全体を復活させません。存在根拠の審査から別のProperty・NASAを承認しません。
 
-| policy | 選択条件 |
-|---|---|
-| `review` | 全候補 |
-| `chemistry_candidate` | Consistency pass |
-| `acquisition` | Consistency pass、hard failなし、必要判定にunknown |
-| `exploratory_simulation` | Consistency/State/Thermochemistry failなし、利用可能datasetまたはestimate |
-| `strict_simulation` | Consistency/State/Reaction evidence/Kinetics pass、Thermochemistry failなし、非estimate |
-| `energy_balance` | strictかつ`reaction_enthalpy_ready` |
-| `resolved_state_model` | strictかつresolved State |
+Propertyの `qualifier` は非束縛等の科学的な宣言であり、管理上のstatusと区別します。部分的に否定・未確定の存在主張と、利用可能な物性を別資格で保持する場合は独立記録へ分けます。宣言の拒否を物理現象の不存在へ読み替えません。
 
-`selected.yaml`のreadinessはclosure、証拠、数値dataset、直接rate、エネルギー源項、
-逆反応を別々に示します。断面積があるだけで「ODE計算準備完了」とは表示しません。
+空または省略scopeを持つ従来記録は、各型の既存資格を互換として維持します。数値宣言を持つsnapshotのscope省略時は、その数値量へ正規化し、係数の審査からチャネルやthresholdを承認しません。scope外の存在主張は競合を作らず、同一反応record IDの競合は審査された各主張の投影で比較します。
 
-## 出力の整合性
+同一対象の存在主張が相反しても、物理照合はexactを保持し、存在命題だけをunknownにします。独立した物性・NASAは自身の資格と条件で評価します。threshold/deltaEの競合・不正値も量ごとに除外し、イオン化下限はthreshold、電荷移動の比較はdeltaE、elasticの内部エネルギー整合は両量の競合を確認します。Penningの励起量/IEと付着のEAは独立に評価し、除外量を既存messageへ残します。真の同定曖昧、拒否された宣言、必要量の競合による利用停止は維持します。
 
-出力先directory自体は置換しません。選択した出力ファイルを同じdirectory内の一時fileへ
-先に書き、完成後にfile単位で置換します。Windows側のdirectory ACLとExplorerから見えるpathを
-維持します。evidence hashは内容だけから計算し、
-checkoutの絶対パスを含めません。大きなassetは複製せず、安定した参照pathとSHA-256だけを
-出力します。
+数値datasetも明示scopeがあれば、その `kind` が審査範囲に含まれる場合だけ数値資格を使用します。チャネルだけの審査で速度係数を承認せず、速度係数だけの審査で閾値を承認しません。
 
-YAML 3ファイルがingest可能な正規bundleです。`--csv`はcase directory直下へ`states.csv`、
-`reactions.csv`を出し、5判定を`assessments/<layer>/`へ分けます。case直下、各判定directory、
-各累積screening directoryでは、全反応の`reactions.csv`に加えて
-`reactions_electron.csv / reactions_ion.csv / reactions_neutral.csv / reactions_surface.csv`を
-同一列構成で出します。surfaceをneutralへ混入させず、4ファイルのID和集合が全反応CSVと一致します。
-各判定directoryは`summary.csv`、`family_summary.csv`と補助図を持ちます。
-状態へ適用するConsistency、State、Thermochemistryだけは`states.csv`も持ち、
-Reaction evidenceとKineticsには意味のない空の状態表を作りません。さらにcase全体で1つの
-`assessments/network.html / network.png / pathways.png`と、
-`assessments/statistics.csv / statistics.svg`が5判定の
-累積pass-only readinessと各判定単独の構成を、`composition.svg`が状態の電荷・励起種別・解像度・寿命特性、
-反応family・生成depthの全候補統計を保持します。同じ候補・判定・選択を
-平坦化した目視用viewで、独立した証拠形式や第2のpipelineではありません。行ごとの再現metadata、
-JSON列、重複する`selected.csv`は出しません。機械的な同一性には状態を含むcanonical IDを使いますが、
-主要表示ではground markerを省略し、`Ar+`や`CF4`のような名前を使います。canonical IDは最後の
-`id`列にだけ残し、完全な証拠と再現情報はYAMLに保持します。状態表現は、励起種別
-`excitation`、解像度`resolution`、寿命・放射特性`lifetime_class`、canonicalな`state_label`、
-目視用`state_symbol`を直交する列として出します。`alternative_resolution_states`は同じ組成・電荷・
-励起種別に対するlumped/resolvedの代替表現を明示します。`structure_scope`は化学式から構造まで
-確定できる範囲を示し、formula-only候補に異性体同定を暗黙付与しません。
-励起状態は`Ar(m)`、`Ar(r)`、`CF4*`、`O2(v)`および既知の項記号で簡潔に表示します。
-証拠側の`Ar(4s)`のように寿命特性が混在するumbrella manifoldは
-`mixed_metastable_resonant`とし、`Ar(m)`・`Ar(r)`への関連証拠にはしても完全一致物性として転記しません。
-反応行には英語の`reaction_type`を付けます。
-表示用の参加粒子順はreaction keyから独立させ、反応物側では電子、重粒子イオン、励起・活性中性種、
-安定中性種、生成物側では重粒子、電子の順に正規化します。third bodyとsurface markerは末尾です。
-この順序はYAML、全CSV、network explorerで共用し、化学量論、候補ID、証拠照合を変更しません。
-`summary.csv`とverdict構成図は全候補を集計します。Network explorerは全反応を一度だけ内包し、
-5判定・3screening、検索、family・verdict・depth filterを同じfileで扱います。既定の全体表示は
-状態行×反応列の化学量論incidence matrixで、1反応を必ず1列へ対応させます。これによりmulti-reactant、
-multi-product反応をspecies間edgeへ展開して反応数を増やしません。反応物・生成物・正味係数ゼロ参加と、
-5判定bandを同じ列上へ配置します。markから選択反応の方向付きhyperedgeへ、状態行から状態近傍networkへ
-移動します。状態近傍は化学量論差`Δν`により正味生成・正味消費・正味係数ゼロ参加へ分類し、3区分を
-独立pageで表示します。正味係数ゼロ参加はtransport、momentum、charge carrier等へ補足分類し、
-物理的無変化とは扱いません。反応nodeから完全hyperedgeへ戻れるため、全接続を隠れたsamplingなしで
-辿れます。
+独立した状態科学記録は、overlayの `state_records` とRegistry種ファイルの `records` に保存します。対象IDと科学record IDを分け、同一対象の物性・NASA・存在宣言を出典ごとに保持します。物性の競合はその量の選択を未確定にし、無関係なNASAや状態同定を失わせません。NASA表現の同等性は係数・温度域・相・標準圧力で比べ、出典名の違いだけで競合にしません。元記録は保存します。
 
-静的`network.png`も全候補を1反応1列で描く同じmatrixであり、1caseに1枚だけ生成します。状態数、反応数、
-反応ID digest、scopeをPNG metadataへ保持し、代表抽出や反応統合を行いません。PNGは全体構造の確認、
-HTMLはzoom・filter・完全反応式確認を担当します。全状態・全反応の正確な判定は各レイヤーの
-`states.csv`と`reactions.csv`にも分けて残します。
+数値の明示 `id` は全体で一意な正規IDです。正規IDを省略した場合、原資料の `record_id` はprovider・collection・release・source_idの名前空間で区別します。同じ原記録の内容変更は同IDの競合として検出します。原記録IDもなければ科学宣言と正規出典情報からcontent IDを生成します。同じ検証済みbytesの保存場所だけは科学内容比較から分け、原参照path・原宣言・各取得来歴は保全します。bytesが検証できない参照の同一性を推測しません。
 
-Explorerの階層経路viewは、feed classのground stateと電子をseedとするAND-hypergraph到達判定です。
-反応物が一つでも未到達ならその反応を進めず、生成物側の正味化学量論係数が正の場合だけ新しい状態を
-導入します。このため弾性衝突や同一性保存channelから状態を生成しません。状態層は最小生成反応段数、
-反応層は全反応物層の最大値+1であり、候補生成`depth`とは独立です。選択対象までの最短supportを主図、
-同率producer、対象消費、対象の正味係数ゼロ参加を関連反応一覧として分離します。主図に出さない反応数を
-明示し、反応nodeから完全hyperedgeへ移れるため、経路の判読性のためにcanonical reactionを失いません。
-主図内は状態名と`INPUT / INTERMEDIATE / TARGET`、反応番号と短い反応種別だけに限定し、完全反応式、ID、
-判定根拠はclick後の詳細へ分離します。edgeはfamily色と方向だけを担い、太さは意味に使いません。
-これは到達可能性のviewであり、速度係数・密度・EEDFからreaction fluxを計算するまでは支配経路を
-主張しません。静的`pathways.png`は最終screeningで到達できる代表対象を1枚だけ出し、HTMLはviewと
-対象状態の切替および表示中経路のPNG取得を担当します。
-Reaction evidenceとKineticsは状態を判定しないため、その2レイヤーには`states.csv`を出力しません。
-Reaction hyperedge view内の全edgeは同じ太さとし、色をelectron・ion・neutral・surfaceのfamily、線種を4値verdictへ
-割り当てます。反応式、reaction type、canonical ID、生成情報、5判定のverdictと理由を同時確認できます。
+新しい状態snapshotの `record_id` または `source.record_id` も同じ名前空間で識別します。原IDがなければ科学宣言と出典から `local-state` IDを生成します。保存済みoverlay・Registryの `record_id` は正規IDとして保持し、旧IDを再生成しません。同じ原IDと出典を持つ旧記録に追加する場合も、既存IDを維持します。
 
-`assessments/screening/`は判定器やpolicyを増やさない派生viewです。State–Consistency、
-State–Consistency–Thermochemistry、State–Consistency–Thermochemistry–
-(Kinetics OR Reaction evidence)の3段階を別directoryへ出します。最後のgateだけはORであり、
-KineticsまたはReaction evidenceの少なくとも一方がpassなら反応を保持します。反応CSVには
-両方の元verdict、合成OR verdict、採用根拠を保持します。各段階は残存候補の`states.csv / reactions.csv`、
-step別の正確な`summary.csv`、残存率を示す`retention.svg`を持ちます。残存反応networkは
-case共通の`assessments/network.html`でviewを切り替えます。
-状態に定義されないKineticsとReaction evidenceは`not_applicable`として素通しします。
-したがってこれはCandidateSetを破壊するfilter pipelineではなく、個別の4値判定から決定的に作る
-pass-only projectionです。
+同じ科学状態IDを異なる物理対象へ、同じ科学反応IDを異なる反応式へ割り当てた入力は、読込み・複数出典の統合時に形式不整合として拒否します。ingest/adoptの同ID比較も保存先全体で行い、対象ごとの配列へ移して衝突を避けることはできません。同じ対象での量の不一致は証拠として保持し、対応する判定で扱います。
+
+反応宣言は共通の `ReactionRecord` に正規化し、overlayの `reaction_records` とRegistry channelの `records` に保存します。対象となる反応IDと科学記録の `id` は別です。新規原IDからは `source-reaction`、原IDのない科学宣言からは `local-reaction`、明示したsnapshot `id` からは `reaction-record` IDを作り、保存済みIDは維持します。チャネル根拠、threshold、deltaE、審査範囲、方法、出典、原宣言が直接分析・ingest・adoptで同じ判定へ届きます。
+
+純粋な反応主張には空のNumericDatasetを作りません。数値を併記したsnapshotは科学主張と数値記録を別の保存先へ置きます。独立した `reaction_records` / channel `records` の要素に `datasets` を埋め込む入力は拒否し、数値はoverlayの `datasets` / channelの `data.datasets` に置きます。反応energyは共通Propertyに量の定義・個別資格・出典・不確かさを保存して往復します。利用者によるProperty/NASAの選択と新しい物理モデルは別の拡張です。
+
+励起エネルギーの数値資格は `properties.excitation_energy_eV` に置きます。状態側のscalar宣言は入口で同じ値へ照合し、元の品質・単位・出典を個別Propertyへ正規化します。存在根拠だけを追加してもエネルギーの品質は変わりません。Penningと形成エンタルピー導出はこの資格を参照します。イオン化下限は同じ物理対象に対応する宣言thresholdとIEを比較し、両側の有効な宣言区間で下限関係が定まらなければunknownです。差の整合は比較できる宣言区間の交差で評価します。未宣言の不確かさを誤差ゼロとせず、点としての名目比較はその範囲を明示します。誤差を絶対的な物理禁止や未取得の測定精度として扱いません。
+
+IE、電子親和力、Penningの比較は共通のProperty区間を使います。等しい中心値でも宣言誤差が違えば全区間を保持し、noteだけの誤差をゼロとしません。EAは同じ相・構造の中性親と基底アニオンの束縛関係、Penningはresolvedな供与状態と対応する基底生成物のエネルギー関係に限ります。励起生成物、構造変更、lumped人口へ基底IE式を転用しません。[根拠と限界](scientific_data_review.md)に詳しく記録します。
+
+全datasetを評価してから、`data_selection` の量別要求を適用します。不正・範囲外の優先データからは他の適格な記録へ進めます。適用条件が未入力の優先データは候補に残します。同IDの異なる科学宣言は上書きしません。同じ物理量・次元・速度次数で、適用領域が重なる値と不確かさを比較します。有限個の比較点は連続域全体の同等性の証明には使いません。
+
+再取得日時や原本の保存先は科学的な値の違いではありません。状態・反応・数値の同ID比較と匿名IDの生成は、標準取得contextと一致する重複出典識別子を除いた共通の比較処理を使います。未知の物理条件・注記、方法、資格、値、assetの参照とhashは比較へ残します。原宣言を変更する処理ではなく、異なる取得宣言はoverlay・Registry・正規結果に併記し、完全に同じ宣言の再採用は既存記録を保持します。
+
+`prefer` は指定したmethod、provider、collectionの順の軸で順位を比較し、各軸の未指定値は同順位の後順位とします。`only` は指定した軸の許可集合すべてを満たす記録へ制限し、記述順を優先順位にしません。`record` は数値dataset IDへ固定します。最上位の異なる値は競合で、同順位の記録を入力順で選びません。明示した別順位から採用しても、他の適格記録との不一致とID競合を `DataUse.disagreements` に残します。候補が同じ量として比較可能で不一致も不足もない場合だけ、品質、表現種別、安定IDで一つを返します。
+
+異なる速度則が同時に適用でき、明示要求で一つに決まらなければ `rate_law_selection` を不足として返します。要求は `DataUse.selection` に保存し、数値の利用結果は `DataUse` 一つに置きます。物性・NASA・存在根拠への採用要求は未対応で入力拒否します。量別要求のない場合だけ旧dataset `preferred` を使う互換処理を残し、0.8で撤去します。
+
+条件が未入力の別速度則は、不適用と決まっていないため選択前に捨てません。明示要求で選んだモデルにも、そのモデル自身の不足条件を残します。数値のみを追加したoverlayからreaction_evidenceを自動でpassにしません。
+
+Arrheniusは `k=A(T/Tref)^b exp[-Ea/(kBT)]` とし、参照温度とパラメータ単位を要求します。化学量論次数と速度次数は別に扱い、実効速度には明示次数を要求します。電子温度と気体温度、KとeVを区別します。断面積は分布の範囲と積分が必要、stickingは0～1の確率でfluxへの変換が必要です。
+
+気相基底状態のNASA7、共通の標準圧力、範囲内温度が揃う場合に限り、数密度形の `Kc=exp(-ΔG/RT)(p0/kBT)^Δν` を返します。電子・非熱平衡励起状態へこの平衡式を適用しません。式と条件の根拠は[Canteraの反応速度](https://cantera.org/stable/reference/kinetics/reaction-rates.html)、[種の熱力学](https://cantera.org/stable/reference/thermo/species-thermo.html)、[stickingの公式説明](https://doc.comsol.com/6.3/doc/com.comsol.help.plasma/plasma_ug_heavy_species.08.27.html)を参照してください。
+
+一反応の熱化学値には、その反応の参加状態に対応する物性だけを選択します。無関係な全候補の物性を毎回再選択せず、計算に必要な範囲を限定します。物性の資格・競合規則や、返す判定・数値は変えません。
+
+## 保存と変更
+
+schema検査、有限値、IDと対象、反応参照、入力と供給状態、集計・完了範囲の整合を共通読込みで確認します。`result.yaml` は同じディレクトリの一時ファイルを検査してから単一replaceで公開します。その後にCSVを公開します。CSVが失敗した場合は正規結果の保存済みと補助表示の不足を区別し、記録hashで古い表を検出・再生成できます。
+
+`ingest` は式照合・明示IDの双方で安定化宣言まで照合します。式だけでprocessが不明な宣言を、既存の型付きチャネルへ推測で割り当てずreview queueへ置きます。式を持たない明示 `reaction_id` 入力では保存結果の対象参照から物理対象を得て、元の入力宣言も保全します。宣言の無い記録をradiativeやthird-bodyの根拠にしません。`adopt` は対象とassetを全件検証し、変更ファイルをstageしてから置換します。同IDの科学内容変更は上書きせず、ingestはqueue、adoptは入力エラーで変更前を保持します。途中のI/O失敗は変更前へ復旧し、復旧にも失敗した場合は例外と復旧用backupを残します。複数ファイルの同時公開、停電や並行更新に対するatomic性は保証しません。
+
+状態の読込み・照合・採用・導出は同じ正規物理キーを使います。併記された状態属性と個別Propertyは一記録単位で照合し、競合を片側だけ成功として処理しません。Registryとoverlayの独立した存在宣言も保持し、後の宣言で先の根拠を消しません。
+
+同じRegistry反応pairを複数ファイルで宣言しても、全channelを保持します。channel IDの重複は同内容でもファイル・位置付きで拒否し、更新先を曖昧にしません。一つのchannelの `records` に独立出典を保持でき、同じ科学IDの取得宣言も併記できます。保存結果の数値選択は、入力要求、evidenceの採用記録、量、個別評価の値・不足と照合します。保存結果の読込みでは外部取得や科学判定の再実行を行いません。
+
+旧pipeline、policy選択、累積screening、capability/readinessの二重管理は撤去しました。外部データ形式のadapterは維持します。schema4は通常実行から切り離した一回限りの移行工具だけが読み、旧判定を採用しません。今後の拡張原則は[AGENTS.md](../AGENTS.md)に置き、実装順や過去課題をここへ混ぜません。

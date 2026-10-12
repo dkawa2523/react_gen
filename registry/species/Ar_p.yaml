@@ -1,4 +1,5 @@
 schema_version: 1
+phase: gas
 id: Ar+
 display_name: Ar+
 composition:
@@ -11,6 +12,13 @@ state:
   kind: ground
   label: X
   excitation_energy_eV: 0.0
+  existence: confirmed
+  existence_source: NIST ASD 5.12, ground level, L8844; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=Ar&unc_out=on&units=1
+  status: reviewed
+  configuration: '[Ne]3s2 3p5'
+  term: 2P
+  J: 3/2
+  parity: odd
 properties:
   mass_amu:
     value: 39.94745
@@ -30,9 +38,13 @@ properties:
     source: derived from Ar IE, NIST Atomic Spectra Database / Basic Atomic Spectroscopic
       Data
   ionization_energy_eV:
-    value: 27.62966
+    value: 27.62967
     unit: eV
-    source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+    source: NIST ASD 5.12, L8844; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=Ar&unc_out=on&units=1
+    evidence_tier: reviewed
+    uncertainty:
+      absolute: 0.00012
+      unit: eV
   electron_affinity_eV:
     value: null
     unit: eV

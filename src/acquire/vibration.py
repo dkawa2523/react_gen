@@ -161,6 +161,7 @@ def records(found: list[Quantum], citation: str) -> list[dict]:
             "property": "vibrational_quantum_eV",
             "value": item.energy_eV,
             "unit": "eV",
+            "phase": "gas",
             "source": {"citation": f"{citation}; effective Einstein mode, {item.fit_note}"},
         }
         for item in found

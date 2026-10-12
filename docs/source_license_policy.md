@@ -1,85 +1,107 @@
-# Source And License Policy
+# Source and license policy
 
-This project separates local generation, reviewed overlays, external data
-acquisition, and explicit Registry adoption. The goal is to prevent public,
-commercial, API-keyed, or license-restricted data from being treated as bundled
-or production-ready by accident.
+The project separates acquisition, local evidence loading, scientific review,
+numerical selection, and explicit Registry adoption. Access to a database,
+successful parsing, and permission to redistribute its contents answer different
+questions. None of them establishes that a scientific record applies to a
+particular state, channel, or calculation.
 
-## Source Catalog
+## Source catalog
 
-The source governance metadata lives in:
+`external_data/source_catalog.yaml` is the single local catalog, at schema version
+3. Each entry describes a `source_id`, provided quantities, an access route,
+available converters, an endpoint, and rights that require checking. A direct
+release download may additionally declare `file`, `format`, and `format_version`.
+`acquire sources` displays this information without accessing the network.
 
-```text
-external_data/source_catalog.yaml
-```
+The catalog describes capabilities and review items. It does not grant a license,
+approve scientific records, set a default scientific status, or rank databases.
+Providers in user evidence do not require catalog registration. An unlisted
+provider still requires adequate source information and compliance with its
+actual terms.
 
-External acquisition setup lives in:
+The previous access profile and fetch catalog have been consolidated into this
+file. `acquire fetch --catalog PATH` continues to read a custom download catalog,
+including its legacy `id` field. Old catalog `priority` values are not analysis
+selection rules.
 
-```text
-external_data/source_access_profiles.yaml
-```
+## Acquisition and storage
 
-The setup profile records which sources are enabled, which require manual
-registration or license review, where explicit download manifests live, and
-which local snapshot paths should be produced.
+- `rgen analyze` reads explicit local Registry, snapshot, and overlay data. It
+  does not download data, call source APIs, or require optional acquisition
+  packages.
+- Network retrieval belongs to an explicit acquisition command. `acquire fetch`
+  downloads the HTTPS file URL declared by the selected catalog entry and checks
+  the expected content format. A successful content check is not a complete
+  source-format or scientific validation.
+- Retain applicable source and upstream terms, attribution requirements, and
+  redistribution restrictions. A public endpoint or an open-source package
+  license does not establish the redistribution rights of every underlying
+  dataset. Check the contributing database or node as well as an aggregator.
+- Record the requested and final URL, retrieval time, original full SHA-256,
+  format, and format version where acquisition supplies them. Preserve original
+  files and source declarations when making repairs or conversions.
+- LXCat and UMIST file conversion stores a raw copy and its SHA-256 with the
+  snapshot. Other converters retain the source declarations they obtained;
+  metadata not provided by an adapter remains unknown rather than invented.
+- Keep restricted or confidential raw data, snapshots, and assets in suitable
+  local storage. Do not add them to a public repository, distribute a result
+  containing them, or bundle them in a release without checking the relevant
+  rights. The catalog is not an access-control mechanism.
+- Optional acquisition packages remain optional dependencies in
+  `pyproject.toml`, separate from the core analysis runtime.
 
-Each source entry records:
+## Scientific qualification and selection
 
-- source category
-- whether it is allowed in core generation, an overlay, or external tools
-- whether license review or API keys are required
-- redistribution risk
-- default status for imported values
-- notes for reviewers
+Records retain `provenance` (provider, collection, release, native record ID,
+citation, and URL where known) and `source_declaration` (the original scientific
+declaration). `method`, evidence `tier`, and declared `review_scope` are separate
+fields. A provider name does not determine a measurement method or evidence
+quality; scientific review does not change license terms.
 
-## Policy Rules
+An adjacent `acquisition.yaml` is carried into `acquisition.source_manifest` only
+when its file name and complete SHA-256 match the converted input. The same
+context is retained in scientific source declarations through ingest and adopt.
+Source paths remain within that original manifest, separate from the snapshot's
+new raw path. A same-file hash conflict or malformed declaration fails before
+conversion writes. A manifest for another file is not adopted. Provider,
+collection, and release are retained only when explicitly declared.
 
-- `rgen generate` may use only local Registry-compatible files. It must not
-  call public APIs, download files, or require optional source packages.
-- Public API sources and commercial/license-restricted sources must never have
-  `allowed_in_core_generate: true`.
-- Sources with `redistribution_risk: high` or `unknown` must set
-  `requires_license_review: true`.
-- Optional Python package sources must not be declared as core runtime
-  dependencies in `pyproject.toml`.
-- External data tools may create raw caches or snapshots, but those outputs
-  require human review before overlay use or Registry adoption.
-- External downloads must come from explicit user-provided URL manifests; no
-  scraping, crawler behavior, hidden API discovery, or login automation is
-  allowed in this repository.
-- Prepared or imported data must not enter curated `registry/` without an
-  explicit, reviewed `rgen adopt OVERLAY --registry PATH` decision.
+Mechanically imported records remain `imported` until an appropriate review or
+documented derivation supplies their qualification. Acquisition, matching,
+Registry membership, and adoption do not promote them automatically. Review
+must address the claim actually used: identity, existence, a numerical property,
+an energy relation, or applicability to a calculation. Reviewing one claim does
+not approve the others.
 
-## Status Guidance
+Reaction records check `channel_assertion`, `threshold_eV`, and `delta_e_eV`
+against their stated review scope. A numerical snapshot with no explicit scope
+is limited to its numerical kind; coefficient review does not approve its
+channel or threshold. Unscoped legacy independent channel declarations retain a
+compatibility rule. Separately typed energy claims and complete claim-level
+selection remain unfinished.
 
-- `curated`: reviewed and accepted in the curated local registry.
-- `literature_supported`: reviewed source or snapshot with citation.
-- `imported`: mechanically imported from a local file, snapshot, or external
-  tool output before final domain review.
-- `estimated`: calculated from explicit documented assumptions.
-- `inferred`: generated by rules/templates, not evidence-backed source data.
+`data_selection` can rank or restrict rate coefficients, cross sections, and
+sticking coefficients by explicitly declared method, provider, collection, or
+record. It does not bypass numerical quality or applicability checks. Records
+and unresolved disagreements remain inspectable. The method `estimated` is a
+description of how a value was obtained; its qualification and assumptions must
+also be stated. Property, thermochemical-model, and existence-evidence selection
+are not yet supported by this input.
 
-When in doubt, use `imported` plus clear provenance and require manual review.
+## Registry adoption and distribution
 
-## Source Categories
+Inspect the source, target identity, quantity, applicable conditions, scientific
+qualification, and usage rights before a record is used for a declared purpose
+or distributed. `rgen adopt OVERLAY --registry PATH --dry-run` describes the
+proposed persistent changes. Running it without `--dry-run` is the explicit
+storage operation; it retains the record's original qualification and is not a
+scientific approval step.
 
-- `bundled`: repository local registry or user-selected local registry root.
-- `internal`: company/local internal files; may contain confidential or
-  redistribution-restricted values.
-- `public_snapshot`: user-prepared local snapshot from a public source.
-- `public_api`: explicit external API acquisition tooling only.
-- `commercial_or_license_restricted`: data requiring contract, license, or
-  redistribution approval.
-- `user_provided_file`: local files supplied by the user.
-- `optional_python_package`: optional package data not required by core runtime.
-
-## Review Checklist
-
-Before using source-derived data in a benchmark or promotion decision, confirm:
-
-- the source is listed in `external_data/source_catalog.yaml`
-- license and redistribution risk are reviewed
-- raw files or snapshots are local and reproducible
-- `source_record`, citation, hash, or metadata sidecar is present where practical
-- values are not silently overwriting curated registry entries
-- promotion decisions are explicit and dry-run reports have been inspected
+Before distributing a Registry, snapshot, asset, or analysis result, verify that
+the retained source information identifies the relevant terms and attribution,
+that the proposed distribution is permitted, and that transformations or repairs
+are traceable to the original. When terms are unknown, preserve that uncertainty
+and resolve it with the source before redistribution. Catalog review items are
+guidance for this check, not blanket permission or a substitute for the source's
+current terms.

@@ -37,8 +37,20 @@ channels:
           (2014), Table 1.
         url: https://doi.org/10.1007/s11090-013-9513-1
         record_id: R45
+        primary_url: https://swb.skku.edu/_res/pnpl/etc/2014-02.pdf
+        source_table: Table 1, pp. 244-245; Plasma Modeling, p. 242
+        applicability_review: R21-R60 coefficients are adopted by this model at gas
+          temperature 700 K. Only this point is reviewed; no temperature-independent
+          elementary rate or other-temperature extrapolation is established.
       status: literature_supported
       preferred: true
+      reaction_order: 2
+      observable: reaction_rate
+      validity:
+        quantity: gas_temperature
+        minimum: 700.0
+        maximum: 700.0
+        unit: K
 metadata:
   status: literature_supported
   notes:

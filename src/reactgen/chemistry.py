@@ -7,10 +7,60 @@ thermochemistry or kinetics.
 
 from __future__ import annotations
 
+import re
+from urllib.parse import quote, unquote
+
 from reactgen import naming
-from reactgen.model import ELECTRON, CandidateState, StateCandidate
+from reactgen.model import ELECTRON, CandidateState, EquationKey, StateCandidate
 
 Composition = dict[str, int]
+
+
+def parse_equation(text: str) -> tuple[EquationKey, tuple[StateCandidate, ...]] | None:
+    """Identify an explicitly written equation without asserting a channel exists."""
+    left, separator, right = text.partition("->")
+    if not separator:
+        return None
+    reactants, products = _parse_equation_side(left), _parse_equation_side(right)
+    if reactants is None or products is None:
+        return None
+    left_terms, left_states, left_third = reactants
+    right_terms, right_states, right_third = products
+    if left_third != right_third:
+        return None
+    return (
+        ("M" if left_third or right_third else None, None, left_terms, right_terms),
+        tuple({state.id: state for state in (*left_states, *right_states)}.values()),
+    )
+
+
+def _parse_equation_side(
+    text: str,
+) -> tuple[tuple[tuple[str, float], ...], tuple[StateCandidate, ...], bool] | None:
+    counts: dict[str, float] = {}
+    states: dict[str, StateCandidate] = {}
+    third_body = False
+    for piece in re.split(r"\s+\+\s+", text.strip()):
+        token = piece.strip()
+        if not token:
+            continue
+        count_text, separator, name = token.rpartition(" ")
+        try:
+            count = float(count_text) if separator else 1.0
+        except ValueError:
+            count, written = 1.0, token
+        else:
+            written = name if separator else token
+        if written == "M":
+            third_body = True
+            continue
+        state = parse_state_id(written)
+        if state is None:
+            return None
+        counts[state.id] = counts.get(state.id, 0.0) + count
+        states[state.id] = state
+    return tuple(sorted(counts.items())), tuple(states.values()), third_body
+
 
 NOBLE_GASES = frozenset({"He", "Ne", "Ar", "Kr", "Xe"})
 DIATOMIC_ELEMENTS = frozenset({"H", "N", "O", "F", "Cl", "Br", "I"})
@@ -166,7 +216,9 @@ def charged_formula(composition: Composition, charge: int) -> str:
     if charge == 0:
         return base
     sign = "+" if charge > 0 else "-"
-    magnitude = "" if abs(charge) == 1 else str(abs(charge))
+    # A bare trailing digit belongs to the chemical formula (Ar2+ is Ar2
+    # with charge +1).  Separate multivalent charge from the atom count.
+    magnitude = "" if abs(charge) == 1 else f"^{abs(charge)}"
     return f"{base}{magnitude}{sign}"
 
 
@@ -175,11 +227,28 @@ def state_id(
     charge: int,
     kind: str = "ground",
     label: str = "",
+    *,
+    resolution: str | None = None,
+    phase: str = "gas",
+    structure: str | None = None,
 ) -> str:
     if not composition and charge == -1:
         return ELECTRON
     state_name = label or kind
-    return f"{charged_formula(composition, charge)}@{state_name}"
+    default_kind, default_resolution, default_label = _state_defaults(state_name)
+    identity = ""
+    if kind != default_kind:
+        identity += f";kind={quote(kind, safe='')}"
+    resolution = resolution or _state_defaults(kind)[1]
+    if resolution != default_resolution:
+        identity += f";resolution={quote(resolution, safe='')}"
+    if label != default_label:
+        identity += f";label={quote(label, safe='')}"
+    if phase != "gas":
+        identity += f";phase={quote(phase, safe='')}"
+    if structure is not None:
+        identity += f";structure={quote(structure, safe='')}"
+    return f"{charged_formula(composition, charge)}@{quote(state_name, safe='')}{identity}"
 
 
 def candidate_state(
@@ -188,14 +257,25 @@ def candidate_state(
     kind: str = "ground",
     *,
     label: str = "",
-    resolution: str = "lumped",
+    resolution: str | None = None,
     classes: frozenset[str] = frozenset(),
     origin: str = "mechanical",
     depth: int = 0,
     introduced_by: tuple[str, ...] = (),
+    phase: str = "gas",
+    structure: str | None = None,
 ) -> StateCandidate:
+    resolution = resolution or _state_defaults(kind)[1]
     return StateCandidate(
-        id=state_id(composition, charge, kind, label),
+        id=state_id(
+            composition,
+            charge,
+            kind,
+            label,
+            resolution=resolution,
+            phase=phase,
+            structure=structure,
+        ),
         composition=dict(composition),
         charge=charge,
         state=CandidateState(kind, resolution, label),
@@ -203,6 +283,8 @@ def candidate_state(
         origin=origin,
         depth=depth,
         introduced_by=introduced_by,
+        phase=phase,
+        structure=structure,
     )
 
 
@@ -227,17 +309,48 @@ def parse_state_id(written: str) -> StateCandidate | None:
         if parsed.excited:
             return candidate_state(parsed.composition, parsed.charge, "electronic")
         return candidate_state(parsed.composition, parsed.charge, "ground", resolution="resolved")
-    if state_text == "ground":
-        return candidate_state(parsed.composition, parsed.charge, "ground", resolution="resolved")
-    if state_text in {"vibrational", "electronic", "metastable", "resonant"}:
-        return candidate_state(parsed.composition, parsed.charge, state_text, resolution="lumped")
+    identity = _parse_identity_suffix(state_text)
+    if identity is None:
+        return None
+    state_text, tags = identity
+    kind, resolution, label = _state_defaults(state_text)
+    resolution = tags.get("resolution", resolution)
+    if resolution not in {"resolved", "lumped"}:
+        return None
     return candidate_state(
         parsed.composition,
         parsed.charge,
-        "resolved",
-        label=naming.normalize_state(state_text) or state_text,
-        resolution="resolved",
+        tags.get("kind", kind),
+        label=tags.get("label", label),
+        resolution=resolution,
+        phase=tags.get("phase", "gas"),
+        structure=tags.get("structure"),
     )
+
+
+def _state_defaults(name: str) -> tuple[str, str, str]:
+    if name == "ground":
+        return "ground", "resolved", ""
+    if name in {"vibrational", "electronic", "metastable", "resonant"}:
+        return name, "lumped", ""
+    return "resolved", "resolved", name
+
+
+def _parse_identity_suffix(text: str) -> tuple[str, dict[str, str]] | None:
+    """Read canonical identity tags without treating them as state labels."""
+    state, *fields = text.split(";")
+    values: dict[str, str] = {}
+    for field in fields:
+        key, equals, value = field.partition("=")
+        if (
+            not equals
+            or (not value and key != "label")
+            or key not in {"kind", "resolution", "label", "phase", "structure"}
+            or key in values
+        ):
+            return None
+        values[key] = unquote(value)
+    return unquote(state), values
 
 
 def electron_state() -> StateCandidate:

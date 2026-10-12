@@ -18,7 +18,8 @@ channels:
   source_record:
     source_type: literature_mechanism
     source_id: doi:10.1116/1.4853675
-    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
     url: https://doi.org/10.1116/1.4853675
     record_id: R6
 - id: e_SF5_dissociative_ionization_SF4p_F
@@ -35,7 +36,8 @@ channels:
   source_record:
     source_type: literature_mechanism
     source_id: doi:10.1116/1.4853675
-    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303 (2014).
+    citation: A. Pateau et al., Journal of Vacuum Science & Technology A 32, 021303
+      (2014).
     url: https://doi.org/10.1116/1.4853675
     record_id: R20
 - id: e_SF5_ionization
@@ -55,7 +57,7 @@ channels:
       status: needs_import
       note: Import the calculated/evaluated SF5 ionization curve before rate calculation.
 - id: e_SF5_dissociative_attachment_Fm_SF4
-  type: attachment
+  type: dissociative_attachment
   products:
   - species: F-
     n: 1
@@ -73,7 +75,7 @@ channels:
       unit: m3/s
       parameters:
         value: 3.0e-15
-        source_value: 3.0e-9
+        source_value: 3.0e-09
         source_unit: cm3/s
         relative_uncertainty: 0.4
       validity:
@@ -91,9 +93,15 @@ channels:
       status: literature_supported
       preferred: true
       notes:
-      - Product-resolved dissociative attachment derived from the measured secondary kinetics.
-      - Use only for thermal electrons near 300 K; this point rate does not replace an energy-dependent cross section.
+      - Product-resolved dissociative attachment derived from the measured secondary
+        kinetics.
+      - Use only for thermal electrons near 300 K; this point rate does not replace
+        an energy-dependent cross section.
+  notes:
+  - 'Classification corrected from attachment: electron capture produces dissociation
+    fragments; parent-anion binding is not this channel''s condition.'
 metadata:
   status: literature_supported
   notes:
-  - Enables ionization and measured thermal attachment after SF5 is produced from SF6.
+  - Enables ionization and measured thermal attachment after SF5 is produced from
+    SF6.

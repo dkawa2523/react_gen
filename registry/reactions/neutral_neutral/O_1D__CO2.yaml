@@ -1,0 +1,126 @@
+channels:
+- data:
+    datasets:
+    - channel_scope: product_resolved
+      evidence_tier: reviewed
+      id: ds_O1D_CO2_quenching_O3P_term_rate_jpl_25_1
+      independent_variable: gas_temperature
+      kind: rate_coefficient
+      method: evaluated
+      notes:
+      - Ea in K denotes Ea/kB; its negative value yields exp(+abs(Ea)/T). Tref=298
+        K is a normalization convention with b=0.
+      - Note A12 recommends unit O(3P)+CO2 product yield, with a small insufficiently
+        quantified CO+O2 channel. Isotopic scrambling through CO3 and minor-channel
+        uncertainty are not resolved.
+      observable: reaction_rate
+      parameter_units:
+        A: m3/s
+        Ea: K
+        branching_fraction: '1'
+        source_A: cm3/s
+        source_f_298_K: '1'
+        source_g_K: K
+        source_k_298_K: cm3/s
+      parameters:
+        A: 7.5e-17
+        Ea: -115.0
+        b: 0.0
+        branching_fraction: 1.0
+        source_A: 7.5e-11
+        source_f_298_K: 1.15
+        source_g_K: 20.0
+        source_k_298_K: 1.1e-10
+      preferred: true
+      reaction_order: 2
+      reference_temperature_K: 298.0
+      representation: arrhenius
+      review_scope:
+      - rate_coefficient
+      source:
+        accessed_date: '2026-10-12'
+        applicability_review: Adoption is restricted to the 200-354 K fit-data window
+          explicitly identified in Note A12. The 195-370 K experimental span and the
+          agreeing 195 K point do not define the full Arrhenius validity range.
+        citation: Burkholder et al., NASA/JPL Evaluation 20, JPL Publication 25-1
+          (2025), Table 1A and Note A12.
+        collection: evaluated_gas_kinetics
+        experimental_temperature_range_K: 195-370
+        product_state_scope: O(3P) product term summed over fine structure; the collider
+          molecule is represented at the source electronic-species scope, not an individual
+          rovibrational level.
+        provider: NASA_JPL
+        record_id: A12
+        release: 25-1
+        rights_review: Four factual evaluated expressions and their derivations are
+          transcribed; original PDF pages, tables, and prose are not redistributed.
+        source_file_sha256: 835496c8fd180b29ff9fc456e038dc8fd34e829e5f6e00346b0837ad71b4169c
+        source_id: JPL-25-1:A12
+        source_type: evaluated_kinetics
+        total_rate_uncertainty: Table 1A reports f(298 K)=1.15, g=20 K; the temperature-dependent
+          uncertainty model is retained as a declaration, not a constant factor.
+        uncertainty_declaration: 'Table 1A footnote e: f(T)=f(298 K) exp(g * abs(1/T
+          - 1/298 K)); approximately one-standard-deviation evaluation bounds, not
+          a rigorous statistical guarantee.'
+        url: https://science.jpl.nasa.gov/documents/1503/NASA_Data_Evaluation_20.pdf
+      status: literature_supported
+      uncertainty:
+        note: Temperature-dependent rate uncertainty and unresolved internal-state
+          branching are not reduced to a combined constant error.
+      unit: m3/s
+      validity:
+        maximum: 354.0
+        minimum: 200.0
+        quantity: gas_temperature
+        unit: K
+  id: O1D_CO2_quenching_O3P_term
+  method: evaluated
+  notes:
+  - This coefficient is for the source electronic-term product scope. It does not
+    provide J- or rovibrational-state resolved rates, populations, or an independent
+    energy-release value.
+  products:
+  - n: 1
+    species: O_3P
+  - n: 1
+    species: CO2
+  review_scope:
+  - channel_assertion
+  source_record:
+    accessed_date: '2026-10-12'
+    applicability_review: Adoption is restricted to the 200-354 K fit-data window
+      explicitly identified in Note A12. The 195-370 K experimental span and the agreeing
+      195 K point do not define the full Arrhenius validity range.
+    citation: Burkholder et al., NASA/JPL Evaluation 20, JPL Publication 25-1 (2025),
+      Table 1A and Note A12.
+    collection: evaluated_gas_kinetics
+    experimental_temperature_range_K: 195-370
+    product_state_scope: O(3P) product term summed over fine structure; the collider
+      molecule is represented at the source electronic-species scope, not an individual
+      rovibrational level.
+    provider: NASA_JPL
+    record_id: A12
+    release: 25-1
+    rights_review: Four factual evaluated expressions and their derivations are transcribed;
+      original PDF pages, tables, and prose are not redistributed.
+    source_file_sha256: 835496c8fd180b29ff9fc456e038dc8fd34e829e5f6e00346b0837ad71b4169c
+    source_id: JPL-25-1:A12
+    source_type: evaluated_kinetics
+    total_rate_uncertainty: Table 1A reports f(298 K)=1.15, g=20 K; the temperature-dependent
+      uncertainty model is retained as a declaration, not a constant factor.
+    uncertainty_declaration: 'Table 1A footnote e: f(T)=f(298 K) exp(g * abs(1/T -
+      1/298 K)); approximately one-standard-deviation evaluation bounds, not a rigorous
+      statistical guarantee.'
+    url: https://science.jpl.nasa.gov/documents/1503/NASA_Data_Evaluation_20.pdf
+  status: literature_supported
+  type: quenching
+metadata:
+  notes:
+  - This source-supported thermal coefficient adds one measured/evaluated loss path;
+    it does not complete a kinetic mechanism.
+  status: curated
+pair:
+  family: neutral_neutral
+  projectile: O_1D
+  target: CO2
+schema_version: 1

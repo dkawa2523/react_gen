@@ -1,35 +1,22 @@
-"""NASA thermodynamic polynomials, from the data `cantera` already ships.
+"""Read gas-phase NASA fits from Cantera's explicit ``nasa_gas.yaml`` source.
 
-The registry has carried a `thermo` field since it was written and every one of
-its 102 species has it empty, because the compilations that publish these
-coefficients -- Burcat's tables, NASA CEA, ATcT -- are all behind a form or a
-WAF. `cantera` bundles them: twenty-two mechanism files holding 862 distinct
-compositions between them, `nasa_gas.yaml` alone carrying 748.
-
-Matching is on composition and charge, never on name. A mechanism writes `AR`,
-the registry writes `Ar`, and CHEMKIN convention spells the cation `AR+` while
-this repository spells it `Ar+`; the atom counts are the same in every notation,
-and the electron appears as an element `E` whose count is the negated charge.
-That match reaches 91 of the 102 species.
-
-It answers for ground states only. `O_1D` and `O` have the same composition and
-charge, so a composition match hands the excited state the ground state's
-polynomial verbatim -- and O(1D) sits 1.967 eV above O, which the enthalpy
-constant has to carry. Excited states are filled by `rgen derive`, which shifts
-a6 by the level energy instead.
-
-What the coefficients are for: Cp(T)/R, H(T)/RT and S(T)/R as polynomials in T,
-which is what a reverse rate constant needs. `reactgen.thermo.reverse_rate`
-has been waiting for them -- an equilibrium constant cannot be formed from a
-formation enthalpy alone, because the entropy term is temperature dependent.
+Composition and charge narrow the match; competing structural identities are
+not selected by file order. This adapter does not establish state existence or
+derive excited-state thermodynamic populations. Cantera's thermo reference
+pressure is 1 atm unless the source specifies otherwise:
+https://cantera.org/stable/yaml/species.html#species-thermo-models
 """
 
 from __future__ import annotations
 
-import glob
+import math
 import os
 from dataclasses import dataclass, field
 from typing import Any
+
+import yaml
+
+from reactgen import yamlio
 
 # The element cantera uses for the electron in an ionised mechanism.
 ELECTRON_ELEMENT = "E"
@@ -46,6 +33,9 @@ class Polynomial:
     listed_as: str | None = None
     origin: str | None = None
     error: str | None = None
+    phase: str = "gas"
+    standard_pressure_Pa: float | None = None
+    structure: str | None = None
 
     @property
     def known(self) -> bool:
@@ -55,8 +45,24 @@ class Polynomial:
     def nasa7(self) -> tuple[tuple[float, ...] | None, tuple[float, ...] | None]:
         """The low and high seven-term rows, or a pair of None for anything else."""
 
-        rows = [tuple(row) for row in self.coefficients if len(row) == 7]
-        if self.model != "NASA7" or not rows or len(self.temperature_ranges) < 2:
+        rows = [tuple(row) for row in self.coefficients]
+        if (
+            self.model != "NASA7"
+            or len(rows) not in {1, 2}
+            or any(len(row) != 7 for row in rows)
+            or len(self.temperature_ranges) != len(rows) + 1
+        ):
+            return None, None
+        if any(not math.isfinite(value) for row in rows for value in row) or any(
+            not math.isfinite(value) or value <= 0 for value in self.temperature_ranges
+        ):
+            return None, None
+        if any(
+            left >= right
+            for left, right in zip(
+                self.temperature_ranges, self.temperature_ranges[1:], strict=False
+            )
+        ):
             return None, None
         return (rows[0], rows[-1])
 
@@ -68,12 +74,6 @@ class Polynomial:
             return None
         return f"{self.model or 'no'} fit, which the registry's NASA7 field cannot hold"
 
-    @property
-    def deferred(self) -> bool:
-        """Left to `rgen derive` rather than absent from the compilation."""
-
-        return bool(self.error and self.error.endswith("from the ground state"))
-
 
 def available() -> bool:
     try:
@@ -83,43 +83,38 @@ def available() -> bool:
     return True
 
 
-def catalog() -> dict[tuple[tuple[tuple[str, int], ...], int], dict[str, Any]]:
-    """Every bundled species that carries a fit, keyed by composition and charge.
-
-    First file wins on a repeat. `nasa_gas.yaml` sorts before the combustion
-    mechanisms, and it is the broader and more consistent compilation, so the
-    ordering is worth keeping rather than leaving to chance.
-    """
+def catalog() -> dict[tuple[tuple[tuple[str, int], ...], int], list[dict[str, Any]]]:
+    """Keep all identities in the gas compilation; condensed fits never enter."""
 
     import cantera as ct
 
     root = os.path.join(os.path.dirname(ct.__file__), "data")
-    found: dict[tuple[tuple[tuple[str, int], ...], int], dict[str, Any]] = {}
-    for path in sorted(glob.glob(os.path.join(root, "*.yaml"))):
-        document = _document(path)
-        for entry in (document or {}).get("species") or []:
-            if not entry.get("thermo"):
-                continue
-            key = _key(entry.get("composition") or {})
-            if key is not None:
-                found.setdefault(key, {**entry, "origin": os.path.basename(path)})
+    found: dict[tuple[tuple[tuple[str, int], ...], int], list[dict[str, Any]]] = {}
+    path = os.path.join(root, "nasa_gas.yaml")
+    document = _document(path)
+    for entry in (document or {}).get("species") or []:
+        if not entry.get("thermo"):
+            continue
+        key = _key(entry.get("composition") or {})
+        if key is not None:
+            found.setdefault(key, []).append({**entry, "origin": "nasa_gas.yaml"})
     return found
 
 
 def _document(path: str) -> dict | None:
     """One bundled file, or None where this cantera build cannot parse it."""
 
-    import yaml
-
     try:
         with open(path, encoding="utf-8") as handle:
-            return yaml.safe_load(handle)
+            return yamlio.load(handle)
     except (OSError, yaml.YAMLError):
         return None
 
 
 def _key(composition: dict) -> tuple[tuple[tuple[str, int], ...], int] | None:
     try:
+        if any(isinstance(v, bool) or float(v) != int(v) for v in composition.values()):
+            return None
         counts = {str(k): int(v) for k, v in composition.items()}
     except (TypeError, ValueError):  # a fractional composition is not a species here
         return None
@@ -138,16 +133,27 @@ def fetch(species: list[dict]) -> list[Polynomial]:
 
 def _one(item: dict, listed: dict) -> Polynomial:
     name = str(item.get("id"))
+    if item.get("phase", "gas") != "gas":
+        return Polynomial(name, error="this adapter supplies gas-phase fits only")
     kind = str((item.get("state") or {}).get("kind", "ground"))
     if kind not in ("ground", "ion"):
         return Polynomial(
-            name, error=f"{kind} state; `rgen derive` shifts it from the ground state"
+            name, error=f"{kind} state; its thermodynamic populations need independent evidence"
         )
     composition = {str(k): int(v) for k, v in (item.get("composition") or {}).items()}
     key = (tuple(sorted(composition.items())), int(item.get("charge", 0)))
-    entry = listed.get(key)
-    if entry is None:
+    entries = listed.get(key, [])
+    if not entries:
         return Polynomial(name, error="no bundled fit for this composition and charge")
+    structure = item.get("structure")
+    source_species = item.get("source_species") or structure
+    if source_species:
+        entries = [entry for entry in entries if entry.get("name") == source_species]
+    if len(entries) != 1:
+        return Polynomial(
+            name, error="ambiguous structural identity; specify source_species", structure=structure
+        )
+    entry = entries[0]
     thermo = entry["thermo"]
     return Polynomial(
         species=name,
@@ -156,6 +162,8 @@ def _one(item: dict, listed: dict) -> Polynomial:
         coefficients=[[float(c) for c in row] for row in thermo.get("data") or []],
         listed_as=str(entry.get("name")),
         origin=str(entry.get("origin")),
+        standard_pressure_Pa=_reference_pressure(thermo.get("reference-pressure", "1 atm")),
+        structure=str(source_species) if source_species else None,
     )
 
 
@@ -185,7 +193,27 @@ def records(found: list[Polynomial], citation: str) -> list[dict]:
                     "t_mid": boundaries[1] if len(boundaries) > 2 else boundaries[-1],
                     "t_max": boundaries[-1],
                     "source": f"{citation}, listed as {item.listed_as} in {item.origin}",
+                    "phase": item.phase,
+                    "standard_pressure_Pa": item.standard_pressure_Pa,
                 },
+                "phase": item.phase,
+                "structure": item.structure,
+                "source_species": item.listed_as,
             }
         )
     return out
+
+
+def _reference_pressure(value: object) -> float | None:
+    """Cantera declares a pressure in Pa numerically or with an explicit unit."""
+    if isinstance(value, int | float) and not isinstance(value, bool):
+        return float(value) if math.isfinite(value) and value > 0 else None
+    written = str(value).split()
+    if len(written) != 2:
+        return None
+    factor = {"Pa": 1.0, "kPa": 1000.0, "bar": 100000.0, "atm": 101325.0}.get(written[1])
+    try:
+        number = float(written[0])
+    except ValueError:
+        return None
+    return number * factor if factor and math.isfinite(number) and number > 0 else None

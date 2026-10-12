@@ -1,19 +1,26 @@
-# Quality gates
+# 品質確認
+
+依存関係と対応Pythonは `pyproject.toml`、実行内容は `tools/quality.py` を正とします。既存の仮想環境を使用し、無ければREADMEに従って作成します。
 
 ```powershell
-python -m pip install -e ".[quality]"
-python -m pytest -q
-ruff check .
-mypy
-lint-imports --config .importlinter --no-cache
+.\.venv\Scripts\python.exe tools/quality.py quality-pr
 ```
 
-テストはprivate helperの実装固定ではなく、次の公開動作に集約します。
+この入口はRuff format/check、mypy、pytest、import-linterを実行します。すべて同じPython環境から起動し、import-linterも生成された実行fileを探さず、そのパッケージのCLI入口を使います。`quality-nightly` は同じ確認に加え、小さな代表入力を現行の `analyze --input ... --evidence registry` で実行し、`build/nightly` に保存します。例の名前は通常処理の分岐に使いません。CIはPython 3.11を使います。
 
-- generation: Registry非依存、frontier深さ、保存則、上限、決定性
-- evidence/assessment: exact/ambiguous/no match、4値、単位・範囲・scope、数値能力
-- policy/pipeline: 全候補保持、用途別選択、resolution、truncation、3出力
-- CLI/acquire: 入力拒否、終了コード、canonical ingest、asset参照
+テストは変更した命題と一般的な境界を確認します。
 
-件数や巨大baselineを品質指標にしません。`.importlinter`は一方向のcore依存と、
-`reactgen`がnetwork/acquireへ依存しない境界を検証します。
+- 生成：Registry非依存、規則再適用で増えない閉包、入力順・重複・seed追加、履歴によらない資格、保存則、自己衝突・両側解離・次数、資源上限。
+- 同定・証拠：相・構造・解像度、存在根拠と物性の分離、競合・null、宣言hashと実測hashの往復、属性と出典の保存、複数payloadの一部だけを成功にしない照合、取得形式の意味。
+- 判定・数値：未対応過程と保存則違反の分離、式パターン、速度次数・次元、片側適用範囲、データ追加・入力順、重複ID、値と不確かさ、IE/EA/Penningの対象と区間、条件未定の別速度則、有限点比較の限界、具体係数と不足。
+- 熱化学：NASAの相・標準状態・温度、数密度平衡定数のΔν=-1/0/+1、逆式相反、電子非平衡の除外。
+- 形成量：共通の参照温度・元素基準・標準圧、対象電荷と電子規約、反応に必要な電子熱項、情報不足と明示不一致、0 Kの準位差、独立量の保持、保存往復。
+- 証拠snapshot：入力・取得記録の変更隔離、明示更新での索引再構築、実際の記録内容・材料・数値・出典を含むfingerprint、順序と保存場所の独立性。
+- 利用者表示：命題・適用範囲・理由のCSV表示、参照温度の区別、CSV形式1/2の再現、責務別不足の集約と全詳細の対応、failを全用途の否定へ変えないこと。
+- 通常利用・保存：入口の同値性、重複YAML宣言と不正数値の拒否、safe C parserの無い環境、schema・ID・参照・入力・DataUse整合、正規commit前後の保存失敗、adoptの欠損asset・stage・置換・復旧失敗、補助表hash宣言と実ファイルの検査・再生成、明示移行。
+- 取得：明示されたLXCatの測定量・列順・単位、不正行の拒否、事前検証失敗時の無変更、数値精度の保存。
+- 図：保存済み結果だけを使う表示、判定未選択とunknownの区別、AND型到達性、明示seed、PNG内容と適用範囲、8000列境界での全列分割と索引の失敗整合。
+
+gas別の件数だけを正解にせず、実装を写すテストを増やしません。変更で新しい懸念が生じなければ同じ確認を繰り返しません。依存方向とcoreのoffline性は `.importlinter` が検査します。
+
+保存結果の読込み時間は `tools/benchmark_result_io.py <result.yamlのパス> --compare-python-parser` で、化学計算を再実行せず同じ正規検証を含めて測れます。時間は環境に依存するため、品質チェックの合否条件には使いません。

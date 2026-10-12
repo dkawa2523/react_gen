@@ -11,7 +11,7 @@ channels:
     n: 1
   - species: O2+
     n: 1
-  status: literature_supported
+  status: needs_review
   dnt_class: long_range_charge_exchange
   deltaE_products_minus_reactants_eV: -3.68991
   data:
@@ -21,7 +21,10 @@ channels:
       representation: constant
       independent_variable: null
       dependent_variable: rate_coefficient
+      observable: reaction_rate
+      channel_scope: total_process
       unit: m3/s
+      reaction_order: 2
       parameters:
         value: 6.3e-17
         source_value: 6.3e-11
@@ -32,6 +35,9 @@ channels:
         citation: P. Gaucherel and B. Rowe, International Journal of Mass Spectrometry
           and Ion Physics 25, 211-227 (1977).
         url: https://doi.org/10.1016/0020-7381(77)80050-8
+        primary_abstract_url: https://www.sciencedirect.com/science/article/abs/pii/0020738177800508
+        measurement: Rarefied plasma-jet charge-exchange coefficient 6.3e-11 cm3/s for Ar+ + O2 -> Ar + O2+; internal product states are not resolved in the abstract.
+        applicability_review: Numerical gas and ion temperatures, relative collision-energy distribution, reactant internal-state populations and product-state branching are not verified in the accessible primary abstract.
       status: literature_supported
       preferred: true
       notes:
@@ -41,6 +47,7 @@ channels:
   - Products are measured by Flesch, Nourbakhsh, and Ng, JCP 92, 3590-3604 (1990),
     doi:10.1063/1.457867.
   - Energy defect is derived from the NIST Ar and O2 ionization energies.
+  - The candidate equation is retained; the accessible primary abstract does not establish the full exact-state product channel.
 metadata:
   status: curated
   notes:

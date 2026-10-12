@@ -1,4 +1,5 @@
 schema_version: 1
+phase: gas
 id: Ar
 display_name: Ar
 composition:
@@ -11,6 +12,13 @@ state:
   kind: ground
   label: X
   excitation_energy_eV: 0.0
+  existence: confirmed
+  existence_source: NIST ASD 5.12, ground level, L9217; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=Ar&unc_out=on&units=1
+  status: reviewed
+  configuration: '[Ne]3s2 3p6'
+  term: 1S
+  J: '0'
+  parity: even
 properties:
   mass_amu:
     value: 39.948
@@ -32,9 +40,13 @@ properties:
     source: chemicals package bundled thermodynamic tables, CAS 7440-37-1, formula
       verified against the registry
   ionization_energy_eV:
-    value: 15.759612
+    value: 15.7596119
     unit: eV
-    source: mendeleev package, bundled periodic table
+    source: NIST ASD 5.12, L9217; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=Ar&unc_out=on&units=1
+    evidence_tier: reviewed
+    uncertainty:
+      absolute: 5.0e-07
+      unit: eV
   electron_affinity_eV:
     value: -11.5
     unit: eV
@@ -73,7 +85,11 @@ thermo:
   - 0.0
   - -745.375
   - 4.366
-  source: cantera bundled thermodynamic data, listed as AR in air.yaml
+  source: 'Cantera 3.2.0 data/air.yaml, AR, NASA7 note 120186; https://github.com/Cantera/cantera/blob/v3.2.0/data/air.yaml;
+    reference-pressure default 1 atm: https://cantera.org/stable/yaml/species.html'
   t_max: 5000.0
   t_mid: 1000.0
   t_min: 300.0
+  phase: gas
+  standard_pressure_Pa: 101325.0
+  evidence_tier: reviewed

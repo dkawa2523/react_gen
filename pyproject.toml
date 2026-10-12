@@ -10,11 +10,12 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
   "Pillow>=10.0",
-  "pyyaml>=6.0"
+  "pyyaml>=6.0",
+  "jsonschema>=4.23"
 ]
 
 [project.optional-dependencies]
-thermo = ["chemicals>=1.3", "mendeleev>=0.15", "pyromat>=2.2"]
+thermo = ["chemicals>=1.3", "mendeleev>=0.15", "pyromat>=2.2", "cantera>=3.0"]
 quality = [
   "import-linter==2.3",
   "mypy==1.17.1",
@@ -42,6 +43,9 @@ where = ["src"]
 
 [tool.setuptools.dynamic]
 version = {attr = "reactgen.__version__"}
+
+[tool.setuptools.package-data]
+reactgen = ["result.schema.yaml"]
 
 [tool.ruff]
 target-version = "py311"
@@ -78,10 +82,14 @@ warn_unreachable = true
 warn_unused_configs = true
 
 [[tool.mypy.overrides]]
+module = ["jsonschema.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
 # These are optional, acquisition-only dependencies. numpy ships inline types
 # written for 3.12, which the 3.11 target above cannot parse, so their contents
 # are not analysed here — only the calls into them, which stay checked.
-module = ["chemicals.*", "numpy.*", "mendeleev.*", "pyromat.*"]
+module = ["chemicals.*", "numpy.*", "mendeleev.*", "pyromat.*", "cantera.*"]
 follow_imports = "skip"
 follow_imports_for_stubs = true
 ignore_missing_imports = true

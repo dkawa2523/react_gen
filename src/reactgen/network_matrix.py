@@ -1,8 +1,8 @@
-"""Render a complete reaction-state incidence matrix as one PNG."""
+"""Render reaction-state incidence matrices with independent reaction columns."""
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Iterator
 from hashlib import sha256
 from io import BytesIO
 from pathlib import Path
@@ -28,6 +28,9 @@ INK = "#1F2933"
 MUTED = "#64717D"
 GRID = "#D7DDE2"
 ASSESSMENTS = ("consistency", "state", "thermochemistry", "reaction_evidence", "kinetics")
+# At least one pixel is reserved for every reaction column. Larger results use
+# separate panels rather than overlapping columns at the image-width bound.
+MAX_MATRIX_COLUMNS = 8000
 
 
 def network_matrix_png(
@@ -37,14 +40,65 @@ def network_matrix_png(
     state_names: dict[str, str],
     reactions: list[dict],
 ) -> bytes:
-    """Return a high-resolution PNG containing every reaction exactly once."""
+    """Render one complete matrix; use ``network_matrix_pages`` for larger results."""
+    if len(reactions) > MAX_MATRIX_COLUMNS:
+        raise ValueError(
+            f"a single matrix PNG supports at most {MAX_MATRIX_COLUMNS} reaction columns; "
+            "use network_matrix_pages to retain every reaction"
+        )
+    return next(
+        network_matrix_pages(
+            case_name=case_name,
+            states=states,
+            state_names=state_names,
+            reactions=reactions,
+        )
+    )[2]
 
+
+def network_matrix_pages(
+    *,
+    case_name: str,
+    states: list[dict],
+    state_names: dict[str, str],
+    reactions: list[dict],
+) -> Iterator[tuple[int, int, bytes]]:
+    """Yield disjoint PNG panels with zero-based, half-open reaction ranges.
+
+    All panels use the same state rows and deterministic reaction order. The
+    range and full reaction count appear in each image and its PNG metadata.
+    """
     ordered_states = sorted(states, key=lambda state: _state_key(state, state_names))
     ordered_reactions = sorted(reactions, key=_reaction_key)
+    count = len(ordered_reactions)
+    for start in range(0, max(1, count), MAX_MATRIX_COLUMNS):
+        stop = min(start + MAX_MATRIX_COLUMNS, count)
+        yield (
+            start,
+            stop,
+            _matrix_png(
+                case_name,
+                ordered_states,
+                state_names,
+                ordered_reactions[start:stop],
+                start,
+                count,
+            ),
+        )
+
+
+def _matrix_png(
+    case_name: str,
+    ordered_states: list[dict],
+    state_names: dict[str, str],
+    ordered_reactions: list[dict],
+    column_start: int,
+    total_count: int,
+) -> bytes:
     reaction_count = len(ordered_reactions)
     state_count = len(ordered_states)
     label_width = 390
-    matrix_width = max(1400, min(8000, reaction_count * 3))
+    matrix_width = max(1400, min(MAX_MATRIX_COLUMNS, reaction_count * 3))
     row_height = 24
     header_height = 245
     verdict_height = 24
@@ -59,10 +113,15 @@ def network_matrix_png(
 
     draw.text((38, 30), f"{case_name} - reaction-state stoichiometric matrix", INK, fonts.title)
     incidences = sum(_reaction_incidence_count(reaction) for reaction in ordered_reactions)
+    split = reaction_count != total_count
+    range_label = (
+        f"Reactions {column_start + 1:,}-{column_start + reaction_count:,} of {total_count:,}"
+    )
     draw.text(
         (38, 74),
         (
-            f"All candidates: {state_count:,} states | {reaction_count:,} reactions | "
+            f"{range_label if split else f'All candidates: {reaction_count:,} reactions'} | "
+            f"{state_count:,} states | "
             f"{incidences:,} directed state-reaction incidences"
         ),
         MUTED,
@@ -75,7 +134,7 @@ def network_matrix_png(
     draw.text((38, matrix_y - 29), "State (one row each)", INK, fonts.label_bold)
     draw.text(
         (matrix_x, matrix_y - 29),
-        "Reaction columns (one column each)",
+        f"Reaction columns (one column each){' - ' + range_label if split else ''}",
         INK,
         fonts.label_bold,
     )
@@ -128,7 +187,7 @@ def network_matrix_png(
     draw.text(
         (38, verdict_bottom + 25),
         (
-            "Each reaction occupies exactly one column; no reaction is sampled, merged, "
+            "Each reaction in this panel occupies one column; no reaction is sampled, merged, "
             "or projected into species-species edges."
         ),
         INK,
@@ -137,7 +196,7 @@ def network_matrix_png(
     draw.text(
         (38, verdict_bottom + 56),
         (
-            "Use network.html to zoom, filter assessment views, inspect exact equations, "
+            "Generate the network view to zoom, filter assessments, inspect exact equations, "
             "and follow local reaction hyperedges."
         ),
         MUTED,
@@ -147,12 +206,18 @@ def network_matrix_png(
     metadata = PngImagePlugin.PngInfo()
     metadata.add_text("reactgen.case", case_name)
     metadata.add_text("reactgen.state_count", str(state_count))
+    metadata.add_text("reactgen.matrix_columns_px", str(matrix_width))
     metadata.add_text("reactgen.reaction_count", str(reaction_count))
+    metadata.add_text("reactgen.total_reaction_count", str(total_count))
+    metadata.add_text("reactgen.first_reaction", str(column_start + 1 if reaction_count else 0))
+    metadata.add_text("reactgen.last_reaction", str(column_start + reaction_count))
     metadata.add_text(
         "reactgen.reaction_ids_sha256",
         sha256("\n".join(reaction["id"] for reaction in ordered_reactions).encode()).hexdigest(),
     )
-    metadata.add_text("reactgen.scope", "all_candidates_no_sampling")
+    metadata.add_text(
+        "reactgen.scope", "reaction_range_no_sampling" if split else "all_candidates_no_sampling"
+    )
     image.save(output, format="PNG", optimize=True, pnginfo=metadata)
     return output.getvalue()
 
@@ -275,8 +340,8 @@ def _state_group_order(state: dict) -> int:
         "electron": 0,
         "positive ion": 1,
         "excited neutral": 2,
-        "radical/atom": 3,
-        "stable neutral": 4,
+        "ground neutral atom": 3,
+        "ground neutral molecule": 4,
         "negative ion": 5,
         "other": 6,
     }[group]
@@ -292,12 +357,11 @@ def _state_group(state: dict) -> str:
         return "negative ion"
     if state["state"]["kind"] != "ground":
         return "excited neutral"
-    classes = {str(value).lower() for value in state.get("classes", [])}
     atom_count = sum(int(value) for value in state.get("composition", {}).values())
-    if "radical" in classes or atom_count == 1:
-        return "radical/atom"
+    if atom_count == 1:
+        return "ground neutral atom"
     if charge == 0:
-        return "stable neutral"
+        return "ground neutral molecule"
     return "other"
 
 
@@ -306,8 +370,8 @@ def _state_group_color(group: str) -> str:
         "electron": "#6E7881",
         "positive ion": "#2F6B9A",
         "excited neutral": "#D7B45A",
-        "radical/atom": "#71884A",
-        "stable neutral": "#C9CFD4",
+        "ground neutral atom": "#71884A",
+        "ground neutral molecule": "#C9CFD4",
         "negative ion": "#C56A2D",
         "other": "#B05A7A",
     }[group]

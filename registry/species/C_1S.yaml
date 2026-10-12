@@ -29,7 +29,9 @@ properties:
     source: unchanged from C on excitation; mendeleev package, bundled periodic table,
       dipole polarizability in atomic units
     unit: A3
-    value: 1.6745
+    value: null
+    qualifier: excitation_changes_this_property
+    evidence_tier: imported
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -47,3 +49,4 @@ metadata:
   notes:
   - 'NIST Atomic Spectra Database, energy levels (energy1.pl). Metastable: no electric
     dipole transition to any lower level is allowed, which is what lets it accumulate.'
+phase: gas

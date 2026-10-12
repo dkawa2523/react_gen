@@ -71,7 +71,8 @@ channels:
       format: external_reference_pending_digitization
       source: Y. Itikawa (2009) and NIST O2 ionization energy
       status: needs_import
-      note: The evaluated threshold is registered; import a numeric ionization curve for rates.
+      note: The evaluated threshold is registered; import a numeric ionization curve
+        for rates.
 - id: e_O2_dissociation_O_O
   type: dissociation
   products:
@@ -93,7 +94,8 @@ channels:
       format: external_reference_pending_digitization
       source: Y. Itikawa, JPCRD 38, 1-20 (2009), doi:10.1063/1.3025886
       status: needs_import
-      note: Threshold is the ground-state dissociation limit; import state-resolved data.
+      note: Threshold is the ground-state dissociation limit; import state-resolved
+        data.
 - id: e_O2_dissociation_O_O1D
   type: dissociation
   products:
@@ -112,7 +114,7 @@ channels:
     url: https://doi.org/10.1007/s11090-013-9513-1
     record_id: R14
 - id: e_O2_attachment_Om_O
-  type: attachment
+  type: dissociative_attachment
   products:
   - species: O-
     n: 1
@@ -126,9 +128,14 @@ channels:
       format: external_reference_pending_digitization
       source: Y. Itikawa, JPCRD 38, 1-20 (2009), doi:10.1063/1.3025886
       status: needs_import
-      note: Thermochemical onset for dissociative attachment; import the resonant cross section.
+      note: Thermochemical onset for dissociative attachment; import the resonant
+        cross section.
+  notes:
+  - 'Classification corrected from attachment: electron capture produces dissociation
+    fragments; parent-anion binding is not this channel''s condition.'
 metadata:
   status: curated
   notes:
-  - Reusable O2 electron-collision seed set; mixtures are assembled only from case input gases.
+  - Reusable O2 electron-collision seed set; mixtures are assembled only from case
+    input gases.
   - Numeric cross-section arrays are acquired only by an explicit site-local import.

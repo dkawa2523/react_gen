@@ -29,7 +29,9 @@ properties:
     source: unchanged from Si on excitation; mendeleev package, bundled periodic table,
       dipole polarizability in atomic units
     unit: A3
-    value: 5.5273
+    value: null
+    qualifier: excitation_changes_this_property
+    evidence_tier: imported
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -68,3 +70,4 @@ thermo:
   t_max: 1685.0
   t_mid: 1000.0
   t_min: 300.0
+phase: gas

@@ -1,167 +1,275 @@
-schema_version: 1
+schema_version: 3
+policy:
+  analysis_network_access: forbidden
+  selection: explicit_analysis_request
+  catalog_scope: Access routes and quantities; registration does not approve scientific
+    records or grant redistribution rights. Providers may also be supplied explicitly
+    in user data without catalog registration.
 sources:
-  - source_id: local_registry
-    category: bundled
-    allowed_in_core_generate: true
-    allowed_in_enrich: true
-    allowed_in_external_tools: false
-    requires_license_review: false
-    requires_api_key: false
-    redistribution_risk: low
-    default_status: curated
-    notes: "Curated local YAML/assets bundled with the repository or provided as a local registry root."
-
-  - source_id: internal_file
-    category: internal
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: false
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: high
-    default_status: imported
-    notes: "Company/local file database input for prepare-time enrichment. Do not redistribute without internal approval."
-
-  - source_id: nist_snapshot
-    category: public_snapshot
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: medium
-    default_status: literature_supported
-    notes: "Local NIST-derived snapshot files only. No scraping or online NIST access from core workflows."
-
-  - source_id: argonne_atct_snapshot
-    category: commercial_or_license_restricted
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: high
-    default_status: literature_supported
-    notes: "Local thermochemistry snapshot family for ATcT/Argonne-style or internally approved values."
-
-  - source_id: chemicals_optional
-    category: optional_python_package
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: false
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: medium
-    default_status: imported
-    package_name: chemicals
-    notes: "Optional local Python package provider. It must remain lazy and absent from core dependencies."
-
-  - source_id: chemical_identity_snapshot
-    category: public_snapshot
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: medium
-    default_status: imported
-    notes: "Reviewed local identity snapshot compiled from PubChem, ChEBI, ChemSpider, OPSIN, NCI/Cactus, or internal identity records."
-
-  - source_id: pubchem
-    category: public_api
-    allowed_in_core_generate: false
-    allowed_in_enrich: false
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: medium
-    default_status: imported
-    notes: "External identity snapshot acquisition only. Core PubChem provider is a disabled placeholder."
-
-  - source_id: lxcat_offline
-    category: public_snapshot
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: high
-    default_status: imported
-    notes: "User-provided LXCat/manual files and local indexes. No login, scraping, automatic download, or redistribution is implemented."
-
-  - source_id: openadas
-    category: public_snapshot
-    allowed_in_core_generate: false
-    allowed_in_enrich: false
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: medium
-    default_status: imported
-    notes: "Manual raw OpenADAS file registration and optional mapping skeletons only. Full ADF parsing is future work."
-
-  - source_id: vamdc
-    category: public_api
-    allowed_in_core_generate: false
-    allowed_in_enrich: false
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: unknown
-    default_status: imported
-    notes: "External raw TAP/XSAMS query capture only. Node terms and coverage vary and require user review."
-
-  - source_id: astrochem_kida_umist_converted
-    category: public_snapshot
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: medium
-    default_status: imported
-    notes: "Official UMIST Rate22 or local KIDA network conversion for exact-pair candidate discovery. Treat as review-required, not semiconductor-validated data."
-
-  - source_id: ion_reaction_table
-    category: user_provided_file
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: unknown
-    default_status: imported
-    notes: "Generic local ion-neutral reaction table. Source-specific licensing depends on the records inside the table."
-
-  - source_id: literature_candidates
-    category: user_provided_file
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: unknown
-    default_status: literature_supported
-    notes: "Reviewed literature-derived local candidates. Current built-in provider is a placeholder unless user supplies a concrete local table."
-
-  - source_id: quantemol_qdb
-    category: commercial_or_license_restricted
-    allowed_in_core_generate: false
-    allowed_in_enrich: false
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: true
-    redistribution_risk: high
-    default_status: imported
-    notes: "Implemented API-key fetch stores raw Q-VT-compatible responses site-locally. It never logs the key or auto-promotes reactions; QDB terms and row provenance require review."
-
-  - source_id: user_provided_cross_section_csv
-    category: user_provided_file
-    allowed_in_core_generate: false
-    allowed_in_enrich: true
-    allowed_in_external_tools: true
-    requires_license_review: true
-    requires_api_key: false
-    redistribution_risk: unknown
-    default_status: imported
-    notes: "User-provided CSV/TSV cross-section tables are converted to snapshots and matched to a generated bundle before overlay review."
+- source_id: lxcat
+  provides:
+  - electron_cross_section
+  access: manual_export
+  converters:
+  - acquire lxcat EXPORT.txt --out WORK
+  endpoint: https://us.lxcat.net/
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - license
+    - citation
+    - complete_set
+    - momentum_transfer
+    - channel_scope
+- source_id: umist
+  provides:
+  - two_body_rate_coefficient
+  access: manual_release
+  converters:
+  - acquire umist RATE.rates --out WORK
+  endpoint: https://umistdatabase.uk/downloads
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - release_terms
+    - row_reference
+    - plasma_temperature_range
+  file: https://umistdatabase.uk/files/rate22_final.rates
+  format: umist
+  format_version: RATE22
+- source_id: nist_asd
+  provides:
+  - atomic_state_energy
+  access: explicit_public_query
+  converters:
+  - acquire asd ELEMENT --out WORK
+  endpoint: https://physics.nist.gov/PhysRefData/ASD/Html/levelshelp.html
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - citation
+    - level_assignment
+    - metastable_or_resonant_class
+- source_id: nist_cccbdb
+  provides:
+  - polarizability
+  access: saved_html_or_explicit_public_query
+  converters:
+  - acquire cccbdb RESULT.yaml --page PAGE.html --out WORK
+  endpoint: https://cccbdb.nist.gov/
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - citation
+    - formula
+    - electronic_state
+- source_id: cantera
+  provides:
+  - nasa7
+  access: optional_local_package
+  converters:
+  - acquire nasa RESULT.yaml --out WORK
+  endpoint: https://cantera.org/stable/yaml/species.html
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - mechanism_source
+    - composition
+    - charge
+    - temperature_range
+- source_id: chemicals
+  provides:
+  - transport_property
+  - formation_enthalpy
+  access: optional_local_package
+  converters:
+  - acquire molecular RESULT.yaml --out WORK
+  - acquire thermo RESULT.yaml --out WORK
+  endpoint: https://chemicals.readthedocs.io/
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - package_license
+    - underlying_source
+    - formula
+    - state
+- source_id: pubchem
+  provides:
+  - identity
+  access: explicit_public_api
+  converters:
+  - acquire pubchem RESULT.yaml --out WORK
+  endpoint: https://pubchem.ncbi.nlm.nih.gov/docs/
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - citation
+    - formula
+    - identifiers
+  scope: identity is not reaction evidence
+- source_id: atct
+  provides:
+  - formation_enthalpy
+  access: manual_snapshot
+  converters: []
+  endpoint: https://atct.anl.gov/index.html
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - license
+    - citation
+    - state
+    - sign_convention
+    - uncertainty
+- source_id: vamdc
+  provides:
+  - state_and_collision_records
+  access: manual_snapshot
+  converters: []
+  endpoint: https://vamdc.org/
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - node_rights
+    - source_citation
+    - state_mapping
+    - unit
+    - channel_scope
+- source_id: openadas
+  provides:
+  - atomic_collision_data
+  access: manual_snapshot
+  converters: []
+  endpoint: https://open.adas.ac.uk/
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - redistribution
+    - adf_type
+    - species_mapping
+    - unit
+    - range
+- source_id: qdb
+  provides:
+  - plasma_reaction_and_cross_section
+  access: licensed_manual_snapshot
+  converters: []
+  endpoint: https://quantemoldb.com/reactions/api-docs/
+  rights:
+    status: check_source_and_upstream
+    review_items:
+    - license
+    - reaction_mapping
+    - state_mapping
+    - unit
+    - channel_scope
+- source_id: mendeleev
+  provides:
+  - atomic_ionization_energy
+  - atomic_electron_affinity
+  access: optional_local_package
+  converters:
+  - acquire atoms ELEMENT --out WORK
+  endpoint: https://mendeleev.readthedocs.io/en/latest/data.html
+  rights:
+    status: check_source_and_upstream
+- source_id: pyromat
+  provides:
+  - ideal_gas_enthalpy
+  access: optional_local_package
+  converters:
+  - acquire idealgas SPECIES.yaml --out WORK
+  endpoint: https://chmarti1.github.io/PYroMat/
+  rights:
+    status: check_source_and_upstream
+- source_id: internal_vibration
+  provides:
+  - effective_vibrational_quantum
+  access: local_calculation
+  converters:
+  - acquire vibration SPECIES.yaml --out WORK
+  endpoint: null
+  rights:
+    status: check_source_and_upstream
+- source_id: internal_additivity
+  provides:
+  - estimated_polarizability
+  access: local_calculation
+  converters:
+  - acquire additivity RESULT.yaml --out WORK
+  endpoint: null
+  rights:
+    status: check_source_and_upstream
+- source_id: nist_webbook
+  provides:
+  - formation_enthalpy
+  - thermochemical_models
+  access: manual_snapshot
+  converters: []
+  endpoint: https://webbook.nist.gov/chemistry/guide/
+  rights:
+    status: check_source_and_upstream
+- source_id: nist_kinetics
+  provides:
+  - rate_coefficient
+  access: manual_snapshot
+  converters: []
+  endpoint: https://kinetics.nist.gov/kinetics/welcome.jsp
+  rights:
+    status: check_source_and_upstream
+- source_id: kida
+  provides:
+  - rate_coefficient
+  access: manual_snapshot
+  converters: []
+  endpoint: https://kida.astrochem-tools.org/
+  rights:
+    status: check_source_and_upstream
+- source_id: aladdin
+  provides:
+  - atomic_collision_records
+  access: manual_snapshot
+  converters: []
+  endpoint: https://www-amdis.iaea.org/ALADDIN/
+  rights:
+    status: check_source_and_upstream
+- source_id: nifs
+  provides:
+  - collision_and_surface_records
+  access: manual_snapshot
+  converters: []
+  endpoint: https://dbshino.nifs.ac.jp/nifsdb/nifs_db/top
+  rights:
+    status: check_source_and_upstream
+- source_id: jpl
+  provides:
+  - evaluated_rate_coefficient
+  access: manual_snapshot
+  converters: []
+  endpoint: https://science.jpl.nasa.gov/projects/data-evaluation/
+  rights:
+    status: check_source_and_upstream
+- source_id: iupac
+  provides:
+  - evaluated_rate_coefficient
+  access: manual_snapshot
+  converters: []
+  endpoint: https://iupac-aeris.ipsl.fr/
+  rights:
+    status: check_source_and_upstream
+- source_id: local_registry
+  provides:
+  - local_scientific_records
+  access: local_records
+  converters: []
+  endpoint: null
+  rights:
+    status: check_source_and_upstream
+- source_id: internal_file
+  provides:
+  - user_scientific_records
+  access: manual_snapshot
+  converters: []
+  endpoint: null
+  rights:
+    status: check_source_and_upstream

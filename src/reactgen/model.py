@@ -9,6 +9,20 @@ from typing import NamedTuple
 
 ELECTRON = "e"
 THIRD_BODY = "M"
+STOICHIOMETRY_TOLERANCE = 1e-9
+
+# The same physical-quantity vocabulary is used by evaluation and user-facing
+# prerequisite labels. Values name actual fields of the validated Conditions.
+CONDITION_INPUT_FIELDS = {
+    "gas_temperature": "gas_temperature_K",
+    "electron_temperature": "electron_temperature_eV",
+    "reduced_field": "reduced_field_Td",
+    "ion_energy": "ion_energy_eV",
+    "ion_temperature": "ion_temperature_K",
+    "surface_temperature": "surface_temperature_K",
+    "electron_energy": "electron_energy_eV",
+    "collision_energy": "collision_energy_eV",
+}
 
 FAMILY_ALIASES = {
     "electron_ion": "electron",
@@ -78,11 +92,11 @@ class Term(NamedTuple):
         return f"{count} {self.species}"
 
 
-StateKey = tuple[tuple[tuple[str, int], ...], int, str, str]
+StateKey = tuple[tuple[tuple[str, int], ...], int, str, str, str, str, str | None]
 # A reaction channel is not identified by stoichiometry alone.  Elastic
 # scattering and charge exchange can have the same equation while requiring
 # different evidence and numerical data.
-ReactionKey = tuple[str, str, str | None, str | None, tuple, tuple]
+ReactionKey = tuple[str, str, str | None, str | None, str | None, tuple, tuple]
 EquationKey = tuple[str | None, str | None, tuple, tuple]
 
 
@@ -137,6 +151,8 @@ class StateCandidate:
     origin: str = "mechanical"
     depth: int = 0
     introduced_by: tuple[str, ...] = ()
+    phase: str = "gas"
+    structure: str | None = None
 
     @property
     def key(self) -> StateKey:
@@ -145,6 +161,9 @@ class StateCandidate:
             self.charge,
             self.state.kind,
             self.state.label,
+            self.state.resolution,
+            self.phase,
+            self.structure,
         )
 
 
@@ -168,6 +187,7 @@ class ReactionCandidate:
     third_body: str | None = None
     surface: str | None = None
     kinetic_effects: tuple[str, ...] = ()
+    stabilization: str | None = None
 
     def __post_init__(self) -> None:
         raw_family = self.family
@@ -182,6 +202,8 @@ class ReactionCandidate:
                 surface=self.surface,
             ),
         )
+        if self.process in {"attachment", "recombination"} and self.stabilization is None:
+            object.__setattr__(self, "stabilization", "unspecified")
 
     @property
     def key(self) -> ReactionKey:
@@ -190,6 +212,7 @@ class ReactionCandidate:
             self.process,
             self.third_body,
             self.surface,
+            self.stabilization,
             side_key(self.reactants),
             side_key(self.products),
         )
@@ -227,6 +250,7 @@ class CandidateSet:
     complete: bool = True
     stop_reason: str = "closure"
     limits: dict[str, int] = field(default_factory=dict)
+    completion: dict[str, bool] = field(default_factory=dict)
 
     def state_by_key(self) -> dict[StateKey, StateCandidate]:
         return {state.key: state for state in self.states.values()}
@@ -242,7 +266,50 @@ class CandidateSet:
 
 
 @dataclass(frozen=True)
+class Requirement:
+    """A missing prerequisite for a particular conclusion, with the work it needs.
+
+    ``target`` identifies the state, reaction or source whose information is
+    missing. ``quantity`` is an accepted input name only for ``user_inputs``;
+    source declarations and unsupported models are not case input fields.
+    """
+
+    responsibility: str
+    target: str
+    quantity: str
+    reason: str = ""
+
+    def __post_init__(self) -> None:
+        for name in ("responsibility", "target", "quantity"):
+            if not isinstance(getattr(self, name), str) or not getattr(self, name).strip():
+                raise ValueError(f"requirement.{name} must be a nonempty string")
+        if not isinstance(self.reason, str):
+            raise ValueError("requirement.reason must be a string")
+
+
+@dataclass(frozen=True)
 class Assessment:
     verdict: str  # pass | fail | unknown | not_applicable
     basis: tuple[str, ...] = ()
     message: str = ""
+    proposition: str = ""
+    scope: str = ""
+    requirements: tuple[Requirement, ...] = ()
+    # References to saved state assessments, not duplicate conclusions.
+    dependencies: tuple[tuple[str, str], ...] = ()
+
+    def __post_init__(self) -> None:
+        # References identify a basis, not the number of independent records.
+        # The complete declarations remain in evidence; public basis is unique.
+        object.__setattr__(self, "basis", tuple(dict.fromkeys(self.basis)))
+        if not isinstance(self.scope, str):
+            raise ValueError("assessment.scope must be a string")
+        if any(not isinstance(item, Requirement) for item in self.requirements):
+            raise ValueError("assessment.requirements must contain Requirement records")
+        object.__setattr__(self, "requirements", tuple(dict.fromkeys(self.requirements)))
+        if any(
+            len(item) != 2 or any(not isinstance(value, str) or not value for value in item)
+            for item in self.dependencies
+        ):
+            raise ValueError("assessment.dependencies must identify a state and assessment")
+        object.__setattr__(self, "dependencies", tuple(sorted(set(self.dependencies))))
