@@ -32,7 +32,7 @@ RESPONSIBILITIES = {
 }
 
 
-def build(document: dict, *, detail: bool = False) -> dict:
+def build(document: dict, *, detail: bool = False, data_missing_only: bool = False) -> dict:
     """Summarize existing findings without reassessing evidence or opening assets."""
     names = {state["id"]: state_name(state) for state in document["states"]}
     labels = dict(names)
@@ -53,6 +53,9 @@ def build(document: dict, *, detail: bool = False) -> dict:
             items.extend(_assessment_items(candidate, target))
             if subject == "reactions":
                 items.extend(_numerical_items(candidate, target))
+                items.extend(_calculation_items(candidate, target))
+    labelled = document["metadata"].get("helper_view_format", 1) >= 5
+    items = _select_findings(items, document, labelled, data_missing_only)
     groups, details = _groups(items, detail=detail)
     tasks = _tasks(items)
     work = _work_groups(tasks, labels)
@@ -90,7 +93,61 @@ def build(document: dict, *, detail: bool = False) -> dict:
     if detail:
         output["details"] = details
         output["work_details"] = list(tasks.values())
+    if labelled:
+        output.update(_completion_output(items, document))
     return output
+
+
+def _select_findings(
+    items: list[dict], document: dict, labelled: bool, data_only: bool
+) -> list[dict]:
+    if data_only and not labelled:
+        raise ValueError(
+            "data-missing labels are absent from this historical result; analyze again"
+        )
+    if labelled:
+        _saved_labels(items, document)
+    return (
+        [item for item in items if "data_missing" in item["blocking_causes"]]
+        if data_only
+        else items
+    )
+
+
+def _completion_output(items: list[dict], document: dict) -> dict:
+    tasks = _tasks([item for item in items if "data_missing" in item["blocking_causes"]])
+    return {
+        "coverage": document["summary"]["coverage"],
+        "data_completion": [
+            task
+            for task in tasks.values()
+            if task["responsibility"] in {"source_information", "investigation"}
+        ],
+    }
+
+
+def _saved_labels(items: list[dict], document: dict) -> None:
+    """Use the label from the owning result, not the finding's work grouping."""
+    states = {item["id"]: item for item in document["states"]}
+    reactions = {item["id"]: item for item in document["reactions"]}
+    for item in items:
+        if item["subject"] == "dataset":
+            result = next(
+                record
+                for record in reactions[item["reaction_id"]]["data_use"]["datasets"]
+                if record["dataset_id"] == item["id"]
+            )
+        else:
+            target = (states if item["subject"] == "state" else reactions)[item["id"]]
+            name = item["judgment"]
+            if name == "data_use":
+                result = target["data_use"]
+            elif name.startswith("calculation:"):
+                result = target["thermochemical_calculations"][name.removeprefix("calculation:")]
+            else:
+                result = target["assessments"][name]
+        item["label"] = result.get("label", "unresolved")
+        item["blocking_causes"] = result.get("blocking_causes", [])
 
 
 def _assessment_items(candidate: dict, target: dict) -> list[dict]:
@@ -139,7 +196,72 @@ def _assessment_items(candidate: dict, target: dict) -> list[dict]:
     return items
 
 
+def _saved_work_items(base: dict, requirements: list[dict], fallback: str) -> list[dict]:
+    """Keep assigned work and reasons exactly as stored by its owning operation."""
+    if not requirements:
+        return [base | {"responsibility": fallback, "requirements": ()}]
+    return [
+        base
+        | {
+            "responsibility": role,
+            "requirements": tuple(sorted({item["quantity"] for item in selected})),
+            "prerequisites": selected,
+        }
+        for role in sorted({item["responsibility"] for item in requirements})
+        for selected in [[item for item in requirements if item["responsibility"] == role]]
+    ]
+
+
 def _numerical_items(candidate: dict, target: dict) -> list[dict]:
+    use = candidate["data_use"]
+    if "requirements" not in use:
+        return _historical_numerical_items(candidate, target)
+    items = []
+    if use["status"] != "coefficient":
+        base = target | {
+            "judgment": "data_use",
+            "proposition": "coefficient_use_under_supplied_conditions",
+            "scope": use["scope"],
+            "status": use["status"],
+            "reason": use["reason"],
+        }
+        items.extend(_saved_work_items(base, use["requirements"], "investigation"))
+    for dataset in use["datasets"]:
+        if dataset["status"] == "valid":
+            continue
+        base = {
+            "subject": "dataset",
+            "reaction_id": target["id"],
+            "id": dataset["dataset_id"],
+            "target": target["target"],
+            "judgment": "dataset",
+            "proposition": "native_numerical_quantity_availability",
+            "scope": dataset["scope"],
+            "status": dataset["status"],
+            "reason": dataset["reason"],
+        }
+        fallback = "excluded_data" if dataset["status"] == "out_of_range" else "investigation"
+        items.extend(_saved_work_items(base, dataset["requirements"], fallback))
+    return items
+
+
+def _calculation_items(candidate: dict, target: dict) -> list[dict]:
+    items = []
+    for quantity, result in sorted(candidate.get("thermochemical_calculations", {}).items()):
+        if result["status"] == "computed":
+            continue
+        base = target | {
+            "judgment": f"calculation:{quantity}",
+            "proposition": f"calculation_availability:{quantity}",
+            "status": result["status"],
+            "reason": result["reason"],
+        }
+        fallback = "excluded_data" if result["status"] == "out_of_range" else "investigation"
+        items.extend(_saved_work_items(base, result["requirements"], fallback))
+    return items
+
+
+def _historical_numerical_items(candidate: dict, target: dict) -> list[dict]:
     use = candidate["data_use"]
     items = []
     base = target | {
@@ -251,6 +373,8 @@ def _include_dependents(tasks: dict, items: list[dict]) -> None:
             for req in item.get("prerequisites", [])
         )
     for item in items:
+        if item["status"] == "fail":
+            continue
         affected = {name: item[name] for name in ("subject", "id", "judgment", "proposition")}
         for reference in item.get("derived_from", []):
             key = (reference["subject"], reference["id"], reference["judgment"])
@@ -276,7 +400,16 @@ def _work_groups(tasks: dict, names: dict[str, str]) -> list[dict]:
 
 
 def _groups(items: list[dict], *, detail: bool) -> tuple[list[dict], list[dict]]:
-    fields = ("responsibility", "subject", "judgment", "proposition", "status", "requirements")
+    fields: tuple[str, ...] = (
+        "responsibility",
+        "subject",
+        "judgment",
+        "proposition",
+        "status",
+        "requirements",
+    )
+    if items and "label" in items[0]:
+        fields = (*fields, "label")
     grouped: dict[tuple, list[dict]] = {}
     for item in items:
         grouped.setdefault(tuple(item[field] for field in fields), []).append(item)

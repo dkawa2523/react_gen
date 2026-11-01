@@ -1,4 +1,4 @@
-"""Explicit numerical source requests, separate from physical conditions.
+"""Explicit quantity source requests, separate from physical conditions.
 
 Preferences rank only records that passed numerical assessment. They do not
 review a source, establish a channel, or supply missing physical conditions.
@@ -6,9 +6,20 @@ review a source, establish a channel, or supply missing physical conditions.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 
 NUMERICAL_QUANTITIES = frozenset({"rate_coefficient", "cross_section", "sticking_coefficient"})
+STATE_QUANTITIES = frozenset(
+    {
+        "enthalpy_formation_eV",
+        "ionization_energy_eV",
+        "electron_affinity_eV",
+        "excitation_energy_eV",
+        "thermochemical_model",
+    }
+)
+SELECTABLE_QUANTITIES = NUMERICAL_QUANTITIES | STATE_QUANTITIES
 METHODS = frozenset({"measured", "evaluated", "calculated", "estimated", "unknown"})
 
 
@@ -92,34 +103,82 @@ class QuantitySelection:
 @dataclass(frozen=True)
 class DataSelection:
     quantities: dict[str, QuantitySelection] = field(default_factory=dict)
+    targets: dict[str, dict[str, QuantitySelection]] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not isinstance(self.quantities, dict):
             raise ValueError("data_selection.quantities must be a mapping")
-        if set(self.quantities) - NUMERICAL_QUANTITIES:
+        if set(self.quantities) - SELECTABLE_QUANTITIES:
             raise ValueError("data_selection.quantities contain unsupported quantity names")
         if any(not isinstance(value, QuantitySelection) for value in self.quantities.values()):
             raise ValueError("data_selection requires validated QuantitySelection values")
+        if not isinstance(self.targets, dict) or any(
+            not isinstance(target, str) or not target.strip() for target in self.targets
+        ):
+            raise ValueError("data_selection.targets must map nonempty target identifiers")
+        for target, policies in self.targets.items():
+            if not isinstance(policies, dict) or not policies:
+                raise ValueError(f"data_selection.targets.{target} must contain quantity policies")
+            if set(policies) - SELECTABLE_QUANTITIES:
+                raise ValueError("data_selection.targets contain unsupported quantity names")
+            if any(not isinstance(value, QuantitySelection) for value in policies.values()):
+                raise ValueError("data_selection requires validated QuantitySelection values")
 
     @classmethod
     def from_document(cls, value: object) -> DataSelection:
-        data = _mapping(value, "data_selection", {"quantities"})
+        data = _mapping(value, "data_selection", {"quantities", "targets"})
         quantities = _mapping(
-            data.get("quantities", {}), "data_selection.quantities", set(NUMERICAL_QUANTITIES)
+            data.get("quantities", {}), "data_selection.quantities", set(SELECTABLE_QUANTITIES)
         )
+        targets = data.get("targets", {})
+        if not isinstance(targets, dict):
+            raise ValueError("data_selection.targets must be a mapping")
         return cls(
-            {name: QuantitySelection.from_document(value) for name, value in quantities.items()}
+            {name: QuantitySelection.from_document(value) for name, value in quantities.items()},
+            {
+                target: {
+                    quantity: QuantitySelection.from_document(policy)
+                    for quantity, policy in _mapping(
+                        policies, f"data_selection.targets.{target}", set(SELECTABLE_QUANTITIES)
+                    ).items()
+                }
+                for target, policies in targets.items()
+            },
         )
 
     def document(self) -> dict:
-        return {
+        document = {
             "quantities": {
                 name: policy.document() for name, policy in sorted(self.quantities.items())
             }
         }
+        if self.targets:
+            document["targets"] = {
+                target: {
+                    quantity: policy.document() for quantity, policy in sorted(policies.items())
+                }
+                for target, policies in sorted(self.targets.items())
+            }
+        return document
 
-    def for_quantity(self, quantity: str) -> QuantitySelection | None:
-        return self.quantities.get(quantity)
+    def for_quantity(self, quantity: str, target: str | None = None) -> QuantitySelection | None:
+        return self.targets.get(target or "", {}).get(quantity, self.quantities.get(quantity))
+
+    def validate_targets(self, states: Iterable[str], reactions: Iterable[str]) -> None:
+        """Validate requested identities/quantity domains, without evaluating data."""
+        state_ids, reaction_ids = set(states), set(reactions)
+        for target, policies in self.targets.items():
+            if target in state_ids:
+                supported = STATE_QUANTITIES
+            elif target in reaction_ids:
+                supported = NUMERICAL_QUANTITIES
+            else:
+                raise ValueError(f"data_selection target is not an analyzed candidate: {target}")
+            if unknown := set(policies) - supported:
+                raise ValueError(
+                    f"data_selection target {target}: unsupported quantities for this target: "
+                    + ", ".join(sorted(unknown))
+                )
 
 
 def _mapping(value: object, name: str, allowed: set[str]) -> dict:

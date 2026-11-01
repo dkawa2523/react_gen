@@ -118,7 +118,14 @@
           "type": "string"
         },
         "helper_view_format": {
-          "enum": [1, 2, 3]
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
         },
         "evidence_snapshot_hash": {
           "type": "string",
@@ -158,6 +165,12 @@
             },
             "scope": {
               "type": "string"
+            },
+            "input_scope": {
+              "type": "object",
+              "additionalProperties": {
+                "enum": ["atom", "diatomic", "central_ligand", "formula_only"]
+              }
             }
           },
           "required": [
@@ -235,6 +248,106 @@
         },
         "interpretation": {
           "type": "string"
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "judgments": {
+              "type": "object",
+              "properties": {
+                "states": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/coverage_counts"
+                  }
+                },
+                "reactions": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/$defs/coverage_counts"
+                  }
+                }
+              },
+              "required": [
+                "states",
+                "reactions"
+              ],
+              "additionalProperties": false
+            },
+            "targets": {
+              "type": "object",
+              "properties": {
+                "states": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "with_data_missing_judgment": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "total",
+                    "with_data_missing_judgment"
+                  ],
+                  "additionalProperties": false
+                },
+                "reactions": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "with_data_missing_judgment": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": [
+                    "total",
+                    "with_data_missing_judgment"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "states",
+                "reactions"
+              ],
+              "additionalProperties": false
+            },
+            "coefficient_use": {
+              "$ref": "#/$defs/coverage_counts"
+            },
+            "native_quantities": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/coverage_counts"
+              }
+            },
+            "thermochemical_calculations": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/coverage_counts"
+              }
+            },
+            "interpretation": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "judgments",
+            "targets",
+            "coefficient_use",
+            "native_quantities",
+            "thermochemical_calculations",
+            "interpretation"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -316,16 +429,56 @@
         },
         "requirements": {
           "type": "array",
-          "items": {"$ref": "#/$defs/requirement"},
+          "items": {
+            "$ref": "#/$defs/requirement"
+          },
           "uniqueItems": true
         },
         "dependencies": {
           "type": "array",
           "items": {
             "type": "array",
-            "items": {"type": "string", "minLength": 1},
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
             "minItems": 2,
             "maxItems": 2
+          },
+          "uniqueItems": true
+        },
+        "label": {
+          "enum": [
+            "satisfied",
+            "not_satisfied",
+            "not_applicable",
+            "available",
+            "computed",
+            "excluded",
+            "out_of_range",
+            "conflicting_data",
+            "unresolved",
+            "data_missing",
+            "identity_unresolved",
+            "input_missing",
+            "interface_unsupported",
+            "model_unsupported",
+            "review_required",
+            "selection_required"
+          ]
+        },
+        "blocking_causes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "data_missing",
+              "identity_unresolved",
+              "input_missing",
+              "interface_unsupported",
+              "model_unsupported",
+              "review_required",
+              "selection_required"
+            ]
           },
           "uniqueItems": true
         }
@@ -340,12 +493,28 @@
     "requirement": {
       "type": "object",
       "properties": {
-        "responsibility": {"type": "string", "minLength": 1},
-        "target": {"type": "string", "minLength": 1},
-        "quantity": {"type": "string", "minLength": 1},
-        "reason": {"type": "string"}
+        "responsibility": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quantity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string"
+        }
       },
-      "required": ["responsibility", "target", "quantity", "reason"],
+      "required": [
+        "responsibility",
+        "target",
+        "quantity",
+        "reason"
+      ],
       "additionalProperties": false
     },
     "state": {
@@ -595,6 +764,12 @@
         },
         "data_use": {
           "$ref": "#/$defs/data_use"
+        },
+        "thermochemical_calculations": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/thermochemical_calculation"
+          }
         }
       },
       "required": [
@@ -710,6 +885,52 @@
             "type": "string"
           },
           "uniqueItems": true
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/requirement"
+          },
+          "uniqueItems": true
+        },
+        "label": {
+          "enum": [
+            "satisfied",
+            "not_satisfied",
+            "not_applicable",
+            "available",
+            "computed",
+            "excluded",
+            "out_of_range",
+            "conflicting_data",
+            "unresolved",
+            "data_missing",
+            "identity_unresolved",
+            "input_missing",
+            "interface_unsupported",
+            "model_unsupported",
+            "review_required",
+            "selection_required"
+          ]
+        },
+        "blocking_causes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "data_missing",
+              "identity_unresolved",
+              "input_missing",
+              "interface_unsupported",
+              "model_unsupported",
+              "review_required",
+              "selection_required"
+            ]
+          },
+          "uniqueItems": true
         }
       },
       "required": [
@@ -740,6 +961,7 @@
             "needs_input",
             "reference_only",
             "unreviewed",
+            "unavailable",
             "conflict"
           ]
         },
@@ -769,6 +991,64 @@
           "type": "array",
           "items": {
             "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/requirement"
+          },
+          "uniqueItems": true
+        },
+        "kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "observable": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "label": {
+          "enum": [
+            "satisfied",
+            "not_satisfied",
+            "not_applicable",
+            "available",
+            "computed",
+            "excluded",
+            "out_of_range",
+            "conflicting_data",
+            "unresolved",
+            "data_missing",
+            "identity_unresolved",
+            "input_missing",
+            "interface_unsupported",
+            "model_unsupported",
+            "review_required",
+            "selection_required"
+          ]
+        },
+        "blocking_causes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "data_missing",
+              "identity_unresolved",
+              "input_missing",
+              "interface_unsupported",
+              "model_unsupported",
+              "review_required",
+              "selection_required"
+            ]
           },
           "uniqueItems": true
         }
@@ -845,11 +1125,201 @@
             },
             "sticking_coefficient": {
               "$ref": "#/$defs/quantity_selection"
+            },
+            "enthalpy_formation_eV": {
+              "$ref": "#/$defs/quantity_selection"
+            },
+            "ionization_energy_eV": {
+              "$ref": "#/$defs/quantity_selection"
+            },
+            "electron_affinity_eV": {
+              "$ref": "#/$defs/quantity_selection"
+            },
+            "excitation_energy_eV": {
+              "$ref": "#/$defs/quantity_selection"
+            },
+            "thermochemical_model": {
+              "$ref": "#/$defs/quantity_selection"
             }
           },
           "additionalProperties": false
+        },
+        "targets": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "rate_coefficient": {
+                "$ref": "#/$defs/quantity_selection"
+              },
+              "cross_section": {
+                "$ref": "#/$defs/quantity_selection"
+              },
+              "sticking_coefficient": {
+                "$ref": "#/$defs/quantity_selection"
+              },
+              "enthalpy_formation_eV": {
+                "$ref": "#/$defs/quantity_selection"
+              },
+              "ionization_energy_eV": {
+                "$ref": "#/$defs/quantity_selection"
+              },
+              "electron_affinity_eV": {
+                "$ref": "#/$defs/quantity_selection"
+              },
+              "excitation_energy_eV": {
+                "$ref": "#/$defs/quantity_selection"
+              },
+              "thermochemical_model": {
+                "$ref": "#/$defs/quantity_selection"
+              }
+            },
+            "additionalProperties": false
+          }
         }
       },
+      "additionalProperties": false
+    },
+    "thermochemical_calculation": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "computed",
+            "needs_input",
+            "unavailable",
+            "out_of_range"
+          ]
+        },
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/requirement"
+          },
+          "uniqueItems": true
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "label": {
+          "enum": [
+            "satisfied",
+            "not_satisfied",
+            "not_applicable",
+            "available",
+            "computed",
+            "excluded",
+            "out_of_range",
+            "conflicting_data",
+            "unresolved",
+            "data_missing",
+            "identity_unresolved",
+            "input_missing",
+            "interface_unsupported",
+            "model_unsupported",
+            "review_required",
+            "selection_required"
+          ]
+        },
+        "blocking_causes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "data_missing",
+              "identity_unresolved",
+              "input_missing",
+              "interface_unsupported",
+              "model_unsupported",
+              "review_required",
+              "selection_required"
+            ]
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "reason",
+        "requirements",
+        "conditions"
+      ],
+      "additionalProperties": false
+    },
+    "coverage_counts": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "applicable": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by_label": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "data_missing": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "data_missing_fraction": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "unresolved_by_cause": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "by_proposition": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/coverage_counts"
+          }
+        }
+      },
+      "required": [
+        "total",
+        "applicable",
+        "by_label",
+        "data_missing",
+        "data_missing_fraction",
+        "unresolved_by_cause"
+      ],
       "additionalProperties": false
     }
   }

@@ -7,9 +7,11 @@ from dataclasses import dataclass
 from reactgen import __version__
 from reactgen.assessment import Evaluation, evaluate
 from reactgen.case import Case
+from reactgen.chemistry import formula_scope
 from reactgen.evidence import EvidenceCatalog
 from reactgen.generate import candidates
 from reactgen.model import CandidateSet
+from reactgen.naming import parse
 
 
 @dataclass
@@ -34,6 +36,7 @@ def analyze(case: Case, catalog: EvidenceCatalog) -> AnalysisResult:
             "completion": combined.completion,
             "stop_reason": combined.stop_reason,
             "limits": combined.limits,
+            "input_scope": {gas: formula_scope(parse(gas).composition) for gas in case.gases},
             "scope": (
                 "Bounded composition grammar for input gases; electronic/vibrational "
                 "templates and ion ligand-transfer partners are limited to input "
@@ -54,7 +57,9 @@ def analyze(case: Case, catalog: EvidenceCatalog) -> AnalysisResult:
             "reaction.thermochemistry": "The named energy proposition is evaluated; "
             "calculated values alone do not establish occurrence.",
             "reaction_evidence": "Reviewed evidence supports this product-resolved channel.",
-            "kinetics": "A qualified numerical dataset applies under the supplied conditions.",
+            "kinetics": "A usable reaction rate coefficient in the supplied evidence "
+            "under supplied conditions; "
+            "native quantity availability and conversion requirements are separate results.",
         },
     }
     return AnalysisResult(combined, evaluation, case.document(), metadata)

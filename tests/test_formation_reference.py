@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import adopt, derive, export, ingest, yamlio
-from reactgen.assessment import assess_thermochemistry
+from reactgen.assessment import assess_thermochemistry, evaluate
 from reactgen.case import Case, Conditions
 from reactgen.chemistry import candidate_state
 from reactgen.evidence import EvidenceCatalog, ReactionEvidence, StateEvidence
@@ -54,6 +54,21 @@ def split(reference=COMMON_REFERENCE):
     return reaction((Term(molecule.id),), (Term(atom.id, 2),)), {
         item.id: item for item in (atom, molecule)
     }
+
+
+def _thermal_evaluation(channel, candidates, states, conditions):
+    evaluation = evaluate(
+        replace(candidates, reactions={channel.id: channel}),
+        EvidenceCatalog(
+            state_records=tuple(record for state in states.values() for record in state.records)
+        ),
+        conditions,
+    )
+    return (
+        evaluation.reaction_assessments[channel.id]["thermochemistry"],
+        evaluation.thermochemistry.get(channel.id, {}),
+        evaluation.thermochemical_calculations[channel.id],
+    )
 
 
 def test_common_reference_units_direction_and_stoichiometry():
@@ -151,12 +166,17 @@ def test_missing_formation_reference_preserves_independent_nasa_and_source_energ
         for key, item in species.items()
     }
     candidates = CandidateSet(states={key: item.candidate for key, item in species.items()})
-    decision, values = assess_thermochemistry(
-        channel, candidates, states, ReactionEvidence(), Conditions(gas_temperature_K=300)
+    decision, values, calculations = _thermal_evaluation(
+        channel, candidates, states, Conditions(gas_temperature_K=300)
     )
     assert "delta_h_eV" not in values
     assert {"delta_g_eV", "equilibrium_constant_number_density"} <= values.keys()
-    assert "compatible reference temperature" in decision.message
+    assert "formation" not in decision.message
+    assert calculations["delta_h_eV"].status == "unavailable"
+    assert all(
+        item.quantity == "enthalpy_formation_eV.formation_reference"
+        for item in calculations["delta_h_eV"].requirements
+    )
     channel, species = split()
     states = {key: StateEvidence("exact", (item,)) for key, item in species.items()}
     _, values = assess_thermochemistry(
@@ -315,14 +335,15 @@ def test_distinct_explicit_electron_terms_affect_only_a_reaction_that_consumes_t
             neutral.id: StateEvidence("exact", (neutral,)),
             ion.id: StateEvidence("exact", ordered),
         }
-        decision, values = assess_thermochemistry(
-            channel, candidates, states, ReactionEvidence(), Conditions()
+        decision, values, calculations = _thermal_evaluation(
+            channel, candidates, states, Conditions()
         )
         availability = assess_state_thermochemistry(ion.candidate, states[ion.id])
         assert availability.verdict == "pass"
         if electron_changes:
             assert "delta_h_eV" not in values
-            assert "formation_reference.electron_enthalpy_eV" in decision.message
+            assert "formation_reference.electron_enthalpy_eV" in calculations["delta_h_eV"].reason
+            assert "formation_reference.electron_enthalpy_eV" not in decision.message
         else:
             assert values["delta_h_eV"] == 0
             assert "electron_enthalpy_eV" not in decision.message
@@ -361,11 +382,12 @@ def test_missing_electron_term_does_not_hide_a_contradictory_qualified_formation
             neutral.id: StateEvidence("exact", (neutral,)),
             complete.id: StateEvidence("exact", ordered),
         }
-        decision, values = assess_thermochemistry(
-            channel, candidates, states, ReactionEvidence(), Conditions()
+        decision, values, calculations = _thermal_evaluation(
+            channel, candidates, states, Conditions()
         )
         assert "delta_h_eV" not in values
-        assert "enthalpy_formation_eV" in decision.message
+        assert "enthalpy_formation_eV" in calculations["delta_h_eV"].reason
+        assert "enthalpy_formation_eV" not in decision.message
     assert [state_record_payload(item) for item in (complete, partial)] == originals
 
 
@@ -416,7 +438,11 @@ def test_reference_survives_normalization_ingest_adopt_and_reload(tmp_path: Path
     )
     ingest.ingest(snapshot, bundle, overlay)
     actual = EvidenceCatalog.load(root, overlay=overlay).state(original.candidate)
-    assert actual.preferred.properties["enthalpy_formation_eV"].formation_reference == reference
+    assert any(
+        item.properties["enthalpy_formation_eV"].formation_reference == reference
+        for item in actual.records
+        if "enthalpy_formation_eV" in item.properties
+    )
     adopt.adopt(overlay, root)
     saved = EvidenceCatalog.load(root).state(original.candidate)
     assert [
@@ -431,11 +457,12 @@ def test_resolved_formation_offset_preserves_zero_k_and_does_not_invent_thermal_
     zero = FormationReference(0, "standard_elements", 100000)
     prop = Property(1, "eV", tier="reviewed", formation_reference=zero)
     parent = replace(parent, properties={"enthalpy_formation_eV": prop})
-    derived = derive.carried_from(parent, 2)["enthalpy_formation_eV"]
+    level = Property(2, "eV", tier="reviewed", review_scope=("excitation_energy_eV",))
+    derived = derive.carried_from(parent, level)["enthalpy_formation_eV"]
     assert derived.value == 3
     assert derived.formation_reference == zero
     assert derived.source_declaration["parent_formation_enthalpy"] == asdict(prop)
     assert derived.source_declaration["level_energy_eV"] == 2
     finite = replace(prop, formation_reference=replace(zero, temperature_K=298.15))
     parent = replace(parent, properties={"enthalpy_formation_eV": finite})
-    assert "enthalpy_formation_eV" not in derive.carried_from(parent, 2)
+    assert "enthalpy_formation_eV" not in derive.carried_from(parent, level)

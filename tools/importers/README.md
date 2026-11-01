@@ -1,32 +1,14 @@
-# External data importers
+# External data conversion
 
-Importer tools are developer-side utilities for converting external public data
-into local registry YAML files and local assets. They are not part of the core
-generation runtime.
+External-format adapters are implemented in `src/acquire`, with the `acquire`
+CLI. This directory contains no separate importer implementation.
 
-The core generator does not call importers during `rgen analyze`, and normal
-generation must not require network access or external API availability.
+Use `acquire` to produce a local snapshot with its source declarations and
+assets, `rgen ingest` to match it to saved candidates, and `rgen adopt` for
+explicit Registry storage. Conversion, matching and storage preserve the
+declared qualification; they do not grant scientific approval.
 
-## Importer contract
-
-- Convert external data into reviewable local files under `registry/`.
-- Store imported numerical assets under `registry/assets/`.
-- Preserve source, provenance, license, and access date whenever available.
-- Record asset paths and source information in reaction YAML entries.
-- Mark imported records explicitly with `status: imported` or
-  `status: literature_supported`.
-- Do not overwrite curated registry files automatically.
-- Do not mix inferred, imported, and curated data without explicit status labels.
-
-## Intended workflow
-
-```text
-download or provide external data
-  -> run importer
-  -> inspect generated registry YAML/assets
-  -> promote accepted files into registry
-  -> run rgen check --registry registry
-  -> run normal rgen analyze with explicit --evidence
-```
-
-No importer is shipped until it can produce validated, reviewable output.
+The current workflow and supported adapters are described in
+[external data](../../external_data/README.md) and
+[data sources](../../docs/data_sources.md). `rgen analyze` reads explicit local
+evidence without calling acquisition adapters or accessing the network.

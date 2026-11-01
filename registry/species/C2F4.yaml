@@ -21,31 +21,22 @@ properties:
   enthalpy_formation_eV:
     value: -6.998784
     unit: eV
-    source: chemicals package bundled thermodynamic tables, CAS 116-14-3, formula
-      verified against the registry
+    source: chemicals package bundled thermodynamic tables, CAS 116-14-3, formula verified against the
+      registry
   entropy_J_mol_K:
     value: 300.1
     unit: J/mol/K
-    source: chemicals package bundled thermodynamic tables, CAS 116-14-3, formula
-      verified against the registry
+    source: chemicals package bundled thermodynamic tables, CAS 116-14-3, formula verified against the
+      registry
   vibrational_quantum_eV:
     value: 0.0931
     unit: eV
-    source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
-      K
+    source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500 K
   dipole_moment_D:
     source: chemicals package bundled molecular property tables, CAS 116-14-3
     unit: D
     value: 0.0
 thermo:
-  high:
-  - 11.086468
-  - 0.0052788429
-  - -2.23544e-06
-  - 4.2166846e-10
-  - -2.9433914e-14
-  - -83292.884
-  - -29.866881
   low:
   - 3.6166183
   - 0.026488618
@@ -54,7 +45,99 @@ thermo:
   - 6.2149244e-13
   - -81277.242
   - 8.52376407
-  source: cantera bundled thermodynamic data, listed as C2F4 in nasa_gas.yaml
-  t_max: 5000.0
-  t_mid: 1000.0
+  high:
+  - 11.086468
+  - 0.0052788429
+  - -2.23544e-06
+  - 4.2166846e-10
+  - -2.9433914e-14
+  - -83292.884
+  - -29.866881
   t_min: 300.0
+  t_mid: 1000.0
+  t_max: 5000.0
+  phase: gas
+  standard_pressure_Pa: 100000.0
+  source:
+    provider: NASA
+    collection: NASA_TM_4513_gas
+    release: Cantera-3.2.0
+    record_id: C2F4
+    citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, C2F4, J 6/69
+    url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  method: calculated
+  evidence_tier: reviewed
+  status: reviewed
+  review_scope:
+  - thermochemical_model
+  source_declaration:
+    source_entry:
+      name: C2F4
+      composition:
+        C: 2
+        F: 4
+      thermo:
+        model: NASA7
+        temperature-ranges:
+        - 300.0
+        - 1000.0
+        - 5000.0
+        data:
+        - - 3.6166183
+          - 0.026488618
+          - -2.2433266e-05
+          - 6.2286445e-09
+          - 6.2149244e-13
+          - -81277.242
+          - 8.52376407
+        - - 11.086468
+          - 0.0052788429
+          - -2.23544e-06
+          - 4.2166846e-10
+          - -2.9433914e-14
+          - -83292.884
+          - -29.866881
+        note: J 6/69
+    acquisition:
+      file: nasa_gas.yaml
+      requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+      sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+      bytes: 276140
+    thermodynamic_reference:
+      standard_pressure_Pa: 100000.0
+      element_basis: elements_standard_states
+      formation_temperature_K: 298.15
+      primary_report: https://ntrs.nasa.gov/citations/19940013151
+      section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy Values
+        and Heats of Formation (p.3)
+      software_default_reference_pressure_Pa: 101325.0
+      adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+        YAML does not redefine the numerical source fit.
+    review:
+      date: '2026-10-13'
+      scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+        standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+        occurrence.
+    previous_registry_declaration:
+      high:
+      - 11.086468
+      - 0.0052788429
+      - -2.23544e-06
+      - 4.2166846e-10
+      - -2.9433914e-14
+      - -83292.884
+      - -29.866881
+      low:
+      - 3.6166183
+      - 0.026488618
+      - -2.2433266e-05
+      - 6.2286445e-09
+      - 6.2149244e-13
+      - -81277.242
+      - 8.52376407
+      source: cantera bundled thermodynamic data, listed as C2F4 in nasa_gas.yaml
+      t_max: 5000.0
+      t_mid: 1000.0
+      t_min: 300.0

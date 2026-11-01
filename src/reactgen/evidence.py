@@ -4,16 +4,21 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from collections.abc import Mapping
 from copy import deepcopy
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from reactgen import yamlio
-from reactgen.chemistry import candidate_state, parse_state_id
+from reactgen.chemistry import (
+    declared_state_target,
+    parse_state_id,
+    reaction_declaration_matches,
+    reaction_family,
+)
 from reactgen.chemistry import parse_equation as parse_equation
 from reactgen.model import (
-    ELECTRON,
     CandidateSet,
     EquationKey,
     ReactionCandidate,
@@ -25,15 +30,15 @@ from reactgen.model import (
 from reactgen.records import (
     TIER_RANK,
     NumericDataset,
-    Property,
     ReactionRecord,
     RegistryReaction,
     Species,
     StateRecord,
+    bind_dataset_target,
     dataset_payload,
     evidence_tier,
     normalized_dataset,
-    normalized_property,
+    normalized_properties,
     normalized_reaction_record,
     normalized_state_record,
     normalized_thermo,
@@ -42,7 +47,9 @@ from reactgen.records import (
     scientific_reaction_content,
     scientific_record_key,
     scientific_state_content,
+    selectable_state_record_id,
     state_record_payload,
+    validate_numerical_targets,
     validate_snapshot,
 )
 from reactgen.registry import (
@@ -54,6 +61,7 @@ from reactgen.registry import (
 from reactgen.registry import (
     registry_state_candidate as registry_state_candidate,
 )
+from reactgen.selection import DataSelection
 
 StateIdentityKey = tuple[tuple[tuple[str, int], ...], int]
 
@@ -62,6 +70,9 @@ StateIdentityKey = tuple[tuple[tuple[str, int], ...], int]
 class StateEvidence:
     match: str  # exact | compatible | ambiguous | none
     records: tuple[StateRecord, ...]
+    selection: DataSelection | None = None
+    target: str | None = None
+    related_records: tuple[StateRecord, ...] = ()
 
     @property
     def preferred(self) -> StateRecord | None:
@@ -154,12 +165,42 @@ class EvidenceCatalog:
         states_input = _state_records if state_records is None else state_records
         reactions_input = _reaction_records if reaction_records is None else reaction_records
         datasets_input = _overlay_datasets if overlay_datasets is None else overlay_datasets
-        snapshot = deepcopy(
+        copied = deepcopy(
             (
                 tuple(states_input),
                 tuple(reactions_input),
                 {target: tuple(records) for target, records in (datasets_input or {}).items()},
             )
+        )
+        snapshot = (
+            copied[0],
+            tuple(
+                replace(
+                    record,
+                    datasets=tuple(
+                        dataset_for_reaction(dataset, reaction_record_candidate(record))
+                        for dataset in record.datasets
+                    ),
+                )
+                for record in copied[1]
+            ),
+            {
+                target: tuple(
+                    bind_dataset_target(dataset, target)
+                    if re.fullmatch(r"rxn_[0-9a-f]{12}", target)
+                    else dataset
+                    for dataset in records
+                )
+                for target, records in copied[2].items()
+            },
+        )
+        validate_numerical_targets(
+            (dataset.id, dataset.reaction_target or "")
+            for dataset in (
+                *(dataset for record in snapshot[1] for dataset in record.datasets),
+                *(dataset for records in snapshot[2].values() for dataset in records),
+            )
+            if dataset.reaction_target is not None
         )
         object.__setattr__(self, "_state_records", snapshot[0])
         object.__setattr__(self, "_reaction_records", snapshot[1])
@@ -175,18 +216,17 @@ class EvidenceCatalog:
         states: dict[StateIdentityKey, list[StateRecord]] = {}
         state_targets: dict[tuple, StateKey] = {}
         for state_record in self._state_records:
-            if state_record.record_id is not None:
-                state_identity = scientific_record_key(state_record_payload(state_record))
-                state_target = state_record.candidate.key
-                if (
-                    state_identity in state_targets
-                    and state_targets[state_identity] != state_target
-                ):
-                    raise ValueError(
-                        "scientific state record ID is assigned to different physical targets: "
-                        f"{state_record.record_id}"
-                    )
-                state_targets[state_identity] = state_target
+            identifier = selectable_state_record_id(state_record)
+            state_identity = scientific_record_key(
+                state_record_payload(state_record) | {"record_id": identifier}
+            )
+            state_target = state_record.candidate.key
+            if state_identity in state_targets and state_targets[state_identity] != state_target:
+                raise ValueError(
+                    "scientific state record ID is assigned to different physical targets: "
+                    f"{identifier}"
+                )
+            state_targets[state_identity] = state_target
             states.setdefault(_state_identity(state_record.candidate), []).append(state_record)
         reactions: dict[EquationKey, list[ReactionRecord]] = {}
         reaction_targets: dict[str, EquationKey] = {}
@@ -255,6 +295,8 @@ class EvidenceCatalog:
             if overlay_path is not None and overlay_path.is_file()
             else {}
         )
+        if not isinstance(overlay_data, dict):
+            raise ValueError("overlay must be a mapping")
         states = _merge_overlay_states(states, overlay_data)
         reactions.extend(
             _overlay_reactions(overlay_data, overlay_path.parent if overlay_path else None)
@@ -297,9 +339,7 @@ class EvidenceCatalog:
         digest = hashlib.sha256(
             "".join(sorted(catalog.fingerprint for catalog in catalogs)).encode()
         ).hexdigest()
-        state_records = _fill_unqualified_nulls(
-            [record for catalog in catalogs for record in catalog.state_records]
-        )
+        state_records = [record for catalog in catalogs for record in catalog.state_records]
         return cls(
             tuple(_unique_states(state_records)),
             tuple(record for catalog in catalogs for record in catalog.reaction_records),
@@ -339,21 +379,24 @@ class EvidenceCatalog:
         return sorted(found, key=lambda item: item[0].id)
 
     def state(self, candidate: StateCandidate) -> StateEvidence:
-        """Match the physical target; claim conflicts belong to their assessment."""
+        """Keep preferred matches and related targets separate; assess only the former."""
         records = self._state_index.get(_state_identity(candidate), ())
         exact = tuple(record for record in records if _state_matches(candidate, record, exact=True))
-        if exact:
-            return StateEvidence("exact", deepcopy(exact))
         compatible = tuple(
             record for record in records if _state_matches(candidate, record, exact=False)
         )
-        return (
-            StateEvidence("compatible", deepcopy(compatible))
-            if compatible
-            else StateEvidence("none", ())
+        selected = exact or compatible
+        return StateEvidence(
+            "exact" if exact else "compatible" if compatible else "none",
+            deepcopy(selected),
+            related_records=deepcopy(tuple(record for record in records if record not in selected)),
         )
 
     def reaction(self, candidate: ReactionCandidate) -> ReactionEvidence:
+        offered = tuple(
+            dataset_for_reaction(dataset, candidate)
+            for dataset in self._overlay_datasets.get(candidate.id, ())
+        )
         equation_records = tuple(
             record
             for record in self._reaction_index.get(candidate.equation_key, ())
@@ -366,9 +409,33 @@ class EvidenceCatalog:
             and record.stabilization == candidate.stabilization
         )
         related = tuple(record for record in equation_records if record not in exact)
-        return deepcopy(
-            ReactionEvidence(exact, related, self._overlay_datasets.get(candidate.id, ()))
-        )
+        return deepcopy(ReactionEvidence(exact, related, offered))
+
+    def validate_targets(self, candidates: CandidateSet) -> None:
+        """Resolve candidate references before checking numerical physical identities.
+
+        API callers may name their candidates independently of canonical physical
+        IDs. Unused evidence references remain available for other analyses.
+        """
+        bindings = [
+            (dataset.id, dataset.reaction_target or "")
+            for record in self._reaction_records
+            for dataset in record.datasets
+        ]
+        for reference, datasets in self._overlay_datasets.items():
+            target = candidates.reactions.get(reference)
+            for dataset in datasets:
+                resolved = dataset_for_reaction(dataset, target) if target is not None else dataset
+                if resolved.reaction_target is not None:
+                    bindings.append((resolved.id, resolved.reaction_target))
+        validate_numerical_targets(bindings)
+
+
+def dataset_for_reaction(dataset: NumericDataset, target: ReactionCandidate) -> NumericDataset:
+    """Identify an offered quantity's channel, without interpreting or approving its source."""
+    if not reaction_declaration_matches(dataset.declared_target, target):
+        raise ValueError(f"dataset {dataset.id} declares a different physical reaction target")
+    return bind_dataset_target(dataset, reaction_id(target.key))
 
 
 def _load_source(path: Path) -> EvidenceCatalog:
@@ -393,30 +460,6 @@ def _load_source(path: Path) -> EvidenceCatalog:
     }:
         return EvidenceCatalog.load(None, overlay=path)
     raise ValueError(f"unrecognized snapshot or overlay: {path}")
-
-
-def _fill_unqualified_nulls(records: list[StateRecord]) -> list[StateRecord]:
-    """Fill a Registry gap only when all offered values agree; preserve negatives."""
-    result = []
-    for current in records:
-        offered: dict[str, list[Property]] = {}
-        if current.origin == "registry":
-            for record in records:
-                if record.origin != "overlay" or not _state_matches(
-                    current.candidate, record, exact=True
-                ):
-                    continue
-                for name, prop in record.properties.items():
-                    held = current.properties.get(name)
-                    if held is None or (held.value is None and held.qualifier is None):
-                        offered.setdefault(name, []).append(prop)
-        additions = {
-            name: props[0]
-            for name, props in offered.items()
-            if all(prop == props[0] for prop in props)
-        }
-        result.append(replace(current, properties=current.properties | additions))
-    return result
 
 
 def _registry_states(registry: Registry | None) -> list[StateRecord]:
@@ -508,12 +551,16 @@ def _load_snapshot(path: Path) -> tuple[list[StateRecord], list[ReactionRecord]]
     default_kind = str(document.get("kind") or "rate_coefficient")
     states: list[StateRecord] = []
     reactions: list[ReactionRecord] = []
-    for record in document.get("records") or []:
+    for index, record in enumerate(document["records"]):
         written = record.get("reaction")
         if not written:
             state = snapshot_state(record, source_data)
-            if state is not None:
-                states.append(state)
+            if state is None:
+                raise ValueError(
+                    f"snapshot record {index} has an unidentified state target; "
+                    "use ingest to retain unresolved declarations in its review queue"
+                )
+            states.append(state)
             continue
         datasets = (
             (
@@ -529,7 +576,10 @@ def _load_snapshot(path: Path) -> tuple[list[StateRecord], list[ReactionRecord]]
         )
         reaction = snapshot_reaction(record, source_data, datasets=datasets)
         if reaction is None:
-            continue
+            raise ValueError(
+                f"snapshot record {index} has an unidentified reaction target; "
+                "use ingest to retain unresolved declarations in its review queue"
+            )
         reactions.append(reaction)
         states.extend(
             StateRecord(
@@ -539,10 +589,14 @@ def _load_snapshot(path: Path) -> tuple[list[StateRecord], list[ReactionRecord]]
                     origin="attested_only",
                     introduced_by=(f"snapshot:{path.stem}",),
                 ),
-                status=reaction.status,
-                tier=reaction.tier,
                 existence="unknown",
-                source=reaction.source,
+                source={key: value for key, value in reaction.source.items() if key != "record_id"},
+                provenance=replace(reaction.provenance, record_id=None),
+                source_declaration={
+                    "derived_from_reaction": reaction.id,
+                    "reaction_source": deepcopy(reaction.source),
+                    "reaction_declaration": deepcopy(reaction.source_declaration),
+                },
                 origin="snapshot",
             )
             for state in reaction.states
@@ -596,7 +650,7 @@ def reaction_record_candidate(record: ReactionRecord) -> ReactionCandidate:
         id="",
         reactants=tuple(Term(name, count) for name, count in reactants),
         products=tuple(Term(name, count) for name, count in products),
-        family=record.family or _family_of_terms(record.states, record.equation_key),
+        family=record.family or reaction_family(record.equation_key),
         process=record.process,
         origin="attested_only",
         generation_rule=f"{record.origin}:{record.id}",
@@ -615,92 +669,95 @@ def snapshot_state(
     preserved_record_id: bool = False,
 ) -> StateRecord | None:
     written = record.get("species")
-    candidate = parse_state_id(str(written)) if written else None
+    candidate = declared_state_target(str(written), record) if written else None
     if candidate is None:
         return None
-    candidate = candidate_state(
-        candidate.composition,
-        candidate.charge,
-        candidate.state.kind,
-        label=candidate.state.label,
-        resolution=candidate.state.resolution,
-        phase=str(
-            record.get("phase") or (candidate.phase if ";phase=" in str(written) else "unknown")
-        ),
-        structure=record.get("structure") or candidate.structure,
+    candidate = replace(
+        candidate,
         origin="attested_only",
         introduced_by=("snapshot",),
     )
-    state = record.get("state") or {}
-    if not isinstance(state, dict) or any(
-        getattr(candidate.state, name, None) != value for name, value in state.items()
-    ):
-        raise ValueError("snapshot state declaration contradicts its physical target")
     return normalized_state_record(
         record, candidate, default_source, preserved_record_id=preserved_record_id
     )
 
 
 def _merge_overlay_states(records: list[StateRecord], overlay: dict) -> list[StateRecord]:
-    """Keep independent declarations; fill only unqualified Registry property gaps."""
-    properties = overlay.get("properties") or {}
-    thermos = overlay.get("thermo") or {}
-    identities = overlay.get("states") or {}
+    """Keep each source declaration intact; quantity selection handles alternatives."""
+    properties = _overlay_mapping(overlay, "properties")
+    thermos = _overlay_mapping(overlay, "thermo")
+    identities = _overlay_mapping(overlay, "states")
     for state_id in sorted(set(properties) | set(thermos) | set(identities)):
-        candidate = parse_state_id(str(state_id))
-        if candidate is None:
-            continue
-        identity = identities.get(state_id) or {}
-        record = snapshot_state(
-            {"species": state_id, "phase": candidate.phase, **identity},
-            {},
-        )
-        if record is None:
-            continue
+        record = _legacy_overlay_state(state_id, identities.get(state_id))
         records.append(
             replace(
                 record,
-                properties=record.properties | _properties(properties.get(state_id) or {}),
+                properties=record.properties | normalized_properties(properties.get(state_id)),
                 thermo=normalized_thermo(thermos.get(state_id)) or record.thermo,
                 origin="overlay",
             )
         )
-    grouped = overlay.get("state_records") or {}
-    if not isinstance(grouped, dict):
-        raise ValueError("overlay.state_records must be a mapping of target IDs to records")
+    grouped = _overlay_mapping(overlay, "state_records")
     for state_id, entries in sorted(grouped.items()):
         if not isinstance(entries, list) or any(not isinstance(item, dict) for item in entries):
             raise ValueError("overlay.state_records entries must be lists of scientific records")
         for entry in entries:
             if entry.get("species") not in {None, state_id}:
                 raise ValueError("overlay state record contradicts its target ID")
-            record = snapshot_state({"species": state_id, **entry}, {}, preserved_record_id=True)
-            if record is None:
+            incoming = snapshot_state({"species": state_id, **entry}, {}, preserved_record_id=True)
+            if incoming is None:
                 raise ValueError(f"overlay state record has an invalid target: {state_id}")
-            records.append(replace(record, origin="overlay"))
-    return _fill_unqualified_nulls(records)
+            records.append(replace(incoming, origin="overlay"))
+    return records
+
+
+def _legacy_overlay_state(state_id: str, identity: object) -> StateRecord:
+    candidate = parse_state_id(state_id)
+    if candidate is None:
+        raise ValueError(f"overlay has an invalid state target: {state_id}")
+    if identity is None:
+        identity = {}
+    if not isinstance(identity, dict) or identity.get("species") not in {None, state_id}:
+        raise ValueError(f"overlay.states.{state_id} must describe its named target")
+    record = snapshot_state({"species": state_id, "phase": candidate.phase, **identity}, {})
+    if record is None:
+        raise ValueError(f"overlay has an unidentified state target: {state_id}")
+    return record
 
 
 def _overlay_datasets(
     overlay: dict,
     base: Path | None,
 ) -> dict[str, tuple[NumericDataset, ...]]:
-    return {
-        str(reaction_id_): tuple(
+    grouped = _overlay_mapping(overlay, "datasets")
+    found = {}
+    for reaction_id_, items in grouped.items():
+        if not isinstance(items, list) or any(not isinstance(item, dict) for item in items):
+            raise ValueError("overlay.datasets entries must be lists of numeric records")
+        found[reaction_id_] = tuple(
             normalized_dataset(
                 item,
                 base=base,
             )
             for item in items
         )
-        for reaction_id_, items in (overlay.get("datasets") or {}).items()
-    }
+    return found
+
+
+def _overlay_mapping(overlay: dict, name: str) -> dict:
+    """Validate legacy and current overlay containers before interpreting targets."""
+    value = overlay.get(name)
+    if value is None:
+        return {}
+    if not isinstance(value, dict) or any(
+        not isinstance(target, str) or not target.strip() for target in value
+    ):
+        raise ValueError(f"overlay.{name} must be a mapping with nonempty target IDs")
+    return value
 
 
 def _overlay_reactions(overlay: dict, base: Path | None) -> list[ReactionRecord]:
-    grouped = overlay.get("reaction_records") or {}
-    if not isinstance(grouped, dict):
-        raise ValueError("overlay.reaction_records must be a mapping of target IDs to records")
+    grouped = _overlay_mapping(overlay, "reaction_records")
     found = []
     for target, entries in sorted(grouped.items()):
         if not isinstance(entries, list) or any(not isinstance(item, dict) for item in entries):
@@ -801,26 +858,6 @@ def _state_preference(record: StateRecord) -> tuple[int, int, int, str, str]:
 
 def _state_identity(candidate: StateCandidate) -> StateIdentityKey:
     return (tuple(sorted(candidate.composition.items())), candidate.charge)
-
-
-def _family_of_terms(states: tuple[StateCandidate, ...], equation: EquationKey) -> str:
-    if equation[1] is not None:
-        return "surface"
-    reactant_ids = {name for name, _count in equation[2]}
-    reactants = [state for state in states if state.id in reactant_ids]
-    if any(state.id == ELECTRON for state in reactants):
-        return "electron"
-    if any(state.charge for state in reactants):
-        return "ion"
-    return "neutral"
-
-
-def _properties(data: dict) -> dict[str, Property]:
-    return {
-        str(name): normalized_property(entry, quantity=str(name))
-        for name, entry in data.items()
-        if isinstance(entry, dict)
-    }
 
 
 def _unique_states(records: list[StateRecord]) -> list[StateRecord]:

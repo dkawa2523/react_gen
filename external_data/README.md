@@ -16,8 +16,9 @@ worklist/            未取得channel
 台帳はschema version 3で、旧`source_access_profiles.yaml`と`sources.yaml`を統合しました。
 台帳は出典の科学的品質、優先順位、利用許諾を決めません。ユーザーデータには未登録providerも
 指定できます。分析時の量別優先・限定は入力の`data_selection`で指定します。
-現在の対象はrate coefficient、cross section、sticking coefficientで、物性・熱化学モデル・
-存在根拠への選択は未対応です。具体的な入力は[README](../README.md)を参照してください。
+現在の対象はrate coefficient、cross section、sticking coefficientに加え、形成enthalpy、
+IE、EA、励起energyと熱化学モデルです。存在・反応の根拠範囲への選択は未対応です。
+具体的な入力は[README](../README.md)を参照してください。
 
 リポジトリのルートで、同じPython環境にインストールした`rgen`と`acquire`を使います。
 module入口は`python -m reactgen.cli ...`と`python -m acquire.cli ...`です。

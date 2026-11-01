@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Iterable
 from dataclasses import dataclass, field
+from fractions import Fraction
+from math import isfinite
 from typing import NamedTuple
 
 ELECTRON = "e"
 THIRD_BODY = "M"
-STOICHIOMETRY_TOLERANCE = 1e-9
 
 # The same physical-quantity vocabulary is used by evaluation and user-facing
 # prerequisite labels. Values name actual fields of the validated Conditions.
@@ -92,6 +94,60 @@ class Term(NamedTuple):
         return f"{count} {self.species}"
 
 
+def validate_stoichiometric_terms(terms: Iterable[tuple[str, float]]) -> None:
+    """Validate each source term before duplicate species can be combined.
+
+    Scientific records require positive finite counts, including fractional
+    counts. Candidate equations may still represent invalid hypotheses for
+    assessment, so neither ``Term`` nor ``side_key`` enforces this boundary.
+    """
+    totals: dict[str, float] = {}
+    for species, count in terms:
+        if not isinstance(species, str) or not species.strip():
+            raise ValueError("stoichiometric species must be nonempty text")
+        finite = False
+        if not isinstance(count, bool) and isinstance(count, int | float):
+            try:
+                finite = isfinite(count)
+            except OverflowError:
+                finite = False
+        if not finite or count <= 0:
+            raise ValueError(
+                f"stoichiometric coefficient for {species!r} must be a finite positive number"
+            )
+        total = totals.get(species, 0.0) + count
+        if not isfinite(total):
+            raise ValueError(f"summed stoichiometric coefficient for {species!r} must be finite")
+        totals[species] = total
+
+
+def stoichiometric_sum(values: Iterable[float]) -> float:
+    """Sum counts without treating small physical contributions as zero.
+
+    Arithmetic uses the decimal representation retained by serialization,
+    before one final conversion to float. Thus declared 0.1 + 0.2 cancels 0.3,
+    while a separately declared tiny term survives beside a cancelled pair.
+    This is canonical coefficient arithmetic, not measurement uncertainty.
+    """
+    terms = tuple(values)
+    if any(not isfinite(value) for value in terms):
+        # Invalid hypotheses remain representable for the consistency
+        # assessment. Scientific-record boundaries reject these originals.
+        return sum(terms)
+    if all(abs(value) <= 2**53 and float(value).is_integer() for value in terms):
+        return float(sum(int(value) for value in terms))
+    return float(sum((Fraction(str(value)) for value in terms), start=Fraction()))
+
+
+def stoichiometric_product(value: float, count: int) -> float:
+    """Multiply a declared coefficient by an exact atom count or integer charge."""
+    if not isfinite(value):
+        return value * count
+    if abs(value) <= 2**53 and float(value).is_integer():
+        return float(int(value) * count)
+    return float(Fraction(str(value)) * count)
+
+
 StateKey = tuple[tuple[tuple[str, int], ...], int, str, str, str, str, str | None]
 # A reaction channel is not identified by stoichiometry alone.  Elastic
 # scattering and charge exchange can have the same equation while requiring
@@ -168,10 +224,14 @@ class StateCandidate:
 
 
 def side_key(terms: tuple[Term, ...] | list[Term]) -> tuple[tuple[str, float], ...]:
-    totals: dict[str, float] = {}
+    totals: dict[str, list[float]] = {}
     for term in terms:
-        totals[term.species] = totals.get(term.species, 0.0) + term.n
-    return tuple(sorted((name, count) for name, count in totals.items() if count))
+        totals.setdefault(term.species, []).append(term.n)
+    return tuple(
+        (name, count)
+        for name, values in sorted(totals.items())
+        if (count := stoichiometric_sum(values)) != 0
+    )
 
 
 @dataclass(frozen=True)
@@ -285,6 +345,97 @@ class Requirement:
                 raise ValueError(f"requirement.{name} must be a nonempty string")
         if not isinstance(self.reason, str):
             raise ValueError("requirement.reason must be a string")
+
+
+def numerical_requirements(
+    inputs: Iterable[str],
+    transforms: Iterable[str],
+    target: str,
+    reason: str,
+) -> tuple[Requirement, ...]:
+    """Normalize numerical prerequisite vocabulary at its producing boundary.
+
+    This assigns work to the accepted input interface; it does not qualify a
+    source or supply a physical model. Historical string requirements use the
+    same adapter, while current results persist the assigned responsibility.
+    """
+    result = []
+    for quantity in sorted(set(inputs)):
+        if field_name := CONDITION_INPUT_FIELDS.get(quantity):
+            role, quantity = "user_inputs", f"conditions.{field_name}"
+        elif quantity in {"dataset_applicability_conditions", "dataset_independent_variable"}:
+            role = "source_information"
+        elif quantity == "rate_law_selection":
+            role, quantity = "source_selection", "data_selection"
+        elif quantity == "numerical_quantity_selection":
+            role = "source_selection"
+        elif quantity in {
+            "electron_energy_distribution",
+            "collision_energy_distribution",
+            "surface_incident_flux_model",
+        }:
+            role = "external_models"
+        else:
+            role = "unsupported_inputs"
+        result.append(Requirement(role, target, quantity, reason))
+    result.extend(
+        Requirement("transforms", target, quantity, reason) for quantity in sorted(set(transforms))
+    )
+    return tuple(result)
+
+
+def numerical_requirement_fields(
+    requirements: Iterable[Requirement],
+) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """Derive the historical input/transform fields from canonical work records.
+
+    Review, missing numerical representations, and exclusions were not input
+    fields and are not relabelled as scalar conditions by this adapter.
+    """
+    inputs, transforms = set(), set()
+    axes = {field_name: quantity for quantity, field_name in CONDITION_INPUT_FIELDS.items()}
+    for item in requirements:
+        if item.responsibility == "transforms":
+            transforms.add(item.quantity)
+        elif item.responsibility == "user_inputs":
+            name = item.quantity.removeprefix("conditions.")
+            inputs.add(axes.get(name, item.quantity))
+        elif item.responsibility == "source_information" and item.quantity in {
+            "dataset_applicability_conditions",
+            "dataset_independent_variable",
+        }:
+            inputs.add(item.quantity)
+        elif item.responsibility == "source_selection" and item.quantity in {
+            "data_selection",
+            "rate_law_selection",
+            "numerical_quantity_selection",
+        }:
+            inputs.add("rate_law_selection" if item.quantity == "data_selection" else item.quantity)
+        elif item.responsibility in {"external_models", "unsupported_inputs"}:
+            inputs.add(item.quantity)
+    return tuple(sorted(inputs)), tuple(sorted(transforms))
+
+
+def coefficient_availability_verdict(status: str, dataset_statuses: Iterable[str]) -> str:
+    """Availability in supplied records, without judging channel occurrence.
+
+    Rejected/inapplicable records can rule out their use. Conflicting records
+    remain unresolved; they do not establish a coefficient's unavailability.
+    """
+    if status == "coefficient":
+        return "pass"
+    offered = tuple(dataset_statuses)
+    if offered and all(item in {"invalid", "out_of_range"} for item in offered):
+        return "fail"
+    return "unknown"
+
+
+def participant_support_verdict(verdicts: Iterable[str]) -> str:
+    """Aggregate the saved named state claims, preserving their individual scope."""
+    values = tuple(verdicts)
+    if "fail" in values:
+        return "fail"
+    return "unknown" if "unknown" in values else "pass"
 
 
 @dataclass(frozen=True)

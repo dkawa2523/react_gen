@@ -1,0 +1,140 @@
+Reaction-data attribution and redistribution review
+Checked: 2026-11-01
+
+Scope
+-----
+This notice describes the sources represented in the working Registry. It is
+not a blanket licence for the Registry or a scientific qualification. Source
+citations, original units, native row identifiers, transformations and reviewed
+applicability remain in the individual records. Distribution decisions must
+also consider the actual material being distributed: a numerical fact, an
+independently encoded formula, a source's selected compilation, an original
+table, its explanatory text, and a source PDF are different materials.
+
+The Registry does not include the original journal PDFs, page images, or table
+images for the literature references below. A citation or a publicly accessible
+author manuscript is not, by itself, a redistribution licence. No permission
+was requested from authors or publishers as part of this review.
+
+CollisionDB D108105
+------------------
+R. K. Janev and J. J. Smith, Atomic and Plasma-Material Interaction Data for
+Fusion, IAEA-APID-4 (1993), section 1.2.1, p. 28.
+Numerical database provider: CollisionDB / IAEA.
+Record: https://db-amdis.org/collisiondb/datasets/108105/
+Source file: https://db-amdis.org/collisiondb/data/108105.txt
+Licence: Creative Commons Attribution 4.0 International (CC BY 4.0).
+Licence terms: https://creativecommons.org/licenses/by/4.0/
+Provider policy: https://db-amdis.org/collisiondb/licence/
+
+Local file: assets/electron/iaea_D108105.csv.
+Changes: cm2 to m2 conversion and conversion of the supplied numerical table
+to CSV. No fit execution or averaging was performed. The supplied data are
+generated from a fit; they are not a newly measured series of independent
+observations. Source parent-method metadata and this distinction are retained.
+Original source SHA-256:
+504b5049513af2defc34788f99976fd3bdc355dc1978be65a6fa133282f42d45
+The source was retrieved again on 2026-11-01 with the same hash. Its JSON header
+does not declare a record-specific licence exception. See also
+sources/collisiondb_2026.yaml for the actual quantity, target and validity.
+
+NASA thermochemistry / Cantera
+------------------------------
+B. J. McBride, S. Gordon and M. A. Reno, NASA TM-4513 (1993).
+https://ntrs.nasa.gov/citations/19940013151
+NASA NTRS marks the original as a US Government work with public use permitted.
+The transcription comes from Cantera v3.2.0 nasa_gas.yaml. Preserve the complete
+Cantera BSD notice in data_notes/Cantera-LICENSE.txt when distributing the
+transcribed coefficients or derived values. See
+sources/nasa_thermochemistry_2026.yaml for provenance and transformations.
+These statements do not apply to unrelated JPL publications merely because
+they are also sponsored by NASA.
+
+Journal numerical records
+-------------------------
+The following are scientific references and extraction scopes. No open
+redistribution licence for the complete source articles or selected mechanism
+tables was established. Article rights and data-only reuse are considered
+separately in docs/scientific_data_review.md and docs/source_license_policy.md.
+
+A. Pateau, A. Rhallabi, M.-C. Fernandez, M. Boufnichel and F. Roqueta,
+Journal of Vacuum Science & Technology A 32, 021303 (2014).
+https://doi.org/10.1116/1.4853675
+Working Registry numerical scope: 167 dataset declarations derived from 32
+source rows, R38-R50 and R119-R137. Generic source rules were expanded over
+their enumerated species; these expansions are not independent measurements.
+The original source-model selection and fit compilation requires a separate
+redistribution decision; an author's public proof is not a permission grant.
+
+J. Son, A. Efremov, I. Chun, G. Y. Yeom and K.-H. Kwon,
+Plasma Chemistry and Plasma Processing 34, 239-257 (2014).
+https://doi.org/10.1007/s11090-013-9513-1
+Working Registry numerical scope: Table 1 R21-R60, 40 coefficients at the
+source model's reviewed 700 K point, encoded independently in Registry YAML.
+The source table's selection is substantial; no article-specific open licence
+for redistribution of that compilation was established.
+
+P. Gaucherel and B. Rowe, International Journal of Mass Spectrometry and Ion
+Physics 25, 211-227 (1977).
+https://doi.org/10.1016/0020-7381(77)80050-8
+Scope: two species-level scalar rate declarations from the source abstract.
+
+T. L. Williams, L. M. Babcock and N. G. Adams, International Journal of Mass
+Spectrometry 185-187, 759-772 (1999).
+https://doi.org/10.1016/S1387-3806(98)14189-1
+Scope: one charge-transfer rate declaration and its source conditions.
+
+J. Wildt, G. Bednarek, E. H. Fink and R. P. Wayne,
+Chemical Physics 122, 463-470 (1988).
+https://doi.org/10.1016/0301-0104(88)80027-2
+Scope: one O2(a1Delta) self-quenching rate and the reported numerical error
+from the source abstract. The measurement temperature remains unconfirmed.
+
+N. S. Shuman et al., Journal of Chemical Physics 133, 234304 (2010).
+https://doi.org/10.1063/1.3520150
+Scope: one thermal electron-attachment coefficient for SF5 at 300 K.
+
+A. Chen, R. Johnsen and M. A. Biondi,
+Journal of Chemical Physics 69, 2688 (1978).
+https://doi.org/10.1063/1.436917
+Scope: one O+ + O2 rate declaration. The original article is not included.
+
+Elsevier's permissions FAQ distinguishes use of numerical data to make a new
+representation from reproduction of an original figure or table, and requests
+source acknowledgement even where permission is unnecessary:
+https://www.elsevier.com/about/policies-and-standards/copyright/permissions
+This is relevant to the isolated Elsevier numerical declarations above. It is
+not an open licence for the articles or a universal rule for other publishers.
+Crossref's TDM-only licence metadata is not a redistribution grant.
+
+NASA/JPL kinetics evaluations
+-----------------------------
+J. B. Burkholder, R. L. Caravan, R. E. Huie, V. L. Orkin, C. J. Percival,
+R. Sander, S. P. Sander and D. M. Wilmouth, Chemical Kinetics and Photochemical
+Data for Use in Atmospheric Studies, Evaluation No. 20, JPL Publication 25-1,
+Jet Propulsion Laboratory, Pasadena (2025).
+https://science.jpl.nasa.gov/projects/data-evaluation/
+https://doi.org/10.48577/jpl.KFQ0TZ
+Copyright 2025, California Institute of Technology.
+U.S. Government sponsorship acknowledged.
+
+Working Registry scope: four current evaluated/derived numerical expressions
+associated with Notes A3, A7 and A12; two historical expressions associated with
+JPL Publication 19-5 Note A3 are retained separately. The original PDF, page
+layout and explanatory text are not distributed. The evaluated loss rate,
+branching fractions, derived nominal branch rate and fine-state limitations
+remain distinguishable. The notice in the original PDF and Caltech/JPL's
+copyright policy do not establish a blanket public-domain classification:
+https://www.jpl.nasa.gov/caltechjpl-privacy-policies-and-important-notices/
+Permission for redistribution of a larger selected collection was not
+established. Numerical factual extracts are not classified as prohibited
+solely because the containing document has a copyright notice.
+
+Pending cross-section references
+-------------------------------
+References to LXCat, NIST SRD 107, Itikawa, Christophorou/Olthoff, Song and other
+sources with no acquired numerical curve are acquisition targets or citations.
+They are not distribution of the referenced datasets. In particular the
+CC BY-NC oxygen workbook, LXCat numerical tables and original source PDFs are
+not bundled in registry/assets. Their own terms must be checked before adding
+them or distributing them in an analysis result.

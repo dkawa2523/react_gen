@@ -18,21 +18,24 @@ import yaml
 from reactgen import yamlio
 from reactgen.evidence import (
     EvidenceCatalog,
+    dataset_for_reaction,
     registry_reaction_candidate,
     registry_state_candidate,
     snapshot_reaction,
 )
 from reactgen.records import (
     NumericDataset,
+    bind_dataset_target,
     dataset_payload,
     normalized_dataset,
     reaction_record_payload,
-    scientific_dataset_content,
+    scientific_datasets_equivalent,
     scientific_reaction_content,
     scientific_record_key,
     scientific_state_content,
     state_record_content,
     state_record_payload,
+    validate_numerical_targets,
 )
 from reactgen.registry import Registry
 
@@ -79,6 +82,7 @@ def adopt(overlay: Path, registry_root: Path, dry_run: bool = False) -> Adoption
     # not scientific approval; missing assets are checked when placing data.
     catalog = EvidenceCatalog.load(None, overlay=overlay_path)
     registry = Registry.load(root)
+    _validate_dataset_targets(catalog, registry)
     documents: dict[Path, dict] = {}
     assets: dict[Path, bytes] = {}
     _prepare_species(overlay_data, catalog, root, registry, report, documents)
@@ -102,6 +106,27 @@ def adopt(overlay: Path, registry_root: Path, dry_run: bool = False) -> Adoption
     if not dry_run:
         _commit_changes(root, changes)
     return report
+
+
+def _validate_dataset_targets(catalog: EvidenceCatalog, registry: Registry) -> None:
+    channels = [channel for group in registry.channels.values() for channel in group]
+    targets = {
+        target.id: target
+        for channel in channels
+        if (target := registry_reaction_candidate(channel, registry.species)) is not None
+    }
+    bindings = [
+        (dataset.id, dataset.reaction_target or "")
+        for channel in channels
+        for dataset in channel.datasets
+    ]
+    for identifier, datasets in catalog.overlay_datasets.items():
+        target = targets.get(identifier)
+        for dataset in datasets:
+            if target is not None:
+                dataset_for_reaction(dataset, target)
+            bindings.append((dataset.id, identifier))
+    validate_numerical_targets(bindings)
 
 
 def _prepare_species(
@@ -269,7 +294,9 @@ def _prepare_datasets(
             document = yamlio.load(path.read_text(encoding="utf-8")) or {}
         channel = document["channels"][index]
         held = channel.setdefault("data", {}).setdefault("datasets", [])
-        additions, kept = _dataset_additions(records, all_existing, overlay_base, root, assets)
+        additions, kept = _dataset_additions(
+            records, all_existing, overlay_base, root, assets, candidate_id
+        )
         if additions:
             held.extend(additions)
             written = report.written.setdefault(candidate_id, [])
@@ -285,6 +312,7 @@ def _dataset_additions(
     overlay_base: Path,
     root: Path,
     assets: dict[Path, bytes],
+    candidate_id: str,
 ) -> tuple[list[dict], list[str]]:
     """An existing numerical ID can be repeated, never silently replaced."""
     existing: dict[str, list[NumericDataset]] = {}
@@ -293,14 +321,11 @@ def _dataset_additions(
     additions = []
     kept = []
     for item in records:
-        normalized = normalized_dataset(item, base=overlay_base)
+        normalized = bind_dataset_target(normalized_dataset(item, base=overlay_base), candidate_id)
         dataset_id = normalized.id
         previous = existing.get(dataset_id, [])
         if previous:
-            if any(
-                scientific_dataset_content(item) != scientific_dataset_content(normalized)
-                for item in previous
-            ):
+            if any(not scientific_datasets_equivalent(item, normalized) for item in previous):
                 raise ValueError(f"dataset ID has different content: {dataset_id}")
             if any(
                 _dataset_storage_content(normalized) == _dataset_storage_content(item)
@@ -490,6 +515,8 @@ def _registry_dataset(
             "reaction_order": record.get("reaction_order"),
             "parameter_units": record.get("parameter_units"),
             "reference_temperature_K": record.get("reference_temperature_K"),
+            "reaction_target": record.get("reaction_target"),
+            "declared_target": record.get("declared_target"),
         }.items()
         if value not in (None, {}, [])
     }

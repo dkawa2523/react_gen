@@ -3,7 +3,10 @@
 Composition and charge narrow the match; competing structural identities are
 not selected by file order. This adapter does not establish state existence or
 derive excited-state thermodynamic populations. Cantera's thermo reference
-pressure is 1 atm unless the source specifies otherwise:
+pressure is a property of the source compilation, not the consuming software's
+default. NASA TM-4513 defines the bundled ``nasa_gas.yaml`` source at 1 bar:
+https://ntrs.nasa.gov/api/citations/19940013151/downloads/19940013151.pdf
+Cantera's unrelated default for omitted YAML reference pressures is 1 atm:
 https://cantera.org/stable/yaml/species.html#species-thermo-models
 """
 
@@ -14,9 +17,9 @@ import os
 from dataclasses import dataclass, field
 from typing import Any
 
-import yaml
-
+from acquire.targets import source_structure
 from reactgen import yamlio
+from reactgen.chemistry import candidate_state, declared_state_target, state_id
 
 # The element cantera uses for the electron in an ionised mechanism.
 ELECTRON_ELEMENT = "E"
@@ -36,6 +39,7 @@ class Polynomial:
     phase: str = "gas"
     standard_pressure_Pa: float | None = None
     structure: str | None = None
+    source_declaration: dict[str, Any] = field(default_factory=dict)
 
     @property
     def known(self) -> bool:
@@ -92,7 +96,7 @@ def catalog() -> dict[tuple[tuple[tuple[str, int], ...], int], list[dict[str, An
     found: dict[tuple[tuple[tuple[str, int], ...], int], list[dict[str, Any]]] = {}
     path = os.path.join(root, "nasa_gas.yaml")
     document = _document(path)
-    for entry in (document or {}).get("species") or []:
+    for entry in document.get("species") or []:
         if not entry.get("thermo"):
             continue
         key = _key(entry.get("composition") or {})
@@ -101,14 +105,13 @@ def catalog() -> dict[tuple[tuple[tuple[str, int], ...], int], list[dict[str, An
     return found
 
 
-def _document(path: str) -> dict | None:
-    """One bundled file, or None where this cantera build cannot parse it."""
-
-    try:
-        with open(path, encoding="utf-8") as handle:
-            return yamlio.load(handle)
-    except (OSError, yaml.YAMLError):
-        return None
+def _document(path: str) -> dict:
+    """Read one source file; deployment and parse errors are not absent species."""
+    with open(path, encoding="utf-8") as handle:
+        document = yamlio.load(handle)
+    if not isinstance(document, dict):
+        raise ValueError("Cantera source file must be a species mapping")
+    return document
 
 
 def _key(composition: dict) -> tuple[tuple[tuple[str, int], ...], int] | None:
@@ -133,19 +136,25 @@ def fetch(species: list[dict]) -> list[Polynomial]:
 
 def _one(item: dict, listed: dict) -> Polynomial:
     name = str(item.get("id"))
-    if item.get("phase", "gas") != "gas":
+    candidate = declared_state_target(name, item, default_phase="gas")
+    phase = candidate.phase if candidate is not None else item.get("phase", "gas")
+    if phase != "gas":
         return Polynomial(name, error="this adapter supplies gas-phase fits only")
-    kind = str((item.get("state") or {}).get("kind", "ground"))
+    kind = (
+        candidate.state.kind
+        if candidate is not None
+        else str((item.get("state") or {}).get("kind", "ground"))
+    )
     if kind not in ("ground", "ion"):
         return Polynomial(
             name, error=f"{kind} state; its thermodynamic populations need independent evidence"
         )
-    composition = {str(k): int(v) for k, v in (item.get("composition") or {}).items()}
-    key = (tuple(sorted(composition.items())), int(item.get("charge", 0)))
+    composition, charge = _target_key(item, candidate)
+    key = (tuple(sorted(composition.items())), charge)
     entries = listed.get(key, [])
     if not entries:
         return Polynomial(name, error="no bundled fit for this composition and charge")
-    structure = item.get("structure")
+    structure = candidate.structure if candidate is not None else item.get("structure")
     source_species = item.get("source_species") or structure
     if source_species:
         entries = [entry for entry in entries if entry.get("name") == source_species]
@@ -154,17 +163,68 @@ def _one(item: dict, listed: dict) -> Polynomial:
             name, error="ambiguous structural identity; specify source_species", structure=structure
         )
     entry = entries[0]
+    target = candidate or candidate_state(
+        composition, charge, kind, phase=phase, structure=structure
+    )
+    try:
+        structure = source_structure(
+            {"composition": composition, "name": entry.get("name")}, target
+        )
+    except ValueError as error:
+        return Polynomial(name, error=str(error), structure=structure)
     thermo = entry["thermo"]
+    declared_pressure = thermo.get("reference-pressure")
+    compilation_pressure = (
+        "1 bar" if declared_pressure is None and entry.get("origin") == "nasa_gas.yaml" else None
+    )
+    pressure = declared_pressure if declared_pressure is not None else compilation_pressure
     return Polynomial(
-        species=name,
+        species=state_id(
+            composition,
+            charge,
+            target.state.kind,
+            target.state.label,
+            resolution=target.state.resolution,
+            phase=phase,
+            structure=structure,
+        ),
         model=str(thermo.get("model")),
         temperature_ranges=[float(t) for t in thermo.get("temperature-ranges") or []],
         coefficients=[[float(c) for c in row] for row in thermo.get("data") or []],
         listed_as=str(entry.get("name")),
         origin=str(entry.get("origin")),
-        standard_pressure_Pa=_reference_pressure(thermo.get("reference-pressure", "1 atm")),
-        structure=str(source_species) if source_species else None,
+        standard_pressure_Pa=_reference_pressure(pressure),
+        structure=structure,
+        source_declaration={
+            "source_entry": entry,
+            "acquisition": {"request": {"target": name, "source_species": source_species}},
+            "declared_reference_pressure": declared_pressure,
+            "compilation_reference_pressure": compilation_pressure,
+            "reference_pressure_source": (
+                "explicit YAML declaration"
+                if declared_pressure is not None
+                else "NASA TM-4513, ideal gas standard-state pressure, page 1"
+                if compilation_pressure is not None
+                else "not declared"
+            ),
+            "cantera_omitted_reference_pressure_default_Pa": 101325.0,
+        },
     )
+
+
+def _target_key(item: dict, candidate) -> tuple[dict[str, int], int]:
+    composition = item.get("composition")
+    if composition is None:
+        composition = candidate.composition if candidate is not None else {}
+    charge = item.get("charge", candidate.charge if candidate is not None else 0)
+    if not isinstance(composition, dict) or any(
+        not isinstance(element, str) or type(count) is not int or count <= 0
+        for element, count in composition.items()
+    ):
+        raise ValueError("NASA target composition must contain positive integer atom counts")
+    if type(charge) is not int:
+        raise ValueError("NASA target charge must be an integer")
+    return composition, charge
 
 
 def records(found: list[Polynomial], citation: str) -> list[dict]:
@@ -199,6 +259,7 @@ def records(found: list[Polynomial], citation: str) -> list[dict]:
                 "phase": item.phase,
                 "structure": item.structure,
                 "source_species": item.listed_as,
+                "source_declaration": item.source_declaration,
             }
         )
     return out

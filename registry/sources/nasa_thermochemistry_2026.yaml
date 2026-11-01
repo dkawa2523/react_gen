@@ -1,0 +1,190 @@
+accessed_date: '2026-10-13'
+source_id: NASA_TM4513_Cantera_3.2.0
+provider: NASA
+collection: NASA_TM_4513_gas
+release: Cantera-3.2.0
+primary_source:
+  citation: B.J. McBride, S. Gordon and M.A. Reno, NASA TM-4513, Coefficients for Calculating Thermodynamic
+    and Transport Properties of Individual Species (1993)
+  url: https://ntrs.nasa.gov/citations/19940013151
+  copyright: Work of the US Gov. Public Use Permitted (NASA NTRS record)
+  standard_pressure_Pa: 100000.0
+  reference_basis: standard_elements
+  formation_temperature_K: 298.15
+distributed_source:
+  url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+  license: Cantera BSD licence
+  license_notice: ../data_notes/Cantera-LICENSE.txt
+acquisition_receipts:
+- file: nasa_gas.yaml
+  requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+  sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+  bytes: 276140
+- file: Cantera-LICENSE.txt
+  requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/License.txt
+  final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/License.txt
+  retrieved_at: '2026-10-12T22:35:37.866908+00:00'
+  sha256: e92980b9712ce20e73898a97b0116889e84e07f548d6be8591e87dcad79c41bb
+  bytes: 1796
+- file: NASA-TM-4513.pdf
+  requested_url: https://ntrs.nasa.gov/api/citations/19940013151/downloads/19940013151.pdf
+  final_url: https://ntrs.nasa.gov/api/citations/19940013151/downloads/19940013151.pdf
+  retrieved_at: '2026-10-12T22:35:39.798438+00:00'
+  sha256: 6b274fb921918f938b01d4525d8a7b7e8dff50b9990a496886db32354e2c4947
+  bytes: 9547373
+review_scope:
+  thermochemical_model: Numerical fit transcription, gas composition/charge, temperature range, standard
+    pressure and source reference. No state-existence or accuracy approval.
+  enthalpy_formation_eV: 'For neutral species with 298.15 K inside the fit: derived H(298.15) under original
+    NASA reference. Not an independent measurement or source recommendation.'
+  ion_models: Imported; electron convention not confirmed and no formation value derived.
+actions:
+  new_species:
+  - H2O
+  - OH
+  - CH3
+  - NH2
+  primary_fit_review:
+  - B
+  - BCl3
+  - Br
+  - C2F4
+  - CF
+  - CF2
+  - CF2O
+  - CF3
+  - CF4
+  - CFO
+  - CHF3
+  - Cl
+  - Cl2
+  - Cu
+  - F2
+  - FO
+  - HBr
+  - He
+  - I
+  - Kr
+  - Ne
+  - NF3
+  - P
+  - S
+  - SF
+  - SF2
+  - SF3
+  - SF4
+  - SF5
+  - SF6
+  - Si
+  - SiH4
+  - SO
+  - SO2
+  - SO2F2
+  - SOF2
+  - Xe
+  new_primary_fit:
+  - C
+  - CH3
+  - CH4
+  - H2O
+  - NH2
+  - OH
+  alternative_fit:
+  - CO
+  - CO2
+  - F
+  - H
+  - H2
+  - N
+  - N2
+  - NH3
+  - O
+  imported_ion_fit:
+  - N+
+  - O2+
+  - O+
+  formation_model_298:
+  - Ar
+  - B
+  - Br
+  - C
+  - CF2O
+  - CF4
+  - CH3
+  - CH4
+  - CHF3
+  - Cl
+  - Cl2
+  - CO
+  - CO2
+  - Cu
+  - F
+  - F2
+  - H
+  - H2
+  - H2O
+  - He
+  - I
+  - Kr
+  - N
+  - N2
+  - Ne
+  - NF3
+  - NH2
+  - NH3
+  - O
+  - O2
+  - OH
+  - P
+  - S
+  - Si
+  - Xe
+  unresolved:
+  - species: C2F3
+    reason: no fit in compilation
+  - species: C2F3+
+    reason: no fit in compilation
+  - species: C2H2
+    reason: ambiguous structural identity
+  - species: C4F8
+    reason: no fit in compilation
+  - species: CF3-
+    reason: no fit in compilation
+  - species: CF4+
+    reason: no fit in compilation
+  - species: F2-
+    reason: no fit in compilation
+  - species: F2+
+    reason: no fit in compilation
+  - species: SO2F
+    reason: no fit in compilation
+  - species: SOF
+    reason: no fit in compilation
+  - species: SOF3
+    reason: no fit in compilation
+  - species: SOF4
+    reason: no fit in compilation
+  unchanged_qualified_models:
+  - Ar
+  - O2
+scientific_regression:
+  primary_table:
+    CH4:
+      printed_page: 19
+      H_298_over_R_K: -8972.26656
+    H2O:
+      printed_page: 32
+      H_298_over_R_K: -29084.8168
+  tolerance_K: 0.0001
+  note: Fit coefficient rounding only; original report R=8.314510 differs from current SI evaluator R=8.314462618.
+    No accuracy interval inferred.
+deferred:
+  source_conditions: Pateau and legacy total-process product branching require cited primary conditions;
+    no available physical conditions inferred from a reactor model point.
+  state_populations: Excited/lumped thermo, fine-state populations, lifetimes and state-resolved branching
+    require separate evidence.
+  cross_sections: LXCat redistribution remains source-specific. CollisionDB real records are acquired
+    and converted separately; raw conversion is not scientific approval.

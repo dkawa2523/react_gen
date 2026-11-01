@@ -1,8 +1,8 @@
 """Convert acquired data into snapshots `rgen ingest` can read.
 
-    python -m acquire lxcat export.txt --out work/ar
-    python -m acquire umist rate22.rates --out work/umist
-    python -m acquire pubchem result.yaml --out external_data/identity
+    python -m acquire.cli lxcat export.txt --out work/ar
+    python -m acquire.cli umist rate22.rates --out work/umist
+    python -m acquire.cli pubchem result.yaml --out external_data/identity
 
 The output of either is fed to `rgen ingest --result result`, which matches it
 onto canonical candidates and queues whatever is ambiguous.
@@ -13,7 +13,7 @@ from __future__ import annotations
 import argparse
 import sys
 from collections import Counter
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -24,6 +24,7 @@ from acquire import (
     asd,
     atoms,
     cccbdb,
+    collisiondb,
     download,
     ideal_gas,
     lxcat,
@@ -31,11 +32,14 @@ from acquire import (
     nasa,
     pubchem,
     snapshot,
+    targets,
     thermo,
     umist,
     vibration,
+    webbook,
 )
 from reactgen import yamlio
+from reactgen.chemistry import parse_state_id
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -107,6 +111,35 @@ def main(argv: list[str] | None = None) -> int:
     polar.add_argument("--out", type=Path, required=True)
     polar.add_argument("--page", type=Path, help="a saved copy of the page, instead of fetching")
     polar.set_defaults(run=_cccbdb)
+
+    book = commands.add_parser("webbook", help="read Hf and IE/EA from one identified NIST page")
+    book.add_argument("species", type=Path, help="species list with explicit CAS/WebBook query IDs")
+    book.add_argument("--out", type=Path, required=True)
+    book.add_argument("--page", type=Path, help="saved HTML for a single requested species")
+    book.set_defaults(run=_webbook)
+
+    collision = commands.add_parser("collisiondb", help="convert a CollisionDB downloaded table")
+    collision.add_argument("export", type=Path)
+    collision.add_argument("--out", type=Path, required=True)
+    collision.add_argument(
+        "--reaction", help="explicit canonical mapping of the stateful source reaction"
+    )
+    collision.add_argument(
+        "--type", help="canonical process; omitted declarations are queued for review"
+    )
+    collision.add_argument(
+        "--independent-variable", choices=("electron_energy", "collision_energy", "ion_energy")
+    )
+    collision.add_argument(
+        "--observable",
+        choices=("reaction", "elastic", "momentum_transfer", "effective_momentum_transfer"),
+    )
+    collision.add_argument(
+        "--channel-scope",
+        choices=("product_resolved", "total", "total_process", "unknown"),
+        default="unknown",
+    )
+    collision.set_defaults(run=_collisiondb)
 
     guess = commands.add_parser(
         "additivity",
@@ -236,6 +269,98 @@ def _fetch(args) -> int:
     return 0
 
 
+def _webbook(args) -> int:
+    requested = _ground_requests(args.species)
+    if args.page is not None and len(requested) != 1:
+        raise ValueError("a saved WebBook page requires exactly one requested species")
+    records = []
+    for index, request in enumerate(requested):
+        source_url = webbook.url(request.query)
+        if args.page is not None:
+            raw_path = args.page
+            raw, _ = snapshot.input_acquisition(raw_path)
+        else:
+            got = download.fetch(source_url, expect="html")
+            if not got.ok or got.body is None:
+                print(f"  unavailable   {request.target.id}: {got.error}")
+                return 1
+            raw = got.body
+            # Parse and match before creating converted output.
+            webbook.records(webbook.parse(raw.decode("utf-8")), request, source_url)
+            raw_dir = args.out / f"source-{index}"
+            raw_dir.mkdir(parents=True, exist_ok=True)
+            raw_path = raw_dir / "webbook.html"
+            raw_path.write_bytes(raw)
+            (raw_dir / "acquisition.yaml").write_text(
+                yaml.safe_dump(
+                    {
+                        "provider": "nist_webbook",
+                        "collection": "SRD69",
+                        "requested_url": source_url,
+                        "final_url": got.url,
+                        "retrieved_at": datetime.now(UTC).isoformat(),
+                        "file": raw_path.name,
+                        "sha256": got.sha256,
+                    },
+                    sort_keys=False,
+                ),
+                encoding="utf-8",
+            )
+        converted = webbook.records(webbook.parse(raw.decode("utf-8")), request, source_url)
+        # Each independent raw page keeps its own input hash and manifest, so
+        # several species do not acquire the last page's provenance.
+        _, acquisition = snapshot.input_acquisition(raw_path)
+        for record in converted:
+            record["source_declaration"]["acquisition"] = acquisition
+        records.extend(converted)
+        destination = args.out / "raw" / f"webbook-{index}.html"
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(raw)
+        for record in converted:
+            record["source_declaration"]["acquisition"]["raw_path"] = f"raw/{destination.name}"
+    path = snapshot.write(
+        args.out,
+        "state_property",
+        {
+            "provider": "nist_webbook",
+            "collection": "SRD69",
+            "citation": "NIST Chemistry WebBook, SRD 69",
+        },
+        records,
+    )
+    print(f"  properties    {len(records)}")
+    print(f"  snapshot      {path}")
+    print(f"  next          rgen ingest {path} --result result --overlay work/overlay.yaml")
+    return 0 if records else 1
+
+
+def _collisiondb(args) -> int:
+    snapshot.input_acquisition(args.export)
+    converted = collisiondb.record(
+        collisiondb.parse(args.export),
+        args.out,
+        reaction=args.reaction,
+        process_type=args.type,
+        independent_variable=args.independent_variable,
+        observable=args.observable,
+        channel_scope=args.channel_scope,
+    )
+    path = snapshot.write(
+        args.out,
+        "cross_section",
+        {
+            "provider": "iaea_collisiondb",
+            "collection": "CollisionDB",
+            "citation": "CollisionDB; cite the original dataset references",
+        },
+        [converted],
+        input_path=args.export,
+    )
+    print(f"  snapshot      {path}")
+    print(f"  next          rgen ingest {path} --result result --overlay work/overlay.yaml")
+    return 0
+
+
 def _sources(args) -> int:
     catalog = _source_catalog(args.catalog)
     print(yaml.safe_dump(catalog, sort_keys=False, allow_unicode=True).rstrip())
@@ -298,10 +423,10 @@ def _atoms(args) -> int:
         atoms.records(found, citation),
     )
     for atom in found:
-        binds = {True: "binds an electron", False: "does not bind an electron", None: "unknown"}
+        signs = {True: "nominal EA > 0", False: "nominal EA <= 0", None: "finite EA unavailable"}
         print(
             f"  {atom.symbol:4} IE={atom.ionization_eV}  EA={atom.affinity_eV}"
-            f"  {binds[atom.binds_electron]}"
+            f"  {signs[atom.nominal_ea_positive]}"
         )
     print(f"  snapshot      {path}")
     return 0
@@ -322,8 +447,12 @@ def _asd(args) -> int:
             continue
         print(
             f"  {item.symbol:4} lowest {item.lowest_eV:8.4f} eV"
-            f"   metastable {_eV(item.metastable_eV)}   resonant {_eV(item.resonant_eV)}"
+            f"   no lower E1 candidate {_eV(item.no_lower_e1_candidate_eV)}"
+            f"   ground E1 candidate {_eV(item.ground_e1_candidate_eV)}"
         )
+    print(
+        "  E1 candidates: returned-level parity/J constraints; no transition strength or lifetime"
+    )
     print(f"  snapshot      {path}")
     return 0 if any(item.known for item in found) else 1
 
@@ -336,26 +465,14 @@ def _molecular(args) -> int:
     if not molecular.available():
         print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    wanted = yamlio.load(args.species.read_text(encoding="utf-8")) or []
-    items = _listed(wanted)
-    names = [
-        _query_name(item)
-        for item in items
-        if not isinstance(item, dict)
-        or (not item.get("charge") and (item.get("state") or {}).get("kind", "ground") == "ground")
-    ]
-    composition = {
-        _query_name(item): item["composition"]
-        for item in items
-        if isinstance(item, dict) and item.get("composition")
-    }
     citation = "chemicals package bundled molecular property tables"
-    found = molecular.fetch(names, composition)
+    requested = _ground_requests(args.species)
+    found, written = _ground_values(requested, molecular.fetch, molecular.records, citation)
     path = snapshot.write(
         args.out,
         "state_property",
         {"source_type": "chemicals", "provider": "chemicals", "citation": citation},
-        molecular.records(found, citation),
+        written,
     )
     for item in found:
         if item.known:
@@ -365,47 +482,45 @@ def _molecular(args) -> int:
                 f"   well {item.well_depth_K!s:>7} K"
             )
     missing = [item.species for item in found if not item.known]
-    print(f"  {len(found) - len(missing)} of {len(found)} answered; {len(missing)} not tabulated")
+    print(f"  {len(found) - len(missing)} of {len(found)} answered; {len(missing)} unresolved")
+    for item in found:
+        if item.error:
+            print(f"    unresolved  {item.species}  {item.error}")
     print(f"  wrote {path}")
     return 0
 
 
 def _cccbdb(args) -> int:
-    wanted: dict[tuple, str] = {}
-    identities: dict[tuple, str] = {}
-    for item in _listed(yamlio.load(args.species.read_text(encoding="utf-8")) or []):
-        named = isinstance(item, dict)
-        if named and (
-            item.get("charge")
-            or (item.get("state") or {}).get("kind", "ground") != "ground"
-            or item.get("phase", "gas") != "gas"
-        ):
-            continue
-        composition = (item.get("composition") or {}) if named else {}
-        key: tuple | None = (
-            tuple(sorted((str(k), int(v)) for k, v in composition.items()))
-            if composition
-            else cccbdb.composition(str(item))
-        )
-        if key is not None:
-            wanted.setdefault(key, str(item["id"]) if named else str(item))
-            if named and (identity := item.get("source_species") or item.get("structure")):
-                identities[key] = str(identity)
+    requested = _ground_requests(args.species)
     saved = args.page.read_text(encoding="utf-8") if args.page else None
     found, error = cccbdb.fetch(saved)
     if error:
         print(f"  could not read {cccbdb.LIST_URL}: {error}")
         return 1
     citation = f"NIST CCCBDB experimental polarizability list, {cccbdb.LIST_URL}"
-    written = cccbdb.records(found, wanted, citation, identities)
+    written = []
+    for request in requested:
+        key = tuple(sorted(request.target.composition.items()))
+        identity = (
+            request.declared.get("source_species")
+            or request.declared.get("query")
+            or request.target.structure
+        )
+        records = cccbdb.records(
+            found,
+            {key: request.target.id},
+            citation,
+            {key: identity} if identity else None,
+        )
+        written.extend(targets.records_for(request, records))
     path = snapshot.write(
         args.out,
         "state_property",
         {"source_type": "cccbdb", "provider": "nist_cccbdb", "citation": citation},
         written,
     )
-    print(f"  {len(found)} species listed, {len(written)} of the {len(wanted)} asked for")
-    missing = sorted(set(wanted.values()) - {item["species"] for item in written})
+    print(f"  {len(found)} species listed, {len(written)} of the {len(requested)} asked for")
+    missing = sorted({item.target.id for item in requested} - {item["species"] for item in written})
     if missing:
         print(f"  not listed: {' '.join(missing)}")
     print(f"  wrote {path}")
@@ -494,31 +609,68 @@ def _listed(document) -> list:
     """The states of an analysis result, or an explicit species list."""
 
     if isinstance(document, dict):
-        return list(document.get("states") or [])
-    return list(document)
+        document = document.get("states")
+    if not isinstance(document, list):
+        raise ValueError("species input must be a list or a result with a states list")
+    return document
 
 
-def _query_name(item) -> str:
-    if not isinstance(item, dict):
-        return str(item)
-    return str(item.get("query") or item.get("id") or "").partition("@")[0]
+def _ground_requests(path: Path) -> list[targets.GroundRequest]:
+    document = yamlio.load(path.read_text(encoding="utf-8"))
+    requested, excluded = targets.requests(_listed(document))
+    for name, reason in excluded:
+        print(f"    excluded    {name}  {reason}")
+    return requested
+
+
+def _ground_values(requested, reader, record_maker, citation) -> tuple[list, list[dict]]:
+    """Acquire once per lookup, then preserve each requested physical target."""
+    composition: dict[str, dict[str, int]] = {}
+    for request in requested:
+        held = composition.get(request.query)
+        if held is not None and held != request.target.composition:
+            raise ValueError("the same source query is assigned to different compositions")
+        composition[request.query] = request.target.composition
+    found = reader(list(composition), composition)
+    by_query = {item.species: item for item in found}
+    displayed, written = [], []
+    for request in requested:
+        item = by_query[request.query]
+        records = targets.records_for(request, record_maker([item], citation))
+        displayed.append(
+            replace(item, species=records[0]["species"] if records else request.target.id)
+        )
+        written.extend(records)
+    return displayed, written
 
 
 def _vibration(args) -> int:
     if not vibration.available():
         print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    wanted = _listed(yamlio.load(args.species.read_text(encoding="utf-8")) or [])
-    names = [_query_name(item) for item in wanted]
-    linear = {_query_name(n): n.get("linear", False) for n in wanted if isinstance(n, dict)}
-    atoms_of = {_query_name(n): n.get("atoms", 2) for n in wanted if isinstance(n, dict)}
+    requested = _ground_requests(args.species)
     citation = "chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500 K"
-    found = vibration.fetch(names, linear, atoms_of)
+    found: list[vibration.Quantum] = []
+    written: list[dict] = []
+    for request in requested:
+        linear = request.declared.get("linear")
+        atom_count = sum(request.target.composition.values())
+        declared_atoms = request.declared.get("atoms", atom_count)
+        if type(declared_atoms) is not int or declared_atoms != atom_count:
+            raise ValueError("vibration.atoms must agree with the requested composition")
+        acquired = vibration.fetch(
+            [request.query],
+            {request.query: linear} if linear is not None else None,
+            {request.query: atom_count},
+            {request.query: request.target.composition},
+        )
+        found.extend(replace(item, species=request.target.id) for item in acquired)
+        written.extend(targets.records_for(request, vibration.records(acquired, citation)))
     path = snapshot.write(
         args.out,
         "state_property",
         {"source_type": "chemicals_cp_fit", "provider": "internal_vibration", "citation": citation},
-        vibration.records(found, citation),
+        written,
     )
     for item in found:
         if item.known:
@@ -533,21 +685,14 @@ def _ideal_gas(args) -> int:
     if not ideal_gas.available():
         print('  pyromat is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    requested = yamlio.load(args.species.read_text(encoding="utf-8")) or {}
-    wanted = _listed(requested)
-    names = [_query_name(item) for item in wanted]
-    composition = {
-        _query_name(item): item["composition"]
-        for item in wanted
-        if isinstance(item, dict) and item.get("composition")
-    }
+    requested = _ground_requests(args.species)
     citation = "PyroMat ideal-gas model, enthalpy at the declared temperature and reference"
-    found = ideal_gas.fetch(names, composition)
+    found, written = _ground_values(requested, ideal_gas.fetch, ideal_gas.records, citation)
     path = snapshot.write(
         args.out,
         "state_property",
         {"source_type": "pyromat", "provider": "pyromat", "citation": citation},
-        ideal_gas.records(found, citation),
+        written,
     )
     print(f"  resolved      {sum(1 for f in found if f.known)} / {len(found)}")
     for item in found:
@@ -561,22 +706,14 @@ def _thermo(args) -> int:
     if not thermo.available():
         print('  chemicals is not installed: python -m pip install -e ".[thermo]"')
         return 1
-    requested = yamlio.load(args.species.read_text(encoding="utf-8")) or {}
-    wanted = _listed(requested)
-    names = [_query_name(item) for item in wanted]
-    composition = {
-        _query_name(item): item["composition"]
-        for item in wanted
-        if isinstance(item, dict) and item.get("composition")
-    }
-
-    found = thermo.fetch(names, composition)
+    requested = _ground_requests(args.species)
     citation = "chemicals package, bundled thermodynamic tables"
+    found, written = _ground_values(requested, thermo.fetch, thermo.records, citation)
     path = snapshot.write(
         args.out,
         "state_property",
         {"source_type": "chemicals", "provider": "chemicals", "citation": citation},
-        thermo.records(found, citation),
+        written,
     )
     print(f"  resolved      {sum(1 for item in found if item.known)} / {len(found)}")
     for item in found:
@@ -588,27 +725,16 @@ def _thermo(args) -> int:
 
 
 def _pubchem(args) -> int:
-    requested = yamlio.load(args.species.read_text(encoding="utf-8")) or {}
-    wanted = _listed(requested)
-    names = [_query_name(item) for item in wanted]
-    registered = {_query_name(item): item for item in wanted if isinstance(item, dict)}
-
-    found = pubchem.fetch(names)
+    wanted = _listed(yamlio.load(args.species.read_text(encoding="utf-8")))
+    requested, report = _identity_queries(wanted)
+    queries = list(dict.fromkeys(query for _, _, query in requested))
+    found = dict(zip(queries, pubchem.fetch(queries), strict=True))
     args.out.mkdir(parents=True, exist_ok=True)
-    records, report = [], []
-    for name, identity in zip(names, found, strict=True):
-        entry = registered.get(name, {})
-        verdict = pubchem.compare(identity, entry.get("composition"), entry.get("mass_amu"))
-        report.append({**asdict(identity), "verdict": verdict})
-        if verdict == "fills_gap" and identity.mass_amu is not None:
-            records.append(
-                {
-                    "species": name,
-                    "property": "mass_amu",
-                    "value": identity.mass_amu,
-                    "unit": "amu",
-                }
-            )
+    records = []
+    for entry, request, query in requested:
+        summary, values = _identity_result(entry, request, found[query])
+        report.append(summary)
+        records.extend(values)
 
     (args.out / "identity.yaml").write_text(
         yaml.safe_dump({"identity": report}, sort_keys=False, allow_unicode=True), encoding="utf-8"
@@ -630,6 +756,81 @@ def _pubchem(args) -> int:
     print(f"  identity     {args.out / 'identity.yaml'}")
     print(f"  snapshot     {path}")
     return 1 if counts.get("differs") else 0
+
+
+def _identity_queries(items: list) -> tuple[list, list[dict]]:
+    """Native aliases can be looked up without inventing their physical target."""
+    queries: list[tuple[dict, targets.GroundRequest | None, str]] = []
+    excluded: list[dict] = []
+    for item in items:
+        entry = item if isinstance(item, dict) else {"id": item}
+        requested, reasons = targets.requests([entry])
+        if requested:
+            request = requested[0]
+            queries.append((entry, request, request.query))
+        elif parse_state_id(str(entry["id"])) is None:
+            query = entry.get("query") or entry["id"]
+            if not isinstance(query, str) or not query.strip():
+                raise ValueError("PubChem query must be nonempty text")
+            queries.append((entry, None, query))
+        else:
+            excluded.append(
+                {"species": entry["id"], "verdict": "not_applicable", "error": reasons[0][1]}
+            )
+    return queries, excluded
+
+
+def _identity_result(
+    entry: dict, request: targets.GroundRequest | None, identity: pubchem.Identity
+) -> tuple[dict, list[dict]]:
+    summary = asdict(identity) | {
+        "species": request.target.id if request is not None else entry["id"],
+        "source_query": identity.species,
+    }
+    if request is None:
+        return summary | {"verdict": "identity_only" if identity.resolved else "unresolved"}, []
+    source_identity = {
+        "molecularFormula": identity.formula,
+        "inChI": identity.inchi,
+        "inchikey": identity.inchikey,
+        "smiles": identity.smiles,
+        "connectivity_smiles": identity.connectivity_smiles,
+        "other_names": identity.synonyms,
+        "name": next(iter(identity.synonyms), None),
+    }
+    if identity.resolved:
+        try:
+            targets.source_structure(source_identity, request)
+        except ValueError as error:
+            # Physical identity precedes mass comparison. An existing or absent
+            # auxiliary mass cannot change whether an isomer has been identified.
+            wrong_compound = (
+                pubchem.compare(identity, request.target.composition) == "wrong_compound"
+            )
+            return summary | {
+                "verdict": "wrong_compound" if wrong_compound else "unresolved",
+                "error": str(error),
+            }, []
+    verdict = pubchem.compare(identity, request.target.composition, entry.get("mass_amu"))
+    summary["verdict"] = verdict
+    if verdict != "fills_gap" or identity.mass_amu is None:
+        return summary, []
+    records = targets.records_for(
+        request,
+        [
+            {
+                "property": "mass_amu",
+                "value": identity.mass_amu,
+                "unit": "amu",
+                "status": "imported",
+                "source": {"citation": f"PubChem PUG REST compound identity, CID {identity.cid}"},
+                "source_declaration": asdict(identity),
+            }
+        ],
+        identity=source_identity,
+    )
+    summary["identified_target"] = records[0]["species"]
+    return summary, records
 
 
 if __name__ == "__main__":

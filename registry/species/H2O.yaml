@@ -1,0 +1,219 @@
+schema_version: 1
+phase: gas
+id: H2O
+display_name: H2O
+composition:
+  H: 2
+  O: 1
+charge: 0
+classes:
+- neutral
+- molecule
+- input_feedstock
+state:
+  kind: ground
+  label: X
+  excitation_energy_eV: 0.0
+metadata:
+  status: imported
+  notes:
+  - Gas-phase ground species target added for reusable thermochemistry. The NASA fit does not approve
+    state existence, population, lifetime, or reaction channels.
+thermo:
+  low:
+  - 4.19864056
+  - -0.0020364341
+  - 6.52040211e-06
+  - -5.48797062e-09
+  - 1.77197817e-12
+  - -30293.7267
+  - -0.849032208
+  high:
+  - 2.67703787
+  - 0.00297318329
+  - -7.7376969e-07
+  - 9.44336689e-11
+  - -4.26900959e-15
+  - -29885.8938
+  - 6.88255571
+  t_min: 200.0
+  t_mid: 1000.0
+  t_max: 6000.0
+  phase: gas
+  standard_pressure_Pa: 100000.0
+  source: &id001
+    provider: NASA
+    collection: NASA_TM_4513_gas
+    release: Cantera-3.2.0
+    record_id: H2O
+    citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, H2O, L 8/89
+    url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  method: calculated
+  evidence_tier: reviewed
+  status: reviewed
+  review_scope:
+  - thermochemical_model
+  source_declaration:
+    source_entry:
+      name: H2O
+      composition:
+        H: 2
+        O: 1
+      thermo:
+        model: NASA7
+        temperature-ranges:
+        - 200.0
+        - 1000.0
+        - 6000.0
+        data:
+        - - 4.19864056
+          - -0.0020364341
+          - 6.52040211e-06
+          - -5.48797062e-09
+          - 1.77197817e-12
+          - -30293.7267
+          - -0.849032208
+        - - 2.67703787
+          - 0.00297318329
+          - -7.7376969e-07
+          - 9.44336689e-11
+          - -4.26900959e-15
+          - -29885.8938
+          - 6.88255571
+        note: L 8/89
+    acquisition:
+      file: nasa_gas.yaml
+      requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+      sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+      bytes: 276140
+    thermodynamic_reference:
+      standard_pressure_Pa: 100000.0
+      element_basis: elements_standard_states
+      formation_temperature_K: 298.15
+      primary_report: https://ntrs.nasa.gov/citations/19940013151
+      section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy Values
+        and Heats of Formation (p.3)
+      software_default_reference_pressure_Pa: 101325.0
+      adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+        YAML does not redefine the numerical source fit.
+    review:
+      date: '2026-10-13'
+      scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+        standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+        occurrence.
+records:
+- record_id: NASA_TM4513_Cantera_3.2.0:H2O
+  species: H2O
+  phase: gas
+  source: *id001
+  status: imported
+  tier: imported
+  source_declaration:
+    source_entry:
+      name: H2O
+      composition:
+        H: 2
+        O: 1
+      thermo:
+        model: NASA7
+        temperature-ranges:
+        - 200.0
+        - 1000.0
+        - 6000.0
+        data:
+        - - 4.19864056
+          - -0.0020364341
+          - 6.52040211e-06
+          - -5.48797062e-09
+          - 1.77197817e-12
+          - -30293.7267
+          - -0.849032208
+        - - 2.67703787
+          - 0.00297318329
+          - -7.7376969e-07
+          - 9.44336689e-11
+          - -4.26900959e-15
+          - -29885.8938
+          - 6.88255571
+        note: L 8/89
+    acquisition:
+      file: nasa_gas.yaml
+      requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+      sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+      bytes: 276140
+    thermodynamic_reference:
+      standard_pressure_Pa: 100000.0
+      element_basis: elements_standard_states
+      formation_temperature_K: 298.15
+      primary_report: https://ntrs.nasa.gov/citations/19940013151
+      section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy Values
+        and Heats of Formation (p.3)
+      software_default_reference_pressure_Pa: 101325.0
+      adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+        YAML does not redefine the numerical source fit.
+    review:
+      date: '2026-10-13'
+      scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+        standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+        occurrence.
+  properties:
+    enthalpy_formation_eV:
+      value: -2.506335588002659
+      unit: eV
+      definition: standard_formation_enthalpy
+      formation_reference:
+        temperature_K: 298.15
+        basis: standard_elements
+        standard_pressure_Pa: 100000.0
+      source: *id001
+      method: calculated
+      evidence_tier: derived
+      status: derived
+      review_scope:
+      - enthalpy_formation_eV
+      source_declaration:
+        derivation: NASA7 H(T)=R*T*(a1+a2*T/2+a3*T^2/3+a4*T^3/4+a5*T^4/5+a6/T); H(298.15 K) equals assigned
+          standard formation enthalpy under NASA TM-4513 reference.
+        temperature_K: 298.15
+        parent_thermo:
+          low:
+          - 4.19864056
+          - -0.0020364341
+          - 6.52040211e-06
+          - -5.48797062e-09
+          - 1.77197817e-12
+          - -30293.7267
+          - -0.849032208
+          high:
+          - 2.67703787
+          - 0.00297318329
+          - -7.7376969e-07
+          - 9.44336689e-11
+          - -4.26900959e-15
+          - -29885.8938
+          - 6.88255571
+          t_min: 200.0
+          t_mid: 1000.0
+          t_max: 6000.0
+          phase: gas
+          standard_pressure_Pa: 100000.0
+          source:
+            provider: NASA
+            collection: NASA_TM_4513_gas
+            release: Cantera-3.2.0
+            record_id: H2O
+            citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, H2O,
+              L 8/89
+            url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+        gas_constant_J_mol_K: 8.314462618
+        avogadro_mol_inverse: 6.02214076e+23
+        joule_per_eV: 1.602176634e-19
+        qualification: Value calculated from a specific numerical fit. Fit rounding and original data
+          uncertainty are not quantified; this is not an independently measured or recommended formation
+          enthalpy.
+        parent_source_note: L 8/89
+        parent_input_sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db

@@ -203,12 +203,32 @@ sources:
 - source_id: nist_webbook
   provides:
   - formation_enthalpy
-  - thermochemical_models
-  access: manual_snapshot
-  converters: []
+  - ionization_energy
+  - electron_affinity
+  access: saved_html_or_explicit_public_query
+  converters:
+  - acquire webbook SPECIES.yaml --page PAGE.html --out WORK
+  - acquire webbook SPECIES.yaml --out WORK
   endpoint: https://webbook.nist.gov/chemistry/guide/
   rights:
     status: check_source_and_upstream
+- source_id: iaea_collisiondb
+  provides:
+  - integral_cross_section_table
+  access: saved_download_file
+  converters:
+  - acquire collisiondb DATASET.txt --out WORK
+  endpoint: https://db-amdis.org/collisiondb/
+  rights:
+    status: check_source_and_upstream
+    licence_url: https://db-amdis.org/collisiondb/licence/
+    review_items:
+    - original_dataset_attribution
+    - explicit_exceptions_to_CC_BY_4_0
+    - state_mapping
+    - quantity_definition
+    - energy_frame
+    - channel_scope
 - source_id: nist_kinetics
   provides:
   - rate_coefficient

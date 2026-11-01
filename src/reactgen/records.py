@@ -10,9 +10,10 @@ from __future__ import annotations
 import hashlib
 import json
 import math
-from collections.abc import Sequence
+import os
+from collections.abc import Iterable, Sequence
 from copy import deepcopy
-from dataclasses import asdict, dataclass, field, fields
+from dataclasses import asdict, dataclass, field, fields, replace
 from pathlib import Path
 from typing import Any, cast
 
@@ -22,7 +23,9 @@ from reactgen.model import (
     Term,
     canonical_family,
     canonical_process,
+    validate_stoichiometric_terms,
 )
+from reactgen.units import canonical_axis_unit, numerical_unit_basis, quantity_value
 from reactgen.units import energy_eV as energy_in_eV
 
 REVIEWED_TIERS = frozenset({"curated", "reviewed"})
@@ -209,6 +212,11 @@ def scientific_dataset_content(dataset: NumericDataset | dict) -> dict:
     content = scientific_declaration(body, source)
     if not isinstance(content, dict):
         raise ValueError("scientific dataset must be a mapping")
+    validity = content.get("validity")
+    if isinstance(validity, dict) and validity.get("unresolved_conditions") == {}:
+        # Older canonical records omit this empty default. The original source
+        # declaration remains representation-sensitive and is never rewritten.
+        validity.pop("unresolved_conditions")
     asset = content.get("asset")
     if isinstance(asset, dict):
         asset.pop("local_path", None)
@@ -223,6 +231,254 @@ def scientific_dataset_content(dataset: NumericDataset | dict) -> dict:
             if isinstance(declaration, dict):
                 _asset_declaration_content(declaration, checksum)
     return content
+
+
+def scientific_datasets_equivalent(
+    left: NumericDataset | dict,
+    right: NumericDataset | dict,
+) -> bool:
+    """Compare known scalar models across unit copies, without changing declarations.
+
+    The scientific fingerprint remains representation-sensitive. This comparison
+    permits only explicit constant/Arrhenius numeric unit transformations;
+    quantity, observable, order, review, source and unknown annotations stay
+    strict. Same-unit numeric changes are strict, whereas different-unit copies
+    permit conversion roundoff. Tables and unsupported models stay byte/content
+    comparisons, never inferred curve equivalence.
+    """
+    first, second = scientific_dataset_content(left), scientific_dataset_content(right)
+    if first == second:
+        return True
+    if first.get("kind") not in {"rate_coefficient", "cross_section", "sticking_coefficient"}:
+        return False
+    if first.get("form") not in {"constant", "arrhenius"} or first.get("form") != second.get(
+        "form"
+    ):
+        return False
+    first_content, first_numbers = _numerical_comparison_content(first)
+    second_content, second_numbers = _numerical_comparison_content(second)
+    if first_numbers.keys() != second_numbers.keys():
+        return False
+    if not all(
+        _numerical_fields_equal(value, second_numbers[name])
+        for name, value in first_numbers.items()
+    ):
+        return False
+    return first_content == second_content
+
+
+def _numerical_field(
+    value: object,
+    unit: object,
+    quantity: str,
+    kind: str,
+) -> tuple[float, str, str, float, float] | None:
+    try:
+        number = normalized_number(value)
+    except ValueError:
+        return None
+    if number is None or not math.isfinite(number) or not isinstance(unit, str):
+        return None
+    if quantity == "amplitude":
+        basis = numerical_unit_basis(unit, kind)
+        canonical, scale = ("", None) if basis is None else basis
+    elif quantity == "activation_energy":
+        canonical, scale = "eV", energy_in_eV(1.0, unit)
+    else:
+        canonical = canonical_axis_unit(quantity) or ""
+        scale = quantity_value(1.0, quantity, unit, canonical)
+    converted = None if scale is None else number * scale
+    return (
+        (number, unit, canonical, converted, scale)
+        if converted is not None
+        and scale is not None
+        and math.isfinite(converted)
+        and (number == 0 or converted != 0)
+        else None
+    )
+
+
+def _numerical_fields_equal(
+    first: tuple[float, str, str, float, float],
+    second: tuple[float, str, str, float, float],
+) -> bool:
+    if first[2] != second[2]:
+        return False
+    if first[1] == second[1] or first[4] == second[4]:
+        return first[0] == second[0]
+    return math.isclose(first[3], second[3], rel_tol=1e-12, abs_tol=0.0)
+
+
+def _numerical_comparison_content(content: dict) -> tuple[dict, dict]:
+    # Canonical public payloads use parameters, while saved dataclasses use params.
+    if "parameters" not in content and "params" in content:
+        content["parameters"] = content.pop("params")
+    kind, unit = str(content.get("kind")), content.get("unit")
+    amplitude = "value" if content.get("form") == "constant" else "A"
+    parameters = content.get("parameters")
+    if not isinstance(parameters, dict):
+        return content, {}
+    fields: dict = {}
+    _take_numerical_field(fields, "amplitude", parameters, amplitude, unit, "amplitude", kind)
+    uncertainty = content.get("uncertainty")
+    if isinstance(uncertainty, dict):
+        _take_numerical_field(fields, "absolute", uncertainty, "absolute", unit, "amplitude", kind)
+    parameter_units = content.get("parameter_units")
+    if content.get("form") == "arrhenius" and isinstance(parameter_units, dict):
+        _take_numerical_field(
+            fields, "Ea", parameters, "Ea", parameter_units.get("Ea"), "activation_energy", kind
+        )
+    _take_validity_fields(fields, content, kind)
+    # Only a successfully compared output amplitude can make its unit redundant.
+    if "amplitude" in fields:
+        content.pop("unit", None)
+        if isinstance(parameter_units, dict) and parameter_units.get("A") == unit:
+            parameter_units.pop("A")
+    if "Ea" in fields and isinstance(parameter_units, dict):
+        parameter_units.pop("Ea", None)
+    declaration = content.get("source_declaration")
+    if isinstance(declaration, dict):
+        _normalize_numerical_declaration(declaration, content, fields, amplitude, unit)
+        if not declaration:
+            content["source_declaration"] = None
+    return content, fields
+
+
+def _take_validity_fields(fields: dict, content: dict, kind: str) -> None:
+    validity = content.get("validity")
+    if not isinstance(validity, dict):
+        return
+    quantity = str(validity.get("quantity"))
+    for name in ("minimum", "maximum"):
+        _take_numerical_field(fields, name, validity, name, validity.get("unit"), quantity, kind)
+    if {"minimum", "maximum"} & fields.keys():
+        validity.pop("unit", None)
+
+
+def _take_numerical_field(
+    fields: dict,
+    name: str,
+    owner: dict,
+    key: str,
+    unit: object,
+    quantity: str,
+    kind: str,
+) -> None:
+    if (value := _numerical_field(owner.get(key), unit, quantity, kind)) is not None:
+        fields[name] = value
+        owner.pop(key, None)
+
+
+def _normalize_numerical_declaration(
+    declaration: dict,
+    content: dict,
+    fields: dict,
+    amplitude: str,
+    unit: object,
+) -> None:
+    """Omit a repeated numeric source field only if it matches its parsed quantity."""
+    kind = str(content.get("kind"))
+    stated_unit = declaration.get("unit", unit)
+    parameter_units = declaration.get("parameter_units")
+    ea_unit = parameter_units.get("Ea") if isinstance(parameter_units, dict) else None
+    removed_amplitude, removed_ea = False, False
+    for key in ("parameters", "params"):
+        parameters = declaration.get(key)
+        if not isinstance(parameters, dict):
+            continue
+        removed_amplitude |= _remove_numerical_declaration(
+            parameters,
+            amplitude,
+            stated_unit,
+            "amplitude",
+            kind,
+            fields.get("amplitude"),
+        )
+        removed_ea |= _remove_numerical_declaration(
+            parameters,
+            "Ea",
+            ea_unit,
+            "activation_energy",
+            kind,
+            fields.get("Ea"),
+        )
+        if not parameters:
+            declaration.pop(key)
+    if removed_amplitude and not _declared_parameter_remains(declaration, amplitude):
+        declaration.pop("unit", None)
+        if isinstance(parameter_units, dict) and parameter_units.get("A") == stated_unit:
+            parameter_units.pop("A")
+    if (
+        removed_ea
+        and not _declared_parameter_remains(declaration, "Ea")
+        and isinstance(parameter_units, dict)
+    ):
+        parameter_units.pop("Ea", None)
+    _normalize_numeric_uncertainty(declaration, fields, stated_unit, kind)
+    _normalize_numeric_validity(declaration, content, fields, kind)
+    if isinstance(parameter_units, dict) and not parameter_units:
+        declaration.pop("parameter_units", None)
+    nested = declaration.get("source_declaration")
+    if isinstance(nested, dict):
+        _normalize_numerical_declaration(nested, content, fields, amplitude, unit)
+
+
+def _normalize_numeric_uncertainty(
+    declaration: dict, fields: dict, unit: object, kind: str
+) -> None:
+    uncertainty = declaration.get("uncertainty")
+    if isinstance(uncertainty, dict) and _remove_numerical_declaration(
+        uncertainty,
+        "absolute",
+        uncertainty.get("unit", unit),
+        "amplitude",
+        kind,
+        fields.get("absolute"),
+    ):
+        uncertainty.pop("unit", None)
+        if not uncertainty:
+            declaration.pop("uncertainty")
+
+
+def _declared_parameter_remains(declaration: dict, parameter: str) -> bool:
+    return any(
+        isinstance(declaration.get(key), dict) and parameter in declaration[key]
+        for key in ("parameters", "params")
+    )
+
+
+def _normalize_numeric_validity(declaration: dict, content: dict, fields: dict, kind: str) -> None:
+    validity, parsed = declaration.get("validity"), content.get("validity")
+    if not isinstance(validity, dict) or not isinstance(parsed, dict):
+        return
+    quantity = str(validity.get("quantity", parsed.get("quantity")))
+    if quantity != parsed.get("quantity"):
+        return
+    removed = [
+        _remove_numerical_declaration(
+            validity, key, validity.get("unit"), quantity, kind, fields.get(key)
+        )
+        for key in ("minimum", "maximum")
+    ]
+    if any(removed) and not any(key in validity for key in ("minimum", "maximum")):
+        validity.pop("unit", None)
+    if not validity:
+        declaration.pop("validity")
+
+
+def _remove_numerical_declaration(
+    owner: dict,
+    key: str,
+    unit: object,
+    quantity: str,
+    kind: str,
+    parsed: tuple[float, str, str, float, float] | None,
+) -> bool:
+    stated = _numerical_field(owner.get(key), unit, quantity, kind)
+    if parsed is None or stated is None or not _numerical_fields_equal(stated, parsed):
+        return False
+    owner.pop(key, None)
+    return True
 
 
 def _is_sha256(value: object) -> bool:
@@ -633,6 +889,16 @@ class Property:
         )
 
 
+def property_has_point_qualifier(prop: Property) -> bool:
+    """Whether no declared qualifier prevents ordinary point-value arithmetic.
+
+    This does not qualify a source or infer the meaning of an annotation.
+    Quantity-specific meanings, such as electron nonbinding, belong to the
+    assessment that explicitly interprets them.
+    """
+    return prop.qualifier is None or not prop.qualifier.strip()
+
+
 def _state_properties(
     properties: dict[str, Property],
     excitation_eV: float | None,
@@ -779,14 +1045,25 @@ class Species:
 
 @dataclass(frozen=True)
 class Validity:
+    """A native interval and unevaluated source-declared physical conditions.
+
+    ``covers`` checks only the interval; it does not qualify additional conditions.
+    """
+
     quantity: str
     minimum: float | None = None
     maximum: float | None = None
     unit: str | None = None
+    unresolved_conditions: dict[str, object] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         _typed_number(self.minimum, "validity.minimum")
         _typed_number(self.maximum, "validity.maximum")
+        object.__setattr__(
+            self,
+            "unresolved_conditions",
+            _validity_conditions(self.unresolved_conditions, "validity.unresolved_conditions"),
+        )
 
     def covers(self, value: float | None) -> bool | None:
         if value is None or (self.minimum is None and self.maximum is None):
@@ -830,6 +1107,25 @@ class Uncertainty:
         if not all(math.isfinite(bound) for bound in bounds):
             raise ValueError("uncertainty bounds must be finite")
         return min(bounds), max(bounds)
+
+
+def normalized_properties(
+    data: object,
+    default_tier: str = "imported",
+    default_source: object = None,
+) -> dict[str, Property]:
+    """Read a complete property mapping; malformed declarations are not gaps."""
+    if data is None:
+        return {}
+    if not isinstance(data, dict) or any(
+        not isinstance(name, str) or not name.strip() or not isinstance(entry, dict)
+        for name, entry in data.items()
+    ):
+        raise ValueError("properties must be a mapping of named property records")
+    return {
+        name: normalized_property(entry, default_tier, default_source, quantity=name)
+        for name, entry in data.items()
+    }
 
 
 def normalized_property(
@@ -1021,6 +1317,35 @@ class AssetReference:
         return content
 
 
+def asset_payload(asset: AssetReference) -> dict[str, str | None]:
+    """Serialize the observation and author checksum without rereading the bytes."""
+    return {
+        "path": asset.reference,
+        "sha256": asset.sha256,
+        "declared_sha256": asset.declared_sha256,
+    }
+
+
+def relocated_asset_payload(
+    asset: AssetReference, source_base: Path, destination_base: Path
+) -> dict[str, str | None]:
+    """Change only the storage spelling of the same source asset.
+
+    Missing or changed assets retain their original resolved location and
+    observed/declared checksums. Relocation never repairs their qualification.
+    Cross-volume Windows paths remain absolute when no relative path exists.
+    """
+    location = asset.local_path or Path(asset.reference)
+    if not location.is_absolute():
+        location = source_base / location
+    location = location.resolve()
+    try:
+        reference = os.path.relpath(location, destination_base.resolve()).replace("\\", "/")
+    except ValueError:
+        reference = location.as_posix()
+    return asset_payload(asset) | {"path": reference}
+
+
 def asset_reference(
     value: object,
     base: Path | None = None,
@@ -1085,9 +1410,16 @@ class NumericDataset:
     source_declaration: object = None
     method: str = "unknown"
     review_scope: tuple[str, ...] = ()
+    reaction_target: str | None = None
+    declared_target: dict[str, str | None] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         _record_provenance(self)
+        if self.reaction_target is not None and (
+            not isinstance(self.reaction_target, str) or not self.reaction_target.strip()
+        ):
+            raise ValueError("dataset.reaction_target must be nonempty text")
+        object.__setattr__(self, "declared_target", normalized_dataset_target(self.declared_target))
         if self.asset is not None and not isinstance(self.asset, AssetReference):
             raise ValueError("dataset.asset must be an AssetReference")
         if type(self.preferred) is not bool:
@@ -1126,6 +1458,61 @@ class NumericDataset:
         return self.tier == "estimated"
 
 
+DATASET_TARGET_FIELDS = frozenset(
+    {"reaction", "reaction_id", "family", "type", "third_body", "surface", "stabilization"}
+)
+
+
+def normalized_dataset_target(value: object) -> dict[str, str | None]:
+    """Keep explicit physical assertions separate from an uninterpreted source declaration."""
+    if not isinstance(value, dict) or set(value) - DATASET_TARGET_FIELDS:
+        raise ValueError("dataset.declared_target must contain supported reaction target fields")
+    result: dict[str, str | None] = {}
+    for name, stated in value.items():
+        if stated is None and name in {"third_body", "surface", "stabilization"}:
+            result[name] = None
+        elif not isinstance(stated, str) or not stated.strip():
+            raise ValueError(f"dataset.declared_target.{name} must be nonempty text")
+        else:
+            result[name] = stated.strip()
+    return result
+
+
+def dataset_target_declaration(record: dict) -> dict[str, str | None]:
+    saved = normalized_dataset_target(record.get("declared_target", {}))
+    explicit = normalized_dataset_target(
+        {
+            name: record[name]
+            for name in DATASET_TARGET_FIELDS
+            if name in record
+            and (record[name] is not None or name in {"third_body", "surface", "stabilization"})
+        }
+    )
+    if any(name in saved and saved[name] != value for name, value in explicit.items()):
+        raise ValueError("dataset physical target declarations conflict")
+    return saved | explicit
+
+
+def bind_dataset_target(dataset: NumericDataset, target: str) -> NumericDataset:
+    """Bind a quantity record to its enclosing physical channel, without approving it."""
+    if dataset.reaction_target is not None and dataset.reaction_target != target:
+        raise ValueError(f"dataset {dataset.id} contradicts its physical reaction target")
+    return (
+        dataset if dataset.reaction_target == target else replace(dataset, reaction_target=target)
+    )
+
+
+def validate_numerical_targets(bindings: Iterable[tuple[str, str]]) -> None:
+    """One canonical numerical scientific ID cannot identify different channels."""
+    targets: dict[str, str] = {}
+    for identifier, target in bindings:
+        if identifier in targets and targets[identifier] != target:
+            raise ValueError(
+                "numerical dataset ID is assigned to different physical targets: " + identifier
+            )
+        targets[identifier] = target
+
+
 @dataclass
 class RegistryReaction:
     id: str
@@ -1148,6 +1535,8 @@ class RegistryReaction:
     records: tuple[ReactionRecord, ...] = ()
 
     def __post_init__(self) -> None:
+        validate_stoichiometric_terms(self.reactants)
+        validate_stoichiometric_terms(self.products)
         _record_provenance(self)
         validate_reaction_energy_properties(self.energy_properties)
 
@@ -1261,6 +1650,8 @@ class ReactionRecord:
     review_scope: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
+        validate_stoichiometric_terms(self.equation_key[2])
+        validate_stoichiometric_terms(self.equation_key[3])
         _record_provenance(self)
         validate_reaction_energy_properties(self.energy_properties)
         raw_family = self.family or ""
@@ -1779,15 +2170,7 @@ def normalized_state_record(
     source = _source_mapping(default_source) | _source_mapping(record.get("source"))
     status = str(record.get("status") or "imported")
     tier = _declared_tier(record, evidence_tier(status, source))
-    entries = record.get("properties") or {}
-    if not isinstance(entries, dict) or any(
-        not isinstance(item, dict) for item in entries.values()
-    ):
-        raise ValueError("state record properties must be a mapping of property records")
-    properties = {
-        str(name): normalized_property(entry, default_source=source, quantity=str(name))
-        for name, entry in entries.items()
-    }
+    properties = normalized_properties(record.get("properties"), default_source=source)
     name = record.get("property")
     fit = record.get("thermo") or (record.get("value") if name == "thermo" else None)
     if name and name != "thermo":
@@ -1856,6 +2239,17 @@ def state_record_payload(record: StateRecord) -> dict:
     return _portable_payload({name: value for name, value in payload.items() if value is not None})
 
 
+def selectable_state_record_id(record: StateRecord) -> str:
+    """Name an anonymous legacy declaration using the existing ID rule.
+
+    Existing IDs are preserved. Naming a new result does not change the stored
+    Registry declaration or invent a native source identifier.
+    """
+    return record.record_id or state_record_id(
+        state_record_payload(record), preserved_record_id=True
+    )
+
+
 def _portable_payload(value: Any) -> Any:
     """Use YAML sequence shapes consistently before comparing or persisting records."""
     if isinstance(value, dict):
@@ -1917,7 +2311,12 @@ def normalized_dataset(
         },
         asset=asset,
         validity=_validity(record.get("validity"), _text(record.get("independent_variable"))),
-        uncertainty=_uncertainty(record.get("uncertainty"), parameters, _text(record.get("unit"))),
+        uncertainty=_uncertainty(
+            record.get("uncertainty"),
+            parameters,
+            _text(record.get("unit")),
+            kind,
+        ),
         source=source,
         status=status,
         tier=_declared_tier(record, evidence_tier(status, source)),
@@ -1936,6 +2335,8 @@ def normalized_dataset(
         source_declaration=declaration,
         method=scientific_method(record, default_source),
         review_scope=review_scope(record),
+        reaction_target=record.get("reaction_target"),
+        declared_target=dataset_target_declaration(record),
     )
 
 
@@ -1951,15 +2352,7 @@ def dataset_payload(dataset: NumericDataset) -> dict:
         "observable": dataset.observable,
         "channel_scope": dataset.channel_scope,
         "parameters": dataset.params,
-        "asset": (
-            {
-                "path": dataset.asset.reference,
-                "sha256": dataset.asset.sha256,
-                "declared_sha256": dataset.asset.declared_sha256,
-            }
-            if dataset.asset
-            else None
-        ),
+        "asset": asset_payload(dataset.asset) if dataset.asset else None,
         "validity": _validity_payload(dataset.validity),
         "uncertainty": _uncertainty_payload(dataset.uncertainty),
         "source": dataset.source,
@@ -1973,6 +2366,8 @@ def dataset_payload(dataset: NumericDataset) -> dict:
         "reaction_order": dataset.reaction_order,
         "parameter_units": dataset.parameter_units,
         "reference_temperature_K": dataset.reference_temperature_K,
+        "reaction_target": dataset.reaction_target,
+        "declared_target": dict(dataset.declared_target),
     }
 
 
@@ -1981,22 +2376,51 @@ def _validity(data: object, independent_variable: str | None = None) -> Validity
         return None
     if not isinstance(data, dict):
         raise ValueError("validity must be a mapping")
+    allowed = {item.name for item in fields(Validity)} | {"conditions"}
+    unsupported = data.keys() - allowed
+    if unsupported:
+        raise ValueError("unsupported validity fields: " + ", ".join(sorted(map(str, unsupported))))
     unit = _text(data.get("unit"))
     default_quantity = independent_variable or {
         "K": "unspecified_temperature",
         "Td": "reduced_field",
         "eV": "collision_energy",
     }.get(unit or "", "unspecified")
+    legacy_conditions = _validity_conditions(data.get("conditions", {}), "validity.conditions")
+    unresolved = _validity_conditions(
+        data.get("unresolved_conditions", {}), "validity.unresolved_conditions"
+    )
+    # These two legacy fields describe acquisition/derivation, not physical
+    # applicability. They remain verbatim in the dataset's source_declaration.
+    for name, value in legacy_conditions.items():
+        if name in {"method", "derivation"}:
+            continue
+        if name in unresolved and unresolved[name] != value:
+            raise ValueError(f"conflicting validity condition: {name}")
+        unresolved[name] = value
     return Validity(
         quantity=str(data.get("quantity") or default_quantity),
         minimum=normalized_number(data.get("minimum"), "validity.minimum"),
         maximum=normalized_number(data.get("maximum"), "validity.maximum"),
         unit=unit,
+        unresolved_conditions=unresolved,
     )
 
 
+def _validity_conditions(data: object, name: str) -> dict[str, object]:
+    """Retain unevaluated declarations without inferring their physical meaning."""
+    if not isinstance(data, dict) or any(
+        not isinstance(key, str) or not key.strip() for key in data
+    ):
+        raise ValueError(f"{name} must be a mapping with nonempty text keys")
+    return deepcopy(data)
+
+
 def _uncertainty(
-    data: object, parameters: dict, parent_unit: str | None = None
+    data: object,
+    parameters: dict,
+    parent_unit: str | None = None,
+    quantity_kind: str | None = None,
 ) -> Uncertainty | None:
     if data is None:
         factor = normalized_number(parameters.get("uncertainty_factor"))
@@ -2004,7 +2428,7 @@ def _uncertainty(
         return Uncertainty(factor, relative) if factor is not None or relative is not None else None
     if not isinstance(data, dict):
         raise ValueError("uncertainty must be a mapping")
-    absolute, conversion = _absolute_uncertainty(data, parent_unit)
+    absolute, conversion = _absolute_uncertainty(data, parent_unit, quantity_kind)
     note = "; ".join(text for text in (_text(data.get("note")), conversion) if text) or None
     return Uncertainty(
         factor=normalized_number(data.get("factor")),
@@ -2014,12 +2438,29 @@ def _uncertainty(
     )
 
 
-def _absolute_uncertainty(data: dict, parent_unit: str | None) -> tuple[float | None, str | None]:
+def _absolute_uncertainty(
+    data: dict,
+    parent_unit: str | None,
+    quantity_kind: str | None = None,
+) -> tuple[float | None, str | None]:
     """Absolute bounds use the parent value's unit in the normalized record."""
     absolute = normalized_number(data.get("absolute"))
     declared_unit = _text(data.get("unit"))
     if absolute is None or declared_unit is None or declared_unit == parent_unit:
         return absolute, None
+    if quantity_kind is not None:
+        declared = numerical_unit_basis(declared_unit, quantity_kind)
+        parent = numerical_unit_basis(parent_unit, quantity_kind)
+        if declared is None or parent is None or declared[0] != parent[0]:
+            raise ValueError(
+                "absolute uncertainty unit cannot be converted to the parent value unit"
+            )
+        # Original units stay in source_declaration; note remains the author's
+        # annotation, not an implementation-generated comparison difference.
+        normalized = absolute * declared[1] / parent[1]
+        if not math.isfinite(normalized) or (absolute != 0 and normalized == 0):
+            raise ValueError("absolute uncertainty conversion is outside the numerical range")
+        return normalized, None
     converted = energy_in_eV(absolute, declared_unit)
     parent_scale = energy_in_eV(1.0, parent_unit)
     if converted is None or parent_scale is None:
@@ -2034,12 +2475,15 @@ def _absolute_uncertainty(data: dict, parent_unit: str | None) -> tuple[float | 
 def _validity_payload(value: Validity | None) -> dict | None:
     if value is None:
         return None
-    return {
+    payload: dict[str, object] = {
         "quantity": value.quantity,
         "minimum": value.minimum,
         "maximum": value.maximum,
         "unit": value.unit,
     }
+    if value.unresolved_conditions:
+        payload["unresolved_conditions"] = deepcopy(value.unresolved_conditions)
+    return payload
 
 
 def _uncertainty_payload(value: Uncertainty | None) -> dict | None:

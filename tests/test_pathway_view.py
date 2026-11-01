@@ -93,6 +93,19 @@ def test_pathway_uses_all_reactants_and_minimum_steps_not_generation_depth() -> 
     assert path.state_ids == ("A", "Y")
 
 
+@pytest.mark.parametrize("scale", [1.0, 1e-20, 1e-200])
+def test_positive_production_is_reachable_independently_of_equation_scale(scale):
+    states = [_state("A", feed=True), _state("B")]
+    reaction = _reaction("production", ("A",), ("B",), depth=0)
+    for side in ("reactants", "products"):
+        reaction[side][0]["n"] = scale
+    reachability = reaction_reachability(states, [reaction])
+    assert reachability.state_layers == {"A": 0, "B": 1}
+    assert select_pathway(
+        states, [reaction], target="B", reachability=reachability
+    ).reaction_ids == ("production",)
+
+
 def test_pathway_png_records_scope_target_and_exact_path_count() -> None:
     states = [_state("A", feed=True), _state("Y")]
     reactions = [_reaction("direct", ("A",), ("Y",), depth=9)]

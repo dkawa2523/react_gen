@@ -1,6 +1,6 @@
 # 出典・データ選択基盤の到達点と継続計画
 
-2026-10-12更新。対象：0.7.4 / schema 5。共通出典・独立科学記録・数値3量の選択に続き、asset完全性、状態同定と存在競合、反応エネルギー競合の作用範囲、EAの矛盾処理、形成量の共通参照型と比較前提、量の定義・反応エネルギーの独立Property・判定の具体的不足を実装しました。本書は到達点と残る設計課題を分けます。実装済み形式の詳細は[現行責務](core_design.md)、[公開出力](output_reference.md)、[Registry形式](registry_data_guide.md)、[取得案内](data_sources.md)、今後の順序は[残件計画](remaining_work_plan.md)を参照してください。
+2026-11-01更新。対象：1.0 / schema 5。物性・熱化学モデルの量別選択と対象別指定、WebBook/CollisionDBの取得形式、実際の科学データ補充まで反映しました。本書は到達点と残る設計課題を分けます。実装済み形式の詳細は[現行責務](core_design.md)、[公開出力](output_reference.md)、[Registry形式](registry_data_guide.md)、[取得案内](data_sources.md)、今後の順序は[残件計画](remaining_work_plan.md)を参照してください。
 
 ## 基盤の目的と現在の範囲
 
@@ -13,7 +13,7 @@ flowchart LR
     A[明示取得・原取得物] --> N[共通型・独立記録へ正規化]
     N --> E[対象・量・資格・適用性の評価]
     E --> J[存在・チャネル・エネルギー関係]
-    E --> S[数値3量の比較・選択]
+    E --> S[同じ量の比較・選択]
     U[分析入力のdata_selection] --> S
     S --> C[適格な量による計算]
     J --> R[一つの正規結果]
@@ -22,7 +22,7 @@ flowchart LR
     R --> V[結論・不足・表・図]
 ```
 
-図のdata_selectionは現在、rate_coefficient・cross_section・sticking_coefficientだけです。Property・Thermoや存在/反応根拠の選択指定は未対応で明示エラーになります。curve/probabilityの用途を追加する図ではなく、選択できるdatasetの種類を示しています。
+data_selectionは現在、rate_coefficient・cross_section・sticking_coefficientに加え、形成エンタルピー、IE、EA、励起エネルギーのPropertyとthermochemical_modelを量別に選択できます。対象別指定はdata_selection.targetsで行います。存在・反応根拠の調査範囲の限定は別用途の未実装項目で、数値のonlyが反対根拠を消すことはありません。元の量の選択と、curve/probabilityから別量を作る計算も別の責務です。
 
 ## 修復済みの境界と残る課題
 
@@ -31,14 +31,30 @@ flowchart LR
 | 反応の物理対象 | 電荷交換の対応基底状態を組成・電荷・相・構造・唯一性で探索。elasticの同一性を式から確認 | 全processの物理モデルや未知の誘起機構を確定したわけではない |
 | 複数チャネル | 同PairKeyの別ファイルから全チャネルを保持。重複IDは同内容でも位置付きエラー | 入力側は独立記録に一意なIDを与える。ファイル名を優先規則に使わない |
 | 存在と物性 | 存在主張の競合は存在命題へ限定し、同一対象のexact照合と独立量を保持。unknown記録でEAの束縛推論を隠さない | EA束縛は全分解経路の安定性・観測存在・寿命ではない。存在不明の機構を量の利用成功で承認しない |
-| 熱化学 | 物性・反応エネルギー量の競合を依存する命題へ限定。NASAの係数・温度範囲・相・基準圧を比較。形成量は共通温度・標準元素基準・標準圧と必要な電子規約/電子形成量を検査。反応エネルギー各量の定義・独立資格・根拠・誤差を共通Propertyへ保存 | 旧形成量の元資料・参照条件、利用者のProperty/NASA選択、数値datasetの複合条件と新モデル条件は残る |
+| 熱化学 | 物性・反応エネルギー量の競合を依存する命題へ限定。NASAの係数・温度範囲・相・基準圧を比較。形成量は共通温度・標準元素基準・標準圧と必要な電子規約/電子形成量を検査。Property/NASAの量別・対象別選択を実装 | 未確認の旧形成量の元資料・参照条件、複合条件、新しい熱モデルと参照変換は残る |
 | 科学記録の保存 | 状態はstate_records / species.records、反応はreaction_records / channels[].recordsで独立保存。反応threshold/deltaEもenergy_propertiesへ量ごとに保存。共通原ID生成・科学内容比較と、原宣言を保持する再取得併記を実装 | confidence・相関の統計利用や未対応の物理モデルに必要な条件は、その量・モデルの用途に応じて追加する。旧値へ未確認の情報を補わない |
 | 各主張の資格 | 状態存在、各Property量、熱化学モデル、チャネル、閾値、エネルギー差へ明示review_scopeを適用。数値だけの審査を別主張へ広げず、拒否された宣言を使わない | 無scope旧宣言は既存資格の互換範囲。独立量の参照条件・根拠は必要量から整える |
 | assetの保存・比較 | 作者の宣言hashと保存実測hashを保持し、実際に解析・採用するbytesを照合。同じ検証bytesの保存場所だけを科学比較から分離 | 未観測・不一致bytesは利用しない。元宣言の保全は科学的な承認ではない |
-| 入力・正規結果 | CLI/APIが同じCase.data_selectionを使う。選択要求・不一致をDataUseに保存し、採用対象・方針の整合を再読込みでも検査 | Property/Thermo、判定の根拠範囲は今後の拡張。数値採用と証拠支持を同義にしない |
-| 取得・台帳 | ASD注記、RATE12/22、LXCat未宣言scope/observable、PyroMatのh(T)を修復。chemicals熱化学は選択tableとpackage版・原IDを保存。source_catalog一本へ取得先・提供量・converterを整理 | 旧chemicals記録と他adapterの実際のmethod・元測定情報、ASD導出概要の責務分離、UMIST加算モデルは残る |
+| 入力・正規結果 | CLI/APIが同じCase.data_selectionを使い、量別・対象別要求を保存。rgen recordsで対象の保存済み科学記録を確認。判定・計算・係数の不足ラベルとsummary.coverageを保存 | 根拠範囲を限定する調査は別用途。数値採用と証拠支持を同義にせず、不足率を機構の完成度と呼ばない |
+| 取得・台帳 | ASD、RATE12/22、LXCat、PyroMat、chemicals等に加え、保存WebBookページとCollisionDBのJSON-header/数表を既存共通型へ渡す。実取得したNASA/断面積の原ID・版・hash・適用範囲を保存 | 旧chemicals記録等の上流method・元測定情報、ASDの新しい導出用途、UMIST加算モデル、個別原資料の条件確認は残る |
 
 監査時の`build/judgment_boundary_audit.py`と同json、`build/remaining_plan_status_2026-10-12.json`は実装前の履歴です。旧不具合を期待するassertionを含み、現行の回帰検証として実行しません。相・構造・順序、同pair、量間競合、同値NASA別source、unknown記録、数値とチャネルの独立性は対応するtestsで確認します。synthetic fixtureは検証用で、Registryへ科学値として追加していません。
+
+### 実取得・補充した量の範囲
+
+NASA TM-4513由来のCantera v3.2.0 nasa_gas.yamlを公式配布先から取得し、組成・電荷・気相と原資料の構造区分を照合しました。37中性種の一致fitの出典・温度域・標準参照を整備し、6種の欠落fitを追加、9種の別fitは独立記録へ保存しました。35中性種には域内のH(298.15 K)から形成量をcalculated/derivedとして追加しました。3イオンfitは電子規約未確認のためimportedです。これは対象別処置の記録であり、独立測定数や汎用ガス全体の充足率ではありません。
+
+原NASA報告の気相標準圧力は1 barです。該当fitには100000 Paを明示し、Canteraが圧力省略時に使う1 atmを別の原宣言として保持しました。既存air.yamlの独立審査済みAr/O2 fitをこの原資料で上書きしていません。Hf298の導出には元fit・式・定数・参照温度・元素基準・標準圧を保存し、300 Kから始まるfitの外挿、イオンの電子規約、励起/lumped人口を補いません。
+
+CollisionDB D108105のH(1s)電子電離曲線は、原評価のbare H+生成とfitに照合した500点をm2へ正規化しました。単純な原子電離では分子fragmentや電子励起生成物への総量配分を必要とせず、放出電子の運動エネルギーを合計した積分断面積を扱います。原数表下端13.6 eVとfit下限13.601 eVを別に保持します。元のexperimental宣言とfitから作られた数表のcalculated方法、推薦精度とfitのrms偏差も区別しています。曲線のvalidはEEDF平均係数の利用成功ではありません。
+
+補充の原資料・権利・原値回帰は[科学審査記録](scientific_data_review.md)、未解決の対象・量・阻害理由・次の作業は[補完保留一覧](../registry/data_notes/data_supplementation_pending.yaml)を参照してください。Pateauの適用条件、旧総過程の準位別分岐、取得失敗、UMIST原形式不正、引用不整合を、別資料の条件や理論値で穴埋めしていません。
+
+### 不足率の意味
+
+保存された判定は、命題の不成立とdata_missing、review_required、input_missing、selection_required、model_unsupported等の未確定理由を区別します。複数の不足原因が残る結果は原因を保持し、否定根拠で既に決まった命題に補助データ不足を競合させません。summary.coverageの分母は明示した生成範囲内の当該判定・計算の適用対象です。複数原因を持つ未確定には原因別集計が重なる場合があり、作業件数、独立出典数、現実の機構完成度や予測精度に読み替えません。
+
+一般入力のH2O/CH4/NH3/H2・N2で、存在unknownと熱モデル利用/ΔH・ΔG・K計算の独立性、実断面積validと係数変換不足の独立性を確認しました。rgen recordsから対象別recordを指定した結果も保存し、値と不足統計が無指定時の同じ適格記録と一致することを確認しています。例の件数を全ガスの完了基準にはしません。
 
 ## 判定に必要なデータと、決まらないこと
 
@@ -55,10 +71,10 @@ flowchart LR
 | 数値の選択 | 各記録の評価、同じ量の比較、分析要求 | 採用記録、方針、残る不一致・不足 | 同定・存在・チャネル承認、データ品質の昇格 |
 | エネルギー関係 | 関係の命題、対応状態のIE/EA/準位/閾値、基準・不確かさ、必要な衝突条件 | 関係の成立・不成立・未確定 | 発生、遷移確率、速度 |
 | 種の熱化学値 | 同定対象、適格なモデル/宣言値、温度・参照状態・範囲 | 指定条件のH/S等と単位、入力record | 種の存在、他温度、全物性の承認 |
-| 反応の熱化学値 | 正規反応、参加状態の必要量、共通の温度・基準・標準状態 | 計算可能なΔH・標準ΔG・対応するK | 障壁、速度、非平衡の方向・人口。HfだけからS/Gを補わない |
+| 反応の熱化学値 | 正規反応、寄与する状態の必要量、共通の温度・基準・標準状態 | ΔH・標準ΔG・対応するKそれぞれの計算状態、値・単位・実際の条件・作業 | 障壁、速度、非平衡の方向・人口。HfだけからS/Gを補わない |
 | チャネル根拠 | 反応物理キー、process、生成物状態、安定化、チャネル主張と審査 | 当該チャネルの支持・矛盾・不足 | totalからの状態別分岐、数値reviewからの存在承認、機構完成 |
 | 速度係数 | チャネル・次数、同じ量の速度則、Tg/Te等、出典条件、採用方針 | 指定条件のkと単位、record・不足 | 反応量、時間発展。密度と境界は別入力 |
-| 断面積/確率の参照・評価（用途拡張） | 過程・observable・エネルギー軸・曲線、または材料/表面/入射条件・確率モデル | 曲線/指定点の断面積、指定条件の確率 | 分布積分したk、表面flux |
+| 元の断面積/確率の評価 | 過程・observable・エネルギー軸・曲線、または材料/表面/入射条件・確率モデル | 曲線の利用可否、指定条件の確率。DatasetAssessmentに量・scope・その評価の作業を保存 | 点問い合わせの断面積値、分布積分したk、表面flux |
 | 分布積分/flux変換（未実装） | 適格データと明示分布・規格化・積分域、または入射flux/幾何条件 | 指定モデルの係数・flux・源項 | EEDF自体、機構完成、予測精度 |
 | 表・不足・保存 | 一つの正規結果 | 同じ対象・命題・値・条件の表示と保存 | 表示順による再判定 |
 
@@ -66,13 +82,15 @@ flowchart LR
 
 状態のthermochemistryは`thermochemical_representation_availability`、つまり審査された形成量またはNASA表現を持つかという結論です。指定温度での利用可否や種の存在は示しません。反応のthermochemistryには`elastic_internal_energy_identity`、`ionization_threshold_lower_bound`、`penning_energy_requirement`、`charge_transfer_energy_defect_consistency`等のpropositionを付け、どの関係を判定したかを保存します。ΔH・ΔG・Kは計算値であり、値が求まったことを反応発生のpassへ変換しません。
 
-形成量はPropertyの`formation_reference`へ参照温度、`standard_elements`の元素基準、標準圧、必要な電子規約・電子形成量を正規化します。ΔHは全参加状態の共通参照を検査して計算し、`delta_h_reference_temperature_K`と`delta_h_standard_pressure_Pa`を併記します。利用者の気体温度を参照温度へ無言で転用しません。欠落・不一致はΔHだけを未確定にし、NASAのΔG/Kや独立したエネルギー関係を維持します。0 K/有限温度、異なる参照温度・電子規約を自動補正するモデルは未実装です。旧Registryの条件確認は科学データ整備として残ります。[形成量の現行形式](registry_data_guide.md#形成エンタルピーの参照)と[根拠・検証](scientific_data_review.md#形成量の共通参照と電子熱化学規約)を参照してください。
+形成量はPropertyの`formation_reference`へ参照温度、`standard_elements`の元素基準、標準圧、必要な電子規約・電子形成量を正規化します。ΔHは正味寄与する参加状態の共通参照を検査して計算し、`delta_h_reference_temperature_K`と`delta_h_standard_pressure_Pa`を併記します。利用者の気体温度を参照温度へ無言で転用しません。欠落・不一致はΔHだけを未確定にし、NASAのΔG/Kや独立したエネルギー関係を維持します。0 K/有限温度、異なる参照温度・電子規約を自動補正するモデルは未実装です。旧Registryの条件確認は科学データ整備として残ります。[形成量の現行形式](registry_data_guide.md#形成エンタルピーの参照)と[根拠・検証](scientific_data_review.md#形成量の共通参照と電子熱化学規約)を参照してください。
 
 NASA7のH/S/Cp計算では、対象・温度範囲・相・基準圧を扱います。NASA9・ShomateをNASA7へ読み替えません。モデルを増やす場合は同じ物理量を返す正しい評価式と基準を設計します。[Canteraの公式モデル仕様](https://cantera.org/stable/reference/thermo/species-thermo.html)を既存の科学仕様の参照先とします。平衡計算のKは指定標準状態・モデル内の量で、混合組成を入力しない現行計算から実際の平衡組成や非平衡の方向は決まりません。
 
+各ThermochemicalCalculationが値・単位・条件・実行状態・必要作業を返し、エネルギー関係の不足と混ぜません。同じ物理状態の正味ゼロの項は加法的な熱化学演算だけで相殺し、状態支持・保存則・速度の参加者からは消しません。表面reservoirを含む収支が未実装の場合は、気相参加種だけの差を表面反応全体の熱化学量として返しません。
+
 ### adapter、評価、計算の境界
 
-adapterは外部の記号・欄・単位と元の主張を正規型へ渡します。同定、量の使用評価、選択、物理関係は共通処理が担います。provider名を見て不足を補う科学的分岐を追加しません。ASDのJ成分集約・保持したE1経路の概要は取得側に残っており、原準位解釈と導出処理の分離が継続課題です。掲載E1情報は全寿命を決めません。
+adapterは外部の記号・欄・単位と元の主張を正規型へ渡します。同定、量の使用評価、選択、物理関係は共通処理が担います。provider名を見て不足を補う科学的分岐を追加しません。ASDは原応答・原準位の読取りとJ/E1概要の生成を別の関数で行い、両情報を保持します。今後の独立した導出用途には、その入力record・式・範囲を設計します。掲載E1情報は全寿命を決めません。
 
 直接snapshotとingest/adoptで、同じ科学主張を同じ正規型へ渡します。状態・反応・数値の来歴と原宣言を往復し、反応根拠・閾値・エネルギー差も独立反応記録として評価へ供給します。純粋な反応主張には空の数値datasetを作らず、明示数値だけを別の量集合へ保存します。反応過程が未同定の宣言は特定過程へ無言で合わせず、確認待ちとして返します。
 
@@ -89,7 +107,7 @@ adapterは外部の記号・欄・単位と元の主張を正規型へ渡しま�
 
 方法をsource_typeの文字列から推測する処理を止めました。既存tier/statusは境界adapterとして受理しますが、方法と審査を同義にしません。SourceRefは全情報を押し込むpayloadではなく、小さな出典参照です。未知の原欄はsource_declarationへ保持します。
 
-ReactionRecordの明示review_scopeはchannel_assertion、threshold_eV、delta_e_eV等の該当主張だけを資格付けします。数値snapshotでform・parameters・asset・data・value・unit等を宣言した記録の無scopeは、そのdataset.kindへ限定します。独立channelの無scope旧宣言は既存資格の互換範囲で、数値の掲載をchannelやenergyの審査へ読み替えません。これは各量に独立した出典・tier・誤差を持たせた完成形式ではありません。
+ReactionRecordの明示review_scopeはchannel_assertion、threshold_eV、delta_e_eV等の該当主張だけを資格付けします。数値snapshotでform・parameters・asset・data・value・unit等を宣言した記録の無scopeは、そのdataset.kindへ限定します。独立channelの無scope旧宣言は既存資格の互換範囲で、数値の掲載をchannelやenergyの審査へ読み替えません。反応エネルギーはenergy_propertiesの各Propertyに独立した出典・tier・誤差・定義を保存します。旧親資格の受理は外部形式の互換範囲で、独立量の承認を追加しません。
 
 StateRecordの存在にはstate_existence、Propertyには各量名、NASAにはthermochemical_modelのscopeを使います。空scopeだけを旧無指定資格として扱い、不正なfalsey値をそこへ読み替えません。存在審査から自動生成した励起scalarにも親scope/statusを引き継ぎ、数値審査へ昇格させません。statusのrejected/conflictingは当該科学宣言の利用停止で、物理現象の否定ではありません。
 
@@ -107,8 +125,8 @@ StateRecordの存在にはstate_existence、Propertyには各量名、NASAには
 | overlay reaction_records | canonical reaction IDごとの独立ReactionRecord list。反応根拠・閾値・エネルギー差と各記録の資格を保持 | 数値はdatasetsへ置く。対象・過程が異なる宣言とembedded datasetsは拒否する |
 | Registry species records | 対象の既存定義を保ち、独立科学recordを追加 | adoptは値の使用方針を永久preferredへ書き戻さず、同ID異内容を消さない |
 | Registry channel records | 既存チャネルを変更せず、独立反応宣言を追加 | 保存containerの選択は科学的な優先ではない。従来の単一channel宣言は境界adapterで保持 |
-| 分析入力 | 物理conditionsと別のdata_selection | 今回は数値3量。通常利用に選択を必須としない |
-| result.yaml | 候補・証拠・判定・値・選択・不一致・不足の正規結果 | schema 5にproposition、selection、disagreementsを任意項目として追加。旧schema 5結果も読込対象 |
+| 分析入力 | 物理conditionsと別のdata_selection。量別方針と対象別上書き | 必要な量だけ任意に指定する。通常利用に選択を必須としない |
+| result.yaml | 候補・証拠・判定・値・選択・不一致・不足ラベル・coverageの正規結果 | schema 5の拡張項目として保存。旧結果を再判定せず、旧形式に無いラベルを新しい科学判断として補わない |
 
 数値記録の明示idは既存の正規IDとして保ち、原資料のrecord_idはprovider・collection・release等と組み合わせます。匿名数値の内容IDと重複比較では、科学条件を保持し、標準取得文脈の時刻・URL・保存場所だけで別科学記録や競合にしません。再取得の各原宣言は保存します。
 
@@ -120,9 +138,9 @@ StateRecordの存在にはstate_existence、Propertyには各量名、NASAには
 
 assetは作者の宣言hashと保存実測hashを保持し、解析に使う同じbytesを照合します。再読込みで保存hashを更新せず、読込み後の変更も旧資格のまま利用しません。同じ検証済みbytesの保存場所だけを科学比較から分け、原取得場所・原宣言は保全します。混合snapshotの反応主張と数値は別に比較し、数値の科学内容変更はdataset側で検出します。未知の科学条件や検証できないbytesを同一化しません。
 
-形成量の参照型と使用前提の検査は実装済みです。旧形成量の元条件確認、数値datasetに実際に必要なAND条件、反応エネルギー各量の独立した資格・根拠、加算/区間/setモデルは残ります。これらを全量・全モデルへ一括実装する計画ではありません。意味を比較・利用できない原欄は保持し、必要な量のdecoderと科学評価を追加した範囲から使います。
+形成量の参照型と使用前提、反応エネルギーの独立量型・資格の検査は実装済みです。旧記録の元条件・根拠の審査、数値datasetに実際に必要なAND条件、加算/区間/setモデルは残ります。これらを全量・全モデルへ一括実装する計画ではありません。意味を比較・利用できない原欄は保持し、必要な量のdecoderと科学評価を追加した範囲から使います。
 
-## 利用者が指定する数値選択
+## 利用者が指定する量別・対象別選択
 
 分析YAMLの任意入力例です。指定providerは実際の科学記録のprovenanceへ対応させます。この指定は取得を起動しません。
 
@@ -136,20 +154,26 @@ data_selection:
     cross_section:
       mode: only
       providers: [lxcat]
+  targets:
+    H3N@ground:
+      thermochemical_model:
+        record: NASA_TM4513_Cantera_3.2.0:NH3
 ```
+
+対象IDと記録IDは保存結果のrgen recordsで確認します。ここでのH3N@groundはNH3の正規対象表記で、例のガス名による処理分岐ではありません。存在資格、採用した物性、熱モデルは同じStateRecord内でも量・命題ごとに独立して評価します。
 
 | 指定 | 現行の意味 | 指定しても成立しないこと |
 |---|---|---|
-| prefer | 指定したmethod→provider→collection軸だけ辞書式に順位付け。未掲載は各軸で同順位のfallback。確定的な不適用/範囲外等なら他記録を検討 | 高順位記録の未確定条件を捨てること。高順位の不足はneeds_inputへ残す |
+| prefer | 比較可能な同じ量の中でmethod→provider→collection軸を辞書式に順位付け。数値datasetはobservable・次数、Propertyは量定義・参照、Thermoは対象・参照・実際の適用域を確認。未掲載は各軸で同順位のfallback。確定的な不適用/範囲外等なら他記録を検討 | 高順位記録の未確定条件を捨てること。高順位の不足は依存する量の結果へ残す |
 | only | 指定軸をすべて満たす許可集合へ限定。list順は順位にしない | 指定外の値を黙って使うこと、未知の取得値を作ること |
-| record | 分析全体の量別方針として固定IDを各反応へ適用。指定IDを持たない反応の同量はunavailable。onlyと矛盾する指定は入力エラー | 単位・scope・次数・資格・条件の検査を回避すること、他反応の値を同じIDで補うこと |
+| record | 指定量の記録IDを固定。quantitiesなら分析全体の同量、targetsなら指定対象の同量だけに作用し、対象別指定が全体指定を上書き。指定IDがなければ当該量の選択不足を返す | 単位・scope・次数・資格・条件の検査を回避すること、他対象や別量へ固定IDを転用すること |
 | 無指定 | 適格記録を比較。同値は安定した代表、同順位異値は競合 | 入力順・名前順・release名で科学的競合を解消すること |
 
-無指定量の既存preferredは移行用の互換処理として一か所に残り、使用時にdeprecated理由を返します。明示data_selectionは同量のpreferredを使いません。撤去予定は0.8で、利用者の採用方針を分析入力へ移します。
+無指定量の既存preferredは移行用の互換処理として一か所に残り、使用時にdeprecated理由を返します。明示data_selectionは同量のpreferredを使いません。撤去予定は2.0で、利用者の採用方針を分析入力へ移します。
 
-DataUse.selectionには要求全体、disagreementsには他の適格値やrecord ID衝突の参照を保存します。採用値があっても不一致は残り、結果を総意とは扱いません。保存・再読込みで、要求と入力、採用ID・kindと証拠、only/record/preferの対応、不一致ID参照を検査します。
+入力のdata_selectionは保存し、DataUse.selectionには係数用途の要求、disagreementsには他の適格値やrecord ID衝突の参照を保存します。Property/Thermoも共通要求を量ごとに評価し、選択不足はその量に依存する判定・計算へ返します。採用値があっても不一致は残り、結果を総意とは扱いません。保存・再読込みで、要求と入力、採用ID・kindと証拠、only/record/preferの対応、不一致ID参照を検査します。
 
-Property/Thermoの優先、存在・反応の根拠範囲、上流根拠を測定のみに限定する要求は未対応です。特に数値のonlyは証拠の反対主張を消す機能ではありません。新しい量の選択は、その比較基準・必要入力・返す結論を整えてから追加します。
+Property/Thermoの優先・限定・record固定は実装済みです。存在・反応の根拠範囲や、evaluated値の上流根拠まで測定のみに限定する要求は別用途として未対応です。数値のonlyは収録された反対主張を消しません。新しい物理量の選択は、その比較基準・必要入力・返す結論を整えてから追加します。
 
 ## 取得先を追加するときの責務
 
@@ -168,10 +192,22 @@ Property/Thermoの優先、存在・反応の根拠範囲、上流根拠を測�
 
 ASDは原応答・全準位・注記を保持し、未知の基準/疑義等では概要の数値化を保留します。PyroMatはh(T)・参照条件・modelを保持し、形成量として取得しません。UMISTはRATE12の8欄とRATE22の9欄を検証し、electron_temperatureとgas_temperatureを区別します。加算の可能性がある重複行はreference_only、未対応過程は係数化せずraw取得物へ保持します。LXCatは未宣言scopeをunknown、ELASTICだけで総/運動量移行を確定せず、未完table/blockを入力エラーとします。
 
+WebBookは識別された保存ページから気相形成量とIE/EAの原行を個別記録へ変換し、構造・測定状態・量定義の未確認を保持します。CollisionDBは元の状態付き反応、方法、frame、fit、不確かさを保持した数表を変換し、明示mappingを科学審査と混同しません。WebBookのShomate、CollisionDBの微分量・重粒子の未対応軸等は、それぞれ必要なモデルと共通量を設計して対応する対象です。
+
 今回取得した公式RATE22 fileは5488行目の不正quoteでparserが拒否します。原資料を黙って修正せず、入力修復の確認が必要です。確認file/hash・範囲は実施記録へ保存します。取得先・権利の確認は[出典・ライセンス方針](source_license_policy.md)に従い、公開閲覧・API・再配布を区別します。
 
 ## 次の実装と完了条件
 
-未完作業の順序と科学データの優先対象は[残件計画](remaining_work_plan.md#次に進める作業単位)へ集約します。数値datasetの複合適用条件、独立エネルギー資格、その量の選択へ進みます。形成量の参照型・検査の完了を、旧データの条件確認やC2全体の完了とは扱いません。完了した境界修復を別の有効仕様として残しません。EEDF・flux・時間発展は別用途の拡張です。
+未完作業の順序は[残件計画](remaining_work_plan.md)へ集約します。原科学記録の不変性、記録IDと対象の対応、正規化前の入力検証、拒否・競合・欠測の分類、保存と評価入口の境界は改修済みです。[実施記録](reaction_state_generation_implementation_plan.md#2026-10-31科学記録対象同定判定責務の改修と再レビュー)に検証範囲を残し、完了した境界修復を未完の別仕様として管理しません。残る作業は、必要用途のモデル拡張と、その対象・量に応じた原資料・条件の補充です。形成量の参照型・検査の完了は、旧データの条件確認や複合条件全体の完了を意味しません。
+
+| 残る範囲 | 進める条件と完了基準 |
+|---|---|
+| 原資料・対象・条件の補充 | 保留一覧の対象・量から原資料を照合し、確認できた条件だけ追加する。HTTP failure、形式不正、source不一致をデータ不存在へ読み替えない |
+| 新しい熱モデル・参照変換 | NASA9・Shomate等を元式と適用範囲で評価する。異なる標準圧・温度・電子規約の変換は必要な理論と参照を明示し、共通のH/S/ΔG入力へ渡す |
+| 条件依存速度・曲線の用途 | 温度/圧力/bath gasの複合条件や、加算/区間/alternativeモデルを実際に使う量から設計する。EEDF積分・表面fluxは明示分布/fluxを入力する別計算として実装する |
+| 新しい取得量・出典形式 | 同じ量を供給する外部DB/社内fileは既存共通型と選択を使う。状態別分岐、異性体、微分量等の別量を既存欄へ押し込まない |
+| DBで得られない必要量 | [独立計算packageの将来設計](data_generation_plan.md)に従い、量に合う方法を必要になった時に別ディレクトリーへ実装する。原資料や測定が必要な欠落を物理計算だけで解消できると説明しない |
+
+EEDF・flux・時間発展は別用途の拡張です。空package、仮の標準値、全DBの専用APIや登録frameworkを先行実装する計画にはしません。
 
 各変更で、意味を保った正規入力・出力、保存往復、同ID異内容、量ごとの競合、単位・基準・Tg/Te、scope、条件不足、選択要求を検証し、対応する文書/schemaを更新します。同じ根拠内容ならDB名・URL・保管経路・入力順の変更だけで科学的結果が変わらないことを確認します。新しい反対根拠・適用条件が加わって結果が変わる場合は、何が変わったかを示します。

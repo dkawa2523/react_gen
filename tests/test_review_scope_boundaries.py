@@ -97,7 +97,9 @@ def test_rejected_or_conflicting_source_cannot_be_approved_by_a_reviewed_tier(tm
         == "unknown"
     )
     assert "threshold_eV" not in analysis.evaluation.thermochemistry.get(reaction.id, {})
-    assert analysis.evaluation.data_use[reaction.id].status == "unavailable"
+    use = analysis.evaluation.data_use[reaction.id]
+    assert use.status == ("conflict" if status == "conflicting" else "unavailable")
+    assert use.value is None
 
 
 def channel_declaration(reaction) -> ReactionRecord:

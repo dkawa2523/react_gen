@@ -1,6 +1,105 @@
 # 科学データの個別審査記録
 
-2026-10-12更新。以下は対象データを個別に照合した結果です。物性・速度データの確認を、参加状態の存在承認や機構全体の妥当性へ広げません。
+2026-10-13更新。以下は対象データを個別に照合した結果です。物性・速度データの確認を、参加状態の存在承認や機構全体の妥当性へ広げません。
+
+## 気相NASA7とモデル由来の298.15 K形成量の補充
+
+[Cantera v3.2.0のnasa_gas.yaml](https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml)、
+[原資料NASA TM-4513](https://ntrs.nasa.gov/citations/19940013151)、同版のBSD licenceを
+2026-10-13に実取得しました。原YAMLのSHA-256は
+`4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db`、原報告PDFは
+`6b274fb921918f938b01d4525d8a7b7e8dff50b9990a496886db32354e2c4947`です。
+[取得・対象別処置・権利の記録](../registry/sources/nasa_thermochemistry_2026.yaml)に版、原ID、
+native note、取得先、全hashと対象ごとの処置を残しました。
+
+対象の選別はベンチマーク名によらず、気相基底種の組成・電荷と原資料の構造区分で行いました。
+原資料に一意の対応がある37中性種では、全14係数が既存fitと一致することを照合し、原温度域、
+参照、出典と限定した`thermochemical_model`資格を補充しました。C、CH4、H2O、OH、CH3、NH2には
+欠けていたfitを追加しました。H2Oと三つの中性ラジカルは新しい対象記録です。9種の異なる既存fitは
+上書きせず、NASA fitを別の`records`へ残しました。既に独立に審査したAr/O2のair.yaml fitは
+その原条件を維持しています。N+、O+、O2+の新fitは電子熱化学規約を確認できていないため
+`imported`のままで、数値係数の存在から利用資格や状態存在を承認していません。
+
+原報告の印刷pp.1–2は気相の標準圧力を1 barと明記しています。したがって、この原fitには
+`standard_pressure_Pa: 100000`を採用しました。Cantera YAMLの圧力省略時にソフトウェアが使う
+1 atmは、原係数が定義された圧力の証拠ではありません。原宣言にはソフトウェアの既定値も別に
+保持し、物理的な標準参照と区別します。単一温度区間は同じ係数をlow/highに保持する表現で、
+架空の温度境界や追加の温度依存は作りません。
+
+原報告の印刷p.3では、298.15 Kのassigned enthalpyを標準形成エンタルピーに等しく置いています。
+この参照とNASA7式に基づき、298.15 Kがfit域内にある35中性種にモデル由来の形成量を追加しました。
+`method: calculated`、`tier: derived`とし、元fit、式、定数、温度、標準圧力、元素基準を保持します。
+既存scalar形成量は消さず、独立した記録として照合・選択できます。300 Kから始まるfitを
+298.15 Kへ外挿せず、イオン、励起種、lumped状態への形成量も導いていません。
+
+CH4とH2Oは原表Table IIの印刷pp.19/32を画像と全文で照合しました。
+原表の`H(298.15)/R`はそれぞれ`-8972.26656 K`、`-29084.8168 K`です。
+係数からの計算は両方とも`1e-4 K`以内で対応します。これはfitの丸めの確認であり測定精度では
+ありません。原報告のR=8.314510と現行計算のR=8.314462618の違いも記録します。
+現行定数による名目形成量はCH4が約-74.5996 kJ/mol、H2Oが約-241.8246 kJ/molです。
+これらを新しい実測値や現行の最良推薦値と呼びません。全追加fitの正の熱容量と
+`dH/dT = T dS/dT`を域内で確認し、区間境界のfit丸めは元係数のまま保持しました。
+
+NASA報告はNTRSが政府著作物・public use permittedと表示し、Cantera由来の転記には
+[BSD notice](../registry/data_notes/Cantera-LICENSE.txt)を保持します。
+これらは熱モデルとその形成量の確認であり、状態存在、非平衡人口、反応発生、断面積・速度、
+不確かさを含む予測精度の承認ではありません。別構造候補があるC2H2を含む、
+一意にfitを得られなかった12対象は選択せず、原資料検索・計算/測定の対象として不足を維持します。
+
+## CollisionDBの実数値曲線と取得失敗の扱い
+
+[CollisionDBの専用license](https://db-amdis.org/collisiondb/licence/)は、明示された例外を除き
+data/metadataをCC BY 4.0としています。一般的なIAEAサイト規約だけから許諾を推測せず、
+この専用規定と個別記録の宣言を確認しました。原著DOI、native状態表記、方法、量と単位、
+不確かさ、fit由来か否かを保存したうえで取得・変換します。
+
+公式downloadからD2984、D108105、D109777の実数値表を取得しました。D2984はH2の
+X1Σg+, v=0からa3Σg+へのMCCCによる解離性励起曲線です。原33点の保存範囲は
+14.68–150 eV、断面積cm2、宣言不確かさ10%です。a3Σg+を束縛したH2励起状態へ同定したり、
+生成するH原子の準位別係数に配分したりしません。
+
+D108105はH(1s)の電子電離曲線で、元記録が`IAEA-APID-4 (1993), p28`のfit由来と宣言します。
+`experimental`は元資料の方法、配布数表はfitから計算された値です。`fit_unc_perc: 1.3`を
+全測定不確かさへ読み替えず、明示されたfit下限13.601 eVと数表範囲も別に保持します。
+曲線を取得・正規化できても、EEDF平均速度係数、実際の発生率、機構の完成を決めません。
+
+[原資料のsection 1.2.1、印刷p.28](https://www-pub.iaea.org/MTCD/Publications/PDF/Pub23vol4_web.pdf)
+ではH(1s)からbare H+への反応、六つのfit係数、推薦断面積の精度10%またはそれ以上、fitの
+rms偏差1.3%と最大偏差4.4%（17.2 eV）を確認しました。今回、配布fitから既に作られた500点を
+`cm2`から`m2`へ正規化し、[出典・変換・CC BY 4.0の表示](../registry/sources/collisiondb_2026.yaml)
+とともにRegistryへ追加しました。原数表の13.6–100000 eVとfit下限13.601 eVを区別します。
+H+は電子を持たないため、この特定の原子電離では分子のfragmentや電子励起生成物へ総量を
+配分する問題はありません。全放出電子の運動エネルギーは合計した量で、微分断面積ではありません。
+40 eVの原推薦値`5.88e-17 cm2`との対応、asset hash、曲線利用とEEDF積分の境界を回帰確認しました。
+推薦精度を統計的な信頼区間に変えず、名目閾値13.6 eVの独立資格も付けませんでした。
+
+D109777はCCCによるH電離と記述されていますが、宣言DOI
+`10.1088/0953-4075/43/14/144006`の書誌は重粒子弾性輸送断面積論文を指します。
+原宣言は保持し、原著との対応を確認するまで数値資格を承認しません。別DOIを推測で補いません。
+
+NIST SRD107のCH4/NH3/H2O/N2公式ASCIIリンクはHTTP 500、直接アクセスは403となりました。
+これは取得failureであり、物理データ不存在や反応の棄却とは扱いません。BEB式を代わりに実行した
+疑似取得にも置き換えず、数値asset未取得として再取得または独立計算の検討へ残します。
+
+## 原条件回復の再取得と未解決対象
+
+Pateau、Wildt1988、Gaucherel/Rowe1977の公式原資料を2026-10-13に再取得しましたが、
+直接要求はいずれもHTTP403でした。既存のabstract・原表から確認した値やscopeを維持し、
+別の論文の温度、reactor運転点、利用者入力から、原係数の適用域や生成物分岐を補いません。
+元の係数の条件を回復する作業と、独立した理論計算・測定で別の係数を作る作業を分けます。
+
+UMISTの公式RATE22配布は取得でき、2,694,792 bytes、SHA-256
+`2f83cdd0905e5dd50494f23bc5faf559a617d866b365cf9d1c5fef3621a1a219`でした。
+現行のstrict parserはline5488の注記末尾のquote不整合を拒否します。
+これはHe+ + CH2CHCHOの行の外部形式不正であり、全RATE22のデータ不存在でも、
+当該反応の物理的な棄却でもありません。原記録を保持した修正版の確認が必要です。
+重なる温度fitを足せるか、代替fitなのかという科学的な採用判断は、その形式修復と別に残ります。
+
+[補完保留一覧](../registry/data_notes/data_supplementation_pending.yaml)には、対象・量・
+必要情報・取得結果・次の作業と、独立計算する場合の方法を記録しました。Pateau167件は
+各反応・dataset IDを維持し、neutralization、電荷交換、活性化反応、安定化会合の計算を区別します。
+元資料の引用不整合、形式不正、参照規約不足には、物理計算だけで解消できるという説明を付けません。
+原資料にも必要な情報がなければ、対象のscopeに合う新しい計算または追加測定へ進みます。
 
 ## O(1D) + O2の二つの生成物チャネル
 
@@ -150,6 +249,66 @@ Hfgの提供元テーブルと選択順、使用する`Hfg`列を確認しまし
 不正入力、独立NASA値の保持、入力順、正規化・ingest/adoptの往復を合成値で確認します。これらは比較規則と
 保存の検証であり、同梱形成量の原資料審査や実験精度の検証ではありません。
 
+## 量・計算・命題の責務確認（0.7.5）
+
+今回の変更は新しい科学値の採用ではなく、既存の入力から返せる結論の修復です。
+[CanteraのElectronCollisionPlasmaRate仕様](https://www.cantera.org/3.2/cxx/d9/ddb/classCantera_1_1ElectronCollisionPlasmaRate.html)
+は電子衝突の断面積と規格化した分布から反応速度係数を計算します。
+[Hagelaar・Pitchford（2005）](https://doi.org/10.1088/0963-0252/14/4/011)の運動量移行と反応速度の定義も照合しました。
+運動量移行断面積には散乱角の重みがあり、反応回数を与える断面積と同じ量ではありません。
+したがって元の曲線の利用可否、係数用途への適合、分布と積分は別の責務です。
+曲線に数値があっても積分済み係数を返さず、運動量移行の曲線だけを持つ場合は
+「EEDFを用意すれば反応係数になる」と案内しません。積分モデル自体は追加していません。
+
+[CanteraのIdealGasPhase仕様](https://www.cantera.org/stable/cxx/d7/dfa/classCantera_1_1IdealGasPhase.html)
+の標準濃度とGibbs関係に基づく既存熱化学演算について、ΔH、標準ΔG、数密度で表すKの出力を分離しました。
+Kの単位は正味の化学量論次数Δνによりm^(-3Δν)、Δν=0ではdimensionlessです。
+計算状態・実際の参照条件・必要作業を各量へ保存し、エネルギー整合や反応発生の判定と混ぜません。
+同一物理状態の両辺の項は加法演算だけで相殺します。表面reservoirの熱化学や
+電子分布を通常の気相NASA種へ読み替えません。計算値の存在から逆過程・逆係数を自動生成しません。
+
+回帰例は、曲線と変換の必要作業、同一量内の出典選択、実数値の範囲外、部分的に不正な表行、
+熱化学の独立した不足・単位・条件、同じ状態の相殺、相・構造の相違、未対応の電荷移行と
+真の資料不足の区別、保存された結論と表示の一致を確認します。
+これらは明示した責務と数式の境界検証であり、実験に対する予測精度の測定ではありません。
+
 ## 継続するデータ不足
 
 数値断面積表の取得・再配布条件、残る状態同定・物性・NASA、Pateau係数の引用元における条件、会合の安定化、umbrella人口重みは未解決です。今回の修復で全候補の速度や機構の予測精度が揃ったとは結論しません。必要な対象・測定量ごとに本記録と同じ粒度で原資料を審査します。
+
+## 2026-11-01：反応数値の再配布条件と科学適用条件の照合
+
+1.0配布準備として、実収録している反応数値と参照だけの資料を分けて棚卸ししました。
+原科学値・資格・適用域は変更していません。著者・出典・変換・必要noticeは
+[反応データの帰属記録](../registry/data_notes/reaction_data_attribution.txt)へまとめました。
+
+| 実収録群 | 数値記録の範囲 | 確認結果 |
+|---|---|---|
+| CollisionDB D108105 | 1曲線 | [一般CC BY 4.0方針](https://db-amdis.org/collisiondb/licence/)と個別downloadを再確認。2026-11-01再取得fileは10166bytes、SHA-256は元receiptと一致。JSON headerに個別の利用制限宣言はない。原著者、license URL、cm2からm2への変換、fit由来を保持 |
+| NASA TM-4513 / Cantera | 気相NASA7とその派生値 | [NASA公式原資料](https://ntrs.nasa.gov/citations/19940013151)は政府著作物・public use permitted表示。[Cantera v3.2.0 BSD notice](https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/License.txt)を同梱。これを他のNASA/JPL資料の許諾へ拡張しない |
+| Pateau 2014 | 167dataset、原32行R38–50/R119–137 | 原表の汎用反応を列挙種へ展開した数値式。独立観測167件ではない。著者proofの公開や出典引用から、元の選択・集成全体の包括再配布許諾は確認できない |
+| Son 2014 | 40dataset、原R21–60 | [公式記事](https://link.springer.com/article/10.1007/s11090-013-9513-1)はRightsLinkを案内し、今回記事固有の公開licenseは確認できない。原表の相当部分を構成する40行の集合と、個々の数値事実を区別する |
+| Gaucherel/Rowe 1977、Williams 1999、Wildt 1988 | 各2、1、1の孤立した数値宣言 | [Elsevier公式FAQ](https://www.elsevier.com/about/policies-and-standards/copyright/permissions)は数値dataから新表現を作る場合と原図表の転載を区別。原PDFや図表画像は収録せず、出典・原単位・変換を保持。記事全体のopen licenseや他社資料への包括許諾とは解釈しない |
+| Shuman 2010、Chen 1978 | 各1の係数 | AIPの一般permissionsとdata-only例外の文脈を照合。少数の数値抽出と元記事の転載は別操作であり、記事固有の包括許諾は今回確認していない |
+| JPL 25-1 / 19-5 | 現行4式・旧2式 | JPL25-1の元PDF印刷p.iiはCaltechのCopyright 2025と政府支援を明示、p.iiiは推奨citationを提示。[JPL公式copyright方針](https://www.jpl.nasa.gov/caltechjpl-privacy-policies-and-important-notices/)も政府スポンサーだけでpublic domainとはしない。原PDF/表画像/説明文の転載はなく、少数の評価値と派生式。より大きな集成の再配布許諾は未確認 |
+
+CollisionDB個別原本は[download URL](https://db-amdis.org/collisiondb/data/108105.txt)から取得しました。
+SHA-256は`504b5049513af2defc34788f99976fd3bdc355dc1978be65a6fa133282f42d45`で、
+以前の取得記録と一致します。dataset HTMLの取得失敗と、原本・一般利用条件を照合できたことは分けます。
+
+著作権表示がある出版物に含まれる数値や原理を、一律に転載禁止の表現とは扱いません。
+[米国著作権局Circular 33](https://www.copyright.gov/circs/circ33.pdf)も原理・方法とその著作表現、
+創作的な選択・配列を区別しています。ただしこの説明を全法域のdatabase権や取得契約の不存在へ拡張しません。
+[AIPの一般permissions](https://publishing.aip.org/resources/researchers/rights-and-permissions/permissions/)は
+系統的転載や電子的な再配布を許諾対象に含め、
+[Books Author Guide](https://publishing.aip.org/wp-content/uploads/2021/12/AIPP-Books_Author-Guide_December-2021.pdf)の
+data-only例外は原図や他のanalysisを複製しない文脈です。後者をJVSTの反応集全体への明示許諾とはしません。
+Springerの[data policy](https://support.springernature.com/en/support/solutions/articles/6000237622-select-the-right-licence-for-your-data)が
+研究dataの権利を出版社へ要求しないことと、各著者のdatasetにどのlicenseがあるかも別です。
+Crossrefに現れるTDM用licenseは、数値表や記事の一般再配布licenseとして使いません。
+
+科学適用条件は権利確認と独立です。Sonの40係数は確認した700 Kの点だけで利用を評価し、
+Pateauの未確認温度・圧力条件を動作点から補いません。Gaucherel/Roweの種別総量を精密準位枝へ割り振らず、
+Wildtの未確認測定温度をroom temperatureとして埋めません。JPLの電子項合計とJ分解、
+実験温度範囲と推奨fit範囲の違いも、配布noticeによって資格を昇格させません。
+LXCat/SRD107/2026酸素workbook等の参照を持つことは、元の数値表を同梱したことではありません。

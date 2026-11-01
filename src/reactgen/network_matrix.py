@@ -9,6 +9,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, PngImagePlugin
 
+from reactgen.model import stoichiometric_sum
+
 FAMILY_COLORS = {
     "electron": "#2F6B9A",
     "ion": "#C56A2D",
@@ -287,7 +289,7 @@ def _draw_participation(
     fonts: _Fonts,
 ) -> None:
     x0, y0, x1, y1 = box
-    if reactant_n and product_n and reactant_n == product_n:
+    if reactant_n and product_n and stoichiometric_sum((product_n, -reactant_n)) == 0:
         draw.rectangle(box, fill=UNCHANGED)
         return
     if reactant_n and product_n:
@@ -305,7 +307,9 @@ def _draw_participation(
 
 def _stoichiometry(state_id: str, reactions: list[dict], side: str) -> list[float]:
     return [
-        sum(float(term["n"]) for term in reaction[side] if term["species"] == state_id)
+        stoichiometric_sum(
+            float(term["n"]) for term in reaction[side] if term["species"] == state_id
+        )
         for reaction in reactions
     ]
 

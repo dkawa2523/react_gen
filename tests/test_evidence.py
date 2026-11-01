@@ -134,7 +134,7 @@ def test_explicit_missing_evidence_is_an_input_error(tmp_path):
         EvidenceCatalog.load(tmp_path / "missing")
 
 
-def test_overlay_fills_registry_null_without_erasing_negative_evidence(tmp_path):
+def test_overlay_retains_independent_values_without_rewriting_registry_null_or_negative(tmp_path):
     root = tmp_path / "registry"
     (root / "species").mkdir(parents=True)
     write_yaml(
@@ -166,10 +166,13 @@ def test_overlay_fills_registry_null_without_erasing_negative_evidence(tmp_path)
     )
     state = candidate_state({"F": 1}, 0, "ground")
     for paths in ((root, overlay), (overlay, root)):
-        record = EvidenceCatalog.load_paths(paths).state(state).preferred
-        assert record is not None
-        assert record.value("mass_amu") == 18.998
-        assert record.properties["electron_affinity_eV"].qualifier == "unbound"
+        records = EvidenceCatalog.load_paths(paths).state(state).records
+        original = next(record for record in records if record.origin == "registry")
+        alternative = next(record for record in records if record.origin == "overlay")
+        assert original.value("mass_amu") is None
+        assert original.properties["electron_affinity_eV"].qualifier == "unbound"
+        assert alternative.value("mass_amu") == 18.998
+        assert alternative.value("electron_affinity_eV") == 3.4
 
 
 def test_phase_and_structure_prevent_false_exact_matches():
@@ -271,7 +274,10 @@ def test_nasa_boundary_does_not_invent_or_accept_bad_temperature_ranges():
 
 def test_excitation_only_carries_mass_not_electronic_transport_response():
     registry = Registry.load(FIXTURE)
-    properties = derive.carried_from(registry.species["Ar"], 11.6)
+    parent = replace(
+        registry.species["Ar"], properties={"mass_amu": Property(40, "amu", tier="reviewed")}
+    )
+    properties = derive.carried_from(parent, Property(11.6, "eV", tier="reviewed"))
     assert "mass_amu" in properties
     assert "polarizability_A3" not in properties
     assert "collision_radius_A" not in properties
@@ -291,13 +297,14 @@ def test_formation_offset_converts_units_and_requires_reviewed_parent_value():
             )
         },
     )
-    properties = derive.carried_from(parent, 2.0)
+    level = Property(2, "eV", tier="reviewed", review_scope=("excitation_energy_eV",))
+    properties = derive.carried_from(parent, level)
     assert properties["enthalpy_formation_eV"].value == pytest.approx(3.0)
     parent = replace(
         parent,
         properties={"enthalpy_formation_eV": Property(value=1.0, unit="eV", tier="imported")},
     )
-    assert "enthalpy_formation_eV" not in derive.carried_from(parent, 2.0)
+    assert "enthalpy_formation_eV" not in derive.carried_from(parent, level)
 
 
 def test_conflicting_reviewed_and_curated_existence_does_not_change_identity():
@@ -996,7 +1003,7 @@ def test_adoption_uses_normalized_physical_identity_for_existence_and_values(
 @pytest.mark.parametrize("section", ["properties", "thermo"])
 @pytest.mark.parametrize(
     "target",
-    ["F@ground;phase=solid", "F@ground;structure=other", "F@electronic", "unknown-target"],
+    ["F@ground;phase=solid", "F@ground;structure=other", "F@electronic", "Xe@ground"],
 )
 def test_adoption_without_existence_payload_still_requires_the_complete_identity(
     tmp_path, section, target

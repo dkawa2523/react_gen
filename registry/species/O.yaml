@@ -37,8 +37,7 @@ properties:
     unit: amu
     source: NIST Atomic Data for Oxygen
   polarizability_A3:
-    source: mendeleev package, bundled periodic table, dipole polarizability in atomic
-      units
+    source: mendeleev package, bundled periodic table, dipole polarizability in atomic units
     unit: A3
     value: 0.7854
   dipole_moment_D:
@@ -52,15 +51,15 @@ properties:
   enthalpy_formation_eV:
     value: 2.583077
     unit: eV
-    source: chemicals package bundled thermodynamic tables, CAS 17778-80-2, formula
-      verified against the registry
+    source: chemicals package bundled thermodynamic tables, CAS 17778-80-2, formula verified against the
+      registry
   ionization_energy_eV:
     value: 13.618055
     unit: eV
     source: NIST ASD 5.12, O I ground to O II ground, L74,L3760; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=O&unc_out=on&units=1
     evidence_tier: reviewed
     uncertainty:
-      absolute: 0.000007
+      absolute: 7.0e-06
       unit: eV
   electron_affinity_eV:
     value: 1.461113
@@ -69,15 +68,15 @@ properties:
   entropy_J_mol_K:
     value: 161.1
     unit: J/mol/K
-    source: chemicals package bundled thermodynamic tables, CAS 17778-80-2, formula
-      verified against the registry
+    source: chemicals package bundled thermodynamic tables, CAS 17778-80-2, formula verified against the
+      registry
 metadata:
   status: curated
   notes:
   - Ground-state atomic oxygen produced by O2 dissociation.
-  - The reviewed identity is the O I 3P2 level. Its g=5 does not set thermal
-    populations of the 3P1 and 3P0 fine-structure levels. Other properties and
-    the imported thermal O polynomial retain their independent qualifications.
+  - The reviewed identity is the O I 3P2 level. Its g=5 does not set thermal populations of the 3P1 and
+    3P0 fine-structure levels. Other properties and the imported thermal O polynomial retain their independent
+    qualifications.
 thermo:
   high:
   - 2.56942078
@@ -99,3 +98,199 @@ thermo:
   t_max: 3500.0
   t_mid: 1000.0
   t_min: 200.0
+records:
+- record_id: NASA_TM4513_Cantera_3.2.0:O
+  species: O
+  phase: gas
+  source: &id001
+    provider: NASA
+    collection: NASA_TM_4513_gas
+    release: Cantera-3.2.0
+    record_id: O
+    citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, O, L 1/90
+    url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  status: imported
+  tier: imported
+  source_declaration:
+    source_entry:
+      name: O
+      composition:
+        O: 1
+      thermo:
+        model: NASA7
+        temperature-ranges:
+        - 200.0
+        - 1000.0
+        - 6000.0
+        data:
+        - - 3.1682671
+          - -0.00327931884
+          - 6.64306396e-06
+          - -6.12806624e-09
+          - 2.11265971e-12
+          - 29122.2592
+          - 2.05193346
+        - - 2.54363697
+          - -2.73162486e-05
+          - -4.1902952e-09
+          - 4.95481845e-12
+          - -4.79553694e-16
+          - 29226.012
+          - 4.92229457
+        note: L 1/90
+    acquisition:
+      file: nasa_gas.yaml
+      requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+      sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+      bytes: 276140
+    thermodynamic_reference:
+      standard_pressure_Pa: 100000.0
+      element_basis: elements_standard_states
+      formation_temperature_K: 298.15
+      primary_report: https://ntrs.nasa.gov/citations/19940013151
+      section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy Values
+        and Heats of Formation (p.3)
+      software_default_reference_pressure_Pa: 101325.0
+      adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+        YAML does not redefine the numerical source fit.
+    review:
+      date: '2026-10-13'
+      scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+        standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+        occurrence.
+  thermo:
+    low:
+    - 3.1682671
+    - -0.00327931884
+    - 6.64306396e-06
+    - -6.12806624e-09
+    - 2.11265971e-12
+    - 29122.2592
+    - 2.05193346
+    high:
+    - 2.54363697
+    - -2.73162486e-05
+    - -4.1902952e-09
+    - 4.95481845e-12
+    - -4.79553694e-16
+    - 29226.012
+    - 4.92229457
+    t_min: 200.0
+    t_mid: 1000.0
+    t_max: 6000.0
+    phase: gas
+    standard_pressure_Pa: 100000.0
+    source: *id001
+    method: calculated
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope:
+    - thermochemical_model
+    source_declaration:
+      source_entry:
+        name: O
+        composition:
+          O: 1
+        thermo:
+          model: NASA7
+          temperature-ranges:
+          - 200.0
+          - 1000.0
+          - 6000.0
+          data:
+          - - 3.1682671
+            - -0.00327931884
+            - 6.64306396e-06
+            - -6.12806624e-09
+            - 2.11265971e-12
+            - 29122.2592
+            - 2.05193346
+          - - 2.54363697
+            - -2.73162486e-05
+            - -4.1902952e-09
+            - 4.95481845e-12
+            - -4.79553694e-16
+            - 29226.012
+            - 4.92229457
+          note: L 1/90
+      acquisition:
+        file: nasa_gas.yaml
+        requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+        final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+        retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+        sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+        bytes: 276140
+      thermodynamic_reference:
+        standard_pressure_Pa: 100000.0
+        element_basis: elements_standard_states
+        formation_temperature_K: 298.15
+        primary_report: https://ntrs.nasa.gov/citations/19940013151
+        section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy
+          Values and Heats of Formation (p.3)
+        software_default_reference_pressure_Pa: 101325.0
+        adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+          YAML does not redefine the numerical source fit.
+      review:
+        date: '2026-10-13'
+        scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+          standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+          occurrence.
+  properties:
+    enthalpy_formation_eV:
+      value: 2.582502825324572
+      unit: eV
+      definition: standard_formation_enthalpy
+      formation_reference:
+        temperature_K: 298.15
+        basis: standard_elements
+        standard_pressure_Pa: 100000.0
+      source: *id001
+      method: calculated
+      evidence_tier: derived
+      status: derived
+      review_scope:
+      - enthalpy_formation_eV
+      source_declaration:
+        derivation: NASA7 H(T)=R*T*(a1+a2*T/2+a3*T^2/3+a4*T^3/4+a5*T^4/5+a6/T); H(298.15 K) equals assigned
+          standard formation enthalpy under NASA TM-4513 reference.
+        temperature_K: 298.15
+        parent_thermo:
+          low:
+          - 3.1682671
+          - -0.00327931884
+          - 6.64306396e-06
+          - -6.12806624e-09
+          - 2.11265971e-12
+          - 29122.2592
+          - 2.05193346
+          high:
+          - 2.54363697
+          - -2.73162486e-05
+          - -4.1902952e-09
+          - 4.95481845e-12
+          - -4.79553694e-16
+          - 29226.012
+          - 4.92229457
+          t_min: 200.0
+          t_mid: 1000.0
+          t_max: 6000.0
+          phase: gas
+          standard_pressure_Pa: 100000.0
+          source:
+            provider: NASA
+            collection: NASA_TM_4513_gas
+            release: Cantera-3.2.0
+            record_id: O
+            citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, O,
+              L 1/90
+            url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+        gas_constant_J_mol_K: 8.314462618
+        avogadro_mol_inverse: 6.02214076e+23
+        joule_per_eV: 1.602176634e-19
+        qualification: Value calculated from a specific numerical fit. Fit rounding and original data
+          uncertainty are not quantified; this is not an independently measured or recommended formation
+          enthalpy.
+        parent_source_note: L 1/90
+        parent_input_sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db

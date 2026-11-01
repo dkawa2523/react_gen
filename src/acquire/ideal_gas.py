@@ -15,6 +15,8 @@ from dataclasses import dataclass, field
 from importlib.metadata import version
 from typing import Any
 
+from acquire.targets import ground_problem
+
 JOULE_PER_EV = 96.48533212  # kJ/mol per eV/molecule
 REFERENCE_K = 300.0
 
@@ -64,6 +66,8 @@ def fetch(names: list[str], composition: dict[str, dict[str, int]] | None = None
 
 
 def _one(name: str, wanted: dict[str, int] | None) -> Enthalpy:
+    if problem := ground_problem(name):
+        return Enthalpy(name, error=problem)
     import pyromat as pm
 
     try:
@@ -146,6 +150,13 @@ def records(found: list[Enthalpy], citation: str) -> list[dict]:
             "qualifier": "model h(T); formation enthalpy is not determined by this acquisition",
             "status": "imported",
             "source_record": item.source_record,
+            "source_identity": {
+                "molecularFormula": item.formula,
+                "inChI": item.source_record.get("inchi"),
+                "cas": item.source_record.get("cas"),
+                "name": next(iter(item.source_record.get("names") or []), None),
+                "other_names": item.source_record.get("names") or [],
+            },
             "package_version": item.package_version,
             "source": {"citation": f"{citation}, read at {REFERENCE_K:.0f} K"},
         }

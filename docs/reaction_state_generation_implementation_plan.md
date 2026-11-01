@@ -1,6 +1,6 @@
 # 反応候補調査基盤の改良実施記録
 
-2026-10-12更新。0.6 / schema 5の履歴と、末尾の[0.7改良](#出典複数記録数値選択の改良07)、0.7.1–0.7.3の修復・検証を記録します。
+0.6 / schema 5以降の改修・検証の履歴です。各節の件数・配布物・保存先は当時の記録であり、現行仕様は[現行責務](core_design.md)と[出力仕様](output_reference.md)を参照してください。直近は[1.0の整備](#2026-11-0110の版確定権利確認開発ハーネス)、その前の[配布前レビュー](#2026-11-01配布前の最終レビューと旧内容の整理)、基盤改修は[2026-10-31の改修と再レビュー](#2026-10-31科学記録対象同定判定責務の改修と再レビュー)に記録しています。
 
 本書は実施範囲と、その版で確認した検証結果を記録します。通常利用は[README](../README.md)、現行責務は[core_design](core_design.md)、公開形式は[output_reference](output_reference.md)、長期の開発原則は[AGENTS.md](../AGENTS.md)を正とします。計画を並行した現行仕様として残しません。以下の0.6節にある「最新」「最終」、品質件数・wheel・hash・性能・保全は当時の確認範囲です。0.7の検証や保全へ転用しません。
 
@@ -359,3 +359,303 @@ Registryは103状態・359チャネル・319dataset（constant213、Arrhenius6�
 実験との予測精度を測定した採点ではありません。Pateau等の出典条件、数値断面積・表面データ、必要な人口/寿命/安定化、Property/NASAの採用指定、新しい条件を使うモデルは[残件計画](remaining_work_plan.md)へ残します。今回の論理・表示修復の完了条件へ、将来用途の網羅実装を混ぜません。
 
 配布物と検証hashはdist/0.7.4/verification.json、SHA256SUMS.txtを参照します。source ZIPは現存するGit対象と非ignoredの新規ソース/文書/Registry/入力例を収録し、原PDF等は含めません。0.7.4の保全・復元確認はC:\Users\user\Desktop\react_gen-preserved\2026-10-12-0.7.4/preservation_manifest.jsonを正とします。過去版を上書きせず、同端末のローカル保管として確認しました。外部公開・GitHub CI・別媒体backupは今回の実施範囲ではありません。
+
+## 処理・判定・保存の責務修復：0.7.5
+
+2026-10-12。科学データの追加を除き、現行の処理を取得から表示まで横断点検しました。
+現行仕様は[core_design](core_design.md)と[output_reference](output_reference.md)に反映し、
+本書の過去版で列挙した完了課題を現在の残件として扱いません。
+
+| 責務 | 今回の修復 | その処理だけでは決まらないこと |
+|---|---|---|
+| 取得・入力境界 | 物理対象と検索名を分離。共通の組成・電荷・相・構造・状態照合、厳密な物性読込み、欠測と形式・通信・実行失敗の区別 | 照合・保存による存在・科学資格の承認 |
+| 元の数値量 | DatasetAssessmentに量・scope・typed workを保存。曲線を暗黙の点値にせず、表の部分不正・数値範囲外・共通域外の比較を修復 | 分布積分後の係数、表面flux |
+| 条件と係数用途 | DataUseが必要な分布・変換を別に保持。未評価の物理条件と測定注記を区別し、既知値・区間を保全。出典preferを同一observable・次数内へ限定 | 出典の好みから別量・別速度則の選択、未対応条件の評価 |
+| 独立熱化学計算 | ΔH・標準ΔG・数密度形Kに計算状態、単位、使用条件、作業を保存。正味ゼロ項だけを熱化学演算で相殺。気相基底の完全打消しは不要なT/pを要求しない | 障壁、反応発生、逆機構、誤差伝播 |
+| 科学命題 | エネルギー関係と熱化学計算の不足を分離。電荷移行の実対象対応を値・区間・不足で共有。状態集約と係数利用は同じ投影規則を使用 | 補助計算値の存在から現象成立への昇格 |
+| 派生値・ASD概要 | deriveは適格なPropertyと活動中の記録だけを使い原根拠を保存。ASDは厳密な下位エネルギーとparity/JによるE1候補へ改名し、入力順を不変化 | 寿命、遷移強度、人口、有限温度の準位熱補正 |
+| 記録比較・表示 | 同IDの定数/Arrhenius単位コピーを共通比較。原宣言保持、未知モデル・表の等価性を推定しない。flat値・旧入力配列は正規結果から投影 | 保存形式の受理による再審査、表示側の科学再評価 |
+
+未使用のArrhenius補助欄で係数を消す検査も、実際に式が使うA・b・Eaへ限定しました。
+未対応の正規validity欄は拒否し、旧conditions mappingの物理条件は
+`unresolved_conditions`として保全して必要モデルを返します。温度だけで適用済みにしません。
+意味の異なる量を一つの判定へ押し込むframework、DB別の科学分岐、新しいsolverは追加していません。
+AGENTS.mdには元の量と別用途への変換を区別する長期原則だけを追加しました。
+
+最終コードの確認結果は次のとおりです。
+
+- Windows / Python 3.12：**1411 passed**。
+- Windows / Python 3.11の`tools/quality.py quality-pr`：**1395 passed、16 skipped**。
+- WSL / Python 3.11の同入口：**1394 passed、17 skipped**。
+- 両品質入口でRuff整形・検査、mypy 49 source files、依存方向の2契約が成功。
+- 代表7入力の分析・保存・CSV形式4・needs集約と、過去31結果の旧CSV形式1–3・hashを確認。
+- Python 3.11のcore依存だけを入れたwheelをリポジトリ外から実行し、analyze、needs、CSV、
+  HTML、derive、Registry検査、取得先台帳、両console helpを確認。wheel・sdist・インストールの
+  48 source/schemaファイルが現行bytesと一致。詳細は`build/package_0_7_5_smoke.json`。
+
+Registryは103状態・359チャネル・319dataset（constant213、Arrhenius6、reference_only100）で、
+数値曲線や科学資格は補充していません。代表7入力の係数利用件数も維持しました。
+出典条件・物性・数値曲線の審査/取得と、利用目的に応じたProperty/NASA選択や複合条件モデルは
+[残件計画](remaining_work_plan.md)へ分けます。今回の修復は実験に対する予測精度の測定ではありません。
+Python内部APIの移行、ASDの新名称、従来結果の読込みは[CHANGELOG](../CHANGELOG.md)に記載しました。
+
+## データ補完・出所選択・不足表示の実装記録：0.7.6
+
+2026-10-13。現在の仕様は[出力仕様](output_reference.md)、[表記辞書](data_dictionary.md)、
+[現行の責務](core_design.md)へ反映しました。これは今回の完了記録であり、別の判定仕様ではありません。
+
+同じ命題の棄却と欠測による未確定を区別し、保存した判定と必要作業からラベルを導きます。
+入力不足、原資料の確認、同定、選択、未対応計算を欠測へ一括分類しません。
+命題の棄却が決まった場合は、その命題の欠測件数へ重複計上しません。
+判定領域・個別命題・元の数値量・係数用途・各熱化学計算には、それぞれの分母と不足率を保存します。
+複数の阻害原因を持つ未確定も一結果として数え、異なる領域の件数を機構の完成率へ足しません。
+`rgen needs RESULT --data-missing --detail`は補完対象と影響する結論を抽出します。
+
+外部DBとローカル記録は共通snapshotで取り込み、出所と原宣言を独立に保持します。
+WebBookとCollisionDBのconverterを追加し、取得・形式変換・照合・審査・採用の責務を分けました。
+ingestでは複数出所の保留を保持し、同じ原入力の再実行を重複させず、保存失敗時の復旧を確認しました。
+物性・熱化学モデルを含む8量の共通選択と、canonical対象IDによる個別指定を実装しました。
+`rgen records RESULT --target ID`で選択可能な記録と出所・条件を確認できます。
+出所の優先順位は量の定義・参照・用途の違いを自動的に解消しません。
+
+実際に補充したデータと限定した資格は[個別審査記録](scientific_data_review.md)を正とします。
+NASA7の既存37fitの原条件を確認し、6fitと9つの代替fit、域内の35中性種のモデル由来形成量を追加しました。
+Hの電子電離断面積500点は原資料・fit・許諾を確認して追加しました。
+取得成功や数値の追加を、状態存在・反応発生・実験との予測精度の保証へ広げません。
+
+難しい原条件・数表の取得失敗、同定・参照の未確認は
+[保留データ一覧](../registry/data_notes/data_supplementation_pending.yaml)へ残しました。
+DBにない量を作る方法は[将来設計](data_generation_plan.md)に分け、将来の`data_methods/`配下で
+計算法ごとの独立packageから共通snapshotを渡す方針にしました。ソルバーや空のpackageは未実装です。
+AGENTS.mdへは欠測集計と独立計算の長期原則だけを追加しました。
+
+Windows / Python 3.11の`tools/quality.py quality-pr`は**1491 passed、16 skipped**、
+Ruff整形・lint、mypy 52ファイル、依存方向の2契約が成功しました。
+任意取得依存を持つ既存Python 3.12環境でも取得・converter関連**129件**が成功しました。
+その後のHTMLラベル表示の調整は既存networkテスト**12件**とRuffで確認しました。
+
+Registry検査は**108種・360反応・構造違反0件**でした。`dist/0.7.6`のwheel/sdistと
+Python 3.11のcore依存だけを入れた別環境では、**51 source/schemaファイル**のbytesが一致し、
+リポジトリ外の分析・欠測抽出・登録記録・CSV形式5・HTML等の**16操作**が成功しました。
+最小の`H2`入力は**9状態・81反応、生成完了**で、存在等の未確定と数値・計算の利用可否を分けて保持します。
+配布検証は`build/package_0_7_6_smoke.json`を参照します。
+
+現在のRegistryと既定の生成範囲を用いたH2例では、係数利用命題は欠測**80/81（98.77%）**、
+棄却0件、未対応モデル1件です。元の電子電離断面積は**1/1利用可能**ですが、EEDF積分済み係数へ
+昇格しません。明示温度のCH4・NH3・H2Oでは生成上限による打切りを保持し、対象別の記録固定後も
+各計算の値・条件・状態と不足統計が一致しました。H2Oのこの生成範囲では係数利用の欠測306件と
+棄却5件が重複していません。これらの件数は現行データ・入力・生成範囲に対する確認記録であり、
+ガス名に固定した判定規則ではありません。
+
+WebBookの実取得N2記録20件とローカル検証用2件を独立に保持し、記録固定・保存往復を確認しました。
+CO2の構造を持つ実取得32記録は、式だけの対象へ転用せず同定待ちへ残しました。
+CLI確認は`build/final_076/verification.json`、複数出所の確認は
+`build/final_076/multisource/verification.json`を参照します。
+
+
+## 2026-10-31：科学記録・対象同定・判定責務の改修と再レビュー
+
+既存の作業ツリーを保持し、F1–F8の境界改修を現行実装へ統合しました。
+原項を合算前に検証し、未登録Registry参照は通常読込みで形式エラーにします。
+数値の候補参照と物理対象を区別し、明示対象・科学IDの対応を入口から保存まで共有します。
+別出所の値で原記録を補完する処理を撤去し、独立記録の量別選択で利用値を得ます。
+反応原IDを派生した参加状態の原IDへ流用しません。
+
+取得側の組成と構造の照合を共通化しました。構造を指定した要求を独立sourceと照合後、
+sourceのInChI等へ対象を統一し、要求別名とqueryはacquisition文脈へ保存します。
+同じ物質の別名による再取得を異対象や科学競合にせず、特定異性体の値を式だけの対象へ転記しません。
+PubChemの物理同定を既存質量の比較より先に実施し、完全SMILESとConnectivitySMILESを区別します。
+
+数値の拒否・競合・未入手を表現形式と独立に扱い、親反応記録による利用停止と独立offerを区別します。
+DataUseとkineticsは同じ提供記録・条件の可用性規則を使います。新規helper形式6は形式5と同じCSV列で、
+過去形式1–5の保存ラベル・hashを変更しません。小数重複項の旧IDは旧形式の読込みだけで照合を維持します。
+
+改修後の別担当レビューでは、元の再現例以外に次の問題を見つけ、共通責務へ修正しました。
+
+- 同じ物質の別名取得による対象ID衝突・query文脈による科学的競合。
+- 既存の質量値がある場合の構造照合省略。
+- derive出力先変更によるasset参照切れ。元解決先・観測/宣言hashを保ち、公開失敗では旧ファイルを保持。
+- 明示材料のないsurface過程や未定義colliderの式形pass。family・reservoir・式形・モデル範囲を区別。
+- 絶対許容差で微小な別種の寄与を消し、ΔH=0・ΔG=0・K=1へ誤って進む枝。
+  保存十進係数の宣言算術を合算・正味差・保存則・経路/行列の投影で共有し、原寄与の差を保持。
+- Kの指数項と標準数密度項の中間overflow/underflow。対数域で合成後に指数化。
+- 直接評価の候補aliasと正規物理ID、family省略と補助状態不足による入口差。
+
+入力別の機械文法範囲も保存し、formula_onlyの結合分割未対応を完了時の通常出力に表示します。
+科学記録の形式受理、数値資格、状態の存在、反応発生、計算値を分離する方針を維持しています。
+現行仕様はREADME・core_design・output_reference・data_sourcesへ統合し、
+残件計画から完了したF1–F8の別仕様を除きました。
+
+最終の証拠保持レビューでは、exact記録があると別構造等の関連資料が正規結果から落ちる経路も
+確認しました。状態のrelated_recordsへ独立保存し、評価対象recordsと混ぜず、records表示で
+target_matchと資料自身の物理対象を示すようにしました。関連資料の追加で既存値・判定を変えず、
+通常取得した構造固有値が式だけの候補へ利用できたように見せません。
+
+
+最終検証では、既存仮想環境の`python tools/quality.py quality-pr`が**1671 passed**、
+Ruff整形・lint、mypy 52 source、依存方向・offline分離の2契約をすべて通過しました。
+`rgen check --registry registry`は**108種・360反応・構造違反0件**です。
+通常入力の分析・result.yaml/CSV保存・verify_views付き再読込み・needsを、
+OSの一時出力先で次の4ケースについて確認しました。
+
+| 付属case | 状態候補 | 反応候補 | 利用できた係数 | 機械/証拠追加の完了 |
+|---|---:|---:|---:|---|
+| ar | 7 | 39 | 0 | 両方完了 |
+| ar_cf4 | 37 | 1061 | 0 | 両方完了 |
+| ar_o2 | 20 | 202 | 2 | 両方完了 |
+| ar_sf6_o2 | 98 | 7399 | 2 | 両方完了 |
+
+これらは付属入力・現在のRegistry・明示文法での実行記録です。件数を一般的な正解や
+機構の完成率には使いません。Ar/CF4の提供係数の利用不可は欠測1050件・範囲外11件へ分かれ、
+存在しない係数を作って利用可能件数を増やしていません。N2Oではinput_scope=formula_onlyと
+結合分割未対応の説明を通常出力で確認しました。
+
+別担当の再レビューで確認した不具合はこの変更へ反映しました。科学値の新規補充・
+原論文全件の再審査・EEDF計算/積分・表面flux・時間発展・構造別生成は追加していません。
+現行の対象・量・条件で返せる結論と、必要な同定・資料・物理モデルを区別する基盤の改修です。
+
+## 2026-11-01：配布前の最終レビューと旧内容の整理
+
+判定は、**候補生成・根拠調査ツールとしての技術検証は通過、公開配布の準備は未完**です。
+通常計算の成功、パッケージ化の成功、配布条件の確定を区別しました。
+既存の作業ツリーを保持し、現在のソース、公開文書、配布形式、独立インストールを対象に確認しました。
+
+### 今回確認し修正した問題
+
+| 重要度 | 問題と影響 | 修正 |
+|---|---|---|
+| P1 | Arrhenius式の中間指数・冪が先にunderflow/overflowし、有限の最終係数をゼロや利用不可にする。例では本来約5.076e-135の値を成功ゼロとして返した | 宣言式の因子を対数域で合成。真のA=0を保持し、最終値自体が表現範囲外ならnative/DataUseはunavailable、kineticsはunknown、数値計算側の作業へ分類。データ不正・現象不存在・資料欠測へ読み替えない |
+| P1 | NASA取得がcanonical ID内の構造を選択・照合に使わず、自分で出力したsnapshotを対象矛盾で再読込みできない。source_speciesで異構造へ差替える経路もあった | 共有した対象解釈とsource構造照合を適用。単一fitでも出典分子の構造を保持し、式だけの対象に特定構造の値を無条件で転記しない |
+| P1 | v4移行工具がrelated total記録を親候補のexact式へ付け替える。Heの別反応の根拠をArの反応式として復元する例を再現 | 関連記録自身の明示式だけを、元状態の相・構造を保って移行。独自式なしは原archiveに保持。原係数と参照も移行境界で検証し、元辞書を変更しない |
+| P2 | sdistに文書・入力例・fixture・検証工具等が無く、ソース配布だけでは説明や検証を辿れない | MANIFEST.inで収録対象を明示。Registryのasset・出典noticeも保持し、build/dist/work・外部原本・取得snapshotは収録しない |
+| P2 | 物性・熱モデルの選択を未対応とする説明、数値断面積なしとする説明、旧importerによる直接Registry編集・資格付与の案内が混在 | external_data、Registry assets、importer案内、辞書、計画を現仕様へ更新。通常Case入力と証拠の状態表記、ΔHの正味寄与対象も区別 |
+
+Arrheniusの数学的定義は[Cantera公式反応速度仕様](https://cantera.org/stable/reference/kinetics/reaction-rates.html)、
+NASAのモデル表現は[公式species仕様](https://cantera.org/stable/yaml/species.html#species-thermo-models)と照合しました。
+演算順序の修正は適用域や物理的な仮定の変更ではありません。
+
+### 不要処理と旧内容
+
+使用先と公開参照のないchemistryのsubtract、electronic_character、専用の固定表を撤去しました。
+本流の生成検証は保持し、使わない推定関数だけのassertを残しません。
+読込み処理から参照されない旧source_profiles三件と、未参照の旧PubChem実行成果物四件も通常ツリーから撤去しました。
+原本とSHA-256はOS一時領域のreactgen_release_review_bm0y7wwk配下の
+obsolete_source_profiles、obsolete_identityへ保全しています。
+
+旧保存形式1–5の読込み、外部形式adapter、旧overlayの読込み、0.8撤去予定のpreferredとv4移行工具は、
+現在の利用先・移行方針があるため保持しました。古い実施件数や成果物名は履歴として残し、
+現行仕様へ転用しないことを文書冒頭に明示しています。
+build/distの過去成果物は通常コードとソース配布から分離されています。監査時の既存dist/0.7.6 wheelは、
+最終ソースと31実行ファイルが異なり、今回の修正を含む成果物として使えません。
+
+### 配布形態と検証結果
+
+wheelは実行パッケージとschemaを収録します。Registry・取得台帳は外部入力で、
+wheel単体のsources/fetchでは--catalog PATHを指定します。既定台帳は実行ディレクトリの相対パスです。
+sdistにはRegistry・台帳・文書・入力例・fixture・工具を収録します。
+台帳を暗黙にネットワーク取得したり、解析時に外部データを補充する処理は追加していません。
+
+- 既存仮想環境のquality-pr：**1685 passed（114.61秒）**。Ruff整形・lint、mypy 52 source、依存方向/offlineの2契約も通過。
+- Registry検査：**108種・360反応・構造違反0件**。
+- 隔離build：sdist生成後、そのsdistからwheelを生成。実行パッケージの51ファイルは現在のsrcと同一で、収録漏れ・余分な旧moduleなし。
+- sdist：555ファイル。文書、入力例、Registry数表とnotice、fixture、検証工具の収録を確認。build/dist/work、外部原本・取得snapshot、撤去済み設定の混入なし。
+- リポジトリ外の独立環境：WindowsのCPython **3.11.15 / 3.12.8**へwheelを通常インストール。site-packagesからのimport、両CLI起動、pip check、台帳読込み、Registry検査を確認。
+- 両環境でsdistのar_o2入力とRegistryを使い、分析（20状態・202反応）、needs、記録表示、CSV再生成、network HTML、verify_views付き保存再読込みを確認。独立環境の26コマンドはすべてexit 0。
+- git diff --checkに違反なし。現行の相対文書リンクとsdistのリンク先収録も確認。
+
+検証用候補、buildログと実行記録はOS一時領域
+C:/Users/user/AppData/Local/Temp/reactgen_release_review_bm0y7wwkに保存しました。
+既存distは上書きせず、公開操作・版の確定・commitは行っていません。
+今回の独立インストール確認はWindowsと上記二版です。Linuxでの現在revisionの再実行や、
+各外部DBへの全adapterのlive取得まで実証したものではありません。
+
+### 公開配布に残る事項
+
+| 重要度 | 現在確認できる不足 | 必要な判断・作業 |
+|---|---|---|
+| P1 | 自作コードのルートLICENSEとlicenseメタデータがない | 権利者が利用・再配布条件を選定し、ファイルとメタデータへ反映。独断で許諾を付与しない |
+| P1 | 変更はUnreleasedの一方、版は既存配布物と同じ0.7.6。必須の未追跡source・文書も残る | 公開版と対象revisionを確定し、その内容から再build。旧distや現在のHEADだけを今回検証した作業ツリーとして渡さない |
+| P1（Registry同梱時） | Registry全体の再配布条件の確認が未完 | NIST/CCCBDB、chemicals/mendeleevの上流値、Pateau/Son等のfitについて、収録項目と適用条項・必要noticeを対応させる |
+
+NASA/Canteraの原出典・BSD noticeとCollisionDB D108105のCC BY 4.0、著者・変換内容は保持しています。
+[NASA原資料情報](https://ntrs.nasa.gov/citations/19940013151)、
+[Cantera v3.2.0 notice](https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/License.txt)、
+[CollisionDB一般license](https://db-amdis.org/collisiondb/licence/)を再確認しました。
+CollisionDB個別ページは今回取得できず、個別記録について新たな承認を行っていません。
+[NIST公式方針](https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications)はSRDと非SRDを分けています。
+出典の存在やpackageのlicenseだけで、全収録値の再配布条件を確認したことにはしません。
+具体的な未確認範囲はspecies/CF4.yamlのNIST・chemicals由来物性や、
+reactions/ion_ion/F2_p__F_m.yaml等に実収録した文献係数です。配布禁止と断定したものではありません。
+
+これらを[残件計画](remaining_work_plan.md)へ反映しました。
+技術的な公開範囲は、明示した生成文法・提供証拠・対応数値表現による候補調査です。
+EEDF、表面flux、時間発展、任意構造・準位生成、機構の予測精度は引き続き保証範囲に含めません。
+
+## 2026-11-01：1.0の版確定・権利確認・開発ハーネス
+
+利用者の指定に従い、今回の版を1.0（パッケージ版1.0.0）へ更新しました。
+自作コードのLICENSE追加は不要との指定を受け、直前レビューの残件から外しています。
+外部データの権利条件はこの指定と独立に調査しました。schema 5、helper形式6、通常入力は維持します。
+1.0は候補・根拠・数値利用の調査基盤の版であり、機構の網羅性や予測solverの完成を意味しません。
+
+### 出典・適用条件とnotice
+
+実際の物性、反応数値、数値表を出典群ごとに棚卸しし、公式の権利条項と照合しました。
+個別の数値事実・式を独自の表現で扱うことと、元の表・選択されたデータ集・ページの転載を区別しています。
+確認結果は[source policy](source_license_policy.md#10-property-source-review-2026-11-01)と
+[反応データの調査](scientific_data_review.md#2026-11-01反応数値の再配布条件と科学適用条件の照合)に記録しました。
+
+- CanteraのBSD、chemicalsのMIT、mendeleev本体と独立したmendeleev-dataのMITを保持しました。
+  ソフトのlicenseだけで上流全データを承認せず、元の取得版が不明な値に現在の版を割り当てません。
+- NISTのSRD編纂権と個別数値の扱いを区別し、NIST-SRD-NOTICEを追加しました。
+  非SRDの許諾をWebBook/ASD/CCCBDBへ無条件に適用せず、元DBの包括再配布許諾とも説明しません。
+- CollisionDB D108105は元fileを再取得し、元receiptと全SHA-256が一致しました。
+  CC BY 4.0、原著者、単位・CSV変換、fit由来を反応データの帰属noticeに保持しています。
+- NASA TM-4513のpublic-use表示と、別著作物であるJPL/Caltechのcopyrightを区別しました。
+- Pateauの167dataset（原32行）とSonの40dataset（原40行）の集成について、
+  包括的な再配布許諾は取得できていません。原論文へのアクセスや引用は許諾の代わりにしません。
+
+再配布条件の確認で、科学資格や適用条件を昇格させていません。
+Sonの700 Kの点、Pateauの未確認条件、Wildtの未確認測定温度、JPLの項合計と準位分解は従来どおり区別します。
+元サイト表のmarkupが残っていたCCCBDB用HTML fixtureは原本とhashをOS一時領域へ保全し、
+自作の最小HTML・架空の値と参照へ置換しました。既存テストはparserの形状・対象境界を検証し、
+架空値を実測の科学回帰値として扱いません。Registryの科学値は変更していません。
+
+### 継続開発で使うハーネス
+
+AGENTS冒頭の反復手順に、返す結論、値・判定の所有処理、境界の反証、旧内容の整理、差分レビューを接続しました。
+新しい定型契約書や内部診断層を全処理へ課さず、既存の依頼・PR・完了報告へ実施根拠を残します。
+PR templateは責務、検証、整理・制約の短い記入欄です。小変更を埋めるための機能やテストは要求しません。
+
+tools/quality.pyには独立したquality-smokeを加えました。通常CLIから分析、needs、CSV/network表示を実行し、
+hash付き再読込みと、表示操作が正規resultを変更しないことを確認します。固定候補件数や特定ガスの科学値は使いません。
+開発中の短い入口として使い、同じ境界を含むquality-prのpytest全体へ重複追加していません。
+テスト・診断を加える理由は独立した失敗の検出とし、既存テストの再利用・不要な専用testの撤去も変更ごとに確認します。
+自動検査の成功から意味的責務の適切さ、未使用処理の不存在、科学的完成を自動承認する機構は作っていません。
+
+現行文書に残っていた0.8撤去予定は、1.xの移行対象・利用先を明示して2.0撤去方針へ整理しました。
+外部形式adapterや元科学記録を、使われない内部関数と同じ理由で削除しません。
+過去の実施記録の版・件数・撤去予定は、その時点の履歴として区別します。
+
+### 1.0の検証と配布物
+
+- quality-pr：**1685 passed（113.45秒）**。Ruff整形/lint、mypy 52 source、依存方向/offlineの2契約も通過。
+- quality-smoke：通常CLI、保存再読込み、CSV/network、正規result不変を確認。
+- Registry：**108種・360反応・構造違反0件**。権利確認による科学値・資格の変更なし。
+- 本体wheel：version 1.0.0と現在の実行パッケージの一致、Registry非収録を確認。
+- リポジトリ外の独立環境：Windows CPython 3.11.15と3.12.8で通常インストール、
+  site-packagesからのimport、版、pip check、CLI起動、分析、needs、CSV、network、verify_views付き再読込み。
+  両環境の18コマンドはすべてexit 0。
+- git diff --checkと相対文書リンクの確認を通過。新しい診断frameworkやテスト数の増加はなし。
+
+本体wheelはRegistryを含まないため、Registry同梱範囲とは独立した1.0の配布物です。
+Registryを含むソース配布は、未確認の集成を含めるかを黙って確定せず、配布範囲の選択を確認待ちにしています。
+ローカルの原Registryは保持し、全Registryが許諾確認済みであるかのようなソース配布物は作成していません。
+今回の指定から外部公開・push・tag作成・既存の作業全体のcommitまでは推測して実行していません。
+
+本体の成果物はdist/1.0.0/plasma_reactgen-1.0.0-py3-none-any.whlです。
+SHA-256は`5a2ff716fe37318923638e92418cb8dbb1035c595f00bdfe7632782bd8818d63`。
+同じディレクトリにSHA256SUMS、verification.json、RELEASE.txtを保存しました。
+最終READMEを含むmetadataを反映したwheelと、独立インストールで検証したwheelの
+実行パッケージ51ファイルは同一です。検証記録ではmetadata更新前後の実行内容を区別せずに
+テスト済みとするのではなく、この同一性と最終成果物のhashを記録しています。

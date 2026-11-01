@@ -4,12 +4,15 @@ from __future__ import annotations
 
 import hashlib
 import sys
+from fractions import Fraction
+from itertools import permutations
 from types import SimpleNamespace
 from urllib.parse import parse_qs, urlparse
 
 import pytest
 
 from acquire import asd, ideal_gas, snapshot
+from acquire.cli import main
 from reactgen import yamlio
 from reactgen.chemistry import parse_state_id
 from reactgen.evidence import EvidenceCatalog
@@ -89,11 +92,11 @@ def test_asd_does_not_promote_a_component_or_next_row_to_a_minimum(
 def test_asd_missing_j_only_withholds_the_e1_classifications(monkeypatch):
     found, _ = acquired(monkeypatch, "open\t3P*\t1 or 2\t\t1.25\t\t\tL2")
     assert found.lowest_eV == 1.25
-    assert found.resonant_eV is None
-    assert found.metastable_eV is None
+    assert found.ground_e1_candidate_eV is None
+    assert found.no_lower_e1_candidate_eV is None
     assert "unresolved J" in found.notes[0]
     with pytest.raises(ValueError, match="definite absolute levels and J"):
-        asd.metastable(list(found.levels))
+        asd.no_lower_e1_candidates(list(found.levels))
 
 
 def test_asd_grouped_configuration_and_its_doubt_are_inherited(monkeypatch):
@@ -148,6 +151,78 @@ def test_asd_parser_can_read_named_reordered_columns_and_spreadsheet_text(monkey
     monkeypatch.setattr(asd, "_request", lambda symbol: text)
     found = asd.fetch(["Ar"])[0]
     assert found.lowest_eV == 1.25
+
+
+def test_asd_equal_energy_levels_are_not_lower_transitions_in_any_input_order():
+    """A zero energy difference cannot be a photon emission; E1 needs A too.
+
+    NIST ASD Lines Help gives the parity/J candidate constraints and positive
+    upper-minus-lower photon energy, not transition-strength guarantees:
+    https://physics.nist.gov/PhysRefData/ASD/Html/lineshelp.html
+    """
+    ground = asd.Level("closed", "1S", Fraction(0), 0)
+    odd = asd.Level("odd", "3P*", Fraction(2), 1)
+    even = asd.Level("even", "1P", Fraction(1), 1)
+    direct = asd.Level("direct", "1P*", Fraction(1), 2)
+    for levels in permutations((ground, odd, even, direct)):
+        assert asd.no_lower_e1_candidates(list(levels)) == [even, odd]
+        found = asd._summaries("Ar", list(levels), "", "")
+        assert found.error is None
+        assert found.lowest_eV == 1
+        assert found.no_lower_e1_candidate_eV == 1
+        assert found.ground_e1_candidate_eV == 2
+        assert found.no_lower_e1_candidate_levels == (even, odd)
+
+
+def test_asd_ground_e1_minimum_does_not_follow_input_order():
+    ground = asd.Level("closed", "1S", Fraction(0), 0)
+    near = asd.Level("near", "1P*", Fraction(1), 1)
+    far = asd.Level("far", "1P*", Fraction(1), 3)
+    tied = asd.Level("tied", "1P*", Fraction(1), 0)
+    assert asd._lowest(ground, [far, near, tied]) == 1
+    assert asd._summaries("Ar", [tied, near, ground], "", "").error == (
+        "ambiguous zero-energy ground term returned"
+    )
+
+
+def test_asd_snapshot_and_cli_claim_candidates_without_lifetime_or_strength(
+    monkeypatch, tmp_path, capsys
+):
+    text = "\n".join((HEADER, GROUND, "open\t3P*\t1\t\t1.25\t\t\tL2"))
+    monkeypatch.setattr(asd, "_request", lambda symbol: text)
+    assert main(["asd", "Ar", "--out", str(tmp_path)]) == 0
+    output = capsys.readouterr().out
+    assert "ground E1 candidate" in output
+    assert "no transition strength or lifetime" in output
+    assert "metastable" not in output
+    assert "resonant" not in output
+    found = asd.fetch(["Ar"])[0]
+    records = asd.records([found], "NIST")
+    assert {record["property"] for record in records} == {
+        "ground_e1_candidate_energy_eV",
+        "lowest_excitation_energy_eV",
+    }
+    assert all(record["status"] == "imported" and "existence" not in record for record in records)
+
+
+def test_old_asd_summary_snapshots_remain_external_properties(tmp_path):
+    old_names = {"metastable_energy_eV", "resonant_energy_eV"}
+    path = snapshot.write(
+        tmp_path,
+        "state_property",
+        {"citation": "old acquisition"},
+        [
+            {"species": "Ar", "phase": "gas", "property": name, "value": 1, "unit": "eV"}
+            for name in sorted(old_names)
+        ],
+    )
+    loaded = EvidenceCatalog.load_paths((path,)).state(parse_state_id("Ar@ground"))
+    assert loaded.preferred is not None
+    assert {name for record in loaded.records for name in record.properties} == old_names
+    assert all(record.existence == "unknown" for record in loaded.records)
+    assert all(
+        prop.tier == "imported" for record in loaded.records for prop in record.properties.values()
+    )
 
 
 def fake_pyromat(monkeypatch, *, enthalpy=0.054, composition=None):

@@ -14,6 +14,7 @@ import pytest
 from reactgen import export, needs, yamlio
 from reactgen.case import Case
 from reactgen.evidence import EvidenceCatalog
+from reactgen.model import ReactionCandidate, Term, reaction_id
 from reactgen.pipeline import analyze
 
 
@@ -26,6 +27,52 @@ def rehash(document: dict) -> None:
         name: hashlib.sha256(content.encode()).hexdigest()
         for name, content in export.csv_views(document).items()
     }
+
+
+def historical_fractional_duplicates(version: int) -> dict:
+    document = saved()
+    document["metadata"]["helper_view_format"] = version
+    reaction = next(row for row in document["reactions"] if row["process"] == "elastic")
+    old_identifier = reaction["id"]
+    # The former sequential-float key encoded 0.1 + 0.2 as this serialized value.
+    legacy_side = (("Ar@ground", 0.30000000000000004), ("e", 1.0))
+    legacy_id = reaction_id(("electron", "elastic", None, None, None, legacy_side, legacy_side))
+    terms = (Term("e"), Term("Ar@ground", 0.1), Term("Ar@ground", 0.2))
+    candidate = ReactionCandidate(legacy_id, terms, terms, "electron", "elastic", "test", "test", 0)
+    assert reaction_id(candidate.key) != legacy_id
+    reaction["reactants"] = [term._asdict() for term in terms]
+    reaction["products"] = [term._asdict() for term in terms]
+    reaction["equation"] = candidate.equation
+
+    def replace_reference(value):
+        if isinstance(value, dict):
+            return {key: replace_reference(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [replace_reference(item) for item in value]
+        return legacy_id if value == old_identifier else value
+
+    document = replace_reference(document)
+    rehash(document)
+    return document
+
+
+@pytest.mark.parametrize("version", [1, 2, 3, 4, 5])
+def test_historical_fractional_duplicate_ids_and_view_hashes_are_read_without_rewriting(
+    tmp_path: Path, version: int
+) -> None:
+    document = historical_fractional_duplicates(version)
+    original = deepcopy(document)
+    path = tmp_path / "result.yaml"
+    path.write_text(yamlio.dump(document), encoding="utf-8")
+    for name, content in export.csv_views(document).items():
+        (tmp_path / name).write_bytes(content.encode("utf-8"))
+    assert export.read(path, verify_views=True) == original
+    assert yamlio.load(path.read_text(encoding="utf-8")) == original
+
+
+def test_current_format_rejects_the_historical_fractional_duplicate_hash() -> None:
+    with pytest.raises(ValueError, match="reaction identity"):
+        export.validate(historical_fractional_duplicates(6))
 
 
 def test_individual_scope_requirements_and_dependencies_roundtrip(tmp_path: Path) -> None:
@@ -63,7 +110,7 @@ def test_current_hashes_cover_the_saved_meaning(field: str) -> None:
         "dependencies": [["Ar@ground", "state"]],
     }
     judgment[field] = changes[field]
-    with pytest.raises(ValueError, match="helper view hashes"):
+    with pytest.raises(ValueError, match="helper view hashes|outcome label"):
         export.validate(document)
 
 
@@ -134,6 +181,9 @@ def test_historical_format_two_keeps_empty_meaning_and_its_exact_hashes(tmp_path
             judgment["proposition"] = ""
             for field in ("scope", "requirements", "dependencies"):
                 judgment.pop(field)
+            judgment.pop("label")
+            judgment.pop("blocking_causes")
+    document["summary"] = export.summary(document["states"], document["reactions"])
     rehash(document)
     expected = export.csv_views(document)
     path = tmp_path / "result.yaml"

@@ -371,12 +371,12 @@ def _levels(monkeypatch, text):
     return asd.fetch(["X"])[0]
 
 
-def test_a_forbidden_level_is_the_metastable(monkeypatch):
-    """Argon's J=2 cannot radiate to a J=0 ground state; the J=1 beside it can."""
+def test_e1_summaries_name_the_parity_j_candidates(monkeypatch):
+    """Argon's J=2 fails the E1 ground constraint; J=1 passes that constraint."""
 
     found = _levels(monkeypatch, ARGON_LEVELS)
-    assert found.metastable_eV == pytest.approx(11.548354)
-    assert found.resonant_eV == pytest.approx(11.623593)
+    assert found.no_lower_e1_candidate_eV == pytest.approx(11.548354)
+    assert found.ground_e1_candidate_eV == pytest.approx(11.623593)
 
 
 def test_ground_term_fine_structure_is_not_an_excited_state(monkeypatch):
@@ -391,7 +391,7 @@ def test_levels_are_recorded_against_the_ground_state_atom(monkeypatch):
 
     records = asd.records([_levels(monkeypatch, ARGON_LEVELS)], "NIST ASD")
     assert {item["species"] for item in records} == {"X"}
-    assert "metastable_energy_eV" in {item["property"] for item in records}
+    assert "no_lower_e1_candidate_energy_eV" in {item["property"] for item in records}
     assert "lowest_excitation_energy_eV" in {item["property"] for item in records}
     assert "excitation_energy_eV" not in {item["property"] for item in records}
     assert all(item["phase"] == "gas" and item["status"] == "imported" for item in records)
@@ -477,7 +477,7 @@ def test_gas_atom_is_never_given_a_condensed_polynomial():
     assert sulfur.known
     assert sulfur.origin == "nasa_gas.yaml"
     assert sulfur.listed_as == "S"
-    assert sulfur.standard_pressure_Pa == 101325.0
+    assert sulfur.standard_pressure_Pa == 100000.0
 
 
 def test_competing_structures_are_not_chosen_by_source_order(monkeypatch):
@@ -535,9 +535,7 @@ def test_an_excited_state_does_not_inherit_a_ground_nasa_fit():
 
     if not nasa.available():
         pytest.skip("cantera is not installed")
-    found = nasa.fetch(
-        [{"id": "O_1D", "composition": {"O": 1}, "charge": 0, "state": {"kind": "excited"}}]
-    )[0]
+    found = nasa.fetch([{"id": "O@1d2", "composition": {"O": 1}, "charge": 0}])[0]
     assert not found.known
     assert "independent evidence" in found.error
 
@@ -615,17 +613,21 @@ def test_atomic_polarizability_is_read_not_estimated():
 # --------------------------------------------------------------------------- cccbdb
 
 
-def test_cccbdb_rows_are_recognised_by_shape_not_position():
-    """The page wraps its own navigation in tables too."""
+def test_cccbdb_synthetic_rows_are_recognised_by_shape_not_position():
+    """Invented values check HTML extraction, including navigation and incomplete rows."""
 
     from acquire import cccbdb
 
     page = (Path(__file__).parent / "fixtures" / "cccbdb_polarizability.html").read_text(
         encoding="utf-8"
     )
-    found = {item.formula: item.polarizability_A3 for item in cccbdb.parse(page)}
-    assert found["Ar"] == pytest.approx(1.664, abs=0.01)
-    assert found["F"] == pytest.approx(0.557, abs=0.01)
+    found = {item.formula: item for item in cccbdb.parse(page)}
+    assert set(found) == {"Ar", "F", "F2SO"}
+    assert found["Ar"].polarizability_A3 == 9.25
+    assert found["F"].polarizability_A3 == 4.5
+    assert found["F2SO"].electronic_state == "1A"
+    assert found["F2SO"].point_group == "Cs"
+    assert found["F2SO"].reference == "synthetic-molecule"
 
 
 def test_a_formula_is_matched_on_its_atoms():
@@ -641,7 +643,7 @@ def test_a_formula_is_matched_on_its_atoms():
 
 
 def test_only_what_the_caller_allows_takes_a_value():
-    """An ion may not have its neutral's polarizability."""
+    """The caller selects a target; synthetic fixture values are not measurements."""
 
     from acquire import cccbdb
 
@@ -652,6 +654,7 @@ def test_only_what_the_caller_allows_takes_a_value():
     written = cccbdb.records(found, {(("Ar", 1),): "Ar"}, "a list")
     assert [item["species"] for item in written] == ["Ar"]
     assert written[0]["unit"] == "A3"
+    assert written[0]["value"] == 9.25
 
 
 def test_cccbdb_competing_structures_require_an_explicit_source_identity():
@@ -701,7 +704,7 @@ def test_additivity_refuses_small_training_without_optional_numpy(monkeypatch):
         return original_import(name, *args, **kwargs)
 
     monkeypatch.setattr(builtins, "__import__", guarded_import)
-    # The fixture is deliberately small, so the guard has to refuse rather than fit.
+    # The synthetic fixture is deliberately small; it cannot justify a fit.
     found = additivity.estimate([("CF3", {"C": 1, "F": 3})], training)
     assert not found[0].known
     assert "training data" in found[0].error

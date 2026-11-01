@@ -1,0 +1,19 @@
+schema_version: 1
+phase: gas
+id: H+
+display_name: H+
+composition:
+  H: 1
+charge: 1
+classes:
+- positive_ion
+- atom
+state:
+  kind: ground
+  label: ''
+  excitation_energy_eV: 0.0
+metadata:
+  status: imported
+  notes:
+  - Bare proton target used by the source-defined H(1s) ionization channel; no electronic excited population
+    or electron thermochemical convention is inferred.

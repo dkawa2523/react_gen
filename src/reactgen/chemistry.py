@@ -11,7 +11,19 @@ import re
 from urllib.parse import quote, unquote
 
 from reactgen import naming
-from reactgen.model import ELECTRON, CandidateState, EquationKey, StateCandidate
+from reactgen.model import (
+    ELECTRON,
+    CandidateState,
+    EquationKey,
+    ReactionCandidate,
+    StateCandidate,
+    Term,
+    canonical_family,
+    canonical_process,
+    reaction_id,
+    side_key,
+    validate_stoichiometric_terms,
+)
 
 Composition = dict[str, int]
 
@@ -37,7 +49,7 @@ def parse_equation(text: str) -> tuple[EquationKey, tuple[StateCandidate, ...]] 
 def _parse_equation_side(
     text: str,
 ) -> tuple[tuple[tuple[str, float], ...], tuple[StateCandidate, ...], bool] | None:
-    counts: dict[str, float] = {}
+    terms: list[Term] = []
     states: dict[str, StateCandidate] = {}
     third_body = False
     for piece in re.split(r"\s+\+\s+", text.strip()):
@@ -52,14 +64,24 @@ def _parse_equation_side(
         else:
             written = name if separator else token
         if written == "M":
+            try:
+                validate_stoichiometric_terms(((written, count),))
+            except ValueError:
+                return None
+            if count != 1 or third_body:
+                return None
             third_body = True
             continue
         state = parse_state_id(written)
         if state is None:
             return None
-        counts[state.id] = counts.get(state.id, 0.0) + count
+        terms.append(Term(state.id, count))
         states[state.id] = state
-    return tuple(sorted(counts.items())), tuple(states.values()), third_body
+    try:
+        validate_stoichiometric_terms(terms)
+    except ValueError:
+        return None
+    return side_key(terms), tuple(states.values()), third_body
 
 
 NOBLE_GASES = frozenset({"He", "Ne", "Ar", "Kr", "Xe"})
@@ -156,11 +178,6 @@ PERIODIC_ORDER = (
     "Bi",
 )
 ATOMIC_NUMBER = {element: number for number, element in enumerate(PERIODIC_ORDER, 1)}
-
-# Even-electron open-shell ground states that matter to the supported plasma
-# feeds and their primary fragments.  Odd-electron species need no table.
-KNOWN_OPEN_SHELL = frozenset({"C", "O", "Si", "S", "Ge", "Se", "O2"})
-KNOWN_CLOSED_SHELL = NOBLE_GASES | frozenset({"H2", "N2", "F2", "Cl2", "Br2", "I2"})
 
 VALENCE = {
     "H": 1,
@@ -328,6 +345,59 @@ def parse_state_id(written: str) -> StateCandidate | None:
     )
 
 
+def declared_state_target(
+    written: str, declaration: dict, *, default_phase: str = "unknown"
+) -> StateCandidate | None:
+    """Identify a formula/state declaration without choosing evidence or quantities.
+
+    Identity suffixes and separately declared fields must agree. The calling
+    source adapter states its phase scope; an unspecified snapshot phase stays
+    unknown. A source query is not a physical target declaration.
+    """
+    candidate = parse_state_id(written)
+    if candidate is None:
+        return None
+    _validate_target_declaration(candidate, declaration)
+    phase = declaration.get("phase")
+    if phase is None:
+        phase = candidate.phase if ";phase=" in written else default_phase
+    structure = declaration.get("structure", candidate.structure)
+    for name, value in (("phase", phase), ("structure", structure)):
+        if value is not None and (not isinstance(value, str) or not value.strip()):
+            raise ValueError(f"state declaration {name} must be nonempty text")
+        if f";{name}=" in written and value != getattr(candidate, name):
+            raise ValueError(f"state declaration {name} contradicts its physical target")
+    return candidate_state(
+        candidate.composition,
+        candidate.charge,
+        candidate.state.kind,
+        label=candidate.state.label,
+        resolution=candidate.state.resolution,
+        phase=phase,
+        structure=structure,
+    )
+
+
+def _validate_target_declaration(candidate: StateCandidate, declaration: dict) -> None:
+    composition = declaration.get("composition")
+    if composition is not None and (
+        not isinstance(composition, dict)
+        or any(type(value) is not int or value <= 0 for value in composition.values())
+        or composition != candidate.composition
+    ):
+        raise ValueError("state declaration composition contradicts its physical target")
+    charge = declaration.get("charge")
+    if charge is not None and (type(charge) is not int or charge != candidate.charge):
+        raise ValueError("state declaration charge contradicts its physical target")
+    state = declaration.get("state")
+    if state is not None and (
+        not isinstance(state, dict)
+        or set(state) - {"kind", "resolution", "label"}
+        or any(getattr(candidate.state, name, None) != value for name, value in state.items())
+    ):
+        raise ValueError("state declaration contradicts its physical target")
+
+
 def _state_defaults(name: str) -> tuple[str, str, str]:
     if name == "ground":
         return "ground", "resolved", ""
@@ -446,27 +516,6 @@ def electron_count(composition: Composition, charge: int = 0) -> int | None:
     return sum(ATOMIC_NUMBER[element] * count for element, count in composition.items()) - charge
 
 
-def electronic_character(composition: Composition, charge: int = 0) -> str:
-    """Return only what formula-level electron bookkeeping can establish.
-
-    Odd electron count proves an open shell.  Even count alone does not prove a
-    closed shell, so only a few elementary ground states are asserted here.
-    Everything else stays unknown for the State evidence layer.
-    """
-
-    count = electron_count(composition, charge)
-    if count is None:
-        return "unknown"
-    if count % 2:
-        return "open_shell"
-    written = formula(composition)
-    if written in KNOWN_OPEN_SHELL:
-        return "open_shell"
-    if written in KNOWN_CLOSED_SHELL:
-        return "closed_shell"
-    return "unknown"
-
-
 def bond_splits(
     composition: Composition,
     max_leaving: int = 2,
@@ -510,19 +559,6 @@ def merge(left: Composition, right: Composition) -> Composition:
     for element, count in right.items():
         merged[element] = merged.get(element, 0) + count
     return {element: count for element, count in merged.items() if count}
-
-
-def subtract(left: Composition, right: Composition) -> Composition | None:
-    result = dict(left)
-    for element, count in right.items():
-        remaining = result.get(element, 0) - count
-        if remaining < 0:
-            return None
-        if remaining:
-            result[element] = remaining
-        else:
-            result.pop(element, None)
-    return result or None
 
 
 def plausible(composition: Composition, *, charged_noble: bool = False) -> bool:
@@ -597,3 +633,56 @@ def bond_exchanges(
             ):
                 products.append((left_product, right_product))
     return products
+
+
+def reaction_declaration_matches(
+    declaration: dict[str, str | None], target: ReactionCandidate
+) -> bool:
+    """Compare explicit target assertions; never interpret a source's free-text declaration.
+
+    Missing fields make no assertion. An enclosing channel supplies the context,
+    while every explicitly stated equation, process or physical condition must agree.
+    This only identifies the quantity's target; it does not approve the reaction.
+    """
+    if "reaction_id" in declaration and declaration["reaction_id"] != reaction_id(target.key):
+        return False
+    if written := declaration.get("reaction"):
+        parsed = parse_equation(written)
+        if parsed is None:
+            return False
+        equation = parsed[0]
+        if (equation[0], target.surface, equation[2], equation[3]) != target.equation_key:
+            return False
+    if (family := declaration.get("family")) and canonical_family(family) != target.family:
+        return False
+    if (process := declaration.get("type")) and canonical_process(
+        process,
+        family=declaration.get("family") or "",
+        third_body=target.third_body,
+        surface=target.surface,
+    ) != target.process:
+        return False
+    if "stabilization" in declaration:
+        stabilization = declaration["stabilization"]
+        stabilization = stabilization or (
+            "unspecified" if target.process in {"attachment", "recombination"} else None
+        )
+        if stabilization != target.stabilization:
+            return False
+    return all(
+        name not in declaration or declaration[name] == getattr(target, name)
+        for name in ("third_body", "surface")
+    )
+
+
+def reaction_family(equation: EquationKey) -> str:
+    """Identify a collision family from canonical participants, not auxiliary records."""
+    if equation[1] is not None:
+        return "surface"
+    identifiers = {name for name, _count in equation[2]}
+    if ELECTRON in identifiers:
+        return "electron"
+    reactants = [parse_state_id(identifier) for identifier in identifiers]
+    if any(state is None for state in reactants):
+        raise ValueError("reaction family requires identified canonical participant states")
+    return "ion" if any(state is not None and state.charge for state in reactants) else "neutral"

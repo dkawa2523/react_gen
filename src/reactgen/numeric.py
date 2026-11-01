@@ -10,15 +10,16 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
 from itertools import combinations, pairwise
-from math import exp, inf, isclose, isfinite
+from math import exp, inf, isclose, isfinite, log
 
 from reactgen.case import Conditions
-from reactgen.evidence import ReactionEvidence
-from reactgen.model import ReactionCandidate
+from reactgen.evidence import ReactionEvidence, dataset_for_reaction
+from reactgen.model import ReactionCandidate, Requirement, numerical_requirement_fields
 from reactgen.records import (
     TIER_RANK,
     NumericDataset,
     Property,
+    ReactionRecord,
     channel_energy_status,
     energy_declarations_agree,
     energy_properties_equivalent,
@@ -26,9 +27,9 @@ from reactgen.records import (
     qualified_channel_energy,
     reaction_energy_definition_compatible,
     review_scope_covers,
-    scientific_dataset_content,
+    scientific_datasets_equivalent,
 )
-from reactgen.selection import DataSelection, QuantitySelection
+from reactgen.selection import NUMERICAL_QUANTITIES, DataSelection, QuantitySelection
 from reactgen.units import EV_PER_K, canonical_axis_unit, energy_eV, numerical_unit, quantity_value
 
 
@@ -39,8 +40,18 @@ class DatasetAssessment:
     reason: str
     value: float | None = None
     unit: str | None = None
-    required_inputs: tuple[str, ...] = ()
-    required_transforms: tuple[str, ...] = ()
+    kind: str | None = None
+    observable: str | None = None
+    scope: str = ""
+    requirements: tuple[Requirement, ...] = ()
+
+    @property
+    def required_inputs(self) -> tuple[str, ...]:
+        return numerical_requirement_fields(self.requirements)[0]
+
+    @property
+    def required_transforms(self) -> tuple[str, ...]:
+        return numerical_requirement_fields(self.requirements)[1]
 
 
 @dataclass(frozen=True)
@@ -51,12 +62,24 @@ class DataUse:
     kind: str | None = None
     value: float | None = None
     unit: str | None = None
-    required_inputs: tuple[str, ...] = ()
-    required_transforms: tuple[str, ...] = ()
     estimated: bool = False
     datasets: tuple[DatasetAssessment, ...] = ()
     selection: dict = field(default_factory=dict)
     disagreements: tuple[str, ...] = ()
+    scope: str = (
+        "Rate-coefficient use from supplied evidence under supplied conditions; "
+        "a native curve or probability "
+        "does not supply a coefficient without its separate conversion."
+    )
+    requirements: tuple[Requirement, ...] = ()
+
+    @property
+    def required_inputs(self) -> tuple[str, ...]:
+        return numerical_requirement_fields(self.requirements)[0]
+
+    @property
+    def required_transforms(self) -> tuple[str, ...]:
+        return numerical_requirement_fields(self.requirements)[1]
 
 
 def data_use(
@@ -67,23 +90,45 @@ def data_use(
 ) -> DataUse:
     """Record-level validity is distinct from reaction existence or feasibility."""
     grouped: dict[str, list[NumericDataset]] = {}
-    for dataset in evidence.datasets:
-        group = grouped.setdefault(dataset.id, [])
-        if all(
-            scientific_dataset_content(dataset) != scientific_dataset_content(held)
-            for held in group
-        ):
-            group.append(dataset)
+    parents: dict[str, list[ReactionRecord | None]] = {}
+    offers: list[tuple[ReactionRecord | None, tuple[NumericDataset, ...]]] = [
+        (None, evidence.overlay_datasets)
+    ] + [(record, record.datasets) for record in evidence.records]
+    for parent, datasets in offers:
+        for dataset in datasets:
+            dataset = dataset_for_reaction(dataset, reaction)
+            parents.setdefault(dataset.id, []).append(parent)
+            group = grouped.setdefault(dataset.id, [])
+            if all(not scientific_datasets_equivalent(dataset, held) for held in group):
+                group.append(dataset)
     assessed: list[DatasetAssessment] = []
     accepted: list[tuple[NumericDataset, DatasetAssessment]] = []
     for dataset_id, group in sorted(grouped.items()):
         if len(group) > 1:
             assessed.append(
-                DatasetAssessment(dataset_id, "conflict", "same ID has different content")
+                DatasetAssessment(
+                    dataset_id,
+                    "conflict",
+                    "same ID has different content",
+                    scope=(
+                        "Conflicting numerical-record identity; no unambiguous "
+                        "native quantity or evaluation is established."
+                    ),
+                    requirements=(
+                        Requirement(
+                            "source_review",
+                            dataset_id,
+                            "record_identity",
+                            "resolve different scientific declarations sharing one record ID",
+                        ),
+                    ),
+                )
             )
             continue
         dataset = group[0]
-        result = assess_dataset(dataset, reaction, evidence, conditions)
+        result = _parent_qualification(dataset, parents[dataset_id]) or assess_dataset(
+            dataset, reaction, evidence, conditions
+        )
         assessed.append(result)
         if result.status in {"valid", "needs_input"}:
             accepted.append((dataset, result))
@@ -91,20 +136,8 @@ def data_use(
     selection = DataSelection() if selection is None else selection
     if not isinstance(selection, DataSelection):
         raise ValueError("selection must be a validated DataSelection")
-    selected, notes = _selection_candidates(accepted, evidence.datasets, selection)
-    if not accepted:
-        conflict = any(item.status == "conflict" for item in results)
-        use = DataUse(
-            "conflict" if conflict else "unavailable",
-            "dataset identity conflicts" if conflict else "no valid numerical representation",
-            datasets=results,
-        )
-    elif not selected:
-        use = DataUse(
-            "unavailable", "no eligible numerical records satisfy the request", datasets=results
-        )
-    else:
-        use = _choose_data(selected, results, conditions, reaction)
+    selected, notes = _selection_candidates(accepted, evidence.datasets, selection, reaction)
+    use = _requested_use(accepted, selected, results, conditions, reaction)
     disagreement_ids = {
         dataset.id
         for left, right in combinations([dataset for dataset, _ in accepted], 2)
@@ -117,24 +150,144 @@ def data_use(
     return replace(
         use,
         reason="; ".join((use.reason, *notes)),
-        selection=selection.document() if selection.quantities else {},
+        selection=selection.document() if selection.quantities or selection.targets else {},
         disagreements=tuple(sorted(disagreement_ids)),
     )
+
+
+def _parent_qualification(
+    dataset: NumericDataset, parents: list[ReactionRecord | None]
+) -> DatasetAssessment | None:
+    """A stopped offer cannot approve its data or invalidate an independent offer."""
+    if dataset.status in {"rejected", "conflicting"} or any(
+        parent is None or parent.status not in {"rejected", "conflicting"} for parent in parents
+    ):
+        return None
+    stopped = sorted(
+        (parent for parent in parents if parent is not None),
+        key=lambda parent: (parent.id, parent.status),
+    )
+    conflict = any(parent.status == "conflicting" for parent in stopped)
+    requirements = tuple(
+        Requirement(
+            "source_review",
+            parent.id,
+            "record_status",
+            f"containing reaction record {parent.id!r} is {parent.status}; "
+            "its numerical declaration is not independently qualified",
+        )
+        for parent in stopped
+    )
+    return _dataset_result(
+        dataset,
+        "conflict" if conflict else "invalid",
+        "; ".join(dict.fromkeys(item.reason for item in requirements)),
+        requirements=requirements,
+    )
+
+
+def _requested_use(
+    accepted: list[tuple[NumericDataset, DatasetAssessment]],
+    selected: list[tuple[NumericDataset, DatasetAssessment]],
+    results: tuple[DatasetAssessment, ...],
+    conditions: Conditions,
+    reaction: ReactionCandidate,
+) -> DataUse:
+    """Apply coefficient-purpose compatibility after a source request."""
+    applicable_to_rate = [
+        (dataset, result) for dataset, result in selected if _coefficient_observable(dataset)
+    ]
+    if not accepted:
+        conflict = any(item.status == "conflict" for item in results)
+        unresolved = tuple(
+            item for item in results if item.status not in {"invalid", "out_of_range"}
+        )
+        relevant = unresolved or results
+        return DataUse(
+            "conflict" if conflict else "unavailable",
+            "numerical records conflict"
+            if conflict
+            else "no numerical value is available from the supplied records under these conditions",
+            datasets=results,
+            requirements=_requirements(*(item.requirements for item in relevant))
+            if relevant
+            else (
+                Requirement(
+                    "source_information",
+                    reaction.id,
+                    "rate_coefficient",
+                    "no numerical record is matched to this channel in the supplied evidence; "
+                    "obtain a channel-appropriate coefficient representation",
+                ),
+            ),
+        )
+    elif not selected:
+        return DataUse(
+            "unavailable",
+            "no eligible numerical records satisfy the request",
+            datasets=results,
+            requirements=(
+                Requirement(
+                    "source_selection",
+                    reaction.id,
+                    "requested_numerical_record",
+                    "check the requested record or source restrictions against eligible records",
+                ),
+            ),
+        )
+    elif not applicable_to_rate:
+        return DataUse(
+            "unavailable",
+            "native momentum-transfer curves do not determine "
+            "a reaction collision-rate coefficient",
+            datasets=results,
+            requirements=tuple(
+                Requirement(
+                    "source_information",
+                    dataset.id,
+                    "reaction_collision_cross_section",
+                    "obtain the reaction collision cross section; a momentum-weighted "
+                    "transport quantity cannot supply it by distribution integration alone",
+                )
+                for dataset, _ in selected
+            ),
+        )
+    return _choose_data(applicable_to_rate, results, conditions, reaction)
+
+
+def _coefficient_observable(dataset: NumericDataset) -> bool:
+    """Purpose compatibility is separate from native quantity qualification.
+
+    A reaction collision cross section determines collision counts. The angular
+    momentum weighting of transport cross sections defines a different quantity;
+    an energy-distribution integral alone cannot remove that weighting.
+    """
+    return dataset.kind != "cross_section" or dataset.observable not in {
+        "momentum_transfer",
+        "effective_momentum_transfer",
+    }
 
 
 def _selection_candidates(
     accepted: list[tuple[NumericDataset, DatasetAssessment]],
     offered: tuple[NumericDataset, ...],
     selection: DataSelection,
+    reaction: ReactionCandidate,
 ) -> tuple[list[tuple[NumericDataset, DatasetAssessment]], list[str]]:
     selected = []
     notes: list[str] = []
-    kinds = sorted({dataset.kind for dataset in offered} | set(selection.quantities))
+    kinds = sorted(
+        {dataset.kind for dataset in offered}
+        | (
+            (set(selection.quantities) | set(selection.targets.get(reaction.id, {})))
+            & NUMERICAL_QUANTITIES
+        )
+    )
     for kind in kinds:
         group = [(dataset, result) for dataset, result in accepted if dataset.kind == kind]
-        policy = selection.for_quantity(kind)
+        policy = selection.for_quantity(kind, reaction.id)
         if policy is None:
-            # Compatibility for existing input declarations, removed in 0.8.
+            # Compatibility for existing input declarations, removed in 2.0.
             preferred = [(dataset, result) for dataset, result in group if dataset.preferred]
             selected.extend(preferred or group)
             if preferred:
@@ -143,7 +296,23 @@ def _selection_candidates(
                     "migrate to data_selection)"
                 )
             continue
-        chosen = _requested_candidates(kind, policy, offered, group)
+        if policy.record is not None:
+            chosen = _requested_candidates(kind, policy, offered, group)
+        else:
+            # A source priority ranks alternatives for the same quantity. It
+            # must not turn a different observable or rate law into that quantity.
+            quantities: dict[tuple[str | None, float | None], list] = {}
+            for dataset, result in group:
+                key = (
+                    dataset.observable,
+                    _coefficient_order(dataset, reaction) if kind == "rate_coefficient" else None,
+                )
+                quantities.setdefault(key, []).append((dataset, result))
+            chosen = [
+                item
+                for comparable in quantities.values()
+                for item in _requested_candidates(kind, policy, offered, comparable)
+            ]
         selected.extend(chosen)
         notes.append(_request_reason(kind, policy, chosen))
     return selected, notes
@@ -212,7 +381,12 @@ def _choose_data(
     conditions: Conditions,
     reaction: ReactionCandidate,
 ) -> DataUse:
-    selected = accepted
+    # This operation chooses a route to a coefficient. Native probabilities and
+    # curves retain their own assessments and cannot obstruct an available rate.
+    rates = [
+        (dataset, result) for dataset, result in accepted if dataset.kind == "rate_coefficient"
+    ]
+    selected = rates or accepted
     applicable = [(dataset, result) for dataset, result in selected if result.status == "valid"]
     pending_rates = [
         (dataset, result)
@@ -223,49 +397,63 @@ def _choose_data(
         return DataUse(
             "needs_input",
             "missing conditions must determine rate-law applicability before source selection",
-            required_inputs=tuple(
-                sorted({value for _, result in pending_rates for value in result.required_inputs})
-            ),
-            required_transforms=tuple(
-                sorted(
-                    {value for _, result in pending_rates for value in result.required_transforms}
-                )
-            ),
+            requirements=_requirements(*(result.requirements for _, result in pending_rates)),
             datasets=results,
         )
     choices = applicable or selected
-    inputs = tuple(sorted({value for _, result in choices for value in result.required_inputs}))
-    transforms = tuple(
-        sorted({value for _, result in choices for value in result.required_transforms})
+    requirements = _requirements(*(result.requirements for _, result in choices))
+    unlike_quantities = any(
+        left.kind == right.kind and not _same_quantity(left, right, reaction)
+        for left, right in combinations([dataset for dataset, _ in choices], 2)
     )
-    rates = [dataset for dataset, _ in choices if dataset.kind == "rate_coefficient"]
-    if any(not _same_quantity(left, right, reaction) for left, right in combinations(rates, 2)):
+    if unlike_quantities:
+        selection_quantity = "data_selection" if rates else "numerical_quantity_selection"
         return DataUse(
             "needs_input",
             "missing conditions must determine rate-law applicability before source selection"
-            if inputs
-            else "sources describe different rate laws; explicit source selection is required",
-            required_inputs=inputs or ("rate_law_selection",),
-            required_transforms=transforms,
+            if requirements
+            else (
+                "sources describe different numerical quantities or rate laws; "
+                "explicit source selection is required"
+            ),
+            requirements=requirements
+            if requirements
+            else (
+                Requirement(
+                    "source_selection",
+                    reaction.id,
+                    selection_quantity,
+                    "select the intended quantity or rate law explicitly with data_selection",
+                ),
+            ),
             datasets=results,
         )
     if _conflicting([item[0] for item in choices], conditions, reaction):
         return DataUse(
             "conflict",
             "numerical sources disagree at the supplied conditions"
-            if applicable
+            if applicable and all(dataset.kind != "cross_section" for dataset, _ in choices)
             else "numerical sources disagree at checked points of overlapping applicability",
-            required_inputs=inputs,
-            required_transforms=transforms,
+            requirements=_requirements(
+                requirements,
+                *(_conversion_requirements(dataset, reaction) for dataset, _ in choices),
+                (
+                    Requirement(
+                        "source_review",
+                        reaction.id,
+                        "numerical_disagreement",
+                        "review disagreeing values of the same quantity in common applicability",
+                    ),
+                ),
+            ),
             datasets=results,
         )
-    if len(choices) > 1 and inputs:
+    if len(choices) > 1 and requirements:
         return DataUse(
             "needs_input",
             "conditions are needed to select a source; finite-point checks do not establish "
             "continuous-domain equivalence",
-            required_inputs=inputs,
-            required_transforms=transforms,
+            requirements=requirements,
             datasets=results,
         )
     dataset, result = min(
@@ -276,13 +464,22 @@ def _choose_data(
             item[0].id,
         ),
     )
-    inputs = result.required_inputs
-    transforms = result.required_transforms
-    status = "needs_input" if inputs else "needs_transform" if transforms else "coefficient"
+    requirements = _requirements(result.requirements, _conversion_requirements(dataset, reaction))
+    inputs, transforms = numerical_requirement_fields(requirements)
+    status = (
+        "needs_input"
+        if result.status == "needs_input" or inputs
+        else "needs_transform"
+        if transforms
+        else "coefficient"
+    )
+    conversion = _conversion_requirements(dataset, reaction)
     reason = result.reason
+    if conversion:
+        reason += "; coefficient-producing conversion is not performed"
     if len(choices) > 1:
         reason += (
-            "; no disagreement at the supplied conditions; "
+            "; no detected disagreement in common applicability; "
             "selected by quality, kind, then stable ID"
         )
     return DataUse(
@@ -292,10 +489,102 @@ def _choose_data(
         dataset.kind,
         result.value,
         result.unit,
-        inputs,
-        transforms,
-        dataset.estimated,
-        results,
+        estimated=dataset.estimated,
+        datasets=results,
+        requirements=requirements,
+    )
+
+
+def _requirements(*groups: tuple[Requirement, ...]) -> tuple[Requirement, ...]:
+    return tuple(
+        sorted(
+            {item for group in groups for item in group},
+            key=lambda item: (
+                item.responsibility,
+                item.target,
+                item.quantity,
+                item.reason,
+            ),
+        )
+    )
+
+
+def _conversion_requirements(
+    dataset: NumericDataset,
+    reaction: ReactionCandidate,
+) -> tuple[Requirement, ...]:
+    """Separate coefficient-producing work from native quantity assessment."""
+    if dataset.kind == "cross_section":
+        electron = reaction.family == "electron"
+        return (
+            Requirement(
+                "external_models",
+                dataset.id,
+                "electron_energy_distribution" if electron else "collision_energy_distribution",
+                "provide an explicit normalized particle energy distribution and its domain",
+            ),
+            Requirement(
+                "transforms",
+                dataset.id,
+                "eedf_integration" if electron else "energy_distribution_integration",
+                "integrate a suitable cross-section quantity over the explicit distribution; "
+                "not implemented",
+            ),
+        )
+    if dataset.kind == "sticking_coefficient":
+        return (
+            Requirement(
+                "external_models",
+                dataset.id,
+                "surface_incident_flux_model",
+                "provide the particle incidence model for this probability",
+            ),
+            Requirement(
+                "transforms",
+                dataset.id,
+                "surface_flux_conversion",
+                "convert probability and incidence to the required surface rate; not implemented",
+            ),
+        )
+    return ()
+
+
+def _dataset_result(
+    dataset: NumericDataset,
+    status: str,
+    reason: str,
+    value: float | None = None,
+    unit: str | None = None,
+    requirements: tuple[Requirement, ...] = (),
+) -> DatasetAssessment:
+    scope = {
+        "cross_section": (
+            "Cross-section curve representation within its declared energy domain; scalar point "
+            "evaluation, distribution coverage and integration are not performed."
+        ),
+        "sticking_coefficient": (
+            "Native probability at supplied conditions; incidence and surface-rate "
+            "conversion are not performed."
+        ),
+        "rate_coefficient": (
+            "Native rate coefficient at supplied conditions; channel occurrence "
+            "and reaction rates are undetermined."
+        ),
+    }.get(
+        dataset.kind,
+        "Unsupported native numerical quantity; evaluation and coefficient use "
+        "are not implemented.",
+    )
+    return DatasetAssessment(
+        dataset.id,
+        status,
+        reason,
+        value,
+        unit,
+        dataset.kind,
+        dataset.observable,
+        scope,
+        _requirements(requirements),
     )
 
 
@@ -305,20 +594,73 @@ def assess_dataset(
     evidence: ReactionEvidence,
     conditions: Conditions,
 ) -> DatasetAssessment:
-    if dataset.form == "reference_only":
-        return DatasetAssessment(
-            dataset.id, "reference_only", "source has no numerical representation"
+    dataset = dataset_for_reaction(dataset, reaction)
+    # Scientific rejection/conflict is independent of whether a numerical
+    # representation has been obtained. Do not turn either into missing data,
+    # or turn an unresolved conflict into a conclusive record exclusion.
+    if dataset.status in {"rejected", "conflicting"}:
+        reason = f"source status is {dataset.status}"
+        return _dataset_result(
+            dataset,
+            "conflict" if dataset.status == "conflicting" else "invalid",
+            reason,
+            requirements=(Requirement("source_review", dataset.id, "record_status", reason),),
         )
-    problem = _metadata_problem(dataset, reaction) or _representation_problem(dataset, evidence)
+    if dataset.form == "reference_only":
+        return _dataset_result(
+            dataset,
+            "reference_only",
+            "source has no numerical representation",
+            requirements=(
+                Requirement(
+                    "source_information",
+                    dataset.id,
+                    "numerical_representation",
+                    "obtain the numerical representation identified by this reference",
+                ),
+            ),
+        )
+    problem = _metadata_problem(dataset, reaction)
+    if (
+        problem is None
+        and (representation := _representation_problem(dataset, evidence)) is not None
+    ):
+        problem = "numerical_representation", representation
     if problem is not None:
-        return DatasetAssessment(dataset.id, "invalid", problem)
+        quantity, reason = problem
+        return _dataset_result(
+            dataset,
+            "invalid",
+            reason,
+            requirements=(
+                Requirement(
+                    "source_review",
+                    dataset.id,
+                    quantity,
+                    reason,
+                ),
+            ),
+        )
     if dataset.tier not in {
         "curated",
         "reviewed",
         "derived",
         "estimated",
     } or not review_scope_covers(dataset.review_scope, dataset.kind):
-        return DatasetAssessment(dataset.id, "unreviewed", "numerical source has not been reviewed")
+        return _dataset_result(
+            dataset,
+            "unreviewed",
+            "numerical source has not been reviewed for this quantity",
+            requirements=(
+                Requirement(
+                    "source_review",
+                    dataset.id,
+                    dataset.kind,
+                    "review this quantity independently of its containing channel "
+                    "or other quantities",
+                ),
+            ),
+        )
     return _evaluated_dataset(dataset, reaction, conditions)
 
 
@@ -330,114 +672,220 @@ def _coefficient_order(dataset: NumericDataset, reaction: ReactionCandidate) -> 
     return sum(term.n for term in reaction.reactants) + bool(reaction.third_body)
 
 
-def _metadata_problem(dataset: NumericDataset, reaction: ReactionCandidate) -> str | None:
+def _metadata_problem(
+    dataset: NumericDataset,
+    reaction: ReactionCandidate,
+) -> tuple[str, str] | None:
     numerical_problem = _numerical_problem(dataset)
     if numerical_problem is not None:
         return numerical_problem
-    if dataset.status in {"rejected", "conflicting"}:
-        return f"source status is {dataset.status}"
     if dataset.channel_scope != "product_resolved":
-        return (
+        return "channel_scope", (
             "total data do not determine this product channel"
             if dataset.channel_scope in {"total", "total_process"}
             else "source does not declare product-resolved channel scope"
         )
     if not _observable_matches(dataset, reaction):
-        return "observable is missing or describes a different quantity"
+        return "observable", "observable is missing or describes a different quantity"
     if numerical_unit(dataset.unit, dataset.kind, _coefficient_order(dataset, reaction)) is None:
-        return "unit does not match quantity and reaction order"
+        return "unit", "unit does not match quantity and reaction order"
     if dataset.kind == "sticking_coefficient" and reaction.surface is None:
-        return "sticking probability requires a surface"
+        return "surface_material", "sticking probability requires a surface"
     return None
 
 
-def _numerical_problem(dataset: NumericDataset, value: float | None = 1.0) -> str | None:
+def _numerical_problem(
+    dataset: NumericDataset,
+    value: float | None = 1.0,
+) -> tuple[str, str] | None:
     if dataset.asset is not None and not dataset.asset.integrity_ok:
-        return "asset is unavailable or differs from its recorded or declared checksum"
+        return "asset_integrity", (
+            "asset is unavailable or differs from its recorded or declared checksum"
+        )
     if dataset.uncertainty is None or value is None:
         return None
     try:
         dataset.uncertainty.bounds(value)
     except ValueError as error:
-        return str(error)
+        return "uncertainty", str(error)
     return None
 
 
 def _application_requirements(
     dataset: NumericDataset,
-    reaction: ReactionCandidate,
     conditions: Conditions,
-) -> tuple[set[str], set[str], bool]:
-    inputs: set[str] = set()
-    transforms: set[str] = set()
-    if dataset.kind == "cross_section":
-        inputs.add(
-            "electron_energy_distribution"
-            if reaction.family == "electron"
-            else "collision_energy_distribution"
-        )
-        transforms.add(
-            "eedf_integration"
-            if reaction.family == "electron"
-            else "energy_distribution_integration"
-        )
-    if dataset.kind == "sticking_coefficient":
-        inputs.add("surface_incident_flux_model")
-        transforms.add("surface_flux_conversion")
+) -> tuple[tuple[Requirement, ...], bool]:
+    requirements: list[Requirement] = []
     validity = dataset.validity
+    if validity is not None:
+        requirements.extend(
+            Requirement(
+                "external_models",
+                dataset.id,
+                f"dataset_applicability.{name}",
+                f"evaluate the source-declared applicability condition {name}; "
+                "checking this condition is not implemented",
+            )
+            for name in validity.unresolved_conditions
+        )
     if validity is None or (validity.minimum is None and validity.maximum is None):
-        inputs.add("dataset_applicability_conditions")
+        requirements.append(
+            Requirement(
+                "source_information",
+                dataset.id,
+                "dataset_applicability_conditions",
+                "establish the source applicability domain; "
+                "adding a user condition does not establish it",
+            )
+        )
     elif dataset.kind != "cross_section":
         condition = condition_value(conditions, validity.quantity, validity.unit)
         if condition is None:
-            inputs.add(validity.quantity)
+            field = Conditions.input_field(validity.quantity)
+            if field is not None:
+                requirements.append(
+                    Requirement(
+                        "user_inputs",
+                        dataset.id,
+                        f"conditions.{field}",
+                        "supply this physical condition to check the declared applicability domain",
+                    )
+                )
         elif not validity.covers(condition):
-            return inputs, transforms, True
-    return inputs, transforms, False
+            return _requirements(tuple(requirements)), True
+    return _requirements(tuple(requirements)), False
+
+
+def _native_value(
+    dataset: NumericDataset,
+    conditions: Conditions,
+) -> tuple[float | None, Requirement | None, str | None]:
+    """Evaluate a native scalar, or retain a curve without an implicit point query."""
+    if (
+        dataset.kind == "cross_section"
+        and dataset.validity is not None
+        and (dataset.validity.minimum is not None or dataset.validity.maximum is not None)
+        and _range(dataset) is None
+    ):
+        return None, None, "numerical curve and declared applicability have no common domain"
+    # Curves are native representations, not implicit scalar-energy queries.
+    value = None if dataset.kind == "cross_section" else _value(dataset, conditions)
+    if dataset.kind != "cross_section" and value is None and dataset.form != "constant":
+        axis = dataset.independent_variable or ""
+        coordinate = (
+            condition_value(conditions, axis, _axis_unit(dataset))
+            if dataset.form == "table"
+            else conditions.value_of(axis)
+        )
+        if coordinate is not None:
+            return (
+                None,
+                None,
+                (
+                    "supplied condition is outside the numerical table; "
+                    "extrapolation is not performed"
+                ),
+            )
+        field = Conditions.input_field(axis)
+        if field is not None:
+            return (
+                None,
+                Requirement(
+                    "user_inputs",
+                    dataset.id,
+                    f"conditions.{field}",
+                    "supply this physical condition to evaluate "
+                    "the declared numerical representation",
+                ),
+                None,
+            )
+    return value, None, None
 
 
 def _evaluated_dataset(
     dataset: NumericDataset, reaction: ReactionCandidate, conditions: Conditions
 ) -> DatasetAssessment:
-    inputs, transforms, out_of_range = _application_requirements(dataset, reaction, conditions)
+    requirements, out_of_range = _application_requirements(dataset, conditions)
     if out_of_range:
-        return DatasetAssessment(
-            dataset.id, "out_of_range", "outside the declared applicability range"
-        )
-    value = _value(dataset, conditions)
+        return _dataset_result(dataset, "out_of_range", "outside the declared applicability range")
+    value, missing, domain_problem = _native_value(dataset, conditions)
     numerical_problem = _numerical_problem(dataset, value)
     if numerical_problem is not None:
-        return DatasetAssessment(dataset.id, "invalid", numerical_problem)
-    if dataset.kind != "cross_section" and value is None and dataset.form != "constant":
-        inputs.add(dataset.independent_variable or "dataset_independent_variable")
+        quantity, reason = numerical_problem
+        return _dataset_result(
+            dataset,
+            "invalid",
+            reason,
+            requirements=(Requirement("source_review", dataset.id, quantity, reason),),
+        )
+    if domain_problem is not None:
+        return _dataset_result(dataset, "out_of_range", domain_problem)
+    if missing is not None and not any(
+        (item.responsibility, item.target, item.quantity)
+        == (
+            missing.responsibility,
+            missing.target,
+            missing.quantity,
+        )
+        for item in requirements
+    ):
+        requirements = _requirements(requirements, (missing,))
     unit = numerical_unit(dataset.unit, dataset.kind, _coefficient_order(dataset, reaction))
     if unit is None:
-        return DatasetAssessment(dataset.id, "invalid", "unsupported numerical unit")
+        return _dataset_result(dataset, "invalid", "unsupported numerical unit")
     if value is not None:
+        native_value = value
         value *= unit[1]
-        if (
-            not isfinite(value)
-            or value < 0.0
-            or (dataset.kind == "sticking_coefficient" and value > 1.0)
+        if not isfinite(value) or (
+            value == 0
+            and (native_value > 0 or (dataset.form == "arrhenius" and dataset.params["A"] > 0))
         ):
-            return DatasetAssessment(
-                dataset.id, "invalid", "evaluated value is outside its physical range"
+            reason = (
+                "the numerical arithmetic cannot represent a finite positive value for "
+                "these declarations; the physical quantity is not thereby disproved"
             )
-    reason = "coefficient evaluated for the supplied conditions"
-    if dataset.kind == "cross_section":
-        reason = "curve checked; distribution coverage and integration are not performed"
-    elif dataset.kind == "sticking_coefficient":
-        reason = "probability checked; conversion to a surface rate is not performed"
-    elif inputs:
-        reason = "representation checked; applicability or evaluation inputs are missing"
-    return DatasetAssessment(
-        dataset.id,
-        "needs_input" if inputs else "valid",
+            return _dataset_result(
+                dataset,
+                "unavailable",
+                reason,
+                unit=unit[0],
+                requirements=_requirements(
+                    requirements,
+                    (
+                        Requirement(
+                            "external_models", dataset.id, "numerical_evaluation_range", reason
+                        ),
+                    ),
+                ),
+            )
+        if value < 0.0 or (dataset.kind == "sticking_coefficient" and value > 1.0):
+            return _dataset_result(
+                dataset,
+                "invalid",
+                "evaluated value is outside its physical range",
+                requirements=(
+                    Requirement(
+                        "source_review",
+                        dataset.id,
+                        "numerical_representation",
+                        "correct the representation whose evaluated value "
+                        "violates its physical range",
+                    ),
+                ),
+            )
+    reason = {
+        "cross_section": "curve representation checked within its declared energy domain",
+        "sticking_coefficient": "native probability evaluated for the supplied conditions",
+    }.get(dataset.kind, "coefficient evaluated for the supplied conditions")
+    if requirements:
+        reason = "; ".join(dict.fromkeys(item.reason for item in requirements))
+    return _dataset_result(
+        dataset,
+        "needs_input" if requirements else "valid",
         reason,
         value,
         unit[0],
-        tuple(sorted(inputs)),
-        tuple(sorted(transforms)),
+        requirements,
     )
 
 
@@ -533,7 +981,10 @@ def _arrhenius_problem(dataset: NumericDataset) -> str | None:
         return "Arrhenius requires a declared temperature quantity"
     if {"A", "b", "Ea"} - dataset.params.keys():
         return "Arrhenius requires A, b, Ea in the declared convention"
-    if not all(isfinite(value) for value in dataset.params.values()) or dataset.params["A"] < 0.0:
+    if (
+        not all(isfinite(dataset.params[name]) for name in ("A", "b", "Ea"))
+        or dataset.params["A"] < 0.0
+    ):
         return "Arrhenius parameters must be finite and A non-negative"
     reference = dataset.reference_temperature_K
     if reference is None or not isfinite(reference) or reference <= 0.0:
@@ -562,22 +1013,7 @@ def _table_problem(dataset: NumericDataset, evidence: ReactionEvidence) -> str |
         return "table coordinate quantity and unit must be declared"
     if quantity_value(points[0][0], axis, x_unit, axis_unit) is None:
         return "table coordinate unit is incompatible with its quantity"
-    return _table_domain_problem(dataset, points, x_unit) or _threshold_problem(
-        dataset, evidence, points, x_unit
-    )
-
-
-def _table_domain_problem(
-    dataset: NumericDataset, points: list[tuple[float, float]], x_unit: str
-) -> str | None:
-    validity = dataset.validity
-    if validity is not None:
-        for bound in (validity.minimum, validity.maximum):
-            if bound is not None:
-                converted = quantity_value(bound, validity.quantity, validity.unit or "", x_unit)
-                if converted is None or not points[0][0] <= converted <= points[-1][0]:
-                    return "declared validity exceeds the numerical table"
-    return None
+    return _threshold_problem(dataset, evidence, points, x_unit)
 
 
 def _threshold_problem(
@@ -706,7 +1142,7 @@ def table_points(dataset: NumericDataset) -> list[tuple[float, float]] | None:
         try:
             point = (float(fields[0]), float(fields[1]))
         except ValueError:
-            if points or header:
+            if points or header or not _table_header(fields):
                 return None
             header = True
             continue
@@ -714,6 +1150,17 @@ def table_points(dataset: NumericDataset) -> list[tuple[float, float]] | None:
             return None
         points.append(point)
     return points
+
+
+def _table_header(fields: list[str]) -> bool:
+    """A partially numerical row is broken data, never a column header."""
+    for value in fields:
+        try:
+            float(value)
+        except ValueError:
+            continue
+        return False
+    return True
 
 
 def _axis_unit(dataset: NumericDataset) -> str | None:
@@ -746,16 +1193,34 @@ def _value(dataset: NumericDataset, conditions: Conditions) -> float | None:
 
 
 def _arrhenius(dataset: NumericDataset, temperature_K: float) -> float | None:
+    """Evaluate the declared fit without overflowing its cancelling factors.
+
+    The modified Arrhenius law is documented in Cantera's reaction-rate
+    reference. Logarithmic composition changes only numerical evaluation;
+    the declared reference temperature, units and validity remain unchanged.
+    """
     activation = energy_eV(dataset.params.get("Ea", 0.0), dataset.parameter_units.get("Ea"))
     reference = dataset.reference_temperature_K
     if activation is None or reference is None or temperature_K <= 0:
         return None
+    amplitude = dataset.params["A"]
+    if amplitude == 0:
+        return 0.0
+    denominator = EV_PER_K * temperature_K
+    activation_term = (
+        activation / denominator
+        if denominator != 0
+        else 0.0
+        if activation == 0
+        else inf
+        if activation > 0
+        else -inf
+    )
+    scale = dataset.params["b"] * (log(temperature_K) - log(reference)) - activation_term
+    if scale == 0:
+        return amplitude
     try:
-        return (
-            dataset.params["A"]
-            * (temperature_K / reference) ** dataset.params["b"]
-            * exp(-activation / (EV_PER_K * temperature_K))
-        )
+        return exp(log(amplitude) + scale)
     except OverflowError:
         return float("inf")
 
@@ -788,7 +1253,22 @@ def _range(dataset: NumericDataset) -> tuple[str, float, float] | None:
         if validity.maximum is None
         else quantity_value(validity.maximum, validity.quantity, validity.unit, unit)
     )
-    return None if low is None or high is None else (validity.quantity, low, high)
+    if low is None or high is None:
+        return None
+    if dataset.form == "table":
+        points = table_points(dataset)
+        if not points:
+            return None
+        numeric_low = quantity_value(
+            points[0][0], validity.quantity, _axis_unit(dataset) or "", unit
+        )
+        numeric_high = quantity_value(
+            points[-1][0], validity.quantity, _axis_unit(dataset) or "", unit
+        )
+        if numeric_low is None or numeric_high is None:
+            return None
+        low, high = max(low, numeric_low), min(high, numeric_high)
+    return None if low > high else (validity.quantity, low, high)
 
 
 def _comparison_samples(
@@ -800,7 +1280,12 @@ def _comparison_samples(
         or (left.validity.quantity if left.validity is not None else None)
         or (right.validity.quantity if right.validity is not None else None)
     )
-    if axis is not None and conditions.value_of(axis) is not None:
+    if (
+        left.kind != "cross_section"
+        and right.kind != "cross_section"
+        and axis is not None
+        and conditions.value_of(axis) is not None
+    ):
         return axis, [None]
     left_range, right_range = _range(left), _range(right)
     if not left_range or not right_range:
@@ -847,6 +1332,12 @@ def _conflicting(
     for left, right in combinations(datasets, 2):
         if not _same_quantity(left, right, reaction):
             continue
+        left_scope = left.validity.unresolved_conditions if left.validity is not None else {}
+        right_scope = right.validity.unresolved_conditions if right.validity is not None else {}
+        if left_scope != right_scope:
+            # A numerical disagreement requires a common physical scope. These
+            # declarations are retained but their applicability is unevaluated.
+            continue
         comparison = _comparison_samples(left, right, conditions)
         if comparison is None:
             continue
@@ -871,6 +1362,15 @@ def _sample_value(
     conditions: Conditions,
     reaction: ReactionCandidate,
 ) -> float | None:
+    domain = _range(dataset)
+    if domain is None:
+        return None
+    domain_axis, low, high = domain
+    coordinate = conditions.value_of(domain_axis) if sample is None else sample
+    if sample is None and coordinate is not None:
+        coordinate = condition_value(conditions, domain_axis, canonical_axis_unit(domain_axis))
+    if coordinate is None or not low <= coordinate <= high:
+        return None
     if sample is None or axis is None:
         value = _value(dataset, conditions)
     elif dataset.form == "constant":

@@ -135,7 +135,7 @@ def test_derived_overlay_uses_the_full_state_identity(tmp_path) -> None:
             "id": "Ar",
             "composition": {"Ar": 1},
             "phase": "gas",
-            "properties": {"mass_amu": {"value": 40, "unit": "amu"}},
+            "properties": {"mass_amu": {"value": 40, "unit": "amu", "tier": "reviewed"}},
         },
     )
     write(

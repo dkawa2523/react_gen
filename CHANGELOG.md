@@ -1,5 +1,108 @@
 # Changelog
 
+## 1.0.0 - 2026-11-01
+
+- Establish the 1.0 release of the bounded candidate investigation and evidence
+  assessment tool. Keep result schema 5 and helper view format 6; the release
+  number does not imply a complete mechanism or a predictive plasma solver.
+- Integrate a change-by-change responsibility, counterexample and cleanup
+  workflow into the existing agent instructions and PR template. Add the
+  optional quality-smoke command without duplicating the full quality gate.
+- Retain third-party property and reaction attribution notices, and distinguish
+  individual factual values from redistribution of a source compilation.
+  Replace the extracted source-page test fixture with authored synthetic HTML.
+- Keep deprecated dataset preference and the explicit v4 migration tool during
+  1.x; document migration and planned removal at 2.0.
+
+- Preserve finite modified Arrhenius coefficients when individual factors
+  overflow or underflow, and retain molecular source identity in NASA snapshots.
+- Migrate legacy related-process evidence only under its own explicit equation;
+  keep unidentified records in the original archive. Remove unused shell-label
+  heuristics and composition subtraction from the runtime chemistry module.
+- Include documentation, examples, Registry notices and test fixtures in sdists;
+  clarify the wheel's external catalog requirement and retire obsolete importer
+  instructions and outdated capability descriptions.
+- Preserve original scientific records and select independent alternatives;
+  remove implicit cross-source filling of Registry property gaps.
+- Identify numerical records with their physical channel across loading,
+  evaluation, ingestion, adoption and persistence. Retain explicit target
+  declarations without parsing free-form source text.
+- Validate original stoichiometric terms before consolidation and report
+  invalid Registry species references from the normal analysis entry point.
+- Share molecular source identity matching across acquisition adapters;
+  retain source structures instead of assigning isomer-specific properties
+  to an unspecified formula. Separate reaction native IDs from derived
+  participant-state representations.
+- Separate rejected, conflicting and unobtained numerical records, preserve
+  independent usable offers, and align coefficient availability projections.
+  New helper format 6 retains format 5 columns; formats 1–5 keep saved labels
+  and hashes.
+- Evaluate equilibrium constants in logarithmic form, validate selections at
+  the shared evaluation entry point, and publish derived overlays atomically.
+- Save input-specific generation scope and report unsupported bond splitting
+  even when the declared bounded grammar completes.
+
+## 0.7.6 - 2026-10-13
+
+- Add reproducible outcome labels and domain/proposition-specific data-missing
+  counts, with separate input, review, identity, selection and model causes.
+  Keep rejection and numerical exclusions distinct from missing source data.
+  CSV format 5 and needs expose the same labels; formats 1–4 remain readable.
+- Extend source selection to consumed energy Properties and thermochemical
+  models, with target-specific overrides and a saved-record inspection command.
+  Retain independent external/local records and unresolved ingestion queues.
+- Add NIST WebBook and CollisionDB converters. Preserve source identity,
+  definitions, conditions, raw files and provenance without approving imports.
+- Supplement NASA7 data and derived neutral formation enthalpies, retaining
+  original standard pressure, alternatives and qualification boundaries. Add
+  one reviewed, source-attributed numerical electron-ionization curve.
+- Document the registration vocabulary and future independent packages for
+  scientific data generation. Difficult source/model gaps remain explicit.
+
+## 0.7.5 - 2026-10-12
+
+- Separate native numerical quantities from coefficient-purpose conversion.
+  Retain quantity labels, scope and typed prerequisites; derive legacy input
+  fields from those prerequisites. Do not treat a curve as a scalar query or
+  momentum-transfer data as a reaction-count cross section.
+- Apply source preference within comparable observables and rate orders.
+  Fix partial malformed table rows, numerical domain boundaries and comparisons
+  outside shared applicability ranges without discarding independent evidence.
+  Check only the parameters consumed by each formula, and reject unsupported
+  applicability fields instead of silently evaluating part of their conditions.
+  Preserve legacy condition mappings and their annotations; retain unevaluated
+  physical conditions in Validity.unresolved_conditions and report the required
+  model without losing independently known values or interval bounds.
+  Share constant/Arrhenius record equivalence across numerical use, ingestion,
+  adoption and saved selections. Keep same-scale changes strict and preserve
+  original unit declarations; normalize compatible numerical error units.
+- Store independent formation enthalpy, Gibbs energy and number-density
+  equilibrium calculations, with units, actual conditions and next work.
+  Derive the former flat value view; keep energy claims and their prerequisites
+  separate. Cancel identical spectator terms only in additive thermal arithmetic.
+  Return temperature-independent zero Gibbs energy and unit equilibrium ratio
+  for identical thermal gas ground-state representations, within the stated scope.
+- Share physical-target interpretation and property normalization at input
+  boundaries. Distinguish missing source values from malformed records and
+  retrieval or execution failures; preserve source qualifications on adoption.
+- Check quantity qualification and active source records before deriving mass
+  or 0 K level formation offsets, and retain the input Properties and approximations.
+  Classify ASD E1 candidates using strictly lower energies, independently of
+  input order. Name the parity/J calculation instead of implying a lifetime.
+- Derive participant and coefficient-use judgments from their canonical results.
+  Validate saved projections without scientific reassessment and show the same
+  typed work in CLI, CSV format 4, needs and HTML. Keep historical formats 1–3.
+- Python constructors for DataUse and DatasetAssessment now take requirements
+  instead of required_inputs/required_transforms; those fields remain readable
+  projections. Evaluation.thermochemistry is a read view; its former constructor
+  field is energy_values. Acquisition uses nominal_ea_positive for the sign of
+  a reported EA, leaving binding inference to assessment. Remove unused
+  reverse_rate arithmetic, without adding a reverse-mechanism evaluator.
+  carried_from now takes a qualified excitation Property instead of a scalar.
+  ASD uses no_lower_e1_candidate_eV/ground_e1_candidate_eV and
+  no_lower_e1_candidate_levels/no_lower_e1_candidates; new snapshots use the corresponding
+  candidate-energy properties. Earlier snapshot Properties remain readable.
+
 ## 0.7.4 - 2026-10-12
 
 - Name every public assessment and save its individual scope, concrete missing

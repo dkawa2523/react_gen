@@ -11,7 +11,6 @@ from reactgen.assessment import assess_consistency
 from reactgen.case import Limits
 from reactgen.chemistry import (
     candidate_state,
-    electronic_character,
     formula_scope,
     neutral_reactive_candidate,
     parse_state_id,
@@ -76,9 +75,6 @@ def test_generation_does_not_grow_beyond_the_largest_feed() -> None:
 def test_formula_roles_do_not_claim_that_every_fragment_is_a_radical() -> None:
     generated = candidates(("SF6", "O2"))
     assert all("radical" not in state.classes for state in generated.states.values())
-    assert electronic_character({"F": 2}, 0) == "closed_shell"
-    assert electronic_character({"S": 1, "F": 5}, 0) == "open_shell"
-    assert electronic_character({"C": 1, "F": 2}, 0) == "unknown"
 
 
 def test_neutral_grammar_is_bounded_and_avoids_neutral_noble_exchange() -> None:

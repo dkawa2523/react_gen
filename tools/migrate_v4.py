@@ -1,6 +1,6 @@
 """One-time migration of schema-4 inputs/evidence; legacy judgments are never loaded.
 
-This tool accepts version 4 only and is scheduled for removal with version 0.8.
+This tool accepts version 4 only and is scheduled for removal with version 2.0.
 Use a new destination. Unspecified phase and unproven existence stay unknown.
 """
 
@@ -15,9 +15,9 @@ import yaml
 
 from reactgen import export, yamlio
 from reactgen.case import Case
-from reactgen.chemistry import candidate_state, parse_state_id
+from reactgen.chemistry import candidate_state, parse_equation, parse_state_id
 from reactgen.evidence import EvidenceCatalog
-from reactgen.model import ReactionCandidate, Term
+from reactgen.model import ELECTRON, ReactionCandidate, Term, validate_stoichiometric_terms
 from reactgen.pipeline import analyze
 
 OBSOLETE_CONDITIONS = {
@@ -168,15 +168,18 @@ def _reaction_records(
 ) -> list[dict]:
     result = []
     for reaction in reactions:
+        reactants = _mapped_terms(
+            tuple((term["species"], term.get("n", 1)) for term in reaction["reactants"]),
+            identities,
+        )
+        products = _mapped_terms(
+            tuple((term["species"], term.get("n", 1)) for term in reaction["products"]),
+            identities,
+        )
         migrated_equation = ReactionCandidate(
             "",
-            tuple(
-                Term(identities[term["species"]], term.get("n", 1))
-                for term in reaction["reactants"]
-            ),
-            tuple(
-                Term(identities[term["species"]], term.get("n", 1)) for term in reaction["products"]
-            ),
+            reactants,
+            products,
             reaction["family"],
             reaction["process"],
             "migration",
@@ -186,11 +189,18 @@ def _reaction_records(
             reaction.get("surface"),
         ).equation
         evidence = reaction.get("evidence", {})
-        channel_records = evidence.get("exact_channel_records", [])
-        channel_records += evidence.get("related_total_process_records", [])
+        channel_records = [
+            (record, migrated_equation, False)
+            for record in evidence.get("exact_channel_records", [])
+        ]
+        channel_records.extend(
+            (record, equation, True) for record, equation in _related_targets(evidence, identities)
+        )
         if evidence.get("overlay_datasets"):
-            channel_records.append({"datasets": evidence["overlay_datasets"], "source": {}})
-        for record in channel_records:
+            channel_records.append(
+                ({"datasets": evidence["overlay_datasets"], "source": {}}, migrated_equation, False)
+            )
+        for record, target_equation, related in channel_records:
             datasets = record.get("datasets") or [{"kind": "reference", "form": "reference"}]
             for dataset in datasets:
                 entry = copy.deepcopy(dataset)
@@ -201,9 +211,14 @@ def _reaction_records(
                         asset["path"] = str((bundle / path).resolve())
                 entry.update(
                     {
-                        "reaction": migrated_equation,
-                        "family": record.get("family", reaction["family"]),
-                        "type": record.get("process", reaction["process"]),
+                        "reaction": target_equation,
+                        "family": record.get("family", None if related else reaction["family"]),
+                        "type": record.get(
+                            "process", "unknown" if related else reaction["process"]
+                        ),
+                        "surface": record.get(
+                            "surface", None if related else reaction.get("surface")
+                        ),
                         "status": "imported",
                         "tier": "imported",
                         "source": record.get("source") or entry.get("source", {}),
@@ -216,6 +231,61 @@ def _reaction_records(
                 )
                 result.append(entry)
     return result
+
+
+def _related_targets(evidence: dict, identities: dict[str, str]) -> list[tuple[dict, str]]:
+    result = []
+    for group in ("related_total_process_records", "related_physical_process_records"):
+        for record in evidence.get(group, []):
+            own_equation = _related_equation(record, identities)
+            if own_equation is not None:
+                identified = dict(record)
+                if group == "related_total_process_records":
+                    identified.setdefault("channel_scope", "total")
+                result.append((identified, own_equation))
+    return result
+
+
+def _related_equation(record: dict, identities: dict[str, str]) -> str | None:
+    """Migrate only a related record's own explicit equation, never its host channel.
+
+    Schema-4 exports usually omitted that equation. Such records stay in the
+    unchanged archive until their target is identified from the original source.
+    Known participants retain the migrated phase/structure; an unknown reference
+    requires a correction rather than silently assuming a gas ground state.
+    """
+    written = record.get("reaction", record.get("equation"))
+    if written is None:
+        return None
+    parsed = parse_equation(written) if isinstance(written, str) else None
+    if parsed is None:
+        raise ValueError("related legacy record requires a valid explicit reaction equation")
+    equation, _ = parsed
+
+    return ReactionCandidate(
+        "",
+        _mapped_terms(equation[2], identities),
+        _mapped_terms(equation[3], identities),
+        record.get("family") or "",
+        record.get("process") or "unknown",
+        "migration",
+        "migration",
+        0,
+        equation[0],
+        record.get("surface"),
+    ).equation
+
+
+def _mapped_terms(
+    terms: tuple[tuple[str, float], ...], identities: dict[str, str]
+) -> tuple[Term, ...]:
+    validate_stoichiometric_terms(terms)
+    result = []
+    for species, count in terms:
+        if species != ELECTRON and species not in identities:
+            raise ValueError(f"legacy equation references an unknown state: {species}")
+        result.append(Term(ELECTRON if species == ELECTRON else identities[species], count))
+    return tuple(result)
 
 
 def main() -> int:

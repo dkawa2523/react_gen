@@ -335,6 +335,72 @@ def test_charge_transfer_compares_declared_defect_ranges_without_a_fixed_energy_
 
 
 @pytest.mark.parametrize(
+    "product_changes",
+    [
+        {"phase": "solid"},
+        {"structure": "another structure"},
+        {"kind": "electronic", "label": "excited level", "resolution": "resolved"},
+    ],
+)
+def test_charge_transfer_model_mismatch_does_not_request_more_ground_ie(product_changes):
+    donor, ion, target, ground_product = (
+        candidate_state({"Ar": 1}, 0),
+        candidate_state({"Ar": 1}, 1),
+        candidate_state({"He": 1}, 0),
+        candidate_state({"He": 1}, 1),
+    )
+    product = candidate_state({"He": 1}, 1, **product_changes)
+    reaction = ReactionCandidate(
+        "changed product",
+        (Term(ion.id), Term(target.id)),
+        (Term(donor.id), Term(product.id)),
+        "ion",
+        "charge_exchange",
+        "test",
+        "test",
+        0,
+    )
+    states = {
+        state.id: StateEvidence(
+            "exact",
+            (
+                StateRecord(
+                    state.id,
+                    state,
+                    properties={"ionization_energy_eV": Property(value, "eV", tier="reviewed")},
+                ),
+            ),
+        )
+        for state, value in ((donor, 10), (target, 7))
+    }
+    record = ReactionRecord(
+        "actual channel defect",
+        reaction.equation_key,
+        reaction.family,
+        reaction.process,
+        (),
+        energy_properties={
+            "delta_e_eV": Property(-3, "eV", tier="reviewed", definition="products_minus_reactants")
+        },
+    )
+    result, values = assess_thermochemistry(
+        reaction,
+        CandidateSet(
+            states={state.id: state for state in (donor, ion, target, ground_product, product)}
+        ),
+        states,
+        ReactionEvidence((record,)),
+        Conditions(),
+    )
+    assert result.verdict == "unknown"
+    assert {(item.responsibility, item.quantity) for item in result.requirements} == {
+        ("external_models", "charge_transfer_energy_relation")
+    }
+    assert "charge_transfer_energy_defect_eV" not in values
+    assert values["source_delta_e_eV"] == -3
+
+
+@pytest.mark.parametrize(
     ("value", "unit", "record_status", "field", "responsibility"),
     [
         (None, "eV", "imported", "value", "source_information"),

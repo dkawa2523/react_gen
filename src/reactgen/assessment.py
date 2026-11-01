@@ -6,8 +6,10 @@ An energy value alone is not a positive feasibility judgement.
 
 from __future__ import annotations
 
+from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field, replace
-from math import isclose, isfinite
+from math import fsum, isclose, isfinite
+from typing import TypeVar, cast
 
 from reactgen.balance import conservation
 from reactgen.case import Conditions
@@ -19,10 +21,15 @@ from reactgen.model import (
     ReactionCandidate,
     Requirement,
     StateCandidate,
+    coefficient_availability_verdict,
+    participant_support_verdict,
+    validate_stoichiometric_terms,
 )
 from reactgen.numeric import DataUse, data_use
 from reactgen.records import (
+    REVIEWED_TIERS,
     TIER_RANK,
+    FormationReference,
     Property,
     ReactionRecord,
     StateRecord,
@@ -31,19 +38,21 @@ from reactgen.records import (
     energy_declarations_agree,
     energy_properties_equivalent,
     property_energy_bounds,
+    property_has_point_qualifier,
     qualified_channel_energy,
     reaction_energy_definition_compatible,
     review_scope_covers,
     scientific_reaction_content,
+    selectable_state_record_id,
 )
-from reactgen.selection import DataSelection
+from reactgen.selection import DataSelection, QuantitySelection
 from reactgen.thermo import (
-    equilibrium_constant,
     formation_delta,
     formation_reference,
-    gibbs_energy_eV,
     net_electron_coefficient,
+    net_stoichiometry,
     reference_pressure,
+    thermal_values,
     valid_thermo,
 )
 from reactgen.units import energy_eV
@@ -52,6 +61,45 @@ VERDICT_PASS = "pass"  # noqa: S105 - scientific verdict, not a credential
 VERDICT_FAIL = "fail"
 VERDICT_UNKNOWN = "unknown"
 VERDICT_NA = "not_applicable"
+StateQuantity = TypeVar("StateQuantity", Property, Thermo)
+
+
+@dataclass(frozen=True)
+class ThermochemicalCalculation:
+    """Availability of one calculated quantity, independent of an energy claim.
+
+    ``computed`` supplies a finite nominal value at the retained conditions.
+    Other states retain the concrete prerequisites or an applicability limit.
+    Source qualification and calculation applicability never establish channel
+    occurrence, uncertainty propagation, or a reversible elementary mechanism.
+    """
+
+    status: str
+    value: float | None
+    unit: str
+    reason: str
+    requirements: tuple[Requirement, ...] = ()
+    conditions: dict[str, float] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.status not in {"computed", "needs_input", "unavailable", "out_of_range"}:
+            raise ValueError("unknown thermochemical calculation status")
+        if (self.status == "computed") != (self.value is not None):
+            raise ValueError("only computed thermochemical quantities may have a value")
+        if self.value is not None and (isinstance(self.value, bool) or not isfinite(self.value)):
+            raise ValueError("thermochemical calculation value must be finite")
+        if not isinstance(self.unit, str) or not self.unit:
+            raise ValueError("thermochemical calculation unit must be nonempty")
+        if not isinstance(self.reason, str) or not self.reason:
+            raise ValueError("thermochemical calculation reason must be nonempty")
+        if any(not isinstance(item, Requirement) for item in self.requirements):
+            raise ValueError("thermochemical calculation requirements must be typed")
+        if any(
+            not isinstance(name, str) or not name or isinstance(value, bool) or not isfinite(value)
+            for name, value in self.conditions.items()
+        ):
+            raise ValueError("thermochemical calculation conditions must be finite quantities")
+        object.__setattr__(self, "requirements", tuple(dict.fromkeys(self.requirements)))
 
 
 @dataclass
@@ -60,8 +108,43 @@ class Evaluation:
     reaction_assessments: dict[str, dict[str, Assessment]]
     state_evidence: dict[str, StateEvidence]
     reaction_evidence: dict[str, ReactionEvidence]
-    thermochemistry: dict[str, dict[str, float]] = field(default_factory=dict)
+    energy_values: dict[str, dict[str, float]] = field(default_factory=dict)
     data_use: dict[str, DataUse] = field(default_factory=dict)
+    thermochemical_calculations: dict[str, dict[str, ThermochemicalCalculation]] = field(
+        default_factory=dict
+    )
+
+    @property
+    def thermochemistry(self) -> Mapping[str, dict[str, float]]:
+        """Read view combining auxiliary energies with successful calculations."""
+        return _ThermochemistryView(self.energy_values, self.thermochemical_calculations)
+
+
+class _ThermochemistryView(Mapping[str, dict[str, float]]):
+    """Project each reaction on access, without copying all reaction values."""
+
+    def __init__(
+        self,
+        energies: dict[str, dict[str, float]],
+        calculations: dict[str, dict[str, ThermochemicalCalculation]],
+    ) -> None:
+        self.energies, self.calculations = energies, calculations
+
+    def __getitem__(self, key: str) -> dict[str, float]:
+        values = _combined_thermal_values(
+            self.energies.get(key, {}), self.calculations.get(key, {})
+        )
+        if not values:
+            raise KeyError(key)
+        return values
+
+    def __iter__(self) -> Iterator[str]:
+        return (
+            key for key in sorted(self.energies.keys() | self.calculations.keys()) if self.get(key)
+        )
+
+    def __len__(self) -> int:
+        return sum(1 for _ in self)
 
 
 def evaluate(
@@ -70,8 +153,14 @@ def evaluate(
     conditions: Conditions,
     selection: DataSelection | None = None,
 ) -> Evaluation:
+    if selection is not None and not isinstance(selection, DataSelection):
+        raise ValueError("selection must be a validated DataSelection")
+    if selection is not None:
+        selection.validate_targets(candidates.states, candidates.reactions)
+    catalog.validate_targets(candidates)
     state_evidence = {
-        state_id: catalog.state(state) for state_id, state in candidates.states.items()
+        state_id: replace(catalog.state(state), selection=selection, target=state_id)
+        for state_id, state in candidates.states.items()
     }
     state_assessments = {
         state_id: {
@@ -92,11 +181,12 @@ def evaluate(
         for reaction_id, reaction in candidates.reactions.items()
     }
     reaction_assessments = {}
-    thermochemistry = {}
+    energy_values = {}
+    calculations = {}
     numerical_use = {}
     for reaction_id, reaction in candidates.reactions.items():
         evidence = reaction_evidence[reaction_id]
-        thermo, values = assess_thermochemistry(
+        thermo, values, thermal_calculations = _evaluate_thermochemistry(
             reaction,
             candidates,
             state_evidence,
@@ -105,7 +195,8 @@ def evaluate(
         )
         kinetics, use = assess_kinetics(reaction, evidence, conditions, selection)
         if values:
-            thermochemistry[reaction_id] = values
+            energy_values[reaction_id] = values
+        calculations[reaction_id] = thermal_calculations
         numerical_use[reaction_id] = use
         reaction_assessments[reaction_id] = {
             "consistency": assess_consistency(reaction, candidates),
@@ -123,8 +214,9 @@ def evaluate(
         reaction_assessments,
         state_evidence,
         reaction_evidence,
-        thermochemistry,
+        energy_values,
         numerical_use,
+        calculations,
     )
 
 
@@ -271,7 +363,22 @@ def _assess_state_support(
 
 
 def _assess_exact_state(state: StateCandidate, evidence: StateEvidence) -> Assessment:
-    if _state_existence_conflicts(evidence.records):
+    declarations = tuple(
+        record for record in evidence.records if record.existence in {"confirmed", "unbound"}
+    )
+    reviewed = tuple(
+        record
+        for record in declarations
+        if record.tier in REVIEWED_TIERS
+        and review_scope_covers(record.review_scope, "state_existence")
+    )
+    declared_conflicts = tuple(
+        record
+        for record in evidence.records
+        if record in reviewed
+        or (record.status == "conflicting" and "state_existence" in record.review_scope)
+    )
+    if _state_existence_conflicts(declared_conflicts):
         return Assessment(
             VERDICT_UNKNOWN,
             evidence.sources,
@@ -288,106 +395,63 @@ def _assess_exact_state(state: StateCandidate, evidence: StateEvidence) -> Asses
                 ),
             ),
         )
-    record = next(
-        (
-            record
-            for record in evidence.records
-            if record.reviewed
-            and record.existence_source is not None
-            and record.existence in {"confirmed", "unbound"}
-        ),
-        evidence.preferred,
-    )
-    if record is None:
+    qualified = [
+        record for record in declarations if record.reviewed and record.existence_source is not None
+    ]
+    if qualified:
+        excluded = qualified[0].existence == "unbound"
         return Assessment(
-            VERDICT_UNKNOWN,
-            (),
-            "no state evidence",
-            requirements=(
-                Requirement(
-                    "source_information",
-                    state.id,
-                    "state_existence",
-                    "obtain an existence assertion for this exact state",
-                ),
-            ),
+            VERDICT_FAIL if excluded else VERDICT_PASS,
+            tuple(sorted({record.label for record in qualified})),
+            "the source explicitly identifies this state as unbound"
+            if excluded
+            else "reviewed existence evidence supports this identity; population is undetermined",
         )
-    if not record.reviewed:
+    if not declarations:
         return Assessment(
             VERDICT_UNKNOWN,
             evidence.sources,
-            "no reviewed existence assertion qualifies this state identity",
-            requirements=(
-                Requirement(
-                    "source_review",
-                    state.id,
-                    "state_existence",
-                    (
-                        "review the existence assertion for this exact identity independently "
-                        "of its numerical properties"
-                    ),
-                ),
-            ),
-        )
-    existence = record.existence.lower()
-    if record.existence_source is None:
-        return Assessment(
-            VERDICT_UNKNOWN,
-            evidence.sources,
-            "existence assertion has no stated supporting source",
-            requirements=(
-                Requirement(
-                    "source_information",
-                    state.id,
-                    "existence_source",
-                    "identify the evidence supporting the existence assertion",
-                ),
-            ),
-        )
-    if existence == "unbound":
-        return Assessment(
-            VERDICT_FAIL,
-            evidence.sources,
-            "the source explicitly identifies this state as unbound",
-        )
-    if existence == "transient":
-        return Assessment(
-            VERDICT_UNKNOWN,
-            evidence.sources,
-            "short lifetime is declared; this alone does not establish or exclude a bound state",
+            "short lifetime is declared; this alone does not establish or exclude a bound state"
+            if any(record.existence == "transient" for record in evidence.records)
+            else "no supporting or excluding existence assertion is supplied for this state",
             requirements=(
                 Requirement(
                     "source_information",
                     state.id,
                     "state_existence",
                     (
-                        "obtain existence or binding evidence; lifetime alone cannot establish "
-                        "or exclude a bound state"
+                        "obtain evidence supporting or excluding this exact state; numerical "
+                        "properties, lifetime and hypothetical labels do not establish existence"
                     ),
                 ),
             ),
         )
-    if existence in {"unknown", "hypothetical"}:
-        return Assessment(
-            VERDICT_UNKNOWN,
-            evidence.sources,
-            "the state record does not establish a bound state",
-            requirements=(
-                Requirement(
-                    "source_information",
-                    state.id,
-                    "state_existence",
-                    (
-                        "obtain existence evidence supporting or excluding this hypothetical or"
-                        " unresolved state"
-                    ),
-                ),
-            ),
+    requirements = []
+    if any(record.existence_source is not None for record in declarations) or not any(
+        record.reviewed for record in declarations
+    ):
+        requirements.append(
+            Requirement(
+                "source_review",
+                state.id,
+                "state_existence",
+                "review the supplied existence assertion independently of numerical properties",
+            )
+        )
+    if not any(record.existence_source is not None for record in declarations):
+        requirements.append(
+            Requirement(
+                "source_information",
+                state.id,
+                "existence_source",
+                "identify the evidence supporting the supplied existence assertion",
+            )
         )
     return Assessment(
-        VERDICT_PASS,
+        VERDICT_UNKNOWN,
         evidence.sources,
-        "reviewed existence evidence supports this identity; population is undetermined",
+        "the supplied existence assertions lack review or a supporting source",
+        requirements=tuple(requirements),
     )
 
 
@@ -578,6 +642,19 @@ def _state_thermochemistry(
                 for quantity in conflicts
             ),
         )
+    selection_requirements = tuple(
+        requirement
+        for quantity in ("enthalpy_formation_eV", "thermochemical_model")
+        for requirement in _state_selection_requirement(evidence, quantity)
+    )
+    if selection_requirements:
+        return Assessment(
+            VERDICT_UNKNOWN,
+            evidence.sources,
+            "the requested data selection excludes available thermochemical representations",
+            proposition,
+            requirements=selection_requirements,
+        )
     useful = [
         record
         for record in evidence.records
@@ -602,6 +679,26 @@ def _state_thermochemistry(
                 ),
             ),
         )
+    if (
+        selected is not None
+        and selected.thermo is not None
+        and (selected.thermo.phase != state.phase)
+    ):
+        return Assessment(
+            VERDICT_UNKNOWN,
+            evidence.sources,
+            "the stated thermochemical model phase does not identify this state phase",
+            proposition,
+            requirements=(
+                Requirement(
+                    "identity" if state.phase == "unknown" else "source_review",
+                    state.id,
+                    "phase" if state.phase == "unknown" else "thermochemical_model.phase",
+                    "identify the state phase or correct the model target; matching composition "
+                    "does not make a gas model a representation of another phase",
+                ),
+            ),
+        )
     return Assessment(
         VERDICT_UNKNOWN,
         tuple(record.label for record in useful),
@@ -623,14 +720,23 @@ def _state_thermochemistry(
 
 def _trusted_thermochemistry(record: StateRecord) -> bool:
     enthalpy = record.properties.get("enthalpy_formation_eV")
-    return (
-        record.thermo is not None
-        and record.thermo.reviewed_for("thermochemical_model")
-        and valid_thermo(record.thermo)
-    ) or (
+    return _qualified_thermal_representation(record) is not None or (
         enthalpy is not None
         and enthalpy.reviewed_for("enthalpy_formation_eV")
         and _eV_value(record, "enthalpy_formation_eV") is not None
+    )
+
+
+def _qualified_thermal_representation(record: StateRecord) -> Thermo | None:
+    """Source/model shape and target phase, without a temperature-use decision."""
+    thermo = record.thermo
+    return (
+        thermo
+        if thermo is not None
+        and thermo.reviewed_for("thermochemical_model")
+        and valid_thermo(thermo)
+        and thermo.phase == record.candidate.phase
+        else None
     )
 
 
@@ -640,12 +746,8 @@ def _thermochemistry_sources(record: StateRecord) -> tuple[str, ...]:
         record, "enthalpy_formation_eV"
     ) is not None:
         sources.add(prop.source or record.label)
-    if (
-        record.thermo is not None
-        and record.thermo.reviewed_for("thermochemical_model")
-        and valid_thermo(record.thermo)
-    ):
-        sources.add(record.thermo.source or record.label)
+    if (thermo := _qualified_thermal_representation(record)) is not None:
+        sources.add(thermo.source or record.label)
     return tuple(sorted(sources))
 
 
@@ -663,9 +765,11 @@ def assess_consistency(reaction: ReactionCandidate, candidates: CandidateSet) ->
 
 
 def _equation_consistency(reaction: ReactionCandidate, candidates: CandidateSet) -> Assessment:
-    terms = (*reaction.reactants, *reaction.products)
-    if any(not isfinite(term.n) or term.n <= 0 for term in terms):
-        return Assessment(VERDICT_FAIL, ("stoichiometry",), "all coefficients must be positive")
+    try:
+        validate_stoichiometric_terms(reaction.reactants)
+        validate_stoichiometric_terms(reaction.products)
+    except ValueError as error:
+        return Assessment(VERDICT_FAIL, ("stoichiometry",), str(error))
     result = conservation(reaction.reactants, reaction.products, candidates.states)
     if result.missing:
         return Assessment(
@@ -680,13 +784,15 @@ def _equation_consistency(reaction: ReactionCandidate, candidates: CandidateSet)
         return Assessment(
             VERDICT_FAIL,
             ("charge conservation",),
-            f"charge {result.left_charge:+g} -> {result.right_charge:+g}",
+            f"charge {result.left_charge:+g} -> {result.right_charge:+g}; "
+            f"difference {result.charge_difference:+g}",
         )
     if not result.elements_conserved and reaction.surface is None:
         return Assessment(
             VERDICT_FAIL,
             ("element conservation",),
-            f"elements {result.left_elements} -> {result.right_elements}",
+            f"elements {result.left_elements} -> {result.right_elements}; "
+            f"differences {result.element_differences}",
         )
     pattern = _process_pattern(reaction, candidates)
     if pattern is False:
@@ -728,6 +834,15 @@ def _equation_consistency(reaction: ReactionCandidate, candidates: CandidateSet)
 
 
 def _family_problem(reaction: ReactionCandidate, candidates: CandidateSet) -> str | None:
+    """Check the declared carriers and reservoir, without inventing missing context."""
+    for name in ("surface", "third_body"):
+        value = getattr(reaction, name)
+        if value is not None and (not isinstance(value, str) or not value.strip()):
+            return f"{name} must identify a nonempty reservoir or collision partner"
+    if reaction.family == "surface" and reaction.surface is None:
+        return "a surface process requires an explicit material reservoir"
+    if reaction.surface is not None and reaction.family in {"electron", "ion", "neutral"}:
+        return "an explicit surface reservoir contradicts the declared gas-collision family"
     electron = any(term.species == ELECTRON for term in reaction.reactants)
     charged = any(
         candidates.states[term.species].charge
@@ -736,6 +851,8 @@ def _family_problem(reaction: ReactionCandidate, candidates: CandidateSet) -> st
     )
     if reaction.family == "electron" and not electron:
         return "an electron process requires an incident electron"
+    if reaction.family == "ion" and electron:
+        return "an incident electron belongs to the electron family, not an ion collision family"
     if reaction.family == "ion" and not charged:
         return "an ion process requires a charged heavy reactant"
     if reaction.family == "neutral" and (electron or charged):
@@ -851,6 +968,20 @@ def _process_pattern(reaction: ReactionCandidate, candidates: CandidateSet) -> b
     if reaction.family not in {"electron", "ion", "neutral", "surface"}:
         return None
     participants = _participants(reaction, candidates)
+    pattern = _participant_pattern(reaction, participants)
+    if (
+        pattern is True
+        and reaction.third_body is not None
+        and reaction.process != "three_body_association"
+    ):
+        # An implicit collider changes molecularity. Existing binary patterns
+        # do not establish that additional collision model; a contradiction
+        # of the named process itself still remains False.
+        return None
+    return pattern
+
+
+def _participant_pattern(reaction: ReactionCandidate, participants: _Participants) -> bool | None:
     process = reaction.process
     if process == "elastic":
         return participants.same_species
@@ -1087,8 +1218,9 @@ def assess_reaction_states(
         "not observational existence, population or channel occurrence."
     )
     dependencies = tuple((state_id, "state") for state_id in participants)
+    aggregate = participant_support_verdict(item.verdict for item in verdicts)
     failed = [item for item in verdicts if item.verdict == VERDICT_FAIL]
-    if failed:
+    if aggregate == VERDICT_FAIL:
         return Assessment(
             VERDICT_FAIL,
             tuple(item for value in failed for item in value.basis),
@@ -1101,7 +1233,7 @@ def assess_reaction_states(
             dependencies=dependencies,
         )
     unknown = [item for item in verdicts if item.verdict == VERDICT_UNKNOWN]
-    if unknown:
+    if aggregate == VERDICT_UNKNOWN:
         return Assessment(
             VERDICT_UNKNOWN,
             tuple(sorted({item for value in unknown for item in value.basis})),
@@ -1130,6 +1262,27 @@ def assess_thermochemistry(
     reaction_evidence: ReactionEvidence,
     conditions: Conditions,
 ) -> tuple[Assessment, dict[str, float]]:
+    """Return the energy proposition and available values for existing API callers.
+
+    Analysis additionally saves the independent calculation results returned
+    by ``_evaluate_thermochemistry``. Missing calculation inputs are not missing
+    evidence for the energy proposition.
+    """
+    result, energy_values, calculations = _evaluate_thermochemistry(
+        reaction, candidates, state_evidence, reaction_evidence, conditions
+    )
+    return result, _combined_thermal_values(energy_values, calculations)
+
+
+def _evaluate_thermochemistry(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    state_evidence: dict[str, StateEvidence],
+    reaction_evidence: ReactionEvidence,
+    conditions: Conditions,
+) -> tuple[Assessment, dict[str, float], dict[str, ThermochemicalCalculation]]:
+    species = _thermo_records(reaction, state_evidence, conditions.gas_temperature_K)
+    calculations = _thermal_calculations(reaction, candidates, state_evidence, species, conditions)
     source_values, source_conflicts = _source_energy_values(reaction_evidence)
     result, values = _assess_energy_relation(
         reaction,
@@ -1137,6 +1290,7 @@ def assess_thermochemistry(
         state_evidence,
         reaction_evidence,
         conditions,
+        any(item.value is not None for item in calculations.values()),
         source_values,
         source_conflicts,
     )
@@ -1159,14 +1313,6 @@ def assess_thermochemistry(
             message=result.message
             + "; conflicting declarations or invalid values excluded from quantities: "
             + ", ".join(conflicts),
-        )
-    species = _thermo_records(reaction, state_evidence)
-    if _formation_quality(reaction, species) and formation_reference(reaction, species) is None:
-        result = replace(
-            result,
-            message=result.message
-            + "; formation delta-H is undetermined: compatible reference temperature, "
-            "elemental basis, pressure and applicable electron convention/enthalpy are required",
         )
     requirements = result.requirements
     if result.verdict == VERDICT_UNKNOWN and not requirements:
@@ -1206,13 +1352,19 @@ def assess_thermochemistry(
             "occurrence."
         ),
     )
-    return replace(result, proposition=proposition, scope=scope, requirements=requirements), values
+    return (
+        replace(result, proposition=proposition, scope=scope, requirements=requirements),
+        values,
+        calculations,
+    )
 
 
 def _energy_requirements(
     state_id: str,
     evidence: StateEvidence | None,
     name: str,
+    *,
+    electron_term_required: bool = False,
 ) -> tuple[Requirement, ...]:
     """Explain the actual boundary preventing consumption of this quantity."""
     if evidence is None or evidence.match == "none":
@@ -1234,14 +1386,22 @@ def _energy_requirements(
         (record, record.properties[name])
         for record in evidence.records
         if name in record.properties
+        and (
+            record.properties[name].value is not None
+            or bool((record.properties[name].qualifier or "").strip())
+        )
     ]
     if not supplied:
+        placeholder = any(name in record.properties for record in evidence.records)
         return (
             Requirement(
                 "source_information",
                 state_id,
-                name,
-                "obtain a sourced value with its physical definition and uncertainty information",
+                f"{name}.value" if placeholder else name,
+                "supply a numerical value; an empty placeholder is not a scientific declaration"
+                if placeholder
+                else "obtain a sourced value with its physical definition "
+                "and uncertainty information",
             ),
         )
     eligible = [
@@ -1274,14 +1434,35 @@ def _energy_requirements(
     context = _energy_context_requirement(state_id, reviewed, name)
     if context:
         return context
-    choices = _property_choices(evidence, name)
-    if _property_declarations_conflict(name, choices):
+    choices = _property_choices(evidence, name, electron_term_required=electron_term_required)
+    selection_requirements = _state_selection_requirement(
+        evidence, name, electron_term_required=electron_term_required
+    )
+    if selection_requirements:
+        return selection_requirements
+    if _property_declarations_conflict(
+        name,
+        choices,
+        charge=evidence.records[0].candidate.charge if evidence.records else None,
+        electron_term_required=electron_term_required,
+    ):
+        quantity = name
+        if (
+            name == "enthalpy_formation_eV"
+            and electron_term_required
+            and not _property_declarations_conflict(
+                name,
+                choices,
+                charge=evidence.records[0].candidate.charge if evidence.records else None,
+            )
+        ):
+            quantity = "formation_reference.electron_enthalpy_eV"
         return (
             Requirement(
                 "source_review",
                 state_id,
-                name,
-                "resolve conflicting declarations of this same energy quantity",
+                quantity,
+                f"resolve conflicting declarations of {quantity}",
             ),
         )
     return _energy_numeric_requirement(state_id, choices, name)
@@ -1525,25 +1706,7 @@ def _relation_requirements(
             ),
         )
     if reaction.process in {"charge_exchange", "resonant_charge_exchange"}:
-        requirements: list[Requirement] = []
-        for state_id, names in _relation_energy_quantities(reaction, candidates).items():
-            for name in sorted(names):
-                record = _preferred_state(state_id, states)
-                if record is None or _eV_value(record, name) is None:
-                    requirements.extend(_energy_requirements(state_id, states.get(state_id), name))
-        choices = _reaction_energy_choices(evidence, "delta_e_eV")
-        if not choices or any(
-            prop.value is None or energy_eV(prop.value, prop.unit) is None for _, prop in choices
-        ):
-            requirements.extend(_channel_energy_requirements(reaction.id, evidence, "delta_e_eV"))
-        return tuple(requirements) or (
-            Requirement(
-                "source_review",
-                reaction.id,
-                "delta_e_eV",
-                "resolve inconsistent or uncertainty-overlapping energy-defect declarations",
-            ),
-        )
+        return _charge_transfer_requirements(reaction, candidates, states, evidence)
     if reaction.process == "elastic":
         return (
             Requirement(
@@ -1569,19 +1732,48 @@ def _relation_requirements(
     )
 
 
+def _charge_transfer_requirements(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    states: dict[str, StateEvidence],
+    evidence: ReactionEvidence,
+) -> tuple[Requirement, ...]:
+    _, model_requirements = _charge_transfer_inputs(reaction, candidates)
+    if model_requirements:
+        return model_requirements
+    requirements: list[Requirement] = []
+    for state_id, names in _relation_energy_quantities(reaction, candidates).items():
+        for name in sorted(names):
+            record = _preferred_state(state_id, states)
+            if record is None or _eV_value(record, name) is None:
+                requirements.extend(_energy_requirements(state_id, states.get(state_id), name))
+    choices = _reaction_energy_choices(evidence, "delta_e_eV")
+    if not choices or any(
+        prop.value is None or energy_eV(prop.value, prop.unit) is None for _, prop in choices
+    ):
+        requirements.extend(_channel_energy_requirements(reaction.id, evidence, "delta_e_eV"))
+    return tuple(requirements) or (
+        Requirement(
+            "source_review",
+            reaction.id,
+            "delta_e_eV",
+            "resolve inconsistent or uncertainty-overlapping energy-defect declarations",
+        ),
+    )
+
+
 def _assess_energy_relation(
     reaction: ReactionCandidate,
     candidates: CandidateSet,
     state_evidence: dict[str, StateEvidence],
     reaction_evidence: ReactionEvidence,
     conditions: Conditions,
+    has_calculated_values: bool,
     source_values: dict[str, float],
     source_conflicts: tuple[str, ...],
 ) -> tuple[Assessment, dict[str, float]]:
     """Check comparable energy relations; values alone do not prove occurrence."""
-    species = _thermo_records(reaction, state_evidence)
-    values = _calculated_energy_values(reaction, species, conditions)
-    values.update(source_values)
+    values = dict(source_values)
     identity = _identity_energy(reaction, candidates, state_evidence)
     if identity is not None:
         values[identity[0]] = identity[1]
@@ -1615,41 +1807,492 @@ def _assess_energy_relation(
         else "energy relation is undetermined"
     )
     note += "; " + "; ".join(dict.fromkeys(item.reason for item in requirements if item.reason))
-    if values:
+    if values or has_calculated_values:
         note += "; available calculated or declared values are retained independently"
     return Assessment(
         VERDICT_UNKNOWN, reaction_evidence.sources, note, requirements=requirements
     ), values
 
 
-def _calculated_energy_values(
+def _calculation_values(
+    calculations: dict[str, ThermochemicalCalculation],
+) -> dict[str, float]:
+    """Project successful calculations into the historical flat value view."""
+    values: dict[str, float] = {}
+    for quantity, calculation in calculations.items():
+        if calculation.value is not None:
+            values[quantity] = calculation.value
+            values.update(calculation.conditions)
+    return values
+
+
+def _combined_thermal_values(
+    energy_values: dict[str, float],
+    calculations: dict[str, ThermochemicalCalculation],
+) -> dict[str, float]:
+    values = _calculation_values(calculations)
+    if values.keys() & energy_values.keys():
+        raise ValueError("auxiliary energy values cannot overwrite thermochemical calculations")
+    return energy_values | values
+
+
+def _thermal_calculations(
     reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    evidence: dict[str, StateEvidence],
     species: dict[str, StateRecord],
     conditions: Conditions,
-) -> dict[str, float]:
-    delta_h = formation_delta(reaction, species)
-    values = _available_value("delta_h_eV", delta_h, _formation_quality(reaction, species))
-    if "delta_h_eV" in values:
-        reference = formation_reference(reaction, species)
-        if reference is not None and reference.temperature_K is not None:
-            values["delta_h_reference_temperature_K"] = reference.temperature_K
-            if reference.standard_pressure_Pa is not None:
-                values["delta_h_standard_pressure_Pa"] = reference.standard_pressure_Pa
-    delta_g, gibbs_values = _gibbs_values(reaction, species, conditions)
-    if delta_g is None or not _gibbs_quality(reaction, species):
-        return values
-    values.update(gibbs_values)
-    if conditions.gas_temperature_K is None or reaction.surface is not None:
-        return values
-    constant = equilibrium_constant(reaction, species, conditions.gas_temperature_K)
+) -> dict[str, ThermochemicalCalculation]:
+    """Calculate three distinct quantities from one selected participant view.
+
+    Formation references and finite-temperature NASA models are independent
+    inputs. Their applicability never determines an energy relation verdict.
+    """
+    enthalpy = _formation_calculation(reaction, candidates, evidence, species)
+    gibbs, constant = _nasa_calculations(reaction, candidates, evidence, species, conditions)
+    return {
+        "delta_h_eV": enthalpy,
+        "delta_g_eV": gibbs,
+        "equilibrium_constant_number_density": constant,
+    }
+
+
+def _calculation_reason(requirements: tuple[Requirement, ...]) -> str:
+    return "; ".join(dict.fromkeys(item.reason for item in requirements))
+
+
+def _surface_thermal_requirement(reaction: ReactionCandidate) -> tuple[Requirement, ...]:
+    return (
+        Requirement(
+            "external_models",
+            reaction.id,
+            "surface_thermochemical_balance",
+            "an energy balance including the surface reservoir is not implemented; "
+            "gas participant values alone do not give the surface reaction thermochemistry",
+        ),
+    )
+
+
+def _formation_calculation(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    evidence: dict[str, StateEvidence],
+    species: dict[str, StateRecord],
+) -> ThermochemicalCalculation:
+    if reaction.surface is not None:
+        requirements = _surface_thermal_requirement(reaction)
+        return ThermochemicalCalculation(
+            "unavailable", None, "eV", _calculation_reason(requirements), requirements
+        )
+    contributors = set(net_stoichiometry(reaction)) - {ELECTRON}
+    electron_required = net_electron_coefficient(reaction) != 0.0
+    missing = tuple(
+        requirement
+        for state_id in sorted(contributors)
+        if state_id not in species or _eV_value(species[state_id], "enthalpy_formation_eV") is None
+        for requirement in _energy_requirements(
+            state_id,
+            evidence.get(state_id),
+            "enthalpy_formation_eV",
+            electron_term_required=electron_required,
+        )
+    )
+    if missing:
+        return ThermochemicalCalculation(
+            "unavailable", None, "eV", _calculation_reason(missing), missing
+        )
+    reference = formation_reference(reaction, species)
+    if reference is None and net_stoichiometry(reaction):
+        requirements = _formation_reference_requirements(reaction, candidates, species)
+        return ThermochemicalCalculation(
+            "unavailable", None, "eV", _calculation_reason(requirements), requirements
+        )
+    value = formation_delta(reaction, species)
+    if value is None:
+        requirements = (
+            Requirement(
+                "external_models",
+                reaction.id,
+                "formation_enthalpy_numerical_range",
+                "the formation enthalpy arithmetic cannot represent a finite difference "
+                "for these declarations",
+            ),
+        )
+        return ThermochemicalCalculation(
+            "unavailable", None, "eV", _calculation_reason(requirements), requirements
+        )
+    reference_conditions: dict[str, float] = {}
+    if reference is not None:
+        if reference.temperature_K is not None:
+            reference_conditions["delta_h_reference_temperature_K"] = reference.temperature_K
+        if reference.standard_pressure_Pa is not None:
+            reference_conditions["delta_h_standard_pressure_Pa"] = reference.standard_pressure_Pa
+    return ThermochemicalCalculation(
+        "computed",
+        value,
+        "eV",
+        (
+            "products-minus-reactants formation enthalpy at the retained common reference; "
+            if reference is not None
+            else "identical represented states cancel at any common formation reference; "
+        )
+        + "this nominal difference does not establish an appearance threshold, "
+        "uncertainty propagation, or channel occurrence",
+        conditions=reference_conditions,
+    )
+
+
+def _formation_reference_requirements(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    species: dict[str, StateRecord],
+) -> tuple[Requirement, ...]:
+    requirements: list[Requirement] = []
+    electron_required = net_electron_coefficient(reaction) != 0.0
+    references = []
+    charged = []
+    for state_id in sorted(set(net_stoichiometry(reaction)) - {ELECTRON}):
+        state = candidates.states[state_id]
+        prop = species[state_id].properties["enthalpy_formation_eV"]
+        reference = prop.formation_reference
+        requirements.extend(
+            _formation_reference_fields(state, reference, electron_required=electron_required)
+        )
+        if reference is not None:
+            references.append((state_id, reference))
+            if state.charge:
+                charged.append((state_id, reference))
+    for name in ("temperature_K", "basis", "standard_pressure_Pa", "electron_convention"):
+        compared = charged if name == "electron_convention" else references
+        if name == "electron_convention":
+            compared = [(state_id, ref) for state_id, ref in compared if ref.temperature_K != 0]
+        if len({getattr(ref, name) for _, ref in compared}) > 1:
+            requirements.extend(
+                Requirement(
+                    "source_review",
+                    state_id,
+                    f"enthalpy_formation_eV.formation_reference.{name}",
+                    f"formation values do not share {name}; use a stated common reference "
+                    "or a supported conversion instead of subtracting unlike references",
+                )
+                for state_id, _ in compared
+            )
+    if electron_required:
+        compared = [
+            (state_id, ref)
+            for state_id, ref in charged
+            if ref.temperature_K != 0 and ref.electron_convention == "ion"
+        ]
+        if len({ref.electron_enthalpy_eV for _, ref in compared}) > 1:
+            requirements.extend(
+                Requirement(
+                    "source_review",
+                    state_id,
+                    "formation_reference.electron_enthalpy_eV",
+                    "formation_reference.electron_enthalpy_eV declarations conflict for "
+                    "the consumed free-electron term",
+                )
+                for state_id, _ in compared
+            )
+    return tuple(dict.fromkeys(requirements)) or (
+        Requirement(
+            "source_information",
+            reaction.id,
+            "formation_reference",
+            "a compatible common formation reference and applicable electron term are required",
+        ),
+    )
+
+
+def _formation_reference_fields(
+    state: StateCandidate,
+    reference: FormationReference | None,
+    *,
+    electron_required: bool,
+) -> tuple[Requirement, ...]:
+    requirements = []
+    if state.phase == "unknown":
+        requirements.append(
+            Requirement(
+                "identity", state.id, "phase", "identify the phase of this formation quantity"
+            )
+        )
+    if reference is None:
+        return (
+            *requirements,
+            Requirement(
+                "source_information",
+                state.id,
+                "enthalpy_formation_eV.formation_reference",
+                "state the formation reference temperature, elemental basis, pressure "
+                "and applicable electron convention for this quantity",
+            ),
+        )
+    fields = ["temperature_K", "basis", "standard_pressure_Pa"]
+    if state.charge and reference.temperature_K != 0:
+        fields.append("electron_convention")
+        if electron_required and reference.electron_convention == "ion":
+            fields.append("electron_enthalpy_eV")
+    requirements.extend(
+        Requirement(
+            "source_information",
+            state.id,
+            f"enthalpy_formation_eV.formation_reference.{name}",
+            f"state {name} in this formation reference before subtracting values",
+        )
+        for name in fields
+        if getattr(reference, name) is None
+    )
+    return tuple(requirements)
+
+
+def _nasa_calculations(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    evidence: dict[str, StateEvidence],
+    species: dict[str, StateRecord],
+    conditions: Conditions,
+) -> tuple[ThermochemicalCalculation, ThermochemicalCalculation]:
+    coefficients = net_stoichiometry(reaction)
+    density_power = fsum(coefficients.values())
+    constant_unit = "dimensionless" if density_power == 0 else f"m{-3 * density_power:g}"
+    requirements = _nasa_requirements(
+        reaction, candidates, evidence, species, temperature_K=conditions.gas_temperature_K
+    )
+    if not coefficients and not requirements:
+        # Each standard-state contribution and the density exponent cancel.
+        # No model coefficients or arbitrary temperature are consumed.
+        return (
+            ThermochemicalCalculation(
+                "computed",
+                0.0,
+                "eV",
+                "the same represented thermal gas ground states cancel, giving zero "
+                "standard Gibbs difference independently of temperature and reference pressure; "
+                "state existence and channel occurrence are undetermined",
+            ),
+            ThermochemicalCalculation(
+                "computed",
+                1.0,
+                "dimensionless",
+                "the cancelling standard Gibbs difference and zero density exponent "
+                "give an equilibrium ratio of one without temperature or reference pressure; "
+                "a reverse channel and its kinetics are undetermined",
+                conditions={"equilibrium_constant_density_power": 0.0},
+            ),
+        )
+    temperature = conditions.gas_temperature_K
+    calculation_conditions = {} if temperature is None else {"temperature_K": temperature}
     pressure = reference_pressure(reaction, species)
-    if constant is not None and pressure is not None:
-        values["equilibrium_constant_number_density"] = constant
-        values["equilibrium_constant_density_power"] = sum(
-            term.n for term in reaction.products
-        ) - sum(term.n for term in reaction.reactants)
-        values["standard_pressure_Pa"] = pressure
-    return values
+    if pressure is not None:
+        calculation_conditions["standard_pressure_Pa"] = pressure
+    constant_conditions = calculation_conditions | {
+        "equilibrium_constant_density_power": density_power
+    }
+    status = "unavailable"
+    if not requirements:
+        if temperature is None:
+            status = "needs_input"
+            requirements = (
+                Requirement(
+                    "user_inputs",
+                    reaction.id,
+                    "gas_temperature_K",
+                    "specify gas_temperature_K to evaluate the retained thermal NASA7 models",
+                ),
+            )
+        else:
+            requirements = tuple(
+                Requirement(
+                    "source_information",
+                    state_id,
+                    "thermochemical_model.temperature_range",
+                    f"the NASA7 range [{record.thermo.t_min:g}, {record.thermo.t_max:g}] K "
+                    f"does not cover the specified {temperature:g} K; obtain a model for "
+                    "the actual temperature rather than extrapolating",
+                )
+                for state_id, record in sorted(species.items())
+                if record.thermo is not None
+                and not record.thermo.t_min <= temperature <= record.thermo.t_max
+            )
+            if requirements:
+                status = "out_of_range"
+    if requirements:
+        reason = _calculation_reason(requirements)
+        return (
+            ThermochemicalCalculation(
+                status, None, "eV", reason, requirements, calculation_conditions
+            ),
+            ThermochemicalCalculation(
+                status, None, constant_unit, reason, requirements, constant_conditions
+            ),
+        )
+    # The missing-temperature branch above returned its typed prerequisite.
+    gibbs, constant = thermal_values(reaction, species, cast(float, temperature))
+    results = []
+    for quantity, value, unit, declared_conditions, reason in (
+        (
+            "delta_g_eV",
+            gibbs,
+            "eV",
+            calculation_conditions,
+            "NASA7 standard Gibbs reaction energy for thermal gas ground states at the "
+            "retained temperature and reference; channel occurrence and kinetics are undetermined",
+        ),
+        (
+            "equilibrium_constant_number_density",
+            constant,
+            constant_unit,
+            constant_conditions,
+            "number-density equilibrium ratio from the retained thermal gas models; "
+            "this does not establish a reversible channel or a reverse rate coefficient",
+        ),
+    ):
+        if value is not None:
+            results.append(
+                ThermochemicalCalculation(
+                    "computed", value, unit, reason, conditions=declared_conditions
+                )
+            )
+        else:
+            requirements = (
+                Requirement(
+                    "external_models",
+                    reaction.id,
+                    f"{quantity}.numerical_range",
+                    f"the thermal arithmetic cannot represent a finite {quantity} for "
+                    "these declarations; the physical quantity is not thereby disproved",
+                ),
+            )
+            results.append(
+                ThermochemicalCalculation(
+                    "unavailable",
+                    None,
+                    unit,
+                    _calculation_reason(requirements),
+                    requirements,
+                    declared_conditions,
+                )
+            )
+    return results[0], results[1]
+
+
+def _nasa_requirements(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    evidence: dict[str, StateEvidence],
+    species: dict[str, StateRecord],
+    *,
+    temperature_K: float | None = None,
+) -> tuple[Requirement, ...]:
+    if reaction.surface is not None:
+        return _surface_thermal_requirement(reaction)
+    if any(term.species == ELECTRON for term in (*reaction.reactants, *reaction.products)):
+        return (
+            Requirement(
+                "external_models",
+                reaction.id,
+                "electron_channel_thermochemical_model",
+                "thermal NASA7 calculations exclude electron channels; an electron "
+                "distribution is not a thermal ground-state chemical species",
+            ),
+        )
+    requirements: list[Requirement] = []
+    contributors = net_stoichiometry(reaction)
+    targets = tuple(contributors) or tuple(
+        sorted({term.species for term in (*reaction.reactants, *reaction.products)})
+    )
+    for state_id in targets:
+        state = candidates.states[state_id]
+        if state.phase != "gas" or state.state.kind != "ground":
+            requirements.append(
+                Requirement(
+                    "identity" if state.phase == "unknown" else "external_models",
+                    state_id,
+                    "phase" if state.phase == "unknown" else "thermal_state_model",
+                    "the implemented NASA7 calculation requires an identified thermal "
+                    "gas ground state; a different phase or excited population needs its own model",
+                )
+            )
+            continue
+        if not contributors:
+            continue
+        matched = evidence.get(state_id)
+        if matched is None or matched.match != "exact":
+            requirements.append(
+                Requirement(
+                    "source_information"
+                    if matched is None or matched.match == "none"
+                    else "identity",
+                    state_id,
+                    "thermochemical_model",
+                    "obtain a thermal model for the exact phase, structure and state",
+                )
+            )
+            continue
+        record = species.get(state_id)
+        if record is None or record.thermo is None:
+            requirements.extend(
+                _missing_thermal_model_requirements(matched, state_id, temperature_K)
+            )
+            continue
+        thermo = record.thermo
+        if not valid_thermo(thermo):
+            missing = [
+                name for name in ("phase", "standard_pressure_Pa") if getattr(thermo, name) is None
+            ]
+            requirements.extend(
+                Requirement(
+                    "source_information" if missing else "source_review",
+                    state_id,
+                    f"thermochemical_model.{name}",
+                    f"state {name} for the NASA7 model"
+                    if missing
+                    else "correct the NASA7 coefficients, temperature domain "
+                    "or gas-phase reference",
+                )
+                for name in (missing or ["representation"])
+            )
+    if (
+        not requirements
+        and net_stoichiometry(reaction)
+        and reference_pressure(reaction, species) is None
+    ):
+        requirements.extend(
+            Requirement(
+                "source_review",
+                state_id,
+                "thermochemical_model.standard_pressure_Pa",
+                "NASA7 participants do not share a standard pressure; use an explicit "
+                "common reference instead of silently mixing standard states",
+            )
+            for state_id in net_stoichiometry(reaction)
+        )
+    return tuple(dict.fromkeys(requirements))
+
+
+def _missing_thermal_model_requirements(
+    evidence: StateEvidence, state_id: str, temperature_K: float | None
+) -> tuple[Requirement, ...]:
+    selection_requirements = _state_selection_requirement(
+        evidence, "thermochemical_model", temperature_K=temperature_K
+    )
+    if selection_requirements:
+        return selection_requirements
+    offered = [item.thermo for item in evidence.records if item.thermo is not None]
+    conflicting = len({_thermo_physical_key(item) for item in _thermo_choices(evidence)}) > 1
+    return (
+        Requirement(
+            "source_review" if offered else "source_information",
+            state_id,
+            "NASA7" if conflicting else "thermochemical_model",
+            "resolve conflicting NASA7 declarations for this state"
+            if conflicting
+            else "review or correct this thermal model independently of state existence"
+            if offered
+            else "obtain a qualified NASA7 model for this thermal gas ground state",
+        ),
+    )
 
 
 def _source_energy_values(
@@ -1862,8 +2505,7 @@ def _checked_energy_relation(
                 "reviewed elastic internal-energy declarations are invalid or conflict",
             )
         changed = any(
-            abs(values.get(name, 0.0)) > 1e-9
-            for name in ("delta_h_eV", "threshold_eV", "source_delta_e_eV")
+            abs(values.get(name, 0.0)) > 1e-9 for name in ("threshold_eV", "source_delta_e_eV")
         )
         if changed:
             return Assessment(
@@ -1952,6 +2594,9 @@ def _charge_defect_input_requirements(
     candidates: CandidateSet,
     evidence: dict[str, StateEvidence],
 ) -> tuple[Requirement, ...]:
+    _, model_requirements = _charge_transfer_inputs(reaction, candidates)
+    if model_requirements:
+        return model_requirements
     missing = tuple(
         requirement
         for state_id, names in _relation_energy_quantities(reaction, candidates).items()
@@ -1976,24 +2621,24 @@ def _charge_transfer_bounds(
     candidates: CandidateSet,
     evidence: dict[str, StateEvidence],
 ) -> tuple[tuple[float, float] | None, tuple[str, ...], bool]:
-    reactants = [candidates.states[term.species] for term in reaction.reactants]
-    ion = next((state for state in reactants if state.charge), None)
-    target = next((state for state in reactants if not state.charge), None)
-    if ion is None or target is None:
+    pair, _ = _charge_transfer_inputs(reaction, candidates)
+    if pair is None:
         return None, (), False
-    donor = _corresponding_ground_state(ion, 0, candidates)
-    if donor is None:
-        return None, (), False
+    ion, donor, target = pair
     if donor.key == target.key:
         return (0.0, 0.0), ("identical physical states",), True
     name = "ionization_energy_eV" if ion.charge > 0 else "electron_affinity_eV"
-    first, first_sources = _energy_property_bounds(evidence[donor.id], name)
-    second, second_sources = _energy_property_bounds(evidence[target.id], name)
+    first, first_sources = _energy_property_bounds(
+        evidence.get(donor.id, StateEvidence("none", ())), name
+    )
+    second, second_sources = _energy_property_bounds(
+        evidence.get(target.id, StateEvidence("none", ())), name
+    )
     sources = tuple(sorted(set(first_sources + second_sources)))
     uncertainty_known = all(
         prop.uncertainty is not None
         for state in (donor, target)
-        for prop in _property_choices(evidence[state.id], name)
+        for prop in _property_choices(evidence.get(state.id, StateEvidence("none", ())), name)
     )
     if first is None or second is None:
         return None, sources, uncertainty_known
@@ -2174,26 +2819,6 @@ def _energy_property_bounds(
     )
 
 
-def _gibbs_values(
-    reaction: ReactionCandidate,
-    species: dict[str, StateRecord],
-    conditions: Conditions,
-) -> tuple[float | None, dict[str, float]]:
-    temperature = conditions.gas_temperature_K
-    if temperature is None:
-        return (None, {})
-    delta_g = gibbs_energy_eV(reaction, species, temperature)
-    return (
-        (None, {})
-        if delta_g is None
-        else (delta_g, {"delta_g_eV": delta_g, "temperature_K": temperature})
-    )
-
-
-def _available_value(name: str, value: float | None, ready: bool) -> dict[str, float]:
-    return {name: value} if ready and value is not None else {}
-
-
 def assess_reaction_evidence(
     reaction: ReactionCandidate,
     evidence: ReactionEvidence,
@@ -2319,7 +2944,19 @@ def _reaction_evidence_support(
             ),
         )
     if reaction.origin == "attested_only":
-        return Assessment(VERDICT_FAIL, (), "attested origin has no recoverable source")
+        return Assessment(
+            VERDICT_UNKNOWN,
+            (),
+            "attested origin has no recoverable source for the channel assertion",
+            requirements=(
+                Requirement(
+                    "source_information",
+                    reaction.id,
+                    "channel_assertion",
+                    "recover evidence for this exact channel; missing provenance does not deny it",
+                ),
+            ),
+        )
     return Assessment(
         VERDICT_UNKNOWN,
         (),
@@ -2342,12 +2979,7 @@ def assess_kinetics(
     selection: DataSelection | None = None,
 ) -> tuple[Assessment, DataUse]:
     use = data_use(reaction, evidence, conditions, selection)
-    if use.status == "coefficient":
-        verdict = VERDICT_PASS
-    elif use.datasets and all(item.status in {"invalid", "out_of_range"} for item in use.datasets):
-        verdict = VERDICT_FAIL
-    else:
-        verdict = VERDICT_UNKNOWN
+    verdict = coefficient_availability_verdict(use.status, (item.status for item in use.datasets))
     basis = (
         (use.dataset_id,)
         if use.dataset_id is not None
@@ -2359,7 +2991,8 @@ def assess_kinetics(
         use.reason,
         "rate_coefficient_availability",
         (
-            "A usable rate coefficient under supplied conditions; probability or "
+            "A usable rate coefficient in the supplied evidence under supplied "
+            "conditions; probability or "
             "curve availability is reported separately in data_use and does not "
             "establish channel occurrence."
         ),
@@ -2369,48 +3002,23 @@ def assess_kinetics(
 def _thermo_records(
     reaction: ReactionCandidate,
     evidence: dict[str, StateEvidence],
+    temperature_K: float | None = None,
 ) -> dict[str, StateRecord]:
-    """Select properties only for participants in this energy balance."""
+    """Select one quantity view for states contributing to the thermal difference."""
     electron_term_required = net_electron_coefficient(reaction) != 0
     return {
         state_id: record
-        for state_id in sorted({term.species for term in (*reaction.reactants, *reaction.products)})
+        for state_id in net_stoichiometry(reaction)
         if (
             record := _preferred_state(
-                state_id, evidence, electron_term_required=electron_term_required
+                state_id,
+                evidence,
+                electron_term_required=electron_term_required,
+                temperature_K=temperature_K,
             )
         )
         is not None
     }
-
-
-def _formation_quality(
-    reaction: ReactionCandidate,
-    species: dict[str, StateRecord],
-) -> bool:
-    return all(
-        term.species == ELECTRON
-        or (
-            term.species in species
-            and (prop := species[term.species].properties.get("enthalpy_formation_eV")) is not None
-            and prop.reviewed_for("enthalpy_formation_eV")
-            and _eV_value(species[term.species], "enthalpy_formation_eV") is not None
-        )
-        for term in (*reaction.reactants, *reaction.products)
-    )
-
-
-def _gibbs_quality(
-    reaction: ReactionCandidate,
-    species: dict[str, StateRecord],
-) -> bool:
-    for term in (*reaction.reactants, *reaction.products):
-        if term.species == ELECTRON or term.species not in species:
-            return False
-        thermo = species[term.species].thermo
-        if thermo is None or not thermo.reviewed_for("thermochemical_model"):
-            return False
-    return True
 
 
 def _identity_energy(
@@ -2541,33 +3149,10 @@ def _charge_transfer_feasibility(
     candidates: CandidateSet,
     evidence: dict[str, StateEvidence],
 ) -> tuple[str, float | None, Assessment | None] | None:
-    if _process_pattern(reaction, candidates) is not True:
+    pair, _ = _charge_transfer_inputs(reaction, candidates)
+    if pair is None:
         return None
-    reactants = [candidates.states[term.species] for term in reaction.reactants]
-    participants = [
-        candidates.states[term.species]
-        for term in (*reaction.reactants, *reaction.products)
-        if term.species != ELECTRON
-    ]
-    if any(state.state.kind != "ground" for state in participants):
-        return None
-    ion = next((state for state in reactants if state.charge), None)
-    target = next((state for state in reactants if state.charge == 0), None)
-    if ion is None or target is None:
-        return None
-    if abs(ion.charge) != 1:
-        return None
-    donor_state = _corresponding_ground_state(ion, 0, candidates)
-    acceptor_state = _corresponding_ground_state(target, 0, candidates)
-    charged_product = _corresponding_ground_state(target, ion.charge, candidates)
-    if donor_state is None or acceptor_state is None or charged_product is None:
-        return None
-    expected_products = tuple(sorted(((donor_state.id, 1.0), (charged_product.id, 1.0))))
-    if (
-        any(term.n != 1 for term in reaction.reactants)
-        or reaction.equation_key[3] != expected_products
-    ):
-        return None
+    ion, donor_state, acceptor_state = pair
     if donor_state.key == acceptor_state.key:
         return ("charge_transfer_energy_defect_eV", 0.0, None)
     donor = _preferred_state(donor_state.id, evidence)
@@ -2576,6 +3161,68 @@ def _charge_transfer_feasibility(
         return None
     property_name = "ionization_energy_eV" if ion.charge > 0 else "electron_affinity_eV"
     return _charge_transfer_declared_defect(reaction, donor, acceptor, property_name)
+
+
+def _charge_transfer_inputs(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+) -> tuple[
+    tuple[StateCandidate, StateCandidate, StateCandidate] | None,
+    tuple[Requirement, ...],
+]:
+    """Resolve the gas-ground IE/EA defect model for the actual channel.
+
+    Pattern agreement concerns the represented charge transfer, while this
+    narrower correspondence fixes the states whose IE/EA may be subtracted.
+    Scalar calculation, declaration ranges and prerequisite reporting consume
+    this same result; no extra data can repair a different physical relation.
+    """
+    unsupported = (
+        Requirement(
+            "external_models",
+            reaction.id,
+            "charge_transfer_energy_relation",
+            "the implemented IE/EA defect relation requires a singly charged gas "
+            "ground ion, a gas ground neutral and their corresponding unchanged-structure "
+            "ground products; these actual participants need another energy model",
+        ),
+    )
+    participants = [
+        candidates.states[term.species]
+        for term in (*reaction.reactants, *reaction.products)
+        if term.species != ELECTRON
+    ]
+    if (
+        _process_pattern(reaction, candidates) is not True
+        or reaction.surface is not None
+        or any(state.state.kind != "ground" or state.phase != "gas" for state in participants)
+        or any(term.n != 1 for term in (*reaction.reactants, *reaction.products))
+    ):
+        return None, unsupported
+    reactants = [candidates.states[term.species] for term in reaction.reactants]
+    ion = next((state for state in reactants if state.charge), None)
+    target = next((state for state in reactants if state.charge == 0), None)
+    if ion is None or target is None or abs(ion.charge) != 1:
+        return None, unsupported
+    resolved = []
+    for parent, charge in ((ion, 0), (target, 0), (target, ion.charge)):
+        found = _corresponding_ground_state(parent, charge, candidates)
+        if found is None:
+            return None, (
+                Requirement(
+                    "identity",
+                    parent.id,
+                    "charge_transfer_ground_correspondence",
+                    "identify a unique corresponding ground state with this composition, "
+                    "phase and structure for the charge-transfer energy balance",
+                ),
+            )
+        resolved.append(found)
+    donor, acceptor, product = resolved
+    expected_products = tuple(sorted(((donor.id, 1.0), (product.id, 1.0))))
+    if reaction.equation_key[3] != expected_products:
+        return None, unsupported
+    return (ion, donor, acceptor), ()
 
 
 def _charge_transfer_declared_defect(
@@ -2883,6 +3530,7 @@ def _preferred_state(
     evidence: dict[str, StateEvidence],
     *,
     electron_term_required: bool = False,
+    temperature_K: float | None = None,
 ) -> StateRecord | None:
     if state_id is None:
         return None
@@ -2891,6 +3539,13 @@ def _preferred_state(
         return None
     properties: dict[str, Property] = {}
     names = {name for record in matched.records for name in record.properties}
+    if matched.selection is not None:
+        names.update(
+            name
+            for name in set(matched.selection.quantities)
+            | set(matched.selection.targets.get(state_id, {}))
+            if name.endswith("_eV")
+        )
     for name in names:
         compared = _property_choices(matched, name, electron_term_required=electron_term_required)
         if not compared or _property_declarations_conflict(
@@ -2903,7 +3558,7 @@ def _preferred_state(
         properties[name] = min(
             compared, key=lambda prop: (TIER_RANK.get(prop.tier, 5), prop.source or "", repr(prop))
         )
-    thermos = _thermo_choices(matched)
+    thermos = _thermo_choices(matched, temperature_K=temperature_K)
     thermo = (
         min(thermos, key=lambda item: (TIER_RANK.get(item.tier, 5), item.source or ""))
         if thermos and len({_thermo_physical_key(item) for item in thermos}) == 1
@@ -2930,6 +3585,16 @@ def _property_choices(
         and prop.reviewed_for(name)
         and _state_energy_incompatibility(prop, name, record.candidate) is None
     ]
+    policy = _state_quantity_policy(evidence, name)
+    if policy is not None and (policy.record is not None or policy.mode == "only"):
+        declarations = [
+            (record, prop)
+            for record in evidence.records
+            if (prop := record.properties.get(name)) is not None and prop in choices
+        ]
+        choices = [
+            prop for _, prop in _requested_state_records(evidence, name, policy, declarations)
+        ]
     if name == "enthalpy_formation_eV":
         charge = evidence.records[0].candidate.charge if evidence.records else 0
         referenced = [
@@ -2955,7 +3620,121 @@ def _property_choices(
             ]
             choices = completed or choices
     informative = [prop for prop in choices if prop.value is not None or prop.qualifier is not None]
-    return informative or choices
+    choices = informative or choices
+    if policy is None:
+        return choices
+    declarations = [
+        (record, prop)
+        for record in evidence.records
+        if (prop := record.properties.get(name)) is not None and prop in choices
+    ]
+    if policy.record is not None:
+        return [prop for _, prop in _requested_state_records(evidence, name, policy, declarations)]
+    usable = [
+        (record, prop)
+        for record, prop in declarations
+        if property_energy_bounds(prop) is not None
+        or (name == "electron_affinity_eV" and _explicit_electron_nonbinding(prop))
+    ]
+    declarations = usable or declarations
+    groups: dict[tuple, list[tuple[StateRecord, Property]]] = {}
+    for record, prop in declarations:
+        # Hf at different reference conditions is not a source alternative.
+        # Explicit record/only requests may restrict it; prefer cannot choose
+        # a reference convention on behalf of the user.
+        key = (
+            (
+                _formation_quantity_key(
+                    prop, record.candidate.charge, electron_term_required=electron_term_required
+                ),
+            )
+            if name == "enthalpy_formation_eV"
+            else ()
+        )
+        groups.setdefault(key, []).append((record, prop))
+    return [
+        prop
+        for group in groups.values()
+        for _, prop in _requested_state_records(evidence, name, policy, group)
+    ]
+
+
+def _state_quantity_policy(evidence: StateEvidence, quantity: str) -> QuantitySelection | None:
+    target = evidence.target or (evidence.records[0].candidate.id if evidence.records else None)
+    return (
+        evidence.selection.for_quantity(quantity, target)
+        if evidence.selection is not None
+        else None
+    )
+
+
+def _state_source_axes(value: Property | Thermo) -> tuple[str, str | None, str | None]:
+    return value.method, value.provenance.provider, value.provenance.collection
+
+
+def _requested_state_records(
+    evidence: StateEvidence,
+    quantity: str,
+    policy: QuantitySelection,
+    eligible: list[tuple[StateRecord, StateQuantity]],
+) -> list[tuple[StateRecord, StateQuantity]]:
+    """Rank already qualified alternatives; raw declarations remain untouched."""
+    if policy.record is not None:
+        offered = [
+            record
+            for record in evidence.records
+            if selectable_state_record_id(record) == policy.record
+        ]
+        values = [
+            record.thermo if quantity == "thermochemical_model" else record.properties.get(quantity)
+            for record in offered
+        ]
+        if any(value is None for value in values):
+            raise ValueError(
+                f"data_selection {quantity}: record {policy.record!r} describes another quantity"
+            )
+        if any(
+            value is not None and not policy.allows(*_state_source_axes(value)) for value in values
+        ):
+            raise ValueError(
+                f"data_selection {quantity}: record {policy.record!r} contradicts only restrictions"
+            )
+        return [
+            (record, value)
+            for record, value in eligible
+            if selectable_state_record_id(record) == policy.record
+        ]
+    allowed = [
+        (record, value) for record, value in eligible if policy.allows(*_state_source_axes(value))
+    ]
+    if policy.mode == "only" or not allowed:
+        return allowed
+    best = min(policy.rank(*_state_source_axes(value)) for _, value in allowed)
+    return [
+        (record, value)
+        for record, value in allowed
+        if policy.rank(*_state_source_axes(value)) == best
+    ]
+
+
+def _formation_quantity_key(
+    prop: Property, charge: int | None, *, electron_term_required: bool = False
+) -> tuple | None:
+    ref = prop.formation_reference
+    if ref is None:
+        return None
+    return (
+        ref.temperature_K,
+        ref.basis,
+        ref.standard_pressure_Pa,
+        ref.electron_convention if ref.temperature_K != 0 and charge != 0 else None,
+        ref.electron_enthalpy_eV
+        if electron_term_required
+        and ref.temperature_K != 0
+        and charge != 0
+        and ref.electron_convention == "ion"
+        else 0.0,
+    )
 
 
 def _state_energy_incompatibility(prop: Property, name: str, state: StateCandidate) -> str | None:
@@ -2968,6 +3747,8 @@ def _state_energy_incompatibility(prop: Property, name: str, state: StateCandida
     retain their explicit electron-binding or lifetime meanings.
     https://webbook.nist.gov/chemistry/ion/
     """
+    if name == "enthalpy_formation_eV":
+        return None if property_has_point_qualifier(prop) else "qualifier"
     if name not in {"ionization_energy_eV", "electron_affinity_eV", "excitation_energy_eV"}:
         return None
     if name != "excitation_energy_eV" and (state.phase != "gas" or state.state.kind != "ground"):
@@ -3002,20 +3783,7 @@ def _property_declarations_conflict(
     """Exclude contradictory quantities without suppressing independent properties."""
     if name == "enthalpy_formation_eV":
         references = {
-            (
-                ref.temperature_K,
-                ref.basis,
-                ref.standard_pressure_Pa,
-                ref.electron_convention if ref.temperature_K != 0 and charge != 0 else None,
-                ref.electron_enthalpy_eV
-                if electron_term_required
-                and ref.temperature_K != 0
-                and charge != 0
-                and ref.electron_convention == "ion"
-                else 0.0,
-            )
-            if (ref := prop.formation_reference) is not None
-            else None
+            _formation_quantity_key(prop, charge, electron_term_required=electron_term_required)
             for prop in properties
         }
         if len(references) > 1:
@@ -3048,14 +3816,82 @@ def _property_declarations_conflict(
     return disagree or len(qualifiers) > 1 or inconsistent_binding
 
 
-def _thermo_choices(evidence: StateEvidence) -> list[Thermo]:
-    return [
-        record.thermo
+def _thermo_choices(evidence: StateEvidence, *, temperature_K: float | None = None) -> list[Thermo]:
+    declarations = [
+        (record, record.thermo)
         for record in evidence.records
         if record.status not in {"rejected", "conflicting"}
         and record.thermo is not None
         and record.thermo.reviewed_for("thermochemical_model")
     ]
+    policy = _state_quantity_policy(evidence, "thermochemical_model")
+    if policy is None:
+        return [thermo for _, thermo in declarations]
+    if policy.record is not None:
+        return [
+            thermo
+            for _, thermo in _requested_state_records(
+                evidence, "thermochemical_model", policy, declarations
+            )
+        ]
+    if policy.mode == "only":
+        declarations = _requested_state_records(
+            evidence, "thermochemical_model", policy, declarations
+        )
+    applicable = [
+        (record, thermo)
+        for record, thermo in declarations
+        if valid_thermo(thermo)
+        and thermo.phase == record.candidate.phase
+        and (temperature_K is None or thermo.t_min <= temperature_K <= thermo.t_max)
+    ]
+    declarations = applicable or declarations
+    groups: dict[tuple, list[tuple[StateRecord, Thermo]]] = {}
+    for record, thermo in declarations:
+        key: tuple = (thermo.phase, thermo.standard_pressure_Pa)
+        if temperature_K is None:
+            key += (thermo.t_min, thermo.t_max)
+        groups.setdefault(key, []).append((record, thermo))
+    return [
+        thermo
+        for group in groups.values()
+        for _, thermo in _requested_state_records(evidence, "thermochemical_model", policy, group)
+    ]
+
+
+def _state_selection_requirement(
+    evidence: StateEvidence,
+    quantity: str,
+    *,
+    temperature_K: float | None = None,
+    electron_term_required: bool = False,
+) -> tuple[Requirement, ...]:
+    """An excluded qualified value needs selection, not invented source data."""
+    if _state_quantity_policy(evidence, quantity) is None:
+        return ()
+    unrestricted = replace(evidence, selection=None)
+    if quantity == "thermochemical_model":
+        selected: list = _thermo_choices(evidence, temperature_K=temperature_K)
+        offered: list = _thermo_choices(unrestricted, temperature_K=temperature_K)
+    else:
+        selected = _property_choices(
+            evidence, quantity, electron_term_required=electron_term_required
+        )
+        offered = _property_choices(
+            unrestricted, quantity, electron_term_required=electron_term_required
+        )
+    if selected or not offered:
+        return ()
+    target = evidence.records[0].candidate.id if evidence.records else ""
+    return (
+        Requirement(
+            "source_selection",
+            target,
+            quantity,
+            "choose an eligible record or relax data_selection; qualified declarations "
+            "are present but excluded by the requested record or only restrictions",
+        ),
+    )
 
 
 def _thermo_physical_key(thermo: Thermo) -> tuple:
@@ -3098,19 +3934,12 @@ def _relation_energy_quantities(
             "ionization_energy_eV" if reaction.process == "ionization" else "electron_affinity_eV"
         )
     if reaction.process in {"charge_exchange", "resonant_charge_exchange"}:
-        charge = next(
-            (
-                candidates.states[state_id].charge
-                for state_id in heavy_parents
-                if candidates.states[state_id].charge
-            ),
-            0,
-        )
-        for state_id in participants - {ELECTRON}:
-            if candidates.states[state_id].charge == 0:
-                requested[state_id].add(
-                    "ionization_energy_eV" if charge > 0 else "electron_affinity_eV"
-                )
+        charge_inputs, _ = _charge_transfer_inputs(reaction, candidates)
+        if charge_inputs is not None:
+            ion, donor, target = charge_inputs
+            name = "ionization_energy_eV" if ion.charge > 0 else "electron_affinity_eV"
+            for state in (donor, target):
+                requested.setdefault(state.id, set()).add(name)
     if reaction.process == "penning_ionization":
         pair = _penning_ground_products(reaction, candidates)
         if pair is not None:
@@ -3126,30 +3955,18 @@ def _reaction_energy_conflicts(
 ) -> tuple[str, ...]:
     """Explain conflicting input quantities without denying independent relations."""
     conflicts = []
-    electron_term_required = net_electron_coefficient(reaction) != 0
     for state_id, names in _relation_energy_quantities(reaction, candidates).items():
         matched = evidence.get(state_id)
         if matched is None or matched.match != "exact":
             continue
-        names.update(_thermochemical_conflicts(matched))
-        if electron_term_required:
-            names.add("enthalpy_formation_eV")
         for name in names:
-            compared = _property_choices(
-                matched, name, electron_term_required=electron_term_required
-            )
-            if name == "NASA7" or _property_declarations_conflict(
+            compared = _property_choices(matched, name)
+            if _property_declarations_conflict(
                 name,
                 compared,
                 charge=candidates.states[state_id].charge,
-                electron_term_required=electron_term_required,
             ):
-                quantity = name
-                if name == "enthalpy_formation_eV" and not _property_declarations_conflict(
-                    name, compared, charge=candidates.states[state_id].charge
-                ):
-                    quantity = "formation_reference.electron_enthalpy_eV"
-                conflicts.append(f"{state_id}:{quantity}")
+                conflicts.append(f"{state_id}:{name}")
     return tuple(sorted(conflicts))
 
 

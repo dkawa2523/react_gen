@@ -21,12 +21,10 @@ properties:
   polarizability_A3:
     value: 2.824
     unit: A3
-    source: NIST CCCBDB experimental data for CF4; Olney et al. Chem. Phys. 223 (1997)
-      59-98
+    source: NIST CCCBDB experimental data for CF4; Olney et al. Chem. Phys. 223 (1997) 59-98
     quality: curated
-    note: Primary isotropic polarizability for public-data-backed registry use. See
-      dnt_polarizability_alt_A3 for transport-fit alternative sometimes used in Ar+/CF4
-      mobility work.
+    note: Primary isotropic polarizability for public-data-backed registry use. See dnt_polarizability_alt_A3
+      for transport-fit alternative sometimes used in Ar+/CF4 mobility work.
   dipole_moment_D:
     value: 0.0
     unit: D
@@ -34,16 +32,16 @@ properties:
   collision_radius_A:
     value: 2.35
     unit: A
-    source: engineering DNT short-range seed from kinetic-diameter scale about 4.7
-      A / 2; not a curated fundamental constant
+    source: engineering DNT short-range seed from kinetic-diameter scale about 4.7 A / 2; not a curated
+      fundamental constant
     quality: estimated
-    note: Effective short-range core radius for preprocessing. Tune/replace during
-      DNT+ calibration or import from a transport set.
+    note: Effective short-range core radius for preprocessing. Tune/replace during DNT+ calibration or
+      import from a transport set.
   enthalpy_formation_eV:
     value: -9.673802
     unit: eV
-    source: chemicals package bundled thermodynamic tables, CAS 75-73-0, formula verified
-      against the registry
+    source: chemicals package bundled thermodynamic tables, CAS 75-73-0, formula verified against the
+      registry
   ionization_energy_eV:
     value: 14.7
     unit: eV
@@ -52,11 +50,10 @@ properties:
   electron_affinity_eV:
     value: null
     unit: eV
-    source: Bjarnason et al., Int. J. Mass Spectrom. 339-340, 45-53 (2013), CF4 attachment
-      proceeds through an unstable transient parent anion
+    source: Bjarnason et al., Int. J. Mass Spectrom. 339-340, 45-53 (2013), CF4 attachment proceeds through
+      an unstable transient parent anion
     status: unbound
-    note: Do not substitute fragment-anion appearance energy for the parent-molecule
-      electron affinity.
+    note: Do not substitute fragment-anion appearance energy for the parent-molecule electron affinity.
   vertical_ionization_energy_eV:
     value: 16.2
     unit: eV
@@ -64,21 +61,20 @@ properties:
   dnt_polarizability_alt_A3:
     value: 3.86
     unit: A3
-    source: Ar+ in CF4 transport-set literature; adopted in Stojanović/Nikitović-style
-      mobility fitting, not the primary molecular polarizability.
+    source: Ar+ in CF4 transport-set literature; adopted in Stojanović/Nikitović-style mobility fitting,
+      not the primary molecular polarizability.
     quality: transport_fit_alternative
-    note: Use only when reproducing specific ion-mobility/transport-set assumptions;
-      do not silently replace polarizability_A3.
+    note: Use only when reproducing specific ion-mobility/transport-set assumptions; do not silently replace
+      polarizability_A3.
   entropy_J_mol_K:
     value: 261.6
     unit: J/mol/K
-    source: chemicals package bundled thermodynamic tables, CAS 75-73-0, formula verified
-      against the registry
+    source: chemicals package bundled thermodynamic tables, CAS 75-73-0, formula verified against the
+      registry
   vibrational_quantum_eV:
     value: 0.1017
     unit: eV
-    source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
-      K
+    source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500 K
   well_depth_K:
     source: chemicals package bundled molecular property tables, CAS 75-73-0
     unit: K
@@ -86,19 +82,11 @@ properties:
 metadata:
   status: estimated
   notes:
-  - Core input gas. Thermochemistry, dipole, IE and polarizability are public-data-backed;
-    DNT short-range collision radius remains an engineering seed.
-  - Primary polarizability_A3=2.824 A3 is from NIST CCCBDB. dnt_polarizability_alt_A3=3.86
-    A3 is retained only for transport-fit reproduction.
+  - Core input gas. Thermochemistry, dipole, IE and polarizability are public-data-backed; DNT short-range
+    collision radius remains an engineering seed.
+  - Primary polarizability_A3=2.824 A3 is from NIST CCCBDB. dnt_polarizability_alt_A3=3.86 A3 is retained
+    only for transport-fit reproduction.
 thermo:
-  high:
-  - 9.47215359
-  - 0.00359525216
-  - -1.40378502e-06
-  - 2.39188188e-10
-  - -1.48558906e-14
-  - -115816.337
-  - -24.9709091
   low:
   - 1.05143992
   - 0.0278246468
@@ -107,7 +95,213 @@ thermo:
   - 9.18909316e-13
   - -113574.067
   - 18.1900899
-  source: cantera bundled thermodynamic data, listed as CF4 in nasa_gas.yaml
-  t_max: 6000.0
-  t_mid: 1000.0
+  high:
+  - 9.47215359
+  - 0.00359525216
+  - -1.40378502e-06
+  - 2.39188188e-10
+  - -1.48558906e-14
+  - -115816.337
+  - -24.9709091
   t_min: 200.0
+  t_mid: 1000.0
+  t_max: 6000.0
+  phase: gas
+  standard_pressure_Pa: 100000.0
+  source: &id001
+    provider: NASA
+    collection: NASA_TM_4513_gas
+    release: Cantera-3.2.0
+    record_id: CF4
+    citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, CF4, L 6/83
+    url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  method: calculated
+  evidence_tier: reviewed
+  status: reviewed
+  review_scope:
+  - thermochemical_model
+  source_declaration:
+    source_entry:
+      name: CF4
+      composition:
+        C: 1
+        F: 4
+      thermo:
+        model: NASA7
+        temperature-ranges:
+        - 200.0
+        - 1000.0
+        - 6000.0
+        data:
+        - - 1.05143992
+          - 0.0278246468
+          - -2.4652526e-05
+          - 6.74548304e-09
+          - 9.18909316e-13
+          - -113574.067
+          - 18.1900899
+        - - 9.47215359
+          - 0.00359525216
+          - -1.40378502e-06
+          - 2.39188188e-10
+          - -1.48558906e-14
+          - -115816.337
+          - -24.9709091
+        note: L 6/83
+    acquisition:
+      file: nasa_gas.yaml
+      requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+      sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+      bytes: 276140
+    thermodynamic_reference:
+      standard_pressure_Pa: 100000.0
+      element_basis: elements_standard_states
+      formation_temperature_K: 298.15
+      primary_report: https://ntrs.nasa.gov/citations/19940013151
+      section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy Values
+        and Heats of Formation (p.3)
+      software_default_reference_pressure_Pa: 101325.0
+      adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+        YAML does not redefine the numerical source fit.
+    review:
+      date: '2026-10-13'
+      scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+        standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+        occurrence.
+    previous_registry_declaration:
+      high:
+      - 9.47215359
+      - 0.00359525216
+      - -1.40378502e-06
+      - 2.39188188e-10
+      - -1.48558906e-14
+      - -115816.337
+      - -24.9709091
+      low:
+      - 1.05143992
+      - 0.0278246468
+      - -2.4652526e-05
+      - 6.74548304e-09
+      - 9.18909316e-13
+      - -113574.067
+      - 18.1900899
+      source: cantera bundled thermodynamic data, listed as CF4 in nasa_gas.yaml
+      t_max: 6000.0
+      t_mid: 1000.0
+      t_min: 200.0
+records:
+- record_id: NASA_TM4513_Cantera_3.2.0:CF4
+  species: CF4
+  phase: gas
+  source: *id001
+  status: imported
+  tier: imported
+  source_declaration:
+    source_entry:
+      name: CF4
+      composition:
+        C: 1
+        F: 4
+      thermo:
+        model: NASA7
+        temperature-ranges:
+        - 200.0
+        - 1000.0
+        - 6000.0
+        data:
+        - - 1.05143992
+          - 0.0278246468
+          - -2.4652526e-05
+          - 6.74548304e-09
+          - 9.18909316e-13
+          - -113574.067
+          - 18.1900899
+        - - 9.47215359
+          - 0.00359525216
+          - -1.40378502e-06
+          - 2.39188188e-10
+          - -1.48558906e-14
+          - -115816.337
+          - -24.9709091
+        note: L 6/83
+    acquisition:
+      file: nasa_gas.yaml
+      requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+      sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+      bytes: 276140
+    thermodynamic_reference:
+      standard_pressure_Pa: 100000.0
+      element_basis: elements_standard_states
+      formation_temperature_K: 298.15
+      primary_report: https://ntrs.nasa.gov/citations/19940013151
+      section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy Values
+        and Heats of Formation (p.3)
+      software_default_reference_pressure_Pa: 101325.0
+      adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+        YAML does not redefine the numerical source fit.
+    review:
+      date: '2026-10-13'
+      scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+        standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+        occurrence.
+  properties:
+    enthalpy_formation_eV:
+      value: -9.671052219288963
+      unit: eV
+      definition: standard_formation_enthalpy
+      formation_reference:
+        temperature_K: 298.15
+        basis: standard_elements
+        standard_pressure_Pa: 100000.0
+      source: *id001
+      method: calculated
+      evidence_tier: derived
+      status: derived
+      review_scope:
+      - enthalpy_formation_eV
+      source_declaration:
+        derivation: NASA7 H(T)=R*T*(a1+a2*T/2+a3*T^2/3+a4*T^3/4+a5*T^4/5+a6/T); H(298.15 K) equals assigned
+          standard formation enthalpy under NASA TM-4513 reference.
+        temperature_K: 298.15
+        parent_thermo:
+          low:
+          - 1.05143992
+          - 0.0278246468
+          - -2.4652526e-05
+          - 6.74548304e-09
+          - 9.18909316e-13
+          - -113574.067
+          - 18.1900899
+          high:
+          - 9.47215359
+          - 0.00359525216
+          - -1.40378502e-06
+          - 2.39188188e-10
+          - -1.48558906e-14
+          - -115816.337
+          - -24.9709091
+          t_min: 200.0
+          t_mid: 1000.0
+          t_max: 6000.0
+          phase: gas
+          standard_pressure_Pa: 100000.0
+          source:
+            provider: NASA
+            collection: NASA_TM_4513_gas
+            release: Cantera-3.2.0
+            record_id: CF4
+            citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, CF4,
+              L 6/83
+            url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+        gas_constant_J_mol_K: 8.314462618
+        avogadro_mol_inverse: 6.02214076e+23
+        joule_per_eV: 1.602176634e-19
+        qualification: Value calculated from a specific numerical fit. Fit rounding and original data
+          uncertainty are not quantified; this is not an independently measured or recommended formation
+          enthalpy.
+        parent_source_note: L 6/83
+        parent_input_sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db

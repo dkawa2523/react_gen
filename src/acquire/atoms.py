@@ -8,6 +8,7 @@ Dipole polarizability is converted from atomic units to cubic angstroms.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 # mendeleev reports dipole polarizability in atomic units.
@@ -23,9 +24,13 @@ class Atom:
     error: str | None = None
 
     @property
-    def binds_electron(self) -> bool | None:
+    def nominal_ea_positive(self) -> bool | None:
         """The nominal atomic-EA sign; this does not evaluate uncertainty."""
-        return None if self.affinity_eV is None else self.affinity_eV > 0
+        return (
+            None
+            if self.affinity_eV is None or not math.isfinite(self.affinity_eV)
+            else self.affinity_eV > 0
+        )
 
 
 def available() -> bool:
@@ -48,6 +53,8 @@ def _one(symbol: str) -> Atom:
     try:
         found = element(symbol)
     except Exception as error:  # mendeleev raises bare exceptions for an unknown symbol
+        if type(error) is not Exception and not isinstance(error, ValueError | LookupError):
+            raise
         return Atom(symbol, error=f"{type(error).__name__}: {str(error)[:50]}")
     polarizability = getattr(found, "dipole_polarizability", None)
     return Atom(

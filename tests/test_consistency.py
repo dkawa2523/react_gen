@@ -65,6 +65,23 @@ def test_missing_reference_precedes_unsupported_process() -> None:
     assert result.basis == ("state index",)
 
 
+@pytest.mark.parametrize("coefficient", [True, False, "1", None, 0, -1, float("inf")])
+def test_invalid_candidate_coefficients_are_failed_propositions(coefficient) -> None:
+    reaction = ReactionCandidate(
+        "invalid",
+        (Term("e"), Term("Ar@ground", coefficient)),
+        (Term("e"), Term("Ar@ground")),
+        "electron",
+        "elastic",
+        "test",
+        "test",
+        0,
+    )
+    result = assess_consistency(reaction, candidates(("Ar",)))
+    assert result.verdict == "fail"
+    assert result.basis == ("stoichiometry",)
+
+
 @pytest.mark.parametrize("resolution", ["resolved", "lumped"])
 def test_quenching_to_a_non_ground_target_is_outside_the_template_not_inconsistent(
     resolution: str,

@@ -133,3 +133,22 @@ def test_saved_kind_must_describe_the_selected_scientific_record() -> None:
     reaction["data_use"]["kind"] = "sticking_coefficient"
     with pytest.raises(ValueError, match="quantity contradicts"):
         export.validate(document)
+
+
+def test_unsupported_native_quantity_keeps_its_declaration_without_a_rate_claim(tmp_path) -> None:
+    target, previous = selected_result()
+    source = previous.evaluation.reaction_evidence[target].overlay_datasets[0]
+    unsupported = replace(source, kind="unsupported_quantity", observable="unsupported")
+    result = analyze(
+        Case("sample", ("Ar",), conditions=Conditions(gas_temperature_K=300)),
+        EvidenceCatalog(overlay_datasets={target: (unsupported,)}),
+    )
+    export.write(tmp_path, result)
+    document = export.read(tmp_path, verify_views=True)
+    reaction = next(item for item in document["reactions"] if item["id"] == target)
+    native = reaction["data_use"]["datasets"][0]
+    assert native["status"] == "invalid"
+    assert native["kind"] == "unsupported_quantity"
+    assert native["scope"].startswith("Unsupported native numerical quantity")
+    assert reaction["data_use"]["status"] == "unavailable"
+    assert reaction["evidence"]["overlay_datasets"][0]["kind"] == "unsupported_quantity"

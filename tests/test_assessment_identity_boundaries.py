@@ -10,11 +10,11 @@ from dataclasses import replace
 import pytest
 
 from reactgen.assessment import (
+    ThermochemicalCalculation,
     assess_consistency,
     assess_kinetics,
     assess_reaction_evidence,
     assess_state,
-    assess_state_thermochemistry,
     assess_thermochemistry,
     evaluate,
 )
@@ -184,7 +184,7 @@ def test_elastic_energy_identity_is_checked_without_requiring_energy_data() -> N
     valid, values = _energy_result(reaction, states)
     assert valid.verdict == "pass"
     assert valid.proposition == "elastic_internal_energy_identity"
-    assert values == {}
+    assert values == {"delta_h_eV": 0.0}
     assert "translational energy transfer is undetermined" in valid.message
 
     dissociation = replace(reaction, products=(Term(electron.id), Term(atom.id, 2)))
@@ -318,20 +318,21 @@ def _thermal_inputs() -> tuple[ReactionCandidate, tuple[StateRecord, StateRecord
 
 def _thermal_result(
     reaction: ReactionCandidate, records: tuple[StateRecord, ...]
-) -> tuple[Assessment, Assessment, dict[str, float]]:
+) -> tuple[Assessment, Assessment, dict[str, float], dict[str, ThermochemicalCalculation]]:
     catalog = EvidenceCatalog(state_records=records)
     states = {record.candidate.id: record.candidate for record in records}
-    evidence = {state.id: catalog.state(state) for state in states.values()}
     molecule = states[reaction.reactants[0].species]
-    availability = assess_state_thermochemistry(molecule, evidence[molecule.id])
-    relationship, values = assess_thermochemistry(
-        reaction,
-        CandidateSet(states=states),
-        evidence,
-        ReactionEvidence(),
+    evaluation = evaluate(
+        CandidateSet(states=states, reactions={reaction.id: reaction}),
+        catalog,
         Conditions(gas_temperature_K=300),
     )
-    return availability, relationship, values
+    return (
+        evaluation.state_assessments[molecule.id]["thermochemistry"],
+        evaluation.reaction_assessments[reaction.id]["thermochemistry"],
+        evaluation.thermochemistry.get(reaction.id, {}),
+        evaluation.thermochemical_calculations[reaction.id],
+    )
 
 
 def test_duplicate_nasa_citations_preserve_scientific_values_and_original_records() -> None:
@@ -344,7 +345,7 @@ def test_duplicate_nasa_citations_preserve_scientific_values_and_original_record
     )
     baseline = _thermal_result(reaction, (atom, molecule))
     for records in ((atom, molecule, another), (another, molecule, atom), (atom, another)):
-        availability, relation, values = _thermal_result(reaction, records)
+        availability, relation, values, _ = _thermal_result(reaction, records)
         assert availability.verdict == baseline[0].verdict == "pass"
         assert availability.proposition == "thermochemical_representation_availability"
         assert relation.verdict == baseline[1].verdict == "unknown"
@@ -371,11 +372,13 @@ def test_incompatible_nasa_model_domains_remain_conflicts(change: dict) -> None:
     assert molecule.thermo is not None
     another = replace(molecule, id="other fit", thermo=replace(molecule.thermo, **change))
     for records in ((atom, molecule, another), (another, molecule, atom)):
-        availability, relation, values = _thermal_result(reaction, records)
+        availability, relation, values, calculations = _thermal_result(reaction, records)
         assert availability.verdict == relation.verdict == "unknown"
         assert "conflict" in availability.message
         assert "NASA7" in availability.message
-        assert "conflicting declarations" in relation.message
+        assert "NASA7" not in relation.message
+        assert calculations["delta_g_eV"].status == "unavailable"
+        assert all(item.quantity == "NASA7" for item in calculations["delta_g_eV"].requirements)
         assert "delta_g_eV" not in values
         assert "equilibrium_constant_number_density" not in values
 
@@ -394,11 +397,13 @@ def test_formation_conflict_does_not_hide_an_independent_nasa_model(keep_nasa: b
         properties={"enthalpy_formation_eV": Property(2, "eV", tier="reviewed")},
     )
     for records in ((atom, molecule, another), (another, molecule, atom)):
-        availability, relation, values = _thermal_result(reaction, records)
+        availability, relation, values, calculations = _thermal_result(reaction, records)
         assert availability.verdict == ("pass" if keep_nasa else "unknown")
         assert "conflict" in availability.message
         assert "enthalpy_formation_eV" in availability.message
-        assert "conflicting declarations" in relation.message
+        assert "enthalpy_formation_eV" not in relation.message
+        assert calculations["delta_h_eV"].status == "unavailable"
+        assert "enthalpy_formation_eV" in calculations["delta_h_eV"].reason
         assert "delta_h_eV" not in values
         assert ("delta_g_eV" in values) == keep_nasa
 

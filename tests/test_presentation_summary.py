@@ -3,12 +3,14 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from dataclasses import asdict
 from pathlib import Path
 
 from reactgen import export, needs
 from reactgen.case import Case, Conditions
 from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
+from reactgen.model import numerical_requirements
 from reactgen.pipeline import analyze
 from reactgen.presentation import analysis_overview, reaction_equation, state_name
 
@@ -27,6 +29,15 @@ def test_overview_retains_zero_unit_conditions_and_separates_models_from_inputs(
     pending.update(
         status="needs_input", required_inputs=["electron_energy_distribution", "ion_temperature"]
     )
+    pending["requirements"] = [
+        asdict(item)
+        for item in numerical_requirements(
+            pending["required_inputs"],
+            pending["required_transforms"],
+            saved["reactions"][1]["id"],
+            pending["reason"],
+        )
+    ]
     reaction["evidence"]["overlay_datasets"] = [
         {
             "id": "nominal",
@@ -75,3 +86,16 @@ def test_cli_leads_with_targets_and_saved_values_then_next_work_and_files(
         < output.index(str(tmp_path / "result.yaml"))
     )
     assert all(str(tmp_path / filename) in output for filename in export.PUBLIC_FILES)
+
+
+def test_unsupported_formula_grammar_is_saved_and_reported_on_completed_generation():
+    saved = export.document(analyze(Case("scope", ("N2O", "Ar")), EvidenceCatalog()))
+    assert saved["metadata"]["generation"]["complete"]
+    assert saved["metadata"]["generation"]["input_scope"] == {"Ar": "atom", "N2O": "formula_only"}
+    output = "\n".join(analysis_overview(saved, needs.build(saved)))
+    assert "outside the supported formula grammar for: N2O." in output
+    historical = deepcopy(saved)
+    del historical["metadata"]["generation"]["input_scope"]
+    assert "outside the supported formula grammar" not in "\n".join(
+        analysis_overview(historical, needs.build(historical))
+    )

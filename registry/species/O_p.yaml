@@ -57,7 +57,7 @@ properties:
     source: NIST ASD 5.12, O II ground to O III ground, L11267,L10621; https://physics.nist.gov/cgi-bin/ASD/ie.pl?at_num_out=on&biblio=on&e_out=0&el_name_out=on&level_out=on&seq_out=on&shells_out=on&spectra=O&unc_out=on&units=1
     evidence_tier: reviewed
     uncertainty:
-      absolute: 0.00006
+      absolute: 6.0e-05
       unit: eV
   electron_affinity_eV:
     value: null
@@ -66,6 +66,88 @@ properties:
 metadata:
   status: curated
   notes:
-  - The ionization energy removes an electron from the O II ground level into
-    the O III ground level. It is not the neutral O threshold or an excited-ion
-    threshold. The formation enthalpy remains unreviewed.
+  - The ionization energy removes an electron from the O II ground level into the O III ground level.
+    It is not the neutral O threshold or an excited-ion threshold. The formation enthalpy remains unreviewed.
+thermo:
+  low:
+  - 2.5
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 187935.291
+  - 4.39337689
+  high:
+  - 2.48773317
+  - 2.17660016e-05
+  - -1.08955806e-08
+  - 1.25909212e-12
+  - 1.3731672e-16
+  - 187939.965
+  - 4.46134091
+  t_min: 298.15
+  t_mid: 1000.0
+  t_max: 6000.0
+  phase: gas
+  standard_pressure_Pa: 100000.0
+  source:
+    provider: NASA
+    collection: NASA_TM_4513_gas
+    release: Cantera-3.2.0
+    record_id: O+
+    citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, O+, L 1/90
+    url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  method: calculated
+  evidence_tier: imported
+  status: imported
+  review_scope: []
+  source_declaration:
+    source_entry:
+      name: O+
+      composition:
+        O: 1
+        E: -1
+      thermo:
+        model: NASA7
+        temperature-ranges:
+        - 298.15
+        - 1000.0
+        - 6000.0
+        data:
+        - - 2.5
+          - 0.0
+          - 0.0
+          - 0.0
+          - 0.0
+          - 187935.291
+          - 4.39337689
+        - - 2.48773317
+          - 2.17660016e-05
+          - -1.08955806e-08
+          - 1.25909212e-12
+          - 1.3731672e-16
+          - 187939.965
+          - 4.46134091
+        note: L 1/90
+    acquisition:
+      file: nasa_gas.yaml
+      requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+      sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+      bytes: 276140
+    thermodynamic_reference:
+      standard_pressure_Pa: 100000.0
+      element_basis: elements_standard_states
+      formation_temperature_K: 298.15
+      primary_report: https://ntrs.nasa.gov/citations/19940013151
+      section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy Values
+        and Heats of Formation (p.3)
+      software_default_reference_pressure_Pa: 101325.0
+      adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+        YAML does not redefine the numerical source fit.
+    review:
+      date: '2026-10-13'
+      scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+        standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+        occurrence.

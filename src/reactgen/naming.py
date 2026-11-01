@@ -105,13 +105,19 @@ def _composition(text: str) -> dict[str, int]:
     resolve without every caller having to know about that convention.
     """
 
-    parsed = _tokenize(text)
+    parsed = parse_formula(text)
     if parsed or not text.isupper():
         return parsed
-    return _tokenize(text.title())
+    return parse_formula(text.title())
 
 
-def _tokenize(text: str) -> dict[str, int]:
+def parse_formula(text: str | None) -> dict[str, int]:
+    """Read a complete plain formula without charge, state or identity suffixes.
+
+    Repeated element symbols add their counts. Unsupported structural notation
+    is unresolved rather than partially interpreted as another composition.
+    Species-name parsing separately interprets charges and state labels.
+    """
     if not text or not text[0].isupper():
         return {}
     counts: dict[str, int] = {}

@@ -1,0 +1,133 @@
+schema_version: 1
+pair:
+  family: electron
+  projectile: e
+  target: H
+channels:
+- id: e_H_ionization_IAEA_APID4
+  type: ionization
+  products:
+  - species: H+
+    n: 1
+  - species: e
+    n: 2
+  status: reviewed
+  review_scope:
+  - channel_assertion
+  method: evaluated
+  source_record: &id001
+    provider: iaea_collisiondb
+    collection: CollisionDB
+    record_id: D108105
+    citation: R.K. Janev and J.J. Smith, IAEA-APID-4 (1993), section 1.2.1, p.28; CollisionDB D108105
+      fitted data
+    url: https://db-amdis.org/collisiondb/datasets/108105/
+  source_declaration:
+    source_reaction: e- + H 1s → H+ + 2e-
+    primary_review: &id002
+      date: '2026-10-13'
+      url: https://www-pub.iaea.org/MTCD/Publications/PDF/Pub23vol4_web.pdf
+      section: 1.2.1, printed p.28, PDF page 40
+      target_mapping: H 1s is the atomic electronic ground state; H+ is a bare proton and has no electronic
+        product-state branching. Electron emission energies are summed.
+      recommended_accuracy: 10% or better (not a confidence interval)
+      fit_rms_deviation_percent: 1.3
+      fit_maximum_deviation_percent: 4.4
+      fit_maximum_deviation_energy_eV: 17.2
+      review_scope: Original target/process, fit parameters and sampled integral ionization cross section;
+        no EEDF integration, population, reaction rate or mechanism approval.
+    native_qid: D108105
+  energy_properties:
+    threshold_eV:
+      value: 13.6
+      unit: eV
+      definition: channel_threshold
+      source: *id001
+      status: imported
+      evidence_tier: imported
+      source_declaration:
+        threshold: '13.600'
+        note: Source model threshold rounded to 13.6 eV. No state-specific uncertainty or laboratory recoil
+          correction confirmed; not an independently approved energy proposition.
+  data:
+    datasets:
+    - id: iaea_collisiondb:D108105:cross_section
+      kind: cross_section
+      representation: table
+      unit: m2
+      independent_variable: electron_energy
+      observable: ionization
+      channel_scope: product_resolved
+      asset:
+        path: assets/electron/iaea_D108105.csv
+        sha256: a06cf071bb4c2df8f3eabf0e3f3dce6f4eb37a6a71a3523e4520c77c089e22d5
+      validity:
+        quantity: electron_energy
+        minimum: 13.601
+        maximum: 100000.0
+        unit: eV
+        unresolved_conditions: {}
+      source: *id001
+      source_declaration:
+        metadata:
+          qid: D108105
+          reaction: e- + H 1s → H+ + 2e-
+          process_types:
+            EIN: Ionization
+          data_type: cross section
+          refs:
+            B52:
+              note: IAEA-APID-4 (1993)
+          comment: Fit function and data were taken from Janev et al. p28
+          method: experimental
+          columns:
+          - name: E
+            units: eV
+          - name: sigma
+            units: cm2
+          threshold: '13.600'
+          fit:
+            coeffs:
+              A1: 0.1845
+              A2: -0.032226
+              A3: -0.034539
+              A4: 1.4003
+              A5: -2.8115
+              A6: 2.2986
+              I: 13.6
+            func: h_ein_janev
+            Elo: 13.601
+            fit_unc_perc: 1.3
+          data_from_fit: true
+          metadata_version: M1.0
+          time_added: '2023-02-08 13:41:18.160629+00:00'
+        point_uncertainties: []
+        explicit_mapping:
+          reaction: e + H -> H+ + 2e
+          type: ionization
+          independent_variable: electron_energy
+          observable: ionization
+          channel_scope: product_resolved
+        acquisition:
+          file: CollisionDB-108105.txt
+          requested_url: https://db-amdis.org/collisiondb/datasets/108105/download
+          final_url: https://db-amdis.org/collisiondb/data/108105.txt
+          retrieved_at: '2026-10-12T22:40:09.457377+00:00'
+          sha256: 504b5049513af2defc34788f99976fd3bdc355dc1978be65a6fa133282f42d45
+          bytes: 10166
+        license:
+          name: CC BY 4.0
+          url: https://db-amdis.org/collisiondb/licence/
+          notice: Data and metadata from CollisionDB; attribution to Janev and Smith (1993) and CollisionDB/IAEA.
+            Converted cm2 to m2; original fit-derived numerical rows retained.
+        primary_review: *id002
+      method: calculated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope:
+      - cross_section
+metadata:
+  status: reviewed
+  notes:
+  - Reaction collision cross-section curve; rate coefficient requires a separately supplied electron-energy
+    distribution and integration model.

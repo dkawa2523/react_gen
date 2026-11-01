@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
+import tempfile
 from pathlib import Path
 
 import yaml
@@ -13,8 +15,9 @@ from reactgen.balance import imbalance
 from reactgen.case import Case
 from reactgen.evidence import EvidenceCatalog
 from reactgen.pipeline import analyze
-from reactgen.presentation import analysis_overview
+from reactgen.presentation import analysis_overview, registered_records
 from reactgen.registry import Registry
+from reactgen.selection import SELECTABLE_QUANTITIES
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -49,7 +52,19 @@ def main(argv: list[str] | None = None) -> int:
     backlog.add_argument(
         "--detail", action="store_true", help="include every affected target and saved reason"
     )
+    backlog.add_argument(
+        "--data-missing", action="store_true", help="show unresolved results that need source data"
+    )
     backlog.set_defaults(run=_needs)
+
+    inspect = commands.add_parser("records", help="inspect saved source records for a target")
+    inspect.add_argument("result", type=Path)
+    inspect.add_argument("--target", required=True, help="saved state or reaction ID")
+    inspect.add_argument("--quantity", choices=sorted(SELECTABLE_QUANTITIES))
+    inspect.add_argument(
+        "--detail", action="store_true", help="include complete source declarations"
+    )
+    inspect.set_defaults(run=_records)
 
     view = commands.add_parser("view", help="derive optional views from the saved canonical result")
     view.add_argument("result", type=Path)
@@ -79,7 +94,7 @@ def main(argv: list[str] | None = None) -> int:
 
     settle = commands.add_parser(
         "adopt",
-        help="promote a reviewed overlay into curated Registry files",
+        help="save matched overlay records in Registry, preserving their qualifications",
     )
     settle.add_argument("overlay", type=Path)
     settle.add_argument("--registry", type=Path, required=True)
@@ -121,7 +136,21 @@ def _analyze(args: argparse.Namespace) -> int:
 
 def _needs(args: argparse.Namespace) -> int:
     yaml.safe_dump(
-        needs.build(export.read(args.result), detail=args.detail),
+        needs.build(
+            export.read(args.result), detail=args.detail, data_missing_only=args.data_missing
+        ),
+        sys.stdout,
+        sort_keys=False,
+        allow_unicode=True,
+    )
+    return 0
+
+
+def _records(args: argparse.Namespace) -> int:
+    yaml.safe_dump(
+        registered_records(
+            export.read(args.result), args.target, args.quantity, detail=args.detail
+        ),
         sys.stdout,
         sort_keys=False,
         allow_unicode=True,
@@ -151,7 +180,10 @@ def _view(args: argparse.Namespace) -> int:
 def _ingest(args: argparse.Namespace) -> int:
     report = ingest.ingest(args.snapshot, args.result, args.overlay)
     print(f"  matched     {report.accepted} -> {args.overlay} (matching does not approve evidence)")
-    print(f"  review      {len(report.review)} -> {args.overlay.with_name('review_queue.yaml')}")
+    print(
+        f"  review      {len(report.review)} in this import; {report.pending_total} pending total"
+        f" -> {args.overlay.with_name('review_queue.yaml')}"
+    )
     for item in report.review[:10]:
         print(f"    {item['reason']:18} {item['wrote']}")
     return 0
@@ -176,12 +208,31 @@ def _check(args: argparse.Namespace) -> int:
 def _derive(args: argparse.Namespace) -> int:
     registry = Registry.load(args.registry)
     filled = derive.overlay(registry)
-    merged = derive.merged(_document(args.overlay) if args.overlay else {}, filled)
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(
-        yaml.safe_dump(merged, sort_keys=True, allow_unicode=True),
-        encoding="utf-8",
+    acquired = (
+        derive.relocated_assets(_document(args.overlay), args.overlay.parent, args.out.parent)
+        if args.overlay
+        else {}
     )
+    merged = derive.merged(acquired, filled)
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    content = yaml.safe_dump(merged, sort_keys=True, allow_unicode=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=args.out.parent,
+            prefix=f".{args.out.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            stream.write(content)
+        EvidenceCatalog.load(None, overlay=temporary)
+        os.replace(temporary, args.out)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
     values = sum(len(entry) for entry in filled["properties"].values())
     print(f"  derived     {values} property values across {len(filled['properties'])} states")
     print(f"  overlay     {args.out}")

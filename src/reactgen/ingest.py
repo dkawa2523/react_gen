@@ -2,38 +2,43 @@
 
 from __future__ import annotations
 
-import os
 from copy import deepcopy
 from dataclasses import dataclass, field, replace
 from pathlib import Path
+from uuid import uuid4
 
 from reactgen import yamlio
-from reactgen.chemistry import parse_state_id
+from reactgen.chemistry import parse_state_id, reaction_declaration_matches
 from reactgen.evidence import (
     EvidenceCatalog,
+    dataset_for_reaction,
     parse_equation,
     reaction_record_candidate,
     snapshot_reaction,
     snapshot_state,
 )
 from reactgen.export import read
-from reactgen.model import EquationKey, Term, canonical_family, canonical_process, side_key
+from reactgen.model import EquationKey, ReactionCandidate, Term, side_key
 from reactgen.records import (
     NumericDataset,
     ReactionRecord,
+    bind_dataset_target,
     dataset_payload,
+    dataset_target_declaration,
     normalized_dataset,
     normalized_reaction_record,
     numerical_record_id,
     reaction_has_numeric_declaration,
     reaction_record_payload,
-    scientific_dataset_content,
+    relocated_asset_payload,
+    scientific_datasets_equivalent,
     scientific_reaction_content,
     scientific_record_key,
     scientific_state_content,
     source_information,
     state_record_content,
     state_record_payload,
+    validate_numerical_targets,
     validate_snapshot,
 )
 
@@ -42,6 +47,7 @@ from reactgen.records import (
 class Report:
     accepted: int = 0
     review: list[dict] = field(default_factory=list)
+    pending_total: int = 0
 
 
 @dataclass(frozen=True)
@@ -94,6 +100,22 @@ class BundleIndex:
         candidate = parse_state_id(written)
         return candidate.id if candidate is not None and candidate.id in self.states else None
 
+    def reaction(self, identifier: str) -> ReactionCandidate:
+        third_body, surface, reactants, products = self.reaction_equations[identifier]
+        return ReactionCandidate(
+            identifier,
+            tuple(Term(*term) for term in reactants),
+            tuple(Term(*term) for term in products),
+            self.families[identifier],
+            self.processes[identifier],
+            "attested_only",
+            "ingest target reference",
+            0,
+            third_body,
+            surface,
+            stabilization=self.stabilizations[identifier],
+        )
+
 
 def ingest(
     snapshot_path: Path,
@@ -102,17 +124,23 @@ def ingest(
 ) -> Report:
     snapshot = validate_snapshot(yamlio.load(snapshot_path.read_text(encoding="utf-8")))
     bundle = BundleIndex.load(bundle_path)
-    overlay = _read(overlay_path)
+    overlay = _read(overlay_path, bundle)
     report = Report()
     source_data = snapshot.get("source") or {}
     if not isinstance(source_data, dict):
         raise ValueError("snapshot.source must be a mapping")
     source = source_data
     kind = snapshot.get("kind", "rate_coefficient")
+    queue_path = overlay_path.with_name("review_queue.yaml")
+    if overlay_path.resolve() == queue_path.resolve():
+        raise ValueError("overlay path must differ from its reserved review_queue.yaml")
+    prior_queue = _read_queue(queue_path)
+    accepted = []
 
     for index, record in enumerate(snapshot.get("records") or []):
         if not isinstance(record, dict):
             raise ValueError(f"snapshot record {index} must be a mapping")
+        prior_accepted = report.accepted
         if record.get("species"):
             _state_record(record, index, bundle, overlay, source, report)
         else:
@@ -127,12 +155,16 @@ def ingest(
                 overlay_path,
                 report,
             )
+        if report.accepted > prior_accepted:
+            accepted.append(_queue_input(record, kind, source, snapshot_path))
 
-    _write(overlay_path, overlay)
-    _write(
-        overlay_path.with_name("review_queue.yaml"),
-        {"snapshot": str(snapshot_path.resolve()), "source": source, "review": report.review},
-    )
+    current_queue = [
+        entry | _queue_input(entry["original_record"], kind, source, snapshot_path)
+        for entry in report.review
+    ]
+    remaining = _merge_queue(prior_queue, current_queue, accepted)
+    _write_outputs({overlay_path: overlay, queue_path: {"queue_version": 1, "review": remaining}})
+    report.pending_total = len(remaining)
     return report
 
 
@@ -292,6 +324,8 @@ def _reaction_record(
         )
         return
     dataset = _snapshot_dataset(record, source, kind, snapshot_path, overlay_path)
+    if dataset is not None:
+        dataset = dataset_for_reaction(dataset, bundle.reaction(target))
     claim = _matched_reaction_claim(record, source, target, bundle, dataset)
     if reaction_record_candidate(claim).id != target:
         report.review.append(
@@ -329,11 +363,9 @@ def _snapshot_dataset(
         default_kind=kind,
         default_source=source,
     )
-    if dataset.asset is not None and dataset.asset.local_path is not None:
-        reference = os.path.relpath(dataset.asset.local_path, overlay_path.parent).replace(
-            "\\", "/"
-        )
-        dataset = replace(dataset, asset=replace(dataset.asset, reference=reference))
+    if dataset.asset is not None:
+        payload = relocated_asset_payload(dataset.asset, snapshot_path.parent, overlay_path.parent)
+        dataset = replace(dataset, asset=replace(dataset.asset, reference=str(payload["path"])))
     return dataset
 
 
@@ -390,16 +422,24 @@ def _stage_reaction_payload(
         staged["datasets"] = quantities
         held = list(quantities.get(target) or [])
         quantities[target] = held
+        try:
+            validate_numerical_targets(
+                [(dataset.id, target)]
+                + [
+                    (numerical_record_id(item), identifier)
+                    for identifier, entries in quantities.items()
+                    for item in entries
+                ]
+            )
+        except ValueError:
+            return None, "numerical dataset ID is assigned to different physical targets"
         existing = [
-            normalized_dataset(item, base=base)
-            for entries in quantities.values()
+            bind_dataset_target(normalized_dataset(item, base=base), identifier)
+            for identifier, entries in quantities.items()
             for item in entries
             if numerical_record_id(item) == dataset.id
         ]
-        if any(
-            scientific_dataset_content(item) != scientific_dataset_content(dataset)
-            for item in existing
-        ):
+        if any(not scientific_datasets_equivalent(item, dataset) for item in existing):
             return None, "dataset id already exists"
     declaration = reaction_record_payload(claim)
     subjects = dict(staged.get("reaction_records") or {})
@@ -451,31 +491,16 @@ def _equation_targets(record: dict, bundle: BundleIndex) -> tuple[str, ...]:
 
 
 def _matches_declared_channel(record: dict, *, target: str, bundle: BundleIndex) -> bool:
-    equation = bundle.reaction_equations[target]
-    if record.get("reaction"):
-        parsed = parse_equation(str(record["reaction"]))
-        if parsed is None or parsed[0] != equation:
-            return False
-    if record.get("family") and canonical_family(str(record["family"])) != bundle.families[target]:
+    if record.get("reaction_target") not in {None, target}:
         return False
-    if record.get("type"):
-        process = canonical_process(
-            str(record["type"]),
-            family=str(record.get("family") or ""),
-            third_body=equation[0],
-            surface=equation[1],
-        )
-        if process != bundle.processes[target]:
-            return False
+    if not reaction_declaration_matches(
+        dataset_target_declaration(record), bundle.reaction(target)
+    ):
+        return False
     stabilization = record.get("stabilization")
     if stabilization is None and bundle.processes[target] in {"attachment", "recombination"}:
         stabilization = "unspecified"
-    if stabilization != bundle.stabilizations[target]:
-        return False
-    return not any(
-        name in record and record[name] != equation[index]
-        for index, name in enumerate(("third_body", "surface"))
-    )
+    return stabilization == bundle.stabilizations[target]
 
 
 def _queued(
@@ -495,23 +520,152 @@ def _queued(
     }
 
 
-def _read(path: Path) -> dict:
+def _read(path: Path, bundle: BundleIndex) -> dict:
     if not path.is_file():
         return {}
     document = yamlio.load(path.read_text(encoding="utf-8")) or {}
     if not isinstance(document, dict):
         raise ValueError("overlay must be a mapping")
-    EvidenceCatalog.load(None, overlay=path)
+    catalog = EvidenceCatalog.load(None, overlay=path)
+    for identifier, datasets in catalog.overlay_datasets.items():
+        if identifier in bundle.reactions:
+            for dataset in datasets:
+                dataset_for_reaction(dataset, bundle.reaction(identifier))
     return document
 
 
-def _write(path: Path, payload: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(f".{path.name}.tmp")
-    try:
-        temporary.write_text(
-            yamlio.dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8"
+def _queue_input(record: dict, kind: str, source: dict, path: Path) -> dict:
+    """Retain source context per input, without evaluating a scientific claim."""
+    return {
+        "original_record": deepcopy(record),
+        "kind": kind,
+        "source": deepcopy(source),
+        "snapshot": str(path.resolve()),
+    }
+
+
+def _read_queue(path: Path) -> list[dict]:
+    if not path.is_file():
+        return []
+    document = yamlio.load(path.read_text(encoding="utf-8"))
+    if not isinstance(document, dict) or not isinstance(document.get("review"), list):
+        raise ValueError("review queue must contain a review list")
+    version = document.get("queue_version", 1)
+    if type(version) is not int or version != 1:
+        raise ValueError("unsupported review queue version")
+    entries = []
+    for item in document["review"]:
+        if not isinstance(item, dict) or not isinstance(item.get("original_record"), dict):
+            raise ValueError("review queue entries require original_record mappings")
+        entry = deepcopy(item)
+        for name in ("kind", "source", "snapshot"):
+            if name not in entry:
+                entry[name] = deepcopy(document.get(name))
+        if entry["source"] is None:
+            entry["source"] = {}
+        if not isinstance(entry["source"], dict):
+            raise ValueError("review queue source must be a mapping")
+        entries.append(entry)
+    return entries
+
+
+def _queue_key(entry: dict, *, include_kind: bool = True) -> str:
+    context = {name: entry[name] for name in ("source", "original_record")}
+    if include_kind:
+        context["kind"] = entry["kind"]
+    return yamlio.dump(context, sort_keys=True, allow_unicode=True)
+
+
+def _merge_queue(prior: list[dict], current: list[dict], accepted: list[dict]) -> list[dict]:
+    """Resolve only the same accepted input; keep other source declarations intact."""
+    accepted_keys = {_queue_key(entry) for entry in accepted}
+    accepted_legacy = {
+        (entry["snapshot"], _queue_key(entry, include_kind=False)) for entry in accepted
+    }
+    remaining = [
+        entry
+        for entry in prior
+        if (
+            (entry["snapshot"], _queue_key(entry, include_kind=False)) not in accepted_legacy
+            if entry["kind"] is None
+            else _queue_key(entry) not in accepted_keys
         )
-        temporary.replace(path)
+    ]
+    keyed = {_queue_key(entry): index for index, entry in enumerate(remaining)}
+    legacy = {
+        (entry["snapshot"], _queue_key(entry, include_kind=False)): index
+        for index, entry in enumerate(remaining)
+        if entry["kind"] is None
+    }
+    for entry in current:
+        key = _queue_key(entry)
+        existing = keyed.get(
+            key, legacy.get((entry["snapshot"], _queue_key(entry, include_kind=False)))
+        )
+        if existing is None:
+            keyed[key] = len(remaining)
+            remaining.append(entry)
+        else:
+            keyed[key] = existing
+            remaining[existing] = entry
+    return remaining
+
+
+def _write_outputs(payloads: dict[Path, dict]) -> None:
+    """Commit overlay and its queue together, restoring both on ordinary IO failure."""
+    token = uuid4().hex
+    staged: list[tuple[Path, Path, Path | None]] = []
+    committed: list[tuple[Path, Path, Path | None]] = []
+    preserve_backup = False
+    try:
+        for path, payload in payloads.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            if path.exists() and not path.is_file():
+                raise ValueError(f"ingest output is not a file: {path}")
+            temporary = path.with_name(f".{path.name}.{token}.tmp")
+            backup = path.with_name(f".{path.name}.{token}.backup") if path.is_file() else None
+            staged.append((path, temporary, backup))
+            temporary.write_text(
+                yamlio.dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8"
+            )
+            if backup is not None:
+                backup.write_bytes(path.read_bytes())
+        try:
+            for path, temporary, backup in staged:
+                temporary.replace(path)
+                committed.append((path, temporary, backup))
+        except OSError as original:
+            failures = _restore_outputs(committed)
+            if failures:
+                preserve_backup = True
+                recovery = [str(backup) for _, _, backup in staged if backup is not None]
+                raise OSError(
+                    "ingest save failed and rollback was incomplete; recovery files: "
+                    + ", ".join(recovery)
+                ) from ExceptionGroup("ingest and rollback errors", [original, *failures])
+            raise
     finally:
-        temporary.unlink(missing_ok=True)
+        for _, temporary, backup in staged:
+            temporary.unlink(missing_ok=True)
+            if backup is not None and not preserve_backup:
+                backup.unlink(missing_ok=True)
+
+
+def _restore_outputs(staged: list[tuple[Path, Path, Path | None]]) -> list[OSError]:
+    failures = []
+    for path, _, backup in reversed(staged):
+        try:
+            if backup is None:
+                path.unlink(missing_ok=True)
+            else:
+                # Copy to a restore file: a failed restore must leave its
+                # backup available for recovery.
+                restore = backup.with_suffix(".restore")
+                try:
+                    restore.write_bytes(backup.read_bytes())
+                    restore.replace(path)
+                finally:
+                    restore.unlink(missing_ok=True)
+        except OSError as error:
+            failures.append(error)
+    return failures

@@ -1,6 +1,7 @@
 # Registryの記録と更新
 
-0.7.4のRegistryは生成文法ではなく、出典付きの状態・反応・数値データのローカル証拠源です。
+現行のRegistryは、出典付きの状態・反応・数値データのローカル証拠源です。候補生成の文法とは
+別に管理します。
 
 ```text
 registry/species/*.yaml
@@ -79,6 +80,16 @@ state_records:
 `states/properties/thermo` とRegistry種の単一 `properties/thermo/state` 宣言は読込みadapterで
 受け付けます。新しい記録は独立形式を使い、複数出典を一つのmappingへ混ぜないでください。
 
+Propertyのmappingは全読込み経路で同じ形式検証を行います。各量の値には記録mappingを置き、
+`mass_amu: 40`や`mass_amu: null`を値不足へ変換して消しません。未取得の値は
+`mass_amu: {value: null, unit: amu}`のように記録内で示せます。記録の不正型は入力エラー、
+値や参照条件の不足はその量の利用条件の不足として扱います。
+
+snapshotとoverlayの物理対象は、化学式・状態IDと明示した組成、電荷、相、構造、状態欄を
+共通規則で照合します。IDが`;phase=gas`を述べるのに別欄が`phase: solid`を述べるなどの
+矛盾は、読込み時の入力エラーです。検索名や出典の行IDを物理対象IDへ読み替えません。
+RegistryのローカルIDは別で、種の明示した組成・電荷・状態等からcanonical対象を作ります。
+
 `provenance` はprovider、collection、release、record_id、citation、URL等の正規出典情報です。
 `source` の明示識別子も入口でここへ正規化します。`source_declaration` は原宣言・補足を保全し、
 `method` は measured / evaluated / calculated / estimated / unknown、`review_scope` は
@@ -102,12 +113,16 @@ Property・NASAにも独立したstatusを保存します。Propertyの `qualifi
 空または省略scopeの旧記録は各型の既存資格を維持しますが、
 資格・同定・適用条件の確認を省略しません。新規のレビューでは確認した命題を明示してください。
 
-NASA7にはlow/high各7係数、明示した`t_min <= t_mid <= t_max`、source、phase、
-`standard_pressure_Pa`を保存します。係数と温度は有限値、温度は正、範囲は非ゼロです。
+NASA7にはlow/high各7係数、明示した`t_min < t_mid < t_max`、source、phase、
+`standard_pressure_Pa`を保存します。low/highが同じ係数の単一区間では境界の`t_mid`も受理します。
+係数と温度は有限値、温度は正、範囲は非ゼロです。
 気相と固相を組成だけで同一視しません。励起の物性やlumped熱化学は別の根拠が必要です。
 NASAモデルが同じ係数、温度域、相、標準圧力を持つ場合は、出典名だけの違いを物理的競合と
-しません。元記録は両方保持します。物性・NASAモデルの利用者による優先指定と、反応
-エネルギー宣言を独立した量の記録へ分ける拡張は[基盤計画](data_foundation_plan.md)の残件です。
+しません。元記録は両方保持します。計算が利用する物性・NASAモデルは`data_selection`で
+量別・対象別に優先・限定・record固定できます。資格・定義・参照条件はその指定でも検査します。
+登録・選択の必要情報は[表記辞書](data_dictionary.md)、出力の規則は[出力仕様](output_reference.md)を参照してください。
+反応エネルギーの独立Property化は実装済みで、[科学量の定義と反応エネルギー](#科学量の定義と反応エネルギー)
+で説明します。今後の拡張は[残件計画](remaining_work_plan.md)へ分けています。
 
 ### 形成エンタルピーの参照
 
@@ -129,8 +144,10 @@ enthalpy_formation_eV:
 温度は0 K以上、標準圧は正、数値は有限値です。`basis: standard_elements`は明示温度・圧での
 各元素の標準参照状態からの形成量を表します。対象の相・構造・電子状態は状態記録で同定します。
 電子規約は`ion`または`electron`で、必要なイオンの参照へ記録します。参照欄が不足した値も
-原宣言とともに保存できますが、全参加種の共通温度・元素基準・標準圧と必要な規約を確認できなければ
+原宣言とともに保存できますが、正味寄与する参加種の共通温度・元素基準・標準圧と必要な規約を確認できなければ
 ΔHを計算しません。不正型・負の温度・不正語彙を情報不足へ読み替えません。
+上限・下限等を含む未解釈の`qualifier`を、reviewedという理由で通常の点値として加減算しません。
+注記と原値は保持し、点値としての意味が確定するまで依存するΔHを未確定にします。
 中性形成量の比較には電子規約・電子形成量を使いません。有限温度のイオンでは、規約を明示した
 同値の適格記録があれば規約未定の記録でその値を隠しません。未定記録の規約を補完したことにはせず、
 元宣言はそのまま保持します。異なる明示規約は共通値として無言で選択しません。
@@ -152,9 +169,14 @@ enthalpy_formation_eV:
 IE/EA等の判定を止めません。旧結果と旧Registryの値は読み込めますが、再分析ではこの使用前提を適用します。
 移行では元資料を確認して各Propertyへ参照を付け、出典と審査を個別に記録してください。
 
-`derive`による解像準位の形成量offsetは、審査済み親形成量が明示0 K参照を持つ場合だけ生成します。
-親の原宣言、level値と出典、共通参照は既存の`source_declaration`へ保存します。有限温度の振動・回転等の
-熱寄与差を電子準位energyだけから補いません。新旧の原データの条件確認は引き続き科学データ整備です。
+`derive`による解像準位の形成量offsetは、個別に適格な親形成量と準位energyから、明示0 K共通参照で
+生成します。準位は非負の有限energyと解像対象を必要とし、親記録の拒否・競合、Propertyの
+審査対象外・未解釈注記をtierだけで昇格させません。独立した適格な記録は別に利用できます。
+親形成量と準位Property全体、共通参照を`source_declaration`へ保存します。有限温度の振動・回転等の
+熱寄与差や不確かさ伝播を電子準位energyだけから補いません。Pythonの
+`carried_from(parent, excitation)`はPropertyまたはNoneを受け、scalarと`energy_source`は廃止しました。
+通常の`derive`入口は変わりません。massは励起energyの不足と独立に、適格な親massまたは原子mass
+から近似し、使用したPropertyと省略したmass欠損を保存します。原資料の条件確認は科学データ整備です。
 
 ## 反応とdataset
 
@@ -198,6 +220,13 @@ channels:
 独立出典を追加できるため、出典ごとにchannel自体を複製する必要はありません。
 数値datasetの同一ID・異なる科学宣言は消さずに数値のID競合として評価します。
 
+`validity`の区間は`quantity`、`minimum`、`maximum`、`unit`で表し、評価未対応の物理条件は
+`unresolved_conditions`に原値とともに保持します。旧`conditions` mappingも受理し、
+`method`・`derivation`は原宣言の注記、それ以外は未評価条件へ正規化します。既知の値・区間は
+維持し、未評価条件を`external_models`の必要作業として返します。温度だけで利用可能としません。
+未知の正規欄は形式エラーです。原条件の保存と、その条件を消費する物理モデルの実装・審査は
+別の操作で、原欄を移しただけで適用性が確定するわけではありません。
+
 反応の科学宣言は直接snapshot、overlayの `reaction_records`、channelの `records` で同じ
 `ReactionRecord`へ正規化します。overlayでは対象反応IDをキーにした記録配列を持ち、各要素は
 上の `records` と同じportable形式です。通常は `ingest` が対象IDと保存payloadを作ります。
@@ -220,6 +249,8 @@ source_idと原記録IDから生成します。異なるDBの同じ行番号を�
 同じ正規IDで配列へ併記し、未知の物理条件・注記や数値資格の違いは科学宣言の差として保持します。
 この比較は状態・反応・数値に共通です。完全な再入力は重複追加せず、原宣言の取得履歴を消しません。
 科学内容が変わる同ID入力はingestでreview queueへ、adoptでは入力エラーとして扱います。
+constant/Arrheniusの既知単位コピーは共通の換算比較を使い、同単位の異値を厳密に区別します。
+絶対不確かさの別単位は同次元の場合だけ値の単位へ正規化し、原宣言を保存します。
 
 反応記録の `review_scope` は `channel_assertion`、`threshold_eV`、`delta_e_eV` を区別します。
 `delta_e_eV` は入力の `deltaE_products_minus_reactants_eV` 宣言の審査対象名です。
@@ -239,9 +270,19 @@ tableは参照assetと宣言／保存実測hashを保持し、実際に解析す
 
 利用者は数値3量について入力の `data_selection` で方法・provider・collectionの優先または
 制限、dataset IDの固定を指定できます。記録の適格性確認を飛ばす指定ではありません。
+優先`prefer`は同じobservable・速度式次数に属する記録の出典順位に適用します。
+異なる断面積の測定量や速度式次数を、出典順位だけで一つの量へ決めません。用途に必要な
+量・モデルを選ぶ場合は`record`で固定するか、`only`で該当する出典へ限定します。
+限定後も異なる量・モデルが残れば、選択を未確定として返します。
 選択要求、採用記録、他の適格記録との不一致は結果に残します。入力例は[README](../README.md)、
 規則は[出力仕様](output_reference.md)を参照してください。旧dataset `preferred` は量別要求が
-ない場合だけ使う互換指定で、0.8で撤去します。
+ない場合だけ使う互換指定で、2.0で撤去します。
+
+個別datasetの判定は、その記録が述べる量の数値利用可否です。保存された断面積曲線が有効でも、
+分布に対する積分や速度係数の成立は決まりません。付着確率が使えても、入射流束と表面速度への
+変換は別の必要処理です。これらの変換作業は係数用途の`DataUse`へ分けて保存し、個別の
+曲線・確率の判定へ重ねません。運動量移行断面積は反応衝突数を数える断面積と異なる量で、
+エネルギー分布との積分だけでは反応速度係数へ変換できません。
 
 ## 科学量の定義と反応エネルギー
 
@@ -267,11 +308,20 @@ analyzeとingestはRegistryを変更しません。ingestの成功は照合済�
 ありません。曖昧な同定、分類不一致、total過程の転記はreview queueで確認します。式だけで
 processが不明な入力を既存の型付きチャネルへ推測で転記しません。式のない明示bundle `reaction_id`
 入力は、保存対象の物理情報を参照して同定し、原入力も保持します。scope外の宣言は保存できても
-その命題の審査資格を持ちません。adoptは明示した
-永続採用で、既存の値を黙って置換しません。sourceとasset完全性を採用後も追跡できます。
+その命題の審査資格を持ちません。adoptは明示した永続保存です。入力のsource、tier、status、
+review_scopeを保持し、Registryへの保存を理由にimportedをreviewed/curatedへ昇格しません。
+既存の値を黙って置換せず、sourceとasset完全性を採用後も追跡できます。正当に同定された対象でも
+更新先がない場合は`unplaced`として返し、対象記録の形式不正やID矛盾とは区別します。
 
 取得snapshotは `snapshot_version: 1` を宣言します。版なしの従来snapshotも受理しますが、未知の
 版は拒否します。変換前ファイルを指定した取得では、rawファイルとSHA-256をsnapshotとともに
 保存します。取得・形式受理・照合・永続採用・科学的審査はそれぞれ別の操作です。
+
+直接`--evidence snapshot.yaml`で分析する記録は、そのsnapshotだけで物理対象を同定できる
+必要があります。未同定の種・式を黙って捨てません。既存候補との照合や保留が必要な外部名は
+`ingest`へ渡し、候補と理由・原記録を`review_queue.yaml`に残します。
+未同定名や壊れたPropertyを旧overlayへ置いていた場合も、この明示した入口へ移行してください。
+取得用の`id`と`query`、adapterの対象範囲と失敗分類は[data sources](data_sources.md#取得要求の対象と検索名)
+を参照してください。
 
 DNT由来の測定を記録できますが、主分析はポテンシャル・断面積・時間発展を計算しません。

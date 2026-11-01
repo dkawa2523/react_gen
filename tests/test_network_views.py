@@ -7,6 +7,7 @@ import json
 import re
 import shutil
 import subprocess
+from dataclasses import asdict
 from hashlib import sha256
 from io import BytesIO
 from itertools import pairwise
@@ -19,6 +20,7 @@ from reactgen import export
 from reactgen.case import Case
 from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
+from reactgen.model import numerical_requirements
 from reactgen.network_matrix import (
     MAX_MATRIX_COLUMNS,
     _column_bounds,
@@ -214,6 +216,16 @@ def test_network_preserves_saved_scientific_meaning_and_absence_without_reassess
         disagreements=["alternative"],
         reason="Saved selection and applicability reason.",
     )
+    use = reaction["data_use"]
+    if historical:
+        use.pop("requirements")
+    else:
+        use["requirements"] = [
+            asdict(item)
+            for item in numerical_requirements(
+                use["required_inputs"], use["required_transforms"], "adopted", use["reason"]
+            )
+        ]
     reaction["evidence"]["overlay_datasets"] = [
         {
             "id": "adopted",

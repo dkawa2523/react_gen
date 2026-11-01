@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import hashlib
 from copy import deepcopy
+from dataclasses import asdict
 from io import StringIO
 from pathlib import Path
 
@@ -14,6 +15,7 @@ from reactgen import export, needs, yamlio
 from reactgen.case import Case
 from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
+from reactgen.model import numerical_requirements
 from reactgen.pipeline import analyze
 
 
@@ -72,6 +74,13 @@ def test_source_information_models_and_scalar_inputs_are_different_work() -> Non
         ],
         required_transforms=["eedf_integration"],
     )
+    use = reaction["data_use"]
+    use["requirements"] = [
+        asdict(item)
+        for item in numerical_requirements(
+            use["required_inputs"], use["required_transforms"], reaction["id"], use["reason"]
+        )
+    ]
     details = [
         row
         for row in needs.build(document, detail=True)["details"]
@@ -116,9 +125,41 @@ def test_dataset_exclusions_and_reference_only_data_remain_inspectable() -> None
     document = saved()
     reaction = document["reactions"][0]
     reaction["data_use"]["datasets"] = [
-        {"dataset_id": "curve", "status": "reference_only", "reason": "no table"},
-        {"dataset_id": "cold", "status": "out_of_range", "reason": "wrong temperature"},
-        {"dataset_id": "broken", "status": "invalid", "reason": "wrong unit"},
+        {
+            "dataset_id": "curve",
+            "status": "reference_only",
+            "reason": "no table",
+            "scope": "native curve",
+            "requirements": [
+                {
+                    "responsibility": "source_information",
+                    "target": "curve",
+                    "quantity": "numerical_representation",
+                    "reason": "no table",
+                }
+            ],
+        },
+        {
+            "dataset_id": "cold",
+            "status": "out_of_range",
+            "reason": "wrong temperature",
+            "scope": "native point",
+            "requirements": [],
+        },
+        {
+            "dataset_id": "broken",
+            "status": "invalid",
+            "reason": "wrong unit",
+            "scope": "native point",
+            "requirements": [
+                {
+                    "responsibility": "source_review",
+                    "target": "broken",
+                    "quantity": "numerical_record",
+                    "reason": "wrong unit",
+                }
+            ],
+        },
     ]
     rows = {
         row["id"]: row
@@ -134,7 +175,7 @@ def test_dataset_exclusions_and_reference_only_data_remain_inspectable() -> None
 
 def test_csv_exposes_each_named_proposition_and_exact_saved_explanation() -> None:
     document = saved()
-    assert document["metadata"]["helper_view_format"] == 3
+    assert document["metadata"]["helper_view_format"] == 6
     for subject, columns in (
         ("states", export.STATE_JUDGMENTS),
         ("reactions", export.REACTION_JUDGMENTS),

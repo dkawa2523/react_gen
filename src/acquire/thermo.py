@@ -7,9 +7,10 @@ conditions. Values remain imported until their own domain review.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from acquire.pubchem import parse_formula
+from acquire.targets import chemical_identity, ground_problem
+from reactgen.naming import parse_formula
 
 JOULE_PER_EV = 96485.33212  # J/mol per eV/molecule
 
@@ -25,6 +26,7 @@ class Thermo:
     enthalpy_method: str | None = None
     entropy_method: str | None = None
     package_version: str | None = None
+    identity: dict = field(default_factory=dict)
 
     @property
     def known(self) -> bool:
@@ -55,16 +57,20 @@ def fetch(names: list[str], composition: dict[str, dict[str, int]] | None = None
 
 
 def _one(name: str, wanted: dict[str, int] | None) -> Thermo:
+    if problem := ground_problem(name):
+        return Thermo(name, error=problem)
     import chemicals
     from chemicals import CAS_from_any, Hfg, Hfg_methods, S0g, S0g_methods, search_chemical
 
     try:
         cas = CAS_from_any(name)
-        formula = search_chemical(cas).formula
-    except (ValueError, LookupError, AttributeError) as error:
+        metadata = search_chemical(cas)
+        formula = metadata.formula
+    except (ValueError, LookupError) as error:
         return Thermo(name, error=f"{type(error).__name__}: {str(error)[:60]}")
 
-    if wanted and parse_formula(formula) != wanted:
+    target = wanted or parse_formula(name)
+    if target and parse_formula(formula) != target:
         return Thermo(name, cas, formula, error=f"resolves to {formula}, a different compound")
 
     # Pin the selected upstream table, rather than saving a value with only a
@@ -83,6 +89,7 @@ def _one(name: str, wanted: dict[str, int] | None) -> Thermo:
         enthalpy_method=enthalpy_method,
         entropy_method=entropy_method,
         package_version=chemicals.__version__,
+        identity=chemical_identity(metadata, cas),
     )
 
 
@@ -118,6 +125,7 @@ def _record(item: Thermo, name: str, value: float, unit: str, citation: str) -> 
         "unit": unit,
         "phase": "gas",
         "source_species": item.formula,
+        "source_identity": item.identity,
         "source": {
             "provider": "chemicals",
             "collection": method,

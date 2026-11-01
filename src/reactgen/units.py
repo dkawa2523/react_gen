@@ -61,21 +61,41 @@ def canonical_axis_unit(quantity: str | None) -> str | None:
 
 
 def numerical_unit(unit: str | None, kind: str, order: float | None) -> tuple[str, float] | None:
-    """Canonical number-density coefficient units and scale, never molar units."""
+    """Check the declared coefficient dimension against its required rate order."""
+    basis = numerical_unit_basis(unit, kind)
+    if basis is None or kind != "rate_coefficient":
+        return basis
+    if order is None or not isfinite(order):
+        return None
+    exponent = 0.0 if basis[0] == "s-1" else float(basis[0][1:-2])
+    return basis if abs(exponent - 3 * (order - 1)) <= 1e-9 else None
+
+
+def numerical_unit_basis(unit: str | None, kind: str) -> tuple[str, float] | None:
+    """Return a quantity's dimension and scale without assigning a kinetic order.
+
+    This supports representation comparison. Numerical use still calls
+    ``numerical_unit`` with the order required by the actual rate law.
+    """
     written = (unit or "").lower().replace("^", "").replace(" ", "")
     if kind == "cross_section":
         return {"m2": ("m2", 1.0), "cm2": ("m2", 1e-4)}.get(written)
     if kind == "sticking_coefficient":
         return ("1", 1.0) if written in {"1", "dimensionless"} else None
-    if kind != "rate_coefficient" or order is None or not isfinite(order):
+    if kind != "rate_coefficient":
         return None
-    if order == 1 and written in {"s-1", "1/s"}:
+    if written in {"s-1", "1/s"}:
         return ("s-1", 1.0)
     match = re.fullmatch(r"(m|cm)(\d+(?:\.\d+)?)/s", written)
     if match is None:
         return None
     exponent = float(match[2])
-    if abs(exponent - 3 * (order - 1)) > 1e-9:
+    if not isfinite(exponent):
         return None
-    canonical = f"m{exponent:g}/s"
-    return (canonical, 10.0 ** (-2 * exponent) if match[1] == "cm" else 1.0)
+    if exponent == 0:
+        return "s-1", 1.0
+    # Preserve the dimension when a fractional exponent needs more than six
+    # significant figures; the canonical label must not weaken order checks.
+    canonical = f"m{exponent:.17g}/s"
+    scale = 10.0 ** (-2 * exponent) if match[1] == "cm" else 1.0
+    return (canonical, scale) if isfinite(scale) and scale > 0 else None

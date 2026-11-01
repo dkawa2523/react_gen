@@ -45,3 +45,86 @@ metadata:
   status: curated
   notes:
   - Ground-state molecular oxygen cation produced by electron ionization and charge transfer.
+thermo:
+  low:
+  - 4.61017167
+  - -0.00635951952
+  - 1.42425624e-05
+  - -1.20997923e-08
+  - 3.70956878e-12
+  - 139742.229
+  - -0.201326874
+  high:
+  - 3.31675922
+  - 0.00111522244
+  - -3.83492556e-07
+  - 5.72784687e-11
+  - -2.77648381e-15
+  - 139876.823
+  - 5.44726476
+  t_min: 298.15
+  t_mid: 1000.0
+  t_max: 6000.0
+  phase: gas
+  standard_pressure_Pa: 100000.0
+  source:
+    provider: NASA
+    collection: NASA_TM_4513_gas
+    release: Cantera-3.2.0
+    record_id: O2+
+    citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, O2+, TPIS89
+    url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  method: calculated
+  evidence_tier: imported
+  status: imported
+  review_scope: []
+  source_declaration:
+    source_entry:
+      name: O2+
+      composition:
+        O: 2
+        E: -1
+      thermo:
+        model: NASA7
+        temperature-ranges:
+        - 298.15
+        - 1000.0
+        - 6000.0
+        data:
+        - - 4.61017167
+          - -0.00635951952
+          - 1.42425624e-05
+          - -1.20997923e-08
+          - 3.70956878e-12
+          - 139742.229
+          - -0.201326874
+        - - 3.31675922
+          - 0.00111522244
+          - -3.83492556e-07
+          - 5.72784687e-11
+          - -2.77648381e-15
+          - 139876.823
+          - 5.44726476
+        note: TPIS89
+    acquisition:
+      file: nasa_gas.yaml
+      requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+      sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+      bytes: 276140
+    thermodynamic_reference:
+      standard_pressure_Pa: 100000.0
+      element_basis: elements_standard_states
+      formation_temperature_K: 298.15
+      primary_report: https://ntrs.nasa.gov/citations/19940013151
+      section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy Values
+        and Heats of Formation (p.3)
+      software_default_reference_pressure_Pa: 101325.0
+      adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+        YAML does not redefine the numerical source fit.
+    review:
+      date: '2026-10-13'
+      scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+        standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+        occurrence.

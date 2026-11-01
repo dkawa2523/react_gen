@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import dataclass
 
-_EPSILON = 1.0e-12
+from reactgen.model import stoichiometric_sum
 
 
 @dataclass(frozen=True)
@@ -165,15 +165,11 @@ def _related_reactions(
         if reaction["id"] in path_reactions:
             continue
         produces_support = bool(_positive_products(reaction).intersection(non_seed_path_states))
-        target_delta = _net_stoichiometry(reaction, target)
+        target_delta = net_stoichiometry(reaction, target)
         mentions_target = target in {
             term["species"] for term in (*reaction["reactants"], *reaction["products"])
         }
-        if (
-            produces_support
-            or target_delta < -_EPSILON
-            or (mentions_target and abs(target_delta) <= _EPSILON)
-        ):
+        if produces_support or target_delta < 0 or (mentions_target and target_delta == 0):
             related.append(reaction["id"])
     return sorted(related)
 
@@ -223,12 +219,14 @@ def _target_priority(state: dict) -> int:
 
 def _positive_products(reaction: dict) -> set[str]:
     species = {term["species"] for term in reaction["products"]}
-    return {state_id for state_id in species if _net_stoichiometry(reaction, state_id) > _EPSILON}
+    return {state_id for state_id in species if net_stoichiometry(reaction, state_id) > 0}
 
 
-def _net_stoichiometry(reaction: dict, state_id: str) -> float:
-    products = sum(float(term["n"]) for term in reaction["products"] if term["species"] == state_id)
-    reactants = sum(
-        float(term["n"]) for term in reaction["reactants"] if term["species"] == state_id
+def net_stoichiometry(reaction: dict, state_id: str) -> float:
+    """Project saved coefficients using the common declared-count arithmetic."""
+    return stoichiometric_sum(
+        sign * float(term["n"])
+        for side, sign in (("products", 1), ("reactants", -1))
+        for term in reaction[side]
+        if term["species"] == state_id
     )
-    return products - reactants

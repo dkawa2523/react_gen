@@ -14,7 +14,12 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 
 from reactgen import naming, yamlio
-from reactgen.chemistry import candidate_state, electron_state, parse_equation
+from reactgen.chemistry import (
+    candidate_state,
+    electron_state,
+    parse_equation,
+    reaction_declaration_matches,
+)
 from reactgen.model import ELECTRON, ReactionCandidate, StateCandidate, Term, reaction_id
 from reactgen.records import (
     Material,
@@ -25,9 +30,10 @@ from reactgen.records import (
     RegistryState,
     Species,
     StateRecord,
+    bind_dataset_target,
     normalized_dataset,
     normalized_number,
-    normalized_property,
+    normalized_properties,
     normalized_reaction_energy_properties,
     normalized_reaction_record,
     normalized_state_record,
@@ -35,6 +41,7 @@ from reactgen.records import (
     review_scope,
     scientific_method,
     source_information,
+    validate_numerical_targets,
 )
 
 PairKey = tuple[str, str, str]  # family, projectile, target
@@ -81,7 +88,7 @@ def _load_species(directory: Path) -> dict[str, Species]:
             charge=charge,
             classes=frozenset(data.get("classes") or []),
             state=_state(data.get("state") or {}),
-            properties=_properties(data.get("properties") or {}, "imported"),
+            properties=normalized_properties(data.get("properties")),
             thermo=normalized_thermo(data.get("thermo")),
             status=status,
             phase=str(data.get("phase") or "unknown"),
@@ -163,14 +170,6 @@ def _state(data: dict) -> RegistryState:
     )
 
 
-def _properties(data: dict, default_tier: str) -> dict[str, Property]:
-    return {
-        name: normalized_property(entry, default_tier, quantity=name)
-        for name, entry in data.items()
-        if isinstance(entry, dict)
-    }
-
-
 def _load_reactions(
     directory: Path, root: Path, species: dict[str, Species]
 ) -> dict[PairKey, list[RegistryReaction]]:
@@ -178,13 +177,14 @@ def _load_reactions(
 
     Repeated IDs are input errors even when their declarations agree: adoption
     must have one unambiguous file and channel to update. Independent sources
-    need distinct record IDs. Dataset-ID conflicts remain numerical evidence
-    for ``data_use`` to assess, rather than channel identity errors.
+    need distinct record IDs. A dataset ID must identify one physical channel;
+    conflicts within that target remain numerical evidence for ``data_use``.
     Sorting pairs and channel IDs makes the returned order reproducible; it
     does not assign priority to any source or numerical declaration.
     """
     channels: dict[PairKey, list[RegistryReaction]] = {}
     locations: dict[str, tuple[PairKey, dict, Path, int]] = {}
+    numerical_bindings: list[tuple[str, str]] = []
     for path in sorted(directory.glob("*/*.yaml")):
         data = _read(path)
         pair = data.get("pair") or {}
@@ -208,13 +208,44 @@ def _load_reactions(
                     "independent source records require distinct IDs"
                 )
             locations[channel_id] = (key, entry, path, index)
-            channel = _channel(entry, family, key, root)
+            try:
+                channel = _channel(entry, family, key, root)
+            except ValueError as error:
+                raise ValueError(f"{path}: channel {channel_id!r}: {error}") from error
+            target = _bind_channel_datasets(channel, species, path)
+            numerical_bindings.extend((dataset.id, target.id) for dataset in channel.datasets)
             channel.records = _scientific_reactions(entry, channel, species, path)
             group.append(channel)
+    validate_numerical_targets(numerical_bindings)
     return {
         key: sorted(group, key=lambda channel: channel.id)
         for key, group in sorted(channels.items())
     }
+
+
+def _bind_channel_datasets(
+    channel: RegistryReaction, species: dict[str, Species], path: Path
+) -> ReactionCandidate:
+    target = registry_reaction_candidate(channel, species)
+    if target is None:
+        missing = sorted(
+            {term.species for term in (*channel.reactants, *channel.products)} - species.keys()
+        )
+        raise ValueError(
+            f"{path}: channel {channel.id!r} references unregistered species: {', '.join(missing)}"
+        )
+    bound = []
+    for dataset in channel.datasets:
+        if not reaction_declaration_matches(dataset.declared_target, target):
+            raise ValueError(
+                f"{path}: dataset {dataset.id!r} contradicts channel {channel.id!r} physical target"
+            )
+        try:
+            bound.append(bind_dataset_target(dataset, target.id))
+        except ValueError as error:
+            raise ValueError(f"{path}: channel {channel.id!r}: {error}") from error
+    channel.datasets = bound
+    return target
 
 
 def _channel(entry: dict, family: str, key: PairKey, root: Path) -> RegistryReaction:
@@ -229,7 +260,10 @@ def _channel(entry: dict, family: str, key: PairKey, root: Path) -> RegistryReac
         family=family,
         type=entry.get("type", "unspecified"),
         reactants=reactants,
-        products=[Term(p["species"], float(p.get("n", 1))) for p in entry.get("products") or []],
+        products=[
+            Term(p["species"], _stoichiometric_number(p.get("n", 1)))
+            for p in entry.get("products") or []
+        ],
         energy_properties=normalized_reaction_energy_properties(entry | {"source": source_data}),
         third_body=entry.get("third_body"),
         surface=target if family == "surface" else None,
@@ -243,6 +277,16 @@ def _channel(entry: dict, family: str, key: PairKey, root: Path) -> RegistryReac
         method=scientific_method(entry, source_data),
         review_scope=review_scope(entry),
     )
+
+
+def _stoichiometric_number(value: object) -> float:
+    try:
+        number = normalized_number(value, "stoichiometric coefficient")
+    except OverflowError as error:
+        raise ValueError("stoichiometric coefficient must be finite") from error
+    if number is None:
+        raise ValueError("stoichiometric coefficient must be a number, not null")
+    return number
 
 
 def _datasets(entry: dict, reaction_id: str, root: Path) -> list[NumericDataset]:

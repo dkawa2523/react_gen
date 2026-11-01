@@ -13,7 +13,7 @@ from pathlib import Path
 import pytest
 
 from reactgen.assessment import assess_state, assess_state_thermochemistry
-from reactgen.evidence import EvidenceCatalog, registry_state_candidate
+from reactgen.evidence import EvidenceCatalog, StateEvidence, registry_state_candidate
 from reactgen.model import CandidateSet
 from reactgen.registry import Registry
 from reactgen.thermo import GAS_CONSTANT, enthalpy_RT, entropy_R, valid_thermo
@@ -56,7 +56,12 @@ def test_individual_oxygen_identity_review_preserves_the_resolved_level(
     assert assess_state(candidate, evidence, candidates).verdict == "pass"
     # Reviewing existence and IE did not silently approve the imported enthalpy.
     assert record.properties["enthalpy_formation_eV"].tier == "imported"
-    assert assess_state_thermochemistry(candidate, evidence).verdict == "unknown"
+    original = StateEvidence("exact", (record,))
+    assert assess_state_thermochemistry(candidate, original).verdict == "unknown"
+    # A separately reviewed NASA-derived record may now supply thermal values;
+    # it does not promote the original existence/IE record's imported enthalpy.
+    if assess_state_thermochemistry(candidate, evidence).verdict == "pass":
+        assert len(evidence.records) > 1
 
 
 def test_oxygen_ground_ionization_energies_keep_their_own_target_and_errors(

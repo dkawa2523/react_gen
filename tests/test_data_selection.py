@@ -385,3 +385,27 @@ def test_native_selection_ranks_only_the_specified_axes() -> None:
     policy = QuantitySelection(providers=("first", "second"))
     assert policy.rank("unknown", "outside-a", None) == policy.rank("measured", "outside-b", "x")
     assert policy.rank("unknown", "first", None) < policy.rank("measured", "second", "x")
+
+
+@pytest.mark.parametrize(
+    ("target", "quantity", "message"),
+    [
+        ("unknown@ground", "enthalpy_formation_eV", "not an analyzed candidate"),
+        ("Ar@ground", "rate_coefficient", "unsupported quantities for this target"),
+    ],
+)
+def test_shared_evaluation_and_analysis_reject_the_same_misdirected_selection(
+    target: str, quantity: str, message: str
+) -> None:
+    from reactgen.assessment import evaluate
+    from reactgen.evidence import EvidenceCatalog
+    from reactgen.generate import candidates
+    from reactgen.pipeline import analyze
+
+    request = DataSelection(targets={target: {quantity: QuantitySelection()}})
+    case = Case("selection", ("Ar",), data_selection=request)
+    catalog = EvidenceCatalog()
+    with pytest.raises(ValueError, match=message):
+        analyze(case, catalog)
+    with pytest.raises(ValueError, match=message):
+        evaluate(candidates(case.gases, case.limits), catalog, case.conditions, request)

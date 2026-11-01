@@ -19,18 +19,17 @@ properties:
   enthalpy_formation_eV:
     value: -3.076115
     unit: eV
-    source: chemicals package bundled thermodynamic tables, CAS 7446-09-5, formula
-      verified against the registry
+    source: chemicals package bundled thermodynamic tables, CAS 7446-09-5, formula verified against the
+      registry
   entropy_J_mol_K:
     value: 248.2
     unit: J/mol/K
-    source: chemicals package bundled thermodynamic tables, CAS 7446-09-5, formula
-      verified against the registry
+    source: chemicals package bundled thermodynamic tables, CAS 7446-09-5, formula verified against the
+      registry
   vibrational_quantum_eV:
     value: 0.1129
     unit: eV
-    source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500
-      K
+    source: chemicals TRC gas heat capacity, effective Einstein mode fitted 300-1500 K
   collision_radius_A:
     source: chemicals package bundled molecular property tables, CAS 7446-09-5
     unit: A
@@ -44,19 +43,11 @@ properties:
     unit: K
     value: 333.4
   polarizability_A3:
-    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp;
-      Sulfur dioxide listed as SO2, 1951LB1.3:509
+    source: NIST CCCBDB experimental polarizability list, https://cccbdb.nist.gov/pollistx.asp; Sulfur
+      dioxide listed as SO2, 1951LB1.3:509
     unit: A3
     value: 3.882
 thermo:
-  high:
-  - 5.2451364
-  - 0.0019704204
-  - -8.0375769e-07
-  - 1.5149969e-10
-  - -1.0558004e-14
-  - -37558.227
-  - -1.07404892
   low:
   - 3.2665338
   - 0.0053237902
@@ -65,7 +56,99 @@ thermo:
   - 2.5590454e-12
   - -36908.148
   - 9.66465108
-  source: cantera bundled thermodynamic data, listed as SO2 in nasa_gas.yaml
-  t_max: 5000.0
-  t_mid: 1000.0
+  high:
+  - 5.2451364
+  - 0.0019704204
+  - -8.0375769e-07
+  - 1.5149969e-10
+  - -1.0558004e-14
+  - -37558.227
+  - -1.07404892
   t_min: 300.0
+  t_mid: 1000.0
+  t_max: 5000.0
+  phase: gas
+  standard_pressure_Pa: 100000.0
+  source:
+    provider: NASA
+    collection: NASA_TM_4513_gas
+    release: Cantera-3.2.0
+    record_id: SO2
+    citation: McBride, Gordon and Reno, NASA TM-4513 (1993); Cantera v3.2.0 nasa_gas.yaml, SO2, J 6/61
+    url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+  method: calculated
+  evidence_tier: reviewed
+  status: reviewed
+  review_scope:
+  - thermochemical_model
+  source_declaration:
+    source_entry:
+      name: SO2
+      composition:
+        S: 1
+        O: 2
+      thermo:
+        model: NASA7
+        temperature-ranges:
+        - 300.0
+        - 1000.0
+        - 5000.0
+        data:
+        - - 3.2665338
+          - 0.0053237902
+          - 6.8437552e-07
+          - -5.2810047e-09
+          - 2.5590454e-12
+          - -36908.148
+          - 9.66465108
+        - - 5.2451364
+          - 0.0019704204
+          - -8.0375769e-07
+          - 1.5149969e-10
+          - -1.0558004e-14
+          - -37558.227
+          - -1.07404892
+        note: J 6/61
+    acquisition:
+      file: nasa_gas.yaml
+      requested_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      final_url: https://raw.githubusercontent.com/Cantera/cantera/v3.2.0/data/nasa_gas.yaml
+      retrieved_at: '2026-10-12T22:35:37.626859+00:00'
+      sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+      bytes: 276140
+    thermodynamic_reference:
+      standard_pressure_Pa: 100000.0
+      element_basis: elements_standard_states
+      formation_temperature_K: 298.15
+      primary_report: https://ntrs.nasa.gov/citations/19940013151
+      section: Standard States, Reference States, and Fundamental Constants (p.2); Assigned Enthalpy Values
+        and Heats of Formation (p.3)
+      software_default_reference_pressure_Pa: 101325.0
+      adopted_pressure_reason: Original NASA TM-4513 ideal-gas reference is 1 bar; omission in Cantera
+        YAML does not redefine the numerical source fit.
+    review:
+      date: '2026-10-13'
+      scope: NASA7 transcription, gas composition/charge, declared temperature intervals and original
+        standard reference; not experimental accuracy, state existence, electronic populations, or reaction
+        occurrence.
+    previous_registry_declaration:
+      high:
+      - 5.2451364
+      - 0.0019704204
+      - -8.0375769e-07
+      - 1.5149969e-10
+      - -1.0558004e-14
+      - -37558.227
+      - -1.07404892
+      low:
+      - 3.2665338
+      - 0.0053237902
+      - 6.8437552e-07
+      - -5.2810047e-09
+      - 2.5590454e-12
+      - -36908.148
+      - 9.66465108
+      source: cantera bundled thermodynamic data, listed as SO2 in nasa_gas.yaml
+      t_max: 5000.0
+      t_mid: 1000.0
+      t_min: 300.0

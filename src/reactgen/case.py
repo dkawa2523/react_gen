@@ -141,7 +141,7 @@ class Case:
         document["conditions"] = {
             key: value for key, value in document["conditions"].items() if value is not None
         }
-        if self.data_selection.quantities:
+        if self.data_selection.quantities or self.data_selection.targets:
             document["data_selection"] = self.data_selection.document()
         else:
             del document["data_selection"]

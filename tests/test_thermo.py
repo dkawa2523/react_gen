@@ -7,6 +7,7 @@ diatomic species, giving zero reaction standard Gibbs energy at any T.
 from __future__ import annotations
 
 from dataclasses import replace
+from math import log
 
 import pytest
 
@@ -18,7 +19,8 @@ from reactgen.thermo import (
     GAS_CONSTANT,
     equilibrium_constant,
     gibbs_energy_eV,
-    reverse_rate,
+    thermal_values,
+    valid_thermo,
 )
 
 
@@ -76,7 +78,6 @@ def test_reversed_reaction_equilibrium_constants_are_reciprocal() -> None:
     assert first is not None
     assert second is not None
     assert first * second == pytest.approx(1)
-    assert reverse_rate(2e-15, forward, _species(), 300) == pytest.approx(2e-15 / first)
 
 
 @pytest.mark.parametrize(
@@ -100,3 +101,54 @@ def test_incompatible_phase_reference_or_temperature_is_not_evaluated(change: di
 def test_electron_nonthermal_distribution_is_not_a_nasa_equilibrium_species() -> None:
     reaction = _reaction((Term("e"), Term("F2@ground")), (Term("e"), Term("F@ground", 2)))
     assert equilibrium_constant(reaction, _species(), 300) is None
+
+
+@pytest.mark.parametrize("midpoint", [200, 6000])
+def test_single_region_polynomial_does_not_require_an_artificial_split(midpoint: float) -> None:
+    thermo = next(iter(_species().values())).thermo
+    assert thermo is not None
+    single = replace(thermo, t_mid=midpoint)
+    assert valid_thermo(single)
+    assert not valid_thermo(replace(single, high=tuple(value + 1 for value in single.low)))
+
+
+@pytest.mark.parametrize("density_power", [-1, 1])
+def test_density_equilibrium_keeps_finite_values_when_its_factors_exceed_float_range(
+    density_power: int,
+) -> None:
+    # An analytic NASA7 fixture changes only the integration constant in H/RT.
+    # At 300 K, Kp=exp(+/-750) cannot be represented, but Kn can.
+    species = _species()
+    molecule = species["F2@ground"]
+    assert molecule.thermo is not None
+    coefficients = (7.0, 0, 0, 0, 0, -225000, 0)
+    species[molecule.id] = replace(
+        molecule, thermo=replace(molecule.thermo, low=coefficients, high=coefficients)
+    )
+    association = _reaction((Term("F@ground", 2),), (Term("F2@ground"),))
+    # Choose the density exponent that compensates the large/small Kp factor.
+    reaction = (
+        association
+        if density_power < 0
+        else replace(association, reactants=association.products, products=association.reactants)
+    )
+    gibbs, constant = thermal_values(reaction, species, 300)
+    assert gibbs is not None
+    assert constant is not None
+    assert constant > 0
+    number_density = 100000 / (GAS_CONSTANT * 300) * AVOGADRO
+    assert log(constant) == pytest.approx(density_power * (-750 + log(number_density)))
+
+
+def test_unrepresentable_equilibrium_does_not_remove_finite_gibbs_energy() -> None:
+    species = _species()
+    molecule = species["F2@ground"]
+    assert molecule.thermo is not None
+    coefficients = (7.0, 0, 0, 0, 0, -300000, 0)
+    species[molecule.id] = replace(
+        molecule, thermo=replace(molecule.thermo, low=coefficients, high=coefficients)
+    )
+    reaction = _reaction((Term("F@ground", 2),), (Term("F2@ground"),))
+    gibbs, constant = thermal_values(reaction, species, 300)
+    assert gibbs is not None
+    assert constant is None

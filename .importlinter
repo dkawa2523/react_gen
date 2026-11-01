@@ -17,7 +17,7 @@ layers =
     reactgen.evidence | reactgen.generate
     reactgen.balance | reactgen.case | reactgen.registry | reactgen.thermo | reactgen.presentation
     reactgen.chemistry
-    reactgen.records
+    reactgen.records | reactgen.outcomes
     reactgen.naming | reactgen.model | reactgen.units | reactgen.yamlio | reactgen.selection
 
 [importlinter:contract:reactgen-offline]

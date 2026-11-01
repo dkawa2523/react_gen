@@ -1,7 +1,15 @@
 # Registry assets
 
-This registry snapshot intentionally does **not** include digitized electron-collision cross-section tables.
-Reaction YAML files contain public source references with `status: needs_import` and `path: null`.
+The Registry includes the H(1s) electron-ionization table
+`electron/iaea_D108105.csv`, converted from CollisionDB record D108105. Its
+attribution, CC BY 4.0 notice, conversion, hash and reviewed quantity are recorded
+in [the source record](../sources/collisiondb_2026.yaml). This is a cross-section
+curve for the declared channel; evaluating an EEDF-averaged rate coefficient
+requires a separate distribution and integration implementation.
+
+Other channels may retain source references with `status: needs_import` and
+`path: null`. A reference alone does not provide a numerical curve or grant
+redistribution rights.
 
 To use an acquired LXCat table, first save an analysis result and match the
 converted snapshot to its candidates:

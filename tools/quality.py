@@ -6,6 +6,7 @@ import subprocess
 import sys
 from collections.abc import Sequence
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -14,13 +15,48 @@ class QualityFailure(RuntimeError):
     pass
 
 
-def _run(command: Sequence[str], *, allowed: set[int] | None = None) -> None:
+def _run(command: Sequence[str], *, allowed: set[int] | None = None, capture: bool = False) -> None:
     print("+ " + " ".join(command))
-    result = subprocess.run(list(command), cwd=ROOT, check=False)
+    result = subprocess.run(list(command), cwd=ROOT, check=False, capture_output=capture, text=True)
     if result.returncode not in (allowed or {0}):
+        if capture:
+            print(result.stdout, end="")
+            print(result.stderr, end="", file=sys.stderr)
         raise QualityFailure(
             f"command failed with exit code {result.returncode}: {' '.join(command)}"
         )
+
+
+def quality_smoke() -> None:
+    """Exercise ordinary local IO during development, without a fixture count oracle."""
+    from reactgen import export
+
+    with TemporaryDirectory(prefix="reactgen-smoke-") as workspace:
+        directory = Path(workspace)
+        case = directory / "case.yaml"
+        case.write_text("gases: [Ar]\n", encoding="utf-8")
+        result = directory / "result"
+        csv = directory / "csv"
+        network = directory / "network"
+        command = [sys.executable, "-m", "reactgen.cli"]
+        _run([*command, "analyze", "--input", str(case), "--out", str(result)], capture=True)
+        canonical = result / "result.yaml"
+        original = canonical.read_bytes()
+        _run([*command, "needs", str(result), "--data-missing"], capture=True)
+        for kind, destination in (("csv", csv), ("network", network)):
+            _run(
+                [*command, "view", str(result), "--kind", kind, "--out", str(destination)],
+                capture=True,
+            )
+        payload = export.read(result, verify_views=True)
+        if export.stale_views(payload, csv):
+            raise QualityFailure("regenerated CSV views differ from the saved canonical result")
+        if canonical.read_bytes() != original:
+            raise QualityFailure("saved-result inspection or display changed the canonical result")
+        network_file = network / "network.html"
+        if not network_file.is_file() or network_file.stat().st_size == 0:
+            raise QualityFailure("network view did not produce a nonempty HTML file")
+    print("Smoke passed: local analysis, saved inspection, CSV and HTML.")
 
 
 def quality_fast() -> None:
@@ -68,6 +104,7 @@ def quality_nightly() -> None:
 
 
 COMMANDS = {
+    "quality-smoke": quality_smoke,
     "quality-fast": quality_fast,
     "quality-pr": quality_pr,
     "quality-nightly": quality_nightly,

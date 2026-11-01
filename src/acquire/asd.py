@@ -9,6 +9,10 @@ https://physics.nist.gov/PhysRefData/ASD/Html/levelshelp.html
 The E1 summaries check parity and J constraints over returned levels. They do
 not establish transition probabilities, lifetimes, collisions or populations.
 Ground-term fine structure is excluded only from the term-level summaries.
+Candidate transitions require a strictly lower energy, as photon energy is
+the upper-minus-lower difference. Parity/J alone are necessary constraints,
+not sufficient transition-strength evidence. See the ASD Lines Help:
+https://physics.nist.gov/PhysRefData/ASD/Html/lineshelp.html
 """
 
 from __future__ import annotations
@@ -35,10 +39,10 @@ class Levels:
     """Summaries plus original levels; absent summaries remain unresolved."""
 
     symbol: str
-    metastable_eV: float | None = None
-    resonant_eV: float | None = None
+    no_lower_e1_candidate_eV: float | None = None
+    ground_e1_candidate_eV: float | None = None
     lowest_eV: float | None = None
-    trapped: tuple[Level, ...] = ()
+    no_lower_e1_candidate_levels: tuple[Level, ...] = ()
     error: str | None = None
     levels: tuple[Level, ...] = ()
     raw_response: str = ""
@@ -89,7 +93,7 @@ def _one(symbol: str) -> Levels:
 
 def _summaries(symbol: str, levels: list[Level], text: str, url: str) -> Levels:
     original = Levels(symbol, levels=tuple(levels), raw_response=text, query_url=url)
-    represented = [level for level in levels if level.term.lower() != "limit"]
+    represented = _ordered([level for level in levels if level.term.lower() != "limit"])
     reasons = [
         f"row {level.source_row}: {level.withheld_reason}"
         for level in represented
@@ -101,6 +105,8 @@ def _summaries(symbol: str, levels: list[Level], text: str, url: str) -> Levels:
     if not represented or represented[0].energy_eV != 0.0:
         return replace(original, error="no definite zero-energy ground level returned")
     ground = represented[0]
+    if any(level.energy_eV == 0 and not level.same_term_as(ground) for level in represented):
+        return replace(original, error="ambiguous zero-energy ground term returned")
     excited = [level for level in represented[1:] if not level.same_term_as(ground)]
     if not excited:
         return replace(original, error="ground term only")
@@ -110,13 +116,15 @@ def _summaries(symbol: str, levels: list[Level], text: str, url: str) -> Levels:
             lowest_eV=excited[0].energy_eV,
             notes=("E1 parity/J summaries withheld: missing or unresolved J",),
         )
-    trapped = [level for level in metastable(represented) if not level.same_term_as(ground)]
+    no_lower = [
+        level for level in no_lower_e1_candidates(represented) if not level.same_term_as(ground)
+    ]
     return replace(
         original,
-        metastable_eV=trapped[0].energy_eV if trapped else None,
-        resonant_eV=_lowest(ground, excited, allowed=True),
+        no_lower_e1_candidate_eV=no_lower[0].energy_eV if no_lower else None,
+        ground_e1_candidate_eV=_lowest(ground, excited),
         lowest_eV=excited[0].energy_eV,
-        trapped=tuple(_distinct(trapped)),
+        no_lower_e1_candidate_levels=tuple(_distinct(no_lower)),
     )
 
 
@@ -197,8 +205,19 @@ def _parse(text: str) -> list[Level]:
         configuration = cells[columns["configuration"]] or configuration
         term = cells[columns["term"]] or term
         found.append(_level(configuration, term, cells, columns, header, row_number))
+    return _ordered(found)
+
+
+def _ordered(levels: list[Level]) -> list[Level]:
+    """Stable physical ordering; source row positions are not energy ordering."""
     return sorted(
-        found, key=lambda level: float("inf") if level.energy_eV is None else level.energy_eV
+        levels,
+        key=lambda level: (
+            float("inf") if level.energy_eV is None else level.energy_eV,
+            level.configuration,
+            level.term,
+            Fraction(-1) if level.j is None else level.j,
+        ),
     )
 
 
@@ -280,9 +299,18 @@ def _distinct(levels: list[Level]) -> list[Level]:
     return out
 
 
-def _lowest(ground: Level, excited: list[Level], allowed: bool) -> float | None:
-    return next(
-        (level.energy_eV for level in excited if _e1_parity_j(ground, level) is allowed), None
+def _lowest(ground: Level, excited: list[Level]) -> float | None:
+    """Lowest positive ground-level parity/J candidate, regardless of row order."""
+    return min(
+        (
+            level.energy_eV
+            for level in excited
+            if level.energy_eV is not None
+            and ground.energy_eV is not None
+            and level.energy_eV > ground.energy_eV
+            and _e1_parity_j(ground, level)
+        ),
+        default=None,
     )
 
 
@@ -293,18 +321,35 @@ def _e1_parity_j(lower: Level, level: Level) -> bool:
     return abs(level.j - lower.j) <= 1 and not (level.j == 0 and lower.j == 0)
 
 
-def metastable(levels: list[Level]) -> list[Level]:
+def no_lower_e1_candidates(levels: list[Level]) -> list[Level]:
     """No lower returned level satisfies parity/J E1 constraints.
 
-    This alone does not establish lifetime/trapping. The caller must first
-    establish absolute energies and unambiguous J values.
+    The zero-energy ground level is excluded. Equal-energy levels cannot emit
+    a positive-energy photon into each other. This alone does not establish
+    transition strength or lifetime. Inputs require unambiguous absolute
+    energies/J values. The provided set defines the comparison scope;
+    completeness over all physical levels is not established.
     """
-    if any(level.withheld_reason or level.j is None or level.energy_eV is None for level in levels):
+    if any(
+        level.withheld_reason
+        or level.j is None
+        or level.energy_eV is None
+        or not math.isfinite(level.energy_eV)
+        or level.energy_eV < 0
+        for level in levels
+    ):
         raise ValueError("E1 classification requires definite absolute levels and J values")
     return [
         level
-        for index, level in enumerate(levels[1:], 1)
-        if not any(_e1_parity_j(lower, level) for lower in levels[:index])
+        for level in _ordered(levels)
+        if level.energy_eV is not None
+        and level.energy_eV > 0
+        and not any(
+            lower.energy_eV is not None
+            and lower.energy_eV < level.energy_eV
+            and _e1_parity_j(lower, level)
+            for lower in levels
+        )
     ]
 
 
@@ -325,8 +370,8 @@ def _float(text: str) -> float | None:
 
 
 PROPERTY = {
-    "metastable_eV": "metastable_energy_eV",
-    "resonant_eV": "resonant_energy_eV",
+    "no_lower_e1_candidate_eV": "no_lower_e1_candidate_energy_eV",
+    "ground_e1_candidate_eV": "ground_e1_candidate_energy_eV",
     "lowest_eV": "lowest_excitation_energy_eV",
 }
 

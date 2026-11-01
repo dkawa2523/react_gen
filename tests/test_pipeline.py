@@ -15,7 +15,7 @@ from reactgen.chemistry import parse_state_id
 from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
 from reactgen.pipeline import analyze
-from tools.migrate_v4 import migrate
+from tools.migrate_v4 import _reaction_records, migrate
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mini"
 
@@ -124,6 +124,9 @@ def selected_data_use(status: str = "coefficient") -> dict:
 
 def document_with_use(use: dict) -> dict:
     document = export.document(result())
+    # These fixtures exercise historical schema-5 fields. Current typed work
+    # and dependent-claim invariants are covered by responsibility_contracts.
+    document["metadata"]["helper_view_format"] = 3
     reaction = document["reactions"][0]
     reaction["data_use"] = use
     # Saved numerical selections must refer to the scientific evidence they
@@ -450,6 +453,91 @@ def test_migration_preserves_originals_and_recomputes_judgments(tmp_path: Path) 
     ).read_bytes()
 
 
+def test_migration_keeps_unidentified_related_records_only_in_archive(tmp_path: Path) -> None:
+    input_path, bundle = legacy(tmp_path)
+    related = {
+        "id": "unidentified-total",
+        "channel_scope": "total",
+        "source": {"source_id": "total-source"},
+    }
+    reaction = {
+        "reactants": [{"species": "Ar@ground"}],
+        "products": [{"species": "Ar@ground"}],
+        "family": "neutral",
+        "process": "elastic",
+        "evidence": {"related_total_process_records": [related]},
+    }
+    original = {"metadata": {"schema_version": 4}, "reactions": [reaction]}
+    dump(bundle / "reactions.yaml", original)
+    migrate(input_path, bundle, tmp_path / "new")
+    restored = yaml.safe_load(
+        (tmp_path / "new/migration/evidence.yaml").read_text(encoding="utf-8")
+    )
+    assert restored["records"] == []
+    assert (
+        yaml.safe_load((tmp_path / "new/migration/reactions.yaml").read_text(encoding="utf-8"))
+        == original
+    )
+
+
+@pytest.mark.parametrize(
+    "group", ["related_total_process_records", "related_physical_process_records"]
+)
+def test_migration_preserves_related_records_own_target_and_scope(
+    tmp_path: Path, group: str
+) -> None:
+    related = {
+        "reaction": "He@ground -> He@ground",
+        "family": "neutral",
+        "process": "elastic",
+        "channel_scope": "total",
+        "source": {"source_id": "helium-source"},
+    }
+    reaction = {
+        "reactants": [{"species": "Ar@ground"}],
+        "products": [{"species": "Ar@ground"}],
+        "family": "neutral",
+        "process": "elastic",
+        "evidence": {"exact_channel_records": [], group: [related]},
+    }
+    original = deepcopy(reaction)
+    records = _reaction_records(
+        [reaction],
+        tmp_path,
+        {"Ar@ground": "Ar@ground;phase=unknown", "He@ground": "He@ground;phase=unknown"},
+    )
+    assert records[0]["reaction"] == "He@ground;phase=unknown -> He@ground;phase=unknown"
+    assert records[0]["channel_scope"] == "total"
+    assert records[0]["source"] == {"source_id": "helium-source"}
+    assert reaction == original
+
+
+@pytest.mark.parametrize("written", ["invalid equation", "Ne@ground -> Ne@ground"])
+def test_migration_rejects_invalid_or_unidentified_explicit_related_target(
+    tmp_path: Path, written: str
+) -> None:
+    reaction = {
+        "reactants": [{"species": "Ar@ground"}],
+        "products": [{"species": "Ar@ground"}],
+        "family": "neutral",
+        "process": "elastic",
+        "evidence": {"related_total_process_records": [{"reaction": written}]},
+    }
+    with pytest.raises(ValueError, match="legacy"):
+        _reaction_records([reaction], tmp_path, {"Ar@ground": "Ar@ground;phase=unknown"})
+
+
+def test_migration_rejects_raw_terms_before_consolidation(tmp_path: Path) -> None:
+    reaction = {
+        "reactants": [{"species": "Ar@ground", "n": -1}, {"species": "Ar@ground", "n": 2}],
+        "products": [{"species": "Ar@ground"}],
+        "family": "neutral",
+        "process": "elastic",
+    }
+    with pytest.raises(ValueError, match="positive"):
+        _reaction_records([reaction], tmp_path, {"Ar@ground": "Ar@ground;phase=unknown"})
+
+
 def test_migration_rejects_ambiguous_multivalent_identity(tmp_path: Path) -> None:
     input_path, bundle = legacy(tmp_path)
     document = yaml.safe_load((bundle / "states.yaml").read_text(encoding="utf-8"))
@@ -510,6 +598,15 @@ def test_needs_retains_invalid_dataset_when_an_alternative_is_selected() -> None
                 "dataset_id": "broken",
                 "status": "invalid",
                 "reason": "wrong units",
+                "scope": "native representation",
+                "requirements": [
+                    {
+                        "responsibility": "source_review",
+                        "target": "broken",
+                        "quantity": "numerical_representation",
+                        "reason": "wrong units",
+                    }
+                ],
             }
         ],
     )

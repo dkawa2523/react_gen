@@ -8,10 +8,10 @@ values or excited/ionic substitutions are fetched implicitly.
 from __future__ import annotations
 
 import re
-from collections import Counter
 from dataclasses import dataclass
 
 from reactgen.chemistry import parse_state_id
+from reactgen.naming import parse_formula
 
 LIST_URL = "https://cccbdb.nist.gov/pollistx.asp"
 # formula, name, electronic state, point group, value, reference
@@ -73,9 +73,6 @@ def fetch(offline: str | None = None) -> tuple[list[Listed], str | None]:
     return parse(got.body.decode("utf-8", "replace")), None
 
 
-FORMULA = re.compile(r"([A-Z][a-z]?)(\d*)")
-
-
 def composition(formula: str) -> tuple[tuple[str, int], ...] | None:
     """A CCCBDB formula as element counts, or None if it is not one.
 
@@ -89,16 +86,8 @@ def composition(formula: str) -> tuple[tuple[str, int], ...] | None:
     read is a row to leave alone.
     """
 
-    if not formula or not formula[0].isupper() or set(formula) & set("+-()[]. "):
-        return None
-    counts: Counter[str] = Counter()
-    consumed = 0
-    for element, digits in FORMULA.findall(formula):
-        counts[element] += int(digits) if digits else 1
-        consumed += len(element) + len(digits)
-    if consumed != len(formula):
-        return None
-    return tuple(sorted(counts.items()))
+    counts = parse_formula(formula)
+    return tuple(sorted(counts.items())) if counts else None
 
 
 def records(
@@ -137,6 +126,8 @@ def records(
         state = parse_state_id(species_id)
         if state is None or state.charge or state.state.kind != "ground" or state.phase != "gas":
             continue
+        if tuple(sorted(state.composition.items())) != key:
+            raise ValueError("CCCBDB requested composition contradicts its physical target")
         out.append(
             {
                 "species": species_id,
@@ -145,6 +136,7 @@ def records(
                 "unit": "A3",
                 "phase": "gas",
                 "source_species": item.name,
+                "source_identity": {"molecularFormula": item.formula, "name": item.name},
                 "structure": identity or state.structure,
                 "electronic_state": item.electronic_state,
                 "source": {

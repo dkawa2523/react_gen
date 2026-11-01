@@ -16,21 +16,38 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
-from reactgen import yamlio
+from reactgen import outcomes, yamlio
 from reactgen.case import Case, Conditions
-from reactgen.chemistry import parse_state_id
+from reactgen.chemistry import parse_state_id, reaction_declaration_matches, reaction_family
 from reactgen.model import (
     CandidateState,
     ReactionCandidate,
+    Requirement,
     Term,
     canonical_state_label,
+    coefficient_availability_verdict,
+    numerical_requirement_fields,
+    participant_support_verdict,
     reaction_id,
     state_excitation,
     state_lifetime_class,
+    validate_stoichiometric_terms,
 )
 from reactgen.pipeline import AnalysisResult
-from reactgen.presentation import reaction_equation, requirement_summary, state_name
-from reactgen.records import normalized_source, scientific_dataset_content, scientific_method
+from reactgen.presentation import (
+    reaction_equation,
+    requirement_summary,
+    saved_requirement_summary,
+    state_name,
+)
+from reactgen.records import (
+    normalized_dataset_target,
+    normalized_source,
+    scientific_datasets_equivalent,
+    scientific_method,
+    selectable_state_record_id,
+    validate_numerical_targets,
+)
 from reactgen.selection import DataSelection
 
 PUBLIC_FILES = ("result.yaml", "states.csv", "reactions.csv")
@@ -82,6 +99,15 @@ def document(result: AnalysisResult) -> dict:
             "structure_scope": state.structure or "composition_only",
         }
         item["evidence"] = _plain(result.evaluation.state_evidence[state.id], declaration=True)
+        item["evidence"].pop("selection", None)
+        item["evidence"].pop("target", None)
+        for group in ("records", "related_records"):
+            for saved, record in zip(
+                item["evidence"][group],
+                getattr(result.evaluation.state_evidence[state.id], group),
+                strict=True,
+            ):
+                saved["record_id"] = selectable_state_record_id(record)
         item["assessments"] = _plain(result.evaluation.state_assessments[state.id])
         states.append(item)
     reactions = []
@@ -96,11 +122,25 @@ def document(result: AnalysisResult) -> dict:
         )
         item["assessments"] = _plain(result.evaluation.reaction_assessments[reaction.id])
         item["thermochemistry"] = _plain(result.evaluation.thermochemistry.get(reaction.id, {}))
-        item["data_use"] = _plain(result.evaluation.data_use[reaction.id])
+        use = result.evaluation.data_use[reaction.id]
+        item["data_use"] = _plain(use)
+        item["data_use"].update(
+            required_inputs=list(use.required_inputs),
+            required_transforms=list(use.required_transforms),
+        )
+        for stored, assessed in zip(item["data_use"]["datasets"], use.datasets, strict=True):
+            stored.update(
+                required_inputs=list(assessed.required_inputs),
+                required_transforms=list(assessed.required_transforms),
+            )
+        item["thermochemical_calculations"] = _plain(
+            result.evaluation.thermochemical_calculations.get(reaction.id, {})
+        )
         reactions.append(item)
+    outcomes.add_labels(states, reactions)
     output = {
         "input": result.input,
-        "metadata": result.metadata | {"helper_view_format": 3},
+        "metadata": result.metadata | {"helper_view_format": 6},
         "summary": summary(states, reactions),
         "states": states,
         "reactions": reactions,
@@ -112,7 +152,7 @@ def document(result: AnalysisResult) -> dict:
 
 
 def summary(states: list[dict], reactions: list[dict]) -> dict:
-    return {
+    result = {
         "state_count": len(states),
         "reaction_count": len(reactions),
         "judgments": {
@@ -131,6 +171,16 @@ def summary(states: list[dict], reactions: list[dict]) -> dict:
             "a complete mechanism, energy closure, or predictive simulation."
         ),
     }
+    if (states or reactions) and all(
+        "label" in result
+        for item in (*states, *reactions)
+        for result in (
+            *item["assessments"].values(),
+            *([item["data_use"]] if "data_use" in item else []),
+        )
+    ):
+        result["coverage"] = outcomes.coverage(states, reactions)
+    return result
 
 
 def write(outdir: Path, result: AnalysisResult) -> None:
@@ -230,15 +280,11 @@ def rebuild_views(payload: dict, directory: Path) -> None:
 def csv_views(payload: dict) -> dict[str, str]:
     """Derive tables using the saved format, so historical hashes stay reproducible.
 
-    Formats 1 and 2 retain historical CSV hashes. Format 3 also preserves the
-    individual scope, prerequisites and dependencies, and numerical selection.
+    Historical formats retain their exact columns and hashes. Current views
+    include native quantity scope and independently saved thermal calculations.
     No format evaluates scientific evidence.
     """
-    version = payload.get("metadata", {}).get("helper_view_format", 3)
-    # Documents with metadata but no format are historical; bare view inputs
-    # use the current format (including empty tables).
-    if "metadata" in payload and "helper_view_format" not in payload["metadata"]:
-        version = 1
+    version = _csv_format(payload)
     names = {state["id"]: state_name(state) for state in payload["states"]}
     state_rows = [
         {
@@ -274,7 +320,7 @@ def csv_views(payload: dict) -> dict[str, str]:
     ]
     state_columns: tuple[str, ...] = STATE_COLUMNS
     reaction_columns: tuple[str, ...] = REACTION_COLUMNS
-    if version in {2, 3}:
+    if version >= 2:
         scopes = payload.get("metadata", {}).get("judgment_scope", {})
         for row, item in zip(state_rows, payload["states"], strict=True):
             row.update(_judgment_details(item, STATE_JUDGMENTS, scopes, "state"))
@@ -286,10 +332,19 @@ def csv_views(payload: dict) -> dict[str, str]:
                     for name in ("delta_h_reference_temperature_K", "delta_h_standard_pressure_Pa")
                 }
             )
-            requirements = requirement_summary(
-                item["data_use"]["required_inputs"], item["data_use"]["required_transforms"]
+            requirements = (
+                saved_requirement_summary(item["data_use"])
+                if version >= 4
+                else requirement_summary(
+                    item["data_use"]["required_inputs"], item["data_use"]["required_transforms"]
+                )
             )
-            row.update({name: ", ".join(values) for name, values in requirements.items()})
+            row.update(
+                {
+                    name: ", ".join(requirements.get(name, ()))
+                    for name in requirement_summary((), ())
+                }
+            )
         state_columns = (*STATE_COLUMNS[:-1], *_judgment_columns(STATE_JUDGMENTS), "id")
         reaction_columns = (
             *REACTION_COLUMNS[:-1],
@@ -299,7 +354,7 @@ def csv_views(payload: dict) -> dict[str, str]:
             *requirement_summary((), ()),
             "id",
         )
-    if version == 3:
+    if version >= 3:
         _current_judgment_rows(state_rows, payload["states"], STATE_JUDGMENTS)
         _current_judgment_rows(reaction_rows, payload["reactions"], REACTION_JUDGMENTS)
         for row, item in zip(reaction_rows, payload["reactions"], strict=True):
@@ -324,16 +379,64 @@ def csv_views(payload: dict) -> dict[str, str]:
             "thermochemical_values",
             "id",
         )
+    if version >= 4:
+        for row, item in zip(reaction_rows, payload["reactions"], strict=True):
+            row.update(
+                data_use_scope=item["data_use"].get("scope", ""),
+                data_use_requirements=_cell(item["data_use"].get("requirements", [])),
+                numerical_record_assessments=_cell(item["data_use"]["datasets"]),
+                thermochemical_calculations=_cell(item.get("thermochemical_calculations", {})),
+            )
+        reaction_columns = (
+            *reaction_columns[:-1],
+            "data_use_scope",
+            "data_use_requirements",
+            "numerical_record_assessments",
+            "thermochemical_calculations",
+            "id",
+        )
+    if version >= 5:
+        _label_rows(state_rows, payload["states"], STATE_JUDGMENTS)
+        _label_rows(reaction_rows, payload["reactions"], REACTION_JUDGMENTS)
+        state_columns = (*state_columns[:-1], *_label_columns(STATE_JUDGMENTS), "id")
+        reaction_columns = (
+            *reaction_columns[:-1],
+            *_label_columns(REACTION_JUDGMENTS),
+            "data_use_label",
+            "data_use_blocking_causes",
+            "id",
+        )
     return {
         "states.csv": _csv(state_rows, state_columns),
         "reactions.csv": _csv(reaction_rows, reaction_columns),
     }
 
 
+def _csv_format(payload: dict) -> int:
+    # Missing format metadata denotes historical files. Bare view inputs use
+    # current columns, including empty tables.
+    return payload["metadata"].get("helper_view_format", 1) if "metadata" in payload else 6
+
+
+def _label_rows(rows: list[dict], items: list[dict], names: tuple[str, ...]) -> None:
+    for row, item in zip(rows, items, strict=True):
+        for name in names:
+            for field in ("label", "blocking_causes"):
+                value = item["assessments"][name][field]
+                row[f"{name}_{field}"] = _cell(value) if field == "blocking_causes" else value
+        if "data_use" in item:
+            row["data_use_label"] = item["data_use"]["label"]
+            row["data_use_blocking_causes"] = _cell(item["data_use"]["blocking_causes"])
+
+
 def _judgment_columns(names: tuple[str, ...]) -> tuple[str, ...]:
     return tuple(
         f"{name}_{field}" for name in names for field in ("proposition", "scope", "reason")
     )
+
+
+def _label_columns(names: tuple[str, ...]) -> tuple[str, ...]:
+    return tuple(f"{name}_{field}" for name in names for field in ("label", "blocking_causes"))
 
 
 def _prerequisite_columns(names: tuple[str, ...]) -> tuple[str, ...]:
@@ -376,6 +479,15 @@ def validate(payload: Any) -> None:
     _validate_input_links(payload)
     _validate_data_uses(payload)
     _validate_assessments(payload)
+    _validate_calculations(payload)
+    if payload["metadata"].get("helper_view_format", 1) >= 5:
+        outcomes.validate_labels(
+            payload["states"],
+            payload["reactions"],
+            coefficient_exclusions=payload["metadata"]["helper_view_format"] >= 6,
+        )
+        if "coverage" not in payload["summary"]:
+            raise ValueError("current result requires coverage counts")
     if payload["summary"] != summary(payload["states"], payload["reactions"]):
         raise ValueError("summary contradicts canonical candidates")
     if payload["metadata"]["generation"]["complete"] != all(
@@ -403,14 +515,104 @@ def _validate_assessments(payload: dict) -> None:
                 if state_id not in states or key not in states[state_id]["assessments"]:
                     raise ValueError(f"assessment dependency is absent: {item['id']}.{name}")
             for requirement in assessment.get("requirements", []):
-                if requirement["responsibility"] == "user_inputs":
-                    field = requirement["quantity"].removeprefix("conditions.")
-                    if field not in accepted:
-                        raise ValueError(f"requirement is not an accepted input field: {field}")
+                _validate_requirement(requirement, accepted)
+    if payload["metadata"].get("helper_view_format", 1) < 4:
+        return
+    for reaction in payload["reactions"]:
+        _validate_coefficient_projection(reaction)
+        _validate_participant_projection(reaction, states)
+
+
+def _validate_coefficient_projection(reaction: dict) -> None:
+    use = reaction["data_use"]
+    kinetics = reaction["assessments"]["kinetics"]
+    if kinetics["proposition"] != "rate_coefficient_availability":
+        return
+    expected = coefficient_availability_verdict(
+        use["status"], (item["status"] for item in use["datasets"])
+    )
+    if kinetics["verdict"] != expected or kinetics["message"] != use["reason"]:
+        raise ValueError(f"coefficient projection contradicts saved data_use: {reaction['id']}")
+    if kinetics.get("requirements"):
+        raise ValueError(f"coefficient projection duplicates numerical work: {reaction['id']}")
+
+
+def _validate_participant_projection(reaction: dict, states: dict) -> None:
+    claim = reaction["assessments"]["state"]
+    if claim["proposition"] != "participant_state_support":
+        return
+    participants = {
+        term["species"]
+        for term in (*reaction["reactants"], *reaction["products"])
+        if term["species"] != "e"
+    }
+    expected_refs = sorted([[name, "state"] for name in participants])
+    if claim.get("dependencies", []) != expected_refs:
+        raise ValueError(f"participant projection has different targets: {reaction['id']}")
+    expected = participant_support_verdict(
+        states[name]["assessments"]["state"]["verdict"] for name in participants
+    )
+    if claim["verdict"] != expected or claim.get("requirements"):
+        raise ValueError(f"participant projection contradicts saved state claims: {reaction['id']}")
+
+
+def _validate_requirement(requirement: dict, accepted: set[str]) -> None:
+    if requirement["responsibility"] == "user_inputs":
+        name = requirement["quantity"].removeprefix("conditions.")
+        if name not in accepted:
+            raise ValueError(f"requirement is not an accepted input field: {name}")
+
+
+def _validate_numerical_requirements(record: dict, label: str) -> None:
+    if not record.get("scope", "").strip() or "requirements" not in record:
+        raise ValueError(f"numerical responsibility is missing: {label}")
+    assigned = tuple(Requirement(**item) for item in record["requirements"])
+    inputs, transforms = numerical_requirement_fields(assigned)
+    if (
+        list(inputs) != record["required_inputs"]
+        or list(transforms) != record["required_transforms"]
+    ):
+        raise ValueError(f"numerical fields contradict saved responsibilities: {label}")
+    accepted = {field.name for field in fields(Conditions)}
+    for requirement in record["requirements"]:
+        _validate_requirement(requirement, accepted)
+
+
+def _validate_calculations(payload: dict) -> None:
+    """Check saved arithmetic projections, without reopening or reapproving sources."""
+    if payload["metadata"].get("helper_view_format", 1) < 4:
+        return
+    accepted = {field.name for field in fields(Conditions)}
+    for reaction in payload["reactions"]:
+        calculations = reaction.get("thermochemical_calculations", {})
+        if (
+            not {
+                "delta_h_eV",
+                "delta_g_eV",
+                "equilibrium_constant_number_density",
+            }
+            <= calculations.keys()
+        ):
+            raise ValueError(f"calculation outcomes are missing: {reaction['id']}")
+        for quantity, result in calculations.items():
+            for requirement in result["requirements"]:
+                _validate_requirement(requirement, accepted)
+            computed = result["status"] == "computed"
+            if computed:
+                if result["value"] is None or result["requirements"]:
+                    raise ValueError(f"computed quantity contradicts its prerequisites: {quantity}")
+                expected = {quantity: result["value"], **result["conditions"]}
+                if any(
+                    reaction["thermochemistry"].get(key) != value for key, value in expected.items()
+                ):
+                    raise ValueError(f"thermal values contradict calculation outcome: {quantity}")
+            elif result["value"] is not None or quantity in reaction["thermochemistry"]:
+                raise ValueError(f"uncomputed quantity has a saved numerical value: {quantity}")
 
 
 def _validate_data_uses(payload: dict) -> None:
     requested = payload["input"].get("data_selection", {})
+    current = payload["metadata"].get("helper_view_format", 1) >= 4
     for reaction in payload["reactions"]:
         use = reaction["data_use"]
         if use.get("selection", {}) != requested:
@@ -427,17 +629,38 @@ def _validate_data_uses(payload: dict) -> None:
         ):
             raise ValueError(f"data_use disagreement has no distinct dataset: {reaction['id']}")
         inputs, transforms = use["required_inputs"], use["required_transforms"]
+        # Historical arrays also list unsupported models as "inputs". Current
+        # typed work can explain an unavailable value without a missing scalar.
+        unavailable_inputs = not inputs or (
+            payload["metadata"].get("helper_view_format", 1) >= 6
+            and set(inputs)
+            <= {
+                item["quantity"]
+                for item in use.get("requirements", [])
+                if item["responsibility"] in {"external_models", "unsupported_inputs"}
+            }
+        )
         requirements = {
             "coefficient": not inputs and not transforms and use["value"] is not None,
             "needs_input": bool(inputs),
             "needs_transform": not inputs and bool(transforms),
-            "unavailable": not inputs and not transforms,
+            "unavailable": unavailable_inputs and not transforms,
             "conflict": True,
         }
         if not requirements[use["status"]]:
             raise ValueError(f"data_use status contradicts value or requirements: {reaction['id']}")
-        _validate_data_selection(use, assessed, reaction["id"])
-        _validate_selected_evidence(reaction, use, assessed)
+        if current:
+            _validate_numerical_requirements(use, reaction["id"])
+            if use["status"] == "coefficient" and use["requirements"]:
+                raise ValueError(
+                    f"coefficient has unresolved saved prerequisites: {reaction['id']}"
+                )
+            _validate_native_record_links(reaction, use["datasets"])
+            for dataset in use["datasets"]:
+                _validate_numerical_requirements(dataset, dataset["dataset_id"])
+                _validate_native_quantity(dataset)
+        _validate_data_selection(use, assessed, reaction["id"], current=current)
+        _validate_selected_evidence(reaction, use, assessed, current=current)
 
 
 def _evidence_datasets(reaction: dict) -> list[dict]:
@@ -450,27 +673,79 @@ def _evidence_datasets(reaction: dict) -> list[dict]:
     return offered
 
 
-def _validate_selected_evidence(reaction: dict, use: dict, assessed: dict[str, dict]) -> None:
+def _validate_native_record_links(reaction: dict, assessments: list[dict]) -> None:
+    """Native labels refer to offered records; this does not recalculate their values."""
+    offered = _evidence_datasets(reaction)
+    for assessment in assessments:
+        records = [item for item in offered if item.get("id") == assessment["dataset_id"]]
+        if not records:
+            raise ValueError(f"native quantity has no offered record: {assessment['dataset_id']}")
+        if assessment["status"] == "conflict" and assessment["kind"] is None:
+            continue
+        labels = {(item.get("kind"), item.get("observable")) for item in records}
+        if (assessment["kind"], assessment["observable"]) not in labels:
+            raise ValueError(
+                f"native quantity labels contradict evidence: {assessment['dataset_id']}"
+            )
+
+
+def _validate_native_quantity(result: dict) -> None:
+    """Check evaluated quantity shape; raw scientific declarations stay in evidence."""
+    value, kind = result["value"], result["kind"]
+    if kind == "cross_section" and value is not None:
+        raise ValueError(f"native curve is not a scalar point query: {result['dataset_id']}")
+    if value is not None and (value < 0 or (kind == "sticking_coefficient" and value > 1)):
+        raise ValueError(f"native quantity value is outside its domain: {result['dataset_id']}")
+    if result["status"] == "valid" and (
+        result["requirements"] or (kind != "cross_section" and value is None)
+    ):
+        raise ValueError(
+            f"valid native quantity has unresolved work or no value: {result['dataset_id']}"
+        )
+    coefficient_work = {
+        "electron_energy_distribution",
+        "collision_energy_distribution",
+        "surface_incident_flux_model",
+        "eedf_integration",
+        "energy_distribution_integration",
+        "surface_flux_conversion",
+    }
+    if any(item["quantity"] in coefficient_work for item in result["requirements"]):
+        raise ValueError(
+            f"native quantity contains coefficient conversion work: {result['dataset_id']}"
+        )
+
+
+def _validate_selected_evidence(
+    reaction: dict, use: dict, assessed: dict[str, dict], *, current: bool = False
+) -> None:
     selected_id = use["dataset_id"]
     if selected_id is None:
         return
     offered = _evidence_datasets(reaction)
     selected = [item for item in offered if item.get("id") == selected_id]
     if not selected or any(
-        scientific_dataset_content(item) != scientific_dataset_content(selected[0])
-        for item in selected
+        not scientific_datasets_equivalent(item, selected[0]) for item in selected
     ):
         raise ValueError(
             f"data_use selection has missing or conflicting evidence: {reaction['id']}"
         )
     if selected[0].get("kind") != use["kind"]:
         raise ValueError(f"data_use quantity contradicts selected evidence: {reaction['id']}")
-    policy = DataSelection.from_document(use.get("selection", {})).for_quantity(use["kind"])
+    if current and use["estimated"] != (selected[0].get("tier") == "estimated"):
+        raise ValueError(
+            f"data_use estimate annotation contradicts selected evidence: {reaction['id']}"
+        )
+    policy = DataSelection.from_document(use.get("selection", {})).for_quantity(
+        use["kind"], reaction["id"]
+    )
     if policy is not None:
-        _validate_source_request(reaction["id"], selected[0], offered, assessed, policy)
+        _validate_source_request(reaction["id"], selected[0], offered, assessed, policy, current)
 
 
-def _validate_source_request(reaction_id, selected, offered, assessed, policy) -> None:
+def _validate_source_request(
+    reaction_id, selected, offered, assessed, policy, current=False
+) -> None:
     if policy.record is not None and policy.record != selected["id"]:
         raise ValueError(f"data_use selection contradicts requested record: {reaction_id}")
     axes = _source_axes(selected)
@@ -482,6 +757,13 @@ def _validate_source_request(reaction_id, selected, offered, assessed, policy) -
             for item in offered
             if item.get("kind") == selected["kind"]
             and assessed.get(item.get("id"), {}).get("status") in {"valid", "needs_input"}
+            and (
+                not current
+                or all(
+                    assessed[item["id"]].get(field) == assessed[selected["id"]].get(field)
+                    for field in ("observable", "unit")
+                )
+            )
         ]
         best_rank = min(policy.rank(*_source_axes(item)) for item in eligible)
         if policy.rank(*axes) != best_rank:
@@ -493,26 +775,27 @@ def _source_axes(record: dict) -> tuple[str, str | None, str | None]:
     return scientific_method(record), source.provider, source.collection
 
 
-def _validate_data_selection(use: dict, assessed: dict[str, dict], reaction_id: str) -> None:
+def _validate_data_selection(
+    use: dict, assessed: dict[str, dict], reaction_id: str, *, current: bool = False
+) -> None:
     selected_id = use["dataset_id"]
     if selected_id is None:
-        if (
-            any(use[name] is not None for name in ("kind", "value", "unit"))
-            or use["estimated"]
-            or use["status"] in {"coefficient", "needs_transform"}
-        ):
-            raise ValueError(
-                f"data_use has a value or usable status without selection: {reaction_id}"
-            )
+        _validate_unselected_payload(use, reaction_id)
         return
     selected = assessed.get(selected_id)
     if selected is None or selected["status"] not in {"valid", "needs_input"}:
         raise ValueError(f"data_use selection has no applicable dataset assessment: {reaction_id}")
     if use["kind"] is None or not use["unit"]:
         raise ValueError(f"data_use selection is missing its quantity or unit: {reaction_id}")
-    for name in ("value", "unit", "required_inputs", "required_transforms"):
+    for name in (
+        ("value", "unit")
+        if current
+        else ("value", "unit", "required_inputs", "required_transforms")
+    ):
         if use[name] != selected[name]:
             raise ValueError(f"data_use selection contradicts dataset {name}: {reaction_id}")
+    if current and any(item not in use["requirements"] for item in selected["requirements"]):
+        raise ValueError(f"coefficient use drops native quantity prerequisites: {reaction_id}")
     expected_status = (
         "needs_input"
         if use["required_inputs"]
@@ -528,8 +811,21 @@ def _validate_data_selection(use: dict, assessed: dict[str, dict], reaction_id: 
         raise ValueError(f"data_use sticking probability exceeds one: {reaction_id}")
 
 
+def _validate_unselected_payload(use: dict, reaction_id: str) -> None:
+    if (
+        any(use[name] is not None for name in ("kind", "value", "unit"))
+        or use["estimated"]
+        or use["status"] in {"coefficient", "needs_transform"}
+    ):
+        raise ValueError(f"data_use has a value or usable status without selection: {reaction_id}")
+
+
 def _validate_input_links(payload: dict) -> None:
     case = Case.from_document(payload["input"])
+    case.data_selection.validate_targets(
+        (state["id"] for state in payload["states"]),
+        (reaction["id"] for reaction in payload["reactions"]),
+    )
     if case.document() != payload["input"]:
         raise ValueError("saved input is not normalized")
     expected = {f"{gas}@ground" for gas in case.gases}
@@ -561,6 +857,8 @@ def _validate_identities(payload: dict) -> None:
         ):
             raise ValueError(f"state identity contradicts ID: {state['id']}")
     identifiers = set()
+    numerical_targets: list[tuple[str, str]] = []
+    legacy_id_encoding = payload["metadata"].get("helper_view_format", 1) <= 5
     for item in payload["reactions"]:
         if item["id"] in identifiers:
             raise ValueError(f"duplicate reaction ID: {item['id']}")
@@ -579,10 +877,90 @@ def _validate_identities(payload: dict) -> None:
             tuple(item["kinetic_effects"]),
             item["stabilization"],
         )
-        if reaction_id(reaction.key) != item["id"] or reaction.equation != item["equation"]:
+        if reaction.equation != item["equation"] or not _saved_reaction_id_matches(
+            reaction, item["id"], legacy_id_encoding
+        ):
             raise ValueError(f"reaction identity contradicts equation or ID: {item['id']}")
         if any(term.species not in states for term in (*reaction.reactants, *reaction.products)):
             raise ValueError(f"reaction refers to an absent state: {item['id']}")
+        numerical_targets.extend(_saved_numerical_targets(reaction, item["evidence"]))
+    validate_numerical_targets(numerical_targets)
+
+
+def _saved_reaction_id_matches(
+    reaction: ReactionCandidate, identifier: str, legacy_encoding: bool
+) -> bool:
+    """Accept the historical storage hash without changing saved identities or judgments."""
+    if reaction_id(reaction.key) == identifier:
+        return True
+    if not legacy_encoding:
+        return False
+    legacy_key = (
+        reaction.family,
+        reaction.process,
+        reaction.third_body,
+        reaction.surface,
+        reaction.stabilization,
+        _legacy_side_key(reaction.reactants),
+        _legacy_side_key(reaction.products),
+    )
+    return reaction_id(legacy_key) == identifier
+
+
+def _legacy_side_key(terms: tuple[Term, ...]) -> tuple[tuple[str, float], ...]:
+    """Formats 1-5 used sequential binary-float sums when hashing raw duplicate terms."""
+    totals: dict[str, float] = {}
+    for term in terms:
+        totals[term.species] = totals.get(term.species, 0.0) + term.n
+    return tuple(sorted((name, count) for name, count in totals.items() if count))
+
+
+def _saved_numerical_targets(reaction: ReactionCandidate, evidence: dict) -> list[tuple[str, str]]:
+    offered = [(dataset, reaction) for dataset in evidence.get("overlay_datasets", [])]
+    for name in ("records", "related_records"):
+        for record in evidence.get(name, []):
+            target = _saved_reaction_target(record, reaction)
+            if name == "records" and target.key != reaction.key:
+                raise ValueError(
+                    f"saved reaction record contradicts its physical target: {record['id']}"
+                )
+            offered.extend((dataset, target) for dataset in record.get("datasets", []))
+    bindings = []
+    for dataset, target in offered:
+        if not isinstance(dataset, dict) or not isinstance(dataset.get("id"), str):
+            raise ValueError("saved numerical evidence requires a dataset ID")
+        canonical = reaction_id(target.key)
+        declared = dataset.get("reaction_target")
+        if (declared is not None and declared != canonical) or not reaction_declaration_matches(
+            normalized_dataset_target(dataset.get("declared_target", {})), target
+        ):
+            raise ValueError(
+                f"saved numerical dataset contradicts physical target: {dataset['id']}"
+            )
+        bindings.append((dataset["id"], canonical))
+    return bindings
+
+
+def _saved_reaction_target(record: dict, enclosing: ReactionCandidate) -> ReactionCandidate:
+    third_body, surface, reactants, products = record["equation_key"]
+    validate_stoichiometric_terms(reactants)
+    validate_stoichiometric_terms(products)
+    target = ReactionCandidate(
+        "",
+        tuple(Term(*term) for term in reactants),
+        tuple(Term(*term) for term in products),
+        record.get("family") or reaction_family((third_body, surface, reactants, products)),
+        record["process"],
+        "attested_only",
+        "saved evidence target",
+        0,
+        third_body,
+        surface,
+        stabilization=record.get("stabilization"),
+    )
+    if target.equation_key != enclosing.equation_key or target.family != enclosing.family:
+        raise ValueError(f"saved reaction record contradicts its physical target: {record['id']}")
+    return target
 
 
 def _plain(value: Any, *, declaration: bool = False) -> Any:
