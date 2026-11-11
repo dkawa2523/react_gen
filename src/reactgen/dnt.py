@@ -3,10 +3,36 @@
 from collections import defaultdict
 from math import isfinite
 
-from reactgen.reaction_tables import energy_values
+from reactgen.presentation import reaction_equation
+from reactgen.reaction_tables import csv_text, energy_values, state_labels
 
 _TARGET_PROPERTIES = {"polarizability_A3": "A3", "dipole_moment_D": "D", "collision_radius_A": "A"}
 _JUDGMENTS = ("conservation", "consistency", "state", "energy", "reaction_evidence")
+_PAIR_COLUMNS = ("ion", "neutral", "projectile_state", "target_state")
+_PAIR_PROPERTIES = (
+    ("projectile", "mass_amu", "ion_mass_amu"),
+    ("target", "mass_amu", "neutral_mass_amu"),
+    ("target", "polarizability_A3", "neutral_polarizability_A3"),
+    ("target", "dipole_moment_D", "neutral_dipole_moment_D"),
+    ("target", "collision_radius_A", "neutral_collision_radius_A"),
+)
+_CHANNEL_COLUMNS = (
+    "equation",
+    "process",
+    *_PAIR_COLUMNS,
+    "state_verdict",
+    "energy_verdict",
+    "energy_label",
+    "reaction_evidence_verdict",
+    "reaction_evidence_label",
+    "state_energy_difference_eV",
+    "endpoint_difference_status",
+    "declared_threshold_eV",
+    "collision_energy_com_eV",
+    "collision_input",
+    "stabilization",
+    "reaction_id",
+)
 
 
 def dnt_inputs(document: dict) -> dict:
@@ -45,6 +71,81 @@ def dnt_inputs(document: dict) -> dict:
             }
             for state in sorted(used_states)
         ],
+    }
+
+
+def dnt_tables(document: dict, inputs: dict) -> dict[str, str]:
+    """Render one row per entrance and per channel from the same DNT projection."""
+    names = state_labels(document)
+    reactions = {reaction["id"]: reaction for reaction in document["reactions"]}
+    pair_columns = (
+        *_PAIR_COLUMNS,
+        "candidate_channels",
+        "neutral_dipole_model_hint",
+        "reduced_mass_amu",
+        *(field for _, _, name in _PAIR_PROPERTIES for field in (name, f"{name}_status")),
+        "neutral_collision_radius_record_tiers",
+    )
+    pairs = []
+    channels = []
+    for pair in inputs["pairs"]:
+        ion, neutral = pair["projectile"]["state"], pair["target"]["state"]
+        identity = {
+            "ion": names[ion],
+            "neutral": names[neutral],
+            "projectile_state": ion,
+            "target_state": neutral,
+        }
+        pair_row = identity | {
+            "candidate_channels": len(pair["channels"]),
+            "neutral_dipole_model_hint": pair["neutral_dipole_model_hint"],
+            "reduced_mass_amu": pair["reduced_mass_amu"],
+        }
+        for role, quantity, name in _PAIR_PROPERTIES:
+            prop = pair[role][quantity]
+            pair_row[name] = prop["value"]
+            pair_row[f"{name}_status"] = prop["status"]
+        radius_records = pair["target"]["collision_radius_A"]["declarations"]
+        pair_row["neutral_collision_radius_record_tiers"] = ", ".join(
+            sorted({record["tier"] for record in radius_records if record["tier"]})
+        )
+        pairs.append(pair_row)
+
+        for channel in pair["channels"]:
+            reaction = reactions[channel["reaction_id"]]
+            channels.append(identity | _channel_table_row(channel, reaction, names))
+
+    # A UTF-8 BOM lets spreadsheet applications recognize the equation arrow on open.
+    return {
+        "dnt_pairs.csv": "\ufeff" + csv_text(pairs, pair_columns),
+        "dnt_channels.csv": "\ufeff" + csv_text(channels, _CHANNEL_COLUMNS),
+    }
+
+
+def _channel_table_row(channel: dict, reaction: dict, names: dict[str, str]) -> dict:
+    assessments = reaction["assessments"]
+    difference = channel["endpoint_difference"]
+    return {
+        "equation": reaction_equation(reaction, names),
+        **{
+            key: channel[key]
+            for key in (
+                "process",
+                "stabilization",
+                "reaction_id",
+                "declared_threshold_eV",
+                "collision_energy_com_eV",
+                "collision_input",
+            )
+        },
+        **{
+            f"{name}_verdict": channel["judgments"].get(name)
+            for name in ("state", "energy", "reaction_evidence")
+        },
+        "energy_label": assessments.get("energy", {}).get("label"),
+        "reaction_evidence_label": assessments.get("reaction_evidence", {}).get("label"),
+        "state_energy_difference_eV": difference["value"],
+        "endpoint_difference_status": difference["status"],
     }
 
 

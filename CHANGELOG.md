@@ -11,6 +11,7 @@
 - Write result schema 5 with helper view format 10. See the
   [result reference](docs/output_reference.md) for older results and migration.
 - Export ion–neutral candidates and recorded properties for DNT preprocessing.
+  Provide separate CSVs for collision-pair properties and channel judgments.
   Publish [the process report and benchmark](docs/reaction_judgment_matrix.md)
   with the Registry inventory and reproducible example inputs.
 - Keep acquisition, candidate matching, scientific review, and Registry writes

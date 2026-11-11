@@ -224,15 +224,19 @@ def _view(args: argparse.Namespace) -> int:
         return _csv_view(args, root, required)
     document = export.read(args.result)
     if args.kind == "dnt":
-        from reactgen.dnt import dnt_inputs
+        from reactgen.dnt import dnt_inputs, dnt_tables
 
         destination = args.out or root / "dnt"
         name = "dnt_inputs.yaml"
         inputs = dnt_inputs(document)
+        tables = dnt_tables(document, inputs)
         export.write_tables(
-            destination, {name: yaml.safe_dump(inputs, sort_keys=False, allow_unicode=True)}
+            destination,
+            {name: yaml.safe_dump(inputs, sort_keys=False, allow_unicode=True), **tables},
         )
         print(f"{destination / name} ({len(inputs['pairs'])} ion-neutral pairs)")
+        for table_name in tables:
+            print(destination / table_name)
         return 0
 
     from reactgen.views import plot, view

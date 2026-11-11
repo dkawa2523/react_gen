@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 from copy import deepcopy
+from csv import DictReader
 from dataclasses import replace
 from pathlib import Path
 
@@ -686,7 +687,13 @@ def test_saved_views_and_needs_never_reanalyze(tmp_path: Path, monkeypatch) -> N
         == 0
     )
     assert main(["view", str(tmp_path / "out"), "--kind", "dnt"]) == 0
-    assert yaml.safe_load((tmp_path / "out/dnt/dnt_inputs.yaml").read_text())["pairs"] == []
+    dnt = tmp_path / "out/dnt"
+    assert yaml.safe_load((dnt / "dnt_inputs.yaml").read_text(encoding="utf-8"))["pairs"] == []
+    for filename in ("dnt_pairs.csv", "dnt_channels.csv"):
+        with (dnt / filename).open(encoding="utf-8-sig", newline="") as stream:
+            reader = DictReader(stream)
+            assert "target_state" in (reader.fieldnames or [])
+            assert list(reader) == []
 
 
 def test_dnt_handoff_retains_missing_dipole_and_independent_energy_values(tmp_path: Path) -> None:
@@ -699,8 +706,9 @@ def test_dnt_handoff_retains_missing_dipole_and_independent_energy_values(tmp_pa
         supplies=("e", "Ar+"),
     )
     saved = export.write(result_path, analyze(case, catalog))
-    assert main(["view", str(result_path), "--kind", "dnt"]) == 0
-    payload = yaml.safe_load((result_path / "dnt/dnt_inputs.yaml").read_text(encoding="utf-8"))
+    dnt = tmp_path / "dnt"
+    assert main(["view", str(result_path), "--kind", "dnt", "--out", str(dnt)]) == 0
+    payload = yaml.safe_load((dnt / "dnt_inputs.yaml").read_text(encoding="utf-8"))
     pairs = {pair["target"]["state"]: pair for pair in payload["pairs"]}
     assert set(pairs) == {"Ar@ground", "F2@ground"}
     assert all(pair["projectile"]["state"] == "Ar+@ground" for pair in pairs.values())
@@ -711,6 +719,23 @@ def test_dnt_handoff_retains_missing_dipole_and_independent_energy_values(tmp_pa
     elastic = next(row for row in pairs["Ar@ground"]["channels"] if row["process"] == "elastic")
     assert elastic["endpoint_difference"]["value"] == 0.0
     assert elastic["declared_threshold_eV"] is None
+
+    with (dnt / "dnt_pairs.csv").open(encoding="utf-8-sig", newline="") as stream:
+        pair_rows = {row["target_state"]: row for row in DictReader(stream)}
+    assert set(pair_rows) == set(pairs)
+    assert float(pair_rows["Ar@ground"]["neutral_dipole_moment_D"]) == 0.0
+    assert pair_rows["F2@ground"]["neutral_dipole_moment_D"] == ""
+    assert pair_rows["F2@ground"]["neutral_dipole_moment_D_status"] == "unavailable"
+    with (dnt / "dnt_channels.csv").open(encoding="utf-8-sig", newline="") as stream:
+        channel_rows = {row["reaction_id"]: row for row in DictReader(stream)}
+    assert set(channel_rows) == {
+        row["reaction_id"] for pair in pairs.values() for row in pair["channels"]
+    }
+    row = channel_rows[elastic["reaction_id"]]
+    assert row["equation"] == "Ar+ + Ar → Ar+ + Ar"
+    assert float(row["state_energy_difference_eV"]) == 0.0
+    assert row["declared_threshold_eV"] == ""
+    assert row["energy_verdict"] == elastic["judgments"]["energy"]
     assert export.read(result_path, verify_views=True) == saved
 
 

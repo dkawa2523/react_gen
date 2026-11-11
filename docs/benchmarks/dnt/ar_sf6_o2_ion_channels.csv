@@ -1,0 +1,489 @@
+﻿equation,process,ion,neutral,projectile_state,target_state,state_verdict,energy_verdict,energy_label,reaction_evidence_verdict,reaction_evidence_label,state_energy_difference_eV,endpoint_difference_status,declared_threshold_eV,collision_energy_com_eV,collision_input,stabilization,reaction_id
+Ar+ + Ar → Ar+ + Ar(4s),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_04dc206d4641
+Ar+ + Ar → Ar+ + Ar(1s3),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.723161045859433,computed,,,,,rxn_10bdbfa3ff7a
+Ar+ + Ar → Ar+ + Ar(1s4),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.6235933779826,computed,,,,,rxn_19ddd34084ee
+Ar+ + Ar → Ar+ + Ar(1s2),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.828071812767746,computed,,,,,rxn_1efd13015450
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s2),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,12.005565495911762,computed,,,,,rxn_47b1517bc3f6
+Ar+ + Ar → Ar+ + Ar(1s5),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.548355079770634,computed,,,,,rxn_56b0bc9da8f5
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s3),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.900654729003449,computed,,,,,rxn_8c7f48aed0c7
+Ar+ + Ar → Ar+(2p1/2) + Ar(4s),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9e8586d80201
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s4),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.801087061126616,computed,,,,,rxn_a3685dca3eb4
+Ar+ + Ar → Ar+(2p1/2) + Ar,charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.17749368314401598,computed,,,,,rxn_c24e4b81f39b
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s5),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.72584876291465,computed,,,,,rxn_db3c6244bdc7
+Ar+ + Ar → e + Ar+(2p1/2) + Ar+,collision_ionization,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,15.937105583144016,computed,,,,,rxn_105100c77872
+Ar+ + Ar → e + 2 Ar+,collision_ionization,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,15.7596119,computed,,,,,rxn_1d46d68e9da3
+Ar+ + Ar → e + Ar+ + Ar+(m),collision_ionization,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c1ee79c277d8
+Ar+ + Ar → e + Ar+ + Ar+(r),collision_ionization,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e9a5560c23b0
+Ar+ + Ar → Ar+ + Ar,elastic,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.0,computed,,,,,rxn_8b17617e5845
+Ar+ + Ar → Ar+(r) + Ar,level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0d36729abd3f
+Ar+ + Ar → Ar+(m) + Ar,level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1093eb317f41
+Ar+ + Ar → Ar+(2p1/2) + Ar(m),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1499e55afca4
+Ar+ + Ar → Ar+(r) + Ar(1s2),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_301830b6c08f
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s2),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,12.005565495911762,computed,,,,,rxn_338bd8b5c0b0
+Ar+ + Ar → Ar+(m) + Ar(r),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3e71350d3d0f
+Ar+ + Ar → Ar+ + Ar(1s5),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.548355079770634,computed,,,,,rxn_43b4c342a832
+Ar+ + Ar → Ar+(r) + Ar(1s5),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_43d1f7efc42c
+Ar+ + Ar → Ar+(2p1/2) + Ar(4s),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_48bcdceabc07
+Ar+ + Ar → Ar+(r) + Ar(m),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_49405abe8bc4
+Ar+ + Ar → Ar+(r) + Ar(1s4),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4d7277165ba5
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s5),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.72584876291465,computed,,,,,rxn_4e43bd77f5b6
+Ar+ + Ar → Ar+ + Ar(1s3),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.723161045859433,computed,,,,,rxn_515e5ae71fb2
+Ar+ + Ar → Ar+(m) + Ar(1s4),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_54e91641d654
+Ar+ + Ar → Ar+ + Ar(m),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_553d2edf9074
+Ar+ + Ar → Ar+(m) + Ar(m),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_59154d798e1b
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s3),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.900654729003449,computed,,,,,rxn_614e33892840
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s4),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.801087061126616,computed,,,,,rxn_61be0576f57e
+Ar+ + Ar → Ar+(r) + Ar(4s),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6a8f4ecb0b24
+Ar+ + Ar → Ar+ + Ar(1s4),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.6235933779826,computed,,,,,rxn_7bca2abb7961
+Ar+ + Ar → Ar+(2p1/2) + Ar(r),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7dec1b40d10b
+Ar+ + Ar → Ar+(r) + Ar(r),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9e2971754ff7
+Ar+ + Ar → Ar+(2p1/2) + Ar,level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.17749368314401598,computed,,,,,rxn_a0c7b353cb98
+Ar+ + Ar → Ar+(r) + Ar(1s3),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a333486fa328
+Ar+ + Ar → Ar+ + Ar(1s2),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.828071812767746,computed,,,,,rxn_bc38d26d8a06
+Ar+ + Ar → Ar+(m) + Ar(1s3),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_cb7228cafd1e
+Ar+ + Ar → Ar+(m) + Ar(4s),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_cdbf9f280c3f
+Ar+ + Ar → Ar+(m) + Ar(1s2),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d313ff58369e
+Ar+ + Ar → Ar+ + Ar(4s),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d43edf0e2135
+Ar+ + Ar → Ar+ + Ar(r),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e33d2cd03856
+Ar+ + Ar → Ar+(m) + Ar(1s5),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e632d20681c0
+Ar+ + Ar → Ar2+(composition),net_association,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,unspecified,rxn_ca53c7f66d93
+Ar+ + Ar → Ar+ + Ar,resonant_charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.0,computed,,,,,rxn_103025254b1e
+Ar+ + O2 → Ar(1s2) + O2+(composition),charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_29e5e0918638
+Ar+ + O2 → Ar(1s2) + O2+,charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,8.138159912767746,computed,,,,,rxn_3acbb69ab882
+Ar+ + O2 → Ar + O2+(composition),charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4b2517af4232
+Ar+ + O2 → Ar(1s4) + O2+(composition),charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_63fe6110e40e
+Ar+ + O2 → Ar(1s3) + O2+,charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,8.033249145859433,computed,,,,,rxn_6f93120dfdb5
+Ar+ + O2 → Ar(1s4) + O2+,charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,7.933681477982599,computed,,,,,rxn_7f7687878a94
+Ar+ + O2 → Ar(1s5) + O2+(composition),charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b8f6498e785d
+Ar+ + O2 → Ar(4s) + O2+,charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_bf3363fe95d8
+Ar+ + O2 → Ar + O2+,charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,review_required,-3.6899119000000002,computed,,,,,rxn_cfd7a7435eff
+Ar+ + O2 → Ar(1s3) + O2+(composition),charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d654b777b39f
+Ar+ + O2 → Ar(4s) + O2+(composition),charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_da4ec2878a0c
+Ar+ + O2 → Ar(1s5) + O2+,charge_exchange,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,7.858443179770633,computed,,,,,rxn_da53d111e376
+Ar+ + O2 → Ar+ + O(3p0) + O,collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,5.1448690035452165,computed,,,,,rxn_01c0be4a7c08
+Ar+ + O2 → Ar+ + 2 O(3p1),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,5.155972160467505,computed,,,,,rxn_0c6e37af04f4
+Ar+ + O2 → Ar+ + O(1d2) + O(3p0),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,7.112233203545216,computed,,,,,rxn_0dd69e33eef7
+Ar+ + O2 → Ar+ + 2 O(1d2),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,9.051455842137443,computed,,,,,rxn_28300070b1f9
+Ar+ + O2 → Ar+ + 2 O(3p),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2e7ff333531c
+Ar+ + O2 → Ar+ + O(3p0) + O(3p1),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,5.164491362710247,computed,,,,,rxn_3dfdab8f1f58
+Ar+ + O2 → Ar+ + O(3p1) + O(3p),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_41a8b7d80457
+Ar+ + O2 → Ar+ + O(1d2) + O,collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,7.0840916421374445,computed,,,,,rxn_4711e459f3ae
+Ar+ + O2 → Ar+ + O(3p1) + O,collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,5.136349801302474,computed,,,,,rxn_68932c6d078e
+Ar+ + O2 → Ar+ + O(1d2) + O(3p1),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,7.103714001302475,computed,,,,,rxn_7309326ff93d
+Ar+ + O2 → Ar+ + O+ + O-,collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_93bb4fbc4772
+Ar+ + O2 → Ar+ + 2 O(3p0),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,5.173010564952989,computed,,,,,rxn_9e0768a4dfea
+Ar+ + O2 → Ar+ + O(1d2) + O(3p),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b5ee1992761b
+Ar+ + O2 → Ar+ + O(3p) + O,collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d5f15c847754
+Ar+ + O2 → Ar+ + O(1d2) + O(1s),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.273837958379834,computed,,,,,rxn_d6f7c0020fa0
+Ar+ + O2 → Ar+ + 2 O(1s),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,13.496220074622224,computed,,,,,rxn_da47dd3af182
+Ar+ + O2 → Ar+ + O(1s) + O(3p0),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,9.334615319787606,computed,,,,,rxn_e4c5aacd7c2e
+Ar+ + O2 → Ar+ + O(1s) + O(3p1),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,9.326096117544864,computed,,,,,rxn_e63fa6453ce1
+Ar+ + O2 → Ar+ + O(3p0) + O(3p),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e6889a154645
+Ar+ + O2 → Ar+ + 2 O,collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,5.116727442137444,computed,,,,,rxn_e759bfd87b99
+Ar+ + O2 → Ar+ + O(1s) + O(3p),collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_efc35d711eb3
+Ar+ + O2 → Ar+ + O(1s) + O,collision_induced_dissociation,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,9.306473758379834,computed,,,,,rxn_fd279441cff5
+Ar+ + O2 → e + Ar+ + O2+(composition),collision_ionization,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2f0d46645eb8
+Ar+ + O2 → e + Ar+ + O2+,collision_ionization,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,12.0697,computed,,,,,rxn_e66764a2d4bb
+Ar+ + O2 → Ar(1s4) + O+ + O,dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.598763920120044,computed,,,,,rxn_00b2251aece8
+Ar+ + O2 → Ar(1s2) + O+ + O(3p0),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.831383916312964,computed,,,,,rxn_030cd1297dd8
+Ar+ + O2 → Ar(m) + O+ + O(1d2),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_033b41e4c8ae
+Ar+ + O2 → Ar(1s4) + O+ + O(1s),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,18.788510236362434,computed,,,,,rxn_056197b4827e
+Ar+ + O2 → Ar(1s5) + O+ + O(3p1),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.543147981073108,computed,,,,,rxn_089d2b33f395
+Ar+ + O2 → Ar(1s4) + O+ + O(3p0),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.626905481527817,computed,,,,,rxn_0b2c72c9b79d
+Ar+ + O2 → Ar(1s3) + O+ + O(3p1),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.717953947161908,computed,,,,,rxn_12d93735d31b
+Ar+ + O2 → Ar(1s2) + O+ + O(3p1),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.82286471407022,computed,,,,,rxn_1ccbf323bfae
+Ar+ + O2 → Ar(1s5) + O+ + O,dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.523525621908078,computed,,,,,rxn_2ecad611eacf
+Ar+ + O2 → Ar(r) + O+ + O(3p1),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_359134d8751b
+Ar+ + O2 → Ar(1s2) + O+ + O(1s),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,18.99298867114758,computed,,,,,rxn_3cb94aac2a7c
+Ar+ + O2 → Ar(1s3) + O+ + O(3p0),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.72647314940465,computed,,,,,rxn_40fd894402a0
+Ar+ + O2 → Ar(4s) + O+ + O(1s),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_444e81cabc30
+Ar+ + O2 → Ar(1s5) + O+ + O(3p),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4507f12ef817
+Ar+ + O2 → Ar(r) + O+ + O(1d2),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_555dd72ad395
+Ar+ + O2 → Ar(1s3) + O+ + O(1s),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,18.888077904239267,computed,,,,,rxn_559a0a6421db
+Ar+ + O2 → Ar(r) + O+ + O(1s),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5f107d2c6669
+Ar+ + O2 → Ar(m) + O+ + O(3p1),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_69f914242507
+Ar+ + O2 → Ar(m) + O+ + O(3p),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6de686d28e71
+Ar+ + O2 → Ar + O+ + O(3p0),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,3.003312103545217,computed,,,,,rxn_7241d711954d
+Ar+ + O2 → Ar(r) + O+ + O(3p0),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_73a9c8f3ef8d
+Ar+ + O2 → Ar + O+ + O(3p1),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,2.994792901302475,computed,,,,,rxn_76306baa705e
+Ar+ + O2 → Ar(4s) + O+ + O,dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_809786f34899
+Ar+ + O2 → Ar + O+ + O(3p),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_880106bb2813
+Ar+ + O2 → Ar(4s) + O+ + O(3p1),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8b904307036c
+Ar+ + O2 → Ar(1s4) + O+ + O(3p1),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.618386279285074,computed,,,,,rxn_8f55551b81c4
+Ar+ + O2 → Ar(1s4) + O+ + O(1d2),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,16.566128120120045,computed,,,,,rxn_949d36362d7e
+Ar+ + O2 → Ar(1s4) + O+ + O(3p),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_97fd856ec669
+Ar+ + O2 → Ar(m) + O+ + O,dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9c11a3c83bcf
+Ar+ + O2 → Ar + O+ + O,dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,2.9751705421374446,computed,,,,,rxn_9d20937539e1
+Ar+ + O2 → Ar(1s3) + O+ + O(3p),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9d353018da5e
+Ar+ + O2 → Ar(1s5) + O+ + O(1s),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,18.71327193815047,computed,,,,,rxn_a67b0936c3c4
+Ar+ + O2 → Ar(m) + O+ + O(3p0),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a731a7ed6168
+Ar+ + O2 → Ar(4s) + O+ + O(1d2),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a92363269c13
+Ar+ + O2 → Ar + O+ + O(1s),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,7.164916858379835,computed,,,,,rxn_b00babfec619
+Ar+ + O2 → Ar + O+ + O(1d2),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,4.942534742137445,computed,,,,,rxn_b6e7e023c30d
+Ar+ + O2 → Ar(1s5) + O+ + O(1d2),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,16.490889821908077,computed,,,,,rxn_b8b790e4419e
+Ar+ + O2 → Ar(1s2) + O+ + O(1d2),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,16.770606554905193,computed,,,,,rxn_b90f13062b77
+Ar+ + O2 → Ar(r) + O+ + O,dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c3be3e5ade9c
+Ar+ + O2 → Ar(1s2) + O+ + O(3p),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_cfe75bf9dfb2
+Ar+ + O2 → Ar(1s3) + O+ + O,dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.698331587996877,computed,,,,,rxn_d816e4e8179e
+Ar+ + O2 → Ar(1s2) + O+ + O,dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.80324235490519,computed,,,,,rxn_e09b80c37613
+Ar+ + O2 → Ar(1s3) + O+ + O(1d2),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,16.665695787996878,computed,,,,,rxn_e3dcde1ce7ad
+Ar+ + O2 → Ar(4s) + O+ + O(3p),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_eab6766ec6e0
+Ar+ + O2 → Ar(m) + O+ + O(1s),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f06ff70275cf
+Ar+ + O2 → Ar(r) + O+ + O(3p),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f20f96030a2f
+Ar+ + O2 → Ar(1s5) + O+ + O(3p0),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,14.551667183315852,computed,,,,,rxn_f8bb6e24ca3c
+Ar+ + O2 → Ar(4s) + O+ + O(3p0),dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_fddb5bc442d9
+Ar+ + O2 → Ar- + 2 O+,dissociative_charge_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_fe35ea81c16a
+Ar+ + O2 → Ar+ + O2,elastic,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.0,computed,,,,,rxn_3919518c130a
+Ar+ + O2 → Ar+(r) + O2(*),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_21eef17826b9
+Ar+ + O2 → Ar+(m) + O2(*),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2c11d5321209
+Ar+ + O2 → Ar+(r) + O2(a1dg),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_31f628ab8cca
+Ar+ + O2 → Ar+(m) + O2(v),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_337fe92f9b92
+Ar+ + O2 → Ar+ + O2(*),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_393d8fdaf7e5
+Ar+ + O2 → Ar+(m) + O2(b1sg+),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7241bab14ff1
+Ar+ + O2 → Ar+ + O2(b1sg+),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,1.627,computed,,,,,rxn_78dbf89c2c19
+Ar+ + O2 → Ar+(r) + O2(b1sg+),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7a2f1cf12cac
+Ar+ + O2 → Ar+(2p1/2) + O2(b1sg+),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,1.804493683144016,computed,,,,,rxn_8aa8a9be05da
+Ar+ + O2 → Ar+(m) + O2(a1dg),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8ab418dfc11f
+Ar+ + O2 → Ar+(2p1/2) + O2(v),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b8ed2438db1f
+Ar+ + O2 → Ar+(2p1/2) + O2(*),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c25c4494f107
+Ar+ + O2 → Ar+(2p1/2) + O2,level_transfer,Ar+,O2,Ar+@ground,O2@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.17749368314401598,computed,,,,,rxn_c82acf47b6c0
+Ar+ + O2 → Ar+(r) + O2,level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d06752856044
+Ar+ + O2 → Ar+(m) + O2,level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e4168db14199
+Ar+ + O2 → Ar+(r) + O2(v),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_eaa0e4790505
+Ar+ + O2 → Ar+ + O2(v),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ebacb5b94572
+Ar+ + O2 → Ar+(2p1/2) + O2(a1dg),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,1.154493683144016,computed,,,,,rxn_efd399664027
+Ar+ + O2 → Ar+ + O2(a1dg),level_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,0.977,computed,,,,,rxn_f8b78b645094
+Ar+ + O2 → ArO2+(composition),net_association,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,unspecified,rxn_b78fcdaf04e1
+Ar+ + O2 → ArO(composition) + O+,net_association_loss,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1a2483dbed9c
+Ar+ + O2 → ArO+(composition) + O(3p1),net_association_loss,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1e4b4e0df393
+Ar+ + O2 → ArO+(composition) + O,net_association_loss,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3385b614f64f
+Ar+ + O2 → ArO+(composition) + O(3p),net_association_loss,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8116b546c5b4
+Ar+ + O2 → ArO+(composition) + O(1s),net_association_loss,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_bb0bad8afcbe
+Ar+ + O2 → ArO+(composition) + O(3p0),net_association_loss,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_bded01a666cb
+Ar+ + O2 → ArO+(composition) + O(1d2),net_association_loss,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e6edce471c81
+Ar+ + O2 → ArO+(composition) + O(3p1),net_group_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_263d1de65875
+Ar+ + O2 → ArO(composition) + O+,net_group_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2bf6b322ff2c
+Ar+ + O2 → ArO+(composition) + O(3p0),net_group_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6240ed4f4459
+Ar+ + O2 → ArO+(composition) + O(1d2),net_group_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a22dadbc0755
+Ar+ + O2 → ArO+(composition) + O(3p),net_group_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a5bb6f93254a
+Ar+ + O2 → ArO+(composition) + O(1s),net_group_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b378ca33b504
+Ar+ + O2 → ArO+(composition) + O,net_group_transfer,Ar+,O2,Ar+@ground,O2@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ce737cd6ec99
+Ar+ + SF6 → Ar(4s) + SF6+(composition),charge_exchange,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_44581d92720a
+Ar+ + SF6 → Ar + SF6+(composition),charge_exchange,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_95e12dfa325b
+Ar+ + SF6 → Ar(1s5) + SF6+(composition),charge_exchange,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_97655598d716
+Ar+ + SF6 → Ar(1s4) + SF6+(composition),charge_exchange,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c21b2987c966
+Ar+ + SF6 → Ar(1s2) + SF6+(composition),charge_exchange,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d6b9496cfc15
+Ar+ + SF6 → Ar(1s3) + SF6+(composition),charge_exchange,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_df6712b72963
+Ar+ + SF6 → Ar+ + F2- + SF4+,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0217ad11feff
+Ar+ + SF6 → Ar+ + F2+(composition) + SF4-(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_138d634401dd
+Ar+ + SF6 → Ar+ + F2-(composition) + SF4+,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_245042d08148
+Ar+ + SF6 → Ar+ + F3-(composition) + SF3+,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_263b8d9eed3f
+Ar+ + SF6 → Ar+ + F4-(composition) + SF2+,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2ac4af461acc
+Ar+ + SF6 → Ar+ + F4-(composition) + SF2+(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2b09a26f5034
+Ar+ + SF6 → Ar+ + F2(composition) + SF4,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_300f52c0114c
+Ar+ + SF6 → Ar+ + F6(composition) + S(1s),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_33ed44b75087
+Ar+ + SF6 → Ar+ + F4+(composition) + SF2-,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3a56132d7cad
+Ar+ + SF6 → Ar+ + F2(composition) + SF4(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3f530483673f
+Ar+ + SF6 → Ar+ + F5-(composition) + SF+,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_44b0fbdb79e4
+Ar+ + SF6 → Ar+ + F2- + SF4+(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4bb421d06113
+Ar+ + SF6 → Ar+ + F2 + SF4(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_56006b0c1147
+Ar+ + SF6 → Ar+ + F4(composition) + SF2,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_57432df21095
+Ar+ + SF6 → Ar+ + F+ + SF5-(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5761aba805da
+Ar+ + SF6 → Ar+ + F2+ + SF4-(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_57f78bc1a1f4
+Ar+ + SF6 → Ar+ + F6(composition) + S(1d),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_645ced76a969
+Ar+ + SF6 → Ar+ + F5-(composition) + SF+(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_646e756da07b
+Ar+ + SF6 → Ar+ + F6-(composition) + S+,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_65e1beb5a08e
+Ar+ + SF6 → Ar+ + F2+(composition) + SF4-,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6d6fc07aa17c
+Ar+ + SF6 → Ar+ + F5(composition) + SF(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7797a4deb6d2
+Ar+ + SF6 → Ar+ + F- + SF5+,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7c175a909a84
+Ar+ + SF6 → Ar+ + F4(composition) + SF2(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7ef6ada822fa
+Ar+ + SF6 → Ar+ + F6(composition) + S,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_826c133f7e43
+Ar+ + SF6 → Ar+ + F3+(composition) + SF3-,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8310fb54ac0c
+Ar+ + SF6 → Ar+ + F- + SF5+(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_83814fee5cdb
+Ar+ + SF6 → Ar+ + F+ + SF5-,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_874fda1f7a68
+Ar+ + SF6 → Ar+ + F3(composition) + SF3,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9b5ec03d5f77
+Ar+ + SF6 → Ar+ + F2 + SF4,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ac2199861ee8
+Ar+ + SF6 → Ar+ + F2-(composition) + SF4+(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ad31b39baf4d
+Ar+ + SF6 → Ar+ + F5+(composition) + SF-(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b4cd2b37c71c
+Ar+ + SF6 → Ar+ + F3+(composition) + SF3-(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c0efcbc61b58
+Ar+ + SF6 → Ar+ + F3-(composition) + SF3+(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c1f91ba27c24
+Ar+ + SF6 → Ar+ + F4+(composition) + SF2-(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c29fd267c428
+Ar+ + SF6 → Ar+ + F6+(composition) + S-,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c2f979eeaa05
+Ar+ + SF6 → Ar+ + F2+ + SF4-,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c467a4fab752
+Ar+ + SF6 → Ar+ + F + SF5,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d22fea084eb4
+Ar+ + SF6 → Ar+ + F5(composition) + SF,collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_dab91bba75c8
+Ar+ + SF6 → Ar+ + F + SF5(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ef7cc24a08c8
+Ar+ + SF6 → Ar+ + F3(composition) + SF3(composition),collision_induced_dissociation,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_fb124434611a
+Ar+ + SF6 → e + Ar+ + SF6+(composition),collision_ionization,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2e9628c031da
+Ar+ + SF6 → Ar(1s3) + F5+(composition) + SF,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_00ef1ed46bd0
+Ar+ + SF6 → Ar(1s2) + F4+(composition) + SF2,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_016a7759b97d
+Ar+ + SF6 → Ar(1s3) + F+ + SF5(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_039257fd25f9
+Ar+ + SF6 → Ar(1s3) + F+ + SF5,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_03c5314182ef
+Ar+ + SF6 → Ar(r) + F + SF5+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0414fc3c9b22
+Ar+ + SF6 → Ar(r) + F5(composition) + SF+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_044c897c925e
+Ar+ + SF6 → Ar(4s) + F2+ + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_04675f282972
+Ar+ + SF6 → Ar(1s3) + F5(composition) + SF+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_05164fb2f968
+Ar+ + SF6 → Ar(1s4) + F3+(composition) + SF3,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_098b55ce8513
+Ar+ + SF6 → Ar(1s3) + F6+(composition) + S(1d),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0a365179f6df
+Ar+ + SF6 → Ar(1s5) + F2+(composition) + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0a603694ea30
+Ar+ + SF6 → Ar(1s4) + F3(composition) + SF3+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0c4a203d90a8
+Ar+ + SF6 → Ar(1s2) + F5(composition) + SF+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0c4b1152c3b1
+Ar+ + SF6 → Ar(1s2) + F2+(composition) + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0cbd56b2405c
+Ar+ + SF6 → Ar + F + SF5+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0e979a8f5643
+Ar+ + SF6 → Ar(1s4) + F2+(composition) + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0ed53a1fff97
+Ar+ + SF6 → Ar + F2+(composition) + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0fc17400f866
+Ar+ + SF6 → Ar- + F6+(composition) + S+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_134124c1af1e
+Ar+ + SF6 → Ar + F4(composition) + SF2+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_14062c005c60
+Ar+ + SF6 → Ar- + F3+(composition) + SF3+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_14bd3a56f1df
+Ar+ + SF6 → Ar(1s3) + F3+(composition) + SF3(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_14d8df64d5f7
+Ar+ + SF6 → Ar(r) + F5+(composition) + SF,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_152deb1f9854
+Ar+ + SF6 → Ar(1s2) + F4(composition) + SF2+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1672deb1625f
+Ar+ + SF6 → Ar + F + SF5+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,pass,satisfied,,unavailable,,,,,rxn_16b38bce3112
+Ar+ + SF6 → Ar + F6(composition) + S+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_178e77b863b4
+Ar+ + SF6 → Ar(1s4) + F4(composition) + SF2+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_18462e74be7e
+Ar+ + SF6 → Ar(m) + F6+(composition) + S(1d),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_185e55bead1f
+Ar+ + SF6 → Ar(1s4) + F2(composition) + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1871dc5f5746
+Ar+ + SF6 → Ar(r) + F + SF5+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_188a2e721074
+Ar+ + SF6 → Ar(1s3) + F5+(composition) + SF(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_18f54727e7db
+Ar+ + SF6 → Ar(m) + F5(composition) + SF+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1bb106e60f82
+Ar+ + SF6 → Ar(r) + F4(composition) + SF2+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1e3f56ebb6d6
+Ar+ + SF6 → Ar(4s) + F2+ + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_21c2a86c834e
+Ar+ + SF6 → Ar(4s) + F5+(composition) + SF(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_22d32bd70890
+Ar+ + SF6 → Ar(1s4) + F6+(composition) + S,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_235dec85c57c
+Ar+ + SF6 → Ar(1s2) + F2+ + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_245853161062
+Ar+ + SF6 → Ar- + F2+ + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_247e1ec8d3ee
+Ar+ + SF6 → Ar(1s3) + F4(composition) + SF2+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_248021abf715
+Ar+ + SF6 → Ar + F+ + SF5,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_249d3bd2721b
+Ar+ + SF6 → Ar + F5(composition) + SF+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_24d429c21bbf
+Ar+ + SF6 → Ar + F2(composition) + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_25ddabbd2950
+Ar+ + SF6 → Ar(1s5) + F5+(composition) + SF(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_26ba3c6dfed7
+Ar+ + SF6 → Ar(4s) + F2 + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_27bcdd192a87
+Ar+ + SF6 → Ar(1s4) + F2 + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_28a7385d3513
+Ar+ + SF6 → Ar(r) + F4(composition) + SF2+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2adc0499718a
+Ar+ + SF6 → Ar + F5(composition) + SF+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2b26d71dc936
+Ar+ + SF6 → Ar(m) + F2(composition) + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2b5099c74c27
+Ar+ + SF6 → Ar(4s) + F2(composition) + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2be1e1711ddc
+Ar+ + SF6 → Ar(1s5) + F2+ + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2cafb76622ab
+Ar+ + SF6 → Ar- + F2+(composition) + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2cef95203be1
+Ar+ + SF6 → Ar(1s4) + F5+(composition) + SF,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2fe9ad622a77
+Ar+ + SF6 → Ar(1s4) + F4(composition) + SF2+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_31704e6a99d3
+Ar+ + SF6 → Ar(4s) + F+ + SF5,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_31c826ea8a3a
+Ar+ + SF6 → Ar(1s5) + F+ + SF5,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_32da2071d742
+Ar+ + SF6 → Ar(1s5) + F5(composition) + SF+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_33240a3de139
+Ar+ + SF6 → Ar(1s5) + F6+(composition) + S(1d),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_337d3fa72144
+Ar+ + SF6 → Ar(1s3) + F2+ + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_33f03f68d4df
+Ar+ + SF6 → Ar(1s3) + F6+(composition) + S(1s),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_34c35ee2ec53
+Ar+ + SF6 → Ar(1s4) + F5(composition) + SF+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_363d226aab7c
+Ar+ + SF6 → Ar- + F5+(composition) + SF+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_38178839705e
+Ar+ + SF6 → Ar(1s3) + F4+(composition) + SF2(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3855f55791d5
+Ar+ + SF6 → Ar- + F5+(composition) + SF+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_391e8f905ba0
+Ar+ + SF6 → Ar(1s5) + F3+(composition) + SF3(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3a6a2cb862b0
+Ar+ + SF6 → Ar(1s4) + F4+(composition) + SF2(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3a6b94c00dd7
+Ar+ + SF6 → Ar(4s) + F2(composition) + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3b2745f8e27c
+Ar+ + SF6 → Ar(1s2) + F5+(composition) + SF,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3dbd27903178
+Ar+ + SF6 → Ar(4s) + F5+(composition) + SF,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_416adf51d2c7
+Ar+ + SF6 → Ar(m) + F3+(composition) + SF3(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_42c2395d36f0
+Ar+ + SF6 → Ar(1s4) + F2(composition) + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_432cc878495d
+Ar+ + SF6 → Ar(1s5) + F4(composition) + SF2+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_45059e048b62
+Ar+ + SF6 → Ar(1s3) + F6(composition) + S+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_457ec98d1c85
+Ar+ + SF6 → Ar(m) + F5+(composition) + SF,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4699cab39a94
+Ar+ + SF6 → Ar- + F3+(composition) + SF3+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_46e3e6aa2788
+Ar+ + SF6 → Ar + F2(composition) + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_49384cb0430e
+Ar+ + SF6 → Ar(m) + F5+(composition) + SF(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_49ed6346155f
+Ar+ + SF6 → Ar(1s2) + F3+(composition) + SF3,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4c9f9021b981
+Ar+ + SF6 → Ar(r) + F+ + SF5(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4d10c04cb82d
+Ar+ + SF6 → Ar(1s3) + F2(composition) + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4e85b950fc44
+Ar+ + SF6 → Ar(1s5) + F5+(composition) + SF,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4f2a2901d629
+Ar+ + SF6 → Ar(1s4) + F6(composition) + S+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4f83daa63065
+Ar+ + SF6 → Ar(m) + F2+ + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_50e7b444c0d5
+Ar+ + SF6 → Ar(1s3) + F5(composition) + SF+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_51d516eca005
+Ar+ + SF6 → Ar(1s4) + F2+ + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_52104b9005e7
+Ar+ + SF6 → Ar(1s3) + F + SF5+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_535d0267776c
+Ar+ + SF6 → Ar(1s5) + F4(composition) + SF2+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_55c02b6d5b27
+Ar+ + SF6 → Ar- + F+ + SF5+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_55cd0d6d922b
+Ar+ + SF6 → Ar(r) + F2+ + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_574a057166d9
+Ar+ + SF6 → Ar(1s4) + F+ + SF5(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_582a0f6d451e
+Ar+ + SF6 → Ar(1s5) + F6+(composition) + S,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5868731d3832
+Ar+ + SF6 → Ar(r) + F3(composition) + SF3+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_58c73356e495
+Ar+ + SF6 → Ar(r) + F2+ + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5a0140f459f4
+Ar+ + SF6 → Ar(1s2) + F + SF5+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5b042f9082f6
+Ar+ + SF6 → Ar(1s5) + F3+(composition) + SF3,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5cab78fec2f2
+Ar+ + SF6 → Ar(1s2) + F+ + SF5,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5d7fc32195f3
+Ar+ + SF6 → Ar(4s) + F2+(composition) + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5dc800b05f75
+Ar+ + SF6 → Ar(1s2) + F6+(composition) + S,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5f15b7a98976
+Ar+ + SF6 → Ar + F6+(composition) + S(1s),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5f60b9f494fd
+Ar+ + SF6 → Ar(4s) + F3+(composition) + SF3(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_60e5ab031d96
+Ar+ + SF6 → Ar(1s3) + F4(composition) + SF2+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_613000cc99b5
+Ar+ + SF6 → Ar(1s4) + F + SF5+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_620b7f925399
+Ar+ + SF6 → Ar(1s4) + F2+ + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_637f5183e1ac
+Ar+ + SF6 → Ar(1s5) + F2+ + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_63ad0f0e5736
+Ar+ + SF6 → Ar(r) + F6+(composition) + S(1d),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_668c3c1209d0
+Ar+ + SF6 → Ar(1s5) + F + SF5+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_67c9a7e199ee
+Ar+ + SF6 → Ar(1s5) + F2(composition) + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_68786fa87446
+Ar+ + SF6 → Ar(4s) + F4(composition) + SF2+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6a75c4e22741
+Ar+ + SF6 → Ar(1s2) + F+ + SF5(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6b7f39e0f4a8
+Ar+ + SF6 → Ar(1s4) + F6+(composition) + S(1d),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6bf7bad071f0
+Ar+ + SF6 → Ar(1s2) + F2 + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6c6358a77bf0
+Ar+ + SF6 → Ar(4s) + F2+(composition) + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6f76919ca7cf
+Ar+ + SF6 → Ar- + F2+(composition) + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6fa933df5500
+Ar+ + SF6 → Ar(1s5) + F2+(composition) + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6fb7ed828acb
+Ar+ + SF6 → Ar(4s) + F4+(composition) + SF2(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_70e42ca57156
+Ar+ + SF6 → Ar(1s2) + F4+(composition) + SF2(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7413c9605d3f
+Ar+ + SF6 → Ar(m) + F4(composition) + SF2+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_74547cb745c6
+Ar+ + SF6 → Ar(4s) + F+ + SF5(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_757eb3bf19bc
+Ar+ + SF6 → Ar(1s3) + F2+ + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_77f6c1dd6c5e
+Ar+ + SF6 → Ar(1s3) + F2+(composition) + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_781c9319c82b
+Ar+ + SF6 → Ar + F5+(composition) + SF,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7abf8f32ba2f
+Ar+ + SF6 → Ar(r) + F4+(composition) + SF2,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7bfa53195c85
+Ar+ + SF6 → Ar(m) + F2(composition) + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7ceed3052735
+Ar+ + SF6 → Ar(1s5) + F2 + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7e6ef9826374
+Ar+ + SF6 → Ar + F4(composition) + SF2+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7edc5b921aa2
+Ar+ + SF6 → Ar(r) + F6+(composition) + S,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8002dc5b0e1c
+Ar+ + SF6 → Ar(1s5) + F5(composition) + SF+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_82b12b147c56
+Ar+ + SF6 → Ar(m) + F6+(composition) + S,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_830f1adc5bd5
+Ar+ + SF6 → Ar(1s2) + F2(composition) + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_83302860c704
+Ar+ + SF6 → Ar(1s3) + F4+(composition) + SF2,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8345e84e6d0a
+Ar+ + SF6 → Ar(1s3) + F2 + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8423576de0cd
+Ar+ + SF6 → Ar(1s2) + F2+(composition) + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_84c123a24207
+Ar+ + SF6 → Ar(1s2) + F3(composition) + SF3+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_84f6c69d893c
+Ar+ + SF6 → Ar(r) + F2(composition) + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8977dbe54f5f
+Ar+ + SF6 → Ar(1s2) + F + SF5+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8a09a8482fdb
+Ar+ + SF6 → Ar(1s2) + F5+(composition) + SF(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8b0ec6445646
+Ar+ + SF6 → Ar(4s) + F3+(composition) + SF3,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8b9f9274c1e1
+Ar+ + SF6 → Ar(m) + F6(composition) + S+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8bb83831ed1a
+Ar+ + SF6 → Ar + F2+(composition) + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8dcf1deea921
+Ar+ + SF6 → Ar(m) + F2 + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8df2139e614b
+Ar+ + SF6 → Ar(4s) + F4(composition) + SF2+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_8ef78766f2ef
+Ar+ + SF6 → Ar(1s5) + F3(composition) + SF3+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_90f35c3dff28
+Ar+ + SF6 → Ar(4s) + F6+(composition) + S,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9146a7d5b5eb
+Ar+ + SF6 → Ar(1s5) + F6(composition) + S+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_92186508458e
+Ar+ + SF6 → Ar(4s) + F + SF5+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_93ad04b53fa4
+Ar+ + SF6 → Ar(4s) + F6(composition) + S+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_95d99824e93c
+Ar+ + SF6 → Ar(m) + F4(composition) + SF2+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_967fe5b8e48e
+Ar+ + SF6 → Ar(1s2) + F6+(composition) + S(1d),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_969f6e7dda01
+Ar+ + SF6 → Ar(r) + F5(composition) + SF+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_96bb9d815c8a
+Ar+ + SF6 → Ar + F2+ + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_96e0339e99f8
+Ar+ + SF6 → Ar + F6+(composition) + S,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_99bd5f6a9fd1
+Ar+ + SF6 → Ar(m) + F+ + SF5,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9b421932acb0
+Ar+ + SF6 → Ar(1s5) + F2(composition) + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9b49a71ef90a
+Ar+ + SF6 → Ar(1s3) + F6+(composition) + S,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9d04bfcb570b
+Ar+ + SF6 → Ar + F5+(composition) + SF(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9dc70c31a6c6
+Ar+ + SF6 → Ar(m) + F2+ + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9e1f96e59bbe
+Ar+ + SF6 → Ar(1s2) + F5(composition) + SF+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9e23046d219c
+Ar+ + SF6 → Ar(m) + F2+(composition) + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9fef8d95b81c
+Ar+ + SF6 → Ar + F2+ + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a0b5c94ced1f
+Ar+ + SF6 → Ar(r) + F5+(composition) + SF(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a0e7d533c964
+Ar+ + SF6 → Ar(r) + F6(composition) + S+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a3057d9b2571
+Ar+ + SF6 → Ar(1s5) + F+ + SF5(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a4d05b3446bf
+Ar+ + SF6 → Ar(m) + F2+(composition) + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a5292e6ad82e
+Ar+ + SF6 → Ar(r) + F2+(composition) + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a79729a4faef
+Ar+ + SF6 → Ar(r) + F2+(composition) + SF4(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a8d375b09508
+Ar+ + SF6 → Ar + F+ + SF5(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a901eaa28d1e
+Ar+ + SF6 → Ar + F6+(composition) + S(1d),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a97717268f47
+Ar+ + SF6 → Ar(1s2) + F6+(composition) + S(1s),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_aa335225556b
+Ar+ + SF6 → Ar(m) + F+ + SF5(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_aa5a1e76d697
+Ar+ + SF6 → Ar(1s3) + F2(composition) + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ab19c5ccae9d
+Ar+ + SF6 → Ar(1s3) + F3(composition) + SF3+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ab95651fca44
+Ar+ + SF6 → Ar(m) + F3(composition) + SF3+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_af542f58a1c0
+Ar+ + SF6 → Ar(1s4) + F + SF5+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b0320912b4be
+Ar+ + SF6 → Ar(1s4) + F3(composition) + SF3+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b1a70b87af6b
+Ar+ + SF6 → Ar(1s5) + F4+(composition) + SF2,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b4c8ce7aba3b
+Ar+ + SF6 → Ar(1s3) + F3+(composition) + SF3,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b5cb8d032875
+Ar+ + SF6 → Ar + F2 + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b6e8a55e775d
+Ar+ + SF6 → Ar(4s) + F5(composition) + SF+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b85cb27660be
+Ar+ + SF6 → Ar(1s2) + F3(composition) + SF3+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b9a37fb98224
+Ar+ + SF6 → Ar(1s3) + F2 + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_bb2156e01c01
+Ar+ + SF6 → Ar(m) + F5(composition) + SF+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_bb772823fbbe
+Ar+ + SF6 → Ar- + F2+ + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_bb7eabbcab24
+Ar+ + SF6 → Ar(m) + F + SF5+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_bd386909ff0a
+Ar+ + SF6 → Ar(1s3) + F + SF5+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_bfc1b538ec2d
+Ar+ + SF6 → Ar + F3(composition) + SF3+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c1131ea4245f
+Ar+ + SF6 → Ar(1s4) + F3+(composition) + SF3(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c19e542f2024
+Ar+ + SF6 → Ar(4s) + F + SF5+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c1c947c9c073
+Ar+ + SF6 → Ar(4s) + F6+(composition) + S(1s),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c1e126ccc40a
+Ar+ + SF6 → Ar(r) + F2 + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c33d85f98ab7
+Ar+ + SF6 → Ar(4s) + F6+(composition) + S(1d),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c3b508ceed65
+Ar+ + SF6 → Ar(r) + F2 + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c4f3e31d258c
+Ar+ + SF6 → Ar(1s5) + F4+(composition) + SF2(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c62a7db5ad1c
+Ar+ + SF6 → Ar(1s2) + F2(composition) + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c65da5f53867
+Ar+ + SF6 → Ar + F4+(composition) + SF2,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c6c1300852c5
+Ar+ + SF6 → Ar(r) + F3+(composition) + SF3,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c72edca66c90
+Ar+ + SF6 → Ar(1s3) + F2+(composition) + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c8ecf78a7eba
+Ar+ + SF6 → Ar(1s5) + F3(composition) + SF3+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_cc7878161063
+Ar+ + SF6 → Ar(m) + F2 + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ccd5feb739aa
+Ar+ + SF6 → Ar(1s2) + F4(composition) + SF2+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_cdf891834e14
+Ar+ + SF6 → Ar(r) + F3(composition) + SF3+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_cfc02087c79b
+Ar+ + SF6 → Ar(1s2) + F2 + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d278e9631013
+Ar+ + SF6 → Ar(m) + F + SF5+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d3359f9dc91d
+Ar+ + SF6 → Ar(4s) + F5(composition) + SF+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d5fe243a737c
+Ar+ + SF6 → Ar(1s4) + F2 + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d7898bbe3aef
+Ar+ + SF6 → Ar(r) + F6+(composition) + S(1s),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d79b93f95c39
+Ar+ + SF6 → Ar(1s5) + F2 + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d9b5fc8adf95
+Ar+ + SF6 → Ar(1s4) + F5+(composition) + SF(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_da2a46fcfc3b
+Ar+ + SF6 → Ar(m) + F6+(composition) + S(1s),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_dd004a3bbdaf
+Ar+ + SF6 → Ar + F3+(composition) + SF3,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_dd4ce70573d5
+Ar+ + SF6 → Ar(4s) + F2 + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ddf5276feea3
+Ar+ + SF6 → Ar(r) + F3+(composition) + SF3(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_dec153fafcf1
+Ar+ + SF6 → Ar- + F+ + SF5+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e09b0719c2c8
+Ar+ + SF6 → Ar(1s4) + F6+(composition) + S(1s),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e0f0ffae1103
+Ar+ + SF6 → Ar + F3(composition) + SF3+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e10f72773459
+Ar+ + SF6 → Ar(r) + F+ + SF5,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e586cac301b7
+Ar+ + SF6 → Ar(1s3) + F3(composition) + SF3+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e5b63238fc2b
+Ar+ + SF6 → Ar(m) + F4+(composition) + SF2,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e5bf485d817d
+Ar+ + SF6 → Ar(1s4) + F2+(composition) + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e6b68c06535a
+Ar+ + SF6 → Ar- + F4+(composition) + SF2+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e8d021da4851
+Ar+ + SF6 → Ar(m) + F4+(composition) + SF2(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ec5daf1ce1b9
+Ar+ + SF6 → Ar(1s2) + F2+ + SF4,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ec7426ee2107
+Ar+ + SF6 → Ar(4s) + F3(composition) + SF3+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ed4266ef9987
+Ar+ + SF6 → Ar(1s4) + F5(composition) + SF+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ed826bdbecf2
+Ar+ + SF6 → Ar(1s5) + F6+(composition) + S(1s),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ee2e1be479fd
+Ar+ + SF6 → Ar(1s4) + F4+(composition) + SF2,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ef5437f92bea
+Ar+ + SF6 → Ar + F2 + SF4+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f0c6441cb575
+Ar+ + SF6 → Ar(4s) + F3(composition) + SF3+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f0c9ab1f3997
+Ar+ + SF6 → Ar(r) + F4+(composition) + SF2(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f0fe0cc2fa42
+Ar+ + SF6 → Ar + F3+(composition) + SF3(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f1e8449d6f7a
+Ar+ + SF6 → Ar(1s2) + F3+(composition) + SF3(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f2121047f86f
+Ar+ + SF6 → Ar(r) + F2(composition) + SF4+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f7c61cc26120
+Ar+ + SF6 → Ar(m) + F3(composition) + SF3+(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f85fac83457b
+Ar+ + SF6 → Ar(1s4) + F+ + SF5,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_f9632551e220
+Ar+ + SF6 → Ar + F4+(composition) + SF2(composition),dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_fc480429e642
+Ar+ + SF6 → Ar- + F4+(composition) + SF2+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_fc6938d8eee3
+Ar+ + SF6 → Ar(m) + F3+(composition) + SF3,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_fe68a0cb4ac2
+Ar+ + SF6 → Ar(1s5) + F + SF5+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_febb57946959
+Ar+ + SF6 → Ar(4s) + F4+(composition) + SF2,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ff105b330076
+Ar+ + SF6 → Ar(1s2) + F6(composition) + S+,dissociative_charge_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ff24edce661a
+Ar+ + SF6 → Ar+ + SF6,elastic,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,0.0,computed,,,,,rxn_4310655aa36c
+Ar+ + SF6 → Ar+ + SF6(v),level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0d8bddcbf819
+Ar+ + SF6 → Ar+(2p1/2) + SF6(*),level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2685105206eb
+Ar+ + SF6 → Ar+(2p1/2) + SF6,level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,0.17749368314401598,computed,,,,,rxn_58a49ab2ee2d
+Ar+ + SF6 → Ar+(m) + SF6,level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_606ed3d5e32b
+Ar+ + SF6 → Ar+(r) + SF6(v),level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6f32699f4374
+Ar+ + SF6 → Ar+(r) + SF6(*),level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_72f8c90e8e4a
+Ar+ + SF6 → Ar+(2p1/2) + SF6(v),level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_860b3a5e7db1
+Ar+ + SF6 → Ar+ + SF6(*),level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9793dfc71fbd
+Ar+ + SF6 → Ar+(r) + SF6,level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9d6df2b41c52
+Ar+ + SF6 → Ar+(m) + SF6(*),level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d1e0ae81c0a7
+Ar+ + SF6 → Ar+(m) + SF6(v),level_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ec51a50134cd
+Ar+ + SF6 → ArSF5+(composition) + F,net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0c6ad5debeef
+Ar+ + SF6 → ArF(composition) + SF5+(composition),net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2945f5d394cb
+Ar+ + SF6 → ArS(composition) + F6+(composition),net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_2dee57a23333
+Ar+ + SF6 → ArF5+(composition) + SF(composition),net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5f84897a2fef
+Ar+ + SF6 → ArSF4+(composition) + F2,net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6f5a0bbe9fc8
+Ar+ + SF6 → ArF6+(composition) + S(1d),net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9c3cec306aec
+Ar+ + SF6 → ArSF4+(composition) + F2(composition),net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9d6b95eec662
+Ar+ + SF6 → ArF6+(composition) + S,net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_cfdfa306ac0d
+Ar+ + SF6 → ArF6+(composition) + S(1s),net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d39db5efe9e8
+Ar+ + SF6 → ArF(composition) + SF5+,net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e6bfe05bbda4
+Ar+ + SF6 → ArF5+(composition) + SF,net_association_loss,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ec2ff4241723
+Ar+ + SF6 → ArF+(composition) + SF5(composition),net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_05b564b5753f
+Ar+ + SF6 → ArF2(composition) + SF4+,net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0d533e1058b3
+Ar+ + SF6 → ArF(composition) + SF5+(composition),net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4a1f4d754d4b
+Ar+ + SF6 → ArS+(composition) + F6(composition),net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4cc1046c9b52
+Ar+ + SF6 → ArSF(composition) + F5+(composition),net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_5519f257026b
+Ar+ + SF6 → ArF2(composition) + SF4+(composition),net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_91f9359b0f13
+Ar+ + SF6 → ArF(composition) + SF5+,net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a46b0374d2b3
+Ar+ + SF6 → ArS(composition) + F6+(composition),net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_ae137dd19c77
+Ar+ + SF6 → ArF2+(composition) + SF4(composition),net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b8dbd5ff20a0
+Ar+ + SF6 → ArF2+(composition) + SF4,net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_b9e1eb0d1d7c
+Ar+ + SF6 → ArF+(composition) + SF5,net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d92abe4b26ae
+Ar+ + SF6 → ArSF+(composition) + F5(composition),net_group_transfer,Ar+,SF6,Ar+@ground,SF6@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_fb4e1d869568

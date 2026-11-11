@@ -99,7 +99,15 @@
         "channels_by_reaction_evidence": {},
         "computed_endpoint_differences": 0,
         "channels_with_declared_threshold": 0,
-        "sha256": "d5291de90240a2471f1aac951d5d1a1a0164886403bad235fa449fd40e35fd6b"
+        "sha256": "d5291de90240a2471f1aac951d5d1a1a0164886403bad235fa449fd40e35fd6b",
+        "csv": {
+          "pairs": {
+            "sha256": "312d80be11bb46ba4850db45a60b727f9d729675d8ad2106280d541fe5d76234"
+          },
+          "channels": {
+            "sha256": "66429374ff6a95b6b292fae8d584064ef8a938a24a19d2ccdb14ca3edf6d2280"
+          }
+        }
       },
       "cli_analyze_seconds": 1.625676
     },
@@ -190,7 +198,15 @@
         "channels_by_reaction_evidence": {},
         "computed_endpoint_differences": 0,
         "channels_with_declared_threshold": 0,
-        "sha256": "9c1a892345cd2fa63f4f0fa7893ccbd10d25fca46f63d53e7ea0f38fb84ffed7"
+        "sha256": "9c1a892345cd2fa63f4f0fa7893ccbd10d25fca46f63d53e7ea0f38fb84ffed7",
+        "csv": {
+          "pairs": {
+            "sha256": "312d80be11bb46ba4850db45a60b727f9d729675d8ad2106280d541fe5d76234"
+          },
+          "channels": {
+            "sha256": "66429374ff6a95b6b292fae8d584064ef8a938a24a19d2ccdb14ca3edf6d2280"
+          }
+        }
       },
       "cli_analyze_seconds": 5.664074
     },
@@ -281,7 +297,15 @@
         "channels_by_reaction_evidence": {},
         "computed_endpoint_differences": 0,
         "channels_with_declared_threshold": 0,
-        "sha256": "0932891bc4b84b2453d73782287e06de5579aa5c26764b745d2947fdd22e96b0"
+        "sha256": "0932891bc4b84b2453d73782287e06de5579aa5c26764b745d2947fdd22e96b0",
+        "csv": {
+          "pairs": {
+            "sha256": "312d80be11bb46ba4850db45a60b727f9d729675d8ad2106280d541fe5d76234"
+          },
+          "channels": {
+            "sha256": "66429374ff6a95b6b292fae8d584064ef8a938a24a19d2ccdb14ca3edf6d2280"
+          }
+        }
       },
       "cli_analyze_seconds": 3.884713
     },
@@ -372,7 +396,15 @@
         "channels_by_reaction_evidence": {},
         "computed_endpoint_differences": 0,
         "channels_with_declared_threshold": 0,
-        "sha256": "86a465f57736da1926619fc93e2dcc84acfbf3d3742a8e1727cabe43128ec880"
+        "sha256": "86a465f57736da1926619fc93e2dcc84acfbf3d3742a8e1727cabe43128ec880",
+        "csv": {
+          "pairs": {
+            "sha256": "312d80be11bb46ba4850db45a60b727f9d729675d8ad2106280d541fe5d76234"
+          },
+          "channels": {
+            "sha256": "66429374ff6a95b6b292fae8d584064ef8a938a24a19d2ccdb14ca3edf6d2280"
+          }
+        }
       },
       "cli_analyze_seconds": 13.597692
     },
@@ -467,7 +499,17 @@
         "computed_endpoint_differences": 29,
         "channels_with_declared_threshold": 0,
         "sha256": "a9fe7be0a29c868c689996006e58272607ae8984a68ab69f40a90a82c49ecc46",
-        "file": "docs/benchmarks/dnt/ar_cf4_ion.yaml"
+        "file": "docs/benchmarks/dnt/ar_cf4_ion.yaml",
+        "csv": {
+          "pairs": {
+            "sha256": "dae08464c1b0a80db857c435c17b6f8499b2d1a834a7f5ba7969e892fad481ea",
+            "file": "docs/benchmarks/dnt/ar_cf4_ion_pairs.csv"
+          },
+          "channels": {
+            "sha256": "92eff4bc014ddb083e09f0e1e796a239f975c03d1d580742b374cc9a59f6291c",
+            "file": "docs/benchmarks/dnt/ar_cf4_ion_channels.csv"
+          }
+        }
       }
     },
     "ar_ion": {
@@ -547,7 +589,17 @@
         "computed_endpoint_differences": 22,
         "channels_with_declared_threshold": 0,
         "sha256": "a343f3d3b70ce8841ab8ab27208bdca87dfd06e7b3bbb46dace9dbe336aa581f",
-        "file": "docs/benchmarks/dnt/ar_ion.yaml"
+        "file": "docs/benchmarks/dnt/ar_ion.yaml",
+        "csv": {
+          "pairs": {
+            "sha256": "a13bd54323ffa8b749718b5b083f1319b991eb17ab8008665d7a41b78bf172ed",
+            "file": "docs/benchmarks/dnt/ar_ion_pairs.csv"
+          },
+          "channels": {
+            "sha256": "10c1ef7cebb647e2fc8e4881eb78267736b47c32f4dbcc3e8f36f7704c54ad40",
+            "file": "docs/benchmarks/dnt/ar_ion_channels.csv"
+          }
+        }
       }
     },
     "ar_o2_ion": {
@@ -629,7 +681,17 @@
         "computed_endpoint_differences": 74,
         "channels_with_declared_threshold": 0,
         "sha256": "de8aeeb5357cd82bd7fc65314db0125882be938bfdab13141f08a1714a3d946b",
-        "file": "docs/benchmarks/dnt/ar_o2_ion.yaml"
+        "file": "docs/benchmarks/dnt/ar_o2_ion.yaml",
+        "csv": {
+          "pairs": {
+            "sha256": "a6ca646ea41929996f83eef4c231f15a8ebd2e5aa20da9cb3604b9c9f8cb3ff0",
+            "file": "docs/benchmarks/dnt/ar_o2_ion_pairs.csv"
+          },
+          "channels": {
+            "sha256": "48c7a58335960192557236bd839843a729692be35c2ee7d7c5783d459ef5a850",
+            "file": "docs/benchmarks/dnt/ar_o2_ion_channels.csv"
+          }
+        }
       }
     },
     "ar_sf6_o2_ion": {
@@ -713,7 +775,17 @@
         "computed_endpoint_differences": 76,
         "channels_with_declared_threshold": 0,
         "sha256": "62179f9e410aec0e1ffdc0e6702e0250b48137212a45931cc31146fe5e7de8dd",
-        "file": "docs/benchmarks/dnt/ar_sf6_o2_ion.yaml"
+        "file": "docs/benchmarks/dnt/ar_sf6_o2_ion.yaml",
+        "csv": {
+          "pairs": {
+            "sha256": "da010ee06dca913fbe59466324f053cd2b9570720c0826111bf7ba3f89a9a3ec",
+            "file": "docs/benchmarks/dnt/ar_sf6_o2_ion_pairs.csv"
+          },
+          "channels": {
+            "sha256": "778b03f79603fe6f095dc4edee456d0ac3231f20c9c859773354d07892dcef6d",
+            "file": "docs/benchmarks/dnt/ar_sf6_o2_ion_channels.csv"
+          }
+        }
       }
     }
   }

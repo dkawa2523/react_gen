@@ -143,7 +143,7 @@ rgen view result --kind matrix
 
 ### DNT向けのイオン・中性衝突入力
 
-`rgen view result --kind dnt` は、保存結果にあるイオン・中性粒子対、候補チャネル、物性宣言と判定を `dnt/dnt_inputs.yaml` に出力します。イオンが探索範囲に入るよう供給または探索深さを指定します。[DNT向け出力の仕様](docs/output_reference.md#dnt向けの出力)・[ベンチマークと出力例](docs/reaction_judgment_matrix.md#ベンチマークとdnt向け出力)
+`rgen view result --kind dnt` は `dnt/` に粒子対一覧 `dnt_pairs.csv`、反応チャネル一覧 `dnt_channels.csv`、詳しい物性宣言と計算入力を持つ `dnt_inputs.yaml` を出力します。CSVは表計算ソフトで開き、粒子対、過程、判定で絞り込めます。イオンが探索範囲に入るよう供給または探索深さを指定します。[DNT向け出力の仕様](docs/output_reference.md#dnt向けの出力)・[ベンチマークと出力例](docs/reaction_judgment_matrix.md#ベンチマークとdnt向け出力)
 
 ## 証拠を追加する
 

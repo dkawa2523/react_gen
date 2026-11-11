@@ -1,0 +1,49 @@
+﻿equation,process,ion,neutral,projectile_state,target_state,state_verdict,energy_verdict,energy_label,reaction_evidence_verdict,reaction_evidence_label,state_energy_difference_eV,endpoint_difference_status,declared_threshold_eV,collision_energy_com_eV,collision_input,stabilization,reaction_id
+Ar+ + Ar → Ar+ + Ar(4s),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_04dc206d4641
+Ar+ + Ar → Ar+ + Ar(1s3),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.723161045859433,computed,,,,,rxn_10bdbfa3ff7a
+Ar+ + Ar → Ar+ + Ar(1s4),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.6235933779826,computed,,,,,rxn_19ddd34084ee
+Ar+ + Ar → Ar+ + Ar(1s2),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.828071812767746,computed,,,,,rxn_1efd13015450
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s2),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,12.005565495911762,computed,,,,,rxn_47b1517bc3f6
+Ar+ + Ar → Ar+ + Ar(1s5),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.548355079770634,computed,,,,,rxn_56b0bc9da8f5
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s3),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.900654729003449,computed,,,,,rxn_8c7f48aed0c7
+Ar+ + Ar → Ar+(2p1/2) + Ar(4s),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9e8586d80201
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s4),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.801087061126616,computed,,,,,rxn_a3685dca3eb4
+Ar+ + Ar → Ar+(2p1/2) + Ar,charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.17749368314401598,computed,,,,,rxn_c24e4b81f39b
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s5),charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.72584876291465,computed,,,,,rxn_db3c6244bdc7
+Ar+ + Ar → e + Ar+(2p1/2) + Ar+,collision_ionization,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,15.937105583144016,computed,,,,,rxn_105100c77872
+Ar+ + Ar → e + 2 Ar+,collision_ionization,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,15.7596119,computed,,,,,rxn_1d46d68e9da3
+Ar+ + Ar → e + Ar+ + Ar+(m),collision_ionization,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_c1ee79c277d8
+Ar+ + Ar → e + Ar+ + Ar+(r),collision_ionization,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e9a5560c23b0
+Ar+ + Ar → Ar+ + Ar,elastic,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.0,computed,,,,,rxn_8b17617e5845
+Ar+ + Ar → Ar+(r) + Ar,level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_0d36729abd3f
+Ar+ + Ar → Ar+(m) + Ar,level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1093eb317f41
+Ar+ + Ar → Ar+(2p1/2) + Ar(m),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_1499e55afca4
+Ar+ + Ar → Ar+(r) + Ar(1s2),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_301830b6c08f
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s2),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,12.005565495911762,computed,,,,,rxn_338bd8b5c0b0
+Ar+ + Ar → Ar+(m) + Ar(r),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_3e71350d3d0f
+Ar+ + Ar → Ar+ + Ar(1s5),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.548355079770634,computed,,,,,rxn_43b4c342a832
+Ar+ + Ar → Ar+(r) + Ar(1s5),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_43d1f7efc42c
+Ar+ + Ar → Ar+(2p1/2) + Ar(4s),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_48bcdceabc07
+Ar+ + Ar → Ar+(r) + Ar(m),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_49405abe8bc4
+Ar+ + Ar → Ar+(r) + Ar(1s4),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_4d7277165ba5
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s5),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.72584876291465,computed,,,,,rxn_4e43bd77f5b6
+Ar+ + Ar → Ar+ + Ar(1s3),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.723161045859433,computed,,,,,rxn_515e5ae71fb2
+Ar+ + Ar → Ar+(m) + Ar(1s4),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_54e91641d654
+Ar+ + Ar → Ar+ + Ar(m),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_553d2edf9074
+Ar+ + Ar → Ar+(m) + Ar(m),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_59154d798e1b
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s3),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.900654729003449,computed,,,,,rxn_614e33892840
+Ar+ + Ar → Ar+(2p1/2) + Ar(1s4),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.801087061126616,computed,,,,,rxn_61be0576f57e
+Ar+ + Ar → Ar+(r) + Ar(4s),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_6a8f4ecb0b24
+Ar+ + Ar → Ar+ + Ar(1s4),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.6235933779826,computed,,,,,rxn_7bca2abb7961
+Ar+ + Ar → Ar+(2p1/2) + Ar(r),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_7dec1b40d10b
+Ar+ + Ar → Ar+(r) + Ar(r),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_9e2971754ff7
+Ar+ + Ar → Ar+(2p1/2) + Ar,level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.17749368314401598,computed,,,,,rxn_a0c7b353cb98
+Ar+ + Ar → Ar+(r) + Ar(1s3),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_a333486fa328
+Ar+ + Ar → Ar+ + Ar(1s2),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,11.828071812767746,computed,,,,,rxn_bc38d26d8a06
+Ar+ + Ar → Ar+(m) + Ar(1s3),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_cb7228cafd1e
+Ar+ + Ar → Ar+(m) + Ar(4s),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_cdbf9f280c3f
+Ar+ + Ar → Ar+(m) + Ar(1s2),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d313ff58369e
+Ar+ + Ar → Ar+ + Ar(4s),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_d43edf0e2135
+Ar+ + Ar → Ar+ + Ar(r),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e33d2cd03856
+Ar+ + Ar → Ar+(m) + Ar(1s5),level_transfer,Ar+,Ar,Ar+@ground,Ar@ground,unknown,not_applicable,not_applicable,unknown,data_missing,,unavailable,,,,,rxn_e632d20681c0
+Ar+ + Ar → Ar+ + Ar,resonant_charge_exchange,Ar+,Ar,Ar+@ground,Ar@ground,pass,not_applicable,not_applicable,unknown,data_missing,0.0,computed,,,,,rxn_103025254b1e

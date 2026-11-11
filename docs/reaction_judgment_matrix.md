@@ -318,12 +318,14 @@ $$
 
 標準入力の初期供給にイオンがないため、深さ1ではDNT向けの入口が生じない。補足4ケースではAr⁺を明示供給した。Ar/CF₄のみ、Ar⁺–Arの重心系1 eVとAr⁺–CF₄の重心系20 eVを比較用に指定した。ほかの補足ケースは元の衝突条件を保持する。
 
-| 補足ケース | DNT向け粒子対 | 候補チャネル | 再現入力 | DNT向けYAML |
-|---|---:|---:|---|---|
-| Ar + Ar⁺ | 1 | 48 | [入力](benchmarks/ar_ion.yaml) | [出力](benchmarks/dnt/ar_ion.yaml) |
-| Ar/CF₄ + Ar⁺ | 2 | 283 | [入力](benchmarks/ar_cf4_ion.yaml) | [出力](benchmarks/dnt/ar_cf4_ion.yaml) |
-| Ar/O₂ + Ar⁺ | 2 | 168 | [入力](benchmarks/ar_o2_ion.yaml) | [出力](benchmarks/dnt/ar_o2_ion.yaml) |
-| Ar/SF₆/O₂ + Ar⁺ | 3 | 488 | [入力](benchmarks/ar_sf6_o2_ion.yaml) | [出力](benchmarks/dnt/ar_sf6_o2_ion.yaml) |
+| 補足ケース | DNT向け粒子対 | 候補チャネル | 再現入力 | 粒子対CSV | チャネルCSV | DNT向けYAML |
+|---|---:|---:|---|---|---|---|
+| Ar + Ar⁺ | 1 | 48 | [入力](benchmarks/ar_ion.yaml) | [粒子対](benchmarks/dnt/ar_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_ion_channels.csv) | [出力](benchmarks/dnt/ar_ion.yaml) |
+| Ar/CF₄ + Ar⁺ | 2 | 283 | [入力](benchmarks/ar_cf4_ion.yaml) | [粒子対](benchmarks/dnt/ar_cf4_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_cf4_ion_channels.csv) | [出力](benchmarks/dnt/ar_cf4_ion.yaml) |
+| Ar/O₂ + Ar⁺ | 2 | 168 | [入力](benchmarks/ar_o2_ion.yaml) | [粒子対](benchmarks/dnt/ar_o2_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_o2_ion_channels.csv) | [出力](benchmarks/dnt/ar_o2_ion.yaml) |
+| Ar/SF₆/O₂ + Ar⁺ | 3 | 488 | [入力](benchmarks/ar_sf6_o2_ion.yaml) | [粒子対](benchmarks/dnt/ar_sf6_o2_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_sf6_o2_ion_channels.csv) | [出力](benchmarks/dnt/ar_sf6_o2_ion.yaml) |
+
+粒子対CSVで中性粒子の物性値と宣言状況を確認し、チャネルCSVを同じ粒子対で絞ると、反応式と各判定を比較できる。例えばAr/SF₆/O₂の表で `reaction_evidence_verdict` を `pass` に絞ると、資料支持がある枝を特定できる。物性の出典と計算入力の詳細はYAMLにある。
 
 たとえば Ar⁺ + CF₄ の出力では、分極率2.824 Å³、永久双極子0 D、換算質量約27.476 amuを確認できる。衝突半径2.35 Åは工学的な初期値として出典を保持した。輸送フィット用の別の分極率はこの値と入れ替えていない。Ar⁺ + SF₆ → Ar + F + SF₅⁺ は保存結果で資料支持あり、端点差は未確定である。
 
