@@ -43,6 +43,6 @@ RDKitの実装を検証するときは、`from rdkit import Chem` が成功す�
 
 確定したソースから、品質検査と時間を分けて新しい出力先へwheelとsdistを作ります。`python -m build --outdir PATH` ではsdistを作り、その展開内容からwheelをビルドします。`MANIFEST.in` がsdist、`pyproject.toml` がwheelの収録を定義します。
 
-- sdistでRegistry本体・数表・帰属とnotice、文書、入力例、取得先台帳、fixture、検証工具を確認します。作業結果や外部の取得原本は同梱対象外です。[出典・配布条件](source_license_policy.md)
+- sdistでRegistry本体・数表・帰属とnotice、文書、入力例、公開ベンチマーク、取得先台帳、fixture、検証工具を確認します。ローカルの作業出力と外部の取得原本は同梱対象外です。[出典・配布条件](source_license_policy.md)
 - wheelを新しい仮想環境へインストールし、`python -m pip check` を実行します。リポジトリ外から、sdistを展開した `registry` を絶対パスで指定して `rgen check --registry PATH` と `rgen analyze Ar --supply e --evidence PATH --out RESULT` を実行します。続けて `rgen needs RESULT`、CSVの再生成、HTMLの表示を確認します。
 - 確認したwheelとsdistのファイル名、SHA-256、ビルド元のコミットを記録します。

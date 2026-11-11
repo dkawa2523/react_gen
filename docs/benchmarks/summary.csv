@@ -1,0 +1,9 @@
+﻿case,scope,states,reaction_candidates,energy_pass,energy_fail,energy_unknown,energy_not_applicable,reaction_evidence_pass,analyze_wall_time_s,dnt_pairs,dnt_candidates,result_archive
+ar,standard,12,49,7,0,4,38,3,1.625676,0,0,results/ar.zip
+ar_cf4,standard,66,373,11,23,211,128,11,5.664074,0,0,results/ar_cf4.zip
+ar_o2,standard,31,208,12,12,18,166,10,3.884713,0,0,results/ar_o2.zip
+ar_sf6_o2,standard,127,933,13,12,566,342,28,13.597692,0,0,results/ar_sf6_o2.zip
+ar_cf4_ion,supplementary_dnt,76,680,21,42,465,152,11,,2,283,results/ar_cf4_ion.zip
+ar_ion,supplementary_dnt,14,119,7,0,4,108,3,,1,48,results/ar_ion.zip
+ar_o2_ion,supplementary_dnt,34,400,12,12,18,358,10,,2,168,results/ar_o2_ion.zip
+ar_sf6_o2_ion,supplementary_dnt,138,1447,13,12,566,856,29,,3,488,results/ar_sf6_o2_ion.zip

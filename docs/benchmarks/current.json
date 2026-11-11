@@ -109,7 +109,12 @@
           }
         }
       },
-      "cli_analyze_seconds": 1.625676
+      "cli_analyze_seconds": 1.625676,
+      "result_archive": {
+        "file": "docs/benchmarks/results/ar.zip",
+        "bytes": 83522,
+        "sha256": "10f51a37733360d051e6d229f68c678839048f7b34caf27de5bbd0f4fe1e857f"
+      }
     },
     "ar_cf4": {
       "input": "cases/ar_cf4/case.yaml",
@@ -208,7 +213,12 @@
           }
         }
       },
-      "cli_analyze_seconds": 5.664074
+      "cli_analyze_seconds": 5.664074,
+      "result_archive": {
+        "file": "docs/benchmarks/results/ar_cf4.zip",
+        "bytes": 329471,
+        "sha256": "e28d4d76b9f40688f46569112f835db62e01417954382fa9c31b05e29fc61e2b"
+      }
     },
     "ar_o2": {
       "input": "cases/ar_o2/case.yaml",
@@ -307,7 +317,12 @@
           }
         }
       },
-      "cli_analyze_seconds": 3.884713
+      "cli_analyze_seconds": 3.884713,
+      "result_archive": {
+        "file": "docs/benchmarks/results/ar_o2.zip",
+        "bytes": 245220,
+        "sha256": "d176ba27a4454daef9c33b68b150717970180c36e5c345c61f2aec66920f5a0e"
+      }
     },
     "ar_sf6_o2": {
       "input": "cases/ar_sf6_o2/case.yaml",
@@ -406,7 +421,12 @@
           }
         }
       },
-      "cli_analyze_seconds": 13.597692
+      "cli_analyze_seconds": 13.597692,
+      "result_archive": {
+        "file": "docs/benchmarks/results/ar_sf6_o2.zip",
+        "bytes": 717182,
+        "sha256": "b5f65ed8190f73d252e9d6c96e1a533067e1de3993b90f84bf58fd4048a69d88"
+      }
     },
     "ar_cf4_ion": {
       "input": "docs/benchmarks/ar_cf4_ion.yaml",
@@ -510,6 +530,11 @@
             "file": "docs/benchmarks/dnt/ar_cf4_ion_channels.csv"
           }
         }
+      },
+      "result_archive": {
+        "file": "docs/benchmarks/results/ar_cf4_ion.zip",
+        "bytes": 543850,
+        "sha256": "353ac5111b016c66159eea44fa8711473caafa4f6c08f40f317766fc6ff4743b"
       }
     },
     "ar_ion": {
@@ -600,6 +625,11 @@
             "file": "docs/benchmarks/dnt/ar_ion_channels.csv"
           }
         }
+      },
+      "result_archive": {
+        "file": "docs/benchmarks/results/ar_ion.zip",
+        "bytes": 124299,
+        "sha256": "ad53881e387d395de49164e57c8a76723303128ed845c26c506f4f5125f27b58"
       }
     },
     "ar_o2_ion": {
@@ -692,6 +722,11 @@
             "file": "docs/benchmarks/dnt/ar_o2_ion_channels.csv"
           }
         }
+      },
+      "result_archive": {
+        "file": "docs/benchmarks/results/ar_o2_ion.zip",
+        "bytes": 378665,
+        "sha256": "37a2ab3a413b6e6734e454ff7e780c810367dfa8d93eb95b7de97326320c02ce"
       }
     },
     "ar_sf6_o2_ion": {
@@ -786,6 +821,11 @@
             "file": "docs/benchmarks/dnt/ar_sf6_o2_ion_channels.csv"
           }
         }
+      },
+      "result_archive": {
+        "file": "docs/benchmarks/results/ar_sf6_o2_ion.zip",
+        "bytes": 1077758,
+        "sha256": "dfbab1ba35c5f8615ac2d11ae42ca667aa097020ae7f66b3f41f9933166f31b5"
       }
     }
   }

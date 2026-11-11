@@ -307,25 +307,52 @@ $$
 
 ## ベンチマークとDNT向け出力
 
-現行の同梱4ケースを `analyze` で実行し、正規YAMLの再読込みと補助CSVの照合を行った。全ケースで `max_depth=1` に達し、終了コード1と部分探索の結果を保存した。以下の反応数は候補数で、資料支持やエネルギーの各判定は独立して集計している。指定条件で採用できる速度係数は4ケースとも0件だった。[判定別の集計、実行時間とハッシュ](benchmarks/current.json)
+現行の同梱4ケースを `analyze` で実行し、正規YAMLの再読込みと補助CSVの照合を行った。全ケースで `max_depth=1` に達し、終了コード1と部分探索の結果を保存した。以下の反応数は候補数で、資料支持やエネルギーの各判定は独立して集計している。指定条件で採用できる速度係数は4ケースとも0件だった。[ケース比較CSV](benchmarks/summary.csv)・[測定値とハッシュ](benchmarks/current.json)
 
-| 標準入力 | 状態 | 反応候補 | エネルギー判定 成立／不成立／未確定／適用外 | 資料支持あり | DNT向け粒子対 |
-|---|---:|---:|---:|---:|---:|
-| Ar | 12 | 49 | 7／0／4／38 | 3 | 0 |
-| Ar/CF₄ | 66 | 373 | 11／23／211／128 | 11 | 0 |
-| Ar/O₂ | 31 | 208 | 12／12／18／166 | 10 | 0 |
-| Ar/SF₆/O₂ | 127 | 933 | 13／12／566／342 | 28 | 0 |
+| 標準入力 | 状態 | 反応候補 | エネルギー判定 成立／不成立／未確定／適用外 | 資料支持あり | 結果ZIP |
+|---|---:|---:|---:|---:|---|
+| Ar | 12 | 49 | 7／0／4／38 | 3 | [Ar](benchmarks/results/ar.zip) |
+| Ar/CF₄ | 66 | 373 | 11／23／211／128 | 11 | [Ar/CF₄](benchmarks/results/ar_cf4.zip) |
+| Ar/O₂ | 31 | 208 | 12／12／18／166 | 10 | [Ar/O₂](benchmarks/results/ar_o2.zip) |
+| Ar/SF₆/O₂ | 127 | 933 | 13／12／566／342 | 28 | [Ar/SF₆/O₂](benchmarks/results/ar_sf6_o2.zip) |
+
+各ZIPを展開すると、再現入力 `case.yaml`、元の `result.yaml`、反応・状態の一覧、判定別CSV、Registryの帰属記録を開ける。`rgen view` には展開先を指定する。
+
+### ベンチマークの比較図
+
+![標準4ケースのエネルギー判定を成立・不成立・未確定・適用外に分けた比較図](benchmarks/figures/energy_verdicts.png)
+
+| 図 | 比較する量 |
+|---|---|
+| [標準ケースの実行時間](benchmarks/figures/cli_wall_time.png) | CLIの起動から結果保存までの実測時間。各ケース1回。 |
+| [正規YAMLの読込み時間](benchmarks/figures/yaml_read_time.png) | 2種類のパーサーについて、構文解析と正規結果の検証にかかった時間を分けて表示。 |
+| [DNT候補と文献支持](benchmarks/figures/dnt_evidence.png) | Ar⁺を供給した補足4ケースの候補数と、そのうち資料支持がある件数。 |
+
+### 標準ケースの反応と経路の図
+
+エネルギー余裕図は、指定衝突対で重心系エネルギーと端点差の両方が得られた枝を表示する。代表経路図の `--checked` は保存された必要条件を確認した経路、`conditioned` は必要条件が未確定の枝を含めて確認できる候補経路を示す。
+
+| ケース | 重心系エネルギー余裕 | 代表経路 |
+|---|---|---|
+| Ar | [e＋Ar](benchmarks/figures/cases/ar/energy-Ar-ground-e-fd698760.svg) | [Ar⁺（`--checked`）](benchmarks/figures/cases/ar/pathway.png) |
+| Ar/CF₄ | e＋CF₄ [1ページ目](benchmarks/figures/cases/ar_cf4/energy-CF4-ground-e-99a47f80-001.svg)・[2ページ目](benchmarks/figures/cases/ar_cf4/energy-CF4-ground-e-99a47f80-002.svg) | [CF₃（`conditioned`）](benchmarks/figures/cases/ar_cf4/pathway.png) |
+| Ar/O₂ | [e＋O₂](benchmarks/figures/cases/ar_o2/energy-O2-ground-e-757e9680.svg) | [O（`--checked`）](benchmarks/figures/cases/ar_o2/pathway.png) |
+| Ar/SF₆/O₂ | [e＋SF₆](benchmarks/figures/cases/ar_sf6_o2/energy-SF6-ground-e-f2e7bf1c.svg)・[e＋O₂](benchmarks/figures/cases/ar_o2/energy-O2-ground-e-757e9680.svg) | [SF₅（`conditioned`）](benchmarks/figures/cases/ar_sf6_o2/pathway.png) |
+
+### DNT補足ケースの結果
 
 標準入力の初期供給にイオンがないため、深さ1ではDNT向けの入口が生じない。補足4ケースではAr⁺を明示供給した。Ar/CF₄のみ、Ar⁺–Arの重心系1 eVとAr⁺–CF₄の重心系20 eVを比較用に指定した。ほかの補足ケースは元の衝突条件を保持する。
 
-| 補足ケース | DNT向け粒子対 | 候補チャネル | 再現入力 | 粒子対CSV | チャネルCSV | DNT向けYAML |
+| 補足ケース | DNT向け粒子対 | 候補チャネル | 全結果ZIP | 粒子対CSV | チャネルCSV | DNT向けYAML |
 |---|---:|---:|---|---|---|---|
-| Ar + Ar⁺ | 1 | 48 | [入力](benchmarks/ar_ion.yaml) | [粒子対](benchmarks/dnt/ar_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_ion_channels.csv) | [出力](benchmarks/dnt/ar_ion.yaml) |
-| Ar/CF₄ + Ar⁺ | 2 | 283 | [入力](benchmarks/ar_cf4_ion.yaml) | [粒子対](benchmarks/dnt/ar_cf4_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_cf4_ion_channels.csv) | [出力](benchmarks/dnt/ar_cf4_ion.yaml) |
-| Ar/O₂ + Ar⁺ | 2 | 168 | [入力](benchmarks/ar_o2_ion.yaml) | [粒子対](benchmarks/dnt/ar_o2_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_o2_ion_channels.csv) | [出力](benchmarks/dnt/ar_o2_ion.yaml) |
-| Ar/SF₆/O₂ + Ar⁺ | 3 | 488 | [入力](benchmarks/ar_sf6_o2_ion.yaml) | [粒子対](benchmarks/dnt/ar_sf6_o2_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_sf6_o2_ion_channels.csv) | [出力](benchmarks/dnt/ar_sf6_o2_ion.yaml) |
+| Ar + Ar⁺ | 1 | 48 | [全結果](benchmarks/results/ar_ion.zip) | [粒子対](benchmarks/dnt/ar_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_ion_channels.csv) | [出力](benchmarks/dnt/ar_ion.yaml) |
+| Ar/CF₄ + Ar⁺ | 2 | 283 | [全結果](benchmarks/results/ar_cf4_ion.zip) | [粒子対](benchmarks/dnt/ar_cf4_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_cf4_ion_channels.csv) | [出力](benchmarks/dnt/ar_cf4_ion.yaml) |
+| Ar/O₂ + Ar⁺ | 2 | 168 | [全結果](benchmarks/results/ar_o2_ion.zip) | [粒子対](benchmarks/dnt/ar_o2_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_o2_ion_channels.csv) | [出力](benchmarks/dnt/ar_o2_ion.yaml) |
+| Ar/SF₆/O₂ + Ar⁺ | 3 | 488 | [全結果](benchmarks/results/ar_sf6_o2_ion.zip) | [粒子対](benchmarks/dnt/ar_sf6_o2_ion_pairs.csv) | [チャネル](benchmarks/dnt/ar_sf6_o2_ion_channels.csv) | [出力](benchmarks/dnt/ar_sf6_o2_ion.yaml) |
 
 粒子対CSVで中性粒子の物性値と宣言状況を確認し、チャネルCSVを同じ粒子対で絞ると、反応式と各判定を比較できる。例えばAr/SF₆/O₂の表で `reaction_evidence_verdict` を `pass` に絞ると、資料支持がある枝を特定できる。物性の出典と計算入力の詳細はYAMLにある。
+
+イオンの衝突エネルギーを指定したAr/CF₄補足ケースは、衝突対ごとにエネルギー余裕を確認できる。[Ar⁺＋Ar（重心系1 eV）](benchmarks/figures/cases/ar_cf4_ion/energy-Ar-ground-Ar-ground-2afae54c-selection-38cc3865.svg)・[Ar⁺＋CF₄（重心系20 eV）](benchmarks/figures/cases/ar_cf4_ion/energy-Ar-ground-CF4-ground-95330a7a-selection-38cc3865.svg)
 
 たとえば Ar⁺ + CF₄ の出力では、分極率2.824 Å³、永久双極子0 D、換算質量約27.476 amuを確認できる。衝突半径2.35 Åは工学的な初期値として出典を保持した。輸送フィット用の別の分極率はこの値と入れ替えていない。Ar⁺ + SF₆ → Ar + F + SF₅⁺ は保存結果で資料支持あり、端点差は未確定である。
 
