@@ -1,209 +1,176 @@
 # plasma-reactgen 1.0.0
 
-入力ガスから、明示した文法範囲の状態・反応候補を生成し、ローカルの証拠と数値データを照合する調査ツールです。候補、確認できた命題、未確定の理由、数値の利用条件を一つの結果に残します。機構の網羅性や予測可能性は宣言しません。
+中性ガスと明示供給から、電子・イオン・中性粒子の気相衝突候補を生成し、指定条件で辿れる経路を調べるツールです。弾性散乱を含むP0・P1を対象とします。反応式、判定した必要条件、使用した根拠と未確定理由を一つの結果に保存します。
 
-## 実行
+## はじめる
 
-Python 3.11以上を使用します。依存関係の正は `pyproject.toml` です。
+Python 3.11以上を使用します。ソース配布物（sdist）には `registry/`、出典とnotice、入力例、取得先台帳、文書を収録します。wheelをインストールする場合は `python -m pip install plasma_reactgen-1.0.0-py3-none-any.whl` を実行し、展開したsdistのRegistryを `--evidence PATH` で指定します。[収録データと配布条件](docs/source_license_policy.md)
 
-配布wheelは `python -m pip install plasma_reactgen-1.0.0-py3-none-any.whl` でインストールできます。Registry、入力例、開発文書を含むリポジトリまたはソースZIPから使う場合は、次の手順で実行します。
-
-wheelに含むのは実行パッケージと結果schemaです。Registryや取得先台帳は同梱しません。
-wheelだけを使う場合は、手元の証拠を`--evidence PATH`、取得先台帳を
-`acquire sources --catalog PATH`または`acquire fetch SOURCE --catalog PATH --out WORK`で指定します。
-台帳の既定パス`external_data/source_catalog.yaml`は実行ディレクトリからの相対パスです。
-ソース配布（sdist）には文書・入力例・Registry・台帳・検証用fixtureも収録します。
-各データの再配布条件は[出典方針](docs/source_license_policy.md)で別途確認してください。
+展開したsdistまたはリポジトリから起動する例です。
 
 ```powershell
 py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e ".[quality]"
-.\.venv\Scripts\rgen.exe analyze Ar CF4 --out result
-.\.venv\Scripts\rgen.exe analyze Ar CF4 --evidence registry --out result
+.\.venv\Scripts\python.exe -m pip install -e .
+.\.venv\Scripts\python.exe -m reactgen.cli analyze --input cases/ar/case.yaml --evidence registry --out result
+.\.venv\Scripts\python.exe -m reactgen.cli view result --kind pathway --target Ar+@ground
 ```
 
-証拠を省略すると空の証拠で調査します。`--evidence` はRegistryディレクトリ、取得snapshot、overlayファイルを繰り返し指定できます。明示したパスが存在しない場合はエラーです。読込み・照合はネットワークやRegistryの変更を伴いません。
+`result/reactions.csv` に反応候補が、`result/judgments/energy.csv` に衝突エネルギー判定が入ります。経路図はコマンドが表示したPNGを開きます。ガスと供給だけを指定して候補を調べる場合は `rgen analyze Ar --supply e --out result` も使えます。以降の `rgen` は、仮想環境を有効にするか `.\.venv\Scripts\rgen.exe` に置き換えて実行します。
 
-同じ入口を`.\.venv\Scripts\python.exe -m reactgen.cli ...`、取得を`.\.venv\Scripts\python.exe -m acquire.cli ...`としても起動できます。
+Windowsの実行制御で `rgen.exe` または `acquire.exe` を起動できない場合は、同じ仮想環境の `python -m reactgen.cli` または `python -m acquire.cli` を使います。
 
-入力・証拠・保存結果のYAMLで同じキーを二重に記述した場合は、後の値で上書きせず位置付きの形式エラーにします。数値欄の非数値や採用指定の非booleanも、不足情報として扱いません。
-
-反応の原項は合算前に正の有限係数を必要とします。負係数を別項と相殺して受理しません。Registryの未登録参加種参照も、通常の分析入口で記録と参照先を示す入力エラーになります。
-
-同じ処理を入力ファイルからも実行できます。直接指定との併用はできません。
-
-```yaml
-gases: [Ar, CF4]
-conditions:
-  gas_temperature_K: 350
-  electron_temperature_eV: 4
-surfaces: [SiO2, Si]
-```
+同梱例は供給から1段目までの候補を保存します。深さ上限で終了コード1が返っても、保存された結果は続けて表示できます。混合ガスの例では、電子衝突によるCF₃の生成候補と判定を確認できます。
 
 ```powershell
-.\.venv\Scripts\rgen.exe analyze --input input.yaml --evidence registry --out result
+rgen analyze --input cases/ar_cf4/case.yaml --evidence registry --out cf4_result
+rgen view cf4_result --kind energy --process dissociation
+rgen view cf4_result --kind pathway --target CF3@ground
 ```
 
-必須入力は中性基底状態の化学式のリスト `gases` だけです。`name` は表示用です。任意の条件は `gas_temperature_K`、`electron_temperature_eV`、`ion_temperature_K`、`surface_temperature_K`、`reduced_field_Td`、`ion_energy_eV`、`electron_energy_eV`、`collision_energy_eV` です。温度と単一の衝突エネルギーを区別し、対応する熱化学計算やデータの評価・適用範囲にだけ使います。温度や単一エネルギーから分布を無言で仮定しません。`surfaces` は照合対象の材料名で、表面flux計算の入力ではありません。
+## 入力
 
-`limits` は `max_depth=12`、`max_species=300`、`max_reactions=10000`、`max_charge_abs=1`、`max_leaving_atoms=2` が既定です。すべて正の整数で、機械生成の電荷範囲は現在±1のみです。既知の多価イオンは証拠から追加できます。上限は完全性を左右する計算条件であり、物理条件ではありません。未知のキー、使わない圧力・密度・幾何量、用途preset、シナリオは受け付けません。
+最小入力は中性基底ガスのリスト `gases` です。電子を外部から供給する場合は `supplies: [e]` または `--supply e` を指定します。系内で生成する電子を使う経路は、その生成反応の支持も必要とします。
 
-複数の出典がある数値は、任意の `data_selection` で量ごとに採用方針を指定できます。例えば、測定値、評価値の順に速度係数を優先する入力は次のとおりです。
+| 指定したい内容 | 入力 | 作用する範囲 |
+|---|---|---|
+| 系に供給する粒子 | `gases` と `supplies` | 候補生成の開始粒子と経路の供給。電子、イオン、励起状態は `supplies` |
+| 個別に調べる反応式 | `reactions` | 自動生成の有無にかかわらず、指定した式を同じ判定と経路照会へ追加 |
+| 読み込む資料 | `--evidence PATH` | Registryディレクトリ、スナップショット、overlay。複数指定可。省略時は組込みの候補生成と物理判定で調査 |
+| 判定・計算に使う物理条件 | `conditions` | 指定した衝突エネルギー、温度等を、その量・条件を必要とする命題や数値評価に適用 |
+| 優先・限定する出典 | `data_selection` | 量ごと、または対象と量ごとに適格な記録を選択。記録の資格や適用条件は引き続き評価 |
+| 候補を探索する範囲 | `limits` | 探索の打切り・機械生成の範囲。部分結果にも打切り理由を保存 |
+
+同梱の `cases/ar/case.yaml` は、供給した電子と基底Arの衝突を重心系17 eVで調べる例です。自分のYAMLは `rgen analyze --input input.yaml --evidence registry --out result` で読み込めます。
 
 ```yaml
 gases: [Ar]
+supplies: [e]
 conditions:
-  gas_temperature_K: 300
-data_selection:
-  quantities:
-    rate_coefficient:
-      mode: prefer
-      methods: [measured, evaluated]
+  collision_energy_eV: 17
+  collision_energy_frame: com
+  projectile_state: e
+  target_state: Ar
+limits:
+  max_atoms: 1
+  max_depth: 1
 ```
 
-対象量は `rate_coefficient`、`cross_section`、`sticking_coefficient`、`enthalpy_formation_eV`、`ionization_energy_eV`、`electron_affinity_eV`、`excitation_energy_eV`、`thermochemical_model` です。`prefer` は指定順に優先し、該当する適格データがなければ他の出典も調べます。`only` は指定区分に制限します。区分は `methods`、`providers`、`collections` で、独自providerも指定できます。特定記録には数値datasetの `id`、物性・熱化学では状態記録の `record_id` を使います。全体方針は `quantities`、特定対象だけの上書きは `targets` へ置きます。全体でrecordを固定すると他対象にも作用するため、個別記録には対象別指定を使います。[表記辞書・登録](docs/data_dictionary.md)と[出力仕様](docs/output_reference.md)に必要項目と規則があります。
+- `collision_energy_eV` は単一の衝突エネルギーです。`com` は重心系を表します。衝突相手を指定すると、その指定に合う枝だけに適用します。`lab` からの換算には入射粒子、標的、`target_at_rest: true` と対応する質量を使います。`electron_energy_eV` と `ion_energy_eV` を換算に使う場合、入射粒子はそれぞれ電子とイオンです。温度や平均エネルギーを衝突エネルギー上限として流用しません。
+- `structures: {C2H4: 'C=C'}` で明示SMILESを結び付けられます。構造演算は `python -m pip install -e ".[structure]"` で利用できます。供給・明示反応のSMILESは元素と電荷を照合し、判明した矛盾は入力エラーになります。RDKitを利用できない場合は明示構造を検証未確定として保存し、可能な組成探索を続けます。衝突相手が一意に決まらない場合は完全な状態IDを指定します。
+- `limits` は有限探索の上限です。既定値は深さ12、状態300、反応10000、試行100000、離脱原子数2、機械生成の絶対電荷1です。`max_atoms` は既定で最大入力粒子の原子数の2倍です。状態数の上限に達しても、登録済みの状態で閉じる候補の探索は他の上限まで続けます。採用した候補の端点差には、資料で同定した基底参照も使えます。`surfaces` は既存資料の照合範囲を指定します。
+- 混合ガスで未解像の粒子から仮説が増え続ける場合は、`limits: {expand_unresolved_states: false}` を指定できます。機械探索の入口を解像済み状態と明示供給に絞ります。生成済みの組成仮説や集約準位は保存し、それらを反応物とする資料由来・明示指定の式も探索できます。既定の `true` では、未解像の粒子も機械探索の入口に含めます。
+- 数値モデルが参照する条件には `gas_temperature_K`、`electron_temperature_eV`、`ion_temperature_K`、`surface_temperature_K`、`electron_energy_eV`、`ion_energy_eV`、`reduced_field_Td` があります。必要な条件は個別の結果や `rgen needs result --detail` から確認できます。出典の優先・限定に使える識別子は `rgen records` で確認できます。[数値の採用要求](docs/output_reference.md#数値の採用要求)
 
-優先指定は、同定、単位、適用域、量の資格の確認を省略しません。優先出典の適用条件が未確定なら、その不足を返します。存在根拠の調査範囲、計算に使わない物性の選択は未対応です。対象別の未知IDや、状態に反応数値を指定するなどの取り違えはエラーになります。
+### 調べる反応式を追加する
+
+分析したい式が決まっている場合は、入力YAMLに `reactions` を追加します。下の例は同梱Ar入力へ追記できます。`process` には `elastic`、`ionization`、`charge_exchange`、`penning_ionization` などの過程名を指定します。判定の範囲は[反応別対応表](docs/reaction_judgment_matrix.md)を参照してください。
 
 ```yaml
-gases: [H2O]
+reactions:
+  - equation: 'e + Ar -> Ar+ + 2 e'
+    process: ionization
+  - equation: 'e + Ar+ -> Ar^2+ + 2 e'
+    process: ionization
+```
+
+書式は ` -> `、粒子の区切りは ` + `、量論係数は `2 e` のように書きます。第三体 `M` は両辺に書きます。式中の粒子が明示供給の一つに対応すればその状態を使います。異性体などで候補が複数あれば `states.csv` 等で確認した完全な状態IDを指定します。
+
+自動生成・資料と同じ状態、量論、過程の反応は一つにまとまります。明示式の反応物が探索で揃い、保存則に矛盾がなければ、その生成物から後続候補も探索します。探索が打ち切られた式や未到達の式も個別に判定します。経路は `gases` と `supplies` から始まり、他の候補と同様に全反応物の到達を求めます。文献による支持は読み込んだ資料から判定します。
+
+上の明示式を追加し、同梱例の `conditions` と `limits` を下記に置き換えると、基底ArとAr⁺への電子衝突を一度の解析で比較できます。各組は実際の二粒子の状態に対応します。記載外の組はエネルギー判定の適用外として保存します。同じ組で別のエネルギーを比較する場合は別の入力として解析します。
+
+```yaml
+conditions:
+  collision_pairs:
+    - {projectile_state: e, target_state: Ar, collision_energy_eV: 17, collision_energy_frame: com}
+    - {projectile_state: e, target_state: Ar+, collision_energy_eV: 28, collision_energy_frame: com}
+limits: {max_atoms: 1, max_depth: 2}
+```
+
+上の明示式と条件で解析し、`rgen view result --kind network --checked --target 'Ar^2+@ground'` を実行すると、二段分の判定理由を経路から辿れます。
+指定した衝突対の状態が保存候補に見つからない場合は、端末の概要とネットワークHTMLに表示します。
+
+原子・結合の対応を必要とする過程は、式だけでは変換の整合が未確定になる場合があります。安定化を指定する場合は `stabilization` に宣言を記載します。宣言したエネルギー交換を扱うモデルが必要な場合、その不足は衝突エネルギー判定に残ります。
+
+## 結果と経路
+
+`analyze` は `result.yaml` に正規結果を保存し、同じディレクトリに一覧と判定別の表を出力します。探索が部分的に終わる場合は、得られた結果を保存して終了コード1を返します。形式・入力エラーは2です。
+
+| 開く場所 | 確認できること |
+|---|---|
+| `reactions.csv` | 反応式、衝突区分、過程、安定化、主要判定、反応ID |
+| `states.csv` | 状態の相、準位の区分・解像度、構造、経路照会に使う状態ID |
+| `judgments/conservation.csv`、`consistency.csv` | 元素・電荷・核種の収支、宣言した過程の式形や対応を各表で確認 |
+| `judgments/energy.csv` | 反応に照合した衝突対・入射値と座標系、重心系エネルギー、端点差、余裕、未確定理由 |
+| `judgments/reaction_evidence.csv` | チャネルを支持する資料と、保存された出典の閾値。入射条件での端点収支は `energy.csv` |
+| `judgments/thermochemistry.csv`、`kinetics.csv` | 熱化学値と参照条件、係数の利用結果を各表で確認 |
+| `judgments/state-*.csv` | 個々の状態について保存された判定 |
+| `graphs/`、`selection/` | `view` で指定した図、または絞り込んだ表を作成したときに使用 |
+
+表は反応ID・状態IDで対応します。`--family` と `--process` は完全一致です。`--require` を繰り返すと、指定した保存判定をすべて満たす反応だけを抽出できます。未知や適用外を含む全結果は元の表から確認できます。物理条件を変える場合は入力を編集して再解析します。
+
+```powershell
+rgen view result --kind csv --family electron --process ionization --require conservation=pass --require consistency=pass --require energy=pass
+rgen view result --kind csv --judgment energy --verdict unknown
+rgen records result --target rxn_60cb094f8f47 --quantity delta_e_eV
+```
+
+Arの同梱例では、1つ目のコマンドが `selection/reactions.filtered.csv` に電離候補を抽出します。2つ目は `selection/energy.filtered.csv` にエネルギー判定が未確定の候補と理由を出します。`rxn_60cb094f8f47` は基底Arの電離の行にある `id` です。`records` は、対象に保存された記録と計算に使用した出典を表示します。
+
+### 図で調べる
+
+| 目的 | コマンド | 図の読み方 |
+|---|---|---|
+| 各枝のエネルギー余裕を比較 | `rgen view result --kind energy` | 衝突対ごとのSVGで、重心系の余裕をゼロからの距離で比較。余裕を算出できた枝が図に入り、未確定理由はエネルギー表に残る |
+| 一つの判定の内訳を比較 | `rgen view result --kind judgment --judgment energy` | 一つの判定を一枚のSVGにし、衝突区分ごとの件数と割合を表示 |
+| 一反応の参加状態を確認 | `rgen view result --kind reaction --reaction rxn_60cb094f8f47` | 反応物から生成物への方向と量論係数をSVGで表示。弾性散乱も指定できる |
+| 対象種へ至る経路を確認 | `rgen view result --kind pathway --target Ar+@ground` | 全反応物・生成物と量論を矢印で表示。後続反応を支える生成物だけを次の反応へ接続 |
+| 反応を検索して詳細を辿る | `rgen view result --kind network` | 任意のHTML。過程・適用した衝突入力・判定で反応一覧を絞れる |
+
+図は既定で `graphs/` に保存されます。`--out DIR` で保存先を指定できます。エネルギー余裕が正でも、過程固有の出口条件や発生を支持する証拠は別に確認します。経路図では同じ反応段の供給電子を一つにまとめ、その段で終わる出射電子も一つにまとめます。後段を支える電子は保存された支持関係でつなぎます。矢印の数字は各反応の量論係数です。行列PNGは、各反応列への各状態の参加と役割を概観できます。
+
+経路は明示供給からのAND到達性です。明示された全反応物に支持が必要です。`candidate` は保存則に反する枝を外し、`conditioned` はさらに宣言した過程の反証と、指定条件でのエネルギー収支の反証を外します。未確定や適用外の枝は理由付きで残ります。たとえばAr例のエネルギーを0 eVに変えると直接電離の枝は外れますが、指定した衝突対の条件が及ばない別経路は候補に残ることがあります。弾性散乱は反応一覧・近傍図から確認できます。正味生成がある反応だけが生成元になります。
+
+```powershell
+rgen needs result --data-missing --detail
+rgen view result --kind pathway --checked --target Ar+@ground
+rgen view result --kind matrix
+```
+
+`--checked` は保存則、過程、衝突エネルギーの必要条件が成立した枝を対象とし、未同定の参加状態を含む枝と供給を除きます。明示SMILESには保存したグラフ検証、資料内の構造IDには対象状態と厳密に一致した審査済みの証拠を使います。状態の存在や束縛に反証がある枝と供給も除き、枝に残る参加状態の未確定な証拠は判定への参照を付けます。`--seed` は照会時の供給を置き換えます。`--target STATE --via REACTION_ID` は、対象種を生成する指定枝と、その枝を支える供給・前段の経路を表示します。反応の発生、分岐、速度、支配経路の判断には個別の根拠と条件が要ります。[経路の公開仕様](docs/output_reference.md#形式7以降の計算と経路)
+
+[Arの段階電離](docs/reaction_judgment_matrix.md#arの段階電離を通常入力で辿る)、[H＋D₂からHDへの交換](docs/reaction_judgment_matrix.md#明示同位体からhdへの候補経路を調べる)、[CF₄/O₂の酸化経路](docs/reaction_judgment_matrix.md#cf₄o₂の酸化経路を調べる)には、根拠の入力から経路出力までの実行例があります。
+
+### DNT向けのイオン・中性衝突入力
+
+`rgen view result --kind dnt` は、保存結果にあるイオン・中性粒子対、候補チャネル、物性宣言と判定を `dnt/dnt_inputs.yaml` に出力します。イオンが探索範囲に入るよう供給または探索深さを指定します。[DNT向け出力の仕様](docs/output_reference.md#dnt向けの出力)・[ベンチマークと出力例](docs/reaction_judgment_matrix.md#ベンチマークとdnt向け出力)
+
+## 証拠を追加する
+
+`--evidence registry --evidence overlay.yaml` は、同梱Registryと手元の追加資料を同時に読み込みます。参照したパスが存在しない場合は入力エラーになります。元の量と係数としての利用可否を調べるには、`rgen records result --target ID --quantity cross_section --detail` を使います。
+
+例として、Hを含む入力の断面積でIAEA CollisionDBの記録を優先するには、以下をYAMLに追加します。`prefer` は適格な代替候補を許し、`only` は該当する出典だけに限定します。記録を一件に固定する場合は `data_selection.targets` で対象IDと量を指定します。[採用要求の入力欄](docs/output_reference.md#数値の採用要求)
+
+```yaml
 data_selection:
   quantities:
-    thermochemical_model:
-      providers: [NASA]
-  targets:
-    H2O@ground:
-      enthalpy_formation_eV:
-        providers: [my_lab, NASA]
+    cross_section:
+      mode: prefer
+      providers: [iaea_collisiondb]
 ```
 
-登録した外部・ローカル記録の内容と選択用IDは、`rgen records result --target H2O@ground --quantity enthalpy_formation_eV` で確認できます。通常は値・条件・出所を表示し、`--detail`で原宣言を含む全記録を表示します。同名の種・反応でも出所と科学内容の異なる記録を保持し、読込み順で上書きしません。通常利用にはすべての出所を手指定する必要はありません。
+`acquire` で取得・変換した記録を `rgen ingest` で既存候補へ照合します。overlayを `--evidence` で読み直して結果を調べ、Registryへ反映する場合は `rgen adopt` を明示的に実行します。照合、審査、採用は別の操作です。複数の出典は独立した記録として保持します。[取得・照合・採用](docs/data_sources.md)・[記録形式と語彙](docs/registry_data_guide.md)
 
-状態の資料には`target_match`と資料自身の対象を示します。別構造・相・準位の関連資料も残しますが、関連資料を列挙できることと、その対象の計算へ採用できることは別です。
+## 既存データと開発
 
-`prefer` は同じobservable・速度次数の記録間で順位を付けます。出典の好みだけで、総断面積と運動量移行断面積、異なる次数の速度則を選びません。用途・速度則の選択を明示する場合は `record` または適格な記録を一種類へ絞る `only` を使います。運動量移行断面積は、反応回数の係数へそのまま積分できる量ではありません。
+- 保存済みschema 5の結果は、各版の判定と補助表の形式を保持して読みます。旧版の表の扱い、schema 4からの移行手順、旧overlayと `preferred` は[互換と移行](docs/output_reference.md#保存の整合と移行)を参照してください。
+- 実装の変更は[開発指針](AGENTS.md)に従い、[品質確認](docs/quality.md)の既存入口を使います。開発用依存は `python -m pip install -e ".[quality]"` で導入できます。
 
-## 結果の読み方
-
-通常CLIは対象と入力条件、使える係数の具体例、必要な対象・量と次の作業を先に表示します。通常の出力は3ファイルです。
-
-各判定の `label` で、命題成立 `satisfied`、命題不成立 `not_satisfied`、データ不足 `data_missing` を区別します。入力不足、確認待ち、同定・選択待ち、未対応モデルは別ラベルです。複数原因は `unresolved` と `blocking_causes` に残します。同じ命題で不成立が決まる場合は、無関係な不足をデータ不足率へ加えません。係数の利用不可は反応の不存在ではありません。
-
-数値記録の拒否はその記録の除外、明示競合は確認待ち、数値未入手は欠測です。参照だけの記録でもこの区別は同じです。提供記録がすべて除外・範囲外なら、その証拠集合・条件での係数利用は不成立となります。独立した適格な代替値は利用できます。
-
-`summary.coverage` と通常CLIに、判定ドメイン・命題・熱化学計算ごとの不足件数、適用対象数、割合を示します。対象外は割合の分母から除き、異なる判定を足して独立作業数にはしません。`rgen needs result --data-missing --detail` で補完対象を絞り、`data_completion` から対象・必要量・理由と影響する命題を確認できます。旧結果は判定を変更せず読み、ラベル付きの補完一覧には再分析が必要です。
-
-- `result.yaml`: 入力、探索範囲と打切り、全候補、命題ごとの判定、出典・数値・利用条件を持つ唯一の正規結果。
-- `states.csv`: 状態、相・構造、判定と理由。
-- `reactions.csv`: 反応式、過程、判定、エネルギー値、数値の利用結果・不足。
-
-CSVには各判定の命題、適用範囲、理由も表示します。利用者が入力できる条件、出典側で確認する情報、出典選択、分布等の外部モデル、未実装の変換を別列に示します。表示は保存された結論から作り、再判定しません。
-
-`pass` はその判定の命題について支持があること、`fail` はその命題との矛盾、`unknown` は不足・競合・モデル未対応等により結論できないこと、`not_applicable` は対象外を表します。新規結果の全判定に `proposition` と個別の `scope` を記録し、必要情報は対象・量・作業を持つ `requirements`、参加状態の集約は個別判定への `dependencies` で確認できます。速度データの不正は反応の不存在を意味せず、熱化学値の存在は反応の実現を証明しません。候補は不足・不正があっても結果に残ります。
-
-解離・会合の`consistency`は、宣言した反応族の保存則・式形を確認します。会合が安定化するか、解離が何によって励起されるか、どの条件で速度が使えるかは、その`pass`だけでは決まりません。
-
-`data_use.status=coefficient` の場合は、指定条件で実際に評価した係数と単位を返します。`needs_input` と `needs_transform` は必要な情報・変換を返します。`unavailable` と `conflict` は採用できない理由を返します。断面積だけではEEDF積分後の係数、sticking確率だけでは表面流束は得られません。
-
-`data_use.datasets` は元の数値記録ごとの量・利用可否を示し、`data_use` は係数として使う目的の結果を示します。断面積曲線が `valid` でも係数が得られたとは限りません。曲線の評価は点問い合わせではないため、単一エネルギーを入力しても断面積のscalar値を返しません。条件・確認・モデル・変換の作業は、それを必要とする処理の `requirements` に保存します。
-
-`data_use.selection` は明示した採用方針、`disagreements` は数値の不一致やIDの競合がある記録IDです。優先指定で一つを採用しても、他の出典の記録と不一致を結果へ残します。優先指定なしで異なる値が競合する場合は、順番だけで一つに決めません。
-
-不足には利用者の条件と、出典側の修復を区別して示します。`gas_temperature` は対応する温度入力、`dataset_applicability_conditions` はデータの適用条件の確認、`rate_law_selection` は異なる速度則の採用根拠が必要という意味です。後二者を通常入力の仮条件で埋めません。
-
-形成エンタルピーの差は、正味寄与する参加種の共通参照温度・元素基準・標準圧力を確認できた場合に返します。イオンを含む有限温度の比較には電子規約も必要です。不明な既存値に298 K等を補わず、ΔHだけを計算不可にします。NASAからの標準ΔG/Kや、独立したIE・EAの結論はそれぞれの前提で評価します。
-
-各反応の `thermochemical_calculations` に、ΔH、標準ΔG、数密度で表した平衡定数の計算結果を分けて保存します。各量の `computed`、`needs_input`、`unavailable`、`out_of_range`、値・単位・実際の条件・次の作業を確認できます。これらの計算結果は、エネルギー関係や反応発生の判定ではありません。従来の `thermochemistry` 値一覧は成功した熱化学計算とエネルギー補助値から導きます。通常CLI・CSV形式6・HTMLにも同じ結果を示します。形式1～5の保存結果は当時の判定・列・hashを維持します。
-
-IE/EAは断熱・垂直等の量の定義を区別します。定義不明の旧分子値や別定義の値は原宣言として保全し、その定義を必要とする比較だけを未確定にします。反応の閾値・内部エネルギー差も、各量自身の資格・出典・不確かさで評価します。宣言値の整合は測定精度や反応発生の保証ではありません。
-
-正の電子親和力と電子非束縛の宣言が矛盾する場合は未確定とし、そのEAを数値計算へ採用しません。`unstable`・`transient`や短寿命の存在宣言だけでは電子非束縛を結論しません。
-
-励起状態の消失率や化学式全体の係数は、特定準位の生成物係数とは区別します。生成物の対応が未確認なら原数値を証拠へ残し、そのチャネルの計算には採用しません。温度を入力しても、この同定不足は解消しません。
-
-`generation.complete` は明示した機械文法と証拠追加の範囲で処理が完了したことです。全化学の探索完了ではありません。打切りでも決まった範囲を保存し、CLIは終了コード1を返します。形式・入力エラーは2です。
-
-`generation.input_scope`は入力ごとの文法範囲です。`formula_only`の入力では機械的な結合分割を生成できず、完了時も通常CLIに対象と次の作業を表示します。保存された過去結果へ生成範囲を後付けしません。
-
-## 保存結果からの補助表示
-
-再計算せず、不足・修復一覧や図を作れます。
-
-```powershell
-.\.venv\Scripts\rgen.exe needs result
-.\.venv\Scripts\rgen.exe needs result --detail
-.\.venv\Scripts\rgen.exe view result --kind network --out result/views
-.\.venv\Scripts\rgen.exe view result --kind matrix --out result/views
-.\.venv\Scripts\rgen.exe view result --kind pathway --seed Ar@ground --seed e --target Ar+@ground --out result/views
-.\.venv\Scripts\rgen.exe view result --kind csv --out result
-```
-
-`needs`は結論と不足の概要を先に返し、`work`に対象・量・責務で整理した具体的な必要情報、`needs`に保存判定やデータ除外の指摘を示します。既知の必要情報数、派生指摘数、具体的要件を持たない指摘数は別です。参加状態やDataUseから導いた同じ不足を作業として重複計数しません。`--detail`で全対象・理由・作業と影響先を確認できます。表示群数は作業数でも、一括解消の保証でもありません。判定の`fail`はその命題の失敗として示し、すべての用途で候補を修復・削除すべきという意味へ変換しません。
-
-経路は全反応物を必要とするAND型の候補到達性です。既定の供給は入力ガスだけで、電子は明示した場合だけ供給します。`--seed` は既定供給を置換します。第三体・壁の利用可能性は図の暗黙の前提で、速度・時間・支配経路は分かりません。図は通常計算の依存先にしません。
-
-ネットワークの詳細は、命題と範囲、利用できた値・条件・参照条件、理由・不足、採用記録・不一致・出典を保存結果から表示します。生成履歴は折り畳みます。旧結果の命題や要件の空欄は「未記録」とし、推測補完しません。
-
-ネットワークの `All saved candidates` は判定未選択です。判定層を選んだときだけその命題のverdictを表示します。行列は8000反応以下で `matrix.png`、それを超えると全列を分割した `matrix.html` とPNGを返します。HTML索引から対象範囲を確認できます。
-
-## 証拠の管理
-
-```powershell
-.\.venv\Scripts\rgen.exe check --registry registry
-.\.venv\Scripts\rgen.exe ingest snapshot.yaml --result result --overlay overlay.yaml
-.\.venv\Scripts\rgen.exe analyze Ar CF4 --evidence registry --evidence overlay.yaml --out result
-.\.venv\Scripts\rgen.exe derive --registry registry --out derived.yaml
-.\.venv\Scripts\rgen.exe adopt overlay.yaml --registry registry --dry-run
-```
-
-取得は別パッケージ `acquire`、照合は `ingest`、永続的な採用は `adopt` です。照合済み件数は科学的承認件数ではありません。状態の存在を支持するには、物性とは別に明示的な存在根拠が必要です。相や構造が不足したsnapshot値を気相へ無言で割り当てません。出典の資格やライセンスは[データガイド](docs/registry_data_guide.md)と[出典方針](docs/source_license_policy.md)を参照してください。
-
-`adopt` は全件を事前検証し、通常の保存失敗では変更を復旧します。復旧にも失敗した場合は残ったbackupと失敗を報告します。[取得手順](external_data/README.md)と[個別データの科学レビュー](docs/scientific_data_review.md)を参照してください。
-
-照合・採用は相、構造、状態と解像度まで一致する対象へ行います。`ingest` は独立した状態記録をoverlayの `state_records` へ保存し、`adopt` はRegistry種ファイルの `records` へ追加します。同一対象の異なる出典・値・NASAモデルを単一mappingへ上書きしません。出典識別子、原宣言、方法、宣言された審査範囲も保存します。値の不一致と対象の同定不足は別に扱い、競合する独立宣言を入力順で選びません。形式は[データガイド](docs/registry_data_guide.md)を参照してください。
-
-化学式だけの取得要求では、取得元が同定した多原子分子の構造を保ちます。特定異性体の値を構造未指定の対象へ転記しません。構造を指定した要求は取得元のInChI・CAS・名前等と照合し、不一致を拒否します。元の科学記録の欠値も別出所で書き換えず、`record`固定時は固定した記録自身の値・不足を返します。
-
-数値科学IDは一つの物理チャネルに属します。入力に明示された反応式・過程等と割当先を照合し、読込み・評価・採用・保存で同じ対象を保持します。照合のために原宣言の自由文を解析しません。
-
-反応主張はoverlayの `reaction_records`、Registryチャネルの `records` に独立保存します。純粋な反応根拠や閾値の宣言は数値datasetを作りません。係数等も宣言した入力は、反応主張と数値を別々に保持するため、`adopt`の書込み件数は一入力から複数になる場合があります。過程が不明な反応式を特定チャネルへ推測して割り当てず、必要な同定をreview queueへ返します。
-
-同じ原記録の再取得は、取得日時だけで競合にせず、各取得の原宣言を併記します。状態の存在・各物性・熱化学モデルの審査範囲を対応する主張へ適用し、出典の優先指定で資格を補いません。
-
-## 0.7から1.0への変更
-
-1.0はschema 5と通常入力を維持します。保存済みの結果は過去の判定として読み、再計算しません。新しい分析では、同一対象の存在根拠が相反しても、独立に審査された物性の利用は別に評価します。エネルギー量の競合は、その量を使う判定だけを未確定にします。量の利用成功から状態・反応の存在を承認しません。
-
-数値表は保存した実測hashと作者の宣言hashを保持し、実際に利用する内容を照合します。表が変更された場合は旧資格のまま計算せず、同じ検証済み内容の保存場所だけが違う場合は科学的競合にしません。原宣言と取得場所は保持します。
-
-0.7.1で導入した審査範囲と拒否宣言の資格確認、原IDの名前空間、独立反応主張の保存は継続します。既存overlay・Registry・結果の保存IDは保持し、原IDが確認できない旧記録を推測で統合しません。
-
-## 0.6からの移行
-
-0.7の公開結果はschema 5の追加形式です。0.6のschema 5保存結果も読み込めます。新しい `proposition`、出典情報、採用方針・不一致は、新しい分析で保存します。再読込みは過去の判定を再計算しません。
-
-旧 `states/properties/thermo` overlayと単一のRegistry物性は読込みadapterで受け付けます。新規取得・照合・採用では独立記録を使ってください。datasetの `preferred` は、その量の `data_selection` がない場合だけ使う旧互換指定で、理由に移行案内を返します。2.0で撤去する予定です。
-
-## 0.5からの移行
-
-0.6は公開形式をschema 5へ変更しています。`generate`、7 policy、`selected.yaml`、累積screening、ready booleanは廃止しました。旧bundleを通常処理で読む互換経路はありません。
-
-```powershell
-.\.venv\Scripts\python.exe tools/migrate_v4.py --input old_input.yaml --bundle old_outputs --out new_result --evidence registry
-```
-
-移行先は新しいディレクトリを指定します。原入力・旧bundle・旧証拠を保存し、使わない旧条件は移行報告へ分けます。旧判定は引き継がず再評価します。旧証拠はimportedとして復元し、相・存在根拠・assetの位置が不明なら不明のまま残します。多価電荷などIDが矛盾する原本は修正が必要です。この一回限りの工具はv4のみを対象とし、2.0で撤去する予定です。
-
-旧関連過程の根拠は、その記録自身に明示された反応式がある場合だけ対象を移行します。
-独自の式がない根拠は原archiveへ保全し、表示されていた親候補の根拠へ付け替えません。
-
-## 開発
-
-```powershell
-.\.venv\Scripts\python.exe tools/quality.py quality-smoke
-.\.venv\Scripts\python.exe tools/quality.py quality-pr
-```
-
-変更ごとに[AGENTS.mdの進め方](AGENTS.md#変更ごとの進め方)を使い、変わる結論とその所有処理、検証の根拠、整理した旧内容を確認します。`quality-smoke`は開発中の短い通常利用確認、`quality-pr`は統合時の包括検証です。両方の成功から科学的な完成や不要処理の不存在を宣言しません。
-
-継続的な判断は[AGENTS.md](AGENTS.md)、現行責務は[Core design](docs/core_design.md)、公開形式は[出力仕様](docs/output_reference.md)、検証入口は[品質管理](docs/quality.md)を正とします。実装と検証の履歴は[実施記録](docs/reaction_state_generation_implementation_plan.md)、残件と優先順位・完了条件は[残件計画](docs/remaining_work_plan.md)に分けています。
+| 資料 | 参照する内容 |
+|---|---|
+| [現行設計](docs/core_design.md) | モジュール間の依存と処理・判定の責務 |
+| [公開出力仕様](docs/output_reference.md) | 保存形式・量の採用・経路・互換 |
+| [反応別レポート](docs/reaction_judgment_matrix.md) | P0・P1の過程・判定式、Registryの収録範囲、ベンチマーク、実行例、文献 |
+| [取得・照合・採用](docs/data_sources.md) | 取得コマンドと物性の取得・算出 |
+| [記録形式と語彙](docs/registry_data_guide.md) | Registry、スナップショット、overlayの入力形式 |
+| [収録データと配布条件](docs/source_license_policy.md) | 出典、適用条件、notice、第三者資料 |

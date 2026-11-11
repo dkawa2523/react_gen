@@ -1,0 +1,43 @@
+schema_version: 1
+id: O_3P1
+display_name: O(3P1)
+composition:
+  O: 1
+charge: 0
+phase: gas
+classes:
+- neutral
+- atom
+- radical
+- excited
+state:
+  kind: electronic
+  label: 3P1
+  configuration: 2s2 2p4
+  term: 3P
+  J: '1'
+  parity: even
+  degeneracy: 3
+  existence: confirmed
+  existence_source: NIST Handbook of Basic Atomic Spectroscopic Data, O I level table.
+  status: reviewed
+  method: evaluated
+  review_scope: [state_existence]
+  source: &level_source
+    provider: NIST
+    collection: SRD108
+    release: '1.1.2'
+    citation: Sansonetti, Martin and Young (2005), NIST Basic Atomic Spectroscopic Data, O I level table, MG93.
+    url: https://physics.nist.gov/PhysRefData/Handbook/Tables/oxygentable5.htm
+properties:
+  excitation_energy_eV:
+    value: 158.265
+    unit: cm-1
+    related_state: O@ground
+    source: *level_source
+    evidence_tier: reviewed
+    status: reviewed
+    method: evaluated
+    review_scope: [excitation_energy_eV]
+    uncertainty:
+      note: The source level table supplies no numerical uncertainty for this entry.

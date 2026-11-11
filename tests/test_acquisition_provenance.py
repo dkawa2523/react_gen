@@ -97,7 +97,7 @@ def test_fetch_conversion_and_all_numeric_storage_routes_preserve_acquisition(
     document = yaml.safe_load((work / "snapshot.yaml").read_text(encoding="utf-8"))
     acquisition = document["acquisition"]
     assert acquisition["source_manifest"] == manifest
-    assert acquisition["raw_path"] == "raw/input.txt"
+    assert acquisition["raw_path"] == f"raw/{checksum}/input.txt"
     assert (work / acquisition["raw_path"]).read_bytes() == payload
     assert document["source"]["acquisition"] == acquisition
 
@@ -149,7 +149,7 @@ def test_state_declaration_and_original_manifest_paths_survive_adoption(tmp_path
     direct = EvidenceCatalog.load(None, known=(source,)).state_records[0]
     acquisition = direct.source_declaration["snapshot_source"]["acquisition"]
     assert acquisition["source_manifest"] == manifest
-    assert acquisition["raw_path"] == "raw/input.tsv"
+    assert acquisition["raw_path"] == f"raw/{manifest['sha256']}/input.tsv"
     assert acquisition["source_manifest"]["raw_path"] == "original-storage/location"
     assert direct.provenance.provider == "declared-upstream"
     root = registry(tmp_path)
@@ -232,3 +232,24 @@ def test_snapshot_digest_is_the_complete_sha256(tmp_path: Path) -> None:
     path = tmp_path / "asset.csv"
     path.write_bytes(b"energy_eV,cross_section_m2\n0,1e-20\n")
     assert snapshot.digest(path) == hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def test_lxcat_converts_and_preserves_the_same_captured_bytes(tmp_path, monkeypatch) -> None:
+    raw = tmp_path / "source.txt"
+    original = LXCAT.encode()
+    raw.write_bytes(original)
+    capture = snapshot.input_acquisition
+
+    def capture_before_change(path):
+        captured = capture(path)
+        path.write_bytes(original.replace(b"1e-20", b"9e-20"))
+        return captured
+
+    monkeypatch.setattr(snapshot, "input_acquisition", capture_before_change)
+    out = tmp_path / "out"
+    assert main(["lxcat", str(raw), "--out", str(out)]) == 0
+    document = yaml.safe_load((out / "snapshot.yaml").read_text(encoding="utf-8"))
+    acquisition = document["acquisition"]
+    assert acquisition["sha256"] == hashlib.sha256(original).hexdigest()
+    assert (out / acquisition["raw_path"]).read_bytes() == original
+    assert "0.0,1e-20" in (out / document["records"][0]["asset"]).read_text(encoding="utf-8")

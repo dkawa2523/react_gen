@@ -3,7 +3,7 @@ name: Quality PR
 on:
   pull_request:
   push:
-    branches: [main, update1_refine, update2_db]
+    branches: [main]
 
 permissions:
   contents: read

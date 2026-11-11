@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import csv
 import hashlib
-import json
 from copy import deepcopy
 from io import StringIO
 from pathlib import Path
@@ -12,14 +11,21 @@ from pathlib import Path
 import pytest
 
 from reactgen import export, needs, yamlio
-from reactgen.case import Case
+from reactgen.case import Case, Limits
+from reactgen.chemistry import candidate_state
 from reactgen.evidence import EvidenceCatalog
 from reactgen.model import ReactionCandidate, Term, reaction_id
 from reactgen.pipeline import analyze
+from reactgen.records import StateRecord
 
 
 def saved() -> dict:
-    return export.document(analyze(Case("analysis", ("Ar",)), EvidenceCatalog.load(None)))
+    return export.document(
+        analyze(
+            Case("analysis", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
+            EvidenceCatalog.load(None),
+        )
+    )
 
 
 def rehash(document: dict) -> None:
@@ -27,6 +33,34 @@ def rehash(document: dict) -> None:
         name: hashlib.sha256(content.encode()).hexdigest()
         for name, content in export.csv_views(document).items()
     }
+
+
+def test_binding_and_existence_have_distinct_owners_and_applicable_populations(
+    tmp_path: Path,
+) -> None:
+    anion = candidate_state({"Ar": 1}, -1)
+    occurrence = StateRecord(
+        anion.id,
+        anion,
+        existence="confirmed",
+        existence_source="test occurrence evidence",
+        tier="reviewed",
+    )
+    analysis = analyze(
+        Case("independent claims", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
+        EvidenceCatalog(state_records=(occurrence,)),
+    )
+    document = export.document(analysis)
+    target = next(state for state in document["states"] if state["id"] == anion.id)
+    assert target["assessments"]["state"]["proposition"] == "state_existence_support"
+    assert target["assessments"]["state"]["verdict"] == "pass"
+    assert target["assessments"]["electron_binding"]["verdict"] == "unknown"
+    assert sum(document["summary"]["judgments"]["states"]["electron_binding"].values()) == 1
+    population = document["summary"]["coverage"]["judgments"]["states"]["electron_binding"]
+    assert population["total"] == 1
+    path = tmp_path / "result.yaml"
+    path.write_text(yamlio.dump(document), encoding="utf-8")
+    assert export.read(path) == document
 
 
 def historical_fractional_duplicates(version: int) -> dict:
@@ -77,16 +111,23 @@ def test_current_format_rejects_the_historical_fractional_duplicate_hash() -> No
 
 def test_individual_scope_requirements_and_dependencies_roundtrip(tmp_path: Path) -> None:
     document = saved()
-    rows = {
-        row["id"]: row
-        for row in csv.DictReader(StringIO(export.csv_views(document)["reactions.csv"]))
+    views = export.csv_views(document)
+    by_judgment = {
+        name: {row["id"]: row for row in csv.DictReader(StringIO(views[f"judgments/{name}.csv"]))}
+        for name in document["summary"]["judgments"]["reactions"]
     }
     for reaction in document["reactions"]:
         for name, judgment in reaction["assessments"].items():
-            row = rows[reaction["id"]]
-            assert row[f"{name}_scope"] == judgment["scope"]
-            assert json.loads(row[f"{name}_requirements"]) == judgment["requirements"]
-            assert json.loads(row[f"{name}_dependencies"]) == judgment["dependencies"]
+            row = by_judgment[name][reaction["id"]]
+            assert row["scope"] == judgment["scope"]
+            assert row["depends_on"] == " | ".join(
+                f"{target} / {dependency}" for target, dependency in judgment["dependencies"]
+            )
+            source = reaction["data_use"] if name == "kinetics" else judgment
+            steps = row["next_steps"].split(" | ") if row["next_steps"] else []
+            assert len(steps) == len(source["requirements"])
+            for step, requirement in zip(steps, source["requirements"], strict=True):
+                assert all(value in step for value in requirement.values())
     path = tmp_path / "result.yaml"
     path.write_text(yamlio.dump(document), encoding="utf-8")
     export.rebuild_views(document, tmp_path)
@@ -176,6 +217,7 @@ def test_shared_prerequisite_is_one_work_item_with_each_saved_dependent() -> Non
 def test_historical_format_two_keeps_empty_meaning_and_its_exact_hashes(tmp_path: Path) -> None:
     document = saved()
     document["metadata"]["helper_view_format"] = 2
+    document["reactions"][0]["kinetic_effects"] = ["momentum_transfer"]
     for item in (*document["states"], *document["reactions"]):
         for judgment in item["assessments"].values():
             judgment["proposition"] = ""

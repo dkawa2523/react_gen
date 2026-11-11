@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import bz2
 import hashlib
 import json
 from pathlib import Path
@@ -9,10 +10,14 @@ from pathlib import Path
 import pytest
 import yaml
 
-from acquire import collisiondb, nasa, targets, webbook
+from acquire import collisiondb, download, exomol, nasa, targets, webbook
 from acquire.cli import main
 from reactgen.assessment import assess_state_thermochemistry
+from reactgen.case import Case, Conditions, Limits
+from reactgen.chemistry import parse_state_id
 from reactgen.evidence import EvidenceCatalog, snapshot_state
+from reactgen.export import read, write
+from reactgen.pipeline import analyze
 from reactgen.records import normalized_dataset, normalized_property, state_record_id
 
 
@@ -111,9 +116,36 @@ def test_saved_webbook_conversion_keeps_original_bytes(tmp_path):
     document = yaml.safe_load((out / "snapshot.yaml").read_text(encoding="utf-8"))
     for record in document["records"]:
         acquisition = record["source_declaration"]["acquisition"]
+        assert acquisition["request"]["query"] == "124-38-9"
+        assert acquisition["request"]["target"] == "CO2@ground"
         assert acquisition["sha256"] == hashlib.sha256(raw.read_bytes()).hexdigest()
         assert (out / acquisition["raw_path"]).read_bytes() == raw.read_bytes()
         assert record["status"] == "imported"
+
+
+def test_webbook_retry_failure_preserves_previous_snapshot_and_originals(tmp_path, monkeypatch):
+    species = tmp_path / "species.yaml"
+    species.write_text("- id: CO2\n  query: 124-38-9\n", encoding="utf-8")
+    raw = tmp_path / "source.html"
+    raw.write_bytes(page().encode())
+    out = tmp_path / "converted"
+    assert main(["webbook", str(species), "--page", str(raw), "--out", str(out)]) == 0
+    before = {path.relative_to(out): path.read_bytes() for path in out.rglob("*") if path.is_file()}
+
+    species.write_text(
+        "- id: CO2\n  query: 124-38-9\n- id: N2\n  query: C7727379\n", encoding="utf-8"
+    )
+    changed = page().replace("-393.51", "-393.45").encode()
+    responses = iter(
+        [
+            download.Fetched("https://example.invalid/CO2", changed),
+            download.Fetched("https://example.invalid/N2", error="503"),
+        ]
+    )
+    monkeypatch.setattr(download, "fetch", lambda *_args, **_kwargs: next(responses))
+    assert main(["webbook", str(species), "--out", str(out)]) == 1
+    after = {path.relative_to(out): path.read_bytes() for path in out.rglob("*") if path.is_file()}
+    assert after == before
 
 
 def collision_file(tmp_path: Path, **changed) -> Path:
@@ -294,3 +326,104 @@ def test_unique_nasa_entry_keeps_its_source_structure_for_formula_only_requests(
     judgment = assess_state_thermochemistry(targets.requests(["CH2O"])[0][0].target, evidence)
     assert judgment.verdict == "unknown"
     assert any(item.responsibility == "identity" for item in judgment.requirements)
+
+
+@pytest.fixture
+def diatomic_files(tmp_path):
+    pytest.importorskip("rdkit.Chem")
+    ground = parse_state_id("H2@ground;structure=smiles:[1H][1H]")
+    assert ground is not None
+    definition = tmp_path / "1H2__demo.def.json"
+    states = tmp_path / "1H2__demo.states.bz2"
+    definition.write_text(
+        json.dumps(
+            {
+                "isotopologue": {
+                    "iso_formula": "(1H)2",
+                    "iso_slug": "1H2",
+                    "inchi": "InChI=1S/H2/h1H",
+                },
+                "dataset": {
+                    "name": "demo",
+                    "version": 20250101,
+                    "states": {
+                        "number_of_states": 4,
+                        "quantum_case_label": "dcs",
+                        "hyperfine_resolved_dataset": False,
+                        "states_file_fields": [
+                            {"name": name} for name in ("ID", "E", "gtot", "J", "v")
+                        ],
+                    },
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    # Selection follows the declared ID, independently of energy and row order.
+    states.write_bytes(bz2.compress(b"3 50.0 3 1 0\n2 100.0 1 0 1\n1 0.0 1 0 0\n"))
+    return definition, states, ground.id
+
+
+def test_exomol_selected_level_requires_review_and_keeps_exact_ground(diatomic_files, tmp_path):
+    definition, states, ground = diatomic_files
+    out = tmp_path / "snapshot"
+    assert (
+        main(
+            [
+                "exomol",
+                str(definition),
+                str(states),
+                "--ground",
+                ground,
+                "--ground-row",
+                "1",
+                "--rows",
+                "2",
+                "--out",
+                str(out),
+            ]
+        )
+        == 0
+    )
+    snapshot = out / "snapshot.yaml"
+    payload = yaml.safe_load(snapshot.read_text(encoding="utf-8"))
+    (row,) = payload["records"]
+    declaration = row["source_declaration"]
+    assert row["related_state"] == ground
+    assert row["status"] == "imported"
+    assert declaration["states_file"]["declared_rows"] == 4
+    assert declaration["states_file"]["parsed_rows"] == 3
+    assert declaration["states_file"]["sha256"] == hashlib.sha256(states.read_bytes()).hexdigest()
+    case = Case(
+        "ExoMol",
+        ("H2",),
+        Conditions(collision_energy_eV=0.03, collision_energy_frame="com"),
+        limits=Limits(max_depth=1, max_atoms=2),
+        supplies=("e",),
+        structures={"H2": "[1H][1H]"},
+    )
+    catalog = EvidenceCatalog.load_paths((snapshot,))
+    analysis = analyze(case, catalog)
+    reaction = next(
+        r
+        for r in analysis.candidates.reactions.values()
+        if r.process == "excitation" and any(term.species == row["species"] for term in r.products)
+    )
+    assert analysis.evaluation.reaction_assessments[reaction.id]["energy"].verdict == "unknown"
+    row.update(status="reviewed", evidence_tier="reviewed", review_scope=["excitation_energy_eV"])
+    snapshot.write_text(yaml.safe_dump(payload), encoding="utf-8")
+    result = tmp_path / "result"
+    write(result, analyze(case, EvidenceCatalog.load_paths((snapshot,))))
+    saved = next(r for r in read(result, verify_views=True)["reactions"] if r["id"] == reaction.id)
+    assert saved["assessments"]["energy"]["verdict"] == "pass"
+    assert saved["thermochemical_calculations"]["state_energy_difference_eV"][
+        "value"
+    ] == pytest.approx(0.01239842)
+
+
+def test_exomol_refuses_wrong_isotope_or_reference(diatomic_files):
+    definition, states, ground = diatomic_files
+    with pytest.raises(ValueError, match="isotope inventory"):
+        exomol.records(definition, states, "H2@ground;structure=smiles:[2H][2H]", 1, [2])
+    with pytest.raises(ValueError, match="specified ground row"):
+        exomol.records(definition, states, ground, 3, [2])

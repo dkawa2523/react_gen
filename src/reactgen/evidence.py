@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from copy import deepcopy
 from dataclasses import dataclass, field, replace
 from pathlib import Path
@@ -22,13 +22,17 @@ from reactgen.model import (
     CandidateSet,
     EquationKey,
     ReactionCandidate,
+    ReactionKey,
     StateCandidate,
     StateKey,
     Term,
+    bind_transformation_states,
+    combine_transformations,
     reaction_id,
 )
 from reactgen.records import (
     TIER_RANK,
+    MolecularIdentity,
     NumericDataset,
     ReactionRecord,
     RegistryReaction,
@@ -43,17 +47,20 @@ from reactgen.records import (
     normalized_state_record,
     normalized_thermo,
     reaction_has_numeric_declaration,
+    review_scope_covers,
     scientific_dataset_content,
     scientific_reaction_content,
     scientific_record_key,
     scientific_state_content,
     selectable_state_record_id,
+    snapshot_content,
     state_record_payload,
     validate_numerical_targets,
-    validate_snapshot,
 )
 from reactgen.registry import (
     Registry,
+    molecular_identity_state,
+    validate_reaction_record_targets,
 )
 from reactgen.registry import (
     registry_reaction_candidate as registry_reaction_candidate,
@@ -62,8 +69,25 @@ from reactgen.registry import (
     registry_state_candidate as registry_state_candidate,
 )
 from reactgen.selection import DataSelection
+from reactgen.structure import (
+    bind_physical_state,
+    physical_equation_key,
+    physical_reaction_key,
+    physical_state_id,
+    physical_state_key,
+)
+
+_OVERLAY_SECTIONS = {
+    "properties",
+    "thermo",
+    "datasets",
+    "states",
+    "state_records",
+    "reaction_records",
+}
 
 StateIdentityKey = tuple[tuple[tuple[str, int], ...], int]
+_SourceOffer = tuple[ReactionRecord, ReactionCandidate, dict[str, StateCandidate]]
 
 
 @dataclass(frozen=True)
@@ -88,6 +112,7 @@ class ReactionEvidence:
     records: tuple[ReactionRecord, ...] = ()
     related_records: tuple[ReactionRecord, ...] = ()
     overlay_datasets: tuple[NumericDataset, ...] = ()
+    structure_aliases: dict[str, str] = field(default_factory=dict)
 
     @property
     def exact_records(self) -> tuple[ReactionRecord, ...]:
@@ -140,6 +165,7 @@ class EvidenceCatalog:
     _source_fingerprint: str | None = field(repr=False)
     _state_index: dict[StateIdentityKey, tuple[StateRecord, ...]] = field(init=False, repr=False)
     _reaction_index: dict[EquationKey, tuple[ReactionRecord, ...]] = field(init=False, repr=False)
+    _source_channel_ids: dict[str, str] = field(init=False, repr=False)
 
     def __init__(
         self,
@@ -172,18 +198,10 @@ class EvidenceCatalog:
                 {target: tuple(records) for target, records in (datasets_input or {}).items()},
             )
         )
+        bound_records, source_channel_ids = _bind_reaction_records(copied[1])
         snapshot = (
             copied[0],
-            tuple(
-                replace(
-                    record,
-                    datasets=tuple(
-                        dataset_for_reaction(dataset, reaction_record_candidate(record))
-                        for dataset in record.datasets
-                    ),
-                )
-                for record in copied[1]
-            ),
+            bound_records,
             {
                 target: tuple(
                     bind_dataset_target(dataset, target)
@@ -195,7 +213,7 @@ class EvidenceCatalog:
             },
         )
         validate_numerical_targets(
-            (dataset.id, dataset.reaction_target or "")
+            (dataset.id, source_channel_ids.get(dataset.reaction_target, dataset.reaction_target))
             for dataset in (
                 *(dataset for record in snapshot[1] for dataset in record.datasets),
                 *(dataset for records in snapshot[2].values() for dataset in records),
@@ -205,6 +223,7 @@ class EvidenceCatalog:
         object.__setattr__(self, "_state_records", snapshot[0])
         object.__setattr__(self, "_reaction_records", snapshot[1])
         object.__setattr__(self, "_overlay_datasets", snapshot[2])
+        object.__setattr__(self, "_source_channel_ids", source_channel_ids)
         object.__setattr__(self, "materials", frozenset(materials))
         source_fingerprint = fingerprint if fingerprint is not None else _source_fingerprint
         object.__setattr__(self, "_source_fingerprint", source_fingerprint)
@@ -220,7 +239,7 @@ class EvidenceCatalog:
             state_identity = scientific_record_key(
                 state_record_payload(state_record) | {"record_id": identifier}
             )
-            state_target = state_record.candidate.key
+            state_target = physical_state_key(state_record.candidate)
             if state_identity in state_targets and state_targets[state_identity] != state_target:
                 raise ValueError(
                     "scientific state record ID is assigned to different physical targets: "
@@ -229,20 +248,9 @@ class EvidenceCatalog:
             state_targets[state_identity] = state_target
             states.setdefault(_state_identity(state_record.candidate), []).append(state_record)
         reactions: dict[EquationKey, list[ReactionRecord]] = {}
-        reaction_targets: dict[str, EquationKey] = {}
         for reaction_record in self._reaction_records:
-            reaction_identity = reaction_record.id
-            reaction_target = reaction_record.equation_key
-            if (
-                reaction_identity in reaction_targets
-                and reaction_targets[reaction_identity] != reaction_target
-            ):
-                raise ValueError(
-                    "scientific reaction record ID is assigned to different physical targets: "
-                    f"{reaction_identity}"
-                )
-            reaction_targets[reaction_identity] = reaction_target
-            reactions.setdefault(reaction_record.equation_key, []).append(reaction_record)
+            key = _equation_lookup_key(reaction_record.equation_key)
+            reactions.setdefault(key, []).append(reaction_record)
         object.__setattr__(
             self,
             "_state_index",
@@ -269,6 +277,56 @@ class EvidenceCatalog:
     def overlay_datasets(self) -> dict[str, tuple[NumericDataset, ...]]:
         return deepcopy(self._overlay_datasets)
 
+    def declared_states(
+        self, *, structural_context: Iterable[StateCandidate] = ()
+    ) -> tuple[StateCandidate, ...]:
+        """Expose named state identities without supplying or qualifying their values."""
+        stopped = {"rejected", "conflicting"}
+        active = [record for record in self._state_records if record.status not in stopped]
+        found = {record.candidate.id: record.candidate for record in active}
+        for reaction in self._reaction_records:
+            if reaction.status not in stopped:
+                found.update((state.id, state) for state in reaction.states)
+        for record in active:
+            for prop in record.properties.values():
+                if prop.related_state is not None:
+                    related = parse_state_id(prop.related_state)
+                    if related is not None:
+                        found.setdefault(related.id, related)
+        for group in self.scoped_molecular_states(structural_context).values():
+            found.update((state.id, state) for state in group)
+        return deepcopy(tuple(found[key] for key in sorted(found)))
+
+    def scoped_molecular_states(
+        self, context: Iterable[StateCandidate]
+    ) -> dict[str, tuple[StateCandidate, ...]]:
+        """Project individually identified records onto a graph already in the case."""
+        representatives: dict[str, StateCandidate] = {}
+        for state in context:
+            if (state.structure or "").startswith("smiles:"):
+                representatives.setdefault(physical_state_id(state.id), state)
+        if not representatives:
+            return {}
+        scopes = {_molecular_scope(state) for state in representatives.values()}
+        inventories = {scope[:-1] for scope in scopes}
+        found: dict[str, dict[str, StateCandidate]] = {}
+        for record in self._state_records:
+            nominal = record.candidate
+            if (
+                record.molecular_identity is None
+                or record.status in {"rejected", "conflicting"}
+                or _molecular_scope(nominal)[:-1] not in inventories
+            ):
+                continue
+            explicit = molecular_identity_state(nominal, record.molecular_identity)
+            if explicit is not None and _molecular_scope(explicit) in scopes:
+                state = bind_physical_state(explicit, representatives)
+                found.setdefault(nominal.id, {})[state.id] = state
+        return {
+            nominal: tuple(states[key] for key in sorted(states))
+            for nominal, states in found.items()
+        }
+
     @classmethod
     def load(
         cls,
@@ -276,53 +334,13 @@ class EvidenceCatalog:
         overlay: str | Path | None = None,
         known: tuple[Path, ...] = (),
     ) -> EvidenceCatalog:
-        root = Path(registry_path) if registry_path is not None else None
-        if root is not None and not root.is_dir():
-            raise FileNotFoundError(f"registry directory not found: {root}")
-        if overlay is not None and not Path(overlay).is_file():
-            raise FileNotFoundError(f"overlay file not found: {overlay}")
-        registry = Registry.load(root) if root is not None and root.is_dir() else None
-        states = _registry_states(registry)
-        reactions = _registry_reactions(registry)
-        for path in known:
-            snapshot_states, snapshot_reactions = _load_snapshot(path)
-            states.extend(snapshot_states)
-            reactions.extend(snapshot_reactions)
-
-        overlay_path = Path(overlay) if overlay is not None else None
-        overlay_data = (
-            yamlio.load(overlay_path.read_text(encoding="utf-8")) or {}
-            if overlay_path is not None and overlay_path.is_file()
-            else {}
-        )
-        if not isinstance(overlay_data, dict):
-            raise ValueError("overlay must be a mapping")
-        states = _merge_overlay_states(states, overlay_data)
-        reactions.extend(
-            _overlay_reactions(overlay_data, overlay_path.parent if overlay_path else None)
-        )
-        datasets = _overlay_datasets(overlay_data, overlay_path.parent if overlay_path else None)
-
-        paths = [path for path in known if path.is_file()]
-        paths += [asset for path in known for asset in _snapshot_assets(path)]
-        if root is not None and root.is_dir():
-            paths += sorted(path for path in root.rglob("*") if path.is_file())
-        if overlay_path is not None and overlay_path.is_file():
-            paths.append(overlay_path)
-        paths += [
-            dataset.asset.local_path
-            for group in datasets.values()
-            for dataset in group
-            if dataset.asset is not None and dataset.asset.local_path is not None
-        ]
-        materials = frozenset(registry.materials) if registry else frozenset()
-        return cls(
-            tuple(_unique_states(states)),
-            tuple(reactions),
-            datasets,
-            materials,
-            _fingerprint(paths),
-        )
+        sources: list[tuple[Path, str | None]] = []
+        if registry_path is not None:
+            sources.append((Path(registry_path), "registry"))
+        sources.extend((path, "snapshot") for path in known)
+        if overlay is not None:
+            sources.append((Path(overlay), "overlay"))
+        return cls._read_sources(sources)
 
     @classmethod
     def load_paths(cls, paths: tuple[Path, ...]) -> EvidenceCatalog:
@@ -331,52 +349,89 @@ class EvidenceCatalog:
         Source order never resolves competing evidence. Analysis remains
         read-only and performs no external acquisition or adoption.
         """
-        catalogs = [_load_source(path) for path in sorted({Path(path).resolve() for path in paths})]
-        datasets: dict[str, list[NumericDataset]] = {}
-        for catalog in catalogs:
-            for target, records in catalog.overlay_datasets.items():
-                datasets.setdefault(target, []).extend(records)
-        digest = hashlib.sha256(
-            "".join(sorted(catalog.fingerprint for catalog in catalogs)).encode()
-        ).hexdigest()
-        state_records = [record for catalog in catalogs for record in catalog.state_records]
+        return cls._read_sources(
+            [(path, None) for path in sorted({Path(p).resolve() for p in paths})]
+        )
+
+    @classmethod
+    def from_overlay(cls, document: dict, base: Path) -> EvidenceCatalog:
+        """Validate an already-read overlay for inspection or explicit adoption."""
         return cls(
-            tuple(_unique_states(state_records)),
-            tuple(record for catalog in catalogs for record in catalog.reaction_records),
+            tuple(_unique_states(_overlay_states(document))),
+            tuple(_overlay_reactions(document, base)),
+            _overlay_datasets(document, base),
+        )
+
+    @classmethod
+    def _read_sources(cls, sources: list[tuple[Path, str | None]]) -> EvidenceCatalog:
+        states: list[StateRecord] = []
+        reactions: list[ReactionRecord] = []
+        datasets: dict[str, list[NumericDataset]] = {}
+        materials: set[str] = set()
+        source_digests: dict[Path, bytes] = {}
+        registry_files: set[Path] = set()
+        for path, kind in sources:
+            if kind == "registry" or (kind is None and path.is_dir()):
+                if kind is None and not (path / "species").is_dir():
+                    raise ValueError(f"not a Registry directory: {path}")
+                registry = Registry.load(path)
+                states.extend(_registry_states(registry))
+                reactions.extend(_registry_reactions(registry))
+                materials.update(registry.materials)
+                source_digests.update(registry.document_hashes)
+                registry_files.update(file for file in path.rglob("*") if file.is_file())
+                continue
+            document, source_digests[path] = _read_source_document(path, kind)
+            if kind == "snapshot" or (kind is None and "records" in document):
+                snapshot_states, snapshot_reactions = _snapshot_records(path, document)
+                states.extend(snapshot_states)
+                reactions.extend(snapshot_reactions)
+            elif kind == "overlay" or _OVERLAY_SECTIONS.intersection(document):
+                states.extend(_overlay_states(document))
+                reactions.extend(_overlay_reactions(document, path.parent))
+                for target, records in _overlay_datasets(document, path.parent).items():
+                    datasets.setdefault(target, []).extend(records)
+            else:
+                raise ValueError(f"unrecognized snapshot or overlay: {path}")
+        # The normalized asset carries the byte observation from this read.
+        # A second file read could hash different bytes from the declaration.
+        for path, checksum in _asset_digests(
+            [*(record.datasets for record in reactions), *datasets.values()]
+        ):
+            source_digests.setdefault(path, checksum)
+        source_digests.update(
+            (file, hashlib.sha256(file.read_bytes()).digest())
+            for file in registry_files - source_digests.keys()
+        )
+        digest = hashlib.sha256(b"".join(sorted(source_digests.values()))).hexdigest()
+        return cls(
+            tuple(_unique_states(states)),
+            tuple(reactions),
             {target: tuple(records) for target, records in datasets.items()},
-            frozenset(material for catalog in catalogs for material in catalog.materials),
+            frozenset(materials),
             digest,
         )
 
-    def with_attested(
+    def attested_candidates(
         self,
-        mechanical: CandidateSet,
         surfaces: tuple[str, ...] = (),
-    ) -> CandidateSet:
-        union = CandidateSet(
-            states=dict(mechanical.states),
-            reactions=dict(mechanical.reactions),
-            complete=mechanical.complete,
-            stop_reason=mechanical.stop_reason,
-            limits=dict(mechanical.limits),
-            completion={"mechanical": mechanical.complete, "attested": True},
-        )
-        return _reachable_union(union, self._attested_candidates(surfaces))
-
-    def _attested_candidates(
-        self,
-        surfaces: tuple[str, ...],
+        *,
+        representatives: Mapping[str, StateCandidate] | None = None,
     ) -> list[tuple[ReactionCandidate, dict[str, StateCandidate]]]:
-        found = []
-        for record in self.reaction_records:
-            if record.channel_scope != "product_resolved":
+        """Group active product-resolved proposals by physical channel."""
+        found: dict[str, list[_SourceOffer]] = {}
+        for record in self._reaction_records:
+            if record.channel_scope != "product_resolved" or record.status in {
+                "rejected",
+                "conflicting",
+            }:
                 continue
             surface = record.equation_key[1]
             if surface is not None and surface not in surfaces:
                 continue
-            reaction = reaction_record_candidate(record)
-            found.append((reaction, {state.id: state for state in record.states}))
-        return sorted(found, key=lambda item: item[0].id)
+            reaction, states = _source_candidate(record, representatives or {})
+            found.setdefault(reaction.id, []).append((record, reaction, states))
+        return deepcopy([_source_candidate_group(found[key]) for key in sorted(found)])
 
     def state(self, candidate: StateCandidate) -> StateEvidence:
         """Keep preferred matches and related targets separate; assess only the former."""
@@ -397,11 +452,17 @@ class EvidenceCatalog:
             dataset_for_reaction(dataset, candidate)
             for dataset in self._overlay_datasets.get(candidate.id, ())
         )
-        equation_records = tuple(
-            record
-            for record in self._reaction_index.get(candidate.equation_key, ())
+        equation = candidate.equation_key
+        physical = physical_equation_key(equation)
+        possible = (
+            (record, molecular_equation(record.equation_key, record.molecular_identities, equation))
+            for record in self._reaction_index.get(_equation_lookup_key(equation), ())
             if record.family is None or record.family == candidate.family
         )
+        matched = [
+            (record, key) for record, key in possible if physical_equation_key(key) == physical
+        ]
+        equation_records = tuple(record for record, _ in matched)
         exact = tuple(
             record
             for record in equation_records
@@ -409,7 +470,16 @@ class EvidenceCatalog:
             and record.stabilization == candidate.stabilization
         )
         related = tuple(record for record in equation_records if record not in exact)
-        return deepcopy(ReactionEvidence(exact, related, offered))
+        compared = [key for _, key in matched if key != equation]
+        aliases = {
+            state: normalized
+            for key in (equation, *compared)
+            if compared
+            for side in key[2:]
+            for state, _ in side
+            if (normalized := physical_state_id(state)) != state
+        }
+        return deepcopy(ReactionEvidence(exact, related, offered, aliases))
 
     def validate_targets(self, candidates: CandidateSet) -> None:
         """Resolve candidate references before checking numerical physical identities.
@@ -418,53 +488,99 @@ class EvidenceCatalog:
         IDs. Unused evidence references remain available for other analyses.
         """
         bindings = [
-            (dataset.id, dataset.reaction_target or "")
+            (
+                dataset.id,
+                self._source_channel_ids.get(dataset.reaction_target, dataset.reaction_target),
+            )
             for record in self._reaction_records
             for dataset in record.datasets
+            if dataset.reaction_target is not None
         ]
         for reference, datasets in self._overlay_datasets.items():
             target = candidates.reactions.get(reference)
             for dataset in datasets:
                 resolved = dataset_for_reaction(dataset, target) if target is not None else dataset
                 if resolved.reaction_target is not None:
-                    bindings.append((resolved.id, resolved.reaction_target))
+                    physical_id = (
+                        reaction_id(physical_reaction_key(target))
+                        if target is not None
+                        else self._source_channel_ids.get(
+                            resolved.reaction_target, resolved.reaction_target
+                        )
+                    )
+                    bindings.append((resolved.id, physical_id))
         validate_numerical_targets(bindings)
 
 
-def dataset_for_reaction(dataset: NumericDataset, target: ReactionCandidate) -> NumericDataset:
+def dataset_for_reaction(
+    dataset: NumericDataset,
+    target: ReactionCandidate,
+    *,
+    source: ReactionRecord | None = None,
+) -> NumericDataset:
     """Identify an offered quantity's channel, without interpreting or approving its source."""
+    raw_target = reaction_record_candidate(source) if source is not None else target
+    if source is not None and raw_target.key != target.key:
+        projected = molecular_equation(
+            raw_target.equation_key, source.molecular_identities, target.equation_key
+        )
+        if raw_target.key[:5] != target.key[:5] or physical_equation_key(
+            projected
+        ) != physical_equation_key(target.equation_key):
+            raise ValueError(f"dataset {dataset.id} declares a different physical reaction target")
+        bound = dataset_for_reaction(dataset, raw_target)
+        declaration = bound.declared_target.copy()
+        if "reaction" in declaration:
+            declaration["reaction"] = target.equation
+        if "reaction_id" in declaration:
+            declaration["reaction_id"] = reaction_id(target.key)
+        dataset = replace(bound, reaction_target=None, declared_target=declaration)
     if not reaction_declaration_matches(dataset.declared_target, target):
         raise ValueError(f"dataset {dataset.id} declares a different physical reaction target")
     return bind_dataset_target(dataset, reaction_id(target.key))
 
 
-def _load_source(path: Path) -> EvidenceCatalog:
-    if path.is_dir():
-        if not (path / "species").is_dir():
-            raise ValueError(f"not a Registry directory: {path}")
-        return EvidenceCatalog.load(path)
+def _bind_reaction_records(
+    records: tuple[ReactionRecord, ...],
+) -> tuple[tuple[ReactionRecord, ...], dict[str, str]]:
+    targets: list[tuple[str, ReactionKey]] = []
+    source_channel_ids: dict[str, str] = {}
+    bound = []
+    for record in records:
+        reaction = reaction_record_candidate(record)
+        key = physical_reaction_key(reaction)
+        targets.append((record.id, key))
+        source_channel_ids[reaction.id] = reaction_id(key)
+        datasets = tuple(dataset_for_reaction(dataset, reaction) for dataset in record.datasets)
+        bound.append(replace(record, datasets=datasets) if datasets else record)
+    validate_reaction_record_targets(targets)
+    return tuple(bound), source_channel_ids
+
+
+def _read_source_document(path: Path, kind: str | None) -> tuple[dict, bytes]:
     if not path.is_file():
-        raise FileNotFoundError(f"evidence path not found: {path}")
-    document = yamlio.load(path.read_text(encoding="utf-8"))
+        raise FileNotFoundError(f"{kind or 'evidence path'} not found: {path}")
+    body = path.read_bytes()
+    document = yamlio.load(body.decode("utf-8"))
+    if kind == "overlay" and document is None:
+        document = {}
     if not isinstance(document, dict):
-        raise ValueError(f"evidence must be a mapping: {path}")
-    if "records" in document:
-        return EvidenceCatalog.load(None, known=(path,))
-    if set(document) & {
-        "properties",
-        "thermo",
-        "datasets",
-        "states",
-        "state_records",
-        "reaction_records",
-    }:
-        return EvidenceCatalog.load(None, overlay=path)
-    raise ValueError(f"unrecognized snapshot or overlay: {path}")
+        raise ValueError(f"{kind or 'evidence'} must be a mapping: {path}")
+    return document, hashlib.sha256(body).digest()
 
 
-def _registry_states(registry: Registry | None) -> list[StateRecord]:
-    if registry is None:
-        return []
+def _asset_digests(
+    groups: list[list[NumericDataset] | tuple[NumericDataset, ...]],
+) -> list[tuple[Path, bytes]]:
+    return [
+        (asset.local_path, bytes.fromhex(asset.sha256))
+        for datasets in groups
+        for dataset in datasets
+        if (asset := dataset.asset) is not None and asset.local_path is not None and asset.sha256
+    ]
+
+
+def _registry_states(registry: Registry) -> list[StateRecord]:
     found = [
         StateRecord(
             id=record.id,
@@ -489,6 +605,7 @@ def _registry_states(registry: Registry | None) -> list[StateRecord]:
             source_declaration=record.state.source_declaration,
             method=record.state.method,
             review_scope=record.state.review_scope,
+            molecular_identity=record.molecular_identity,
         )
         for record in registry.species.values()
     ]
@@ -496,14 +613,17 @@ def _registry_states(registry: Registry | None) -> list[StateRecord]:
     return found
 
 
-def _registry_reactions(registry: Registry | None) -> list[ReactionRecord]:
-    if registry is None:
-        return []
+def _registry_reactions(registry: Registry) -> list[ReactionRecord]:
     found = []
+    identities = {
+        registry_state_candidate(species).id: species.molecular_identity
+        for species in registry.species.values()
+        if species.molecular_identity is not None
+    }
     for reaction in (item for group in registry.channels.values() for item in group):
-        candidate = registry_reaction_candidate(reaction, registry.species)
+        candidate = registry.channel_locations[reaction.id][2]
         states = _reaction_states(reaction, registry.species)
-        if candidate is None or states is None:
+        if states is None:
             continue
         source = dict(reaction.source) or {"source_id": f"registry:{reaction.id}"}
         found.append(
@@ -524,6 +644,10 @@ def _registry_reactions(registry: Registry | None) -> list[ReactionRecord]:
                 source_declaration=reaction.source_declaration,
                 method=reaction.method,
                 review_scope=reaction.review_scope,
+                transformation=candidate.transformation,
+                molecular_identities={
+                    state.id: identities[state.id] for state in states if state.id in identities
+                },
             )
         )
         found.extend(reaction.records)
@@ -543,15 +667,11 @@ def _reaction_states(
     return tuple({state.id: state for state in records}.values())
 
 
-def _load_snapshot(path: Path) -> tuple[list[StateRecord], list[ReactionRecord]]:
-    document = validate_snapshot(yamlio.load(path.read_text(encoding="utf-8")))
-    source_data = document.get("source") or {}
-    if not isinstance(source_data, dict):
-        raise ValueError("snapshot.source must be a mapping")
-    default_kind = str(document.get("kind") or "rate_coefficient")
+def _snapshot_records(path: Path, document: dict) -> tuple[list[StateRecord], list[ReactionRecord]]:
+    records, source_data, default_kind = snapshot_content(document)
     states: list[StateRecord] = []
     reactions: list[ReactionRecord] = []
-    for index, record in enumerate(document["records"]):
+    for index, record in enumerate(records):
         written = record.get("reaction")
         if not written:
             state = snapshot_state(record, source_data)
@@ -581,6 +701,8 @@ def _load_snapshot(path: Path) -> tuple[list[StateRecord], list[ReactionRecord]]
                 "use ingest to retain unresolved declarations in its review queue"
             )
         reactions.append(reaction)
+        if reaction.status in {"rejected", "conflicting"}:
+            continue
         states.extend(
             StateRecord(
                 id=state.id,
@@ -658,8 +780,155 @@ def reaction_record_candidate(record: ReactionRecord) -> ReactionCandidate:
         third_body=third_body,
         surface=surface,
         stabilization=record.stabilization,
+        transformation=record.transformation,
     )
     return replace(candidate, id=reaction_id(candidate.key))
+
+
+def _source_candidate(
+    record: ReactionRecord, representatives: Mapping[str, StateCandidate]
+) -> tuple[ReactionCandidate, dict[str, StateCandidate]]:
+    candidate = reaction_record_candidate(record)
+    bound = bound_molecular_participants(record, representatives)
+    states = {
+        state.id: bind_physical_state(bound.get(state.id, state), representatives)
+        for state in record.states
+    }
+    aliases = {name: state.id for name, state in states.items() if state.id != name}
+    if aliases:
+        _, _, reactants, products = physical_equation_key(record.equation_key, aliases)
+        candidate = replace(
+            candidate,
+            reactants=tuple(Term(*term) for term in reactants),
+            products=tuple(Term(*term) for term in products),
+            transformation=bind_transformation_states(record.transformation, aliases),
+        )
+        candidate = replace(candidate, id=reaction_id(candidate.key))
+    return candidate, {state.id: state for state in states.values()}
+
+
+def bound_molecular_participants(
+    record: ReactionRecord, representatives: Mapping[str, StateCandidate]
+) -> dict[str, StateCandidate]:
+    """Find explicit representatives of the locally identified Registry participants."""
+    if not record.molecular_identities:
+        return {}
+    structured = {
+        state.id.split(";structure=", 1)[0]
+        for state in representatives.values()
+        if (state.structure or "").startswith("smiles:")
+    }
+    return {
+        state.id: representative
+        for state in record.states
+        if state.id in structured
+        and (identity := record.molecular_identities.get(state.id)) is not None
+        and (explicit := molecular_identity_state(state, identity)) is not None
+        and (representative := representatives.get(physical_state_id(explicit.id))) is not None
+    }
+
+
+def _molecular_scope(state: StateCandidate) -> tuple:
+    key = physical_state_key(state)
+    return key[0], key[1], key[5], key[6]
+
+
+def molecular_reference_id(record: StateRecord, target: str, reference: str | None) -> str | None:
+    """Resolve a same-molecule reference using this exact state record's graph proof."""
+    identity = record.molecular_identity
+    if identity is None or reference is None or ";structure=" not in target:
+        return reference
+    related, bound = parse_state_id(reference), parse_state_id(target)
+    if (
+        related is None
+        or bound is None
+        or related.structure is not None
+        or related.state.kind != "ground"
+        or related.state.resolution != "resolved"
+        or _molecular_scope(related)[:-1] != _molecular_scope(bound)[:-1]
+    ):
+        return reference
+    explicit = molecular_identity_state(record.candidate, identity)
+    if explicit is None or physical_state_key(explicit) != physical_state_key(bound):
+        return reference
+    projected = molecular_identity_state(related, identity, verify_graph=False)
+    return physical_state_id(projected.id) if projected is not None else reference
+
+
+def _equation_lookup_key(equation: EquationKey) -> EquationKey:
+    """Group possible targets by the state axes that require no graph matching."""
+    aliases = {
+        name: name.split(";structure=", 1)[0]
+        for side in equation[2:]
+        for name, _ in side
+        if ";structure=" in name
+    }
+    return physical_equation_key(equation, aliases)
+
+
+def molecular_equation(
+    equation: EquationKey,
+    identities: Mapping[str, MolecularIdentity],
+    target: EquationKey,
+    *,
+    saved_aliases: Mapping[str, str] | None = None,
+) -> EquationKey:
+    """Project only this Registry record's qualified nominal participants."""
+    if not identities:
+        return equation
+
+    def comparison(identifier: str) -> str:
+        if saved_aliases is not None:
+            return saved_aliases.get(identifier, identifier)
+        return physical_state_id(identifier)
+
+    participant_ids = {
+        comparison(name) for side in target[2:] for name, _ in side if ";structure=" in name
+    }
+    nominal_ids = {name.split(";structure=", 1)[0] for name in participant_ids}
+    aliases = {}
+    for name, identity in identities.items():
+        if name not in nominal_ids:
+            continue
+        state = parse_state_id(name)
+        if state is None:
+            raise ValueError(f"invalid nominal molecular identity target: {name}")
+        explicit = molecular_identity_state(state, identity, verify_graph=saved_aliases is None)
+        if explicit is not None and comparison(explicit.id) in participant_ids:
+            aliases[name] = explicit.id
+    return physical_equation_key(equation, aliases)
+
+
+def _source_candidate_group(
+    offers: list[_SourceOffer],
+) -> tuple[ReactionCandidate, dict[str, StateCandidate]]:
+    # The representative names discovery provenance only. Each independently
+    # qualified transformation can describe a different valid role mapping.
+    _, candidate, states = min(offers, key=lambda offer: (offer[0].id, offer[0].label))
+    reviewed_mapping = any(
+        reaction.transformation and record.reviewed_for("channel_assertion")
+        for record, reaction, _ in offers
+    )
+    mappings: dict[str, list[dict]] = {}
+    for record, reaction, _ in offers:
+        usable = (
+            record.reviewed_for("channel_assertion")
+            if reviewed_mapping
+            else review_scope_covers(record.review_scope, "channel_assertion")
+        )
+        if usable and reaction.transformation:
+            mappings.setdefault(record.id, []).append(reaction.transformation)
+    transformations = combine_transformations(
+        sorted(
+            (
+                choices[0]
+                for choices in mappings.values()
+                if all(choice == choices[0] for choice in choices)
+            ),
+            key=_encode_declaration,
+        )
+    )
+    return replace(candidate, transformation=transformations), states
 
 
 def snapshot_state(
@@ -672,6 +941,19 @@ def snapshot_state(
     candidate = declared_state_target(str(written), record) if written else None
     if candidate is None:
         return None
+    return snapshot_state_record(
+        record, candidate, default_source, preserved_record_id=preserved_record_id
+    )
+
+
+def snapshot_state_record(
+    record: dict,
+    candidate: StateCandidate,
+    default_source: dict[str, str],
+    *,
+    preserved_record_id: bool = False,
+) -> StateRecord:
+    """Normalize the payload for a target resolved from the same declaration."""
     candidate = replace(
         candidate,
         origin="attested_only",
@@ -682,8 +964,9 @@ def snapshot_state(
     )
 
 
-def _merge_overlay_states(records: list[StateRecord], overlay: dict) -> list[StateRecord]:
+def _overlay_states(overlay: dict) -> list[StateRecord]:
     """Keep each source declaration intact; quantity selection handles alternatives."""
+    records: list[StateRecord] = []
     properties = _overlay_mapping(overlay, "properties")
     thermos = _overlay_mapping(overlay, "thermo")
     identities = _overlay_mapping(overlay, "states")
@@ -772,60 +1055,19 @@ def _overlay_reactions(overlay: dict, base: Path | None) -> list[ReactionRecord]
     return found
 
 
-def _reachable_union(
-    union: CandidateSet,
-    attested: list[tuple[ReactionCandidate, dict[str, StateCandidate]]],
-) -> CandidateSet:
-    state_keys = union.state_by_key()
-    reaction_keys = union.reaction_by_key()
-    pending = attested
-    while pending:
-        carried = []
-        changed = False
-        for reaction, states in pending:
-            if not {term.species for term in reaction.reactants}.issubset(union.states):
-                carried.append((reaction, states))
-                continue
-            additions = {
-                state.id: state
-                for term in reaction.products
-                if (state := states.get(term.species)) is not None and state.key not in state_keys
-            }
-            limit = None
-            if len(union.states) + len(additions) > union.limits.get("max_species", 10000):
-                limit = "max_species"
-            elif reaction.key not in reaction_keys and len(union.reactions) >= union.limits.get(
-                "max_reactions", 100000
-            ):
-                limit = "max_reactions"
-            if limit:
-                union.complete = False
-                union.completion["attested"] = False
-                union.stop_reason = f"{limit} during attested addition"
-                return union
-            for state in additions.values():
-                union.states[state.id] = state
-                state_keys[state.key] = state
-                changed = True
-            if reaction.key not in reaction_keys:
-                union.reactions[reaction.id] = reaction
-                reaction_keys[reaction.key] = reaction
-                changed = True
-        if not changed:
-            break
-        pending = carried
-    return union
-
-
 def _state_matches(candidate: StateCandidate, record: StateRecord, *, exact: bool) -> bool:
     found = record.candidate
+    if candidate.structure is not None and record.molecular_identity is not None:
+        found = molecular_identity_state(found, record.molecular_identity) or found
     if found.composition != candidate.composition or found.charge != candidate.charge:
         return False
     if found.phase != candidate.phase and (
         exact or "unknown" not in {found.phase, candidate.phase}
     ):
         return False
-    if exact and found.structure != candidate.structure:
+    if (exact or (found.structure is not None and candidate.structure is not None)) and (
+        physical_state_key(found)[-1] != physical_state_key(candidate)[-1]
+    ):
         return False
     if found.state.kind == candidate.state.kind and found.state.label == candidate.state.label:
         return not exact or found.state.resolution == candidate.state.resolution
@@ -870,22 +1112,8 @@ def _unique_states(records: list[StateRecord]) -> list[StateRecord]:
     return [record for group in found.values() for record in group]
 
 
-def _snapshot_assets(path: Path) -> list[Path]:
-    if not path.is_file():
-        return []
-    document = yamlio.load(path.read_text(encoding="utf-8")) or {}
-    found = []
-    for record in document.get("records") or []:
-        asset = record.get("asset")
-        written = asset.get("path") if isinstance(asset, dict) else asset
-        if not written:
-            continue
-        candidate = Path(str(written))
-        if not candidate.is_absolute():
-            candidate = (path.parent / candidate).resolve()
-        if candidate.is_file():
-            found.append(candidate)
-    return found
+def _encode_declaration(value: object) -> str:
+    return json.dumps(value, sort_keys=True, ensure_ascii=True, default=str)
 
 
 def _snapshot_fingerprint(
@@ -902,30 +1130,38 @@ def _snapshot_fingerprint(
     operation never reads assets: evaluation verifies their current integrity.
     """
 
-    def encode(value: object) -> str:
-        return json.dumps(value, sort_keys=True, ensure_ascii=True, default=str)
-
     def numeric_content(records: tuple[NumericDataset, ...]) -> list[str]:
         return sorted(
-            encode(scientific_dataset_content(dataset_payload(record))) for record in records
+            _encode_declaration(scientific_dataset_content(dataset_payload(record)))
+            for record in records
         )
 
     content = {
         "states": sorted(
-            encode(
+            _encode_declaration(
                 {
                     "id": record.id,
                     "record_id": record.record_id,
                     "content": scientific_state_content(record),
+                    **(
+                        {"molecular_identity": record.molecular_identity}
+                        if record.molecular_identity is not None
+                        else {}
+                    ),
                 }
             )
             for record in states
         ),
         "reactions": sorted(
-            encode(
+            _encode_declaration(
                 {
                     "content": scientific_reaction_content(record),
                     "datasets": numeric_content(record.datasets),
+                    **(
+                        {"molecular_identities": record.molecular_identities}
+                        if record.molecular_identities
+                        else {}
+                    ),
                 }
             )
             for record in reactions
@@ -936,14 +1172,4 @@ def _snapshot_fingerprint(
         "materials": sorted(materials),
         "source_files": source_fingerprint,
     }
-    return hashlib.sha256(encode(content).encode("utf-8")).hexdigest()
-
-
-def _fingerprint(paths: list[Path]) -> str:
-    """Content-only fingerprint: moving the same evidence does not change output."""
-
-    contents = sorted(hashlib.sha256(path.read_bytes()).digest() for path in set(paths))
-    digest = hashlib.sha256()
-    for content in contents:
-        digest.update(content)
-    return digest.hexdigest()
+    return hashlib.sha256(_encode_declaration(content).encode("utf-8")).hexdigest()

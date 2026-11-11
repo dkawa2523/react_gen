@@ -1,0 +1,41 @@
+schema_version: 1
+id: NF2_p_triplet
+display_name: NF2_p_triplet
+phase: gas
+composition: {N: 1, F: 2}
+charge: 1
+classes: [ion, cation, molecule]
+state:
+  kind: electronic
+  label: triplet
+  term: triplet
+records:
+- record_id: ATcT_1.228:31685-31-1*1
+  species: NF2_p_triplet
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 31685-31-1*1
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical Network v1.228, Argonne National Laboratory.
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=2267
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 1376.4
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: '[NF2]+ (g, triplet)'
+        published_uncertainty:
+          absolute: 2.3
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit
+        scope: Lowest evaluated triplet manifold endpoint used by ATcT. Fine structure and rotational levels are not assigned.

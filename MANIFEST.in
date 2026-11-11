@@ -1,9 +1,11 @@
-include AGENTS.md CHANGELOG.md Makefile noxfile.py .importlinter
+include AGENTS.md CHANGELOG.md .importlinter
 recursive-include docs *.md
+recursive-include docs/assets *.png
+recursive-include docs/benchmarks *.json *.yaml
 recursive-include cases case.yaml
-recursive-include registry *.yaml *.csv *.md *.txt
+recursive-include registry *.yaml *.csv *.txt
 include external_data/README.md external_data/source_catalog.yaml
 recursive-include schemas *.yaml
-recursive-include tools *.py *.md
+recursive-include tools *.py
 recursive-include tests *.py *.yaml *.html
 global-exclude __pycache__ *.py[cod]

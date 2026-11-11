@@ -262,3 +262,31 @@ records:
           enthalpy.
         parent_source_note: L 5/93
         parent_input_sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+- record_id: ATcT_1.228:12385-13-6*0
+  species: H
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 12385-13-6*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=20
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 216.034
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0.0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: H (g)
+        published_uncertainty:
+          display: ±0.000 kJ/mol
+          interpretation: Estimated 95% confidence limit below 0.0005 kJ/mol, rounded in the source

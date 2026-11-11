@@ -4,18 +4,28 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import sys
 import tempfile
+from hashlib import sha256
 from pathlib import Path
 
 import yaml
 
 from reactgen import adopt, derive, export, ingest, needs, yamlio
 from reactgen.balance import imbalance
-from reactgen.case import Case
+from reactgen.case import Case, RequestedReaction
 from reactgen.evidence import EvidenceCatalog
 from reactgen.pipeline import analyze
 from reactgen.presentation import analysis_overview, registered_records
+from reactgen.reaction_tables import (
+    VERDICTS,
+    judgment_tables,
+    reaction_table,
+    selected_reactions,
+    state_judgment_stem,
+    state_judgment_tables,
+)
 from reactgen.registry import Registry
 from reactgen.selection import SELECTABLE_QUANTITIES
 
@@ -28,6 +38,9 @@ def main(argv: list[str] | None = None) -> int:
         "analyze", help="investigate candidate states, channels and numerical data"
     )
     build.add_argument("gases", nargs="*", help="neutral ground-state formulas")
+    build.add_argument(
+        "--supply", action="append", default=[], help="explicit gas-state supply, e.g. e or Ar+"
+    )
     build.add_argument(
         "--input", type=Path, help="validated physical input YAML, instead of gas arguments"
     )
@@ -57,21 +70,46 @@ def main(argv: list[str] | None = None) -> int:
     )
     backlog.set_defaults(run=_needs)
 
-    inspect = commands.add_parser("records", help="inspect saved source records for a target")
+    inspect = commands.add_parser("records", help="inspect saved source records and numerical use")
     inspect.add_argument("result", type=Path)
-    inspect.add_argument("--target", required=True, help="saved state or reaction ID")
+    inspect.add_argument(
+        "--target", required=True, help="saved state, reaction or calculation reference state ID"
+    )
     inspect.add_argument("--quantity", choices=sorted(SELECTABLE_QUANTITIES))
     inspect.add_argument(
-        "--detail", action="store_true", help="include complete source declarations"
+        "--detail", action="store_true", help="include complete declarations and evaluation detail"
     )
     inspect.set_defaults(run=_records)
 
     view = commands.add_parser("view", help="derive optional views from the saved canonical result")
     view.add_argument("result", type=Path)
-    view.add_argument("--kind", choices=("csv", "network", "matrix", "pathway"), required=True)
-    view.add_argument("--out", type=Path, required=True)
+    view.add_argument(
+        "--kind",
+        choices=("csv", "energy", "judgment", "reaction", "pathway", "network", "matrix", "dnt"),
+        required=True,
+    )
+    view.add_argument("--out", type=Path, help="override the result directory's standard location")
+    view.add_argument(
+        "--judgment",
+        help="saved judgment for a CSV or verdict graph, e.g. energy or conservation",
+    )
+    view.add_argument("--verdict", choices=VERDICTS, help="filter CSV rows of --judgment")
+    view.add_argument("--family", help="exact collision family for CSV, energy or judgment graph")
+    view.add_argument("--process", help="exact process key for CSV, energy or judgment graph")
+    view.add_argument(
+        "--require",
+        action="append",
+        default=[],
+        metavar="JUDGMENT=VERDICT",
+        help="retain reactions matching every supplied saved verdict",
+    )
+    view.add_argument("--reaction", help="saved reaction ID for a single reaction diagram")
     view.add_argument("--seed", action="append", default=[])
     view.add_argument("--target", default=None)
+    view.add_argument("--via", help="trace the selected saved producer reaction for --target")
+    view.add_argument(
+        "--checked", action="store_true", help="show paths supported by saved necessary checks"
+    )
     view.set_defaults(run=_view)
 
     absorb = commands.add_parser(
@@ -85,7 +123,7 @@ def main(argv: list[str] | None = None) -> int:
 
     infer = commands.add_parser(
         "derive",
-        help="derive reviewed excited-state properties in an overlay",
+        help="derive nominal masses and resolved-level formation enthalpies in an overlay",
     )
     infer.add_argument("--registry", type=Path, required=True)
     infer.add_argument("--overlay", type=Path, default=None)
@@ -112,26 +150,46 @@ def main(argv: list[str] | None = None) -> int:
 def _analyze(args: argparse.Namespace) -> int:
     if bool(args.input) == bool(args.gases):
         raise ValueError("provide gas formulas or --input, exactly one")
-    case = Case.load(args.input) if args.input else Case("analysis", tuple(args.gases))
+    if args.input and args.supply:
+        raise ValueError("put supplies in the input file when using --input")
+    case = (
+        Case.load(args.input)
+        if args.input
+        else Case("analysis", tuple(args.gases), supplies=tuple(args.supply))
+    )
     catalog = EvidenceCatalog.load_paths(tuple(args.evidence))
     result = analyze(case, catalog)
     try:
-        export.write(args.out, result)
+        document = export.write(args.out, result)
     except export.PartialOutputError as error:
         print(f"error: {error}", file=sys.stderr)
         return 1
     except OSError as error:
         print(f"error: cannot save result: {error}", file=sys.stderr)
         return 1
-    # Read the committed source of truth: success output describes the same
-    # values and conclusions as the persisted result and every later view.
-    document = export.read(args.out)
-    print("\n".join(analysis_overview(document, needs.build(document))))
-    print(f'Next work details: rgen needs "{args.out}" --detail')
+    print("\n".join(analysis_overview(document)))
+    if requested := document["input"].get("reactions"):
+        print(f"Requested reactions: {len(requested)} (included in the saved assessments)")
+        for row in requested[:3]:
+            item = RequestedReaction(**row)
+            print(f"  {item.candidate.id}  {item.equation} [{item.process}]")
+    _print_result_locations(args.out, document)
+    return 0 if result.candidates.complete else 1
+
+
+def _print_result_locations(directory: Path, document: dict) -> None:
     print("Results:")
     for name in export.PUBLIC_FILES:
-        print(f"  {args.out / name}")
-    return 0 if result.candidates.complete else 1
+        print(f"  {directory / name}")
+    if any(name.startswith("judgments/") for name in document["helper_views"]):
+        print(f"  {directory / 'judgments'}")
+    print("Optional graphs and source inspection:")
+    print(f'  rgen view "{directory}" --kind pathway --target STATE_ID')
+    if "energy" in document["summary"]["judgments"]["reactions"]:
+        print(f'  rgen view "{directory}" --kind judgment --judgment energy')
+    if any("collision_energy_margin_eV" in row["thermochemistry"] for row in document["reactions"]):
+        print(f'  rgen view "{directory}" --kind energy')
+    print(f'  rgen needs "{directory}" --detail')
 
 
 def _needs(args: argparse.Namespace) -> int:
@@ -159,22 +217,174 @@ def _records(args: argparse.Namespace) -> int:
 
 
 def _view(args: argparse.Namespace) -> int:
-    document = export.read(args.result)
+    _validate_view_options(args)
+    root = args.result if args.result.is_dir() else args.result.parent
+    required = _required_verdicts(args.require)
     if args.kind == "csv":
-        if args.seed or args.target:
-            raise ValueError("--seed and --target apply to pathway/network views")
-        export.rebuild_views(document, args.out)
-    else:
-        from reactgen.views import view
+        return _csv_view(args, root, required)
+    document = export.read(args.result)
+    if args.kind == "dnt":
+        from reactgen.dnt import dnt_inputs
 
-        path = view(document, args.out, args.kind, seeds=tuple(args.seed), target=args.target)
-        if args.kind == "matrix" and path.suffix == ".html":
-            print(f"Split matrix: open {path} to view every reaction panel")
-        else:
-            print(path)
+        destination = args.out or root / "dnt"
+        name = "dnt_inputs.yaml"
+        inputs = dnt_inputs(document)
+        export.write_tables(
+            destination, {name: yaml.safe_dump(inputs, sort_keys=False, allow_unicode=True)}
+        )
+        print(f"{destination / name} ({len(inputs['pairs'])} ion-neutral pairs)")
         return 0
-    print(args.out)
+
+    from reactgen.views import plot, view
+
+    destination = args.out or root / "graphs"
+    if args.kind in {"energy", "judgment", "reaction"}:
+        rows = selected_reactions(
+            document, family=args.family, process=args.process, verdicts=required
+        )
+        paths = plot(
+            document,
+            destination,
+            args.kind,
+            rows,
+            judgment=args.judgment,
+            reaction_id=args.reaction,
+            selection=", ".join(
+                ([f"family={args.family}"] if args.family else [])
+                + ([f"process={args.process}"] if args.process else [])
+                + [f"{name}={verdict}" for name, verdict in sorted(required.items())]
+            ),
+        )
+        for path in paths:
+            print(path)
+        if not paths:
+            print("No saved numerical collision margins in the selected reactions.")
+            if "energy" in document["summary"]["judgments"]["reactions"]:
+                print(f'  rgen view "{args.result}" --kind csv --judgment energy')
+        return 0
+    filename = _pathway_filename(args) if args.kind == "pathway" and not args.out else None
+    path = view(
+        document,
+        destination,
+        args.kind,
+        seeds=tuple(args.seed),
+        target=args.target,
+        checked=args.checked,
+        via=args.via,
+        filename=filename,
+    )
+    if args.kind == "matrix" and path.suffix == ".html":
+        print(f"Split matrix: open {path} to view every reaction panel")
+    else:
+        print(path)
     return 0
+
+
+def _validate_view_options(args: argparse.Namespace) -> None:
+    if (args.seed or args.target or args.checked or args.via) and args.kind not in {
+        "pathway",
+        "network",
+    }:
+        raise ValueError("--seed, --target, --checked and --via apply to pathway/network views")
+    if args.judgment and args.kind not in {"csv", "judgment"}:
+        raise ValueError("--judgment applies to csv/judgment views")
+    if args.judgment and not re.fullmatch(r"[a-z][a-z0-9_-]*", args.judgment):
+        raise ValueError("--judgment must be a saved judgment key")
+    if args.verdict and (args.kind != "csv" or not args.judgment):
+        raise ValueError("--verdict requires --kind csv and --judgment")
+    if (args.family or args.process or args.require) and args.kind not in {
+        "csv",
+        "energy",
+        "judgment",
+    }:
+        raise ValueError("--family, --process and --require apply to csv/energy/judgment views")
+    if (args.kind == "reaction") != bool(args.reaction):
+        raise ValueError("--kind reaction requires --reaction, which applies only to that view")
+    if args.kind == "judgment" and not args.judgment:
+        raise ValueError("--kind judgment requires --judgment")
+
+
+def _required_verdicts(expressions: list[str]) -> dict[str, str]:
+    verdicts: dict[str, str] = {}
+    for expression in expressions:
+        name, _, verdict = expression.partition("=")
+        if not name or verdict not in VERDICTS:
+            raise ValueError(f"invalid --require {expression!r}; expected JUDGMENT=VERDICT")
+        if name in verdicts and verdicts[name] != verdict:
+            raise ValueError(f"conflicting --require verdicts for {name}")
+        verdicts[name] = verdict
+    return verdicts
+
+
+def _csv_view(args: argparse.Namespace, root: Path, required: dict[str, str]) -> int:
+    reaction_filter = bool(args.family or args.process or required)
+    if not args.judgment and not reaction_filter:
+        export.rebuild_views(args.result, args.out or root)
+        print(args.out or root)
+        return 0
+    document = export.read(args.result)
+    if args.judgment:
+        tables = _selected_judgment_tables(document, args, required, reaction_filter)
+    else:
+        tables = {
+            "reactions": reaction_table(
+                document, family=args.family, process=args.process, verdicts=required
+            )
+        }
+    filtered = bool(reaction_filter or args.verdict)
+    destination = args.out or root / ("selection" if filtered else "judgments")
+    files = {
+        f"{name}{'.filtered' if filtered else ''}.csv": content for name, content in tables.items()
+    }
+    export.write_tables(destination, files)
+    for name in files:
+        print(destination / name)
+    return 0
+
+
+def _selected_judgment_tables(
+    document: dict, args: argparse.Namespace, required: dict[str, str], reaction_filter: bool
+) -> dict[str, str]:
+    verdicts = dict(required)
+    if args.verdict:
+        if verdicts.get(args.judgment, args.verdict) != args.verdict:
+            raise ValueError(f"--verdict conflicts with --require for {args.judgment}")
+        # State-only judgments are filtered below without treating them as reaction claims.
+        if args.judgment in document["summary"]["judgments"]["reactions"]:
+            verdicts[args.judgment] = args.verdict
+    tables = judgment_tables(
+        document,
+        judgment=args.judgment,
+        family=args.family,
+        process=args.process,
+        verdicts=verdicts,
+    )
+    if not reaction_filter:
+        tables.update(
+            {
+                state_judgment_stem(key): content
+                for key, content in state_judgment_tables(
+                    document, judgment=args.judgment, verdict=args.verdict
+                ).items()
+            }
+        )
+    if not tables:
+        subjects = ("reactions",) if reaction_filter else ("reactions", "states")
+        summary = document["summary"]["judgments"]
+        available = sorted({key for subject in subjects for key in summary[subject]})
+        raise ValueError(
+            f"judgment {args.judgment!r} is not saved; available judgments: "
+            f"{', '.join(available) or 'none'}"
+        )
+    return tables
+
+
+def _pathway_filename(args: argparse.Namespace) -> str:
+    if not (args.target or args.seed or args.checked or args.via):
+        return "pathway.png"
+    name = re.sub(r"[^A-Za-z0-9_-]+", "-", args.target or "default").strip("-")[:48]
+    query = repr((args.target, tuple(sorted(set(args.seed))), args.checked, args.via))
+    return f"pathway-{name or 'state'}-{sha256(query.encode()).hexdigest()[:10]}.png"
 
 
 def _ingest(args: argparse.Namespace) -> int:

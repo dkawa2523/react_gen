@@ -1,0 +1,20 @@
+schema_version: 1
+id: SiH-
+display_name: SiH-
+composition: {Si: 1, H: 1}
+charge: -1
+phase: gas
+classes:
+- negative_ion
+- molecule
+state:
+  kind: ground
+  existence: confirmed
+  existence_source: Gas-phase mass-selected SiH- measured by laser photoelectron spectroscopy.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: AIP
+    citation: A. Kasdan, E. Herbst and W. C. Lineberger, J. Chem. Phys. 62, 541–548 (1975)
+    url: https://doi.org/10.1063/1.430508

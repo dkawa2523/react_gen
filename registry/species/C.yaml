@@ -128,6 +128,36 @@ thermo:
         standard reference; not experimental accuracy, state existence, electronic populations, or reaction
         occurrence.
 records:
+- record_id: ATcT_1.228:7440-44-0*0
+  species: C
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 7440-44-0*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=21
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 711.370
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0.0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        target: C (g), ground atomic carbon
+        atct_formula: C (g)
+        published_uncertainty:
+          absolute: 0.038
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit
 - record_id: NASA_TM4513_Cantera_3.2.0:C
   species: C
   phase: gas

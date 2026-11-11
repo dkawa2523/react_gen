@@ -8,7 +8,7 @@ import pytest
 import yaml
 
 from reactgen import export, ingest
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.evidence import EvidenceCatalog
 from reactgen.pipeline import analyze
 
@@ -21,7 +21,9 @@ def write(path: Path, payload: dict) -> Path:
 
 
 def bundle(path: Path, *gases: str) -> Path:
-    export.write(path, analyze(Case("queue", gases), EvidenceCatalog.load(REGISTRY)))
+    # Queue matching needs the supplied atomic targets, not cluster growth or closure.
+    case = Case("queue", gases, limits=Limits(max_atoms=1, max_depth=1))
+    export.write(path, analyze(case, EvidenceCatalog.load(REGISTRY)))
     return path
 
 
@@ -80,6 +82,29 @@ def test_same_input_later_matched_removes_only_its_unresolved_entry(tmp_path):
     assert len(queue) == 1
     assert queue[0]["source"]["provider"] == "two"
     assert "Xe@ground" in read(overlay)["state_records"]
+
+
+def test_state_ingest_uses_the_complete_source_declaration_for_identity(tmp_path):
+    pytest.importorskip("rdkit")
+    case = Case(
+        "isotopic hydrogen",
+        ("H2",),
+        limits=Limits(max_atoms=2, max_depth=1),
+        structures={"H2": "[1H][1H]"},
+    )
+    offered = source(tmp_path / "source.yaml", "H2")
+    document = read(offered)
+    document["records"][0].update({"structure": "smiles:[1H][1H]", "value": 2.01565})
+    write(offered, document)
+    direct = EvidenceCatalog.load_paths((offered,)).state_records[0]
+    result = tmp_path / "result"
+    export.write(result, analyze(case, EvidenceCatalog()))
+    overlay = tmp_path / "overlay.yaml"
+    report = ingest.ingest(offered, result, overlay)
+    assert report.accepted == 1
+    placed = EvidenceCatalog.load_paths((overlay,)).state_records[0]
+    assert placed.candidate.key == direct.candidate.key
+    assert placed.record_id == direct.record_id
 
 
 def test_reordered_rows_do_not_duplicate_unresolved_work(tmp_path):

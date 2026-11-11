@@ -177,12 +177,13 @@ def test_reaction_numeric_method_and_original_claims_survive_all_routes(tmp_path
         tmp_path / "source.yaml",
         {
             "snapshot_version": 1,
-            "kind": "rate_coefficient",
+            "kind": None,
             "source": {"release": "v1"},
             "records": [acquired],
         },
     )
     direct = EvidenceCatalog.load(None, known=(source,)).reaction_records[0].datasets[0]
+    assert direct.kind == "rate_coefficient"
     export.write(tmp_path / "bundle", analyze(Case("argon", ("Ar",)), EvidenceCatalog.load(root)))
     overlay = tmp_path / "overlay.yaml"
     assert ingest.ingest(source, tmp_path / "bundle", overlay).accepted == 1
@@ -298,11 +299,20 @@ def test_explicit_raw_source_is_not_reinterpreted_as_approval(kind) -> None:
     assert result.source_declaration["unknown_fields"]["original"] == [1, 2]
 
 
-@pytest.mark.parametrize("version", [2, "1", None, True])
-def test_unknown_snapshot_versions_fail_before_any_ingest_write(tmp_path, version) -> None:
-    source = write(tmp_path / "source.yaml", {"snapshot_version": version, "records": []})
-    with pytest.raises(ValueError, match="snapshot_version"):
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("snapshot_version", 2),
+        ("snapshot_version", "1"),
+        ("snapshot_version", None),
+        ("snapshot_version", True),
+        ("source", []),
+    ],
+)
+def test_malformed_snapshot_context_fails_before_any_ingest_write(tmp_path, field, value) -> None:
+    source = write(tmp_path / "source.yaml", {field: value, "records": []})
+    with pytest.raises(ValueError, match=field):
         EvidenceCatalog.load(None, known=(source,))
-    with pytest.raises(ValueError, match="snapshot_version"):
+    with pytest.raises(ValueError, match=field):
         ingest.ingest(source, tmp_path / "unused-bundle", tmp_path / "overlay.yaml")
     assert not (tmp_path / "overlay.yaml").exists()

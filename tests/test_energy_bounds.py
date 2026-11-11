@@ -389,6 +389,7 @@ def _penning_ranges(
     donor_product_structure: str | None = None,
     ion_product_charge: int = 1,
     additional_excitation: Property | None = None,
+    misidentify_donor: bool = False,
 ) -> tuple[Assessment, dict[str, float]]:
     donor = candidate_state({"Ar": 1}, 0, "electronic", label="level", resolution="resolved")
     target = candidate_state({"O": 2}, 0)
@@ -409,6 +410,14 @@ def _penning_ranges(
         "test",
         "test",
         0,
+        transformation={
+            "kind": "penning",
+            "donor": target.id,
+            "donor_product": donor_product.id,
+            "target": donor.id,
+        }
+        if misidentify_donor
+        else {},
     )
     evidence = {
         donor.id: StateEvidence(
@@ -434,13 +443,20 @@ def _penning_ranges(
         ),
     }
     if ion_product_charge == 1:
-        assert assess_consistency(reaction, candidates).verdict == "pass"
+        # The named donor direction can be inferred from an exact ground
+        # endpoint, but a different excited or structure-unmatched endpoint
+        # needs a qualified correspondence and signed gap.
+        ground_donor_product = donor_product_kind == "ground" and donor_product_structure is None
+        expected = "pass" if ground_donor_product else "unknown"
+        if misidentify_donor:
+            expected = "fail"
+        assert assess_consistency(reaction, candidates).verdict == expected
     return assess_thermochemistry(
         reaction,
         candidates,
         evidence,
         ReactionEvidence(),
-        Conditions(collision_energy_eV=collision),
+        Conditions(collision_energy_eV=collision, collision_energy_frame="com"),
     )
 
 
@@ -530,13 +546,18 @@ def test_penning_equal_centers_keep_the_wider_error_and_conflicting_centers_are_
         {"ion_product_kind": "electronic"},
         {"donor_product_structure": "another structure"},
         {"ion_product_charge": 2},
+        {"misidentify_donor": True},
     ],
 )
 def test_penning_ground_energy_model_cannot_decide_different_actual_products(changes: dict) -> None:
     energy, ie = (Property(value, "eV", tier="reviewed") for value in (12.0, 10.0))
     result, values = _penning_ranges(energy, ie, **changes)
-    assert result.verdict == "unknown"
-    assert "corresponding ground-state products" in result.message
+    if changes.get("ion_product_charge") == 2:
+        assert result.verdict == "not_applicable"
+        assert result.basis == ("assessment:conservation",)
+    else:
+        assert result.verdict == "unknown"
+        assert "corresponding ground-state products" in result.message
     assert "penning_available_energy_eV" not in values
 
 

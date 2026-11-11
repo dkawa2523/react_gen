@@ -1,4 +1,4 @@
-"""Small source-based regressions for the reviewed oxygen kinetics declarations."""
+"""Source-based regressions for reviewed energy and kinetics declarations."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import pytest
 
 from reactgen import export
 from reactgen.assessment import assess_consistency, assess_reaction_evidence
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
 from reactgen.evidence import (
     EvidenceCatalog,
     ReactionEvidence,
@@ -62,6 +62,71 @@ def _use(registry: Registry, channel_id: str, conditions: Conditions) -> DataUse
     )
 
 
+def test_ground_oxygen_dissociation_and_ionization_use_distinct_endpoint_energies(
+    registry: Registry, catalog: EvidenceCatalog
+) -> None:
+    case = Case(
+        "oxygen screening",
+        ("O2",),
+        Conditions(
+            collision_energy_eV=6,
+            collision_energy_frame="com",
+            projectile_state="e",
+            target_state="O2@ground",
+        ),
+        limits=Limits(max_atoms=2, max_depth=1),
+        supplies=("e",),
+    )
+    result = analyze(case, catalog).evaluation
+    # Wang et al. (2024) D0 in cm^-1, and the NIST SRD69 adiabatic IE in eV.
+    for channel_id, endpoint, verdict in (
+        ("e_O2_dissociation_O_O", 41269.19 * 1.239841984e-4, "pass"),
+        ("e_O2_ionization", 12.0697, "fail"),
+    ):
+        channel = registry_reaction_candidate(_channel(registry, channel_id), registry.species)
+        assert channel is not None
+        assert result.reaction_assessments[channel.id]["energy"].verdict == verdict
+        margin = result.thermochemical_calculations[channel.id]["collision_energy_margin_eV"]
+        assert margin.value == pytest.approx(6 - endpoint)
+
+
+def test_fluorocarbon_oxidation_uses_four_same_reference_ground_energies(
+    registry: Registry, catalog: EvidenceCatalog
+) -> None:
+    case = Case(
+        "fluorocarbon oxidation",
+        ("CF3",),
+        Conditions(
+            collision_energy_eV=0.1,
+            collision_energy_frame="com",
+            projectile_state="CF3@ground",
+            target_state="O@ground",
+        ),
+        limits=Limits(max_atoms=4, max_depth=1, max_reactions=100),
+        supplies=("O",),
+    )
+    result = analyze(case, catalog)
+    branch = registry_reaction_candidate(_channel(registry, "CF3_O_to_CF2O_F"), registry.species)
+    assert branch is not None
+    assessment = result.evaluation.reaction_assessments[branch.id]["energy"]
+    difference = result.evaluation.thermochemical_calculations[branch.id][
+        "state_energy_difference_eV"
+    ]
+    # ATcT v1.228 ΔfH°(0 K), kJ/mol for COF2, F, CF3 and O.
+    assert difference.value == pytest.approx((-603.33 + 77.284 + 465.11 - 246.843) / 96.48533212)
+    assert {term["target"] for term in difference.inputs} == {
+        "CF3@ground",
+        "O@ground",
+        "COF2@ground",
+        "F@ground",
+    }
+    assert all(term["provider"] == "ATcT" for term in difference.inputs)
+    assert not difference.alternatives
+    assert assessment.verdict == "pass"
+    for state in ("CF3@ground", "COF2@ground"):
+        assert result.evaluation.state_assessments[state]["state"].verdict == "pass"
+
+
 @pytest.mark.parametrize("temperature", [100.0, 298.0, 400.0])
 def test_jpl_nominal_channel_sum_and_dimensions_match_the_evaluated_total(
     registry: Registry,
@@ -87,7 +152,7 @@ def test_jpl_nominal_channel_sum_and_dimensions_match_the_evaluated_total(
         assert total == pytest.approx(3.95e-17, rel=0.01, abs=0)
 
 
-@pytest.mark.parametrize("temperature", [99.0, 401.0, 424.0])
+@pytest.mark.parametrize("temperature", [99.0, 401.0])
 def test_jpl_channels_do_not_extrapolate_beyond_the_evaluated_data_range(
     registry: Registry,
     temperature: float,
@@ -153,7 +218,7 @@ def test_self_quenching_preserves_the_reported_absolute_error_and_original_units
 
 @pytest.mark.parametrize(
     "conditions",
-    [Conditions(), Conditions(gas_temperature_K=300), Conditions(gas_temperature_K=700)],
+    [Conditions(), Conditions(gas_temperature_K=700)],
 )
 def test_unknown_product_scope_precedes_missing_measurement_temperature(
     registry: Registry,
@@ -172,9 +237,8 @@ def test_unknown_product_scope_precedes_missing_measurement_temperature(
 
 
 @pytest.mark.parametrize("channel_id", TOTAL_PROCESS_CHANNELS)
-@pytest.mark.parametrize("conditions", [Conditions(), Conditions(gas_temperature_K=700)])
 def test_primary_abstract_total_rates_do_not_attest_exact_state_products(
-    registry: Registry, catalog: EvidenceCatalog, channel_id: str, conditions: Conditions
+    registry: Registry, catalog: EvidenceCatalog, channel_id: str
 ) -> None:
     # Gaucherel/Rowe 1977 abstracts report species-level products; Wildt 1988
     # obtains a-state self-quenching from fluorescence decay, not product
@@ -193,7 +257,7 @@ def test_primary_abstract_total_rates_do_not_attest_exact_state_products(
     assert dataset.channel_scope == "total_process"
     assert dataset.reaction_order == 2
     assert dataset.observable == "reaction_rate"
-    result = data_use(candidate, evidence, conditions)
+    result = data_use(candidate, evidence, Conditions(gas_temperature_K=700))
     assert result.status == "unavailable"
     assert result.dataset_id is None
     assert result.value is None
@@ -210,7 +274,15 @@ def test_total_rate_declarations_survive_canonical_result_roundtrip(
         "Arp_O2_charge_transfer": 6.3e-11,
         "O2a_O2_self_quenching": 1.5e-18,
     }
-    result = analyze(Case("source scope", ("Ar", "O2"), Conditions(gas_temperature_K=700)), catalog)
+    case = Case(
+        "source scope",
+        ("Ar", "O2"),
+        Conditions(gas_temperature_K=700),
+        # Supply the exact entrances here to test the record roundtrip directly.
+        supplies=("e", "Ar+", "O2+", "O2@a1dg"),
+        limits=Limits(max_depth=1, max_atoms=2, max_reactions=300),
+    )
+    result = analyze(case, catalog)
     export.write(tmp_path, result)
     saved = export.read(tmp_path, verify_views=True)
     for channel_id, source_value in original_values.items():

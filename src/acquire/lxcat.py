@@ -24,6 +24,8 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from reactgen.chemistry import parse_equation
+
 RULE = re.compile(r"^-{5,}\s*$")
 HEADER = re.compile(r"^([A-Z][A-Z._ ]*):\s*(.*)$")
 KINDS = {
@@ -37,8 +39,14 @@ KINDS = {
 }
 
 
-def process_type(kind: str) -> str:
-    return {
+def process_type(kind: str, equation: str = "", *, scope: str = "unknown") -> str:
+    """Normalize the declared kind, refining only identified product channels.
+
+    LXCat's IONIZATION/ATTACHMENT headings also contain dissociative channels.
+    The explicit products, rather than the heading, distinguish these equations.
+    Total-process data keep their original broad type and acquire no products.
+    """
+    broad = {
         "ELASTIC": "elastic",
         "EFFECTIVE": "elastic",
         "IONIZATION": "ionization",
@@ -47,6 +55,22 @@ def process_type(kind: str) -> str:
         "ROTATION": "excitation",
         "VIBRATION": "excitation",
     }.get(kind.upper(), kind.lower())
+    if scope != "product_resolved" or not equation:
+        return broad
+    parsed = parse_equation(equation)
+    if parsed is None:
+        return broad
+    key, _states = parsed
+    left, right = key[-2:]
+    incoming = [(name, count) for name, count in left if name != "e"]
+    fragments = sum(count for name, count in right if name != "e")
+    if len(incoming) != 1 or incoming[0][1] != 1 or fragments < 2:
+        return broad
+    return {
+        "ionization": "dissociative_ionization",
+        "attachment": "dissociative_attachment",
+        "excitation": "dissociation",
+    }.get(broad, broad)
 
 
 def observable(kind: str, headers: dict[str, str] | None = None) -> str | None:
@@ -90,12 +114,15 @@ class Process:
 
 
 def parse(path: str | Path) -> list[Process]:
-    lines = Path(path).read_text(encoding="utf-8", errors="replace").splitlines()
+    return parse_text(Path(path).read_text(encoding="utf-8", errors="replace"))
+
+
+def parse_text(body: str) -> list[Process]:
     processes: list[Process] = []
     current: Process | None = None
     in_table = False
 
-    for line in lines:
+    for line in body.splitlines():
         text = line.strip()
         if not text:
             continue

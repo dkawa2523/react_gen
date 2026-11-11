@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import adopt, export, ingest, yamlio
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.chemistry import candidate_state
 from reactgen.evidence import EvidenceCatalog
 from reactgen.pipeline import analyze
@@ -77,6 +77,14 @@ def test_one_snapshot_rejects_one_native_record_id_assigned_to_different_targets
         source = snapshot(tmp_path / f"source-{index}.yaml", kind, ordered)
         with pytest.raises(ValueError, match="record ID.*different physical targets"):
             EvidenceCatalog.load_paths((source,))
+
+
+def test_same_equation_with_distinct_stabilization_cannot_share_one_record_id(tmp_path):
+    attachment = {"reaction": "e + F -> F-", "type": "attachment", "id": "attachment-1"}
+    entries = [attachment | {"stabilization": name} for name in ("radiative", "unspecified")]
+    source = snapshot(tmp_path / "source.yaml", "reaction", entries)
+    with pytest.raises(ValueError, match="record ID.*different physical targets"):
+        EvidenceCatalog.load_paths((source,))
 
 
 @pytest.mark.parametrize("kind", ["state", "reaction"])
@@ -167,7 +175,13 @@ def registry(root: Path) -> None:
 def test_ingest_queues_a_cross_target_native_id_and_adoption_rejects_it_atomically(tmp_path, kind):
     root, bundle = tmp_path / "registry", tmp_path / "bundle"
     registry(root)
-    export.write(bundle, analyze(Case("two targets", ("Ar", "Ne")), EvidenceCatalog.load(root)))
+    export.write(
+        bundle,
+        analyze(
+            Case("two targets", ("Ar", "Ne"), limits=Limits(max_atoms=1, max_depth=1)),
+            EvidenceCatalog.load(root),
+        ),
+    )
     first = snapshot(tmp_path / "first.yaml", kind, [record(kind, "Ar")])
     second = snapshot(tmp_path / "second.yaml", kind, [record(kind, "Ne")])
     overlay = tmp_path / "overlay.yaml"

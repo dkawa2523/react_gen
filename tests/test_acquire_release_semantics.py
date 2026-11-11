@@ -26,8 +26,9 @@ def test_every_declared_fit_and_original_method_are_preserved(
     path.write_text(original, encoding="utf-8")
     rates = umist.parse(path, version)
     assert [(rate.t_min, rate.t_max) for rate in rates] == [(10, 100), (100, 500)]
+    assert [rate.reference for rate in rates] == ["reference", "other"]
     records = umist.records(rates)
-    assert len(records) == 2
+    assert len({record["source"]["record_id"] for record in records}) == 2
     assert {item["source"]["format_version"] for item in records} == {version}
     assert records[0]["source_declaration"]["accuracy"] == "A"
     assert records[0]["source_declaration"]["row"] == original

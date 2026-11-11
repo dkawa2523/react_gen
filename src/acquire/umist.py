@@ -64,13 +64,17 @@ class Rate:
 
 
 def parse(path: str | Path, version: str | None = None) -> list[Rate]:
+    return parse_text(Path(path).read_text(encoding="utf-8"), version)
+
+
+def parse_text(body: str, version: str | None = None) -> list[Rate]:
     """Read all declared fits, with an explicit version or unambiguous layout.
 
     Auto detection describes the file format, not scientific provenance. It
     uses the whole file and refuses ambiguous layouts rather than guessing
     from a filename. Original rows, method, accuracy and notes remain attached.
     """
-    rows = _read_rows(Path(path))
+    rows = _read_rows(body)
     if version is not None and version not in FIT_FIELDS:
         raise ValueError(f"unsupported UMIST format version: {version}")
     if not rows:
@@ -94,9 +98,9 @@ def parse(path: str | Path, version: str | None = None) -> list[Rate]:
     return found
 
 
-def _read_rows(path: Path) -> list[tuple[int, str, list[str]]]:
+def _read_rows(body: str) -> list[tuple[int, str, list[str]]]:
     rows = []
-    for index, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+    for index, line in enumerate(body.splitlines(), 1):
         if not line.strip() or line.lstrip().startswith(("#", "!")):
             continue
         try:

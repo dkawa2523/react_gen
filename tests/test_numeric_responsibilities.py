@@ -6,8 +6,8 @@ from pathlib import Path
 import pytest
 
 from reactgen import export, needs
-from reactgen.case import Case, Conditions
-from reactgen.evidence import EvidenceCatalog, ReactionEvidence
+from reactgen.case import Case, Conditions, Limits, RequestedReaction
+from reactgen.evidence import EvidenceCatalog, ReactionEvidence, snapshot_reaction
 from reactgen.model import ReactionCandidate, Term
 from reactgen.numeric import assess_dataset, data_use, table_points
 from reactgen.pipeline import analyze
@@ -74,7 +74,12 @@ def test_arrhenius_preserves_finite_final_values_and_zero_amplitude(
 def test_unrepresentable_positive_rate_is_a_calculation_limit_after_roundtrip(
     tmp_path, activation_sign
 ):
-    case = Case("arithmetic range", ("Ar",), Conditions(gas_temperature_K=1000))
+    case = Case(
+        "arithmetic range",
+        ("Ar",),
+        Conditions(gas_temperature_K=1000),
+        limits=Limits(max_atoms=1, max_depth=1),
+    )
     initial = analyze(case, EvidenceCatalog())
     reaction = next(
         item
@@ -160,6 +165,57 @@ def test_native_curve_does_not_imply_a_point_query_or_distribution(energy) -> No
     assert {item.responsibility for item in use.requirements} == {"external_models", "transforms"}
     assert use.required_inputs == ("electron_energy_distribution",)
     assert use.required_transforms == ("eedf_integration",)
+
+
+@pytest.mark.parametrize(
+    ("pair", "threshold", "frame", "excluded"),
+    [
+        ("Ar", 31.52, "target", False),
+        ("Ar", 50.0, "target", True),
+        ("Ar", 25.0, "com", True),
+        ("Ar", 25.0, None, False),
+        ("He", 50.0, "target", False),
+    ],
+)
+def test_curve_threshold_comparison_requires_a_common_collision_coordinate(
+    tmp_path, pair, threshold, frame, excluded
+) -> None:
+    equation = f"Ar + {pair} -> Ar+ + {pair} + e"
+    reaction = RequestedReaction(equation, "collision_ionization").candidate
+    record = snapshot_reaction(
+        {
+            "reaction": equation,
+            "type": reaction.process,
+            "energy_properties": {
+                "threshold_eV": {
+                    "definition": "channel_threshold",
+                    "value": threshold,
+                    "unit": "eV",
+                    "evidence_tier": "reviewed",
+                    "source_declaration": {"frame": frame},
+                }
+            },
+        }
+    )
+    assert record is not None
+    source = table(
+        tmp_path,
+        "10,0\n20,1e-20\n40,2e-20\n",
+        kind="cross_section",
+        unit="m2",
+        observable=reaction.process,
+        independent_variable="collision_energy",
+        validity={
+            "quantity": "collision_energy",
+            "minimum": 10,
+            "maximum": 40,
+            "unit": "eV",
+            "unresolved_conditions": {"energy_frame": "com"},
+        },
+    )
+    native = assess_dataset(source, reaction, ReactionEvidence((record,)), Conditions())
+    assert (native.status == "invalid") is excluded
+    assert ("below the" in native.reason) is excluded
 
 
 def test_native_probability_and_surface_rate_have_independent_requirements() -> None:

@@ -9,7 +9,7 @@ import pytest
 
 from acquire import snapshot
 from reactgen import adopt, export, ingest, yamlio
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
 from reactgen.evidence import EvidenceCatalog, ReactionEvidence
 from reactgen.model import ReactionCandidate, Term
 from reactgen.numeric import data_use
@@ -102,7 +102,15 @@ def test_reacquisition_keeps_one_number_and_all_context_in_public_output(
     assert len(use.datasets) == 1
     assert not use.disagreements
 
-    result = analyze(Case("argon", ("Ar",), conditions=Conditions(gas_temperature_K=350)), catalog)
+    result = analyze(
+        Case(
+            "argon",
+            ("Ar",),
+            conditions=Conditions(gas_temperature_K=350),
+            limits=Limits(max_atoms=1, max_depth=1),
+        ),
+        catalog,
+    )
     export.write(tmp_path / "public", result)
     document = export.read(tmp_path / "public", verify_views=True)
     selected = next(item for item in document["reactions"] if item["data_use"]["dataset_id"])
@@ -228,18 +236,28 @@ def test_local_asset_resolution_is_operational_context_in_saved_evidence(tmp_pat
             form="table",
             parameters={},
             independent_variable="gas_temperature",
-            asset="assets/curve.csv",
+            asset=snapshot.write_table(
+                directory / "converted",
+                "curve",
+                [(300, 1e-15), (500, 2e-15)],
+                "temperature_K,k_m3_s",
+            ),
             validity={"quantity": "gas_temperature", "minimum": 300, "maximum": 500, "unit": "K"},
-        )
-        snapshot.write_table(
-            directory / "converted", "curve", [(300, 1e-15), (500, 2e-15)], "temperature_K,k_m3_s"
         )
         paths.append(_acquired_snapshot(directory, index, record))
     catalog = EvidenceCatalog.load_paths(tuple(paths))
     datasets = catalog.reaction(REACTION).datasets
     assert datasets[0].asset.local_path != datasets[1].asset.local_path
     assert _use(catalog).status == "coefficient"
-    result = analyze(Case("argon", ("Ar",), conditions=Conditions(gas_temperature_K=350)), catalog)
+    result = analyze(
+        Case(
+            "argon",
+            ("Ar",),
+            conditions=Conditions(gas_temperature_K=350),
+            limits=Limits(max_atoms=1, max_depth=1),
+        ),
+        catalog,
+    )
     export.write(tmp_path / "public", result)
     read = export.read(tmp_path / "public", verify_views=True)
     selected = next(item for item in read["reactions"] if item["data_use"]["dataset_id"])
@@ -263,7 +281,10 @@ def test_ingest_and_adoption_keep_distinct_acquisitions_without_silent_replaceme
             ],
         },
     )
-    result = analyze(Case("argon", ("Ar",)), EvidenceCatalog.load(root))
+    result = analyze(
+        Case("argon", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
+        EvidenceCatalog.load(root),
+    )
     export.write(tmp_path / "bundle", result)
     paths = (
         _acquired_snapshot(tmp_path / "first", 1, _record()),

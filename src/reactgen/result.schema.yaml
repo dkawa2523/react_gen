@@ -51,6 +51,39 @@
             "collision_energy_eV": {
               "type": "number",
               "minimum": 0
+            },
+            "collision_energy_frame": {
+              "enum": [
+                "com",
+                "lab"
+              ]
+            },
+            "projectile_state": {
+              "type": "string",
+              "minLength": 1
+            },
+            "target_state": {
+              "type": "string",
+              "minLength": 1
+            },
+            "target_at_rest": {
+              "type": "boolean"
+            },
+            "collision_pairs": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "projectile_state": {"type": "string", "minLength": 1},
+                  "target_state": {"type": "string", "minLength": 1},
+                  "collision_energy_eV": {"type": "number", "minimum": 0},
+                  "collision_energy_frame": {"enum": ["com", "lab"]},
+                  "target_at_rest": {"type": "boolean"}
+                },
+                "required": ["projectile_state", "target_state", "collision_energy_eV", "collision_energy_frame"],
+                "additionalProperties": false
+              }
             }
           },
           "required": [],
@@ -84,6 +117,17 @@
             "max_leaving_atoms": {
               "type": "integer",
               "minimum": 1
+            },
+            "max_atoms": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_candidate_trials": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "expand_unresolved_states": {
+              "type": "boolean"
             }
           },
           "required": [
@@ -97,6 +141,36 @@
         },
         "data_selection": {
           "$ref": "#/$defs/data_selection"
+        },
+        "reactions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "equation": {"type": "string", "minLength": 1},
+              "process": {"type": "string", "minLength": 1},
+              "stabilization": {"type": "string", "minLength": 1}
+            },
+            "required": ["equation", "process"],
+            "additionalProperties": false
+          }
+        },
+        "supplies": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "structures": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       },
       "required": [
@@ -124,7 +198,11 @@
             3,
             4,
             5,
-            6
+            6,
+            7,
+            8,
+            9,
+            10
           ]
         },
         "evidence_snapshot_hash": {
@@ -158,6 +236,11 @@
             },
             "limits": {
               "type": "object",
+              "properties": {
+                "expand_unresolved_states": {
+                  "type": "boolean"
+                }
+              },
               "additionalProperties": {
                 "type": "integer",
                 "minimum": 1
@@ -169,7 +252,28 @@
             "input_scope": {
               "type": "object",
               "additionalProperties": {
-                "enum": ["atom", "diatomic", "central_ligand", "formula_only"]
+                "enum": [
+                  "atom",
+                  "diatomic",
+                  "central_ligand",
+                  "formula_only"
+                ]
+              }
+            },
+            "trials": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "gaps": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "unexpanded": {
+              "type": "array",
+              "items": {
+                "type": "object"
               }
             }
           },
@@ -186,6 +290,30 @@
           "type": "object",
           "additionalProperties": {
             "type": "string"
+          }
+        },
+        "supply_state_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "calculation_reference_state_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "input_structure_bindings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "smiles": {"type": "string", "minLength": 1},
+              "state": {"type": "string", "minLength": 1}
+            },
+            "required": ["smiles", "state"],
+            "additionalProperties": false
           }
         }
       },
@@ -383,11 +511,59 @@
           "pattern": "^[a-f0-9]{64}$"
         }
       },
+      "patternProperties": {
+        "^judgments/[a-z][a-z0-9_-]*[.]csv$": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
       "required": [
         "states.csv",
         "reactions.csv"
       ],
       "additionalProperties": false
+    },
+    "pathways": {
+      "type": "object",
+      "properties": {
+        "seeds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "conditions": {
+          "type": "object"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "unconfirmed_states": {
+          "type": "object"
+        },
+        "candidate": {
+          "$ref": "#/$defs/pathway_mode"
+        },
+        "conditioned": {
+          "$ref": "#/$defs/pathway_mode"
+        }
+      },
+      "required": [
+        "seeds",
+        "conditions",
+        "scope",
+        "candidate",
+        "conditioned",
+        "unconfirmed_states"
+      ],
+      "additionalProperties": false
+    },
+    "scientific_records": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
     }
   },
   "required": [
@@ -444,6 +620,21 @@
             },
             "minItems": 2,
             "maxItems": 2
+          },
+          "uniqueItems": true
+        },
+        "record_inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "target": {"type": "string", "minLength": 1},
+              "quantity": {"type": "string", "minLength": 1},
+              "record_id": {"type": "string", "minLength": 1},
+              "record_ref": {"type": "string", "pattern": "^record-ref:[a-f0-9]{64}$"}
+            },
+            "required": ["target", "quantity", "record_id", "record_ref"],
+            "additionalProperties": false
           },
           "uniqueItems": true
         },
@@ -625,6 +816,9 @@
             },
             "thermochemistry": {
               "$ref": "#/$defs/assessment"
+            },
+            "electron_binding": {
+              "$ref": "#/$defs/assessment"
             }
           },
           "required": [
@@ -706,6 +900,7 @@
           ]
         },
         "kinetic_effects": {
+          "description": "Optional legacy result field. New analyses omit it.",
           "type": "array",
           "items": {
             "type": "string"
@@ -726,6 +921,14 @@
         },
         "evidence": {
           "type": "object",
+          "properties": {
+            "structure_aliases": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
           "additionalProperties": true
         },
         "assessments": {
@@ -744,6 +947,12 @@
               "$ref": "#/$defs/assessment"
             },
             "kinetics": {
+              "$ref": "#/$defs/assessment"
+            },
+            "conservation": {
+              "$ref": "#/$defs/assessment"
+            },
+            "energy": {
               "$ref": "#/$defs/assessment"
             }
           },
@@ -770,6 +979,9 @@
           "additionalProperties": {
             "$ref": "#/$defs/thermochemical_calculation"
           }
+        },
+        "transformation": {
+          "type": "object"
         }
       },
       "required": [
@@ -783,7 +995,6 @@
         "depth",
         "third_body",
         "surface",
-        "kinetic_effects",
         "stabilization",
         "equation",
         "reaction_type",
@@ -820,7 +1031,8 @@
             "needs_input",
             "needs_transform",
             "unavailable",
-            "conflict"
+            "conflict",
+            "not_applicable"
           ]
         },
         "dataset_id": {
@@ -1115,34 +1327,7 @@
       "type": "object",
       "properties": {
         "quantities": {
-          "type": "object",
-          "properties": {
-            "rate_coefficient": {
-              "$ref": "#/$defs/quantity_selection"
-            },
-            "cross_section": {
-              "$ref": "#/$defs/quantity_selection"
-            },
-            "sticking_coefficient": {
-              "$ref": "#/$defs/quantity_selection"
-            },
-            "enthalpy_formation_eV": {
-              "$ref": "#/$defs/quantity_selection"
-            },
-            "ionization_energy_eV": {
-              "$ref": "#/$defs/quantity_selection"
-            },
-            "electron_affinity_eV": {
-              "$ref": "#/$defs/quantity_selection"
-            },
-            "excitation_energy_eV": {
-              "$ref": "#/$defs/quantity_selection"
-            },
-            "thermochemical_model": {
-              "$ref": "#/$defs/quantity_selection"
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/quantity_selections"
         },
         "targets": {
           "type": "object",
@@ -1151,38 +1336,33 @@
             "minLength": 1
           },
           "additionalProperties": {
-            "type": "object",
-            "properties": {
-              "rate_coefficient": {
-                "$ref": "#/$defs/quantity_selection"
-              },
-              "cross_section": {
-                "$ref": "#/$defs/quantity_selection"
-              },
-              "sticking_coefficient": {
-                "$ref": "#/$defs/quantity_selection"
-              },
-              "enthalpy_formation_eV": {
-                "$ref": "#/$defs/quantity_selection"
-              },
-              "ionization_energy_eV": {
-                "$ref": "#/$defs/quantity_selection"
-              },
-              "electron_affinity_eV": {
-                "$ref": "#/$defs/quantity_selection"
-              },
-              "excitation_energy_eV": {
-                "$ref": "#/$defs/quantity_selection"
-              },
-              "thermochemical_model": {
-                "$ref": "#/$defs/quantity_selection"
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/$defs/quantity_selections"
           }
         }
       },
       "additionalProperties": false
+    },
+    "quantity_selections": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "rate_coefficient",
+          "cross_section",
+          "sticking_coefficient",
+          "enthalpy_formation_eV",
+          "ionization_energy_eV",
+          "electron_affinity_eV",
+          "excitation_energy_eV",
+          "proton_affinity_eV",
+          "gas_basicity_eV",
+          "mass_amu",
+          "thermochemical_model",
+          "delta_e_eV"
+        ]
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/quantity_selection"
+      }
     },
     "thermochemical_calculation": {
       "type": "object",
@@ -1192,7 +1372,8 @@
             "computed",
             "needs_input",
             "unavailable",
-            "out_of_range"
+            "out_of_range",
+            "not_applicable"
           ]
         },
         "value": {
@@ -1256,6 +1437,21 @@
             ]
           },
           "uniqueItems": true
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "operation": {
+          "type": "string"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
         }
       },
       "required": [
@@ -1321,6 +1517,106 @@
         "unresolved_by_cause"
       ],
       "additionalProperties": false
+    },
+    "pathway_mode": {
+      "type": "object",
+      "properties": {
+        "state_layers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "reaction_layers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "producer_ids": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        },
+        "primary_producer": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "default_target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "excluded": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "unresolved": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "required": [
+        "state_layers",
+        "reaction_layers",
+        "producer_ids",
+        "primary_producer",
+        "default_target",
+        "excluded",
+        "unresolved"
+      ],
+      "additionalProperties": false
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "metadata": {
+            "properties": {
+              "helper_view_format": {
+                "minimum": 7
+              }
+            },
+            "required": [
+              "helper_view_format"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "pathways",
+          "scientific_records"
+        ],
+        "properties": {
+          "metadata": {
+            "required": [
+              "supply_state_ids"
+            ]
+          }
+        }
+      }
+    }
+  ]
 }

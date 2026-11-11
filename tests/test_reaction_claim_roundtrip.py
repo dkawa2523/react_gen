@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import adopt, export, ingest, yamlio
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.evidence import EvidenceCatalog, reaction_record_candidate, snapshot_reaction
 from reactgen.pipeline import analyze
 from reactgen.records import reaction_record_payload, scientific_reaction_content
@@ -63,7 +63,7 @@ def test_claim_and_energy_have_the_same_judgment_after_portable_roundtrip(tmp_pa
     assert saved.source_declaration == record.source_declaration
     assert saved.review_scope == record.review_scope
     assert saved.method == record.method
-    case = Case("same claims", ("Ar",))
+    case = Case("same claims", ("Ar",), limits=Limits(max_atoms=1, max_depth=1))
     direct, staged = analyze(case, direct_catalog), analyze(case, staged_catalog)
     reaction = selected(direct)
     assert (
@@ -193,7 +193,13 @@ def test_asset_quantity_and_claim_are_idempotent_in_a_relocated_overlay(tmp_path
     )
     source = write(assets.parent / "snapshot.yaml", {"records": [entry]})
     bundle = tmp_path / "bundle"
-    export.write(bundle, analyze(Case("asset", ("Ar",)), EvidenceCatalog.load_paths((source,))))
+    export.write(
+        bundle,
+        analyze(
+            Case("asset", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
+            EvidenceCatalog.load_paths((source,)),
+        ),
+    )
     overlay = tmp_path / "elsewhere" / "overlay.yaml"
     assert ingest.ingest(source, bundle, overlay).accepted == 1
     saved = overlay.read_bytes()
@@ -225,7 +231,7 @@ def test_snapshot_ingest_adopt_share_channel_claims_and_energy_qualification(tmp
         },
     )
     source = write(tmp_path / "snapshot.yaml", {"records": [declaration(review_scope=scope)]})
-    case = Case("same reaction claims", ("Ar",))
+    case = Case("same reaction claims", ("Ar",), limits=Limits(max_atoms=1, max_depth=1))
     direct_catalog = EvidenceCatalog.load_paths((root, source))
     direct = analyze(case, direct_catalog)
     bundle = tmp_path / "bundle"

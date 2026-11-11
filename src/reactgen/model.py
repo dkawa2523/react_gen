@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from collections.abc import Iterable
+from copy import deepcopy
 from dataclasses import dataclass, field
 from fractions import Fraction
 from math import isfinite
@@ -12,6 +13,12 @@ from typing import NamedTuple
 
 ELECTRON = "e"
 THIRD_BODY = "M"
+VERIFIED_STRUCTURE_BASIS = "verified_explicit_smiles"
+
+# One source record supplies the complete state difference in either direction.
+DIRECT_STATE_RELATION = "direct_state_relation"
+REVERSED_STATE_RELATION = "reversed_state_relation"
+EXACT_STATE_RELATION_OPERATIONS = (DIRECT_STATE_RELATION, REVERSED_STATE_RELATION)
 
 # The same physical-quantity vocabulary is used by evaluation and user-facing
 # prerequisite labels. Values name actual fields of the validated Conditions.
@@ -223,6 +230,16 @@ class StateCandidate:
         )
 
 
+def binary_collision_partners(terms: tuple[Term, ...]) -> tuple[str, str] | None:
+    """The canonical pair for one integer two-particle entrance channel."""
+    side = side_key(terms)
+    if len(side) == 1 and side[0][1] == 2:
+        return side[0][0], side[0][0]
+    if len(side) == 2 and side[0][1] == side[1][1] == 1:
+        return side[0][0], side[1][0]
+    return None
+
+
 def side_key(terms: tuple[Term, ...] | list[Term]) -> tuple[tuple[str, float], ...]:
     totals: dict[str, list[float]] = {}
     for term in terms:
@@ -246,8 +263,8 @@ class ReactionCandidate:
     depth: int
     third_body: str | None = None
     surface: str | None = None
-    kinetic_effects: tuple[str, ...] = ()
     stabilization: str | None = None
+    transformation: dict = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         raw_family = self.family
@@ -303,26 +320,87 @@ def reaction_id(key: ReactionKey) -> str:
     return "rxn_" + hashlib.sha256(encoded.encode()).hexdigest()[:12]
 
 
+def bind_transformation_states(declaration: dict, states: dict[str, str]) -> dict:
+    """Map transformation participant references, retaining atom maps and raw declarations.
+
+    Only fields that name physical states are translated. Bond actions, SMILES,
+    group inventories and other scientific content are not interpreted here.
+    """
+    mapped = deepcopy(declaration)
+    for key in (
+        "parent",
+        "collider",
+        "collider_product",
+        "initial",
+        "final",
+        "target",
+        "donor",
+        "acceptor",
+        "donor_product",
+        "acceptor_product",
+        "product",
+    ):
+        value = mapped.get(key)
+        if isinstance(value, str):
+            mapped[key] = states.get(value, value)
+    for key in ("partners", "partner_products", "fragments", "initial", "final", "reactants"):
+        values = mapped.get(key)
+        if isinstance(values, list):
+            mapped[key] = [
+                states.get(value, value) if isinstance(value, str) else value for value in values
+            ]
+    for key in ("reactant_graphs", "products"):
+        entries = mapped.get(key)
+        if isinstance(entries, list):
+            for entry in entries:
+                if isinstance(entry, dict) and isinstance(entry.get("state"), str):
+                    entry["state"] = states.get(entry["state"], entry["state"])
+    alternatives = mapped.get("alternatives")
+    if isinstance(alternatives, list):
+        mapped["alternatives"] = [
+            bind_transformation_states(item, states) if isinstance(item, dict) else item
+            for item in alternatives
+        ]
+    return mapped
+
+
+def combine_transformations(declarations: Iterable[dict]) -> dict:
+    """Retain distinct alternative role maps for the same physical equation."""
+    alternatives: list[dict] = []
+    for declared in declarations:
+        if not declared:
+            continue
+        items = declared.get("alternatives") if declared.get("kind") == "alternatives" else None
+        if isinstance(items, list) and items and all(isinstance(item, dict) for item in items):
+            alternatives.extend(item for item in items if item not in alternatives)
+        elif declared not in alternatives:
+            alternatives.append(declared)
+    if not alternatives:
+        return {}
+    if len(alternatives) == 1:
+        return alternatives[0]
+    return {"kind": "alternatives", "alternatives": alternatives}
+
+
 @dataclass
 class CandidateSet:
     states: dict[str, StateCandidate] = field(default_factory=dict)
     reactions: dict[str, ReactionCandidate] = field(default_factory=dict)
     complete: bool = True
     stop_reason: str = "closure"
-    limits: dict[str, int] = field(default_factory=dict)
+    limits: dict[str, int | bool] = field(default_factory=dict)
     completion: dict[str, bool] = field(default_factory=dict)
+    trials: int = 0
+    generation_gaps: list[dict] = field(default_factory=list)
+    unexpanded: list[dict] = field(default_factory=list)
 
-    def state_by_key(self) -> dict[StateKey, StateCandidate]:
-        return {state.key: state for state in self.states.values()}
-
-    def reaction_by_key(self) -> dict[ReactionKey, ReactionCandidate]:
-        return {reaction.key: reaction for reaction in self.reactions.values()}
-
-    def equation_index(self) -> dict[EquationKey, list[ReactionCandidate]]:
-        found: dict[EquationKey, list[ReactionCandidate]] = {}
-        for reaction in self.reactions.values():
-            found.setdefault(reaction.equation_key, []).append(reaction)
-        return found
+    def nongas_participants(self, reaction: ReactionCandidate) -> dict[str, str]:
+        """Retain known and unknown material phases; the electron is intrinsic."""
+        return {
+            term.species: phase
+            for term in (*reaction.reactants, *reaction.products)
+            if term.species != ELECTRON and (phase := self.states[term.species].phase) != "gas"
+        }
 
 
 @dataclass(frozen=True)
@@ -424,6 +502,8 @@ def coefficient_availability_verdict(status: str, dataset_statuses: Iterable[str
     """
     if status == "coefficient":
         return "pass"
+    if status == "not_applicable":
+        return "not_applicable"
     offered = tuple(dataset_statuses)
     if offered and all(item in {"invalid", "out_of_range"} for item in offered):
         return "fail"
@@ -438,6 +518,14 @@ def participant_support_verdict(verdicts: Iterable[str]) -> str:
     return "unknown" if "unknown" in values else "pass"
 
 
+@dataclass(frozen=True, order=True)
+class ScientificRecordReference:
+    target: str
+    quantity: str
+    record_id: str
+    record_ref: str
+
+
 @dataclass(frozen=True)
 class Assessment:
     verdict: str  # pass | fail | unknown | not_applicable
@@ -448,6 +536,7 @@ class Assessment:
     requirements: tuple[Requirement, ...] = ()
     # References to saved state assessments, not duplicate conclusions.
     dependencies: tuple[tuple[str, str], ...] = ()
+    record_inputs: tuple[ScientificRecordReference, ...] = ()
 
     def __post_init__(self) -> None:
         # References identify a basis, not the number of independent records.
@@ -464,3 +553,52 @@ class Assessment:
         ):
             raise ValueError("assessment.dependencies must identify a state and assessment")
         object.__setattr__(self, "dependencies", tuple(sorted(set(self.dependencies))))
+
+
+@dataclass(frozen=True)
+class ThermochemicalCalculation:
+    """Availability of one calculated quantity, independent of an energy claim.
+
+    ``computed`` supplies a finite nominal value at the retained conditions.
+    Other states retain the concrete prerequisites or an applicability limit.
+    Source qualification and calculation applicability never establish channel
+    occurrence, uncertainty propagation, or a reversible elementary mechanism.
+    """
+
+    status: str
+    value: float | None
+    unit: str
+    reason: str
+    requirements: tuple[Requirement, ...] = ()
+    conditions: dict[str, float] = field(default_factory=dict)
+    inputs: tuple[dict, ...] = ()
+    operation: str = ""
+    alternatives: tuple[dict, ...] = ()
+
+    def __post_init__(self) -> None:
+        if self.status not in {
+            "computed",
+            "needs_input",
+            "unavailable",
+            "out_of_range",
+            "not_applicable",
+        }:
+            raise ValueError("unknown thermochemical calculation status")
+        if (self.status == "computed") != (self.value is not None):
+            raise ValueError("only computed thermochemical quantities may have a value")
+        if self.value is not None and (isinstance(self.value, bool) or not isfinite(self.value)):
+            raise ValueError("thermochemical calculation value must be finite")
+        if not isinstance(self.unit, str) or not self.unit:
+            raise ValueError("thermochemical calculation unit must be nonempty")
+        if not isinstance(self.reason, str) or not self.reason:
+            raise ValueError("thermochemical calculation reason must be nonempty")
+        if any(not isinstance(item, Requirement) for item in self.requirements):
+            raise ValueError("thermochemical calculation requirements must be typed")
+        if any(
+            not isinstance(name, str) or not name or isinstance(value, bool) or not isfinite(value)
+            for name, value in self.conditions.items()
+        ):
+            raise ValueError("thermochemical calculation conditions must be finite quantities")
+        object.__setattr__(self, "requirements", tuple(dict.fromkeys(self.requirements)))
+        if any(not isinstance(item, dict) for item in self.inputs):
+            raise ValueError("calculation inputs must reference scientific records")

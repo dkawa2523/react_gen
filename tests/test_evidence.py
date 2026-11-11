@@ -12,7 +12,7 @@ import yaml
 from acquire import additivity, asd, snapshot
 from reactgen import adopt, derive, export, ingest
 from reactgen.assessment import assess_state
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
 from reactgen.chemistry import candidate_state, parse_state_id
 from reactgen.evidence import EvidenceCatalog, registry_reaction_candidate
 from reactgen.generate import candidates
@@ -22,6 +22,7 @@ from reactgen.records import (
     FormationReference,
     NumericDataset,
     Property,
+    ReactionRecord,
     RegistryState,
     StateRecord,
     Validity,
@@ -121,8 +122,12 @@ def test_same_equation_with_another_stabilization_is_related_evidence(tmp_path):
     evidence = catalog.reaction(channel)
     assert not evidence.exact_records
     assert len(evidence.related_records) == 1
-    combined = catalog.with_attested(mechanical)
-    attachments = [item for item in combined.reactions.values() if item.process == "attachment"]
+    combined = analyze(Case("attachment", ("F",)), catalog).candidates
+    attachments = [
+        item
+        for item in combined.reactions.values()
+        if item.process == "attachment" and item.equation_key == channel.equation_key
+    ]
     assert {item.stabilization for item in attachments} == {"unspecified", "radiative"}
     assert len({item.id for item in attachments}) == 2
 
@@ -231,22 +236,34 @@ def test_declared_checksum_failure_survives_serialization_and_adoption(tmp_path)
     assert not adopted.asset.integrity_ok
 
 
-def test_known_additions_obey_combined_limits_and_record_the_scope(tmp_path):
-    snapshot = write_yaml(
-        tmp_path / "snapshot.yaml",
-        {
-            "records": [
-                {"reaction": "e + Ar -> e + Ar + Ar", "type": "attested", "status": "imported"}
-            ]
-        },
+def test_known_additions_obey_combined_limits_and_record_the_scope():
+    limits = Limits(max_atoms=1)
+    mechanical = candidates(("Ar",), limits)
+    ground = mechanical.states["Ar@ground"]
+    levels = tuple(
+        candidate_state({"Ar": 2}, 0, "resolved", label=f"source_{index}")
+        for index in range(len(mechanical.states))
     )
-    mechanical = candidates(("Ar",))
-    mechanical.limits["max_reactions"] = len(mechanical.reactions)
-    result = EvidenceCatalog.load_paths((snapshot,)).with_attested(mechanical)
-    assert len(result.reactions) <= result.limits["max_reactions"]
+    channel = ReactionRecord(
+        "source-limited",
+        (
+            None,
+            None,
+            ((ground.id, float(2 * len(levels))),),
+            tuple((level.id, 1.0) for level in levels),
+        ),
+        "neutral",
+        "attested",
+        (ground, *levels),
+    )
+    result = analyze(
+        Case("limited", ("Ar",), limits=replace(limits, max_species=len(mechanical.states))),
+        EvidenceCatalog(reaction_records=(channel,)),
+    ).candidates
     assert result.completion == {"mechanical": True, "attested": False}
     assert not result.complete
     assert set(result.states) == set(mechanical.states)
+    assert set(result.reactions) == set(mechanical.reactions)
 
 
 def test_total_process_records_do_not_add_product_channels(tmp_path):
@@ -259,7 +276,7 @@ def test_total_process_records_do_not_add_product_channels(tmp_path):
         },
     )
     mechanical = candidates(("Ar",))
-    result = EvidenceCatalog.load_paths((snapshot,)).with_attested(mechanical)
+    result = analyze(Case("total", ("Ar",)), EvidenceCatalog.load_paths((snapshot,))).candidates
     assert set(result.reactions) == set(mechanical.reactions)
 
 
@@ -374,7 +391,11 @@ def test_adoption_does_not_upgrade_state_quality_or_erase_qualified_negative(tmp
 
 def saved_analysis(tmp_path, gas, records=()):
     path = write_yaml(tmp_path / "known.yaml", {"records": list(records)})
-    result = analyze(Case("boundary", (gas,)), EvidenceCatalog.load_paths((path,)))
+    # These round trips need the feed and its first collision channels, not closure.
+    result = analyze(
+        Case("boundary", (gas,), limits=Limits(max_depth=1)),
+        EvidenceCatalog.load_paths((path,)),
+    )
     out = tmp_path / "analysis"
     export.write(out, result)
     return out, result
@@ -727,7 +748,11 @@ def test_existence_only_overlay_and_adoption_preserve_energy_qualification(tmp_p
         assert energies
         assert all(prop.tier == tier for prop in energies)
     source = EvidenceCatalog.load_paths((root, overlay, channels))
-    result = analyze(Case("energy assertion boundary", ("Ar",), Conditions()), source)
+    # Retain excitation followed by the source's Penning channel.
+    result = analyze(
+        Case("energy assertion boundary", ("Ar",), Conditions(), limits=Limits(max_depth=2)),
+        source,
+    )
     penning = next(
         reaction
         for reaction in result.candidates.reactions.values()
@@ -756,7 +781,8 @@ def test_existence_only_overlay_and_adoption_preserve_energy_qualification(tmp_p
         tier == "reviewed"
     )
     after_result = analyze(
-        Case("energy assertion boundary", ("Ar",)), EvidenceCatalog.load_paths((root, channels))
+        Case("energy assertion boundary", ("Ar",), limits=Limits(max_depth=2)),
+        EvidenceCatalog.load_paths((root, channels)),
     )
     assert (
         after_result.evaluation.thermochemistry.get(penning.id, {}).get(
@@ -868,7 +894,8 @@ def test_unknown_excitation_unit_does_not_produce_an_energy_calculation(tmp_path
     }
     write_yaml(path, document)
     result = analyze(
-        Case("unknown energy unit", ("Ar",)), EvidenceCatalog.load_paths((root, channels))
+        Case("unknown energy unit", ("Ar",), limits=Limits(max_depth=2)),
+        EvidenceCatalog.load_paths((root, channels)),
     )
     assert all(
         "penning_available_energy_eV" not in values
@@ -901,7 +928,7 @@ def test_reviewed_energy_remains_usable_alongside_an_unreviewed_legacy_scalar(tm
         EvidenceCatalog.load(root, overlay=existence, known=(channels, observation)),
         EvidenceCatalog.load_paths((root, existence, channels, observation)),
     ):
-        result = analyze(Case("independent energy", ("Ar",)), catalog)
+        result = analyze(Case("independent energy", ("Ar",), limits=Limits(max_depth=2)), catalog)
         penning = next(
             reaction
             for reaction in result.candidates.reactions.values()

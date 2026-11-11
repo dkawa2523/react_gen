@@ -1,0 +1,21 @@
+schema_version: 1
+id: SiH2+
+display_name: SiH2+ (X+ 2A1)
+composition: {Si: 1, H: 2}
+charge: 1
+phase: gas
+classes:
+- positive_ion
+- molecule
+state:
+  kind: ground
+  term: X+ 2A1
+  existence: confirmed
+  existence_source: Threshold photoelectron spectrum identifies the cation ground state.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: RSC
+    citation: L. H. Coudert et al., Phys. Chem. Chem. Phys. 27, 6628–6639 (2025)
+    url: https://doi.org/10.1039/D5CP00558B

@@ -17,7 +17,7 @@ import pytest
 from PIL import Image
 
 from reactgen import export
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
 from reactgen.model import numerical_requirements
@@ -52,16 +52,6 @@ def _matrix_document(count: int) -> dict:
             "depth": 0,
             "reactants": [{"species": "Ar@ground", "n": 1.0}],
             "products": [{"species": "Ar@ground", "n": 1.0}],
-            "assessments": {
-                layer: {"verdict": "pass"}
-                for layer in (
-                    "consistency",
-                    "state",
-                    "thermochemistry",
-                    "reaction_evidence",
-                    "kinetics",
-                )
-            },
         }
         for index in range(count)
     ]
@@ -119,6 +109,7 @@ def test_split_matrix_index_preserves_previous_panels_after_publish_failure(
     from reactgen import views
 
     saved = _matrix_document(MAX_MATRIX_COLUMNS + 1)
+    saved["metadata"]["generation"].update(complete=False, stop_reason="max_reactions=8001")
     before = copy.deepcopy(saved)
     index = view(saved, tmp_path, "matrix")
     assert index.name == "matrix.html"
@@ -128,9 +119,14 @@ def test_split_matrix_index_preserves_previous_panels_after_publish_failure(
     assert "8,001 reactions in 2 panels" in html
     assert "Reactions 1-8,000 of 8,001" in html
     assert "Reactions 8,001-8,001 of 8,001" in html
+    status = "Partial candidate exploration. Recorded stop reason: max_reactions=8001."
+    assert status in html
+    for path in paths:
+        with Image.open(tmp_path / path) as image:
+            assert image.info["reactgen.exploration_status"] == status
     previous = {path: (tmp_path / path).read_bytes() for path in paths}
     assert saved == before
-    saved["reactions"][0]["assessments"]["consistency"]["verdict"] = "fail"
+    saved["reactions"][0]["products"][0]["n"] = 2.0
     publish = views._publish_view
 
     def fail_second_panel(directory, filename, payload):
@@ -156,7 +152,11 @@ def test_cli_reports_the_split_matrix_index(tmp_path: Path, monkeypatch, capsys)
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="embedded JavaScript needs a JS runtime")
 def test_unselected_judgment_is_distinct_in_badges_filters_and_graphs(tmp_path: Path) -> None:
-    saved = export.document(analyze(Case("view-test", ("Ar",)), EvidenceCatalog.load_paths(())))
+    saved = export.document(
+        analyze(
+            Case("view-test", ("Ar",), limits=Limits(max_depth=1)), EvidenceCatalog.load_paths(())
+        )
+    )
     saved["reactions"][0]["assessments"]["consistency"]["verdict"] = "unknown"
     saved["reactions"][1]["assessments"]["consistency"]["verdict"] = "fail"
     html = view(saved, tmp_path, "network").read_text(encoding="utf-8")
@@ -177,7 +177,9 @@ def test_unselected_judgment_is_distinct_in_badges_filters_and_graphs(tmp_path: 
 def test_network_preserves_saved_scientific_meaning_and_absence_without_reassessment(
     tmp_path: Path, monkeypatch, historical: bool
 ) -> None:
-    saved = export.document(analyze(Case("meaning", ("Ar",)), EvidenceCatalog.load(None)))
+    saved = export.document(
+        analyze(Case("meaning", ("Ar",), limits=Limits(max_depth=1)), EvidenceCatalog.load(None))
+    )
     reaction = saved["reactions"][0]
     state_id = reaction["reactants"][0]["species"]
     state = next(item for item in saved["states"] if item["id"] == state_id)
@@ -203,6 +205,7 @@ def test_network_preserves_saved_scientific_meaning_and_absence_without_reassess
         "delta_h_eV": 0,
         "delta_h_reference_temperature_K": 0,
         "delta_h_standard_pressure_Pa": 100000,
+        "threshold_eV": 12.5,
     }
     reaction["data_use"].update(
         status="needs_transform",
@@ -262,7 +265,7 @@ def test_network_preserves_saved_scientific_meaning_and_absence_without_reassess
     assert shown_state["evidence"] == state["evidence"]
     assert shown["numerical_requirements"]["external_models"] == ["electron_energy_distribution"]
     assert shown["numerical_requirements"]["user_inputs"] == []
-    assert payload["conditions"] == saved["input"]["conditions"]
+    assert "700 K" in payload["conditions_text"]
     assert saved == before
     if shutil.which("node") is not None:
         assertions = """
@@ -276,7 +279,9 @@ assert.ok(el('sources').innerHTML.includes('Declared source &lt;text&gt;'));
 assert.ok(el('sources').innerHTML.includes('&lt;/script&gt;'));
 assert.ok(!el('sources').innerHTML.includes('<script>'));
 assert.ok(el('sources').innerHTML.includes('Competing source'));
-assert.ok(el('energy-values').innerHTML.includes('delta_h_reference_temperature_K'));
+assert.ok(el('energy-values').innerHTML.includes('ΔH reference temperature / K</dt><dd>0'));
+assert.ok(!el('energy-values').innerHTML.includes('12.5'));
+assert.ok(el('sources').innerHTML.includes('Source-declared threshold</dt><dd>12.5 eV'));
 assert.ok(el('participant-assertions').innerHTML.includes('Saved state evidence'));
 const a = reaction.assessments.state;
 if (a.proposition) {
@@ -310,6 +315,105 @@ vm.runInNewContext(input.source, {
 });
 """
 
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="embedded JavaScript needs a JS runtime")
+def test_pathway_views_distinguish_unreachable_target_and_related_reactions(tmp_path: Path) -> None:
+    saved = export.document(
+        analyze(
+            Case("pathway", ("Ar", "F2"), supplies=("e",), limits=Limits(max_depth=1)),
+            EvidenceCatalog.load_paths(()),
+        )
+    )
+    seeds = ("Ar@ground",)
+    for target in ("F@ground", "Ar-@ground"):
+        html = view(saved, tmp_path, "network", seeds=seeds, target=target).read_text(
+            encoding="utf-8"
+        )
+        png = view(saved, tmp_path, "pathway", seeds=seeds, target=target)
+        with Image.open(png) as image:
+            png_query = json.loads(image.info["reactgen.pathway_query"])
+        scripts = re.findall(r"<script[^>]*>(.*?)</script>", html, re.DOTALL)
+        if target == "F@ground":
+            assert not png_query["reaction_ids"]
+            assertions = """
+assert.equal(activePanel, 'pathway');
+assert.equal(el('list-controls').hidden, true);
+assert.equal(el('pathway-download').disabled, true);
+assert.equal(el('exploration-status').textContent,
+  'Partial candidate exploration. Recorded stop reason: max_depth=1.');
+const count = Object.keys(computePathwayReachability().saved.primary_producer)
+  .filter(id => computePathwayReachability().stateLayers.get(id) > 0).length;
+renderPathway();
+assert.ok(count > 0);
+assert.equal(el('pathway-summary').textContent, `${count} reachable targets in this pathway query`);
+assert.ok(el('pathway-graph').innerHTML.includes('F · Not reachable in this scope'));
+const requested = el('pathway-target').options.find(option => option.value === 'F@ground');
+assert.ok(requested.label.includes('not reachable'));
+assert.ok(el('pathway-excluded-list').innerHTML.includes('Unreachable reactants:'));
+"""
+        else:
+            expected = png_query["related_reactions"]
+            assert any("unreachable" in category for category in expected.values())
+            assertions = f"""
+const reachability = computePathwayReachability();
+const path = selectHierarchicalPath(data.pathway_requested_target, reachability);
+const query = pathwayQuery(data.pathway_requested_target, path, reachability);
+assert.deepEqual(query.related_reactions, {json.dumps(expected)});
+assert.deepEqual(query.state_claims, {json.dumps(png_query["state_claims"])});
+assert.deepEqual(query.effective_seeds, {json.dumps(png_query["effective_seeds"])});
+assert.ok(el('pathway-state-claims').innerHTML.includes('Participant state evidence'));
+assert.ok(el('pathway-related-list').innerHTML.includes('Unreachable reactants:'));
+assert.ok(el('pathway-summary').textContent.includes('One shortest support'));
+const step = reactionById.get([...path.reactions][0]);
+assert.ok(el('pathway-graph').innerHTML.includes(`data-reaction-id="${{step.id}}"`));
+assert.ok(el('pathway-graph').innerHTML.includes(`>${{esc(step.reaction_type)}}</text>`));
+assert.ok(el('pathway-graph').innerHTML.includes('>Target</text>'));
+assert.ok(!el('pathway-graph').innerHTML.includes('>R1</text>'));
+const diagram = pathwayDiagram(data.pathway_requested_target, path, reachability);
+for (const id of path.reactions) {{
+  const node = 'reaction:' + id;
+  const r = reactionById.get(id);
+  for (const [side, endpoint] of [['reactants', 'target'], ['products', 'source']]) {{
+    const actual = diagram.edges.filter(e => e[endpoint] === node);
+    const terms = r['diagram_' + side];
+    assert.deepEqual(actual.map(e => e.coefficient), terms.map(t => t.n));
+    terms.forEach((term, index) => {{
+      const shared = side === 'reactants'
+        ? path.supportedBy.has(term.species)
+        : path.supportedBy.get(term.species) === id;
+      const participant = endpoint === 'target' ? actual[index].source : actual[index].target;
+      if (shared) assert.equal(participant, 'state:' + term.species);
+      else {{
+        const local = diagram.nodes.get(participant);
+        if (stateById.has(term.species)) assert.equal(local.state.id, term.species);
+        else assert.equal(local.role, 'Third body');
+        const level = diagram.nodes.get(node).level + (side === 'reactants' ? -1 : 1);
+        assert.equal(local.level, level);
+      }}
+    }});
+  }}
+}}
+el('search').value = 'no match expected';
+applyFilters();
+selectReaction(step.id);
+assert.equal(el('detail-equation').textContent, step.equation);
+assert.equal(el('selection-note').hidden, false);
+assert.equal(el('list-controls').hidden, false);
+showPanel('pathway');
+assert.equal(el('pathway-target').value, data.pathway_requested_target);
+"""
+        completed = subprocess.run(  # noqa: S603 - discovered local runtime, no shell
+            [str(shutil.which("node")), "--input-type=commonjs", "-e", _RUN_JS],
+            input=json.dumps(
+                {"source": _DOM_STUB + "\n" + scripts[-1] + "\n" + assertions, "data": scripts[0]}
+            ),
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        assert completed.returncode == 0, completed.stderr
+
+
 _DOM_STUB = """
 const elements = new Map();
 function makeElement() {
@@ -317,7 +421,7 @@ function makeElement() {
     value:'', children:[], options:[], listeners:{}, dataset:{}, _text:'',
     innerHTML:'', disabled:false, hidden:false, classList:{toggle(){}},
     get textContent(){return this._text},
-    set textContent(value){this._text=value;this.children=[]},
+    set textContent(value){this._text=value;this.children=[];this.options=[];this.innerHTML=''},
     add(option){this.options.push(option)}, append(child){this.children.push(child)},
     addEventListener(name, callback){this.listeners[name]=callback},
     insertAdjacentHTML(){}, querySelector(){return null}
@@ -335,12 +439,17 @@ function Option(label, value){this.label=label;this.value=String(value)}
 _JUDGMENT_ASSERTIONS = """
 const initial = JSON.stringify(data.reactions);
 assert.equal(el('scope-note').textContent, data.scope_note);
+assert.equal(activePanel, 'reaction');
+assert.equal(el('overview-panel').hidden, true);
+assert.equal(el('matrix-graph').innerHTML, '');
 assert.equal(currentView().assessment, null);
 assert.equal(el('verdict').disabled, true);
 assert.equal(filtered.length, data.reactions.length);
 assert.equal(verdictFor(data.reactions[0]), 'unselected');
-assert.ok(el('reaction-list').children.every(row=>row.innerHTML.includes('judgment not selected')));
+assert.ok(el('reaction-list').children.every(row=>!row.innerHTML.includes('class="verdict')));
 assert.equal(verdictDash.unselected, '');
+assert.ok(el('assessment-summary').innerHTML.includes('Process consistency'));
+assert.ok(el('assessments').innerHTML.includes('<summary>All saved assessment details</summary>'));
 el('view').value = 'consistency';
 el('view').listeners.change();
 assert.equal(el('verdict').disabled, false);
@@ -351,11 +460,24 @@ assert.equal(filtered[0].id, data.reactions[0].id);
 selectReaction(filtered[0].id);
 assert.ok(el('graph').innerHTML.includes('stroke-dasharray="7 5"'));
 assert.ok(!el('graph').innerHTML.includes('judgment not selected'));
+assert.ok(el('assessments').innerHTML.startsWith('<section class="assessment unknown">'));
 el('view').value = 'all';
 el('view').listeners.change();
 assert.equal(el('verdict').disabled, true);
 assert.equal(el('verdict').value, '');
 assert.equal(filtered.length, data.reactions.length);
+const process = data.reactions[0].process;
+el('process').value = process;
+el('process').listeners.change();
+assert.deepEqual(filtered.map(r=>r.id), data.reactions.filter(r=>r.process===process).map(r=>r.id));
+el('equation-pass').checked = true;
+el('equation-pass').listeners.change();
+assert.ok(filtered.every(r=>['conservation','consistency'].every(
+  key=>r.assessments[key].verdict==='pass')));
+assert.ok(!filtered.some(r=>r.id===data.reactions[0].id));
+el('process').value = '';
+el('equation-pass').checked = false;
+applyFilters();
 assert.ok(el('graph').innerHTML.includes('judgment not selected'));
 assert.ok(!el('graph').innerHTML.includes('stroke-dasharray'));
 const neighbor = neighborhoodReactionNode(data.reactions[0],0,0,360,'producer');
@@ -368,4 +490,43 @@ assert.equal(el('view').value, 'all');
 assert.equal(el('verdict').disabled, true);
 assert.equal(JSON.stringify(data.reactions), initial);
 assert.equal(el('scope-note').textContent, data.scope_note);
+showPanel('overview');
+const matrix=el('matrix-graph').innerHTML;
+assert.ok(matrix.includes('Reaction-state participation'));
+assert.ok(matrix.includes('data-reaction-id'));
+assert.ok(!matrix.includes('consistency: unknown'));
+
+// Only the electron label is shared across parallel incidences on the same side.
+stateById.set('e', {id:'e', name:'e'});
+const electron = n => ({species:'e', n});
+for (const [id, n] of [['first',1],['parallel',2],['later',3]]) {
+  reactionById.set(id, {id, family:'electron', reaction_type:'test',
+    diagram_reactants:[electron(1)], diagram_products:[electron(n)]});
+}
+const reactionIds = new Set(['first','parallel','later']);
+const reach = {
+  reactionLayers:new Map([['first',1],['parallel',1],['later',2]]),
+  saved:{unresolved:{}}, seeds:new Set(['e'])
+};
+const projected = pathwayDiagram('O@ground',{reactions:reactionIds,supportedBy:new Map()},reach);
+const [firstIn, firstOut, parallelIn, parallelOut, laterIn, laterOut] = projected.edges;
+assert.equal(firstIn.source, parallelIn.source);
+assert.equal(firstOut.target, parallelOut.target);
+assert.notEqual(firstOut.target, laterIn.source);
+assert.ok(projected.nodes.get(firstOut.target).level < projected.nodes.get(laterIn.source).level);
+assert.deepEqual(projected.edges.map(edge=>edge.coefficient),[1,1,1,2,1,3]);
+assert.deepEqual(projected.edges.filter(edge=>edge.target===firstOut.target)
+  .map(edge=>edge.source),['reaction:first','reaction:parallel']);
+assert.notEqual(laterOut.target, firstOut.target);
+
+// When the saved path uses a producer as support, its electron stays a state node.
+reactionById.get('first').diagram_reactants=[];
+reach.reactionLayers.set('parallel',2);
+reach.seeds.clear();
+const support = new Map([['e','first']]);
+const supported = pathwayDiagram('O@ground',{reactions:reactionIds,supportedBy:support},reach);
+assert.equal(supported.edges[0].target,'state:e');
+assert.equal(supported.edges[1].source,'state:e');
+assert.equal(supported.edges[3].source,'state:e');
+assert.notEqual(supported.edges[2].target,'state:e');
 """

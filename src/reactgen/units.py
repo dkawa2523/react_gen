@@ -26,6 +26,11 @@ def energy_eV(value: float, unit: str | None) -> float | None:
         "J/mol": 1.0 / (AVOGADRO * JOULE_PER_EV),
         "kJ/mol": 1000.0 / (AVOGADRO * JOULE_PER_EV),
         "K": EV_PER_K,
+        "cm-1": 6.62607015e-34 * 299792458.0 * 100.0 / JOULE_PER_EV,
+        "cm^-1": 6.62607015e-34 * 299792458.0 * 100.0 / JOULE_PER_EV,
+        "Hz": 6.62607015e-34 / JOULE_PER_EV,
+        "MHz": 6.62607015e-28 / JOULE_PER_EV,
+        "Hartree": 27.211386245981,
     }
     factor = factors.get(unit or "")
     if factor is None or not isfinite(value):

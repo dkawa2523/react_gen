@@ -1,0 +1,39 @@
+schema_version: 1
+id: NF3-
+display_name: NF3-
+phase: gas
+composition: {N: 1, F: 3}
+charge: -1
+classes: [ion, anion, molecule]
+state:
+  kind: ground
+records:
+- record_id: ATcT_1.228:37366-69-1*0
+  species: NF3-
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 37366-69-1*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical Network v1.228, Argonne National Laboratory.
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=1967
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: -247.0
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: '[NF3]- (g)'
+        published_uncertainty:
+          absolute: 2.5
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit
+        scope: Evaluated ground anion endpoint with predominantly calculated input affinities. No measured lifetime or channel assertion.

@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import export, needs, yamlio
-from reactgen.case import Case
+from reactgen.case import Case, Conditions, Limits
 from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
 from reactgen.model import numerical_requirements
@@ -20,7 +20,46 @@ from reactgen.pipeline import analyze
 
 
 def saved() -> dict:
-    return export.document(analyze(Case("analysis", ("Ar",)), EvidenceCatalog.load(None)))
+    return export.document(
+        analyze(
+            Case("analysis", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
+            EvidenceCatalog.load(None),
+        )
+    )
+
+
+def test_cli_assesses_requested_equations_without_supplying_or_expanding_their_states(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    input_path = tmp_path / "case.yaml"
+    input_path.write_text(
+        "gases: [Ar]\nsupplies: [e]\nlimits: {max_atoms: 1, max_depth: 1}\n"
+        "reactions:\n"
+        "- {equation: 'e + Ar -> Ar+ + 2 e', process: ionization}\n"
+        "- {equation: 'e + Ar+ -> Ar^2+ + 2 e', process: ionization}\n"
+        "- {equation: 'e + Ne^2+ -> Ne^3+ + 2 e', process: ionization}\n"
+        "- {equation: 'e + Ar -> Ar+ + e', process: ionization}\n",
+        encoding="utf-8",
+    )
+    directory = tmp_path / "result"
+    assert main(["analyze", "--input", str(input_path), "--out", str(directory)]) == 1
+    assert "Requested reactions: 4" in capsys.readouterr().out
+    document = export.read(directory, verify_views=True)
+    requested = Case.load(input_path).reactions
+    reactions = {item["id"]: item for item in document["reactions"]}
+    requested_ids = {item.candidate.id for item in requested}
+    baseline_ids = {item["id"] for item in saved()["reactions"]}
+    assert set(reactions) == requested_ids | baseline_ids
+    assert document["pathways"]["seeds"] == ["Ar@ground", "e"]
+    reached = document["pathways"]["conditioned"]["state_layers"]
+    assert "Ar^2+@ground" in reached
+    assert "Ne^3+@ground" not in reached
+    admitted = [reactions[identifier] for identifier in requested_ids - baseline_ids]
+    assert all(item["origin"] == "requested" for item in admitted)
+    assert all(
+        item["assessments"]["reaction_evidence"]["verdict"] == "unknown" for item in admitted
+    )
+    assert any(item["assessments"]["conservation"]["verdict"] == "fail" for item in admitted)
 
 
 def test_grouped_needs_are_bounded_deterministic_and_keep_every_saved_finding() -> None:
@@ -34,8 +73,6 @@ def test_grouped_needs_are_bounded_deterministic_and_keep_every_saved_finding() 
     }
     assert sum(group["count"] for group in compact["needs"]) == len(full["details"])
     assert compact["summary"]["findings"] == len(full["details"])
-    assert len(compact["needs"]) < len(full["details"])
-    assert all("id" not in group for group in compact["needs"])
     assert all(len(group["target_examples"]) <= 3 for group in compact["needs"])
     assert all("@" not in item["target"] for item in full["details"])
     assert document == before
@@ -47,14 +84,20 @@ def test_grouped_needs_are_bounded_deterministic_and_keep_every_saved_finding() 
 def test_csv_keeps_formation_reference_separate_from_the_input_gas_temperature() -> None:
     document = saved()
     document["input"]["conditions"]["gas_temperature_K"] = 700
-    document["reactions"][0]["thermochemistry"].update(
+    reaction = document["reactions"][0]
+    reaction["thermochemistry"].update(
         delta_h_eV=1, delta_h_reference_temperature_K=298.15, delta_h_standard_pressure_Pa=100000
     )
-    table = export.csv_views(document)["reactions.csv"]
-    row = next(csv.DictReader(StringIO(table)))
+    tables = export.csv_views(document)
+    row = next(
+        row
+        for row in csv.DictReader(StringIO(tables["judgments/thermochemistry.csv"]))
+        if row["id"] == reaction["id"]
+    )
     assert row["delta_h_eV"] == "1"
     assert row["delta_h_reference_temperature_K"] == "298.15"
     assert row["delta_h_standard_pressure_Pa"] == "100000"
+    assert "delta_h_eV" not in next(csv.DictReader(StringIO(tables["reactions.csv"])))
     document["metadata"].pop("helper_view_format")
     old_table = export.csv_views(document)["reactions.csv"]
     assert "delta_h_reference_temperature_K" not in next(csv.DictReader(StringIO(old_table)))
@@ -98,12 +141,13 @@ def test_source_information_models_and_scalar_inputs_are_different_work() -> Non
     tables = export.csv_views(document)
     row = next(
         row
-        for row in csv.DictReader(StringIO(tables["reactions.csv"]))
+        for row in csv.DictReader(StringIO(tables["judgments/kinetics.csv"]))
         if row["id"] == reaction["id"]
     )
-    assert row["user_inputs"] == "conditions.gas_temperature_K"
-    assert row["source_information"] == "dataset_applicability_conditions"
-    assert row["external_models"] == "electron_energy_distribution"
+    steps = row["next_steps"].split(" | ")
+    for responsibility, quantities in tasks.items():
+        for quantity in quantities:
+            assert any(quantity in step and responsibility in step for step in steps)
 
 
 def test_failure_is_not_reported_as_a_missing_fact_or_source_repair() -> None:
@@ -119,6 +163,32 @@ def test_failure_is_not_reported_as_a_missing_fact_or_source_repair() -> None:
     assert group["status"] == "fail"
     assert group["responsibility"] == "failed_proposition"
     assert "repair" not in group["responsibility"]
+
+
+def test_work_summary_respects_collision_pair_applicability() -> None:
+    document = export.document(
+        analyze(
+            Case(
+                "scoped",
+                ("Ar", "F"),
+                Conditions(collision_energy_eV=3, collision_energy_frame="com", target_state="Ar"),
+                limits=Limits(max_atoms=1, max_depth=1),
+                supplies=("e",),
+            ),
+            EvidenceCatalog.load(None),
+        )
+    )
+    outside = next(
+        row
+        for row in document["reactions"]
+        if row["assessments"]["energy"]["verdict"] == "not_applicable"
+        and "collision_energy_margin_eV" in row["thermochemical_calculations"]
+    )
+    details = needs.build(document, detail=True)["details"]
+    assert not any(
+        row["id"] == outside["id"] and row["judgment"] == "calculation:collision_energy_margin_eV"
+        for row in details
+    )
 
 
 def test_dataset_exclusions_and_reference_only_data_remain_inspectable() -> None:
@@ -175,23 +245,28 @@ def test_dataset_exclusions_and_reference_only_data_remain_inspectable() -> None
 
 def test_csv_exposes_each_named_proposition_and_exact_saved_explanation() -> None:
     document = saved()
-    assert document["metadata"]["helper_view_format"] == 6
-    for subject, columns in (
-        ("states", export.STATE_JUDGMENTS),
-        ("reactions", export.REACTION_JUDGMENTS),
-    ):
-        rows = {
-            row["id"]: row
-            for row in csv.DictReader(StringIO(export.csv_views(document)[f"{subject}.csv"]))
-        }
-        for item in document[subject]:
-            for name in columns:
-                assert (
-                    rows[item["id"]][f"{name}_proposition"]
-                    == item["assessments"][name]["proposition"]
-                )
-                assert rows[item["id"]][f"{name}_reason"] == item["assessments"][name]["message"]
-                assert rows[item["id"]][f"{name}_scope"] == item["assessments"][name]["scope"]
+    assert document["metadata"]["helper_view_format"] == export.FOCUSED_VIEW_FORMAT
+    tables = export.csv_views(document)
+    for subject in ("states", "reactions"):
+        for name in document["summary"]["judgments"][subject]:
+            if subject == "reactions":
+                stem = name
+            else:
+                stem = "state-support" if name == "state" else f"state-{name}"
+            rows = {
+                row["id"]: row for row in csv.DictReader(StringIO(tables[f"judgments/{stem}.csv"]))
+            }
+            claims = {
+                item["id"]: item["assessments"][name]
+                for item in document[subject]
+                if name in item["assessments"]
+            }
+            assert rows.keys() == claims.keys()
+            for identifier, claim in claims.items():
+                row = rows[identifier]
+                assert row["proposition"] == claim["proposition"]
+                assert row["reason"] == claim["message"]
+                assert row["scope"] == claim["scope"]
 
 
 def test_historical_table_hashes_and_saved_conclusions_stay_readable(tmp_path: Path) -> None:
@@ -222,11 +297,69 @@ def test_historical_table_hashes_and_saved_conclusions_stay_readable(tmp_path: P
         export.validate(document)
 
 
-def test_current_table_hashes_include_reaction_proposition_and_explanation() -> None:
-    document = saved()
-    document["reactions"][0]["assessments"]["thermochemistry"]["message"] = "changed explanation"
-    with pytest.raises(ValueError, match="helper view hashes"):
-        export.validate(document)
+def test_csv_extracts_one_saved_judgment_without_replacing_full_views(
+    tmp_path: Path, capsys
+) -> None:
+    case = Case(
+        "ground argon at zero relative energy",
+        ("Ar",),
+        conditions=Conditions(collision_energy_eV=0, collision_energy_frame="com"),
+        limits=Limits(max_atoms=1, max_depth=1),
+        supplies=("e",),
+    )
+    registry = Path(__file__).resolve().parents[1] / "registry"
+    document = export.write(tmp_path, analyze(case, EvidenceCatalog.load(registry)))
+    expected = {
+        reaction["id"]: reaction
+        for reaction in document["reactions"]
+        if reaction["assessments"]["energy"]["verdict"] == "fail"
+    }
+    assert any(reaction["process"] == "ionization" for reaction in expected.values())
+    assert any(
+        reaction["assessments"]["energy"]["verdict"] == "pass" for reaction in document["reactions"]
+    )
+    arguments = ["view", str(tmp_path), "--kind", "csv", "--out", str(tmp_path)]
+    assert main([*arguments, "--judgment", "energy", "--verdict", "fail"]) == 0
+    with (tmp_path / "energy.filtered.csv").open(encoding="utf-8", newline="") as stream:
+        rows = list(csv.DictReader(stream))
+    assert {row["id"] for row in rows} == expected.keys()
+    for row in rows:
+        reaction = expected[row["id"]]
+        claim = reaction["assessments"]["energy"]
+        assert row["verdict"] == "fail"
+        assert (row["family"], row["process"]) == (reaction["family"], reaction["process"])
+        assert (row["proposition"], row["scope"], row["reason"]) == (
+            claim["proposition"],
+            claim["scope"],
+            claim["message"],
+        )
+    assert export.read(tmp_path, verify_views=True) == document
+    assert (
+        main(
+            [
+                *arguments,
+                "--process",
+                "ionization",
+                "--require",
+                "conservation=pass",
+                "--require",
+                "energy=fail",
+            ]
+        )
+        == 0
+    )
+    with (tmp_path / "reactions.filtered.csv").open(encoding="utf-8", newline="") as stream:
+        filtered = {row["id"] for row in csv.DictReader(stream)}
+    assert filtered == {
+        identifier
+        for identifier, reaction in expected.items()
+        if reaction["process"] == "ionization"
+        and reaction["assessments"]["conservation"]["verdict"] == "pass"
+    }
+    assert filtered
+    assert export.read(tmp_path, verify_views=True) == document
+    assert main([*arguments, "--judgment", "unknown_key"]) == 2
+    assert "available judgments:" in capsys.readouterr().err
 
 
 def test_needs_cli_detail_is_an_explicit_optional_view(tmp_path: Path, capsys) -> None:

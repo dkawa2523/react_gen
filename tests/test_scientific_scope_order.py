@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import adopt, export, ingest, yamlio
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.evidence import EvidenceCatalog, snapshot_reaction, snapshot_state
 from reactgen.pipeline import analyze
 from reactgen.records import (
@@ -93,7 +93,13 @@ def test_scope_order_reacquisition_preserves_both_original_declarations(tmp_path
             ],
         },
     )
-    export.write(tmp_path / "bundle", analyze(Case("argon", ("Ar",)), EvidenceCatalog.load(root)))
+    export.write(
+        tmp_path / "bundle",
+        analyze(
+            Case("argon", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
+            EvidenceCatalog.load(root),
+        ),
+    )
     original = _record(kind, native=True)
     changed = deepcopy(original)
     changed["review_scope"] = list(reversed(SCOPES))

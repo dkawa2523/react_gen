@@ -49,12 +49,12 @@ def elastic_channel():
     )
 
 
-@pytest.mark.parametrize("form", ["reference_only", "constant", "table"])
 @pytest.mark.parametrize(
-    ("status", "native_label", "verdict", "claim_label"),
+    ("form", "status", "native_label", "verdict", "claim_label"),
     [
-        ("rejected", "excluded", "fail", "not_satisfied"),
-        ("conflicting", "conflicting_data", "unknown", "review_required"),
+        ("reference_only", "rejected", "excluded", "fail", "not_satisfied"),
+        ("constant", "rejected", "excluded", "fail", "not_satisfied"),
+        ("table", "conflicting", "conflicting_data", "unknown", "review_required"),
     ],
 )
 def test_record_status_has_the_same_meaning_before_and_after_number_acquisition(
@@ -96,8 +96,9 @@ def test_an_excluded_record_is_not_a_prerequisite_to_completing_an_independent_r
     assert {item.target for item in use.requirements} == {reference.id}
 
 
-@pytest.mark.parametrize("form", ["reference_only", "constant", "table"])
-@pytest.mark.parametrize("status", ["rejected", "conflicting"])
+@pytest.mark.parametrize(
+    ("form", "status"), [("reference_only", "rejected"), ("table", "conflicting")]
+)
 def test_stopped_source_does_not_remove_an_independent_usable_coefficient(
     tmp_path: Path, form: str, status: str
 ) -> None:

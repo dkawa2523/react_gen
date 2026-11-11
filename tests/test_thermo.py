@@ -17,8 +17,6 @@ from reactgen.records import StateRecord, Thermo
 from reactgen.thermo import (
     AVOGADRO,
     GAS_CONSTANT,
-    equilibrium_constant,
-    gibbs_energy_eV,
     thermal_values,
     valid_thermo,
 )
@@ -64,20 +62,9 @@ def test_number_density_equilibrium_constant_has_the_delta_nu_exponent(direction
         )
     temperature = 300.0
     reference_number_density = 100000.0 / (GAS_CONSTANT * temperature) * AVOGADRO
-    assert gibbs_energy_eV(reaction, _species(), temperature) == pytest.approx(0, abs=1e-12)
-    assert equilibrium_constant(reaction, _species(), temperature) == pytest.approx(
-        reference_number_density**direction
-    )
-
-
-def test_reversed_reaction_equilibrium_constants_are_reciprocal() -> None:
-    forward = _reaction((Term("F2@ground"),), (Term("F@ground", 2),))
-    backward = replace(forward, reactants=forward.products, products=forward.reactants)
-    first = equilibrium_constant(forward, _species(), 300)
-    second = equilibrium_constant(backward, _species(), 300)
-    assert first is not None
-    assert second is not None
-    assert first * second == pytest.approx(1)
+    gibbs, constant = thermal_values(reaction, _species(), temperature)
+    assert gibbs == pytest.approx(0, abs=1e-12)
+    assert constant == pytest.approx(reference_number_density**direction, rel=1e-12, abs=0)
 
 
 @pytest.mark.parametrize(
@@ -94,13 +81,7 @@ def test_incompatible_phase_reference_or_temperature_is_not_evaluated(change: di
     species = _species()
     record = species["F2@ground"]
     species[record.id] = replace(record, thermo=replace(record.thermo, **change))
-    assert gibbs_energy_eV(reaction, species, 300) is None
-    assert equilibrium_constant(reaction, species, 300) is None
-
-
-def test_electron_nonthermal_distribution_is_not_a_nasa_equilibrium_species() -> None:
-    reaction = _reaction((Term("e"), Term("F2@ground")), (Term("e"), Term("F@ground", 2)))
-    assert equilibrium_constant(reaction, _species(), 300) is None
+    assert thermal_values(reaction, species, 300) == (None, None)
 
 
 @pytest.mark.parametrize("midpoint", [200, 6000])

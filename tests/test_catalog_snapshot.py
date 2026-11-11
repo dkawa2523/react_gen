@@ -1,23 +1,11 @@
 """Public evidence access cannot invalidate a catalog's physical-target indexes."""
 
-from dataclasses import FrozenInstanceError, replace
-
-import pytest
+from dataclasses import replace
 
 from reactgen.chemistry import candidate_state
 from reactgen.evidence import EvidenceCatalog
 from reactgen.model import ReactionCandidate, Term
 from reactgen.records import NumericDataset, Property, ReactionRecord, StateRecord
-
-
-def test_catalog_membership_cannot_be_reassigned() -> None:
-    target = candidate_state({"Ar": 1}, 0)
-    catalog = EvidenceCatalog((StateRecord("argon", target),))
-    with pytest.raises(FrozenInstanceError):
-        catalog.state_records = ()  # type: ignore[misc]
-    assert catalog.state(target).match == "exact"
-    assert len(catalog.state_records) == 1
-    assert EvidenceCatalog().state(target).match == "none"
 
 
 def test_mutating_input_or_returned_state_does_not_change_the_snapshot() -> None:

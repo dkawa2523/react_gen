@@ -1,75 +1,44 @@
-"""Readable summaries use saved numerical values and keep work responsibilities distinct."""
+"""The console gives the saved outcomes and a way to inspect them."""
 
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import asdict
 from pathlib import Path
 
-from reactgen import export, needs
-from reactgen.case import Case, Conditions
+from reactgen import export
+from reactgen.case import Case, CollisionPair, Conditions, Limits
 from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
-from reactgen.model import numerical_requirements
 from reactgen.pipeline import analyze
-from reactgen.presentation import analysis_overview, reaction_equation, state_name
+from reactgen.presentation import analysis_overview
 
 
-def test_overview_retains_zero_unit_conditions_and_separates_models_from_inputs() -> None:
+def test_overview_uses_saved_counts_and_conditions_without_expanding_work() -> None:
     saved = export.document(
         analyze(
-            Case("summary", ("Ar",), Conditions(gas_temperature_K=298)), EvidenceCatalog.load(None)
+            Case(
+                "summary",
+                ("Ar",),
+                Conditions(gas_temperature_K=298),
+                limits=Limits(max_depth=1, max_atoms=1),
+                supplies=("e",),
+            ),
+            EvidenceCatalog(),
         )
     )
-    reaction = saved["reactions"][0]
-    reaction["data_use"].update(
-        status="coefficient", dataset_id="nominal", kind="rate_coefficient", value=0, unit="m3/s"
-    )
-    pending = saved["reactions"][1]["data_use"]
-    pending.update(
-        status="needs_input", required_inputs=["electron_energy_distribution", "ion_temperature"]
-    )
-    pending["requirements"] = [
-        asdict(item)
-        for item in numerical_requirements(
-            pending["required_inputs"],
-            pending["required_transforms"],
-            saved["reactions"][1]["id"],
-            pending["reason"],
-        )
-    ]
-    reaction["evidence"]["overlay_datasets"] = [
-        {
-            "id": "nominal",
-            "validity": {
-                "quantity": "gas_temperature",
-                "minimum": 100,
-                "maximum": 400,
-                "unit": "K",
-            },
-        }
-    ]
     before = deepcopy(saved)
-    work = needs.build(saved)
-    output = "\n".join(analysis_overview(saved, work))
-    names = {state["id"]: state_name(state) for state in saved["states"]}
-    assert f"{reaction_equation(reaction, names)}: rate coefficient = 0 m3/s" in output
+    output = "\n".join(analysis_overview(saved))
+    energy = saved["summary"]["judgments"]["reactions"]["energy"]
     assert "gas temperature = 298 K" in output
-    assert "declared applicability: gas_temperature [100, 400] K" in output
-    assert "conditions.ion_temperature_K" in output
-    assert "conditions.electron_energy_distribution" not in output
-    assert (
-        f"Next work: {work['summary']['known_prerequisites']} "
-        "distinct known target/quantity prerequisites" in output
-    )
-    assert "saved work groups" not in output
-    assert f"Other saved findings: {work['summary']['findings_without_prerequisites']}" in output
-    assert "mechanism" in output
-    assert "predictive" in output
+    assert "Supplied particles: Ar, e" in output
+    assert f"Collision-energy check: {energy.get('pass', 0)} pass" in output
+    assert f"{energy.get('unknown', 0)} unknown" in output
+    assert "Conditioned pathways:" in output
+    assert "Unresolved because source data are missing" not in output
     assert saved == before
     saved["states"].reverse()
     saved["reactions"].reverse()
-    assert "\n".join(analysis_overview(saved, needs.build(saved))) == output
+    assert "\n".join(analysis_overview(saved)) == output
 
 
 def test_cli_leads_with_targets_and_saved_values_then_next_work_and_files(
@@ -80,22 +49,56 @@ def test_cli_leads_with_targets_and_saved_values_then_next_work_and_files(
     saved = export.read(tmp_path)
     assert output.startswith("Targets: Ar\nConditions: none supplied\n")
     assert f"Usable coefficients: {saved['summary']['data_use'].get('coefficient', 0)}" in output
-    assert (
-        output.index("Next work:")
-        < output.index("Results:")
-        < output.index(str(tmp_path / "result.yaml"))
-    )
+    assert output.index("Results:") < output.index("Optional graphs and source inspection:")
+    assert str(tmp_path / "judgments") in output
+    assert "--kind pathway --target STATE_ID" in output
+    assert "--kind judgment --judgment energy" in output
+    assert "--kind energy" not in output
+    assert f'rgen needs "{tmp_path}" --detail' in output
     assert all(str(tmp_path / filename) in output for filename in export.PUBLIC_FILES)
 
 
-def test_unsupported_formula_grammar_is_saved_and_reported_on_completed_generation():
-    saved = export.document(analyze(Case("scope", ("N2O", "Ar")), EvidenceCatalog()))
-    assert saved["metadata"]["generation"]["complete"]
-    assert saved["metadata"]["generation"]["input_scope"] == {"Ar": "atom", "N2O": "formula_only"}
-    output = "\n".join(analysis_overview(saved, needs.build(saved)))
-    assert "outside the supported formula grammar for: N2O." in output
-    historical = deepcopy(saved)
-    del historical["metadata"]["generation"]["input_scope"]
-    assert "outside the supported formula grammar" not in "\n".join(
-        analysis_overview(historical, needs.build(historical))
+def test_overview_reports_absent_collision_state_alongside_evaluated_pair() -> None:
+    saved = export.document(
+        analyze(
+            Case(
+                "pair scope",
+                ("Ar",),
+                Conditions(
+                    collision_pairs=(
+                        CollisionPair("e", "Ar", 17, "com"),
+                        CollisionPair("e", "Ar^3+", 50, "com"),
+                    )
+                ),
+                limits=Limits(max_depth=1, max_atoms=1),
+                supplies=("e",),
+            ),
+            EvidenceCatalog(),
+        )
     )
+    assert saved["summary"]["judgments"]["reactions"]["energy"]["pass"] > 0
+    output = analysis_overview(saved)
+    assert "Collision pair e on Ar^3+@ground has no saved state for Ar^3+@ground." in output
+    assert not any("has no saved state" in line and "e on Ar@ground" in line for line in output)
+
+
+def test_formula_representation_does_not_invent_generation_limitations():
+    saved = export.document(
+        analyze(
+            Case("scope", ("N2O", "Ar"), limits=Limits(max_depth=1, max_reactions=400)),
+            EvidenceCatalog(),
+        )
+    )
+    assert saved["metadata"]["generation"]["input_scope"] == {"Ar": "atom", "N2O": "formula_only"}
+    output = "\n".join(analysis_overview(saved))
+    assert "Generation operations with recorded limitations" not in output
+    saved["input"]["structures"] = {"N2O@ground": "[N-]=[N+]=O"}
+    assert "Generation operations with recorded limitations" not in "\n".join(
+        analysis_overview(saved)
+    )
+    saved["metadata"]["generation"]["gaps"] = [
+        {"target": "N2O@ground", "operation": "graph_input", "reason": "RDKit cannot load"}
+    ]
+    output = "\n".join(analysis_overview(saved))
+    assert "Generation operations with recorded limitations: 1" in output
+    assert "graph_input: N2O@ground; RDKit cannot load" in output

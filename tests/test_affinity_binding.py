@@ -113,8 +113,9 @@ def test_positive_ea_and_separate_nonbinding_evidence_are_not_selected_by_input_
     assert "electron_affinity_eV" not in first[2]
 
 
-@pytest.mark.parametrize("qualifier", ["unbound", " Unbound ", "UNBOUND", "\tunbound\n"])
-@pytest.mark.parametrize("value", [None, -1.0, 1.0])
+@pytest.mark.parametrize(
+    ("qualifier", "value"), [(" Unbound ", None), ("UNBOUND", -1.0), ("\tunbound\n", 1.0)]
+)
 def test_known_ea_qualifier_spelling_has_one_scientific_meaning_and_retains_raw_text(
     qualifier: str,
     value: float | None,

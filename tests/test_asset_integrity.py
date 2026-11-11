@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import adopt, export, ingest, numeric, yamlio
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
 from reactgen.evidence import (
     EvidenceCatalog,
     ReactionEvidence,
@@ -219,7 +219,10 @@ def test_anonymous_identity_uses_verified_bytes_without_inventing_unknown_equiva
 def test_mixed_ingest_and_adoption_preserve_relocated_acquisitions_and_repeat(tmp_path, native):
     root = registry(tmp_path / "registry")
     bundle = tmp_path / "bundle"
-    export.write(bundle, analyze(Case("argon", ("Ar",)), EvidenceCatalog.load(root)))
+    export.write(
+        bundle,
+        analyze(Case("argon", ("Ar",), limits=Limits(max_depth=1)), EvidenceCatalog.load(root)),
+    )
     paths = []
     for index, name in enumerate(("first.csv", "second.csv")):
         (tmp_path / name).write_bytes(TABLE)
@@ -240,7 +243,15 @@ def test_mixed_ingest_and_adoption_preserve_relocated_acquisitions_and_repeat(tm
     public = tmp_path / "public"
     export.write(
         public,
-        analyze(Case("argon", ("Ar",), conditions=Conditions(gas_temperature_K=350)), catalog),
+        analyze(
+            Case(
+                "argon",
+                ("Ar",),
+                conditions=Conditions(gas_temperature_K=350),
+                limits=Limits(max_depth=1),
+            ),
+            catalog,
+        ),
     )
     saved = export.read(public, verify_views=True)
     selected = [item for item in saved["reactions"] if item["data_use"]["status"] == "coefficient"]

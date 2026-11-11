@@ -1,0 +1,49 @@
+schema_version: 1
+id: NF
+display_name: NF
+phase: gas
+composition: {N: 1, F: 1}
+charge: 0
+classes: [neutral, molecule]
+state:
+  kind: ground
+  term: X3Sigma-
+  existence: confirmed
+  existence_source: Observed ground electronic state in Huber and Herzberg, NIST Chemistry WebBook.
+  status: reviewed
+  method: evaluated
+  review_scope: [state_existence]
+  source:
+    provider: NIST
+    collection: SRD 69
+    citation: K. P. Huber and G. H. Herzberg, Constants of Diatomic Molecules, NF, NIST Chemistry WebBook.
+    url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C13967061&Mask=1000
+records:
+- record_id: ATcT_1.228:13967-06-1*1
+  species: NF
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 13967-06-1*1
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical Network v1.228, Argonne National Laboratory.
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=665
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 232.64
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: NF (g, triplet)
+        published_uncertainty:
+          absolute: 0.77
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

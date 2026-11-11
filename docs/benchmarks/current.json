@@ -1,0 +1,720 @@
+{
+  "python": "3.12.8",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "rdkit": "2024.09.6",
+  "method": {
+    "analysis": "python -m reactgen.cli analyze --input <case> --evidence registry --out <directory>",
+    "read_verification": "reactgen.export.read(<directory>, verify_views=True)",
+    "read_benchmark": "python tools/benchmark_result_io.py <directory> --compare-python-parser",
+    "dnt_view": "python -m reactgen.cli view <directory> --kind dnt",
+    "input_snapshot": "Inputs, registry, code, and benchmark tool were run from a copy of the Git index, using the Windows virtual environment. Registry numerical assets retained the source bytes.",
+    "analysis_timing": "One sequential invocation per standard case, wall clock including CLI startup and writing. The supplementary ion runs are not used as a timing comparison.",
+    "read_timing": "One measurement per parser for each standard case and the supplementary Ar/CF4 run, in a separate process. The tool reads the input text before timing and measures parse and canonical validation separately.",
+    "dnt_variant_input": "For Ar, Ar/O2 and Ar/SF6/O2, append Ar+ to the original supplies, append _ion to the case name, and keep gases, conditions and limits unchanged. Ar/CF4 uses its separate tracked input including two specified Ar+ collision energies."
+  },
+  "cases": {
+    "ar": {
+      "input": "cases/ar/case.yaml",
+      "input_sha256": "8780bb72dc660283c527313c1a345103db97e3ee9fa79ecaae6cc636daa6eb62",
+      "scope": "standard",
+      "analysis_exit": 1,
+      "generator_version": "1.0.0",
+      "schema_version": 5,
+      "helper_view_format": 10,
+      "evidence_snapshot_sha256": "f23e08097518a9a00255fbe13faa3cfee248c03859ac7ddb1e3852f3d0a62b4b",
+      "state_count": 12,
+      "reaction_count": 49,
+      "generation": {
+        "complete": false,
+        "completion": {
+          "mechanical": false,
+          "attested": false
+        },
+        "stop_reason": "max_depth=1",
+        "trials": 130
+      },
+      "reaction_families": {
+        "electron": 11,
+        "neutral": 38
+      },
+      "reaction_verdict_counts": {
+        "conservation": {
+          "pass": 49
+        },
+        "consistency": {
+          "pass": 49
+        },
+        "energy": {
+          "not_applicable": 38,
+          "pass": 7,
+          "unknown": 4
+        },
+        "kinetics": {
+          "unknown": 49
+        },
+        "reaction_evidence": {
+          "pass": 3,
+          "unknown": 46
+        },
+        "state": {
+          "pass": 24,
+          "unknown": 25
+        },
+        "thermochemistry": {
+          "not_applicable": 44,
+          "pass": 2,
+          "unknown": 3
+        }
+      },
+      "data_use": {
+        "unavailable": 49
+      },
+      "conditioned_pathways": {
+        "state_layers": 12,
+        "reaction_layers": 49,
+        "excluded": 0,
+        "unresolved": 42
+      },
+      "result_yaml": {
+        "bytes": 966145,
+        "sha256": "1ce487b7c9bcda5232f6842ceb420077e41fc9411a09c1a7b89cdb44f4525451",
+        "verified_helper_views": 12,
+        "libyaml_available": true,
+        "measurements": [
+          {
+            "parser": "python_safe_parser",
+            "parse_seconds": 0.826842,
+            "validate_seconds": 0.069597
+          },
+          {
+            "parser": "selected_safe_parser",
+            "parse_seconds": 0.17015,
+            "validate_seconds": 0.066092
+          }
+        ]
+      },
+      "dnt": {
+        "pair_count": 0,
+        "channel_count": 0,
+        "channels_by_reaction_evidence": {},
+        "computed_endpoint_differences": 0,
+        "channels_with_declared_threshold": 0,
+        "sha256": "d5291de90240a2471f1aac951d5d1a1a0164886403bad235fa449fd40e35fd6b"
+      },
+      "cli_analyze_seconds": 1.625676
+    },
+    "ar_cf4": {
+      "input": "cases/ar_cf4/case.yaml",
+      "input_sha256": "8d1614e5d9fefbde5c5e6fdbfc415855b63dffab2618bed871053f37d001855f",
+      "scope": "standard",
+      "analysis_exit": 1,
+      "generator_version": "1.0.0",
+      "schema_version": 5,
+      "helper_view_format": 10,
+      "evidence_snapshot_sha256": "f23e08097518a9a00255fbe13faa3cfee248c03859ac7ddb1e3852f3d0a62b4b",
+      "state_count": 66,
+      "reaction_count": 373,
+      "generation": {
+        "complete": false,
+        "completion": {
+          "mechanical": false,
+          "attested": false
+        },
+        "stop_reason": "max_depth=1",
+        "trials": 644
+      },
+      "reaction_families": {
+        "electron": 256,
+        "neutral": 117
+      },
+      "reaction_verdict_counts": {
+        "conservation": {
+          "pass": 373
+        },
+        "consistency": {
+          "pass": 373
+        },
+        "energy": {
+          "fail": 23,
+          "not_applicable": 128,
+          "pass": 11,
+          "unknown": 211
+        },
+        "kinetics": {
+          "unknown": 373
+        },
+        "reaction_evidence": {
+          "pass": 11,
+          "unknown": 362
+        },
+        "state": {
+          "pass": 33,
+          "unknown": 340
+        },
+        "thermochemistry": {
+          "not_applicable": 362,
+          "pass": 5,
+          "unknown": 6
+        }
+      },
+      "data_use": {
+        "unavailable": 373
+      },
+      "conditioned_pathways": {
+        "state_layers": 66,
+        "reaction_layers": 350,
+        "excluded": 23,
+        "unresolved": 339
+      },
+      "result_yaml": {
+        "bytes": 5021478,
+        "sha256": "4f995d9d58a0b144a182ce9e8e46338285683e18e598a45f82eae7f06f89d139",
+        "verified_helper_views": 13,
+        "libyaml_available": true,
+        "measurements": [
+          {
+            "parser": "python_safe_parser",
+            "parse_seconds": 4.891688,
+            "validate_seconds": 0.650285
+          },
+          {
+            "parser": "selected_safe_parser",
+            "parse_seconds": 1.547275,
+            "validate_seconds": 0.651993
+          }
+        ]
+      },
+      "dnt": {
+        "pair_count": 0,
+        "channel_count": 0,
+        "channels_by_reaction_evidence": {},
+        "computed_endpoint_differences": 0,
+        "channels_with_declared_threshold": 0,
+        "sha256": "9c1a892345cd2fa63f4f0fa7893ccbd10d25fca46f63d53e7ea0f38fb84ffed7"
+      },
+      "cli_analyze_seconds": 5.664074
+    },
+    "ar_o2": {
+      "input": "cases/ar_o2/case.yaml",
+      "input_sha256": "1a8f516a3f36a47cb92bb910111b227dddf72662aae85b116ea92562859073e4",
+      "scope": "standard",
+      "analysis_exit": 1,
+      "generator_version": "1.0.0",
+      "schema_version": 5,
+      "helper_view_format": 10,
+      "evidence_snapshot_sha256": "f23e08097518a9a00255fbe13faa3cfee248c03859ac7ddb1e3852f3d0a62b4b",
+      "state_count": 31,
+      "reaction_count": 208,
+      "generation": {
+        "complete": false,
+        "completion": {
+          "mechanical": false,
+          "attested": false
+        },
+        "stop_reason": "max_depth=1",
+        "trials": 467
+      },
+      "reaction_families": {
+        "electron": 53,
+        "neutral": 155
+      },
+      "reaction_verdict_counts": {
+        "conservation": {
+          "pass": 208
+        },
+        "consistency": {
+          "pass": 208
+        },
+        "energy": {
+          "fail": 12,
+          "not_applicable": 166,
+          "pass": 12,
+          "unknown": 18
+        },
+        "kinetics": {
+          "unknown": 208
+        },
+        "reaction_evidence": {
+          "pass": 10,
+          "unknown": 198
+        },
+        "state": {
+          "pass": 102,
+          "unknown": 106
+        },
+        "thermochemistry": {
+          "not_applicable": 197,
+          "pass": 5,
+          "unknown": 6
+        }
+      },
+      "data_use": {
+        "unavailable": 208
+      },
+      "conditioned_pathways": {
+        "state_layers": 31,
+        "reaction_layers": 196,
+        "excluded": 12,
+        "unresolved": 184
+      },
+      "result_yaml": {
+        "bytes": 3289647,
+        "sha256": "f1a394ed8ef735fc1c7c19c450b92c5bd90fbfad4f05ecb9a1bf7ec01bd186d8",
+        "verified_helper_views": 13,
+        "libyaml_available": true,
+        "measurements": [
+          {
+            "parser": "python_safe_parser",
+            "parse_seconds": 2.822828,
+            "validate_seconds": 0.36544
+          },
+          {
+            "parser": "selected_safe_parser",
+            "parse_seconds": 0.886538,
+            "validate_seconds": 0.355297
+          }
+        ]
+      },
+      "dnt": {
+        "pair_count": 0,
+        "channel_count": 0,
+        "channels_by_reaction_evidence": {},
+        "computed_endpoint_differences": 0,
+        "channels_with_declared_threshold": 0,
+        "sha256": "0932891bc4b84b2453d73782287e06de5579aa5c26764b745d2947fdd22e96b0"
+      },
+      "cli_analyze_seconds": 3.884713
+    },
+    "ar_sf6_o2": {
+      "input": "cases/ar_sf6_o2/case.yaml",
+      "input_sha256": "f45db8b7fa44c144a2825e53a17b38732bf9c0d27d1ee213b0e0af5c6aff7094",
+      "scope": "standard",
+      "analysis_exit": 1,
+      "generator_version": "1.0.0",
+      "schema_version": 5,
+      "helper_view_format": 10,
+      "evidence_snapshot_sha256": "f23e08097518a9a00255fbe13faa3cfee248c03859ac7ddb1e3852f3d0a62b4b",
+      "state_count": 127,
+      "reaction_count": 933,
+      "generation": {
+        "complete": false,
+        "completion": {
+          "mechanical": false,
+          "attested": false
+        },
+        "stop_reason": "max_depth=1",
+        "trials": 1462
+      },
+      "reaction_families": {
+        "electron": 602,
+        "neutral": 331
+      },
+      "reaction_verdict_counts": {
+        "conservation": {
+          "pass": 933
+        },
+        "consistency": {
+          "pass": 933
+        },
+        "energy": {
+          "fail": 12,
+          "not_applicable": 342,
+          "pass": 13,
+          "unknown": 566
+        },
+        "kinetics": {
+          "unknown": 933
+        },
+        "reaction_evidence": {
+          "pass": 28,
+          "unknown": 905
+        },
+        "state": {
+          "pass": 102,
+          "unknown": 831
+        },
+        "thermochemistry": {
+          "not_applicable": 915,
+          "pass": 9,
+          "unknown": 9
+        }
+      },
+      "data_use": {
+        "unavailable": 933
+      },
+      "conditioned_pathways": {
+        "state_layers": 127,
+        "reaction_layers": 921,
+        "excluded": 12,
+        "unresolved": 908
+      },
+      "result_yaml": {
+        "bytes": 11861942,
+        "sha256": "61fa36ba3d2fd036fc0d96bc8d5ea1f12874de054d531682668b28b92f866a67",
+        "verified_helper_views": 13,
+        "libyaml_available": true,
+        "measurements": [
+          {
+            "parser": "python_safe_parser",
+            "parse_seconds": 12.334626,
+            "validate_seconds": 1.635079
+          },
+          {
+            "parser": "selected_safe_parser",
+            "parse_seconds": 3.789811,
+            "validate_seconds": 1.611379
+          }
+        ]
+      },
+      "dnt": {
+        "pair_count": 0,
+        "channel_count": 0,
+        "channels_by_reaction_evidence": {},
+        "computed_endpoint_differences": 0,
+        "channels_with_declared_threshold": 0,
+        "sha256": "86a465f57736da1926619fc93e2dcc84acfbf3d3742a8e1727cabe43128ec880"
+      },
+      "cli_analyze_seconds": 13.597692
+    },
+    "ar_cf4_ion": {
+      "input": "docs/benchmarks/ar_cf4_ion.yaml",
+      "input_sha256": "688a80cdd1a0b4993f79066001db137bf3f2e2609b644d4138380655f2abfee8",
+      "scope": "supplementary_dnt",
+      "analysis_exit": 1,
+      "generator_version": "1.0.0",
+      "schema_version": 5,
+      "helper_view_format": 10,
+      "evidence_snapshot_sha256": "f23e08097518a9a00255fbe13faa3cfee248c03859ac7ddb1e3852f3d0a62b4b",
+      "state_count": 76,
+      "reaction_count": 680,
+      "generation": {
+        "complete": false,
+        "completion": {
+          "mechanical": false,
+          "attested": false
+        },
+        "stop_reason": "max_depth=1",
+        "trials": 1011
+      },
+      "reaction_families": {
+        "electron": 266,
+        "ion": 293,
+        "neutral": 121
+      },
+      "reaction_verdict_counts": {
+        "conservation": {
+          "pass": 680
+        },
+        "consistency": {
+          "pass": 680
+        },
+        "energy": {
+          "fail": 42,
+          "not_applicable": 152,
+          "pass": 21,
+          "unknown": 465
+        },
+        "kinetics": {
+          "unknown": 680
+        },
+        "reaction_evidence": {
+          "pass": 11,
+          "unknown": 669
+        },
+        "state": {
+          "pass": 67,
+          "unknown": 613
+        },
+        "thermochemistry": {
+          "not_applicable": 641,
+          "pass": 9,
+          "unknown": 30
+        }
+      },
+      "data_use": {
+        "unavailable": 680
+      },
+      "conditioned_pathways": {
+        "state_layers": 76,
+        "reaction_layers": 638,
+        "excluded": 42,
+        "unresolved": 617
+      },
+      "result_yaml": {
+        "bytes": 8836794,
+        "sha256": "1f42bcd05a0561d7bcadea7367d990c9bbe27cad517dfc31233616090ee32e01",
+        "verified_helper_views": 13,
+        "libyaml_available": true,
+        "measurements": [
+          {
+            "parser": "python_safe_parser",
+            "parse_seconds": 8.472269,
+            "validate_seconds": 1.223676
+          },
+          {
+            "parser": "selected_safe_parser",
+            "parse_seconds": 2.360158,
+            "validate_seconds": 1.207626
+          }
+        ]
+      },
+      "dnt": {
+        "pair_count": 2,
+        "channel_count": 283,
+        "channels_by_reaction_evidence": {
+          "unknown": 283
+        },
+        "computed_endpoint_differences": 29,
+        "channels_with_declared_threshold": 0,
+        "sha256": "a9fe7be0a29c868c689996006e58272607ae8984a68ab69f40a90a82c49ecc46",
+        "file": "docs/benchmarks/dnt/ar_cf4_ion.yaml"
+      }
+    },
+    "ar_ion": {
+      "input": "docs/benchmarks/ar_ion.yaml",
+      "input_sha256": "a472943b814165062478a934f5785df8fb4c3cda358959a78849bd56ebd687b7",
+      "scope": "supplementary_dnt",
+      "analysis_exit": 1,
+      "generator_version": "1.0.0",
+      "schema_version": 5,
+      "helper_view_format": 10,
+      "evidence_snapshot_sha256": "f23e08097518a9a00255fbe13faa3cfee248c03859ac7ddb1e3852f3d0a62b4b",
+      "state_count": 14,
+      "reaction_count": 119,
+      "generation": {
+        "complete": false,
+        "completion": {
+          "mechanical": false,
+          "attested": false
+        },
+        "stop_reason": "max_depth=1",
+        "trials": 238
+      },
+      "reaction_families": {
+        "electron": 21,
+        "ion": 58,
+        "neutral": 40
+      },
+      "reaction_verdict_counts": {
+        "conservation": {
+          "pass": 119
+        },
+        "consistency": {
+          "pass": 119
+        },
+        "energy": {
+          "not_applicable": 108,
+          "pass": 7,
+          "unknown": 4
+        },
+        "kinetics": {
+          "unknown": 119
+        },
+        "reaction_evidence": {
+          "pass": 3,
+          "unknown": 116
+        },
+        "state": {
+          "pass": 56,
+          "unknown": 63
+        },
+        "thermochemistry": {
+          "not_applicable": 99,
+          "pass": 5,
+          "unknown": 15
+        }
+      },
+      "data_use": {
+        "unavailable": 119
+      },
+      "conditioned_pathways": {
+        "state_layers": 14,
+        "reaction_layers": 119,
+        "excluded": 0,
+        "unresolved": 112
+      },
+      "result_yaml": {
+        "bytes": 1749251,
+        "sha256": "d7b857262549d56ac4df87c58ecb66d73d375f86bfa747f8deb297613884093c",
+        "verified_helper_views": 12
+      },
+      "dnt": {
+        "pair_count": 1,
+        "channel_count": 48,
+        "channels_by_reaction_evidence": {
+          "unknown": 48
+        },
+        "computed_endpoint_differences": 22,
+        "channels_with_declared_threshold": 0,
+        "sha256": "a343f3d3b70ce8841ab8ab27208bdca87dfd06e7b3bbb46dace9dbe336aa581f",
+        "file": "docs/benchmarks/dnt/ar_ion.yaml"
+      }
+    },
+    "ar_o2_ion": {
+      "input": "docs/benchmarks/ar_o2_ion.yaml",
+      "input_sha256": "96cc2ea4392cb60d8bac02f613a9bd1f17050f9817ed97dacaf316320a15691f",
+      "scope": "supplementary_dnt",
+      "analysis_exit": 1,
+      "generator_version": "1.0.0",
+      "schema_version": 5,
+      "helper_view_format": 10,
+      "evidence_snapshot_sha256": "f23e08097518a9a00255fbe13faa3cfee248c03859ac7ddb1e3852f3d0a62b4b",
+      "state_count": 34,
+      "reaction_count": 400,
+      "generation": {
+        "complete": false,
+        "completion": {
+          "mechanical": false,
+          "attested": false
+        },
+        "stop_reason": "max_depth=1",
+        "trials": 777
+      },
+      "reaction_families": {
+        "electron": 63,
+        "ion": 178,
+        "neutral": 159
+      },
+      "reaction_verdict_counts": {
+        "conservation": {
+          "pass": 400
+        },
+        "consistency": {
+          "pass": 400
+        },
+        "energy": {
+          "fail": 12,
+          "not_applicable": 358,
+          "pass": 12,
+          "unknown": 18
+        },
+        "kinetics": {
+          "fail": 1,
+          "unknown": 399
+        },
+        "reaction_evidence": {
+          "pass": 10,
+          "unknown": 390
+        },
+        "state": {
+          "pass": 187,
+          "unknown": 213
+        },
+        "thermochemistry": {
+          "not_applicable": 361,
+          "pass": 9,
+          "unknown": 30
+        }
+      },
+      "data_use": {
+        "unavailable": 400
+      },
+      "conditioned_pathways": {
+        "state_layers": 34,
+        "reaction_layers": 388,
+        "excluded": 12,
+        "unresolved": 376
+      },
+      "result_yaml": {
+        "bytes": 5466730,
+        "sha256": "8f55fca69bb3eafa1308464d6db0ae94f60a14cfcf3ce0e4569d5b573dfba08f",
+        "verified_helper_views": 13
+      },
+      "dnt": {
+        "pair_count": 2,
+        "channel_count": 168,
+        "channels_by_reaction_evidence": {
+          "unknown": 168
+        },
+        "computed_endpoint_differences": 74,
+        "channels_with_declared_threshold": 0,
+        "sha256": "de8aeeb5357cd82bd7fc65314db0125882be938bfdab13141f08a1714a3d946b",
+        "file": "docs/benchmarks/dnt/ar_o2_ion.yaml"
+      }
+    },
+    "ar_sf6_o2_ion": {
+      "input": "docs/benchmarks/ar_sf6_o2_ion.yaml",
+      "input_sha256": "8a78e559f309ef5d126b9c1b05dd2d40332444aaefb577e0fca333ffb09ea4a3",
+      "scope": "supplementary_dnt",
+      "analysis_exit": 1,
+      "generator_version": "1.0.0",
+      "schema_version": 5,
+      "helper_view_format": 10,
+      "evidence_snapshot_sha256": "f23e08097518a9a00255fbe13faa3cfee248c03859ac7ddb1e3852f3d0a62b4b",
+      "state_count": 138,
+      "reaction_count": 1447,
+      "generation": {
+        "complete": false,
+        "completion": {
+          "mechanical": false,
+          "attested": false
+        },
+        "stop_reason": "max_depth=1",
+        "trials": 2122
+      },
+      "reaction_families": {
+        "electron": 612,
+        "ion": 498,
+        "neutral": 337
+      },
+      "reaction_verdict_counts": {
+        "conservation": {
+          "pass": 1447
+        },
+        "consistency": {
+          "pass": 1447
+        },
+        "energy": {
+          "fail": 12,
+          "not_applicable": 856,
+          "pass": 13,
+          "unknown": 566
+        },
+        "kinetics": {
+          "fail": 1,
+          "unknown": 1446
+        },
+        "reaction_evidence": {
+          "pass": 29,
+          "unknown": 1418
+        },
+        "state": {
+          "pass": 187,
+          "unknown": 1260
+        },
+        "thermochemistry": {
+          "not_applicable": 1394,
+          "pass": 14,
+          "unknown": 39
+        }
+      },
+      "data_use": {
+        "needs_input": 1,
+        "unavailable": 1446
+      },
+      "conditioned_pathways": {
+        "state_layers": 138,
+        "reaction_layers": 1435,
+        "excluded": 12,
+        "unresolved": 1422
+      },
+      "result_yaml": {
+        "bytes": 17857933,
+        "sha256": "02463288640514b057b2dee5a446856611b85708ed66f80394e819ef0abcef9f",
+        "verified_helper_views": 13
+      },
+      "dnt": {
+        "pair_count": 3,
+        "channel_count": 488,
+        "channels_by_reaction_evidence": {
+          "pass": 1,
+          "unknown": 487
+        },
+        "computed_endpoint_differences": 76,
+        "channels_with_declared_threshold": 0,
+        "sha256": "62179f9e410aec0e1ffdc0e6702e0250b48137212a45931cc31146fe5e7de8dd",
+        "file": "docs/benchmarks/dnt/ar_sf6_o2_ion.yaml"
+      }
+    }
+  }
+}

@@ -11,6 +11,7 @@ onto canonical candidates and queues whatever is ambiguous.
 from __future__ import annotations
 
 import argparse
+import math
 import sys
 from collections import Counter
 from dataclasses import asdict, replace
@@ -26,6 +27,7 @@ from acquire import (
     cccbdb,
     collisiondb,
     download,
+    exomol,
     ideal_gas,
     lxcat,
     molecular,
@@ -81,9 +83,24 @@ def main(argv: list[str] | None = None) -> int:
     table.set_defaults(run=_atoms)
 
     levels = commands.add_parser("asd", help="read atomic excitation levels from NIST ASD")
-    levels.add_argument("symbols", nargs="+", help="element symbols")
+    levels.add_argument("symbols", nargs="+", help="element symbols or atomic cations")
     levels.add_argument("--out", type=Path, required=True)
+    levels.add_argument(
+        "--resolved-below",
+        type=float,
+        metavar="EV",
+        help="also import resolved absolute levels up to this energy for each spectrum",
+    )
     levels.set_defaults(run=_asd)
+
+    spectrum = commands.add_parser("exomol", help="import selected local ExoMol diatomic levels")
+    spectrum.add_argument("definition", type=Path, help="official .def.json file")
+    spectrum.add_argument("states", type=Path, help="matching .states or .states.bz2 file")
+    spectrum.add_argument("--ground", required=True, help="explicit isotopic gas ground state")
+    spectrum.add_argument("--ground-row", required=True, type=int, help="reference level ID")
+    spectrum.add_argument("--rows", required=True, type=int, nargs="+", help="selected excited IDs")
+    spectrum.add_argument("--out", type=Path, required=True)
+    spectrum.set_defaults(run=_exomol)
 
     vibrate = commands.add_parser(
         "vibration", help="fit an effective vibrational quantum from heat capacity"
@@ -180,11 +197,11 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _lxcat(args) -> int:
-    snapshot.input_acquisition(args.export)
-    processes = lxcat.parse(args.export)
-    scopes = [lxcat.channel_scope(process) for process in processes]
+    input_data = snapshot.input_acquisition(args.export)
+    processes = lxcat.parse_text(input_data[0].decode("utf-8", errors="replace"))
     records = []
     for index, process in enumerate(processes):
+        scope = lxcat.channel_scope(process)
         asset = snapshot.write_table(
             args.out,
             f"{process.label}_{index}",
@@ -194,12 +211,12 @@ def _lxcat(args) -> int:
         records.append(
             {
                 "reaction": process.equation or None,
-                "type": lxcat.process_type(process.kind),
+                "type": lxcat.process_type(process.kind, process.equation, scope=scope),
                 "form": "table",
                 "unit": "m2",
                 "independent_variable": "electron_energy",
                 "observable": lxcat.observable(process.kind, process.headers),
-                "channel_scope": scopes[index],
+                "channel_scope": scope,
                 "asset": asset,
                 "threshold_eV": process.threshold_eV,
                 "status": "imported",
@@ -216,7 +233,7 @@ def _lxcat(args) -> int:
         "cross_section",
         {"source_type": "lxcat_export", "provider": "lxcat", "citation": args.citation},
         records,
-        input_path=args.export,
+        input_data=input_data,
     )
     print(f"  processes   {len(processes)}")
     print(f"  snapshot    {path}")
@@ -274,50 +291,34 @@ def _webbook(args) -> int:
     if args.page is not None and len(requested) != 1:
         raise ValueError("a saved WebBook page requires exactly one requested species")
     records = []
-    for index, request in enumerate(requested):
+    pages = []
+    for request in requested:
         source_url = webbook.url(request.query)
         if args.page is not None:
-            raw_path = args.page
-            raw, _ = snapshot.input_acquisition(raw_path)
+            raw, acquisition = snapshot.input_acquisition(args.page)
         else:
             got = download.fetch(source_url, expect="html")
             if not got.ok or got.body is None:
                 print(f"  unavailable   {request.target.id}: {got.error}")
                 return 1
-            raw = got.body
-            # Parse and match before creating converted output.
-            webbook.records(webbook.parse(raw.decode("utf-8")), request, source_url)
-            raw_dir = args.out / f"source-{index}"
-            raw_dir.mkdir(parents=True, exist_ok=True)
-            raw_path = raw_dir / "webbook.html"
-            raw_path.write_bytes(raw)
-            (raw_dir / "acquisition.yaml").write_text(
-                yaml.safe_dump(
-                    {
-                        "provider": "nist_webbook",
-                        "collection": "SRD69",
-                        "requested_url": source_url,
-                        "final_url": got.url,
-                        "retrieved_at": datetime.now(UTC).isoformat(),
-                        "file": raw_path.name,
-                        "sha256": got.sha256,
-                    },
-                    sort_keys=False,
-                ),
-                encoding="utf-8",
-            )
+            raw, acquisition = snapshot.raw_input("webbook.html", got.body)
+            acquisition["source_manifest"] = {
+                "provider": "nist_webbook",
+                "collection": "SRD69",
+                "requested_url": source_url,
+                "final_url": got.url,
+                "retrieved_at": datetime.now(UTC).isoformat(),
+                "file": acquisition["input_name"],
+                "sha256": acquisition["sha256"],
+            }
         converted = webbook.records(webbook.parse(raw.decode("utf-8")), request, source_url)
         # Each independent raw page keeps its own input hash and manifest, so
         # several species do not acquire the last page's provenance.
-        _, acquisition = snapshot.input_acquisition(raw_path)
         for record in converted:
-            record["source_declaration"]["acquisition"] = acquisition
+            prior = record["source_declaration"].get("acquisition", {})
+            record["source_declaration"]["acquisition"] = prior | acquisition
         records.extend(converted)
-        destination = args.out / "raw" / f"webbook-{index}.html"
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_bytes(raw)
-        for record in converted:
-            record["source_declaration"]["acquisition"]["raw_path"] = f"raw/{destination.name}"
+        pages.append((raw, acquisition))
     path = snapshot.write(
         args.out,
         "state_property",
@@ -327,6 +328,7 @@ def _webbook(args) -> int:
             "citation": "NIST Chemistry WebBook, SRD 69",
         },
         records,
+        raw_pages=tuple(pages),
     )
     print(f"  properties    {len(records)}")
     print(f"  snapshot      {path}")
@@ -335,9 +337,9 @@ def _webbook(args) -> int:
 
 
 def _collisiondb(args) -> int:
-    snapshot.input_acquisition(args.export)
+    input_data = snapshot.input_acquisition(args.export)
     converted = collisiondb.record(
-        collisiondb.parse(args.export),
+        collisiondb.parse_text(input_data[0].decode("utf-8")),
         args.out,
         reaction=args.reaction,
         process_type=args.type,
@@ -354,7 +356,7 @@ def _collisiondb(args) -> int:
             "citation": "CollisionDB; cite the original dataset references",
         },
         [converted],
-        input_path=args.export,
+        input_data=input_data,
     )
     print(f"  snapshot      {path}")
     print(f"  next          rgen ingest {path} --result result --overlay work/overlay.yaml")
@@ -394,14 +396,15 @@ def _catalog_identifier(entry: object) -> str:
 
 
 def _umist(args) -> int:
-    rates = umist.parse(args.release, args.format_version)
+    input_data = snapshot.input_acquisition(args.release)
+    rates = umist.parse_text(input_data[0].decode("utf-8"), args.format_version)
     records = umist.records(rates)
     path = snapshot.write(
         args.out,
         "rate_coefficient",
         {"source_type": "umist", "provider": "umist", "citation": args.citation},
         records,
-        input_path=args.release,
+        input_data=input_data,
     )
     print(f"  reactions     {len(rates)}")
     print(f"  two-body      {len(records)}  (others need a third body the registry must name)")
@@ -434,12 +437,23 @@ def _atoms(args) -> int:
 
 def _asd(args) -> int:
     citation = "NIST Atomic Spectra Database, energy levels"
+    maximum = args.resolved_below
+    if maximum is not None and (not math.isfinite(maximum) or maximum <= 0):
+        raise ValueError("ASD resolved level upper bound must be finite and positive")
     found = asd.fetch(args.symbols)
+    records = asd.records(found, citation)
+    resolved_count = 0
+    if maximum is not None:
+        for item in found:
+            resolved = asd.resolved_records(item, citation, maximum)
+            resolved_count += len(resolved)
+            records.extend(resolved)
+            print(f"  {item.symbol:4} resolved imported levels: {len(resolved)}")
     path = snapshot.write(
         args.out,
         "state_property",
         {"source_type": "nist_asd", "provider": "nist_asd", "citation": citation},
-        asd.records(found, citation),
+        records,
     )
     for item in found:
         if item.error:
@@ -454,11 +468,29 @@ def _asd(args) -> int:
         "  E1 candidates: returned-level parity/J constraints; no transition strength or lifetime"
     )
     print(f"  snapshot      {path}")
+    if maximum is not None:
+        return 0 if resolved_count else 1
     return 0 if any(item.known for item in found) else 1
 
 
 def _eV(value: float | None) -> str:
     return "     none" if value is None else f"{value:8.4f} eV"
+
+
+def _exomol(args) -> int:
+    source, records = exomol.records(
+        args.definition, args.states, args.ground, args.ground_row, args.rows
+    )
+    path = snapshot.write(args.out, "state_property", source, records)
+    table = records[0]["source_declaration"]["states_file"]
+    if table["declared_rows"] != table["parsed_rows"]:
+        print(
+            f"  ExoMol states count: declared {table['declared_rows']}, read {table['parsed_rows']}"
+        )
+    print(f"  imported ExoMol levels: {len(records)}  {source['citation']}")
+    print(f"  ground        {records[0]['related_state']}")
+    print(f"  snapshot      {path}")
+    return 0
 
 
 def _molecular(args) -> int:

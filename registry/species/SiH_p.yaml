@@ -1,0 +1,21 @@
+schema_version: 1
+id: SiH+
+display_name: SiH+ (X+ 1Sigma+)
+composition: {Si: 1, H: 1}
+charge: 1
+phase: gas
+classes:
+- positive_ion
+- molecule
+state:
+  kind: ground
+  term: X+ 1Sigma+
+  existence: confirmed
+  existence_source: Mass-selected photoelectron spectrum identifies the cation ground state.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: AIP
+    citation: N. L. Chen et al., J. Chem. Phys. 157, 014303 (2022)
+    url: https://doi.org/10.1063/5.0094863

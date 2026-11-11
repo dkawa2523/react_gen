@@ -8,6 +8,7 @@ Counts describe candidates within the saved generation scope, not a mechanism.
 from __future__ import annotations
 
 from collections import Counter
+from collections.abc import Iterator
 
 from reactgen.model import coefficient_availability_verdict
 
@@ -22,18 +23,6 @@ CAUSES = {
     "transforms": "model_unsupported",
     "unsupported_inputs": "interface_unsupported",
 }
-LABELS = (
-    "satisfied",
-    "not_satisfied",
-    "not_applicable",
-    "available",
-    "computed",
-    "excluded",
-    "out_of_range",
-    "conflicting_data",
-    "unresolved",
-    *sorted(set(CAUSES.values())),
-)
 
 
 def _causes(record: dict) -> set[str]:
@@ -73,6 +62,7 @@ def numerical_outcome(record: dict, *, coefficient_exclusions: bool = True) -> d
         "invalid": "excluded",
         "out_of_range": "out_of_range",
         "conflict": "conflicting_data",
+        "not_applicable": "not_applicable",
     }
     if status in labels:
         return {"label": labels[status], "blocking_causes": []}
@@ -108,54 +98,46 @@ def add_labels(
     states: list[dict], reactions: list[dict], *, coefficient_exclusions: bool = True
 ) -> None:
     """Attach reproducible labels when creating a new canonical result."""
-    index = {state["id"]: state for state in states}
-    for item in (*states, *reactions):
-        for assessment in item["assessments"].values():
-            assessment.update(
-                assessment_outcome(
-                    assessment,
-                    index,
-                    item.get("data_use"),
-                    coefficient_exclusions=coefficient_exclusions,
-                )
-            )
-    for reaction in reactions:
-        records = (
-            reaction["data_use"],
-            *reaction["data_use"]["datasets"],
-            *reaction.get("thermochemical_calculations", {}).values(),
-        )
-        for record in records:
-            record.update(numerical_outcome(record, coefficient_exclusions=coefficient_exclusions))
+    for record, outcome, _ in _label_projections(states, reactions, coefficient_exclusions):
+        record.update(outcome)
 
 
 def validate_labels(
     states: list[dict], reactions: list[dict], *, coefficient_exclusions: bool = True
 ) -> None:
     """Check projections without reinterpreting evidence or changing old results."""
+    for record, expected, target in _label_projections(states, reactions, coefficient_exclusions):
+        if any(record.get(name) != value for name, value in expected.items()):
+            raise ValueError(f"outcome label contradicts saved verdict or prerequisites: {target}")
+
+
+def _label_projections(
+    states: list[dict], reactions: list[dict], coefficient_exclusions: bool
+) -> Iterator[tuple[dict, dict, str]]:
     index = {state["id"]: state for state in states}
     for item in (*states, *reactions):
         for name, record in item["assessments"].items():
-            expected = assessment_outcome(
-                record, index, item.get("data_use"), coefficient_exclusions=coefficient_exclusions
+            yield (
+                record,
+                assessment_outcome(
+                    record,
+                    index,
+                    item.get("data_use"),
+                    coefficient_exclusions=coefficient_exclusions,
+                ),
+                f"{item['id']}.{name}",
             )
-            _check_label(record, expected, f"{item['id']}.{name}")
     for reaction in reactions:
         for record in (
             reaction["data_use"],
             *reaction["data_use"]["datasets"],
             *reaction.get("thermochemical_calculations", {}).values(),
         ):
-            _check_label(
+            yield (
                 record,
                 numerical_outcome(record, coefficient_exclusions=coefficient_exclusions),
                 reaction["id"],
             )
-
-
-def _check_label(record: dict, expected: dict, target: str) -> None:
-    if any(record.get(name) != value for name, value in expected.items()):
-        raise ValueError(f"outcome label contradicts saved verdict or prerequisites: {target}")
 
 
 def _coverage(records: list[dict]) -> dict:
@@ -198,7 +180,9 @@ def coverage(states: list[dict], reactions: list[dict]) -> dict:
             ),
         }
         for domain in sorted({name for item in items for name in item["assessments"]}):
-            records = [item["assessments"][domain] for item in items]
+            records = [
+                item["assessments"][domain] for item in items if domain in item["assessments"]
+            ]
             judgments[subject][domain] = _coverage(records) | {
                 "by_proposition": {
                     name: _coverage([record for record in records if record["proposition"] == name])

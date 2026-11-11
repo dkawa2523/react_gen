@@ -1,8 +1,7 @@
 name: ar_o2
 gases: [Ar, O2]
-
+supplies: [e]
 conditions:
-  gas_temperature_K: 400.0
-  electron_temperature_eV: 3.0
-
-surfaces: [SiO2, Y2O3]
+  collision_pairs:
+    - {projectile_state: e, target_state: O2, collision_energy_eV: 8, collision_energy_frame: com}
+limits: {max_atoms: 2, max_depth: 1, expand_unresolved_states: false}

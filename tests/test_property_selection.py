@@ -100,7 +100,7 @@ def test_public_state_quantity_selection_round_trips(quantity):
     case = Case("sample", ("F2",), data_selection=request)
     assert Case.from_document(case.document()) == case
     with pytest.raises(ValueError, match="unsupported"):
-        policy("mass_amu", providers=["local_lab"])
+        policy("unsupported_test_quantity", providers=["local_lab"])
 
 
 @pytest.mark.parametrize("reverse", [False, True])

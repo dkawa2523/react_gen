@@ -13,6 +13,8 @@ from reactgen.model import CandidateSet, ReactionCandidate, Term
 from reactgen.records import FormationReference, Property, StateRecord, Thermo
 from reactgen.thermo import net_stoichiometry
 
+THERMAL_QUANTITIES = ("delta_h_eV", "delta_g_eV", "equilibrium_constant_number_density")
+
 
 def inputs(scale: float = 1.0):
     atom, molecule = candidate_state({"O": 1}, 0), candidate_state({"O": 2}, 0)
@@ -37,8 +39,8 @@ def test_small_nonzero_contributors_still_require_their_own_physical_data(scale:
     assert net_stoichiometry(reaction) == {"O2@ground": -scale, "O@ground": 2 * scale}
     evaluation = evaluate(candidates, EvidenceCatalog(), Conditions())
     calculations = evaluation.thermochemical_calculations[reaction.id]
-    assert {value.status for value in calculations.values()} == {"unavailable"}
-    assert all(value.value is None for value in calculations.values())
+    assert {calculations[name].status for name in THERMAL_QUANTITIES} == {"unavailable"}
+    assert all(calculations[name].value is None for name in THERMAL_QUANTITIES)
 
 
 def test_fractional_scale_changes_gibbs_enthalpy_and_equilibrium_exponent_consistently() -> None:
@@ -77,7 +79,9 @@ def test_fractional_scale_changes_gibbs_enthalpy_and_equilibrium_exponent_consis
     small = evaluate(scaled_candidates, catalog, Conditions(gas_temperature_K=300))
     actual = small.thermochemical_calculations[scaled.id]
     expected = full.thermochemical_calculations[base.id]
-    assert {value.status for value in actual.values()} == {"computed"}
+    # Extensive thermodynamic quantities scale with the written reaction.
+    # They do not assert a 0 K endpoint or a single binary-collision event.
+    assert {actual[name].status for name in THERMAL_QUANTITIES} == {"computed"}
     for quantity in ("delta_h_eV", "delta_g_eV"):
         assert actual[quantity].value == pytest.approx(
             scale * expected[quantity].value, rel=1e-12, abs=0

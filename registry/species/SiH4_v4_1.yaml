@@ -1,0 +1,44 @@
+schema_version: 1
+id: SiH4_v4_1
+display_name: SiH4(v4=1)
+phase: gas
+composition: {Si: 1, H: 4}
+charge: 0
+classes: [neutral, molecule]
+molecular_identity:
+  smiles: '[SiH4]'
+  source:
+    provider: NIST
+    collection: SRD 69
+    record_id: C7803625
+    citation: NIST Chemistry WebBook, SRD 69, Silane (molecular structure)
+    url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C7803625
+state:
+  kind: vibrational
+  label: v4=1
+  term: X 1A1
+  existence: confirmed
+  existence_source: Gas-phase infrared lines identify the 28SiH4 v4 fundamental band.
+  status: reviewed
+  method: spectroscopy
+  review_scope: [state_existence]
+  source: &band_source
+    provider: literature
+    collection: Molecules
+    record_id: Kamel2025:Table5:28SiH4:v4
+    citation: R. Kamel et al., Molecules 30, 1992 (2025), Table 5.
+    url: https://doi.org/10.3390/molecules30091992
+properties:
+  excitation_energy_eV:
+    value: 913.46833
+    unit: cm^-1
+    related_state: SiH4@ground
+    source: *band_source
+    method: spectroscopy
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [excitation_energy_eV]
+    uncertainty: {absolute: 0.00011, unit: cm^-1}
+    source_declaration:
+      scope: Order-zero band origin for the 28SiH4 (0001 F2) vibrational state relative to v=0. The principal isotopologue represents nominal SiH4 in this vibrational model. Rotational energies and other isotopologues have separate origins and levels.
+      uncertainty_definition: One standard deviation from the fit to the infrared line positions.

@@ -8,17 +8,23 @@ from pathlib import Path
 from uuid import uuid4
 
 from reactgen import yamlio
-from reactgen.chemistry import parse_state_id, reaction_declaration_matches
+from reactgen.chemistry import declared_state_target, parse_state_id, reaction_declaration_matches
 from reactgen.evidence import (
     EvidenceCatalog,
     dataset_for_reaction,
     parse_equation,
     reaction_record_candidate,
     snapshot_reaction,
-    snapshot_state,
+    snapshot_state_record,
 )
 from reactgen.export import read
-from reactgen.model import EquationKey, ReactionCandidate, Term, side_key
+from reactgen.model import (
+    EquationKey,
+    ReactionCandidate,
+    StateCandidate,
+    Term,
+    bind_transformation_states,
+)
 from reactgen.records import (
     NumericDataset,
     ReactionRecord,
@@ -35,12 +41,13 @@ from reactgen.records import (
     scientific_reaction_content,
     scientific_record_key,
     scientific_state_content,
+    snapshot_content,
     source_information,
     state_record_content,
     state_record_payload,
     validate_numerical_targets,
-    validate_snapshot,
 )
+from reactgen.structure import physical_equation_key, physical_state_id
 
 
 @dataclass
@@ -53,68 +60,54 @@ class Report:
 @dataclass(frozen=True)
 class BundleIndex:
     states: frozenset[str]
-    reactions: frozenset[str]
+    state_spellings: dict[str, tuple[str, ...]]
+    reactions: dict[str, ReactionCandidate]
     equations: dict[EquationKey, tuple[str, ...]]
-    families: dict[str, str]
-    processes: dict[str, str]
-    reaction_equations: dict[str, EquationKey]
-    state_details: dict[str, dict]
-    stabilizations: dict[str, str | None]
 
     @classmethod
     def load(cls, directory: Path) -> BundleIndex:
         document = read(directory)
         states = frozenset(item["id"] for item in document["states"])
+        state_spellings: dict[str, list[str]] = {}
+        for identifier in sorted(states):
+            state_spellings.setdefault(physical_state_id(identifier), []).append(identifier)
         equations: dict[EquationKey, list[str]] = {}
-        reaction_ids = set()
-        families = {}
-        processes = {}
-        reaction_equations = {}
+        reactions = {}
         for item in document["reactions"]:
-            reaction_id_ = str(item["id"])
-            reaction_ids.add(reaction_id_)
-            families[reaction_id_] = str(item["family"])
-            processes[reaction_id_] = str(item["process"])
-            key: EquationKey = (
+            candidate = ReactionCandidate(
+                str(item["id"]),
+                _terms(item["reactants"]),
+                _terms(item["products"]),
+                str(item["family"]),
+                str(item["process"]),
+                "attested_only",
+                "ingest target reference",
+                0,
                 item.get("third_body"),
                 item.get("surface"),
-                _terms(item.get("reactants") or []),
-                _terms(item.get("products") or []),
+                stabilization=item.get("stabilization"),
             )
-            equations.setdefault(key, []).append(reaction_id_)
-            reaction_equations[reaction_id_] = key
+            reactions[candidate.id] = candidate
+            equations.setdefault(physical_equation_key(candidate.equation_key), []).append(
+                candidate.id
+            )
         return cls(
             states,
-            frozenset(reaction_ids),
+            {key: tuple(ids) for key, ids in state_spellings.items()},
+            reactions,
             {key: tuple(sorted(ids)) for key, ids in equations.items()},
-            families,
-            processes,
-            reaction_equations,
-            {item["id"]: item for item in document["states"]},
-            {item["id"]: item.get("stabilization") for item in document["reactions"]},
         )
 
     def state(self, written: str) -> str | None:
         if written in self.states:
             return written
         candidate = parse_state_id(written)
-        return candidate.id if candidate is not None and candidate.id in self.states else None
-
-    def reaction(self, identifier: str) -> ReactionCandidate:
-        third_body, surface, reactants, products = self.reaction_equations[identifier]
-        return ReactionCandidate(
-            identifier,
-            tuple(Term(*term) for term in reactants),
-            tuple(Term(*term) for term in products),
-            self.families[identifier],
-            self.processes[identifier],
-            "attested_only",
-            "ingest target reference",
-            0,
-            third_body,
-            surface,
-            stabilization=self.stabilizations[identifier],
-        )
+        if candidate is None:
+            return None
+        if candidate.id in self.states:
+            return candidate.id
+        matched = self.state_spellings.get(physical_state_id(candidate.id), ())
+        return matched[0] if len(matched) == 1 else None
 
 
 def ingest(
@@ -122,24 +115,17 @@ def ingest(
     bundle_path: Path,
     overlay_path: Path,
 ) -> Report:
-    snapshot = validate_snapshot(yamlio.load(snapshot_path.read_text(encoding="utf-8")))
+    records, source, kind = snapshot_content(yamlio.load(snapshot_path.read_text(encoding="utf-8")))
     bundle = BundleIndex.load(bundle_path)
     overlay = _read(overlay_path, bundle)
     report = Report()
-    source_data = snapshot.get("source") or {}
-    if not isinstance(source_data, dict):
-        raise ValueError("snapshot.source must be a mapping")
-    source = source_data
-    kind = snapshot.get("kind", "rate_coefficient")
     queue_path = overlay_path.with_name("review_queue.yaml")
     if overlay_path.resolve() == queue_path.resolve():
         raise ValueError("overlay path must differ from its reserved review_queue.yaml")
     prior_queue = _read_queue(queue_path)
     accepted = []
 
-    for index, record in enumerate(snapshot.get("records") or []):
-        if not isinstance(record, dict):
-            raise ValueError(f"snapshot record {index} must be a mapping")
+    for index, record in enumerate(records):
         prior_accepted = report.accepted
         if record.get("species"):
             _state_record(record, index, bundle, overlay, source, report)
@@ -176,30 +162,44 @@ def _state_record(
     source: dict,
     report: Report,
 ) -> None:
-    target = bundle.state(str(record["species"]))
-    if target is None:
+    written = str(record["species"])
+    try:
+        declared = declared_state_target(written, record)
+    except ValueError:
+        target = bundle.state(written)
+        targets = (target,) if target is not None else ()
+        report.review.append(
+            _queued(record, index, targets, "state", "physical state declaration mismatch")
+        )
+        return
+    if declared is None:
         report.review.append(_queued(record, index, (), "state", "no match"))
         return
-    identity = bundle.state_details[target]
-    if record.get("phase") in {None, "unknown"}:
+    if declared.phase == "unknown":
+        related = bundle.state(written)
         report.review.append(
-            _queued(record, index, (target,), "state", "physical phase unspecified")
+            _queued(
+                record, index, (related,) if related else (), "state", "physical phase unspecified"
+            )
         )
         return
-    if any(name in record and record[name] != identity[name] for name in ("phase", "structure")):
+    target = bundle.state(declared.id)
+    if target is None:
+        related = bundle.state(written)
         report.review.append(
-            _queued(record, index, (target,), "state", "physical identity mismatch")
+            _queued(
+                record,
+                index,
+                (related,) if related else (),
+                "state",
+                "physical identity mismatch" if related else "no match",
+            )
         )
         return
-    if "state" in record and (
-        not isinstance(record["state"], dict)
-        or any(identity["state"].get(name) != value for name, value in record["state"].items())
-    ):
-        report.review.append(
-            _queued(record, index, (target,), "state", "physical state declaration mismatch")
-        )
-        return
-    offered = _state_payload(record, source)
+    bound = declared if target == declared.id else parse_state_id(target)
+    if bound is None:
+        raise ValueError(f"bundle state has an invalid target: {target}")
+    offered = _state_payload(record, source, bound)
     if not offered:
         report.review.append(
             _queued(
@@ -228,11 +228,9 @@ def _state_record(
     report.accepted += 1
 
 
-def _state_payload(record: dict, source: dict) -> dict:
+def _state_payload(record: dict, source: dict, target: StateCandidate) -> dict:
     """Normalize one complete scientific declaration without approving it."""
-    normalized = snapshot_state(record, source)
-    if normalized is None:
-        raise ValueError("matched snapshot state cannot be normalized")
+    normalized = snapshot_state_record(record, target, source)
     if (
         not normalized.properties
         and normalized.thermo is None
@@ -260,12 +258,8 @@ def _stage_state_payload(overlay: dict, target: str, offered: dict) -> dict | No
     staged = dict(overlay)
     subjects = dict(staged.get("state_records") or {})
     staged["state_records"] = subjects
-    if not isinstance(subjects, dict):
-        raise ValueError("overlay.state_records must be a mapping")
     held = list(subjects.get(target) or [])
     subjects[target] = held
-    if not isinstance(held, list):
-        raise ValueError(f"overlay.state_records.{target} must be a list")
     existing = [
         item
         for entries in subjects.values()
@@ -324,9 +318,16 @@ def _reaction_record(
         )
         return
     dataset = _snapshot_dataset(record, source, kind, snapshot_path, overlay_path)
+    candidate = bundle.reactions[target]
     if dataset is not None:
-        dataset = dataset_for_reaction(dataset, bundle.reaction(target))
-    claim = _matched_reaction_claim(record, source, target, bundle, dataset)
+        if not reaction_declaration_matches(dataset.declared_target, candidate):
+            # The matched target equation is the overlay reference; the author's
+            # spelling remains in the dataset's original source declaration.
+            dataset = replace(
+                dataset, declared_target=dataset.declared_target | {"reaction": candidate.equation}
+            )
+        dataset = dataset_for_reaction(dataset, candidate)
+    claim = _matched_reaction_claim(record, source, candidate, dataset)
     if reaction_record_candidate(claim).id != target:
         report.review.append(
             _queued(
@@ -372,33 +373,42 @@ def _snapshot_dataset(
 def _matched_reaction_claim(
     record: dict,
     source: dict,
-    target: str,
-    bundle: BundleIndex,
+    target: ReactionCandidate,
     dataset: NumericDataset | None,
 ) -> ReactionRecord:
     quantities = (dataset,) if dataset is not None else ()
     claim = snapshot_reaction(record, source, datasets=quantities)
-    if claim is not None:
+    if claim is not None and claim.equation_key == target.equation_key:
         return claim
     # The explicit bundle ID is a physical target reference. Keep the original
     # declaration separately from the physical context supplied by that reference.
-    equation = bundle.reaction_equations[target]
+    equation = target.equation_key
     states = tuple(
         parse_state_id(identifier)
         for identifier in sorted({term[0] for side in equation[2:] for term in side})
     )
     if any(state is None for state in states):
-        raise ValueError(f"bundle reaction has an invalid state target: {target}")
+        raise ValueError(f"bundle reaction has an invalid state target: {target.id}")
+    bound = tuple(state for state in states if state is not None)
+    if claim is not None:
+        by_physical_id = {physical_state_id(state.id): state.id for state in bound}
+        aliases = {state.id: by_physical_id[physical_state_id(state.id)] for state in claim.states}
+        return replace(
+            claim,
+            equation_key=equation,
+            states=bound,
+            transformation=bind_transformation_states(claim.transformation, aliases),
+        )
     return normalized_reaction_record(
         record
         | {
-            "type": record.get("type") or bundle.processes[target],
-            "family": record.get("family") or bundle.families[target],
-            "stabilization": bundle.stabilizations[target],
+            "type": record.get("type") or target.process,
+            "family": record.get("family") or target.family,
+            "stabilization": target.stabilization,
             "source_declaration": source_information(record, source)[1],
         },
         equation,
-        tuple(state for state in states if state is not None),
+        bound,
         source,
         datasets=quantities,
     )
@@ -444,12 +454,8 @@ def _stage_reaction_payload(
     declaration = reaction_record_payload(claim)
     subjects = dict(staged.get("reaction_records") or {})
     staged["reaction_records"] = subjects
-    if not isinstance(subjects, dict):
-        raise ValueError("overlay.reaction_records must be a mapping")
     claims = list(subjects.get(target) or [])
     subjects[target] = claims
-    if not isinstance(claims, list):
-        raise ValueError(f"overlay.reaction_records.{target} must be a list")
     previous = [
         item
         for entries in subjects.values()
@@ -469,10 +475,8 @@ def _stage_reaction_payload(
     return staged, ""
 
 
-def _terms(records: list[dict]) -> tuple[tuple[str, float], ...]:
-    return side_key(
-        tuple(Term(str(item["species"]), float(item.get("n", 1.0))) for item in records)
-    )
+def _terms(records: list[dict]) -> tuple[Term, ...]:
+    return tuple(Term(str(item["species"]), float(item.get("n", 1.0))) for item in records)
 
 
 def _explicit_target(record: dict, bundle: BundleIndex) -> tuple[str, ...]:
@@ -482,7 +486,7 @@ def _explicit_target(record: dict, bundle: BundleIndex) -> tuple[str, ...]:
 
 def _equation_targets(record: dict, bundle: BundleIndex) -> tuple[str, ...]:
     parsed = parse_equation(str(record.get("reaction") or ""))
-    targets = () if parsed is None else bundle.equations.get(parsed[0], ())
+    targets = () if parsed is None else bundle.equations.get(physical_equation_key(parsed[0]), ())
     return tuple(
         target
         for target in targets
@@ -493,14 +497,15 @@ def _equation_targets(record: dict, bundle: BundleIndex) -> tuple[str, ...]:
 def _matches_declared_channel(record: dict, *, target: str, bundle: BundleIndex) -> bool:
     if record.get("reaction_target") not in {None, target}:
         return False
+    candidate = bundle.reactions[target]
     if not reaction_declaration_matches(
-        dataset_target_declaration(record), bundle.reaction(target)
+        dataset_target_declaration(record), candidate, comparison=physical_equation_key
     ):
         return False
     stabilization = record.get("stabilization")
-    if stabilization is None and bundle.processes[target] in {"attachment", "recombination"}:
+    if stabilization is None and candidate.process in {"attachment", "recombination"}:
         stabilization = "unspecified"
-    return stabilization == bundle.stabilizations[target]
+    return stabilization == candidate.stabilization
 
 
 def _queued(
@@ -523,14 +528,16 @@ def _queued(
 def _read(path: Path, bundle: BundleIndex) -> dict:
     if not path.is_file():
         return {}
-    document = yamlio.load(path.read_text(encoding="utf-8")) or {}
+    document = yamlio.load(path.read_text(encoding="utf-8"))
+    if document is None:
+        document = {}
     if not isinstance(document, dict):
         raise ValueError("overlay must be a mapping")
-    catalog = EvidenceCatalog.load(None, overlay=path)
+    catalog = EvidenceCatalog.from_overlay(document, path.parent)
     for identifier, datasets in catalog.overlay_datasets.items():
         if identifier in bundle.reactions:
             for dataset in datasets:
-                dataset_for_reaction(dataset, bundle.reaction(identifier))
+                dataset_for_reaction(dataset, bundle.reactions[identifier])
     return document
 
 

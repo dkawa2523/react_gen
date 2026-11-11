@@ -68,3 +68,13 @@ def load(stream: str | bytes | TextIO) -> Any:
 def dump(data: Any, **options: Any) -> str:
     """Serialize ordinary data using the available safe emitter."""
     return yaml.dump(data, Dumper=SafeDumper, **options)
+
+
+def mapping(value: object, name: str, allowed: set[str]) -> dict:
+    """Validate the fields of a declared input section."""
+    if not isinstance(value, dict):
+        raise ValueError(f"{name} must be a mapping")
+    unexpected = set(value) - allowed
+    if unexpected:
+        raise ValueError(f"{name}: unsupported fields: {', '.join(sorted(map(str, unexpected)))}")
+    return value

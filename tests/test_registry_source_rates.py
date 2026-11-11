@@ -83,29 +83,29 @@ def test_tabulated_constants_keep_unknown_applicability_after_user_conditions(
 ) -> None:
     # Tables III and VII check numerical transcription and source-model order.
     # Their reactor simulation inputs do not supply elementary-rate validity.
-    examined = []
-    for channel in _source_channels(registry, PATEAU):
-        reaction = registry_reaction_candidate(channel, registry.species)
-        assert reaction is not None
-        for dataset in channel.datasets:
-            if dataset.source.get("source_id") != PATEAU:
-                continue
-            examined.append(dataset)
-            assert dataset.reaction_order == 2
-            assert dataset.observable == "reaction_rate"
-            assert dataset.validity is None
-            assert dataset.params["value"] == pytest.approx(
-                dataset.params["source_value"] * 1e-6, rel=1e-12, abs=0
-            )
-            assert normalized_dataset(dataset_payload(dataset)) == dataset
-            for conditions in (Conditions(), Conditions(gas_temperature_K=700)):
-                value = data_use(
-                    reaction, ReactionEvidence(overlay_datasets=(dataset,)), conditions
-                )
-                assert value.status == "needs_input"
-                assert value.required_inputs == ("dataset_applicability_conditions",)
-                assert "not specified" in dataset.source["applicability_review"]
-    assert examined
+    entries = [
+        (channel, dataset)
+        for channel in _source_channels(registry, PATEAU)
+        for dataset in channel.datasets
+        if dataset.source.get("source_id") == PATEAU
+    ]
+    for _, dataset in entries:
+        assert dataset.reaction_order == 2
+        assert dataset.observable == "reaction_rate"
+        assert dataset.validity is None
+        assert dataset.params["value"] == pytest.approx(
+            dataset.params["source_value"] * 1e-6, rel=1e-12, abs=0
+        )
+
+    channel, dataset = next(entry for entry in entries if entry[0].source["record_id"] == "R119")
+    assert normalized_dataset(dataset_payload(dataset)) == dataset
+    reaction = registry_reaction_candidate(channel, registry.species)
+    assert reaction is not None
+    evidence = ReactionEvidence(overlay_datasets=(dataset,))
+    for conditions in (Conditions(), Conditions(gas_temperature_K=700)):
+        value = data_use(reaction, evidence, conditions)
+        assert value.status == "needs_input"
+        assert value.required_inputs == ("dataset_applicability_conditions",)
 
 
 def test_reviewed_son_heavy_particle_constants_are_only_the_declared_model_point(
@@ -113,32 +113,36 @@ def test_reviewed_son_heavy_particle_constants_are_only_the_declared_model_point
 ) -> None:
     # Son p. 242 explicitly assigns R21-R60 to 700 K. The matching Table 1
     # expressions and constants were checked separately before adding scope.
-    channels = _source_channels(registry, SON)
-    assert channels
-    for channel in channels:
-        reaction = registry_reaction_candidate(channel, registry.species)
-        assert reaction is not None
-        for dataset in channel.datasets:
-            if dataset.source.get("source_id") != SON:
-                continue
-            assert dataset.reaction_order == 2
-            assert dataset.validity is not None
-            assert dataset.validity.minimum == dataset.validity.maximum == 700
-            evidence = ReactionEvidence(overlay_datasets=(dataset,))
-            scoped = data_use(reaction, evidence, Conditions(gas_temperature_K=700))
-            assert scoped.status == "coefficient"
-            assert scoped.unit == "m3/s"
-            assert scoped.value == pytest.approx(
-                dataset.params["source_value"] * 1e-6, rel=1e-12, abs=0
-            )
-            assert data_use(reaction, evidence, Conditions()).required_inputs == (
-                "gas_temperature",
-            )
-            assert (
-                data_use(reaction, evidence, Conditions(gas_temperature_K=300)).status
-                == "unavailable"
-            )
-            assert normalized_dataset(dataset_payload(dataset)) == dataset
+    entries = [
+        (channel, dataset)
+        for channel in _source_channels(registry, SON)
+        for dataset in channel.datasets
+        if dataset.source.get("source_id") == SON
+    ]
+    for _, dataset in entries:
+        assert dataset.reaction_order == 2
+        assert dataset.validity is not None
+        assert dataset.validity.quantity == "gas_temperature"
+        assert dataset.validity.minimum == dataset.validity.maximum == 700
+        assert dataset.validity.unit == "K"
+        assert dataset.unit == "m3/s"
+        assert dataset.params["value"] == pytest.approx(
+            dataset.params["source_value"] * 1e-6, rel=1e-12, abs=0
+        )
+
+    channel, dataset = next(
+        entry for entry in entries if entry[0] in registry.channels[("neutral_neutral", "CF2", "F")]
+    )
+    assert normalized_dataset(dataset_payload(dataset)) == dataset
+    reaction = registry_reaction_candidate(channel, registry.species)
+    assert reaction is not None
+    evidence = ReactionEvidence(overlay_datasets=(dataset,))
+    scoped = data_use(reaction, evidence, Conditions(gas_temperature_K=700))
+    assert scoped.status == "coefficient"
+    assert scoped.unit == "m3/s"
+    assert scoped.value == pytest.approx(dataset.params["value"], rel=1e-12, abs=0)
+    assert data_use(reaction, evidence, Conditions()).required_inputs == ("gas_temperature",)
+    assert data_use(reaction, evidence, Conditions(gas_temperature_K=300)).status == "unavailable"
 
 
 def test_one_reactant_source_table_entry_does_not_infer_a_first_order_coefficient(

@@ -8,11 +8,11 @@ from pathlib import Path
 import pytest
 import yaml
 
-from acquire import lxcat, snapshot
+from acquire import lxcat
 from acquire.cli import main
 from reactgen import export as bundle_export
 from reactgen import ingest
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.evidence import EvidenceCatalog
 from reactgen.pipeline import analyze
 
@@ -58,46 +58,38 @@ def test_every_process_block_is_parsed(export):
     assert [item.kind for item in processes] == ["ELASTIC", "IONIZATION"]
     assert processes[0].equation == "E + Ar -> E + Ar"
     assert processes[0].table == [(0.0, 7.5e-20), (10.0, 7.7e-20)]
-
-
-def test_threshold_comes_from_the_param_line(export):
-    ionization = lxcat.parse(export)[1]
+    ionization = processes[1]
     assert ionization.threshold_eV == pytest.approx(15.7596)
     assert ionization.target == "Ar"
 
 
-def test_a_block_without_a_table_is_an_input_error(tmp_path):
-    path = tmp_path / "empty.txt"
-    path.write_text("ELASTIC\nAr\nPROCESS: E + Ar -> E + Ar, Elastic\n", encoding="utf-8")
-    with pytest.raises(ValueError, match="process block has no table"):
-        lxcat.parse(path)
+@pytest.mark.parametrize(
+    ("kind", "equation", "expected"),
+    [
+        ("IONIZATION", "e + F2 -> 2 e + F+ + F", "dissociative_ionization"),
+        ("ATTACHMENT", "e + F2 -> F- + F", "dissociative_attachment"),
+        ("EXCITATION", "e + F2 -> e + 2 F", "dissociation"),
+        ("IONIZATION", "e + Ar -> 2 e + Ar+", "ionization"),
+    ],
+)
+def test_lxcat_products_refine_only_product_resolved_processes(kind, equation, expected):
+    assert lxcat.process_type(kind, equation, scope="product_resolved") == expected
+    assert lxcat.process_type(kind, equation, scope="total") == lxcat.process_type(kind)
 
 
-def test_converted_export_matches_registered_reactions(export, tmp_path):
-    assert main(["lxcat", str(export), "--out", str(tmp_path / "work")]) == 0
-
-    document = yaml.safe_load((tmp_path / "work" / "snapshot.yaml").read_text(encoding="utf-8"))
+def test_converted_export_matches_registered_reactions_and_keeps_relative_assets(export, tmp_path):
+    work = tmp_path / "work"
+    assert main(["lxcat", str(export), "--out", str(work)]) == 0
+    document = yaml.safe_load((work / "snapshot.yaml").read_text(encoding="utf-8"))
     assert document["kind"] == "cross_section"
     assert len(document["records"]) == 2
 
     catalog = EvidenceCatalog.load(FIXTURE)
-    generated = analyze(Case("argon", ("Ar",)), catalog)
+    case = Case("argon", ("Ar",), supplies=("e",), limits=Limits(max_atoms=1, max_depth=1))
+    generated = analyze(case, catalog)
     bundle_export.write(tmp_path / "bundle", generated)
-    report = ingest.ingest(
-        tmp_path / "work" / "snapshot.yaml",
-        tmp_path / "bundle",
-        tmp_path / "work" / "overlay.yaml",
-    )
+    report = ingest.ingest(work / "snapshot.yaml", tmp_path / "bundle", work / "overlay.yaml")
     assert report.accepted == 2
-
-
-def test_overlay_assets_resolve_against_the_overlay(export, tmp_path):
-    work = tmp_path / "work"
-    main(["lxcat", str(export), "--out", str(work)])
-    catalog = EvidenceCatalog.load(FIXTURE)
-    generated = analyze(Case("argon", ("Ar",)), catalog)
-    bundle_export.write(work / "bundle", generated)
-    ingest.ingest(work / "snapshot.yaml", work / "bundle", work / "overlay.yaml")
 
     overlay = yaml.safe_load((work / "overlay.yaml").read_text(encoding="utf-8"))
     datasets = [item for group in overlay["datasets"].values() for item in group]
@@ -107,13 +99,6 @@ def test_overlay_assets_resolve_against_the_overlay(export, tmp_path):
     with asset.open(encoding="utf-8", newline="") as stream:
         table = list(csv.reader(stream))[1:]
     assert (15.7596, 0.0) in [tuple(map(float, row)) for row in table]
-
-
-def test_table_asset_is_written_next_to_the_snapshot(tmp_path):
-    relative = snapshot.write_table(tmp_path, "demo", [(1.0, 2.0)], "energy_eV,cross_section_m2")
-    assert relative == "assets/demo.csv"
-    with (tmp_path / relative).open(encoding="utf-8", newline="") as stream:
-        assert list(csv.reader(stream)) == [["energy_eV", "cross_section_m2"], ["1.0", "2.0"]]
 
 
 # --------------------------------------------------------------------------- umist
@@ -210,9 +195,9 @@ def test_thermo_is_optional_and_says_so_when_absent(monkeypatch):
 def test_enthalpy_is_converted_to_eV_per_molecule():
     from acquire import thermo
 
+    pytest.importorskip("chemicals")
     found = thermo.fetch(["CF4"])
-    if not found[0].known:
-        pytest.skip("chemicals is not installed")
+    assert found[0].known
     # -933.38 kJ/mol for CF4; the registry records eV per molecule.
     assert found[0].enthalpy_eV == pytest.approx(-933380.0 / 96485.33212, rel=1e-6)
 
@@ -220,9 +205,9 @@ def test_enthalpy_is_converted_to_eV_per_molecule():
 def test_records_carry_the_source_and_the_cas():
     from acquire import thermo
 
+    pytest.importorskip("chemicals")
     found = thermo.fetch(["CF4"])
-    if not found[0].known:
-        pytest.skip("chemicals is not installed")
+    assert found[0].known
     written = thermo.records(found, "chemicals")
     assert {item["property"] for item in written} == {"enthalpy_formation_eV", "entropy_J_mol_K"}
     assert found[0].cas in written[0]["source"]["citation"]
@@ -258,8 +243,7 @@ def test_a_fuzzy_name_match_is_refused(monkeypatch):
 
     from acquire import thermo
 
-    if not thermo.available():
-        pytest.skip("chemicals is not installed")
+    pytest.importorskip("chemicals")
     found = thermo.fetch(["CF"], {"CF": {"C": 1, "F": 1}})[0]
     assert not found.known
     assert "different compound" in (found.error or "")
@@ -268,8 +252,7 @@ def test_a_fuzzy_name_match_is_refused(monkeypatch):
 def test_a_correct_match_still_passes():
     from acquire import thermo
 
-    if not thermo.available():
-        pytest.skip("chemicals is not installed")
+    pytest.importorskip("chemicals")
     found = thermo.fetch(["CF4"], {"CF4": {"C": 1, "F": 4}})[0]
     assert found.known
     assert found.formula == "CF4"
@@ -318,8 +301,7 @@ def test_pyromat_supplies_a_radical_the_compilations_lack():
 
     from acquire import ideal_gas
 
-    if not ideal_gas.available():
-        pytest.skip("pyromat is not installed")
+    pytest.importorskip("pyromat")
     found = ideal_gas.fetch(["CF"], {"CF": {"C": 1, "F": 1}})[0]
     assert found.known
     assert found.enthalpy_eV == pytest.approx(2.65, abs=0.1)
@@ -328,8 +310,7 @@ def test_pyromat_supplies_a_radical_the_compilations_lack():
 def test_a_composition_mismatch_is_refused():
     from acquire import ideal_gas
 
-    if not ideal_gas.available():
-        pytest.skip("pyromat is not installed")
+    pytest.importorskip("pyromat")
     found = ideal_gas.fetch(["CF4"], {"CF4": {"C": 1, "F": 3}})[0]
     assert not found.known
     assert "composition" in (found.error or "")
@@ -338,8 +319,7 @@ def test_a_composition_mismatch_is_refused():
 def test_an_unknown_species_reports_rather_than_raises():
     from acquire import ideal_gas
 
-    if not ideal_gas.available():
-        pytest.skip("pyromat is not installed")
+    pytest.importorskip("pyromat")
     assert not ideal_gas.fetch(["SOF3"])[0].known
 
 
@@ -402,8 +382,7 @@ def test_a_diatomic_quantum_comes_back_near_its_measured_one():
 
     from acquire import vibration
 
-    if not vibration.available():
-        pytest.skip("chemicals is not installed")
+    pytest.importorskip("chemicals")
     found = {
         item.species: item
         for item in vibration.fetch(
@@ -423,8 +402,7 @@ def test_a_polyatomic_is_divided_by_its_mode_count():
 
     from acquire import vibration
 
-    if not vibration.available():
-        pytest.skip("chemicals is not installed")
+    pytest.importorskip("chemicals")
     found = vibration.fetch(["CF4"], {"CF4": False}, {"CF4": 5})[0]
     assert found.known
     # Nine modes spanning 0.078 to 0.16 eV; an average sits inside that.
@@ -440,8 +418,7 @@ def test_a_polynomial_is_matched_on_composition_not_name():
 
     from acquire import nasa
 
-    if not nasa.available():
-        pytest.skip("cantera is not installed")
+    pytest.importorskip("cantera")
     found = nasa.fetch([{"id": "Ar", "composition": {"Ar": 1}, "charge": 0}])[0]
     assert found.known
     assert found.listed_as.upper() == "AR"
@@ -455,8 +432,7 @@ def test_charge_is_part_of_the_match():
 
     from acquire import nasa
 
-    if not nasa.available():
-        pytest.skip("cantera is not installed")
+    pytest.importorskip("cantera")
     neutral, cation = nasa.fetch(
         [
             {"id": "Ar", "composition": {"Ar": 1}, "charge": 0},
@@ -471,8 +447,7 @@ def test_charge_is_part_of_the_match():
 def test_gas_atom_is_never_given_a_condensed_polynomial():
     from acquire import nasa
 
-    if not nasa.available():
-        pytest.skip("cantera is not installed")
+    pytest.importorskip("cantera")
     sulfur = nasa.fetch([{"id": "S", "composition": {"S": 1}, "charge": 0}])[0]
     assert sulfur.known
     assert sulfur.origin == "nasa_gas.yaml"
@@ -492,25 +467,10 @@ def test_competing_structures_are_not_chosen_by_source_order(monkeypatch):
         assert "ambiguous" in result.error
 
 
-def test_umist_reads_every_declared_temperature_fit(tmp_path):
-    from acquire import umist
-
-    path = tmp_path / "rate.txt"
-    path.write_text(
-        "1:NN:O:O2:O:O2:::2:1e-12:0:0:10:100:M:A:ref1:2e-12:1:5:100:300:C:B:ref2\n",
-        encoding="utf-8",
-    )
-    rates = umist.parse(path)
-    assert [(rate.t_min, rate.t_max) for rate in rates] == [(10.0, 100.0), (100.0, 300.0)]
-    assert [rate.reference for rate in rates] == ["ref1", "ref2"]
-    assert len({record["source"]["record_id"] for record in umist.records(rates)}) == 2
-
-
 def test_molecular_lookup_rejects_a_formula_alias_for_another_compound():
     from acquire import molecular
 
-    if not molecular.available():
-        pytest.skip("chemicals is not installed")
+    pytest.importorskip("chemicals")
     radical = molecular.fetch(["CF"])[0]
     assert not radical.known
     assert "different compound" in radical.error
@@ -533,8 +493,7 @@ def test_an_excited_state_does_not_inherit_a_ground_nasa_fit():
 
     from acquire import nasa
 
-    if not nasa.available():
-        pytest.skip("cantera is not installed")
+    pytest.importorskip("cantera")
     found = nasa.fetch([{"id": "O@1d2", "composition": {"O": 1}, "charge": 0}])[0]
     assert not found.known
     assert "independent evidence" in found.error
@@ -589,8 +548,7 @@ def test_chemicals_answers_for_a_polar_molecule():
 
     from acquire import molecular
 
-    if not molecular.available():
-        pytest.skip("chemicals is not installed")
+    pytest.importorskip("chemicals")
     found = {item.species: item for item in molecular.fetch(["SO2", "CF4"])}
     assert found["SO2"].dipole_D == pytest.approx(1.63, abs=0.1)
     assert found["CF4"].dipole_D == pytest.approx(0.0, abs=0.01)
@@ -603,8 +561,7 @@ def test_atomic_polarizability_is_read_not_estimated():
 
     from acquire import atoms
 
-    if not atoms.available():
-        pytest.skip("mendeleev is not installed")
+    pytest.importorskip("mendeleev")
     found = {item.symbol: item for item in atoms.fetch(["Ar", "F"])}
     assert found["Ar"].polarizability_A3 == pytest.approx(1.641, abs=0.01)
     assert found["F"].polarizability_A3 == pytest.approx(0.557, abs=0.02)

@@ -130,3 +130,34 @@ thermo:
       t_max: 5000.0
       t_mid: 1000.0
       t_min: 300.0
+records:
+- record_id: ATcT_1.228:1871-24-5*0
+  species: CFO
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 1871-24-5*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=424
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: -176.61
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0.0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        target: FCO (g), fluoroformyl O=[C]F
+        atct_formula: FCO (g)
+        published_uncertainty:
+          absolute: 0.37
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

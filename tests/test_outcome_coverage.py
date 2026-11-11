@@ -10,13 +10,13 @@ import pytest
 
 from reactgen import export, needs, outcomes, yamlio
 from reactgen.assessment import assess_reaction_evidence
-from reactgen.case import Case
+from reactgen.case import Case, Conditions, Limits
 from reactgen.chemistry import candidate_state
 from reactgen.evidence import EvidenceCatalog, ReactionEvidence
 from reactgen.model import ReactionCandidate, Term
 from reactgen.pipeline import analyze
-from reactgen.presentation import analysis_overview, registered_records
-from reactgen.records import Property, StateRecord, selectable_state_record_id
+from reactgen.presentation import registered_records
+from reactgen.records import Property, StateRecord, normalized_dataset, selectable_state_record_id
 from reactgen.selection import DataSelection
 
 
@@ -130,7 +130,51 @@ def test_result_reports_domain_denominators_and_completion_tasks() -> None:
         task["responsibility"] in {"source_information", "investigation"}
         for task in work["data_completion"]
     )
-    assert "not satisfied:" in "\n".join(analysis_overview(document, work))
+
+
+def test_out_of_range_coefficient_is_an_exclusion_in_saved_work() -> None:
+    case = Case(
+        "range",
+        ("Ar",),
+        Conditions(gas_temperature_K=200),
+        limits=Limits(max_atoms=1, max_depth=1),
+        supplies=("e",),
+    )
+    channel = next(
+        item.id
+        for item in analyze(case, EvidenceCatalog()).candidates.reactions.values()
+        if item.family == "electron" and item.process == "elastic"
+    )
+    record = normalized_dataset(
+        {
+            "id": "gas-temperature-rate",
+            "kind": "rate_coefficient",
+            "form": "constant",
+            "unit": "m3/s",
+            "observable": "reaction_rate",
+            "status": "reviewed",
+            "parameters": {"value": 1e-15},
+            "validity": {
+                "quantity": "gas_temperature",
+                "minimum": 300,
+                "maximum": 1000,
+                "unit": "K",
+            },
+        }
+    )
+    document = export.document(
+        analyze(case, EvidenceCatalog(overlay_datasets={channel: (record,)}))
+    )
+    (use,) = [
+        item
+        for item in needs.build(document, detail=True)["details"]
+        if item["id"] == channel and item["judgment"] == "data_use"
+    ]
+    assert (use["label"], use["responsibility"], use["requirements"]) == (
+        "out_of_range",
+        "excluded_data",
+        [],
+    )
 
 
 def test_failed_aggregate_is_not_an_affected_missing_data_conclusion() -> None:

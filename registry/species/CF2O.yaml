@@ -17,6 +17,16 @@ state:
   kind: ground
   label: X
   excitation_energy_eV: 0.0
+  existence: confirmed
+  existence_source: Gas-phase microwave rotational spectra establish the ground carbonyl fluoride structure.
+  status: reviewed
+  source:
+    provider: literature
+    record_id: 10.1016/0022-2852(74)90226-4
+    citation: The microwave spectrum and structure of carbonyl fluoride, J. Mol. Spectrosc. 50, 182–201 (1974)
+    url: https://doi.org/10.1016/0022-2852(74)90226-4
+  method: spectroscopy
+  review_scope: [state_existence]
 metadata:
   status: literature_supported
   notes:
@@ -147,6 +157,36 @@ thermo:
       t_mid: 1000.0
       t_min: 200.0
 records:
+- record_id: ATcT_1.228:353-50-4*0
+  species: CF2O
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 353-50-4*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=153
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: -603.33
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0.0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        target: CF2O (g), carbonyl fluoride O=C(F)F
+        atct_formula: CF2O (g)
+        published_uncertainty:
+          absolute: 0.40
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit
 - record_id: NASA_TM4513_Cantera_3.2.0:COF2
   species: CF2O
   phase: gas

@@ -218,26 +218,6 @@ def deltas(
     return (delta_h, delta_s)
 
 
-def gibbs_energy_eV(
-    reaction: ReactionLike,
-    species: Mapping[str, ThermoEvidence],
-    temperature_K: float,
-) -> float | None:
-    """Delta G of the forward reaction, in eV per event."""
-
-    return thermal_values(reaction, species, temperature_K)[0]
-
-
-def equilibrium_constant(
-    reaction: ReactionLike,
-    species: Mapping[str, ThermoEvidence],
-    temperature_K: float,
-) -> float | None:
-    """Concentration-form equilibrium constant, or None without valid polynomials."""
-
-    return thermal_values(reaction, species, temperature_K)[1]
-
-
 def thermal_values(
     reaction: ReactionLike,
     species: Mapping[str, ThermoEvidence],

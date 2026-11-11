@@ -2,6 +2,14 @@ schema_version: 1
 phase: gas
 id: O2
 display_name: O2
+molecular_identity:
+  smiles: O=O
+  source:
+    provider: NIST
+    collection: SRD 69
+    record_id: C7782447
+    citation: NIST Chemistry WebBook, SRD 69, Oxygen (molecular structure)
+    url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447
 aliases:
 - oxygen
 - molecular oxygen
@@ -55,7 +63,22 @@ properties:
   ionization_energy_eV:
     value: 12.0697
     unit: eV
-    source: NIST Chemistry WebBook SRD 69 evaluated ionization energy
+    definition: adiabatic
+    related_state: O2+@ground
+    source:
+      provider: nist
+      collection: SRD69
+      record_id: C7782447:IE
+      citation: NIST Chemistry WebBook evaluated O2 ionization energy, Tonkyn et al. (1989)
+      url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447&Mask=864
+    method: evaluated
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [ionization_energy_eV]
+    uncertainty: {absolute: 0.0002, unit: eV}
+    source_declaration:
+      original_study: https://doi.org/10.1016/0009-2614(89)85005-5
+      scope: Nominal ground-state O2 X3Sigma_g- to O2+ X2Pi_g, both v=0, using the evaluated adiabatic value.
   electron_affinity_eV:
     value: 0.448
     unit: eV

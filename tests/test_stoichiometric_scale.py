@@ -7,12 +7,12 @@ import pytest
 
 from reactgen import export
 from reactgen.balance import conservation, imbalance
-from reactgen.case import Case
+from reactgen.case import Case, Conditions, Limits
 from reactgen.chemistry import candidate_state, electron_state, parse_equation
 from reactgen.evidence import EvidenceCatalog
 from reactgen.model import Term, side_key
 from reactgen.pipeline import analyze
-from reactgen.records import ReactionRecord, RegistryReaction
+from reactgen.records import Property, ReactionRecord, RegistryReaction
 
 
 @pytest.mark.parametrize("scale", [1.0, 1e-10, 1e-100])
@@ -56,6 +56,72 @@ def test_fractional_atom_multiplication_and_duplicate_terms_share_canonical_arit
     record = RegistryReaction("fractional", "neutral", "dissociation", list(left), list(right))
     assert imbalance(record, states) is None
     assert imbalance(replace(record, products=[*right, Term(atom.id, 1e-20)]), states) is not None
+
+
+def test_labelled_nuclei_distinguish_a_contradiction_from_an_unresolved_inventory() -> None:
+    light = candidate_state({"C": 1}, 0, structure="smiles:[12C]")
+    heavy = candidate_state({"C": 1}, 0, structure="SMILES=[013C:1]")
+    unlabelled = candidate_state({"C": 1}, 0)
+    ion = candidate_state({"C": 1}, 1, structure="smiles:[13C+]")
+    states = {state.id: state for state in (light, heavy, unlabelled, ion)}
+
+    conflict = conservation((Term(heavy.id),), (Term(light.id),), states)
+    assert conflict.elements_conserved
+    assert conflict.isotope_conflicts == ("C",)
+    partial = conservation((Term(heavy.id),), (Term(unlabelled.id),), states)
+    assert partial.isotope_conflicts == ()
+    assert partial.isotope_unresolved == ("C",)
+    coarse_exchange = conservation(
+        (Term(heavy.id), Term(unlabelled.id)),
+        (Term(light.id), Term(unlabelled.id)),
+        states,
+    )
+    assert coarse_exchange.isotope_conflicts == ()
+    assert coarse_exchange.isotope_unresolved == ("C",)
+    matching = conservation((Term(heavy.id),), (Term(ion.id),), states)
+    assert matching.isotope_conflicts == matching.isotope_unresolved == ()
+
+    left = (Term(heavy.id, 0.1), Term(heavy.id, 0.2), Term(unlabelled.id))
+    right = (Term(heavy.id, 0.3), Term(unlabelled.id))
+    unchanged = conservation(left, right, states)
+    assert unchanged.isotope_conflicts == unchanged.isotope_unresolved == ()
+
+
+def test_declared_isotope_change_is_not_a_pathway_producer() -> None:
+    light = candidate_state({"C": 1}, 0, structure="smiles:[12C]")
+    heavy = candidate_state({"C": 1}, 0, structure="smiles:[13C]")
+    parsed = parse_equation(f"{heavy.id} + Ar -> {light.id} + Ar")
+    assert parsed is not None
+    equation, states = parsed
+    record = ReactionRecord(
+        "isotope-mismatch",
+        equation,
+        "neutral",
+        "elastic",
+        states,
+        energy_properties={
+            "delta_e_eV": Property(1, "eV", definition="products_minus_reactants", tier="reviewed")
+        },
+    )
+    case = Case(
+        "isotope mismatch",
+        ("Ar",),
+        supplies=(heavy.id,),
+        limits=Limits(max_depth=1),
+        conditions=Conditions(collision_energy_eV=10, collision_energy_frame="com"),
+    )
+    result = export.document(analyze(case, EvidenceCatalog(reaction_records=(record,))))
+    target = next(
+        row
+        for row in result["reactions"]
+        if {x["species"] for x in row["products"]} == {light.id, "Ar@ground"}
+    )
+    assert target["assessments"]["conservation"]["verdict"] == "fail"
+    assert "isotope" in target["assessments"]["conservation"]["message"]
+    for mode in ("candidate", "conditioned"):
+        pathway = result["pathways"][mode]
+        assert target["id"] in pathway["excluded"]
+        assert target["id"] not in pathway["producer_ids"].get(light.id, ())
 
 
 def test_fractional_source_equation_retains_identity_through_result_storage(tmp_path: Path) -> None:

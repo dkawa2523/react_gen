@@ -62,3 +62,36 @@ thermo:
   t_max: 6000.0
   t_mid: 1000.0
   t_min: 298.15
+records:
+- record_id: ATcT_1.228:14701-13-4*0
+  species: F+
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 14701-13-4*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=1238
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 1758.332
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference:
+        temperature_K: 0.0
+        basis: standard_elements
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope:
+      - enthalpy_formation_eV
+      source_declaration:
+        atct_formula: F+ (g)
+        published_uncertainty:
+          absolute: 0.026
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

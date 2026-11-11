@@ -1,13 +1,15 @@
 """Small, deterministic chemistry grammar used by candidate generation.
 
-The functions in this module know formulas, bounded bond breaking and a simple
-valence ceiling.  They intentionally know nothing about Registry records,
-thermochemistry or kinetics.
+The functions in this module know formulas and finite inventory partitions.
+They do not infer a molecular structure, reactivity or valence from a formula,
+and know nothing about Registry records, thermochemistry or kinetics.
 """
 
 from __future__ import annotations
 
 import re
+from collections.abc import Callable, Iterable, Iterator
+from itertools import product
 from urllib.parse import quote, unquote
 
 from reactgen import naming
@@ -85,121 +87,9 @@ def _parse_equation_side(
 
 
 NOBLE_GASES = frozenset({"He", "Ne", "Ar", "Kr", "Xe"})
-DIATOMIC_ELEMENTS = frozenset({"H", "N", "O", "F", "Cl", "Br", "I"})
 LIGANDS = frozenset({"H", "F", "Cl", "Br", "I"})
 TERMINAL_ELEMENTS = LIGANDS | {"O"}
-TERMINAL_BOND_ORDER = dict.fromkeys(LIGANDS, 1) | {"O": 2}
 
-# Generation needs electron parity, not a path-dependent ``radical`` label.
-# This compact periodic order covers every element accepted by naming.py.
-PERIODIC_ORDER = (
-    "H",
-    "He",
-    "Li",
-    "Be",
-    "B",
-    "C",
-    "N",
-    "O",
-    "F",
-    "Ne",
-    "Na",
-    "Mg",
-    "Al",
-    "Si",
-    "P",
-    "S",
-    "Cl",
-    "Ar",
-    "K",
-    "Ca",
-    "Sc",
-    "Ti",
-    "V",
-    "Cr",
-    "Mn",
-    "Fe",
-    "Co",
-    "Ni",
-    "Cu",
-    "Zn",
-    "Ga",
-    "Ge",
-    "As",
-    "Se",
-    "Br",
-    "Kr",
-    "Rb",
-    "Sr",
-    "Y",
-    "Zr",
-    "Nb",
-    "Mo",
-    "Tc",
-    "Ru",
-    "Rh",
-    "Pd",
-    "Ag",
-    "Cd",
-    "In",
-    "Sn",
-    "Sb",
-    "Te",
-    "I",
-    "Xe",
-    "Cs",
-    "Ba",
-    "La",
-    "Ce",
-    "Pr",
-    "Nd",
-    "Pm",
-    "Sm",
-    "Eu",
-    "Gd",
-    "Tb",
-    "Dy",
-    "Ho",
-    "Er",
-    "Tm",
-    "Yb",
-    "Lu",
-    "Hf",
-    "Ta",
-    "W",
-    "Re",
-    "Os",
-    "Ir",
-    "Pt",
-    "Au",
-    "Hg",
-    "Tl",
-    "Pb",
-    "Bi",
-)
-ATOMIC_NUMBER = {element: number for number, element in enumerate(PERIODIC_ORDER, 1)}
-
-VALENCE = {
-    "H": 1,
-    "F": 1,
-    "Cl": 1,
-    "Br": 1,
-    "I": 1,
-    "O": 2,
-    "S": 6,
-    "Se": 2,
-    "N": 3,
-    "P": 5,
-    "B": 3,
-    "C": 4,
-    "Si": 4,
-    "Ge": 4,
-    "He": 0,
-    "Ne": 0,
-    "Ar": 0,
-    "Kr": 0,
-    "Xe": 0,
-}
 
 ELECTRONEGATIVITY = {
     "Cu": 1.90,
@@ -476,84 +366,6 @@ def _central_ligand_pair(composition: Composition) -> tuple[str, str] | None:
     return (centres[0], ligand) if ligand in TERMINAL_ELEMENTS else None
 
 
-def neutral_reactive_candidate(composition: Composition) -> bool:
-    """Formula-level reactivity used to expand neutral collision candidates.
-
-    This is deliberately not a spin-state claim. Odd electron count, a
-    non-noble atom, or unused valence in an unambiguous AXn formula is enough to
-    keep a species such as CF2 or SiH2 active in the mechanical frontier. More
-    detailed electronic-state and kinetic questions remain evidence judgements.
-    """
-
-    if is_atom(composition):
-        return not is_noble(composition)
-    count = electron_count(composition)
-    if count is not None and count % 2:
-        return True
-    pair = _central_ligand_pair(composition)
-    if pair is None:
-        return False
-    centre, ligand = pair
-    capacity = VALENCE.get(centre)
-    occupied = composition[ligand] * TERMINAL_BOND_ORDER[ligand]
-    return capacity is not None and occupied < capacity
-
-
-def is_noble_ligand_complex(composition: Composition) -> bool:
-    """Whether a diatomic composition is meaningful only as a charged complex."""
-
-    return (
-        sum(composition.values()) == 2
-        and len(composition) == 2
-        and any(element in NOBLE_GASES for element in composition)
-        and any(element in LIGANDS for element in composition)
-    )
-
-
-def electron_count(composition: Composition, charge: int = 0) -> int | None:
-    if any(element not in ATOMIC_NUMBER for element in composition):
-        return None
-    return sum(ATOMIC_NUMBER[element] * count for element, count in composition.items()) - charge
-
-
-def bond_splits(
-    composition: Composition,
-    max_leaving: int = 2,
-) -> list[tuple[Composition, Composition]]:
-    """Bounded ligand loss from a molecular formula."""
-
-    kind = formula_scope(composition)
-    if kind == "atom" or kind == "formula_only":
-        return []
-    if kind == "diatomic":
-        elements = list(composition)
-        if len(elements) == 1:
-            element = elements[0]
-            return [({element: 1}, {element: 1})]
-        leaving = max(elements, key=lambda item: ELECTRONEGATIVITY.get(item, 2.0))
-        heavy_element = next(item for item in elements if item != leaving)
-        return [({heavy_element: 1}, {leaving: 1})]
-    ligand = _central_ligand(composition)
-    if ligand is None:
-        return []
-    found = []
-    for count in range(1, min(max_leaving, composition[ligand]) + 1):
-        core = {**composition, ligand: composition[ligand] - count}
-        core = {element: number for element, number in core.items() if number}
-        if core:
-            found.append((core, {ligand: count}))
-    return found
-
-
-def leaving_products(composition: Composition) -> list[Composition]:
-    """A two-atom leaving group may be a real homonuclear molecule."""
-
-    ((element, count),) = composition.items()
-    if count == 2 and element in DIATOMIC_ELEMENTS:
-        return [dict(composition)]
-    return [{element: 1} for _ in range(count)]
-
-
 def merge(left: Composition, right: Composition) -> Composition:
     merged = dict(left)
     for element, count in right.items():
@@ -561,82 +373,73 @@ def merge(left: Composition, right: Composition) -> Composition:
     return {element: count for element, count in merged.items() if count}
 
 
-def plausible(composition: Composition, *, charged_noble: bool = False) -> bool:
-    """A small valence ceiling; unknown central elements are not guessed."""
-
-    if charged_noble and sum(composition.values()) == 2:
-        noble = [element for element in composition if element in NOBLE_GASES]
-        ligand = [element for element in composition if element not in NOBLE_GASES]
-        if len(noble) == len(ligand) == 1 and ligand[0] in LIGANDS:
-            return True
-    if any(element in NOBLE_GASES for element in composition) and sum(composition.values()) > 1:
-        return False
-    if len(composition) == 1:
-        return sum(composition.values()) <= 2
-    ligands = sum(count for element, count in composition.items() if element in LIGANDS)
-    skeleton = {element: count for element, count in composition.items() if element not in LIGANDS}
-    if not skeleton:
-        return sum(composition.values()) <= 2
-    if any(element not in VALENCE for element in skeleton):
-        return True
-    centres = sum(skeleton.values())
-    capacity = sum(VALENCE[element] * count for element, count in skeleton.items())
-    capacity -= 2 * (centres - 1)
-    return ligands <= capacity
+def composition_groups(composition: Composition, max_atoms: int) -> Iterator[Composition]:
+    """Enumerate bounded nonempty inventory groups, without asserting a bond."""
+    elements = sorted(composition)
+    for counts in product(*(range(composition[element] + 1) for element in elements)):
+        if 0 < sum(counts) <= max_atoms:
+            yield {
+                element: count for element, count in zip(elements, counts, strict=False) if count
+            }
 
 
-def ligand_transfers(
-    donor: Composition,
-    acceptor: Composition,
-    *,
-    charged_acceptor: bool = False,
-) -> list[tuple[Composition, Composition]]:
-    """Move one ligand from donor to acceptor without association or growth."""
-
-    if (is_noble(acceptor) and not charged_acceptor) or formula_scope(donor) == "formula_only":
-        return []
-    products = []
-    largest_reactant = max(sum(donor.values()), sum(acceptor.values()))
-    for remainder, leaving in bond_splits(donor, 1):
-        moved = merge(acceptor, leaving)
-        swapped = remainder == acceptor and moved == donor
-        if (
-            not swapped
-            and sum(moved.values()) <= largest_reactant
-            and plausible(remainder)
-            and plausible(moved, charged_noble=charged_acceptor)
-        ):
-            products.append((remainder, moved))
-    return products
+def subtract(composition: Composition, group: Composition) -> Composition:
+    """Subtract a contained inventory; negative counts are an implementation error."""
+    result = dict(composition)
+    for element, count in group.items():
+        if result.get(element, 0) < count:
+            raise ValueError("group is not contained in the parent inventory")
+        result[element] -= count
+    return {element: count for element, count in result.items() if count}
 
 
-def bond_exchanges(
-    left: Composition,
-    right: Composition,
-) -> list[tuple[Composition, Composition]]:
-    """Exchange one bounded leaving group between two collision partners."""
+def composition_partitions(
+    composition: Composition, fragments: int = 2
+) -> Iterator[tuple[Composition, ...]]:
+    """Lazy unordered partitions into nonempty inventories, not bond cleavage.
 
-    products = []
-    left_size = sum(left.values())
-    right_size = sum(right.values())
-    for left_core, left_group in bond_splits(left, 1):
-        for right_core, right_group in bond_splits(right, 1):
-            left_product = merge(left_core, right_group)
-            right_product = merge(right_core, left_group)
-            unchanged = left_product == left and right_product == right
-            if (
-                not unchanged
-                and sum(left_product.values()) <= left_size
-                and sum(right_product.values()) <= right_size
-                and plausible(left_product)
-                and plausible(right_product)
-            ):
-                products.append((left_product, right_product))
-    return products
+    Each element count is distributed directly, so identical atoms do not
+    create factorially many duplicate atom-labelled partitions.
+    """
+    if fragments not in {2, 3}:
+        raise ValueError("the candidate grammar supports two or three fragments")
+    if sum(composition.values()) < fragments:
+        return
+    elements = sorted(composition)
+    buckets: list[Composition] = [{} for _ in range(fragments)]
+
+    def distribute(index: int) -> Iterator[tuple[Composition, ...]]:
+        if index == len(elements):
+            keys = [tuple(sorted(bucket.items())) for bucket in buckets]
+            if all(keys) and keys == sorted(keys):
+                yield tuple(dict(bucket) for bucket in buckets)
+            return
+        element = elements[index]
+        for allocation in _allocations(composition[element], fragments):
+            for bucket, count in zip(buckets, allocation, strict=False):
+                if count:
+                    bucket[element] = count
+                else:
+                    bucket.pop(element, None)
+            yield from distribute(index + 1)
+
+    yield from distribute(0)
+
+
+def _allocations(count: int, buckets: int) -> Iterator[tuple[int, ...]]:
+    if buckets == 1:
+        yield (count,)
+    else:
+        for first in range(count + 1):
+            for rest in _allocations(count - first, buckets - 1):
+                yield (first, *rest)
 
 
 def reaction_declaration_matches(
-    declaration: dict[str, str | None], target: ReactionCandidate
+    declaration: dict[str, str | None],
+    target: ReactionCandidate,
+    *,
+    comparison: Callable[[EquationKey], EquationKey] | None = None,
 ) -> bool:
     """Compare explicit target assertions; never interpret a source's free-text declaration.
 
@@ -650,8 +453,11 @@ def reaction_declaration_matches(
         parsed = parse_equation(written)
         if parsed is None:
             return False
-        equation = parsed[0]
-        if (equation[0], target.surface, equation[2], equation[3]) != target.equation_key:
+        parsed_equation = parsed[0]
+        equation = (parsed_equation[0], target.surface, parsed_equation[2], parsed_equation[3])
+        if equation != target.equation_key and (
+            comparison is None or comparison(equation) != comparison(target.equation_key)
+        ):
             return False
     if (family := declaration.get("family")) and canonical_family(family) != target.family:
         return False
@@ -673,6 +479,21 @@ def reaction_declaration_matches(
         name not in declaration or declaration[name] == getattr(target, name)
         for name in ("third_body", "surface")
     )
+
+
+def electron_partition_process(
+    parent_charge: int, outgoing: float, fragment_charges: Iterable[int]
+) -> str:
+    """Classify a charge-balanced split with one incident and up to two outgoing electrons.
+
+    The positive/negative fragment pair of a neutral parent with one outgoing
+    electron has its own class. IUPAC Orange Book, section 12.3.1.
+    """
+    if outgoing == 0:
+        return "dissociative_recombination" if parent_charge > 0 else "dissociative_attachment"
+    if outgoing == 2:
+        return "dissociative_detachment" if parent_charge < 0 else "dissociative_ionization"
+    return "ion_pair_formation" if parent_charge == 0 and any(fragment_charges) else "dissociation"
 
 
 def reaction_family(equation: EquationKey) -> str:

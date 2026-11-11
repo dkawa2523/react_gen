@@ -1,0 +1,43 @@
+schema_version: 1
+id: Ar+_2P1_2
+display_name: Ar+(2P1/2)
+composition:
+  Ar: 1
+charge: 1
+phase: gas
+classes:
+- positive_ion
+- atom
+- excited
+state:
+  kind: electronic
+  label: 2P1/2
+  configuration: 3s2 3p5
+  term: 2P
+  J: '1/2'
+  parity: odd
+  degeneracy: 2
+  existence: confirmed
+  existence_source: NIST Handbook of Basic Atomic Spectroscopic Data, Ar II level table.
+  status: reviewed
+  method: evaluated
+  review_scope: [state_existence]
+  source: &level_source
+    provider: NIST
+    collection: SRD108
+    release: '1.1.2'
+    citation: Sansonetti, Martin and Young (2005), NIST Basic Atomic Spectroscopic Data, Ar II level table, YKH85.
+    url: https://pml.nist.gov/PhysRefData/Handbook/Tables/argontable6.htm
+properties:
+  excitation_energy_eV:
+    value: 1431.5831
+    unit: cm-1
+    related_state: Ar+@ground
+    source: *level_source
+    evidence_tier: reviewed
+    status: reviewed
+    method: evaluated
+    review_scope: [excitation_energy_eV]
+    uncertainty:
+      absolute: 0.0007
+      unit: cm-1

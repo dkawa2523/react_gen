@@ -4,21 +4,38 @@ root_packages =
     acquire
 include_external_packages = True
 
-[importlinter:contract:reactgen-layers]
-name = generation and assessment dependencies point inward
-type = layers
-layers =
-    reactgen.cli
-    reactgen.adopt | reactgen.derive | reactgen.ingest | reactgen.views | reactgen.needs
-    reactgen.export
+[importlinter:contract:analysis-ownership]
+name = analysis does not depend on presentation or writes
+type = forbidden
+source_modules =
     reactgen.pipeline
+    reactgen.generate
     reactgen.assessment
+forbidden_modules =
+    reactgen.cli
+    reactgen.adopt
+    reactgen.ingest
+    reactgen.export
+    reactgen.views
+    reactgen.needs
+    reactgen.presentation
+
+[importlinter:contract:projection-ownership]
+name = views do not rerun analysis or access evidence storage
+type = forbidden
+source_modules =
+    reactgen.views
+    reactgen.needs
+    reactgen.presentation
+    reactgen.pathway
+forbidden_modules =
+    reactgen.pipeline
+    reactgen.generate
+    reactgen.assessment
+    reactgen.screening
     reactgen.numeric
-    reactgen.evidence | reactgen.generate
-    reactgen.balance | reactgen.case | reactgen.registry | reactgen.thermo | reactgen.presentation
-    reactgen.chemistry
-    reactgen.records | reactgen.outcomes
-    reactgen.naming | reactgen.model | reactgen.units | reactgen.yamlio | reactgen.selection
+    reactgen.evidence
+    reactgen.registry
 
 [importlinter:contract:reactgen-offline]
 name = reactgen never reaches the network or the acquisition tools

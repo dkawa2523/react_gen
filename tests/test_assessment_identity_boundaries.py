@@ -18,10 +18,11 @@ from reactgen.assessment import (
     assess_thermochemistry,
     evaluate,
 )
-from reactgen.case import Conditions
+from reactgen.case import Case, Conditions, Limits, RequestedReaction
 from reactgen.chemistry import candidate_state, electron_state
 from reactgen.evidence import EvidenceCatalog, ReactionEvidence, StateEvidence
 from reactgen.model import Assessment, CandidateSet, ReactionCandidate, StateCandidate, Term
+from reactgen.pipeline import analyze
 from reactgen.records import NumericDataset, Property, ReactionRecord, StateRecord, Thermo, Validity
 from reactgen.selection import DataSelection, QuantitySelection
 
@@ -162,6 +163,84 @@ def test_resonant_identity_needs_no_invented_ionization_energy() -> None:
     reaction = replace(_transfer(ion, donor, donor, ion), process="resonant_charge_exchange")
     _, values = _energy_result(reaction, (donor, ion))
     assert values["charge_transfer_energy_defect_eV"] == 0.0
+
+
+@pytest.mark.parametrize(
+    ("structure", "verdict"),
+    [("smiles:[36Ar]", "pass"), ("smiles:[40Ar]", "fail"), (None, "unknown")],
+)
+def test_resonant_charge_exchange_compares_nuclides_per_particle(structure, verdict) -> None:
+    # The unchanged net isotope inventory alone cannot distinguish these
+    # three cases. Different isotopes are near-resonant systems.
+    # https://doi.org/10.1021/jp905184a
+    ion = candidate_state({"Ar": 1}, 1, structure="smiles:[36Ar+]")
+    neutral = candidate_state({"Ar": 1}, 0, structure=structure)
+    pair = f"{ion.id} + {neutral.id}"
+    hypothesis = RequestedReaction(f"{pair} -> {pair}", "resonant_charge_exchange")
+    case = Case(
+        "Resonant isotope correspondence",
+        ("Ar",),
+        supplies=(ion.id, neutral.id),
+        conditions=Conditions(collision_energy_eV=1, collision_energy_frame="com"),
+        limits=Limits(max_depth=1, max_atoms=1),
+        reactions=(hypothesis,),
+    )
+    result = analyze(case, EvidenceCatalog())
+    reaction = result.candidates.reactions[hypothesis.candidate.id]
+    claims = result.evaluation.reaction_assessments[reaction.id]
+    assert claims["conservation"].verdict == "pass"
+    assert claims["consistency"].verdict == verdict
+    if verdict == "pass":
+        assert not reaction.transformation.get("unresolved_nuclides")
+        assert claims["energy"].verdict == "pass"
+    elif verdict == "fail":
+        assert reaction.origin == "requested"
+    else:
+        assert claims["consistency"].requirements[0].responsibility == "identity"
+
+
+def test_isotope_preserving_nonresonant_charge_transfer_is_still_generated() -> None:
+    lighter = candidate_state({"Ar": 1}, 1, structure="smiles:[36Ar+]")
+    heavier = candidate_state({"Ar": 1}, 0, structure="smiles:[40Ar]")
+    lighter_product = candidate_state({"Ar": 1}, 0, structure="smiles:[36Ar]")
+    heavier_product = candidate_state({"Ar": 1}, 1, structure="smiles:[40Ar+]")
+    equation = f"{lighter.id} + {heavier.id} -> {lighter_product.id} + {heavier_product.id}"
+    hypothesis = RequestedReaction(equation, "charge_exchange")
+    case = Case(
+        "Nonresonant isotope correspondence",
+        ("Ar",),
+        supplies=(lighter.id, heavier.id),
+        limits=Limits(max_depth=1, max_atoms=1),
+        reactions=(hypothesis,),
+    )
+    known_products = tuple(
+        StateRecord(state.id, state) for state in (lighter_product, heavier_product)
+    )
+    result = analyze(case, EvidenceCatalog(state_records=known_products))
+    reaction = result.candidates.reactions[hypothesis.candidate.id]
+    assert reaction.origin == "mechanical"
+    assert result.evaluation.reaction_assessments[reaction.id]["consistency"].verdict == "pass"
+
+
+def test_resonant_molecular_exchange_checks_charge_stripped_graphs() -> None:
+    pytest.importorskip("rdkit.Chem")
+    composition = {"C": 2, "H": 6, "O": 1}
+    ion = candidate_state(composition, 1, structure="smiles:CC[OH+]")
+    for structure, verdict in (("smiles:CCO", "pass"), ("smiles:COC", "fail"), (None, "unknown")):
+        neutral = candidate_state(composition, 0, structure=structure)
+        reaction = replace(
+            _transfer(ion, neutral, neutral, ion), process="resonant_charge_exchange"
+        )
+        states = CandidateSet(states={state.id: state for state in (ion, neutral)})
+        assert assess_consistency(reaction, states).verdict == verdict
+
+
+def test_resonant_molecular_exchange_cannot_be_decided_by_an_opaque_label() -> None:
+    neutral = candidate_state({"C": 2, "H": 6, "O": 1}, 0, structure="unresolved")
+    ion = candidate_state(neutral.composition, 1, structure=neutral.structure)
+    reaction = replace(_transfer(ion, neutral, neutral, ion), process="resonant_charge_exchange")
+    states = CandidateSet(states={state.id: state for state in (ion, neutral)})
+    assert assess_consistency(reaction, states).verdict == "unknown"
 
 
 def test_elastic_energy_identity_is_checked_without_requiring_energy_data() -> None:
@@ -348,8 +427,9 @@ def test_duplicate_nasa_citations_preserve_scientific_values_and_original_record
         availability, relation, values, _ = _thermal_result(reaction, records)
         assert availability.verdict == baseline[0].verdict == "pass"
         assert availability.proposition == "thermochemical_representation_availability"
-        assert relation.verdict == baseline[1].verdict == "unknown"
+        assert relation.verdict == baseline[1].verdict == "not_applicable"
         assert relation.proposition == "reaction_energy_relation"
+        assert not relation.requirements
         assert values == baseline[2]
         assert values["delta_g_eV"] == pytest.approx(0, abs=1e-12)
         assert len(EvidenceCatalog(state_records=records).state_records) == len(records)
@@ -373,7 +453,9 @@ def test_incompatible_nasa_model_domains_remain_conflicts(change: dict) -> None:
     another = replace(molecule, id="other fit", thermo=replace(molecule.thermo, **change))
     for records in ((atom, molecule, another), (another, molecule, atom)):
         availability, relation, values, calculations = _thermal_result(reaction, records)
-        assert availability.verdict == relation.verdict == "unknown"
+        assert availability.verdict == "unknown"
+        assert relation.verdict == "not_applicable"
+        assert not relation.requirements
         assert "conflict" in availability.message
         assert "NASA7" in availability.message
         assert "NASA7" not in relation.message

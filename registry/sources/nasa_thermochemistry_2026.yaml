@@ -181,10 +181,3 @@ scientific_regression:
   tolerance_K: 0.0001
   note: Fit coefficient rounding only; original report R=8.314510 differs from current SI evaluator R=8.314462618.
     No accuracy interval inferred.
-deferred:
-  source_conditions: Pateau and legacy total-process product branching require cited primary conditions;
-    no available physical conditions inferred from a reactor model point.
-  state_populations: Excited/lumped thermo, fine-state populations, lifetimes and state-resolved branching
-    require separate evidence.
-  cross_sections: LXCat redistribution remains source-specific. CollisionDB real records are acquired
-    and converted separately; raw conversion is not scientific approval.

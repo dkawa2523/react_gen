@@ -20,8 +20,8 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Install project and pinned quality tools
-        run: python -m pip install -e ".[quality]"
+      - name: Install project, optional scientific dependencies, and quality tools
+        run: python -m pip install -e ".[quality,structure,thermo]"
 
       - name: Run nightly quality gate
         run: python tools/quality.py quality-nightly

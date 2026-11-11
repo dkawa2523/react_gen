@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import adopt, export, ingest, yamlio
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
 from reactgen.evidence import EvidenceCatalog, ReactionEvidence
 from reactgen.model import ReactionCandidate, Term
 from reactgen.numeric import data_use
@@ -246,7 +246,12 @@ def test_numeric_unit_copies_survive_snapshot_ingest_adopt_and_saved_result(tmp_
             ],
         },
     )
-    case = Case("argon", ("Ar",), Conditions(electron_temperature_eV=350 * EV_PER_K))
+    case = Case(
+        "argon",
+        ("Ar",),
+        Conditions(electron_temperature_eV=350 * EV_PER_K),
+        limits=Limits(max_atoms=1, max_depth=1),
+    )
     export.write(tmp_path / "bundle", analyze(case, EvidenceCatalog.load(root)))
     original, converted = copies()
     overlay = tmp_path / "overlay.yaml"

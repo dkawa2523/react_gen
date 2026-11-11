@@ -1,4 +1,4 @@
-"""Small, reproducible quality entry points used by Make and Nox."""
+"""Quality entry points for local development and CI."""
 
 from __future__ import annotations
 
@@ -15,16 +15,22 @@ class QualityFailure(RuntimeError):
     pass
 
 
-def _run(command: Sequence[str], *, allowed: set[int] | None = None, capture: bool = False) -> None:
+def _run(command: Sequence[str], *, allow_partial: bool = False, capture: bool = False) -> int:
     print("+ " + " ".join(command))
-    result = subprocess.run(list(command), cwd=ROOT, check=False, capture_output=capture, text=True)
-    if result.returncode not in (allowed or {0}):
-        if capture:
-            print(result.stdout, end="")
-            print(result.stderr, end="", file=sys.stderr)
+    result = subprocess.run(
+        list(command), cwd=ROOT, check=False, capture_output=capture or allow_partial, text=True
+    )
+    accepted = result.returncode == 0 or (
+        allow_partial and result.returncode == 1 and not result.stderr
+    )
+    if allow_partial or (capture and not accepted):
+        print(result.stdout, end="")
+        print(result.stderr, end="", file=sys.stderr)
+    if not accepted:
         raise QualityFailure(
             f"command failed with exit code {result.returncode}: {' '.join(command)}"
         )
+    return result.returncode
 
 
 def quality_smoke() -> None:
@@ -59,15 +65,11 @@ def quality_smoke() -> None:
     print("Smoke passed: local analysis, saved inspection, CSV and HTML.")
 
 
-def quality_fast() -> None:
+def quality_pr() -> None:
     _run([sys.executable, "-m", "ruff", "format", "--check", "."])
     _run([sys.executable, "-m", "ruff", "check", "."])
-    _run([sys.executable, "-m", "mypy", "src", "tools/quality.py", "noxfile.py"])
+    _run([sys.executable, "-m", "mypy"])
     _run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider"])
-
-
-def quality_pr() -> None:
-    quality_fast()
     # Invoke the package's console entry point with the active Python. This
     # avoids depending on a generated launcher beside that interpreter.
     _run(
@@ -83,29 +85,50 @@ def quality_pr() -> None:
 
 
 def quality_nightly() -> None:
+    from reactgen import export
+
     quality_pr()
-    for case in sorted((ROOT / "cases").glob("*/case.yaml")):
-        out = ROOT / "build" / "nightly" / case.parent.name
-        _run(
-            [
-                sys.executable,
-                "-m",
-                "reactgen.cli",
-                "analyze",
-                "--input",
-                str(case),
-                "--evidence",
-                str(ROOT / "registry"),
-                "--out",
-                str(out),
-            ],
-            allowed={0, 1},
-        )
+    destination = ROOT / "build" / "nightly"
+    destination.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(prefix=".reactgen-nightly-", dir=destination) as workspace:
+        for case in sorted((ROOT / "cases").glob("*/case.yaml")):
+            stage = Path(workspace) / case.parent.name
+            status = _run(
+                [
+                    sys.executable,
+                    "-m",
+                    "reactgen.cli",
+                    "analyze",
+                    "--input",
+                    str(case),
+                    "--evidence",
+                    str(ROOT / "registry"),
+                    "--out",
+                    str(stage),
+                ],
+                allow_partial=True,
+            )
+            try:
+                result = export.read(stage, verify_views=True)
+            except (OSError, ValueError) as error:
+                raise QualityFailure(
+                    f"invalid nightly output for {case.parent.name}: {error}"
+                ) from error
+            expected = 0 if result["metadata"]["generation"]["complete"] else 1
+            if status != expected:
+                raise QualityFailure(
+                    f"nightly exit status contradicts generation for {case.parent.name}"
+                )
+            out = destination / case.parent.name
+            out.mkdir(exist_ok=True)
+            for name in ("result.yaml", *result["helper_views"]):
+                path = out / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                (stage / name).replace(path)
 
 
 COMMANDS = {
     "quality-smoke": quality_smoke,
-    "quality-fast": quality_fast,
     "quality-pr": quality_pr,
     "quality-nightly": quality_nightly,
 }

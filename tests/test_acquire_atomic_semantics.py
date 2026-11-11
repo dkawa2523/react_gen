@@ -14,8 +14,10 @@ import pytest
 from acquire import asd, ideal_gas, snapshot
 from acquire.cli import main
 from reactgen import yamlio
+from reactgen.case import Case, Conditions, Limits
 from reactgen.chemistry import parse_state_id
 from reactgen.evidence import EvidenceCatalog
+from reactgen.pipeline import analyze
 
 HEADER = "Configuration\tTerm\tJ\tPrefix\tLevel (eV)\tSuffix\tUncertainty (eV)\tReferences"
 GROUND = "closed\t1S\t0\t\t0.000000000\t\t\tL1"
@@ -203,6 +205,60 @@ def test_asd_snapshot_and_cli_claim_candidates_without_lifetime_or_strength(
         "lowest_excitation_energy_eV",
     }
     assert all(record["status"] == "imported" and "existence" not in record for record in records)
+
+
+def test_asd_resolved_ion_level_is_used_after_explicit_quantity_review(monkeypatch, tmp_path):
+    text = "\n".join(
+        (
+            HEADER,
+            "2s2.2p\t2P*\t1/2\t\t0.0\t\t\tL1",
+            "\t\t3/2\t\t0.007859989\t\t0.000000003\tL1",
+            "other\t1P\t1\t\t1.1\t+x\t\tL2",
+            "doubled\t3P\t1\t\t2.0\t\t\tL3",
+            "\t\t1\t\t2.1\t\t\tL3",
+            "broad\t3P\t2\t\t3.0\ta\t\tL4",
+            "C III (2s2 1S<0>)\tLimit\t---\t\t24.383143\t\t0.000012\tL5",
+            "above\t3P\t2\t\t25.0\t\t\tL6",
+        )
+    )
+    monkeypatch.setattr(asd, "_request", lambda symbol: text)
+    assert main(["asd", "C+", "--resolved-below", "30", "--out", str(tmp_path)]) == 0
+    source = tmp_path / "snapshot.yaml"
+    raw = yamlio.load(source.read_text(encoding="utf-8"))
+    (row,) = [item for item in raw["records"] if item["property"] == "excitation_energy_eV"]
+    assert row["status"] == "imported"
+    assert row["related_state"] == "C+@ground"
+    assert row["source_declaration"]["level"]["declared"]["References"] == "L1"
+    assert row["source_declaration"]["response_sha256"] == hashlib.sha256(text.encode()).hexdigest()
+    assert parse_qs(urlparse(row["source"]["url"]).query)["spectrum"] == ["C II"]
+    assert row["uncertainty"] == {"absolute": 3e-9, "unit": "eV"}
+    case = Case(
+        "ion level",
+        ("C",),
+        Conditions(collision_energy_eV=1, collision_energy_frame="com"),
+        limits=Limits(max_depth=1),
+        supplies=("e", "C+"),
+    )
+
+    def collision_difference():
+        result = analyze(case, EvidenceCatalog.load_paths((source,)))
+        reaction = next(
+            candidate
+            for candidate in result.candidates.reactions.values()
+            if candidate.process == "excitation"
+            and {term.species for term in candidate.products} == {"e", row["species"]}
+        )
+        return result.evaluation.thermochemical_calculations[reaction.id][
+            "state_energy_difference_eV"
+        ]
+
+    assert collision_difference().value is None
+    row["status"] = "reviewed"
+    row["review_scope"] = ["excitation_energy_eV"]
+    source.write_text(yamlio.dump(raw), encoding="utf-8")
+    assert collision_difference().value == pytest.approx(0.007859989)
+    monkeypatch.setattr(asd, "_request", lambda symbol: text.replace("C III", "C II"))
+    assert asd.resolved_records(asd.fetch(["C+"])[0], "NIST ASD", 30) == []
 
 
 def test_old_asd_summary_snapshots_remain_external_properties(tmp_path):

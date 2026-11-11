@@ -1,0 +1,9 @@
+name: ar_cf4_ion
+gases: [Ar, CF4]
+supplies: [e, Ar+]
+conditions:
+  collision_pairs:
+    - {projectile_state: e, target_state: CF4, collision_energy_eV: 12, collision_energy_frame: com}
+    - {projectile_state: Ar+, target_state: Ar, collision_energy_eV: 1, collision_energy_frame: com}
+    - {projectile_state: Ar+, target_state: CF4, collision_energy_eV: 20, collision_energy_frame: com}
+limits: {max_atoms: 5, max_depth: 1, expand_unresolved_states: false}

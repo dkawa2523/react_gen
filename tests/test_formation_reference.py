@@ -12,7 +12,7 @@ import pytest
 
 from reactgen import adopt, derive, export, ingest, yamlio
 from reactgen.assessment import assess_thermochemistry, evaluate
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
 from reactgen.chemistry import candidate_state
 from reactgen.evidence import EvidenceCatalog, ReactionEvidence, StateEvidence
 from reactgen.model import CandidateSet, ReactionCandidate, Term
@@ -434,7 +434,11 @@ def test_reference_survives_normalization_ingest_adopt_and_reload(tmp_path: Path
     overlay = tmp_path / "overlay.yaml"
     bundle = tmp_path / "result"
     export.write(
-        bundle, analyze(Case("reference", ("F",), Conditions()), EvidenceCatalog.load(root))
+        bundle,
+        analyze(
+            Case("reference", ("F",), Conditions(), limits=Limits(max_atoms=1, max_depth=1)),
+            EvidenceCatalog.load(root),
+        ),
     )
     ingest.ingest(snapshot, bundle, overlay)
     actual = EvidenceCatalog.load(root, overlay=overlay).state(original.candidate)

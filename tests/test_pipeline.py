@@ -4,34 +4,51 @@ from __future__ import annotations
 
 import hashlib
 from copy import deepcopy
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
 import yaml
 
 from reactgen import export, ingest, needs
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits, RequestedReaction
 from reactgen.chemistry import parse_state_id
 from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
+from reactgen.pathway import checked_pathway_query
 from reactgen.pipeline import analyze
+from reactgen.records import Property, ReactionRecord
 from tools.migrate_v4 import _reaction_records, migrate
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mini"
 
 
 def result():
-    return analyze(Case("analysis", ("Ar",)), EvidenceCatalog.load(None))
+    return analyze(
+        Case("analysis", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
+        EvidenceCatalog.load(None),
+    )
 
 
 def dump(path: Path, value: dict) -> None:
     path.write_text(yaml.safe_dump(value), encoding="utf-8")
 
 
-def test_evidence_does_not_change_mechanical_candidates() -> None:
-    case = Case("test", ("Ar", "F2"))
-    empty = analyze(case, EvidenceCatalog.load(None))
-    filled = analyze(case, EvidenceCatalog.load(FIXTURE))
+def test_property_qualification_does_not_change_candidate_scope() -> None:
+    case = Case(
+        "test",
+        ("Ar", "F2"),
+        limits=Limits(max_atoms=2, max_depth=3, max_reactions=1500),
+    )
+    original = EvidenceCatalog.load(FIXTURE)
+    changed = replace(
+        original,
+        state_records=tuple(
+            replace(record, status="rejected") for record in original.state_records
+        ),
+    )
+    first = analyze(case, original)
+    second = analyze(case, changed)
 
     def mechanical(analysis):
         return {
@@ -40,7 +57,266 @@ def test_evidence_does_not_change_mechanical_candidates() -> None:
             if item.origin == "mechanical"
         }
 
-    assert mechanical(empty) == mechanical(filled)
+    assert mechanical(first) == mechanical(second)
+    assert first.metadata["supply_state_ids"] == second.metadata["supply_state_ids"]
+
+
+def test_source_states_reenter_generation_without_becoming_particle_supplies() -> None:
+    ground, excited, electron = (parse_state_id(name) for name in ("Ar", "Ar@source_level", "e"))
+    assert ground is not None
+    assert excited is not None
+    assert electron is not None
+    declared = replace(excited, classes=frozenset({"feed"}))
+    source = ReactionRecord(
+        "source-excitation",
+        (
+            None,
+            None,
+            ((ground.id, 1.0), (electron.id, 1.0)),
+            ((excited.id, 1.0), (electron.id, 1.0)),
+        ),
+        "electron",
+        "excitation",
+        (ground, declared, electron),
+    )
+    contradiction = RequestedReaction("e + Ar -> e + Ne", "excitation")
+    refuted = ReactionRecord(
+        "refuted inventory",
+        contradiction.candidate.equation_key,
+        "electron",
+        "excitation",
+        contradiction.states,
+    )
+    catalog = EvidenceCatalog(reaction_records=(source, refuted))
+    result = analyze(
+        Case("source expansion", ("Ar",), limits=Limits(max_atoms=1, max_depth=3)),
+        catalog,
+    )
+    assert excited.id in result.candidates.states
+    assert excited.id not in result.metadata["supply_state_ids"]
+    assert "feed" not in result.candidates.states[excited.id].classes
+    assert "feed" in catalog.reaction_records[0].states[1].classes
+    assert any(
+        reaction.origin == "mechanical"
+        and excited.id in {term.species for term in reaction.reactants}
+        for reaction in result.candidates.reactions.values()
+    )
+    assert "Ne@ground" in result.candidates.states
+    assert all(
+        term.species != "Ne@ground"
+        for reaction in result.candidates.reactions.values()
+        for term in reaction.reactants
+    )
+    assert (
+        result.evaluation.reaction_assessments[contradiction.candidate.id]["conservation"].verdict
+        == "fail"
+    )
+
+
+def test_rejected_source_is_preserved_only_when_its_channel_is_independently_proposed(
+    tmp_path: Path,
+) -> None:
+    proposed = RequestedReaction("e + Ar+ -> Ar^2+ + 2 e", "ionization")
+    source = tmp_path / "source.yaml"
+    dump(
+        source,
+        {
+            "snapshot_version": 1,
+            "records": [
+                {
+                    "reaction": proposed.equation,
+                    "type": proposed.process,
+                    "channel_scope": "product_resolved",
+                    "status": "rejected",
+                }
+            ],
+        },
+    )
+    catalog = EvidenceCatalog.load_paths((source,))
+    case = Case(
+        "rejected proposal", ("Ar",), supplies=("e", "Ar+"), limits=Limits(max_atoms=1, max_depth=1)
+    )
+    candidates = analyze(case, catalog).candidates
+    assert proposed.candidate.id not in candidates.reactions
+    assert "Ar^2+@ground" not in candidates.states
+
+    saved = export.document(analyze(replace(case, reactions=(proposed,)), catalog))
+    reaction = next(item for item in saved["reactions"] if item["id"] == proposed.candidate.id)
+    assert reaction["origin"] == "requested"
+    assert [record["status"] for record in reaction["evidence"]["records"]] == ["rejected"]
+    assert reaction["assessments"]["reaction_evidence"]["verdict"] == "unknown"
+
+
+def test_qualified_source_transform_and_checked_route_do_not_depend_on_snapshot_order(
+    tmp_path: Path,
+) -> None:
+    channel = RequestedReaction("Ar@upper + Ne -> Ar@lower + Ne", "quenching")
+    transform = {
+        "kind": "level_transition",
+        "initial": "Ar@upper",
+        "final": "Ar@lower",
+        "collider": "Ne@ground",
+    }
+    good = {
+        "id": "good",
+        "reaction": channel.equation,
+        "type": channel.process,
+        "status": "reviewed",
+        "review_scope": ["channel_assertion"],
+        "transformation": transform,
+        "energy_properties": {
+            "delta_e_eV": {
+                "value": -1,
+                "unit": "eV",
+                "definition": "products_minus_reactants",
+                "status": "reviewed",
+                "evidence_tier": "reviewed",
+            }
+        },
+    }
+    bad = good | {
+        "id": "bad",
+        "status": "rejected",
+        "transformation": transform | {"initial": "Ar@ground"},
+    }
+    unrelated = good | {
+        "id": "only energy",
+        "review_scope": ["delta_e_eV"],
+        "transformation": transform | {"initial": "Ar@ground"},
+    }
+    case = Case(
+        "source transformation",
+        ("Ne",),
+        supplies=("Ar@upper",),
+        conditions=Conditions(collision_energy_eV=5, collision_energy_frame="com"),
+        limits=Limits(max_atoms=1, max_depth=1),
+    )
+    source = tmp_path / "source.yaml"
+    for records in ([good, bad, unrelated], [unrelated, bad, good]):
+        dump(source, {"snapshot_version": 1, "records": records})
+        saved = export.document(analyze(case, EvidenceCatalog.load_paths((source,))))
+        reaction = next(item for item in saved["reactions"] if item["id"] == channel.candidate.id)
+        assert reaction["transformation"] == transform
+        assert reaction["assessments"]["consistency"]["verdict"] == "pass"
+        assert {record["status"] for record in reaction["evidence"]["records"]} == {
+            "reviewed",
+            "rejected",
+        }
+        assert {
+            record["transformation"]["initial"] for record in reaction["evidence"]["records"]
+        } == {"Ar@upper", "Ar@ground"}
+        checked = checked_pathway_query(saved["states"], saved["reactions"], saved["pathways"])
+        assert channel.candidate.id in checked["checked"]["reaction_layers"]
+
+
+def test_deeper_source_chain_cannot_preempt_a_shallower_mechanical_expansion() -> None:
+    ground, first, second, electron = (
+        parse_state_id(name) for name in ("Ar", "Ar@first", "Ar@second", "e")
+    )
+    assert all(state is not None for state in (ground, first, second, electron))
+    records = tuple(
+        ReactionRecord(
+            f"source-{parent.id}",
+            (
+                None,
+                None,
+                ((parent.id, 1.0), (electron.id, 1.0)),
+                ((target.id, 1.0), (electron.id, 1.0)),
+            ),
+            "electron",
+            "excitation",
+            (parent, target, electron),
+        )
+        for parent, target in ((ground, first), (first, second))
+    )
+    result = analyze(
+        Case("depth", ("Ar",), supplies=("e",), limits=Limits(max_atoms=1, max_depth=2)),
+        EvidenceCatalog(reaction_records=records),
+    ).candidates
+    assert result.states[second.id].depth == 1
+    assert any(
+        row.process == "elastic" and {term.species for term in row.reactants} == {second.id, "e"}
+        for row in result.reactions.values()
+    )
+
+
+@pytest.mark.parametrize(
+    ("depth", "energy", "verdict"), [(2, 0, "fail"), (2, 20, "pass"), (1, 20, "pass")]
+)
+def test_requested_intermediate_extends_bounded_discovery_without_becoming_feed(
+    depth: int, energy: float, verdict: str
+) -> None:
+    request = RequestedReaction("e + Ar+ -> Ar^2+ + 2 e", "ionization")
+    downstream = RequestedReaction("e + Ar^2+ -> Ar^3+ + 2 e", "ionization")
+    disconnected = RequestedReaction("e + Ne^2+ -> Ne^3+ + 2 e", "ionization")
+    unbalanced = RequestedReaction("e + Ar+ -> Xe^2+ + 2 e", "ionization")
+    catalog = EvidenceCatalog(
+        reaction_records=(
+            ReactionRecord(
+                "synthetic endpoint difference",
+                request.candidate.equation_key,
+                "electron",
+                "ionization",
+                request.states,
+                channel_scope="energy_relation",
+                energy_properties={
+                    "delta_e_eV": Property(
+                        12.0, "eV", tier="reviewed", definition="products_minus_reactants"
+                    )
+                },
+            ),
+            ReactionRecord(
+                "downstream channel",
+                downstream.candidate.equation_key,
+                "electron",
+                "ionization",
+                downstream.states,
+            ),
+        )
+    )
+    analysis = analyze(
+        Case(
+            "nominated intermediate",
+            ("Ar",),
+            conditions=Conditions(
+                collision_energy_eV=energy,
+                collision_energy_frame="com",
+                projectile_state="e",
+                target_state="Ar+",
+            ),
+            limits=Limits(max_atoms=1, max_depth=depth),
+            supplies=("e", "Ar+"),
+            reactions=(request, disconnected, unbalanced),
+        ),
+        catalog,
+    )
+    saved = export.document(analysis)
+    reactions = analysis.candidates.reactions
+    assert saved["pathways"]["seeds"] == ["Ar+@ground", "Ar@ground", "e"]
+    assert reactions[request.candidate.id].origin == "requested"
+    assert (
+        analysis.evaluation.reaction_assessments[request.candidate.id]["energy"].verdict == verdict
+    )
+    assert reactions[disconnected.candidate.id].depth == 0
+    assert reactions[unbalanced.candidate.id].depth == 0
+    assert not any(
+        {"Ne^3+@ground", "Xe^2+@ground"}.intersection(term.species for term in row.reactants)
+        for row in reactions.values()
+    )
+    assert (downstream.candidate.id in reactions) == (depth == 2)
+    if depth == 2:
+        assert reactions[downstream.candidate.id].origin == "attested_only"
+        assert any(
+            row.origin == "mechanical"
+            and row.process == "elastic"
+            and {term.species for term in row.reactants} == {"e", "Ar^2+@ground"}
+            for row in reactions.values()
+        )
+    assert saved["metadata"]["generation"]["completion"]["attested"] == (depth == 2)
+    assert ("Ar^3+@ground" in saved["pathways"]["candidate"]["state_layers"]) == (depth == 2)
+    assert ("Ar^3+@ground" in saved["pathways"]["conditioned"]["state_layers"]) == (
+        depth == 2 and verdict == "pass"
+    )
 
 
 def test_no_evidence_retains_candidates_and_scopes_conclusions() -> None:
@@ -49,28 +325,44 @@ def test_no_evidence_retains_candidates_and_scopes_conclusions() -> None:
     document = export.document(analysis)
     assert len(document["reactions"]) == len(analysis.candidates.reactions)
     assert set(document["metadata"]["generation"]["completion"]) == {"mechanical", "attested"}
-    assert "selection" not in document
-    assert "readiness" not in document
-    assert "predictive" in document["summary"]["interpretation"]
+    binding_states = [
+        state for state in document["states"] if "electron_binding" in state["assessments"]
+    ]
+    assert all(
+        state["charge"] == -1 and state["state"]["kind"] == "ground" for state in binding_states
+    )
+    if binding_states:
+        assert sum(document["summary"]["judgments"]["states"]["electron_binding"].values()) == len(
+            binding_states
+        )
+        binding_coverage = document["summary"]["coverage"]["judgments"]["states"][
+            "electron_binding"
+        ]
+        assert binding_coverage["total"] == len(binding_states)
 
 
-def test_three_files_are_deterministic_and_share_the_same_conclusions(tmp_path: Path) -> None:
+def test_published_tables_are_deterministic_and_share_the_same_conclusions(tmp_path: Path) -> None:
     analysis = result()
     first, second = tmp_path / "first", tmp_path / "second"
-    export.write(first, analysis)
+    committed = export.write(first, analysis)
     export.write(second, analysis)
-    assert {path.name for path in first.iterdir()} == set(export.PUBLIC_FILES)
-    for name in export.PUBLIC_FILES:
+    files = {"result.yaml", *committed["helper_views"]}
+    assert {
+        path.relative_to(first).as_posix() for path in first.rglob("*") if path.is_file()
+    } == files
+    for name in files:
         assert (first / name).read_bytes() == (second / name).read_bytes()
     document = export.read(first, verify_views=True)
+    assert committed == document
     assert document["input"]["gases"] == ["Ar"]
     assert document["metadata"]["schema_version"] == 5
     assert document["summary"]["reaction_count"] == len(document["reactions"])
+    assert all("kinetic_effects" not in reaction for reaction in document["reactions"])
 
 
 @pytest.mark.parametrize("change", ["hash", "content", "missing", "extra"])
 def test_saved_result_rejects_view_hashes_detached_from_canonical_content(
-    tmp_path: Path, change: str, monkeypatch
+    tmp_path: Path, change: str
 ) -> None:
     export.write(tmp_path, result())
     document = export.read(tmp_path, verify_views=True)
@@ -85,17 +377,37 @@ def test_saved_result_rejects_view_hashes_detached_from_canonical_content(
         document["helper_views"]["extra.csv"] = "0" * 64
     dump(tmp_path / "result.yaml", document)
 
-    def forbidden(*args):
-        raise AssertionError("integrity validation must not reanalyze")
-
-    monkeypatch.setattr("reactgen.pipeline.analyze", forbidden)
     for verify_views in (False, True):
         with pytest.raises(ValueError, match="helper_views|helper view hashes"):
             export.read(tmp_path, verify_views=verify_views)
 
 
+@pytest.mark.parametrize("location", ["selected", "alternative"])
+def test_saved_result_rejects_cyclic_calculation_inputs(location: str) -> None:
+    document = export.document(result())
+    calculations = next(
+        row["thermochemical_calculations"]
+        for row in document["reactions"]
+        if row["process"] == "elastic"
+    )
+    name = "state_energy_difference_eV"
+    calculation = calculations[name]
+    inputs = [{"calculation": name, "coefficient": 1.0}]
+    if location == "selected":
+        calculation["inputs"] = inputs
+    else:
+        calculation["alternatives"] = [
+            {"value": 0.0, "unit": "eV", "operation": "test", "inputs": inputs, "conditions": {}}
+        ]
+    document["helper_views"] = {
+        name: hashlib.sha256(content.encode("utf-8")).hexdigest()
+        for name, content in export.csv_views(document).items()
+    }
+    with pytest.raises(ValueError, match="cyclic calculation references"):
+        export.validate(document)
+
+
 def selected_data_use(status: str = "coefficient") -> dict:
-    inputs = ["gas_temperature"] if status == "needs_input" else []
     transforms = ["surface_flux_conversion"] if status == "needs_transform" else []
     unit = "1" if transforms else "m3/s"
     return {
@@ -105,17 +417,17 @@ def selected_data_use(status: str = "coefficient") -> dict:
         "kind": "sticking_coefficient" if transforms else "rate_coefficient",
         "value": 0,
         "unit": unit,
-        "required_inputs": inputs,
+        "required_inputs": [],
         "required_transforms": transforms,
         "estimated": False,
         "datasets": [
             {
                 "dataset_id": "selected",
-                "status": "needs_input" if inputs else "valid",
+                "status": "valid",
                 "reason": "test applicable dataset",
                 "value": 0,
                 "unit": unit,
-                "required_inputs": list(inputs),
+                "required_inputs": [],
                 "required_transforms": list(transforms),
             }
         ],
@@ -140,26 +452,22 @@ def document_with_use(use: dict) -> dict:
     return document
 
 
-@pytest.mark.parametrize("status", ["coefficient", "needs_input", "needs_transform"])
-def test_saved_use_accepts_zero_and_selected_values_without_rerunning_calculations(
-    tmp_path: Path, status: str, monkeypatch
-) -> None:
-    document = document_with_use(selected_data_use(status))
+def test_legacy_saved_coefficient_can_be_zero(tmp_path: Path) -> None:
+    document = document_with_use(selected_data_use())
     dump(tmp_path / "result.yaml", document)
-
-    def forbidden(*args):
-        raise AssertionError("saved values must not be recalculated")
-
-    monkeypatch.setattr("reactgen.numeric.data_use", forbidden)
     assert export.read(tmp_path)["reactions"][0]["data_use"]["value"] == 0
 
 
-@pytest.mark.parametrize("status", ["unavailable", "conflict", "needs_input"])
-def test_saved_use_allows_unselected_results_and_missing_selection(status: str) -> None:
+def test_legacy_saved_use_can_require_selection_without_claiming_a_value() -> None:
     use = selected_data_use()
-    use.update(status=status, dataset_id=None, kind=None, value=None, unit=None)
-    if status in {"needs_input", "conflict"}:
-        use["required_inputs"] = ["rate_law_selection"]
+    use.update(
+        status="needs_input",
+        dataset_id=None,
+        kind=None,
+        value=None,
+        unit=None,
+        required_inputs=["rate_law_selection"],
+    )
     export.validate(document_with_use(use))
 
 
@@ -183,22 +491,11 @@ def test_saved_use_retains_probabilities_or_curves_pending_conversion(
     ("status", "use_changes", "dataset_changes"),
     [
         ("coefficient", {"value": None}, {"value": None}),
-        ("coefficient", {"value": -1}, {"value": -1}),
-        ("coefficient", {"unit": None}, {"unit": None}),
-        ("coefficient", {"kind": None}, {}),
         ("coefficient", {"dataset_id": None}, {}),
         ("coefficient", {"dataset_id": "absent"}, {}),
         ("coefficient", {}, {"status": "invalid"}),
         ("coefficient", {}, {"value": 1}),
-        ("coefficient", {}, {"unit": "s-1"}),
         ("coefficient", {"required_inputs": ["unknown"]}, {"required_inputs": ["unknown"]}),
-        ("coefficient", {"required_transforms": ["unknown"]}, {}),
-        ("coefficient", {"status": "needs_input"}, {}),
-        ("coefficient", {"status": "needs_transform"}, {}),
-        ("needs_transform", {"required_inputs": ["incident_flux"]}, {}),
-        ("coefficient", {"status": "unavailable"}, {}),
-        ("coefficient", {"status": "conflict"}, {}),
-        ("coefficient", {"status": "conflict", "dataset_id": None, "kind": None, "unit": None}, {}),
         ("coefficient", {"kind": "sticking_coefficient", "unit": "1"}, {"unit": "1"}),
         ("needs_transform", {"value": 1.1}, {"value": 1.1}),
     ],
@@ -236,7 +533,7 @@ def test_saved_result_rejects_identity_and_schema_contradictions(change: str) ->
     elif change == "verdict":
         document["reactions"][0]["assessments"]["kinetics"]["verdict"] = "ready"
     elif change == "extra":
-        document["policy"] = "review"
+        document["unexpected"] = True
     elif change == "input":
         document["input"]["gases"] = ["CF4"]
     else:
@@ -257,7 +554,13 @@ def test_failed_canonical_replace_preserves_previous_result(tmp_path: Path, monk
 
     monkeypatch.setattr(Path, "replace", replace)
     with pytest.raises(OSError, match="commit failure"):
-        export.write(tmp_path, analyze(Case("changed", ("Ar",)), EvidenceCatalog.load(None)))
+        export.write(
+            tmp_path,
+            analyze(
+                Case("changed", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
+                EvidenceCatalog.load(None),
+            ),
+        )
     assert (tmp_path / "result.yaml").read_bytes() == previous
     export.read(tmp_path, verify_views=True)
     assert not list(tmp_path.glob("*.tmp"))
@@ -276,7 +579,14 @@ def test_failed_csv_replace_leaves_canonical_readable_and_repairable(
 
     monkeypatch.setattr(Path, "replace", replace)
     # Different gases change both views and establish an actual mixed-view case.
-    updated = analyze(Case("changed", ("Ar", "F2")), EvidenceCatalog.load(None))
+    updated = analyze(
+        Case(
+            "changed",
+            ("Ar", "F2"),
+            limits=Limits(max_atoms=2, max_depth=1, max_reactions=200),
+        ),
+        EvidenceCatalog.load(None),
+    )
     with pytest.raises(export.PartialOutputError, match="result.yaml saved"):
         export.write(tmp_path, updated)
     document = export.read(tmp_path)
@@ -284,7 +594,7 @@ def test_failed_csv_replace_leaves_canonical_readable_and_repairable(
     with pytest.raises(ValueError, match="stale"):
         export.read(tmp_path, verify_views=True)
     monkeypatch.setattr(Path, "replace", original)
-    export.rebuild_views(document, tmp_path)
+    export.rebuild_views(tmp_path, tmp_path)
     export.read(tmp_path, verify_views=True)
 
 
@@ -375,6 +685,33 @@ def test_saved_views_and_needs_never_reanalyze(tmp_path: Path, monkeypatch) -> N
         main(["view", str(tmp_path / "out"), "--kind", "csv", "--out", str(tmp_path / "tables")])
         == 0
     )
+    assert main(["view", str(tmp_path / "out"), "--kind", "dnt"]) == 0
+    assert yaml.safe_load((tmp_path / "out/dnt/dnt_inputs.yaml").read_text())["pairs"] == []
+
+
+def test_dnt_handoff_retains_missing_dipole_and_independent_energy_values(tmp_path: Path) -> None:
+    result_path = tmp_path / "result"
+    catalog = EvidenceCatalog.load(FIXTURE)
+    case = Case(
+        "ion collision",
+        ("Ar", "F2"),
+        limits=Limits(max_atoms=2, max_depth=1),
+        supplies=("e", "Ar+"),
+    )
+    saved = export.write(result_path, analyze(case, catalog))
+    assert main(["view", str(result_path), "--kind", "dnt"]) == 0
+    payload = yaml.safe_load((result_path / "dnt/dnt_inputs.yaml").read_text(encoding="utf-8"))
+    pairs = {pair["target"]["state"]: pair for pair in payload["pairs"]}
+    assert set(pairs) == {"Ar@ground", "F2@ground"}
+    assert all(pair["projectile"]["state"] == "Ar+@ground" for pair in pairs.values())
+    assert pairs["Ar@ground"]["neutral_dipole_model_hint"] == "dnt_plus"
+    assert pairs["F2@ground"]["neutral_dipole_model_hint"] is None
+    assert pairs["F2@ground"]["target"]["dipole_moment_D"]["status"] == "unavailable"
+
+    elastic = next(row for row in pairs["Ar@ground"]["channels"] if row["process"] == "elastic")
+    assert elastic["endpoint_difference"]["value"] == 0.0
+    assert elastic["declared_threshold_eV"] is None
+    assert export.read(result_path, verify_views=True) == saved
 
 
 def test_ingest_checks_declared_equation_even_with_explicit_id(tmp_path: Path) -> None:

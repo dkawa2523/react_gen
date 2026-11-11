@@ -9,6 +9,8 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 
+from reactgen import yamlio
+
 NUMERICAL_QUANTITIES = frozenset({"rate_coefficient", "cross_section", "sticking_coefficient"})
 STATE_QUANTITIES = frozenset(
     {
@@ -16,10 +18,17 @@ STATE_QUANTITIES = frozenset(
         "ionization_energy_eV",
         "electron_affinity_eV",
         "excitation_energy_eV",
+        "proton_affinity_eV",
+        "gas_basicity_eV",
+        "mass_amu",
         "thermochemical_model",
     }
 )
-SELECTABLE_QUANTITIES = NUMERICAL_QUANTITIES | STATE_QUANTITIES
+REFERENCE_STATE_QUANTITIES = frozenset(
+    {"enthalpy_formation_eV", "ionization_energy_eV", "electron_affinity_eV"}
+)
+REACTION_ENERGY_QUANTITIES = frozenset({"delta_e_eV"})
+SELECTABLE_QUANTITIES = NUMERICAL_QUANTITIES | STATE_QUANTITIES | REACTION_ENERGY_QUANTITIES
 METHODS = frozenset({"measured", "evaluated", "calculated", "estimated", "unknown"})
 
 
@@ -55,7 +64,7 @@ class QuantitySelection:
 
     @classmethod
     def from_document(cls, value: object) -> QuantitySelection:
-        data = _mapping(
+        data = yamlio.mapping(
             value, "quantity selection", {"mode", "methods", "providers", "collections", "record"}
         )
         axes: dict[str, tuple[str, ...]] = {}
@@ -126,8 +135,8 @@ class DataSelection:
 
     @classmethod
     def from_document(cls, value: object) -> DataSelection:
-        data = _mapping(value, "data_selection", {"quantities", "targets"})
-        quantities = _mapping(
+        data = yamlio.mapping(value, "data_selection", {"quantities", "targets"})
+        quantities = yamlio.mapping(
             data.get("quantities", {}), "data_selection.quantities", set(SELECTABLE_QUANTITIES)
         )
         targets = data.get("targets", {})
@@ -138,7 +147,7 @@ class DataSelection:
             {
                 target: {
                     quantity: QuantitySelection.from_document(policy)
-                    for quantity, policy in _mapping(
+                    for quantity, policy in yamlio.mapping(
                         policies, f"data_selection.targets.{target}", set(SELECTABLE_QUANTITIES)
                     ).items()
                 }
@@ -164,27 +173,30 @@ class DataSelection:
     def for_quantity(self, quantity: str, target: str | None = None) -> QuantitySelection | None:
         return self.targets.get(target or "", {}).get(quantity, self.quantities.get(quantity))
 
-    def validate_targets(self, states: Iterable[str], reactions: Iterable[str]) -> None:
+    def validate_targets(
+        self,
+        states: Iterable[str],
+        reactions: Iterable[str],
+        *,
+        reference_states: Iterable[str] = (),
+    ) -> None:
         """Validate requested identities/quantity domains, without evaluating data."""
         state_ids, reaction_ids = set(states), set(reactions)
+        reference_ids = set(reference_states)
         for target, policies in self.targets.items():
             if target in state_ids:
                 supported = STATE_QUANTITIES
             elif target in reaction_ids:
-                supported = NUMERICAL_QUANTITIES
+                supported = NUMERICAL_QUANTITIES | REACTION_ENERGY_QUANTITIES
+            elif target in reference_ids:
+                supported = REFERENCE_STATE_QUANTITIES
             else:
-                raise ValueError(f"data_selection target is not an analyzed candidate: {target}")
+                raise ValueError(
+                    "data_selection target is not an analyzed candidate or calculation reference: "
+                    f"{target}"
+                )
             if unknown := set(policies) - supported:
                 raise ValueError(
                     f"data_selection target {target}: unsupported quantities for this target: "
                     + ", ".join(sorted(unknown))
                 )
-
-
-def _mapping(value: object, name: str, allowed: set[str]) -> dict:
-    if not isinstance(value, dict):
-        raise ValueError(f"{name} must be a mapping")
-    unexpected = set(value) - allowed
-    if unexpected:
-        raise ValueError(f"{name}: unsupported fields: {', '.join(sorted(map(str, unexpected)))}")
-    return value

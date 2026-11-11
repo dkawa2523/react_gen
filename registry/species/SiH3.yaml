@@ -1,0 +1,85 @@
+schema_version: 1
+id: SiH3
+display_name: SiH3 (silyl)
+composition: {Si: 1, H: 3}
+charge: 0
+phase: gas
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  term: X 2A1
+  existence: confirmed
+  existence_source: Mass-selected REMPI resolves the gas-phase silyl radical.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: AIP
+    citation: R. D. Johnson III, B. P. Tsai and J. W. Hudgens, J. Chem. Phys. 91, 3340–3359 (1989)
+    url: https://doi.org/10.1063/1.456909
+properties:
+  ionization_energy_eV:
+    value: 8.135
+    unit: eV
+    definition: adiabatic
+    related_state: SiH3+@ground
+    source:
+      provider: AIP
+      citation: R. D. Johnson III, B. P. Tsai and J. W. Hudgens, J. Chem. Phys. 91, 3340–3359 (1989)
+      url: https://doi.org/10.1063/1.456909
+    method: measured
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [ionization_energy_eV]
+    uncertainty: {absolute: 0.005, unit: eV}
+    source_declaration:
+      scope: H3 isotopologue, ground to ground. Rydberg-series extrapolation.
+      reported_asymmetric_uncertainty_eV: {lower: 0.002, upper: 0.005}
+  electron_affinity_eV:
+    value: 1.406
+    unit: eV
+    definition: adiabatic
+    related_state: SiH3-@ground
+    source:
+      provider: ACS
+      citation: M. R. Nimlos and G. B. Ellison, J. Am. Chem. Soc. 108, 6522–6529 (1986)
+      url: https://doi.org/10.1021/ja00281a013
+    method: measured
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [electron_affinity_eV]
+    uncertainty: {absolute: 0.014, unit: eV}
+    source_declaration:
+      scope: H3 isotopologue, adiabatic laser photoelectron value for the neutral and anion ground states.
+records:
+- record_id: ATcT_1.228:13765-44-1*0
+  species: SiH3
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 13765-44-1*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=191
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 205.15
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0.0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: SiH3 (g)
+        published_uncertainty:
+          absolute: 0.74
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

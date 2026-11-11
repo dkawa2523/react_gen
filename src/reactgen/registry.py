@@ -10,7 +10,9 @@ Layout consumed here::
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+import hashlib
+from collections.abc import Iterable
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from reactgen import naming, yamlio
@@ -19,10 +21,20 @@ from reactgen.chemistry import (
     electron_state,
     parse_equation,
     reaction_declaration_matches,
+    state_id,
 )
-from reactgen.model import ELECTRON, ReactionCandidate, StateCandidate, Term, reaction_id
+from reactgen.model import (
+    ELECTRON,
+    ReactionCandidate,
+    ReactionKey,
+    StateCandidate,
+    Term,
+    bind_transformation_states,
+    reaction_id,
+)
 from reactgen.records import (
     Material,
+    MolecularIdentity,
     NumericDataset,
     Property,
     ReactionRecord,
@@ -36,6 +48,7 @@ from reactgen.records import (
     normalized_properties,
     normalized_reaction_energy_properties,
     normalized_reaction_record,
+    normalized_source,
     normalized_state_record,
     normalized_thermo,
     review_scope,
@@ -43,8 +56,10 @@ from reactgen.records import (
     source_information,
     validate_numerical_targets,
 )
+from reactgen.structure import StructureUnavailable, structure_key
 
 PairKey = tuple[str, str, str]  # family, projectile, target
+ChannelLocation = tuple[Path, int, ReactionCandidate]
 
 
 @dataclass
@@ -53,26 +68,38 @@ class Registry:
     species: dict[str, Species]
     channels: dict[PairKey, list[RegistryReaction]]
     materials: dict[str, Material]
+    species_locations: dict[str, Path] = field(default_factory=dict, repr=False, compare=False)
+    channel_locations: dict[str, ChannelLocation] = field(
+        default_factory=dict, repr=False, compare=False
+    )
+    document_hashes: dict[Path, bytes] = field(default_factory=dict, repr=False, compare=False)
 
     @classmethod
     def load(cls, root: str | Path) -> Registry:
         root = Path(root)
         if not root.is_dir():
             raise FileNotFoundError(f"registry not found: {root}")
-        species = _load_species(root / "species")
-        channels = _load_reactions(root / "reactions", root, species)
+        hashes: dict[Path, bytes] = {}
+        species, species_locations = _load_species(root / "species", hashes)
+        channels, channel_locations = _load_reactions(root / "reactions", root, species, hashes)
         return cls(
             root=root,
             species=species,
             channels=channels,
-            materials=_load_materials(root / "materials"),
+            materials=_load_materials(root / "materials", hashes),
+            species_locations=species_locations,
+            channel_locations=channel_locations,
+            document_hashes=hashes,
         )
 
 
-def _load_species(directory: Path) -> dict[str, Species]:
+def _load_species(
+    directory: Path, hashes: dict[Path, bytes]
+) -> tuple[dict[str, Species], dict[str, Path]]:
     out: dict[str, Species] = {}
+    locations: dict[str, Path] = {}
     for path in sorted(directory.glob("*.yaml")):
-        data = _read(path)
+        data = _read(path, hashes)
         composition = data.get("composition") or {}
         if not isinstance(composition, dict) or any(
             isinstance(v, bool) or not isinstance(v, int) or v <= 0 for v in composition.values()
@@ -93,11 +120,22 @@ def _load_species(directory: Path) -> dict[str, Species]:
             status=status,
             phase=str(data.get("phase") or "unknown"),
             structure=data.get("structure"),
+            molecular_identity=read_molecular_identity(data.get("molecular_identity")),
         )
+        if species.molecular_identity is not None:
+            try:
+                molecular_identity_state(
+                    registry_state_candidate(species),
+                    species.molecular_identity,
+                    verify_graph=False,
+                )
+            except ValueError as error:
+                raise ValueError(f"{path}: {error}") from error
         species = replace(species, records=_scientific_states(data, species, path))
         if species.id in out:
             raise ValueError(f"{path}: duplicate species id {species.id}")
         out[species.id] = species
+        locations[species.id] = path
     out.setdefault(
         "e",
         Species(
@@ -116,7 +154,41 @@ def _load_species(directory: Path) -> dict[str, Species]:
             status="curated",
         ),
     )
-    return out
+    return out, locations
+
+
+def read_molecular_identity(declaration: object) -> MolecularIdentity | None:
+    if declaration is None:
+        return None
+    if not isinstance(declaration, dict) or set(declaration) != {"smiles", "source"}:
+        raise ValueError("molecular_identity must contain smiles and source")
+    return MolecularIdentity(declaration["smiles"], normalized_source(declaration["source"]))
+
+
+def molecular_identity_state(
+    nominal: StateCandidate, identity: MolecularIdentity, *, verify_graph: bool = True
+) -> StateCandidate | None:
+    """Apply the cited graph only to its declared phase, charge and level."""
+    if not nominal.composition or nominal.structure is not None or nominal.phase == "unknown":
+        raise ValueError("molecular_identity requires a structure-free species in a declared phase")
+    level = nominal.state
+    structure = "smiles:" + identity.smiles
+    identifier = state_id(
+        nominal.composition,
+        nominal.charge,
+        level.kind,
+        level.label,
+        resolution=level.resolution,
+        phase=nominal.phase,
+        structure=structure,
+    )
+    candidate = replace(nominal, id=identifier, structure=structure)
+    if verify_graph:
+        try:
+            structure_key(candidate)
+        except StructureUnavailable:
+            return None
+    return candidate
 
 
 def _scientific_states(data: dict, species: Species, path: Path) -> tuple[StateRecord, ...]:
@@ -136,9 +208,13 @@ def _scientific_states(data: dict, species: Species, path: Path) -> tuple[StateR
             getattr(candidate.state, name, None) != value for name, value in state.items()
         ):
             raise ValueError(f"{path}: scientific record state contradicts the target")
-        declarations.append(
-            normalized_state_record(entry, candidate, origin="registry", preserved_record_id=True)
+        record = normalized_state_record(
+            entry, candidate, origin="registry", preserved_record_id=True
         )
+        if identity := read_molecular_identity(entry.get("molecular_identity")):
+            molecular_identity_state(candidate, identity, verify_graph=False)
+            record = replace(record, molecular_identity=identity)
+        declarations.append(record)
     return tuple(declarations)
 
 
@@ -171,8 +247,8 @@ def _state(data: dict) -> RegistryState:
 
 
 def _load_reactions(
-    directory: Path, root: Path, species: dict[str, Species]
-) -> dict[PairKey, list[RegistryReaction]]:
+    directory: Path, root: Path, species: dict[str, Species], hashes: dict[Path, bytes]
+) -> tuple[dict[PairKey, list[RegistryReaction]], dict[str, ChannelLocation]]:
     """Retain every pair's channels with unique IDs across the Registry.
 
     Repeated IDs are input errors even when their declarations agree: adoption
@@ -184,9 +260,11 @@ def _load_reactions(
     """
     channels: dict[PairKey, list[RegistryReaction]] = {}
     locations: dict[str, tuple[PairKey, dict, Path, int]] = {}
+    resolved: dict[str, ChannelLocation] = {}
     numerical_bindings: list[tuple[str, str]] = []
+    scientific_bindings: list[tuple[str, ReactionKey]] = []
     for path in sorted(directory.glob("*/*.yaml")):
-        data = _read(path)
+        data = _read(path, hashes)
         pair = data.get("pair") or {}
         family = pair.get("family") or path.parent.name
         key: PairKey = (family, pair["projectile"], pair.get("target", pair["projectile"]))
@@ -213,14 +291,32 @@ def _load_reactions(
             except ValueError as error:
                 raise ValueError(f"{path}: channel {channel_id!r}: {error}") from error
             target = _bind_channel_datasets(channel, species, path)
+            resolved[channel.id] = path, index - 1, target
             numerical_bindings.extend((dataset.id, target.id) for dataset in channel.datasets)
-            channel.records = _scientific_reactions(entry, channel, species, path)
+            channel.records = _scientific_reactions(entry, target, species, path)
+            scientific_bindings.append((channel.id, target.key))
+            scientific_bindings.extend((record.id, target.key) for record in channel.records)
             group.append(channel)
     validate_numerical_targets(numerical_bindings)
-    return {
-        key: sorted(group, key=lambda channel: channel.id)
-        for key, group in sorted(channels.items())
-    }
+    validate_reaction_record_targets(scientific_bindings)
+    return (
+        {
+            key: sorted(group, key=lambda channel: channel.id)
+            for key, group in sorted(channels.items())
+        },
+        resolved,
+    )
+
+
+def validate_reaction_record_targets(bindings: Iterable[tuple[str, ReactionKey]]) -> None:
+    """An independent scientific ID must keep the same full physical channel."""
+    targets: dict[str, ReactionKey] = {}
+    for identifier, target in bindings:
+        if targets.setdefault(identifier, target) != target:
+            raise ValueError(
+                "scientific reaction record ID is assigned to different physical targets: "
+                f"{identifier}"
+            )
 
 
 def _bind_channel_datasets(
@@ -272,6 +368,7 @@ def _channel(entry: dict, family: str, key: PairKey, root: Path) -> RegistryReac
         source=_source(source_data),
         status=entry.get("status", "draft"),
         stabilization=entry.get("stabilization"),
+        transformation=entry.get("transformation", {}),
         provenance=provenance,
         source_declaration=declaration,
         method=scientific_method(entry, source_data),
@@ -342,21 +439,19 @@ def registry_reaction_candidate(
         third_body=record.third_body,
         surface=record.surface,
         stabilization=record.stabilization,
+        transformation=bind_transformation_states(record.transformation, mapped),
     )
     return replace(candidate, id=reaction_id(candidate.key))
 
 
 def _scientific_reactions(
-    data: dict, channel: RegistryReaction, species: dict[str, Species], path: Path
+    data: dict, target: ReactionCandidate, species: dict[str, Species], path: Path
 ) -> tuple[ReactionRecord, ...]:
     entries = data.get("records") or []
     if not isinstance(entries, list) or any(not isinstance(item, dict) for item in entries):
         raise ValueError(f"{path}: records must be a list of scientific reaction records")
     if not entries:
         return ()
-    target = registry_reaction_candidate(channel, species)
-    if target is None:
-        raise ValueError(f"{path}: scientific reaction record has unresolved participants")
     declarations = []
     for entry in entries:
         if "datasets" in entry:
@@ -380,7 +475,12 @@ def _scientific_reactions(
             or record.stabilization != target.stabilization
         ):
             raise ValueError(f"{path}: scientific reaction record contradicts its channel target")
-        declarations.append(record)
+        mapped = {key: registry_state_candidate(value).id for key, value in species.items()}
+        declarations.append(
+            replace(
+                record, transformation=bind_transformation_states(record.transformation, mapped)
+            )
+        )
     return tuple(declarations)
 
 
@@ -420,17 +520,19 @@ def registry_state_candidate(record: Species) -> StateCandidate:
     )
 
 
-def _load_materials(directory: Path) -> dict[str, Material]:
+def _load_materials(directory: Path, hashes: dict[Path, bytes]) -> dict[str, Material]:
     if not directory.is_dir():
         return {}
     out = {}
     for path in sorted(directory.glob("*.yaml")):
-        data = _read(path)
+        data = _read(path, hashes)
         out[data["id"]] = Material(
             id=data["id"], name=data.get("name", data["id"]), notes=data.get("notes", "")
         )
     return out
 
 
-def _read(path: Path) -> dict:
-    return yamlio.load(path.read_text(encoding="utf-8")) or {}
+def _read(path: Path, hashes: dict[Path, bytes]) -> dict:
+    body = path.read_bytes()
+    hashes[path] = hashlib.sha256(body).digest()
+    return yamlio.load(body.decode("utf-8")) or {}

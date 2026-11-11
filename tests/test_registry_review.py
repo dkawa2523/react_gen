@@ -39,25 +39,19 @@ def catalog() -> EvidenceCatalog:
         ("CO", "F", 1.29e-11),
     ],
 )
-def test_model_association_rate_is_limited_to_its_source_temperature(
-    registry: Registry, catalog: EvidenceCatalog, projectile: str, target: str, source_rate: float
+def test_son_association_rows_keep_their_original_numbers_and_unspecified_stabilization(
+    registry: Registry, projectile: str, target: str, source_rate: float
 ) -> None:
     # Son et al. 2014, p. 242 and Table 1: heavy-particle rates adopted at 700 K.
     record = registry.channels[("neutral_neutral", projectile, target)][0]
-    reaction = registry_reaction_candidate(record, registry.species)
-    assert reaction is not None
-    evidence = catalog.reaction(reaction)
-    value = data_use(reaction, evidence, Conditions(gas_temperature_K=700))
-    assert value.status == "coefficient"
-    assert value.value == pytest.approx(source_rate * 1e-6, rel=1e-12, abs=0)
-    assert value.unit == "m3/s"
-    assert evidence.datasets[0].reaction_order == 2
-    assert data_use(reaction, evidence, Conditions()).required_inputs == ("gas_temperature",)
-    assert data_use(reaction, evidence, Conditions(gas_temperature_K=300)).status == "unavailable"
-    assert reaction.stabilization == "unspecified"
-    states = {state.id: state for state in map(registry_state_candidate, registry.species.values())}
-    judgment = assess_consistency(reaction, CandidateSet(states=states))
-    assert judgment.verdict == "pass"  # Equation shape; stabilization remains unspecified.
+    assert record.type == "association"
+    assert record.stabilization == "unspecified"
+    dataset = next(
+        dataset
+        for dataset in record.datasets
+        if dataset.source.get("source_id") == "doi:10.1007/s11090-013-9513-1"
+    )
+    assert dataset.params["source_value"] == pytest.approx(source_rate, rel=1e-12, abs=0)
 
 
 def test_pooling_equation_does_not_establish_a_lumped_rate(

@@ -1,0 +1,20 @@
+schema_version: 1
+id: SiH4+
+display_name: SiH4+
+composition: {Si: 1, H: 4}
+charge: 1
+phase: gas
+classes:
+- positive_ion
+- molecule
+state:
+  kind: ground
+  existence: confirmed
+  existence_source: Mass-selected parent ion observed in the low-temperature photoionization experiment.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: AIP
+    citation: J. Berkowitz et al., J. Chem. Phys. 86, 1235–1248 (1987)
+    url: https://doi.org/10.1063/1.452213

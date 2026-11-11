@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import export
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.chemistry import candidate_state
 from reactgen.evidence import EvidenceCatalog
 from reactgen.pipeline import analyze
@@ -60,7 +60,7 @@ def selected_delta_h(result):
 def test_anonymous_id_from_result_is_selectable_without_mutating_the_input_catalog(tmp_path: Path):
     initial = records()
     catalog = EvidenceCatalog(state_records=initial)
-    base = Case("fluorine", ("F2",))
+    base = Case("fluorine", ("F2",), limits=Limits(max_atoms=2, max_depth=1))
     listing = export.document(analyze(base, catalog))
     ground = next(state for state in listing["states"] if state["id"] == "F2@ground")
     chosen = next(
@@ -100,18 +100,50 @@ def test_a_target_selector_does_not_remove_another_species_value_or_change_its_s
             }
         }
     )
-    case = Case("fluorine", ("F2",), data_selection=request)
+    case = Case(
+        "fluorine",
+        ("F2",),
+        data_selection=request,
+        limits=Limits(max_atoms=2, max_depth=1),
+    )
     first = analyze(case, EvidenceCatalog(state_records=initial))
     enriched_atom = replace(
         initial[0], properties=initial[0].properties | {"mass_amu": Property(19, "amu")}
     )
     second = analyze(case, EvidenceCatalog(state_records=(enriched_atom, *initial[1:])))
-    assert selected_delta_h(first) == selected_delta_h(second)
+    # The augmented source declaration has a different content ID. Its new
+    # provenance reference must change, while the chemical calculation does not.
+    first_delta, second_delta = selected_delta_h(first), selected_delta_h(second)
+    assert first_delta.value == second_delta.value == -3
+    assert replace(first_delta, inputs=()) == replace(second_delta, inputs=())
     for state_id in ("F@ground", "F2@ground"):
         assert (
             first.evaluation.state_assessments[state_id]["state"]
             == second.evaluation.state_assessments[state_id]["state"]
         )
+
+
+def test_rejected_record_with_the_same_value_cannot_supply_formation_enthalpy():
+    atom, offered, _ = records()
+    good = replace(offered, record_id="good")
+    bad = replace(offered, record_id="bad", status="rejected")
+    case = Case("fluorine", ("F2",), limits=Limits(max_atoms=2, max_depth=1))
+    catalog = EvidenceCatalog(state_records=(atom, bad, good))
+    for record_id in ("good", "bad"):
+        selection = DataSelection.from_document(
+            {"targets": {"F2@ground": {"enthalpy_formation_eV": {"record": record_id}}}}
+        )
+        result = analyze(replace(case, data_selection=selection), catalog)
+        delta = selected_delta_h(result)
+        if record_id == "good":
+            assert delta.value == -1
+            assert [
+                item["record_id"] for item in delta.inputs if item["target"] == "F2@ground"
+            ] == ["good"]
+        else:
+            assert delta.value is None
+            assert delta.inputs == ()
+            assert any(item.responsibility == "source_selection" for item in delta.requirements)
 
 
 def test_existing_canonical_record_ids_are_preserved():

@@ -13,6 +13,16 @@ state:
   kind: ground
   label: X
   excitation_energy_eV: 0.0
+  existence: confirmed
+  existence_source: Cold-jet gas-phase CF4 infrared spectrum with assigned transitions from the vibrational ground state.
+  status: reviewed
+  source:
+    provider: literature
+    record_id: 10.1080/00268976.2022.2093285
+    citation: Caviezel, Horká-Zelenková, Seyfang and Quack, Mol. Phys. 120, e2093285 (2022)
+    url: https://doi.org/10.1080/00268976.2022.2093285
+  method: spectroscopy
+  review_scope: [state_existence]
 properties:
   mass_amu:
     value: 88.0043
@@ -305,3 +315,35 @@ records:
           enthalpy.
         parent_source_note: L 6/83
         parent_input_sha256: 4de6199d65d2d3db782e30573720c723130953707336add59713b02d8667e4db
+- record_id: ATcT_1.228:75-73-0*0
+  species: CF4
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 75-73-0*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=100
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: -927.62
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference:
+        temperature_K: 0.0
+        basis: standard_elements
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope:
+      - enthalpy_formation_eV
+      source_declaration:
+        atct_formula: CF4 (g)
+        published_uncertainty:
+          absolute: 0.23
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

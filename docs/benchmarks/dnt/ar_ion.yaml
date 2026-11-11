@@ -1,0 +1,1688 @@
+format: reactgen_dnt_preprocessing
+schema_version: 1
+analysis:
+  name: ar_ion
+  result_schema_version: 5
+  evidence_snapshot_hash: f23e08097518a9a00255fbe13faa3cfee248c03859ac7ddb1e3852f3d0a62b4b
+  generation_complete: false
+  conditions:
+    collision_energy_eV: 17.0
+    collision_energy_frame: com
+    projectile_state: e
+    target_state: Ar@ground
+pairs:
+- projectile:
+    state: Ar+@ground
+    mass_amu:
+      value: 39.94745
+      unit: amu
+      status: declared
+      declarations:
+      - record_id: local-state:e64326346bdaa7f9b86c
+        value: 39.94745
+        unit: amu
+        source: Ar atomic mass minus electron mass
+        status: imported
+        tier: imported
+        qualifier: null
+        uncertainty: null
+  target:
+    state: Ar@ground
+    mass_amu:
+      value: 39.948
+      unit: amu
+      status: declared
+      declarations:
+      - record_id: local-state:c39ad2fcd60961243e8e
+        value: 39.948
+        unit: amu
+        source: NIST Atomic Spectra Database / Basic Atomic Spectroscopic Data
+        status: imported
+        tier: imported
+        qualifier: null
+        uncertainty: null
+    polarizability_A3:
+      value: 1.6411
+      unit: A3
+      status: declared
+      declarations:
+      - record_id: local-state:c39ad2fcd60961243e8e
+        value: 1.6411
+        unit: A3
+        source: Experimental/static polarizability literature seed; CCCBDB/NIST polarizability
+          tables for review
+        status: imported
+        tier: curated
+        qualifier: null
+        uncertainty: null
+    dipole_moment_D:
+      value: 0.0
+      unit: D
+      status: declared
+      declarations:
+      - record_id: local-state:c39ad2fcd60961243e8e
+        value: 0.0
+        unit: D
+        source: atomic symmetry
+        status: imported
+        tier: imported
+        qualifier: null
+        uncertainty: null
+    collision_radius_A:
+      value: 1.7037
+      unit: A
+      status: declared
+      declarations:
+      - record_id: local-state:c39ad2fcd60961243e8e
+        value: 1.7037
+        unit: A
+        source: chemicals package bundled molecular property tables, CAS 7440-37-1
+        status: imported
+        tier: imported
+        qualifier: null
+        uncertainty: null
+  reduced_mass_amu: 19.97386249905345
+  neutral_dipole_model_hint: dnt_plus
+  channels:
+  - reaction_id: rxn_04dc206d4641
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@4s;kind=electronic;resolution=lumped
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_10bdbfa3ff7a
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@1s3
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.723161045859433
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:f26d5a95c8751031a7a4
+        record_ref: record-ref:edde653726663472d9008276dd0e9d19939370f3219d5b632f01fc47e8f7fc9f
+        target: Ar@1s3
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.723161045859433
+        source_value: 94553.6705
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_19ddd34084ee
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@1s4
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.6235933779826
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:ac3f2852ea81616e2e45
+        record_ref: record-ref:58593a236cc424cd4862f649567e3c5b1f2b85ed4107fd6d23b0cbdb4b57c75c
+        target: Ar@1s4
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.6235933779826
+        source_value: 93750.6031
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_1efd13015450
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@1s2
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.828071812767746
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:a8b054f5144db276850a
+        record_ref: record-ref:2bca62a110ed230ed5e4c6077601b2435f040b9f8f3a2753522fb01f02858d66
+        target: Ar@1s2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.828071812767746
+        source_value: 95399.8329
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_47b1517bc3f6
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@1s2
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 12.005565495911762
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+      - record_id: local-state:a8b054f5144db276850a
+        record_ref: record-ref:2bca62a110ed230ed5e4c6077601b2435f040b9f8f3a2753522fb01f02858d66
+        target: Ar@1s2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.828071812767746
+        source_value: 95399.8329
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_56b0bc9da8f5
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@1s5
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.548355079770634
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:11280e9e3f4ce73a1db9
+        record_ref: record-ref:d74284225f26d7b928068f2aead89551a21945d82ce53b726f62ad398d43a6b8
+        target: Ar@1s5
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.548355079770634
+        source_value: 93143.7653
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_8c7f48aed0c7
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@1s3
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.900654729003449
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+      - record_id: local-state:f26d5a95c8751031a7a4
+        record_ref: record-ref:edde653726663472d9008276dd0e9d19939370f3219d5b632f01fc47e8f7fc9f
+        target: Ar@1s3
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.723161045859433
+        source_value: 94553.6705
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_9e8586d80201
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@4s;kind=electronic;resolution=lumped
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_a3685dca3eb4
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@1s4
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.801087061126616
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+      - record_id: local-state:ac3f2852ea81616e2e45
+        record_ref: record-ref:58593a236cc424cd4862f649567e3c5b1f2b85ed4107fd6d23b0cbdb4b57c75c
+        target: Ar@1s4
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.6235933779826
+        source_value: 93750.6031
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_c24e4b81f39b
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@ground
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 0.17749368314401598
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_db3c6244bdc7
+    process: charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@1s5
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.72584876291465
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+      - record_id: local-state:11280e9e3f4ce73a1db9
+        record_ref: record-ref:d74284225f26d7b928068f2aead89551a21945d82ce53b726f62ad398d43a6b8
+        target: Ar@1s5
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.548355079770634
+        source_value: 93143.7653
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_105100c77872
+    process: collision_ionization
+    stabilization: null
+    products:
+    - species: e
+      n: 1.0
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar+@ground
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 15.937105583144016
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+      - record_id: local-state:c39ad2fcd60961243e8e
+        record_ref: record-ref:00a573bfe0e587c1d7c614308542fcf142bd774214dc73dbe51d9d3bcd4c9ff9
+        target: Ar@ground
+        quantity: ionization_energy_eV
+        coefficient: 1.0
+        value_eV: 15.7596119
+        source_value: 15.7596119
+        source_unit: eV
+        definition: null
+        method: unknown
+        provider: null
+        collection: null
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_1d46d68e9da3
+    process: collision_ionization
+    stabilization: null
+    products:
+    - species: e
+      n: 1.0
+    - species: Ar+@ground
+      n: 2.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 15.7596119
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:c39ad2fcd60961243e8e
+        record_ref: record-ref:00a573bfe0e587c1d7c614308542fcf142bd774214dc73dbe51d9d3bcd4c9ff9
+        target: Ar@ground
+        quantity: ionization_energy_eV
+        coefficient: 1.0
+        value_eV: 15.7596119
+        source_value: 15.7596119
+        source_unit: eV
+        definition: null
+        method: unknown
+        provider: null
+        collection: null
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_c1ee79c277d8
+    process: collision_ionization
+    stabilization: null
+    products:
+    - species: e
+      n: 1.0
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar+@metastable
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_e9a5560c23b0
+    process: collision_ionization
+    stabilization: null
+    products:
+    - species: e
+      n: 1.0
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar+@resonant
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_8b17617e5845
+    process: elastic
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@ground
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 0.0
+      unit: eV
+      status: computed
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_0d36729abd3f
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@resonant
+      n: 1.0
+    - species: Ar@ground
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_1093eb317f41
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@metastable
+      n: 1.0
+    - species: Ar@ground
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_1499e55afca4
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@metastable
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_301830b6c08f
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@resonant
+      n: 1.0
+    - species: Ar@1s2
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_338bd8b5c0b0
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@1s2
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 12.005565495911762
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+      - record_id: local-state:a8b054f5144db276850a
+        record_ref: record-ref:2bca62a110ed230ed5e4c6077601b2435f040b9f8f3a2753522fb01f02858d66
+        target: Ar@1s2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.828071812767746
+        source_value: 95399.8329
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_3e71350d3d0f
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@metastable
+      n: 1.0
+    - species: Ar@resonant
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_43b4c342a832
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@1s5
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.548355079770634
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:11280e9e3f4ce73a1db9
+        record_ref: record-ref:d74284225f26d7b928068f2aead89551a21945d82ce53b726f62ad398d43a6b8
+        target: Ar@1s5
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.548355079770634
+        source_value: 93143.7653
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_43d1f7efc42c
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@resonant
+      n: 1.0
+    - species: Ar@1s5
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_48bcdceabc07
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@4s;kind=electronic;resolution=lumped
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_49405abe8bc4
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@resonant
+      n: 1.0
+    - species: Ar@metastable
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_4d7277165ba5
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@resonant
+      n: 1.0
+    - species: Ar@1s4
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_4e43bd77f5b6
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@1s5
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.72584876291465
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+      - record_id: local-state:11280e9e3f4ce73a1db9
+        record_ref: record-ref:d74284225f26d7b928068f2aead89551a21945d82ce53b726f62ad398d43a6b8
+        target: Ar@1s5
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.548355079770634
+        source_value: 93143.7653
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_515e5ae71fb2
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@1s3
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.723161045859433
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:f26d5a95c8751031a7a4
+        record_ref: record-ref:edde653726663472d9008276dd0e9d19939370f3219d5b632f01fc47e8f7fc9f
+        target: Ar@1s3
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.723161045859433
+        source_value: 94553.6705
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_54e91641d654
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@metastable
+      n: 1.0
+    - species: Ar@1s4
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_553d2edf9074
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@metastable
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_59154d798e1b
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@metastable
+      n: 1.0
+    - species: Ar@metastable
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_614e33892840
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@1s3
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.900654729003449
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+      - record_id: local-state:f26d5a95c8751031a7a4
+        record_ref: record-ref:edde653726663472d9008276dd0e9d19939370f3219d5b632f01fc47e8f7fc9f
+        target: Ar@1s3
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.723161045859433
+        source_value: 94553.6705
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_61be0576f57e
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@1s4
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.801087061126616
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+      - record_id: local-state:ac3f2852ea81616e2e45
+        record_ref: record-ref:58593a236cc424cd4862f649567e3c5b1f2b85ed4107fd6d23b0cbdb4b57c75c
+        target: Ar@1s4
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.6235933779826
+        source_value: 93750.6031
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_6a8f4ecb0b24
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@resonant
+      n: 1.0
+    - species: Ar@4s;kind=electronic;resolution=lumped
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_7bca2abb7961
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@1s4
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.6235933779826
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:ac3f2852ea81616e2e45
+        record_ref: record-ref:58593a236cc424cd4862f649567e3c5b1f2b85ed4107fd6d23b0cbdb4b57c75c
+        target: Ar@1s4
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.6235933779826
+        source_value: 93750.6031
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_7dec1b40d10b
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@resonant
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_9e2971754ff7
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@resonant
+      n: 1.0
+    - species: Ar@resonant
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_a0c7b353cb98
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@2p1%2F2
+      n: 1.0
+    - species: Ar@ground
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 0.17749368314401598
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:e0174169cf2f0a0932bf
+        record_ref: record-ref:8b783071b621464c1655d92644c5a16fad20d1c71dd67fb25bd628089ec8ee4c
+        target: Ar+@2p1%2F2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 0.17749368314401598
+        source_value: 1431.5831
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar+@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_a333486fa328
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@resonant
+      n: 1.0
+    - species: Ar@1s3
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_bc38d26d8a06
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@1s2
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 11.828071812767746
+      unit: eV
+      status: computed
+      inputs:
+      - record_id: local-state:a8b054f5144db276850a
+        record_ref: record-ref:2bca62a110ed230ed5e4c6077601b2435f040b9f8f3a2753522fb01f02858d66
+        target: Ar@1s2
+        quantity: excitation_energy_eV
+        coefficient: 1.0
+        value_eV: 11.828071812767746
+        source_value: 95399.8329
+        source_unit: cm-1
+        definition: null
+        method: evaluated
+        provider: NIST
+        collection: SRD108
+        related_state: Ar@ground
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_cb7228cafd1e
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@metastable
+      n: 1.0
+    - species: Ar@1s3
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_cdbf9f280c3f
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@metastable
+      n: 1.0
+    - species: Ar@4s;kind=electronic;resolution=lumped
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_d313ff58369e
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@metastable
+      n: 1.0
+    - species: Ar@1s2
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_d43edf0e2135
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@4s;kind=electronic;resolution=lumped
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_e33d2cd03856
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@resonant
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_e632d20681c0
+    process: level_transfer
+    stabilization: null
+    products:
+    - species: Ar+@metastable
+      n: 1.0
+    - species: Ar@1s5
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: unknown
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: null
+      unit: eV
+      status: unavailable
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+  - reaction_id: rxn_103025254b1e
+    process: resonant_charge_exchange
+    stabilization: null
+    products:
+    - species: Ar+@ground
+      n: 1.0
+    - species: Ar@ground
+      n: 1.0
+    judgments:
+      conservation: pass
+      consistency: pass
+      state: pass
+      energy: not_applicable
+      reaction_evidence: unknown
+    endpoint_difference:
+      value: 0.0
+      unit: eV
+      status: computed
+      inputs: []
+    declared_threshold_eV: null
+    threshold_records: []
+    collision_energy_com_eV: null
+    collision_input: null
+states:
+- id: Ar+@2p1%2F2
+  composition:
+    Ar: 1
+  charge: 1
+  state:
+    kind: resolved
+    resolution: resolved
+    label: 2p1/2
+  structure: null
+- id: Ar+@ground
+  composition:
+    Ar: 1
+  charge: 1
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  structure: null
+- id: Ar+@metastable
+  composition:
+    Ar: 1
+  charge: 1
+  state:
+    kind: metastable
+    resolution: lumped
+    label: ''
+  structure: null
+- id: Ar+@resonant
+  composition:
+    Ar: 1
+  charge: 1
+  state:
+    kind: resonant
+    resolution: lumped
+    label: ''
+  structure: null
+- id: Ar@1s2
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: resolved
+    resolution: resolved
+    label: 1s2
+  structure: null
+- id: Ar@1s3
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: resolved
+    resolution: resolved
+    label: 1s3
+  structure: null
+- id: Ar@1s4
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: resolved
+    resolution: resolved
+    label: 1s4
+  structure: null
+- id: Ar@1s5
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: resolved
+    resolution: resolved
+    label: 1s5
+  structure: null
+- id: Ar@4s;kind=electronic;resolution=lumped
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: electronic
+    resolution: lumped
+    label: 4s
+  structure: null
+- id: Ar@ground
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: ground
+    resolution: resolved
+    label: ''
+  structure: null
+- id: Ar@metastable
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: metastable
+    resolution: lumped
+    label: ''
+  structure: null
+- id: Ar@resonant
+  composition:
+    Ar: 1
+  charge: 0
+  state:
+    kind: resonant
+    resolution: lumped
+    label: ''
+  structure: null
+- id: e
+  composition: {}
+  charge: -1
+  state:
+    kind: electron
+    resolution: resolved
+    label: electron
+  structure: null

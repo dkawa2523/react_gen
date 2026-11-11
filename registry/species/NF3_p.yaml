@@ -1,0 +1,51 @@
+schema_version: 1
+id: NF3+
+display_name: NF3+
+phase: gas
+composition: {N: 1, F: 3}
+charge: 1
+classes: [ion, cation, molecule]
+state:
+  kind: ground
+  term: X2A1
+  existence: confirmed
+  existence_source: Experimental photoelectron band reassigned to the lowest cation state by Bentley et al. Its adiabatic origin is theory-constrained.
+  status: reviewed
+  method: evaluated
+  review_scope: [state_existence]
+  source:
+    provider: literature
+    collection: Journal of Physical Chemistry A
+    citation: M. R. Bentley et al., Discrepancies between Theory and Experiment in Determining the Ionization Energy of NF3 (2025).
+    url: https://doi.org/10.1021/acs.jpca.5c00613
+records:
+- record_id: ATcT_1.228:54384-83-7*0
+  species: NF3+
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 54384-83-7*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical Network v1.228, Argonne National Laboratory.
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=1965
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 1093.83
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: '[NF3]+ (g)'
+        published_uncertainty:
+          absolute: 0.62
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit
+        adiabatic_origin_review: https://doi.org/10.1021/acs.jpca.5c00613
+        scope: Ground-state endpoint from the evaluated network, including theory-constrained adiabatic origin. An electron-impact appearance threshold is a separate quantity.

@@ -1,0 +1,49 @@
+schema_version: 1
+id: NF2
+display_name: NF2
+phase: gas
+composition: {N: 1, F: 2}
+charge: 0
+classes: [neutral, molecule]
+state:
+  kind: ground
+  term: X2B1
+  existence: confirmed
+  existence_source: Gas-phase rotational spectroscopy assigned to X2B1.
+  status: reviewed
+  method: spectroscopy
+  review_scope: [state_existence]
+  source:
+    provider: literature
+    collection: Journal of Molecular Spectroscopy
+    citation: H. S. P. Müller et al., J. Mol. Spectrosc. 251 (2008), 185–193.
+    url: https://doi.org/10.1016/j.jms.2008.02.014
+records:
+- record_id: ATcT_1.228:3744-07-8*0
+  species: NF2
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 3744-07-8*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical Network v1.228, Argonne National Laboratory.
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=664
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 36.21
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: NF2 (g)
+        published_uncertainty:
+          absolute: 0.58
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

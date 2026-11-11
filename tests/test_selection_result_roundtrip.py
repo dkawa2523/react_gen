@@ -4,9 +4,11 @@ from dataclasses import replace
 from pathlib import Path
 
 import pytest
+import yaml
 
 from reactgen import export
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
+from reactgen.cli import main
 from reactgen.evidence import EvidenceCatalog
 from reactgen.pipeline import analyze
 from reactgen.records import NumericDataset, SourceRef, Validity
@@ -14,7 +16,12 @@ from reactgen.selection import DataSelection
 
 
 def selected_result(equal_values: bool = False, mode: str = "prefer"):
-    base = Case("sample", ("Ar",), conditions=Conditions(gas_temperature_K=300))
+    base = Case(
+        "sample",
+        ("Ar",),
+        conditions=Conditions(gas_temperature_K=300),
+        limits=Limits(max_atoms=1, max_depth=1),
+    )
     generated = analyze(base, EvidenceCatalog())
     target = next(
         reaction
@@ -56,7 +63,9 @@ def selected_result(equal_values: bool = False, mode: str = "prefer"):
     return target.id, result
 
 
-def test_cli_api_shape_and_saved_number_share_the_selection(tmp_path: Path) -> None:
+def test_cli_api_shape_and_saved_number_share_the_selection(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     target, result = selected_result()
     export.write(tmp_path, result)
     document = export.read(tmp_path, verify_views=True)
@@ -71,6 +80,17 @@ def test_cli_api_shape_and_saved_number_share_the_selection(tmp_path: Path) -> N
     assert reaction["assessments"]["reaction_evidence"]["verdict"] == "unknown"
     assert reaction["assessments"]["kinetics"]["verdict"] == "pass"
     assert "source_declaration" in reaction["evidence"]["overlay_datasets"][0]
+    assert (
+        main(["records", str(tmp_path), "--target", target, "--quantity", "rate_coefficient"]) == 0
+    )
+    listed = yaml.safe_load(capsys.readouterr().out)
+    assert listed["coefficient_use"]["status"] == "coefficient"
+    assert listed["coefficient_use"]["dataset_id"] == "lab-a-rate"
+    assert listed["coefficient_use"]["value"] == pytest.approx(1e-16)
+    by_id = {record["id"]: record for record in listed["records"]}
+    assert by_id["lab-a-rate"]["provenance"]["provider"] == "lab_a"
+    assert by_id["lab-a-rate"]["native_evaluation"]["status"] == "valid"
+    assert by_id["lab-b-rate"]["native_evaluation"]["status"] == "valid"
 
 
 def test_saved_disagreement_must_refer_to_a_dataset() -> None:
@@ -96,7 +116,12 @@ def test_duplicate_dataset_identity_conflict_can_be_saved(tmp_path: Path) -> Non
     offered = result.evaluation.reaction_evidence[target].overlay_datasets
     same_id = (offered[0], replace(offered[1], id=offered[0].id))
     result = analyze(
-        Case("sample", ("Ar",), conditions=Conditions(gas_temperature_K=300)),
+        Case(
+            "sample",
+            ("Ar",),
+            conditions=Conditions(gas_temperature_K=300),
+            limits=Limits(max_atoms=1, max_depth=1),
+        ),
         EvidenceCatalog(overlay_datasets={target: same_id}),
     )
     export.write(tmp_path, result)
@@ -120,7 +145,7 @@ def test_saved_equal_value_does_not_bypass_the_source_request(mode: str) -> None
 def test_saved_kind_must_describe_the_selected_scientific_record() -> None:
     target, result = selected_result()
     result = analyze(
-        Case("sample", ("Ar",)),
+        Case("sample", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
         EvidenceCatalog(
             overlay_datasets={
                 target: result.evaluation.reaction_evidence[target].overlay_datasets[:1]
@@ -140,7 +165,12 @@ def test_unsupported_native_quantity_keeps_its_declaration_without_a_rate_claim(
     source = previous.evaluation.reaction_evidence[target].overlay_datasets[0]
     unsupported = replace(source, kind="unsupported_quantity", observable="unsupported")
     result = analyze(
-        Case("sample", ("Ar",), conditions=Conditions(gas_temperature_K=300)),
+        Case(
+            "sample",
+            ("Ar",),
+            conditions=Conditions(gas_temperature_K=300),
+            limits=Limits(max_atoms=1, max_depth=1),
+        ),
         EvidenceCatalog(overlay_datasets={target: (unsupported,)}),
     )
     export.write(tmp_path, result)

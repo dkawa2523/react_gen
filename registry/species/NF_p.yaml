@@ -1,0 +1,49 @@
+schema_version: 1
+id: NF+
+display_name: NF+
+phase: gas
+composition: {N: 1, F: 1}
+charge: 1
+classes: [ion, cation, molecule]
+state:
+  kind: ground
+  term: X2Pi
+  existence: confirmed
+  existence_source: Vacuum ultraviolet photoelectron bands assigned to the X2Pi ion.
+  status: reviewed
+  method: spectroscopy
+  review_scope: [state_existence]
+  source:
+    provider: literature
+    collection: Journal of the Chemical Society, Faraday Transactions 2
+    citation: J. M. Dyke et al., J. Chem. Soc., Faraday Trans. 2, 78 (1982), 1445.
+    url: https://doi.org/10.1039/F29827801445
+records:
+- record_id: ATcT_1.228:33146-36-0*0
+  species: NF+
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 33146-36-0*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical Network v1.228, Argonne National Laboratory.
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=1669
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 1415.07
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: '[NF]+ (g)'
+        published_uncertainty:
+          absolute: 0.83
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

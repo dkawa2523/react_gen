@@ -1,0 +1,85 @@
+schema_version: 1
+id: SiH
+display_name: SiH (silylidyne)
+composition: {Si: 1, H: 1}
+charge: 0
+phase: gas
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  term: X 2Pi
+  existence: confirmed
+  existence_source: Mass-selected photoelectron spectrum identifies the gas-phase neutral X 2Pi state.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: AIP
+    citation: N. L. Chen et al., J. Chem. Phys. 157, 014303 (2022)
+    url: https://doi.org/10.1063/5.0094863
+properties:
+  ionization_energy_eV:
+    value: 7.934
+    unit: eV
+    definition: adiabatic
+    related_state: SiH+@ground
+    source:
+      provider: AIP
+      citation: N. L. Chen et al., J. Chem. Phys. 157, 014303 (2022)
+      url: https://doi.org/10.1063/5.0094863
+    method: measured
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [ionization_energy_eV]
+    uncertainty: {absolute: 0.005, unit: eV}
+    source_declaration:
+      scope: Neutral X 2Pi (v=0) to cation X+ 1Sigma+ (v=0), Table II.
+  electron_affinity_eV:
+    value: 1.2771
+    unit: eV
+    definition: adiabatic
+    related_state: SiH-@ground
+    source:
+      provider: AIP
+      citation: A. Kasdan, E. Herbst and W. C. Lineberger, J. Chem. Phys. 62, 541–548 (1975)
+      url: https://doi.org/10.1063/1.430508
+    method: measured
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [electron_affinity_eV]
+    uncertainty: {absolute: 0.0087, unit: eV}
+    source_declaration:
+      scope: Adiabatic gas-phase laser photoelectron affinity of SiH.
+      compilation_url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C13774942&Mask=20
+records:
+- record_id: ATcT_1.228:13774-94-2*0
+  species: SiH
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 13774-94-2*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=392
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 371.63
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0.0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: SiH (g)
+        published_uncertainty:
+          absolute: 0.56
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

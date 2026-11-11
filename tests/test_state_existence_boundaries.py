@@ -17,7 +17,7 @@ from reactgen.assessment import (
     assess_state_thermochemistry,
     evaluate,
 )
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
 from reactgen.chemistry import candidate_state, electron_state
 from reactgen.evidence import EvidenceCatalog, StateEvidence
 from reactgen.model import CandidateSet, ReactionCandidate, Term
@@ -153,7 +153,12 @@ def test_conflicting_existence_survives_snapshot_ingest_adopt_without_losing_qua
         yamlio.dump({"snapshot_version": 1, "records": [state_record_payload(r) for r in records]}),
         encoding="utf-8",
     )
-    case = Case("synthetic boundary", ("F2",), conditions=Conditions(gas_temperature_K=300))
+    case = Case(
+        "synthetic boundary",
+        ("F2",),
+        conditions=Conditions(gas_temperature_K=300),
+        limits=Limits(max_depth=1, max_atoms=2, max_species=20, max_reactions=80),
+    )
     direct = analyze(case, EvidenceCatalog.load_paths((source,)))
     bundle, overlay = tmp_path / "bundle", tmp_path / "overlay.yaml"
     export.write(bundle, direct)

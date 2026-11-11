@@ -1,22 +1,22 @@
-# データ源と証拠の流れ
+# データ取得・照合・採用
 
-現行の候補生成は証拠と独立した有限文法による列挙です。`analyze`は指定したローカル証拠だけを
-読み、取得やRegistry変更を行いません。取得、照合、科学的レビュー、永続採用は別操作です。
+`analyze`は有限文法による候補とローカル証拠が明示したチャネルを共通の探索へ渡します。
+取得、候補との照合、科学的審査、永続採用は個別の操作です。
+科学記録の形式・資格・量の定義は[記録ガイド](registry_data_guide.md)、
+取得元の利用条件とnoticeは[出典・配布方針](source_license_policy.md)を参照してください。
 
 ```text
 外部データ -> acquire -> snapshot.yaml と原本・参照asset
   -> rgen ingest SNAPSHOT --result RESULT --overlay OVERLAY
        一意に照合できる記録 -> overlay
        一意に照合できない記録・同定不足・分類不一致 -> review_queue.yaml
-  -> rgen analyze Ar CF4 --evidence registry --evidence OVERLAY --out result
+  -> rgen analyze Ar CF4 --supply e --evidence registry --evidence OVERLAY --out result
   -> 明示的な rgen adopt OVERLAY --registry registry
 ```
 
 照合成功は科学的承認ではありません。`status: imported`の数値はレビュー前の値として保持し、
 自動でreviewedへ昇格しません。Registryへの所属も個別物性の品質を保証しません。
-汎用取得経路と出典・参照条件を整備し、個別審査できた熱化学モデル・形成量・
-電子電離断面積を補充しました。追加記録と資格・制約は[科学レビュー](scientific_data_review.md)、
-登録する欄と必要情報は[表記辞書](data_dictionary.md)を参照してください。
+収録した科学記録の審査範囲と適用条件は[出典・配布方針](source_license_policy.md)に記録します。
 手元のデータが共通snapshot形式なら、converterを追加せず`ingest`または`--evidence`へ
 直接渡せます。必要な取得・変換と、すでに共通形式にある記録の読込みを分けてください。
 
@@ -36,21 +36,9 @@
 利用許諾、分析時の優先順位を意味しません。ユーザーデータのproviderは台帳への登録なしでも
 明示できます。取得先ごとの条件は[source/license policy](source_license_policy.md)を参照してください。
 
-各記録の`provenance`はprovider、collection、release、record_id、citation、URL等の出典情報です。
-`method`は`measured`・`evaluated`・`calculated`・`estimated`・`unknown`、
-`tier`は証拠の資格、`review_scope`は宣言されたレビュー対象を表します。存在には
-`state_existence`、Propertyにはその物性名、NASAには`thermochemical_model`、反応には
-`channel_assertion`・`threshold_eV`・`delta_e_eV`の資格をそれぞれ確認します。
-明示scope外と`status: rejected/conflicting`の値は、reviewed tierでも採用しません。
-scopeは承認する命題、statusは科学宣言自体の受理・拒否状態です。親状態記録の拒否・競合は
-その宣言全体の利用停止で、個別Property・NASAの審査から復活させません。部分的な存在否定と
-適格な物性を別資格で保持したい場合は独立記録へ分けます。
-Propertyの`qualifier`は非束縛等の科学的内容として別に保持し、管理上の拒否statusから
-現象の不存在を導きません。空または省略scopeの旧記録には各型の既存資格を維持しますが、
-scope省略だけでtierを昇格しません。数値snapshotはscope省略時もその数値kindに限定します。
-係数のレビューを反応・閾値の承認へ広げません。これらを分け、
-provider名やsource_typeの文字列から測定方法・品質を推測しません。元の欄、注記、原資料は
-`source_declaration`に保持します。方法やレビュー範囲が不明なら、その不明を残します。
+取得元が宣言した値・単位、注記、状態名、出典を`source_declaration`とともに保ちます。
+測定方法や審査範囲が不明なら、その不明を残します。科学量を利用するための資格は
+[記録の出典と資格](registry_data_guide.md#出典と資格)を確認してください。
 
 新しいsnapshotは`snapshot_version: 1`を持ちます。版なしの既存snapshotも読み込めますが、
 未対応の版は入力エラーです。LXCat・UMIST・CollisionDBのファイル変換は原本をsnapshot内の`raw/`へ保存し、
@@ -66,10 +54,11 @@ provider名やsource_typeの文字列から測定方法・品質を推測しま�
 WebBookの取得・保存HTML変換も原ページと完全なhashを保存します。複数のページは各記録の
 原宣言に独立した取得情報を持たせ、最後のページの情報を他の種へ流用しません。
 
-旧`source_access_profiles.yaml`と`sources.yaml`は台帳へ統合して撤去しました。
-今回の移行前の原本とhashは`build/source_catalog_migration/`へ保存しています。
+新しい成果物の原本と数表は、内容のSHA-256を含む相対パスへ保存します。配置は宣言されたパスで辿り、旧パスの成果物も読めます。変換と原本の記録には同じバイト列を使います。原本・数表の用意が終わってからスナップショットを公開します。中断時に未参照のファイルが残っても、既存のスナップショットが参照するファイルは引き続き利用できます。
+
+WebBook CLIは変換時の`request`（queryと元target）と原本のパス・hashを併せて保持します。
+
 既存の独自fetch台帳は`--catalog`で指定でき、旧`id`欄も取得用adapterで読みます。
-旧priority/profileを分析の選択設定として利用する経路はありません。
 
 ## 同定と存在根拠
 
@@ -133,67 +122,11 @@ overlayの`datasets`へ、採用後はchannelの`data.datasets`へ保存しま�
 式を持たず明示したbundleの`reaction_id`を参照する入力では、その保存対象から物理対象を同定し、
 元の入力宣言も保持します。同じIDの別エネルギー量だけの差から、チャネル根拠の競合を導きません。
 
-## 数値データと利用者の選択
+## 数値データと参照ファイル
 
-取得元によらず同じ`NumericDataset`へ正規化し、同じ数値評価へ渡します。
+取得した数値は共通の科学記録として読み込みます。項目は[記録形式](registry_data_guide.md#反応とdataset)、出典の選び方は[数値の採用要求](output_reference.md#数値の採用要求)を参照してください。
 
-| 項目 | 意味 |
-|---|---|
-| kind / form | 断面積、速度係数、付着確率と、table・constant・arrhenius・reference_only |
-| unit / observable | 数値の次元と測定量。momentum transferと反応断面積を区別する |
-| independent_variable / validity | 物理量、適用範囲、単位。TgとTeを区別する |
-| reaction_order | sourceが宣言する速度式の次数。未宣言時は許可された素反応の次数を使う |
-| reference_temperature_K / parameter_units | Arrhenius基準温度と活性化項の単位 |
-| channel_scope | product_resolved、total等の対象範囲。不明を個別生成物の値へ補完しない |
-| provenance / source_declaration | 出典と元の宣言。sourceの表示文字列も保持する |
-| method / status / tier / uncertainty | 生成方法、証拠の資格、不確かさ |
-| asset | 参照path、実測sha256、元のdeclared_sha256 |
-
-入力の`data_selection.quantities`で、数値3量に加え`enthalpy_formation_eV`・
-`ionization_energy_eV`・`electron_affinity_eV`・`excitation_energy_eV`・
-`thermochemical_model`ごとにmethod、provider、collectionの`prefer`順または`only`限定、
-特定recordを指定できます。`data_selection.targets`では保存されたcanonical対象IDごとに
-量のpolicyを上書きできます。同じ適用性評価の後に選択するため、優先指定で未レビュー・
-誤単位・範囲外・対象不一致のデータを利用可能にはしません。適用条件が不足する優先記録は
-必要入力を返します。採用値と競合・不一致記録は正規結果へ残します。
-`prefer`による順位は同じobservableと、速度係数なら同じreaction_orderの記録内で適用します。
-例えば別の測定量の断面積や異なる次数の速度式を、provider順位だけで選びません。
-必要な量・モデルを明示するには`record`で固定するか、`only`で該当する出典へ限定します。
-限定後も異なる量・モデルが残れば、さらに明示選択を必要とします。
-
-指定した量では旧datasetの`preferred`を使いません。未指定の量に残る`preferred`は移行用の
-互換処理です。具体的な入力と選択規則は[README](../README.md)を参照してください。
-物性・熱化学モデルの選択も、量の定義・形成参照・同定の確認を飛ばしません。
-状態・反応の存在根拠や反応エネルギー根拠の優先指定は、上の量別policyの対象ではありません。
-形成量の共通参照型と比較前提、反応threshold/deltaEの独立Property化は実装済みです。
-
-`rgen records RESULT --target N2@ground --quantity ionization_energy_eV`は、保存した出所・
-内容・資格と選択に使う正規IDを先に表示します。`--detail`で原宣言を含む全記録を参照できます。
-状態の`record_id`、数値datasetの`id`を対象別policyの`record`へ指定します。
-一覧は保存結果の表示であり、再計算や記録の承認は行いません。
-
-同一dataset IDの異なる科学内容は競合です。constant/Arrheniusの同一記録は、既知の単位換算で
-一致する表現も共通規則で比較し、同じ単位の異値は厳密に区別します。換算の丸めだけを許容し、
-source・observable・反応次数・注記・審査条件等の違いを消しません。絶対不確かさの別単位は
-同じ物理次元の場合に値の単位へ正規化し、元の単位と原宣言を保持します。
-不正・範囲外・未レビューの記録も結果へ残し、修復・
-代替取得の対象にします。数値の不適用は反応不存在を意味しません。個別datasetの判定は
-native量の数値利用可否です。断面積では、宣言したエネルギー範囲での曲線表現を確認し、
-指定エネルギーの点評価、分布の収録範囲の完備、速度係数を決めたことにはしません。
-確率では、必要な条件での確率を返せても入射粒子数・表面速度は決まりません。
-
-係数用途の`DataUse`は別に、断面積に必要な明示分布と積分、確率に必要な入射モデルと
-流束変換を必要作業へ保存します。これらの変換は現在未実装です。電子温度の入力だけで
-電子エネルギー分布の形を指定したことにはなりません。運動量移行・実効運動量移行断面積は
-反応衝突数を数える量と異なり、同じエネルギー分布との積分だけでは反応衝突速度係数を
-求められません。その用途では対応する反応断面積が必要です。利用可能な係数を選べた場合にも、
-他のnative記録の不足や評価はその記録に保持します。
-
-assetは作者の宣言hashと保存時の実測hashを分けて保持します。表を使う際は保存hashを
-照合した同じbytesを解析し、再読込みや読込み後の変更で新しい値を無言で採用しません。
-adoptは検証したbytesをRegistry内へコピーし相対pathにします。同じ科学内容と検証済み
-bytesの保存場所だけでは競合にせず、各取得の原宣言・参照場所は残します。検証できない
-bytesや異なる科学条件を同一化せず、宣言hash不一致のデータには計算資格を与えません。
+表は保存したハッシュに一致するバイト列を解析します。採用時は検証した同じバイト列をRegistry内へ置き、相対パスで参照します。
 
 ## 取得要求の対象と検索名
 
@@ -220,9 +153,12 @@ IDの化学式部の順で使います。元の検索名・要求対象・その
 `source_identity`に取得元の組成・構造識別子・名前を保持し、検索queryを同定根拠にしません。
 CCCBDBは同じ組成の複数の依頼対象を保持し、構造・状態が競合する出典には明示した検索名を使います。
 
-化学式だけの多原子分子要求へ、取得した特定構造の値を無言で付けません。構造固有値は
-取得元の構造付き対象として保存し、式だけの候補には関連証拠として残ります。現在の通常Caseは
-構造入力・構造別生成に対応していないため、この同定不足を温度入力等で解消した扱いにしません。
+特定構造の値は取得元の構造付き対象として保存し、式だけの候補には関連証拠として残します。
+通常Caseでは明示SMILESを入力でき、同じ構造表現を検証できる記録へ照合します。取得元が
+別の識別体系を使う場合は、出典を示して対応関係を確認する必要があります。
+同梱RegistryのO₂・F₂には、確認済みの名目種とグラフの対応を持たせています。照合範囲は
+その宣言を持つ資料に限ります。[Registryの構造宣言](registry_data_guide.md#状態と物性)
+F₂・NF₃・SiH₄のATcT形成量では、原資料自身が示すSMILESを個別記録へ付けています。
 取得成功と既存候補への数値利用は別です。構造を指定した要求が取得元と異なれば入力エラーです。
 
 従来の取得出力の`source_query`は上記acquisitionコンテナへ移しました。既存snapshotの原宣言は
@@ -245,6 +181,36 @@ HTTP 404は該当entryなし、500/429・通信失敗・壊れたJSON等は取�
 異なる理由です。molecularの値読込みで予期しない例外を`None`へ変換せず、Cantera元ファイルの
 破損・未配置を「当該種のfitがない」と扱いません。不正なProperty mappingや物理同定の矛盾は
 読込み時の入力エラーです。出典に値や条件が本当にない場合は、その依存情報の不足として扱います。
+
+## 用途別の取得元と参照
+
+必要な候補・端点と量を先に定めます。同じ対象について定義付きの直接値があれば、代替計算用の量まで一律に集める必要はありません。
+別出典を組み合わせる場合は、参照基底、相、構造、電荷、核種、温度や標準状態を量の用途に応じて照合します。
+
+| 量 | 原資料と現行の取扱い |
+|---|---|
+| 形成量・IE・EA | [ATcT版固定表](https://atct.anl.gov/Thermochemical%20Data/version%201.228/index.php)の0 K／298.15 K形成量、[WebBookの気相イオン熱化学](https://webbook.nist.gov/chemistry/ion/)の量定義と個別原典を確認します。WebBookは対応表を変換できます。ATcT専用の取得adapterはありません。 |
+| 解離エネルギーD₀ | 原著が指定する親からフラグメントへの0 K差を用います。例えば[D₂](https://doi.org/10.1063/1.3374426)と[HD](https://doi.org/10.1063/1.3483462)ではそれぞれ対応する核種と準位を確認します。一般の解離表から自動変換する入口はなく、[関係量の記入例](registry_data_guide.md#科学量の定義と反応エネルギー)で入力できます。 |
+| PA・GB | [WebBookのNH₃](https://webbook.nist.gov/cgi/cbook.cgi?ID=C7664417&Mask=20)等から共役対、参照温度、GBの標準圧を確認します。現行WebBook変換の対象外で、対応するPropertyを独立に記録します。 |
+| 原子・原子イオンの準位 | [NIST ASD準位表](https://physics.nist.gov/PhysRefData/ASD/Html/levelshelp.html)の電荷段階、準位、帰属、基準を使います。各電荷段階の基底ゼロは独立なので、電荷段階をまたぐ差には対応するIEを使います。 |
+| 分子の実準位 | 原著の直接差、または[ExoMolの形式原著](https://exomol.com/static/papers/548.pdf)と同一の同位体分子・データセット版の定義と準位表を用います。準位IDはデータセット内の番号です。遷移表全体や光学強度はエネルギー差に必須ではありません。 |
+| 熱関数 | [JANAFのNH₃表](https://janaf.nist.gov/tables/H-083.html)の温度・標準圧と`H−H(Tr)`、[CCCBDBの熱関数](https://cccbdb.nist.gov/thermox.asp)・[元素参照](https://cccbdb.nist.gov/refstatex.asp)を個別に確認します。現行CCCBDB adapterは分極率を扱います。NASA7を有効温度域外へ外挿しません。[Canteraの熱化学仕様](https://cantera.org/stable/reference/thermo/species-thermo.html) |
+| 構造・質量 | 原資料の構造、返却された[PubChem CID](https://pubchem.ncbi.nlm.nih.gov/pcfe/docs/pug-rest.html)と対象を照合します。ConnectivitySMILESでは核種・立体情報を失う場合があります。質量は[標準原子量](https://ciaaw.org/atomic-weights.htm)、[個別核種の質量](https://ciaaw.org/atomic-masses.htm)、中性原子の組成和、イオン質量を区別します。 |
+
+`h_s(T)=H_s(T)−H_s(0)`が整合する表から得られれば、有限温度の反応エンタルピーの0 K差は
+`ΔrH(0)=ΔrH(T)−Σν_s h_s(T)`です。中性種の個別形成量には
+`ΔfH_s(0)=ΔfH_s(T)−h_s(T)+Σ_a n_sa h_element,a(T)` と元素参照の熱増分が必要です。
+イオンを含む有限温度資料は電子の参照規約と熱項を確認します。
+温度または基準の不足は、有限温度の原値とは分けて扱います。
+この補正は資料を照合して導出した値を登録する場合の手順です。解析時に熱関数を自動取得して変換する処理はありません。
+
+共通の参照基準が確認できる準位差を使います。例えば[WebBookのCO分光定数表](https://webbook.nist.gov/cgi/cbook.cgi?ID=C630080&Mask=1000)
+にある `D_e` は遠心歪定数です。井戸底からの解離エネルギーとは別量で、現在のWebBook adapterはこの表を変換しません。
+ExoMolの縮退度 `gtot` には核スピンの重みが入り、電子多重度へは変換しません。
+同じ元データに由来する複数の出典を独立した測定とは数えず、標準不確かさと包含区間を区別します。
+
+HTTPエラー、取得した内容の形式不一致、対象の不一致、変換機能の適用外、調べた資料の範囲内での未収録は個別に扱います。
+部分取得では検証した範囲を記録し、そのhashを原本全体のhashとして使いません。
 
 ## 取得adapterの範囲
 
@@ -279,7 +245,7 @@ JSONヘッダ、区切り線、2列の積分断面積に対応し、軸`eV/keV`�
 stateful反応、原`qid`・文献・方法・frame・合計チャネル・fit・全体と各点の不確かさ、
 raw/hashを保存します。微分断面積、質量当たりエネルギー、多列表、欠測点の補間は未対応です。
 必要な対応を`--reaction`、`--type`、`--independent-variable`、`--observable`、
-`--channel-scope`で明示できます。対応語彙は[表記辞書](data_dictionary.md)を参照してください。
+`--channel-scope`で明示できます。対応語彙は[記録ガイド](registry_data_guide.md#対象と反応)を参照してください。
 原状態名をgroundへ省略せず、未指定scopeを`product_resolved`へ昇格しません。
 重粒子衝突の原frameは`com/target`を必要とし、欠落・不正は取得形式エラーです。
 利用者の軸指定で原frameを補いません。対応の不明な原反応はingestで同定作業へ回します。
@@ -303,11 +269,10 @@ CP/CR/PHと二体以外は数値snapshotの対象外で、保存した原本で�
 [RATE22一次資料](https://umistdatabase.uk/files/UDfA2024.pdf)
 
 同じ過程・式の別行が温度範囲で重なる場合、和の成分か代替値かを確定できないため、
-全成分をparametersと原行付きの`reference_only`として保持します。加算モデルの科学的同定と
-評価は残件です。2026-10-12に確認した[公式RATE22原本](https://umistdatabase.uk/files/rate22_final.rates)
-（SHA-256 `2f83cdd0905e5dd50494f23bc5faf559a617d866b365cf9d1c5fef3621a1a219`）は、
-5488行の余分な引用符をstrict parserが拒否します。この原本の全件変換が成功したとは扱わず、
-修正する場合は原本と修正内容を別に保存してください。
+全成分をparametersと原行付きの`reference_only`として保持します。利用には加算モデルの同定と評価が必要です。
+原本の不正を修正するときは原本と変更内容を別に保存してください。
+
+2026-10-12に取得した [RATE22原本](https://umistdatabase.uk/files/rate22_final.rates)（SHA-256 `2f83cdd0905e5dd50494f23bc5faf559a617d866b365cf9d1c5fef3621a1a219`）は、5488行目の引用符が閉じておらず変換が止まります。このハッシュの原本では、現行コマンドで同じエラーを再現できます。
 
 ### LXCat
 
@@ -323,7 +288,7 @@ unknownです。`ELASTIC`だけではtotalかmomentum transferかを決めず、
 
 ### 原子準位・熱化学・物性
 
-- ASDは中性原子の掲載準位、元TSV全体、query URL、hash、個別行の注記・不確かさ・参考文献欄を
+- ASDは原子・原子イオンの掲載準位、元TSV全体、query URL、hash、個別行の注記・不確かさ・参考文献欄を
   保存します。`[]`・`()`の半経験・計算由来と、`?`・dagger・`+x`等の疑義や未知の基準を
   区別し、絶対閾値を確定できない宣言から最小値を出しません。Jが不明ならE1分類を保留します。
   `lowest_excitation_energy_eV`は返された準位のground termからの最小励起概要で、特定状態の
@@ -332,16 +297,32 @@ unknownです。`ELASTIC`だけではtotalかmomentum transferかを決めず、
   ground準位とのparity/J条件を満たす正の励起の最小値です。同エネルギー準位は下位遷移に使わず、
   行順に依存しません。ground termのfine structureはterm概要から除き、原準位を保持します。
   これらは必要なparity/J条件だけの候補で、行列要素・強度・寿命・衝突消光・人口は決まりません。
-  Pythonの`Levels`も`no_lower_e1_candidate_eV`・`ground_e1_candidate_eV`・
-  `no_lower_e1_candidate_levels`、関数は`no_lower_e1_candidates`へ名称を統一しました。
-  旧metastable/resonant/trapped名の内部aliasは残しません。旧外部snapshotの
-  `metastable_energy_eV`・`resonant_energy_eV`は汎用Propertyとして読み、意味や資格を昇格させません。
   [ASD準位・注記の公式説明](https://physics.nist.gov/PhysRefData/ASD/Html/levelshelp.html)
   [ASDのE1候補と強度の公式説明](https://physics.nist.gov/PhysRefData/ASD/Html/lineshelp.html)
-- 原子IE/EAの取得はatomic量の名目値です。CLIのEA表示とPythonの
-  `Atom.nominal_ea_positive`は有限な名目EAの符号だけを示し、不確かさを含む電子結合を
-  判定しません。旧`binds_electron`はこの名前へ変更しました。束縛陰イオンの命題と
-  付着反応の安定化・速度は、それぞれの評価・計算の責務です。
+  `acquire asd Ar C+ --resolved-below 12 --out WORK` は通常の概要に加え、各電荷段階で
+  指定上限以下の実準位を `excitation_energy_eV` として取り込みます。正の絶対準位、確定したJ、
+  一意の準位名と基底ゼロ、次の電荷段階を示す電離限界がそろった場合に、電離限界より低い準位を
+  対象にします。各記録はその電荷の基底 `related_state` と原行を持ちます。自己電離注記、
+  未確定の絶対基準、重複した準位名は原資料で確認できます。ASDの既定Hは¹Hを指すため、
+  同位体未指定のHへの実準位の取り込みは保留します。出力は `imported` として保持し、計算に
+  使う量だけを確認して審査してください。[ASDのスペクトル・準位仕様](https://physics.nist.gov/PhysRefData/ASD/Html/levelshelp.html)
+- ExoMolの分子準位は、保存済みの同一同位体・同一データセットの公式 `.def.json` と
+  `.states` または `.states.bz2` を対にして変換します。現行の対象は `dcs` の中性二原子分子で、
+  `ID/E/gtot/J/v` と任意の `e/f` を持つ基底電子状態の回転振動表です。既存のoptional RDKitで
+  入力SMILESを照合し、定義の核種と一致する気相基底、参照行のID、取得する励起行のIDを指定します。
+  [ExoMolデータ仕様](https://exomol.com/data/)・[¹H₂ RACPPK](https://exomol.com/data/data-types/linelist/H2/1H2/RACPPK/)
+
+  ```powershell
+  acquire exomol 1H2__RACPPK.def.json 1H2__RACPPK.states.bz2 --ground 'H2@ground;structure=smiles:[1H][1H]' --ground-row 1 --rows 2 --out work/exomol
+  ```
+
+  参照行は読み込んだ表の一意な `E=0, v=0, J=0` で、対応する物理基底はデータセットの説明と
+  照合してください。選択した行、参照行、版、元ファイル名、SHA-256、宣言行数と読込行数を保持します。
+  行数の差は表示し、読めた行の範囲だけを対象にします。出力は量ごとの審査前の `imported` です。
+  ¹H₂では解析入力の `structures: {H2: '[1H][1H]'}` と `supplies: [e]` に対応し、審査した
+  量は既存の `excitation_energy_eV` として利用できます。元ファイルは取得先とともに保管してください。
+- 原子IE/EAの取得はatomic量の名目値です。CLIのEA表示は有限な名目EAの符号を示します。
+  不確かさを含む電子束縛、付着反応の安定化・速度は別の量と判定です。
 - PyroMatは`h(300 K)`を`enthalpy_eV`（model_enthalpy）として保存します。温度、Tref、pref、ho、
   Tlim、元モデル、package版を保持し、`enthalpy_formation_eV`へ読み替えません。現在の形成量による
   反応エネルギー評価はこのh(T)を利用しません。
@@ -373,8 +354,7 @@ unknownです。`ELASTIC`だけではtotalかmomentum transferかを決めず、
   点値を、tierだけでderivedへ昇格させません。massは励起energyの不足と独立に導出でき、
   組成和では化学結合のmass欠損、励起へのmass転記ではE/c²を無視する近似を明示します。
   使った原子mass・親Propertyと準位Property全体を`source_declaration`へ保存します。
-  `carried_from(parent, excitation)`のexcitationはPropertyまたはNoneとし、旧scalar/energy_source
-  引数は廃止しました。finite・非負の適格energyと共通0 K参照の形成量から名目offsetだけを求め、
+  有限・非負の適格energyと共通0 K参照の形成量から名目offsetを求め、
   不確かさ伝播・有限温度の熱寄与・人口を補いません。polarizability、dipole、collision radius、
   well depthも基底からコピーしません。
 
@@ -389,16 +369,5 @@ CASと量の原ID、tableを出典情報へ残します。公式資料で確認�
 `formation_reference`は読込み・取込み・採用・正規保存で保持され、参照条件不足は
 当該ΔHの計算だけを止めます。詳しい型と条件は[Registry guide](registry_data_guide.md)を参照してください。
 
-0 Kの解像準位については、共通参照を持つ親の形成量へ審査された準位差を加える導出を
-行います。有限温度の熱寄与差、lumped人口、不明な形成参照は無言で補正しません。
-
-反応threshold・deltaEは`energy_properties`内の独立Propertyとして、定義、値・単位、
-資格・status・review_scope、出典・方法、不確かさ、原宣言を保持します。親channelの審査で
-明示Propertyを昇格せず、量ごとの適格性を確認して共通エネルギー判定へ渡します。
-旧外部scalarは入口で一度だけこの表現へ変換し、元宣言も残します。
-形式と定義は[Registry guide](registry_data_guide.md#科学量の定義と反応エネルギー)を参照してください。
-
 NASA9・Shomate、EEDF積分、表面流束変換は現行計算へ追加していません。
 値や原係数の取得と、それを消費するモデルの実装・審査を分けます。
-DBで得られない量の独立計算packageは未実装の[将来設計](data_generation_plan.md)へ分け、
-必要な用途と実装順は[残件計画](remaining_work_plan.md)へ置きます。

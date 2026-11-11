@@ -13,12 +13,39 @@ classes:
 state:
   kind: ground
   label: X
+  term: X 1A1
   excitation_energy_eV: 0.0
+  existence: confirmed
+  existence_source: Gas-phase monosilane characterized by parent photoionization.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: AIP
+    citation: J. Berkowitz et al., J. Chem. Phys. 86, 1235–1248 (1987)
+    url: https://doi.org/10.1063/1.452213
 metadata:
   status: literature_supported
   notes:
   - Semiconductor deposition feedstock identity; reaction acquisition remains explicit.
 properties:
+  ionization_energy_eV:
+    value: 11.00
+    unit: eV
+    definition: adiabatic
+    related_state: SiH4+@ground
+    source:
+      provider: AIP
+      citation: J. Berkowitz et al., J. Chem. Phys. 86, 1235–1248 (1987)
+      url: https://doi.org/10.1063/1.452213
+    method: measured
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [ionization_energy_eV]
+    uncertainty: {absolute: 0.02, unit: eV}
+    source_declaration:
+      scope: Adiabatic parent-ion threshold from Table II. The paper discusses Jahn–Teller distortion of the cation.
+      temperature_note: The abstract reports 150 K and Figure 3 states −150 °C for the threshold scan.
   enthalpy_formation_eV:
     value: 0.355494
     unit: eV
@@ -151,3 +178,34 @@ thermo:
       t_max: 5000.0
       t_mid: 1000.0
       t_min: 300.0
+records:
+- record_id: ATcT_1.228:7803-62-5*0
+  species: SiH4
+  phase: gas
+  source: &atct_sih4
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 7803-62-5*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=68
+  molecular_identity: {smiles: '[SiH4]', source: *atct_sih4}
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 43.16
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0.0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: SiH4 (g)
+        published_uncertainty:
+          absolute: 0.52
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

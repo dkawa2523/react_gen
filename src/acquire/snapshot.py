@@ -11,26 +11,34 @@ import hashlib
 import re
 from copy import deepcopy
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 from typing import Any
 
 import yaml
 
 from reactgen import yamlio
 
+RawInput = tuple[bytes, dict[str, Any]]
 
-def input_acquisition(input_path: Path) -> tuple[bytes, dict[str, Any]]:
+
+def raw_input(name: str, data: bytes) -> RawInput:
+    """Identify the exact input that a converter reads and retains."""
+    checksum = hashlib.sha256(data).hexdigest()
+    return data, {
+        "input_name": name,
+        "sha256": checksum,
+        "raw_path": f"raw/{checksum}/{name}",
+    }
+
+
+def input_acquisition(input_path: Path) -> RawInput:
     """Validate the local raw input and any adjacent acquisition declaration.
 
     A sidecar for another file is unrelated. A declaration for this file must
     identify these bytes before the converter writes a snapshot or raw copy.
     Its original paths belong to source_manifest, not the converted raw_path.
     """
-    data = input_path.read_bytes()
-    acquisition: dict[str, Any] = {
-        "input_name": input_path.name,
-        "sha256": hashlib.sha256(data).hexdigest(),
-        "raw_path": f"raw/{input_path.name}",
-    }
+    data, acquisition = raw_input(input_path.name, input_path.read_bytes())
     sidecar = input_path.with_name("acquisition.yaml")
     if sidecar.exists():
         manifest = _manifest(sidecar)
@@ -93,10 +101,15 @@ def write(
     records: list[dict],
     *,
     input_path: Path | None = None,
+    input_data: RawInput | None = None,
+    raw_pages: tuple[RawInput, ...] = (),
 ) -> Path:
-    acquisition = None
+    """Publish a snapshot after its content-identified dependencies exist."""
     if input_path is not None:
-        data, acquisition = input_acquisition(input_path)
+        if input_data is not None:
+            raise ValueError("provide either input_path or an already captured input")
+        input_data = input_acquisition(input_path)
+    acquisition = input_data[1] if input_data is not None else None
     saved_source, saved_records = _source_records(source, records, acquisition)
     body = yaml.safe_dump(
         {
@@ -109,18 +122,11 @@ def write(
         sort_keys=False,
         allow_unicode=True,
     )
-    outdir.mkdir(parents=True, exist_ok=True)
-    if input_path is not None:
-        raw = outdir / "raw"
-        raw.mkdir(exist_ok=True)
-        destination = raw / input_path.name
-        if input_path.resolve() != destination.resolve():
-            destination.write_bytes(data)
+    inputs = raw_pages if input_data is None else (input_data, *raw_pages)
+    for data, declaration in inputs:
+        _publish_asset(outdir / declaration["raw_path"], data)
     path = outdir / "snapshot.yaml"
-    path.write_text(
-        body,
-        encoding="utf-8",
-    )
+    _replace_bytes(path, body.encode("utf-8"))
     return path
 
 
@@ -135,11 +141,30 @@ def write_table(outdir: Path, name: str, rows: list[tuple[float, float]], header
     # repr preserves each parsed floating-point value; fixed six-decimal
     # scientific notation silently discarded source precision.
     body = "\n".join(f"{x!r},{y!r}" for x, y in rows)
-    assets = outdir / "assets"
-    assets.mkdir(parents=True, exist_ok=True)
-    path = assets / f"{name}.csv"
-    path.write_text(f"{header}\n{body}\n", encoding="utf-8")
-    return f"assets/{path.name}"
+    data = f"{header}\n{body}\n".encode()
+    checksum = hashlib.sha256(data).hexdigest()
+    safe_name = re.sub(r"[^A-Za-z0-9_-]", "_", name)
+    relative = f"assets/{checksum}/{safe_name}.csv"
+    _publish_asset(outdir / relative, data)
+    return relative
+
+
+def _publish_asset(path: Path, data: bytes) -> None:
+    if not path.is_file() or path.read_bytes() != data:
+        _replace_bytes(path, data)
+
+
+def _replace_bytes(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    staged: Path | None = None
+    try:
+        with NamedTemporaryFile(dir=path.parent, suffix=".tmp", delete=False) as stream:
+            staged = Path(stream.name)
+            stream.write(data)
+        staged.replace(path)
+    finally:
+        if staged is not None:
+            staged.unlink(missing_ok=True)
 
 
 def digest(path: Path) -> str:

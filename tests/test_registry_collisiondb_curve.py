@@ -4,9 +4,12 @@ from pathlib import Path
 
 import pytest
 
-from reactgen.case import Conditions
+from reactgen import export
+from reactgen.case import Case, Conditions, Limits
 from reactgen.evidence import EvidenceCatalog
 from reactgen.numeric import assess_dataset, data_use, table_points
+from reactgen.pipeline import analyze
+from reactgen.presentation import registered_records
 from reactgen.registry import Registry, registry_reaction_candidate
 
 ROOT = Path(__file__).resolve().parents[1] / "registry"
@@ -17,7 +20,8 @@ def test_hydrogen_source_curve_keeps_its_quantity_domain_and_conversion_boundary
     channel = registry.channels[("electron", "e", "H")][0]
     reaction = registry_reaction_candidate(channel, registry.species)
     assert reaction is not None
-    evidence = EvidenceCatalog.load(ROOT).reaction(reaction)
+    catalog = EvidenceCatalog.load(ROOT)
+    evidence = catalog.reaction(reaction)
     dataset = evidence.datasets[0]
     native = assess_dataset(dataset, reaction, evidence, Conditions())
     assert native.status == "valid"
@@ -53,3 +57,18 @@ def test_hydrogen_source_curve_keeps_its_quantity_domain_and_conversion_boundary
     assert use.status == "needs_input"
     assert "electron_energy_distribution" in use.required_inputs
     assert "eedf_integration" in use.required_transforms
+
+    case = Case(
+        "hydrogen",
+        ("H",),
+        supplies=("e",),
+        conditions=Conditions(electron_energy_eV=40),
+        limits=Limits(max_atoms=1, max_depth=1),
+    )
+    result = export.document(analyze(case, catalog))
+    shown = registered_records(result, reaction.id, "cross_section")
+    listed = next(record for record in shown["records"] if record["id"] == dataset.id)
+    assert listed["native_evaluation"]["status"] == "valid"
+    assert "value" not in listed["native_evaluation"]
+    assert shown["coefficient_use"]["status"] == "needs_input"
+    assert "value" not in shown["coefficient_use"]

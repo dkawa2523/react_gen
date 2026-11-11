@@ -13,8 +13,15 @@ from itertools import combinations, pairwise
 from math import exp, inf, isclose, isfinite, log
 
 from reactgen.case import Conditions
+from reactgen.chemistry import parse_state_id
 from reactgen.evidence import ReactionEvidence, dataset_for_reaction
-from reactgen.model import ReactionCandidate, Requirement, numerical_requirement_fields
+from reactgen.model import (
+    ELECTRON,
+    ReactionCandidate,
+    Requirement,
+    binary_collision_partners,
+    numerical_requirement_fields,
+)
 from reactgen.records import (
     TIER_RANK,
     NumericDataset,
@@ -87,6 +94,8 @@ def data_use(
     evidence: ReactionEvidence,
     conditions: Conditions,
     selection: DataSelection | None = None,
+    *,
+    equation_refuted: bool = False,
 ) -> DataUse:
     """Record-level validity is distinct from reaction existence or feasibility."""
     grouped: dict[str, list[NumericDataset]] = {}
@@ -95,8 +104,13 @@ def data_use(
         (None, evidence.overlay_datasets)
     ] + [(record, record.datasets) for record in evidence.records]
     for parent, datasets in offers:
+        source = (
+            parent
+            if parent is not None and (evidence.structure_aliases or parent.molecular_identities)
+            else None
+        )
         for dataset in datasets:
-            dataset = dataset_for_reaction(dataset, reaction)
+            dataset = dataset_for_reaction(dataset, reaction, source=source)
             parents.setdefault(dataset.id, []).append(parent)
             group = grouped.setdefault(dataset.id, [])
             if all(not scientific_datasets_equivalent(dataset, held) for held in group):
@@ -136,6 +150,13 @@ def data_use(
     selection = DataSelection() if selection is None else selection
     if not isinstance(selection, DataSelection):
         raise ValueError("selection must be a validated DataSelection")
+    if equation_refuted:
+        return DataUse(
+            status="not_applicable",
+            reason="rate-coefficient use requires a conserved reaction equation",
+            datasets=results,
+            selection=selection.document() if selection.quantities or selection.targets else {},
+        )
     selected, notes = _selection_candidates(accepted, evidence.datasets, selection, reaction)
     use = _requested_use(accepted, selected, results, conditions, reaction)
     disagreement_ids = {
@@ -464,7 +485,8 @@ def _choose_data(
             item[0].id,
         ),
     )
-    requirements = _requirements(result.requirements, _conversion_requirements(dataset, reaction))
+    conversion = _conversion_requirements(dataset, reaction)
+    requirements = _requirements(result.requirements, conversion)
     inputs, transforms = numerical_requirement_fields(requirements)
     status = (
         "needs_input"
@@ -473,7 +495,6 @@ def _choose_data(
         if transforms
         else "coefficient"
     )
-    conversion = _conversion_requirements(dataset, reaction)
     reason = result.reason
     if conversion:
         reason += "; coefficient-producing conversion is not performed"
@@ -623,7 +644,7 @@ def assess_dataset(
     problem = _metadata_problem(dataset, reaction)
     if (
         problem is None
-        and (representation := _representation_problem(dataset, evidence)) is not None
+        and (representation := _representation_problem(dataset, evidence, reaction)) is not None
     ):
         problem = "numerical_representation", representation
     if problem is not None:
@@ -727,6 +748,11 @@ def _application_requirements(
                 "checking this condition is not implemented",
             )
             for name in validity.unresolved_conditions
+            if not (
+                dataset.kind == "cross_section"
+                and name == "energy_frame"
+                and _energy_frame(validity.unresolved_conditions[name]) is not None
+            )
         )
     if validity is None or (validity.minimum is None and validity.maximum is None):
         requirements.append(
@@ -904,7 +930,9 @@ def _observable_matches(dataset: NumericDataset, reaction: ReactionCandidate) ->
     return dataset.observable in allowed
 
 
-def _representation_problem(dataset: NumericDataset, evidence: ReactionEvidence) -> str | None:
+def _representation_problem(
+    dataset: NumericDataset, evidence: ReactionEvidence, reaction: ReactionCandidate
+) -> str | None:
     axis = dataset.independent_variable
     if axis is not None and canonical_axis_unit(axis) is None:
         return "physical quantity is unspecified or unsupported"
@@ -922,7 +950,7 @@ def _representation_problem(dataset: NumericDataset, evidence: ReactionEvidence)
     if dataset.form == "arrhenius":
         return _arrhenius_problem(dataset)
     if dataset.form == "table":
-        return _table_problem(dataset, evidence)
+        return _table_problem(dataset, evidence, reaction)
     return "unsupported numerical representation"
 
 
@@ -996,7 +1024,9 @@ def _arrhenius_problem(dataset: NumericDataset) -> str | None:
     return None
 
 
-def _table_problem(dataset: NumericDataset, evidence: ReactionEvidence) -> str | None:
+def _table_problem(
+    dataset: NumericDataset, evidence: ReactionEvidence, reaction: ReactionCandidate
+) -> str | None:
     axis = dataset.independent_variable
     axis_unit = canonical_axis_unit(axis)
     points = table_points(dataset)
@@ -1013,18 +1043,26 @@ def _table_problem(dataset: NumericDataset, evidence: ReactionEvidence) -> str |
         return "table coordinate quantity and unit must be declared"
     if quantity_value(points[0][0], axis, x_unit, axis_unit) is None:
         return "table coordinate unit is incompatible with its quantity"
-    return _threshold_problem(dataset, evidence, points, x_unit)
+    return _threshold_problem(dataset, evidence, reaction, points, x_unit)
 
 
 def _threshold_problem(
     dataset: NumericDataset,
     evidence: ReactionEvidence,
+    reaction: ReactionCandidate,
     points: list[tuple[float, float]],
     x_unit: str,
 ) -> str | None:
-    if dataset.kind != "cross_section":
+    if dataset.kind != "cross_section" or dataset.validity is None:
         return None
-    declaration = _threshold_declaration_bound(evidence)
+    axis = dataset.validity.unresolved_conditions
+    frame = _energy_frame(axis.get("energy_frame"))
+    if frame is None or reaction.surface is not None or reaction.third_body is not None:
+        return None
+    partners = binary_collision_partners(reaction.reactants)
+    if partners is None:
+        return None
+    declaration = _threshold_declaration_bound(evidence, frame, axis, partners)
     if declaration is None:
         return None
     threshold, nominal = declaration
@@ -1044,20 +1082,80 @@ def _threshold_problem(
     return None
 
 
-def _threshold_declaration_bound(evidence: ReactionEvidence) -> tuple[float, bool] | None:
-    """One conservative declared lower edge; the boolean marks nominal use."""
+def _energy_frame(value: object) -> str | None:
+    # CollisionDB's target frame is the lab frame with a stationary target.
+    # https://doi.org/10.1088/1741-4326/acf5da
+    if value == "com":
+        return "com"
+    return "lab" if value in ("lab", "target") else None
+
+
+def _axis_projectile(value: object, partners: tuple[str, str]) -> str | None:
+    if value is None:
+        if ELECTRON in partners or partners[0] == partners[1]:
+            return ELECTRON if ELECTRON in partners else partners[0]
+        return None
+    state = parse_state_id(value) if isinstance(value, str) else None
+    return state.id if state is not None and state.id in partners else None
+
+
+def _threshold_on_curve_axis(
+    prop: Property,
+    frame: str,
+    axis: dict[str, object],
+    partners: tuple[str, str],
+) -> Property | None:
+    declaration = prop.source_declaration
+    if not isinstance(declaration, dict) or prop.value is None:
+        return None
+    threshold_frame = _energy_frame(declaration.get("energy_frame", declaration.get("frame")))
+    if threshold_frame is None:
+        return None
+    if frame == threshold_frame:
+        if frame == "com":
+            return prop
+        curve_projectile = _axis_projectile(axis.get("projectile_state"), partners)
+        threshold_projectile = _axis_projectile(declaration.get("projectile_state"), partners)
+        return (
+            prop
+            if curve_projectile is not None and curve_projectile == threshold_projectile
+            else None
+        )
+    # Identical represented particles have equal mass. A distinct pair would
+    # require qualified masses and a confirmed stationary-target convention.
+    if partners[0] != partners[1]:
+        return None
+    lab_declaration = axis if frame == "lab" else declaration
+    if _axis_projectile(lab_declaration.get("projectile_state"), partners) is None:
+        return None
+    scale = 0.5 if frame == "com" else 2.0
+    uncertainty = prop.uncertainty
+    if uncertainty is not None and uncertainty.absolute is not None:
+        uncertainty = replace(uncertainty, absolute=uncertainty.absolute * scale)
+    return replace(prop, value=prop.value * scale, uncertainty=uncertainty)
+
+
+def _threshold_declaration_bound(
+    evidence: ReactionEvidence,
+    frame: str,
+    axis: dict[str, object],
+    partners: tuple[str, str],
+) -> tuple[float, bool] | None:
+    """Find the conservative threshold lower edge on the curve's coordinate."""
     if any(
         channel_energy_status(record, "threshold_eV") == "conflicting"
         and review_scope_covers(prop.review_scope, "threshold_eV")
         and reaction_energy_definition_compatible(prop, "threshold_eV")
+        and _threshold_on_curve_axis(prop, frame, axis, partners) is not None
         for record in evidence.exact_records
         if (prop := record.energy_properties.get("threshold_eV")) is not None
     ):
         return None
     declared = [
-        (record, prop)
+        (record, compatible)
         for record in evidence.exact_records
         if (prop := qualified_channel_energy(record, "threshold_eV")) is not None
+        and (compatible := _threshold_on_curve_axis(prop, frame, axis, partners)) is not None
     ]
     if not declared:
         return None
@@ -1070,6 +1168,7 @@ def _threshold_declaration_bound(evidence: ReactionEvidence) -> tuple[float, boo
             or prop is None
             or not review_scope_covers(prop.review_scope, "threshold_eV")
             or not reaction_energy_definition_compatible(prop, "threshold_eV")
+            or (compatible := _threshold_on_curve_axis(prop, frame, axis, partners)) is None
         ):
             continue
         if channel_energy_status(record, "threshold_eV") == "conflicting":
@@ -1082,10 +1181,10 @@ def _threshold_declaration_bound(evidence: ReactionEvidence) -> tuple[float, boo
         )
         previous = same_record.get(record.id)
         if previous is not None and (
-            previous[0] != target or not energy_properties_equivalent(previous[1], prop)
+            previous[0] != target or not energy_properties_equivalent(previous[1], compatible)
         ):
             return None
-        same_record[record.id] = target, prop
+        same_record[record.id] = target, compatible
     bounds = [property_energy_bounds(prop) for _, prop in declared]
     if any(interval is None for interval in bounds):
         return None

@@ -13,7 +13,7 @@ import math
 import os
 from collections.abc import Iterable, Sequence
 from copy import deepcopy
-from dataclasses import asdict, dataclass, field, fields, replace
+from dataclasses import asdict, dataclass, field, fields, is_dataclass, replace
 from pathlib import Path
 from typing import Any, cast
 
@@ -682,8 +682,8 @@ def scientific_state_content(record: StateRecord | dict) -> dict:
     return content
 
 
-def validate_snapshot(document: object) -> dict:
-    """Read the supported external snapshot version; unversioned input is legacy."""
+def snapshot_content(document: object) -> tuple[list[dict], dict, str]:
+    """Read snapshot records and their common source and quantity context."""
     if not isinstance(document, dict) or not isinstance(document.get("records"), list):
         raise ValueError("snapshot must contain a records list")
     version = document.get("snapshot_version")
@@ -691,7 +691,12 @@ def validate_snapshot(document: object) -> dict:
         raise ValueError(f"unsupported snapshot_version: {version!r}")
     if any(not isinstance(record, dict) for record in document["records"]):
         raise ValueError("snapshot records must be mappings")
-    return document
+    source = document.get("source")
+    if source is None:
+        source = {}
+    if not isinstance(source, dict):
+        raise ValueError("snapshot.source must be a mapping")
+    return document["records"], source, str(document.get("kind") or "rate_coefficient")
 
 
 def _record_provenance(
@@ -857,6 +862,7 @@ class Property:
     status: str = "imported"
     formation_reference: FormationReference | None = None
     definition: str | None = None
+    related_state: str | None = None
 
     def __post_init__(self) -> None:
         _record_provenance(self, display_source=True)
@@ -871,6 +877,10 @@ class Property:
             self.formation_reference, FormationReference
         ):
             raise ValueError("property.formation_reference must be a FormationReference record")
+        if self.related_state is not None and (
+            not isinstance(self.related_state, str) or not self.related_state.strip()
+        ):
+            raise ValueError("property.related_state must identify a nonempty state")
 
     @property
     def known(self) -> bool:
@@ -1007,6 +1017,20 @@ class RegistryState:
 
 
 @dataclass(frozen=True)
+class MolecularIdentity:
+    """A reviewed structural identification of a particular Registry species."""
+
+    smiles: str
+    source: SourceRef
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.smiles, str) or not self.smiles.strip():
+            raise ValueError("molecular_identity.smiles must be nonempty text")
+        if not (self.source.citation and self.source.url):
+            raise ValueError("molecular_identity requires a source citation and URL")
+
+
+@dataclass(frozen=True)
 class Species:
     id: str
     composition: dict[str, int]
@@ -1019,6 +1043,7 @@ class Species:
     phase: str = "unknown"
     structure: str | None = None
     records: tuple[StateRecord, ...] = ()
+    molecular_identity: MolecularIdentity | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(
@@ -1037,10 +1062,6 @@ class Species:
     def value(self, name: str) -> float | None:
         prop = self.properties.get(name)
         return prop.value if prop else None
-
-    @property
-    def is_neutral(self) -> bool:
-        return self.charge == 0 and self.id != "e"
 
 
 @dataclass(frozen=True)
@@ -1160,6 +1181,7 @@ def normalized_property(
         status=str(entry.get("status") or "imported"),
         formation_reference=normalized_formation_reference(entry.get("formation_reference")),
         definition=entry.get("definition"),
+        related_state=entry.get("related_state"),
     )
     validate_property_definition(prop, quantity)
     return prop
@@ -1436,16 +1458,6 @@ class NumericDataset:
             raise ValueError("dataset.uncertainty must be an Uncertainty record")
 
     @property
-    def usable(self) -> bool:
-        if self.form == "reference_only":
-            return False
-        return (
-            self.asset is not None and self.asset.integrity_ok
-            if self.form == "table"
-            else bool(self.params)
-        )
-
-    @property
     def reviewed(self) -> bool:
         return (
             self.tier in REVIEWED_TIERS
@@ -1533,12 +1545,15 @@ class RegistryReaction:
     method: str = "unknown"
     review_scope: tuple[str, ...] = ()
     records: tuple[ReactionRecord, ...] = ()
+    transformation: dict = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         validate_stoichiometric_terms(self.reactants)
         validate_stoichiometric_terms(self.products)
         _record_provenance(self)
         validate_reaction_energy_properties(self.energy_properties)
+        if not isinstance(self.transformation, dict):
+            raise ValueError("reaction.transformation must be a mapping")
 
     @property
     def threshold_eV(self) -> float | None:
@@ -1589,8 +1604,11 @@ class StateRecord:
     source_declaration: object = None
     method: str = "unknown"
     review_scope: tuple[str, ...] = ()
+    molecular_identity: MolecularIdentity | None = None
 
     def __post_init__(self) -> None:
+        if self.molecular_identity is not None and self.origin != "registry":
+            raise ValueError("molecular_identity belongs to a Registry state record")
         _record_provenance(self)
         _validate_state_values(
             self.existence, self.energy_eV, self.lifetime_s, self.degeneracy, self.existence_source
@@ -1648,12 +1666,18 @@ class ReactionRecord:
     source_declaration: object = None
     method: str = "unknown"
     review_scope: tuple[str, ...] = ()
+    transformation: dict = field(default_factory=dict)
+    molecular_identities: dict[str, MolecularIdentity] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
+        if self.molecular_identities and self.origin != "registry":
+            raise ValueError("molecular_identities belong to a Registry reaction record")
         validate_stoichiometric_terms(self.equation_key[2])
         validate_stoichiometric_terms(self.equation_key[3])
         _record_provenance(self)
         validate_reaction_energy_properties(self.energy_properties)
+        if not isinstance(self.transformation, dict):
+            raise ValueError("reaction.transformation must be a mapping")
         raw_family = self.family or ""
         object.__setattr__(
             self,
@@ -2059,6 +2083,7 @@ def normalized_reaction_record(
         source_declaration=declaration,
         method=scientific_method(record, default_source),
         review_scope=scopes,
+        transformation=deepcopy(record.get("transformation", {})),
     )
 
 
@@ -2092,6 +2117,7 @@ def reaction_record_payload(record: ReactionRecord) -> dict:
         "source_declaration": deepcopy(record.source_declaration),
         "method": record.method,
         "review_scope": list(record.review_scope),
+        "transformation": deepcopy(record.transformation),
     }
     return _portable_payload({name: value for name, value in payload.items() if value is not None})
 
@@ -2248,6 +2274,71 @@ def selectable_state_record_id(record: StateRecord) -> str:
     return record.record_id or state_record_id(
         state_record_payload(record), preserved_record_id=True
     )
+
+
+def calculation_record_reference(record: StateRecord | ReactionRecord | dict) -> str:
+    """Identify a calculation declaration even when sources reuse a portable ID.
+
+    Use the raw record's source and science, not the applicable candidate or
+    selection policy. Saved records can reconstruct the same reference without
+    re-reading the catalog or relying on the container's storage key.
+    """
+    identity: tuple
+    quantities: tuple
+    if isinstance(record, StateRecord):
+        identity = (selectable_state_record_id(record), record.candidate.id)
+        quantities = (record.properties, record.thermo, record.molecular_identity)
+    elif isinstance(record, ReactionRecord):
+        identity = (record.id, record.equation_key, record.family, record.process)
+        quantities = (record.energy_properties, record.molecular_identities)
+    elif "candidate" in record:
+        identity = (record.get("record_id"), record["candidate"]["id"])
+        quantities = (
+            record.get("properties", {}),
+            record.get("thermo"),
+            record.get("molecular_identity"),
+        )
+    else:
+        identity = (
+            record.get("id"),
+            record.get("equation_key"),
+            record.get("family"),
+            record.get("process"),
+        )
+        quantities = (record.get("energy_properties", {}), record.get("molecular_identities", {}))
+    names = (
+        "provenance",
+        "source",
+        "source_declaration",
+        "status",
+        "tier",
+        "method",
+        "review_scope",
+    )
+    context = [
+        record.get(name) if isinstance(record, dict) else getattr(record, name) for name in names
+    ]
+    body = json.dumps(
+        _calculation_declaration((identity, quantities, context)),
+        sort_keys=True,
+        ensure_ascii=True,
+        default=str,
+    )
+    return f"record-ref:{hashlib.sha256(body.encode()).hexdigest()}"
+
+
+def _calculation_declaration(value: Any) -> Any:
+    if is_dataclass(value) and not isinstance(value, type):
+        return _calculation_declaration(asdict(value))
+    if isinstance(value, dict):
+        return {str(name): _calculation_declaration(item) for name, item in value.items()}
+    if isinstance(value, tuple | list):
+        return [_calculation_declaration(item) for item in value]
+    if isinstance(value, set | frozenset):
+        return [_calculation_declaration(item) for item in sorted(value)]
+    if isinstance(value, float) and not math.isfinite(value):
+        return repr(value)
+    return value
 
 
 def _portable_payload(value: Any) -> Any:

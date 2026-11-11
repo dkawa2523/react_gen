@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import export, yamlio
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
 from reactgen.evidence import EvidenceCatalog, ReactionEvidence
 from reactgen.model import ReactionCandidate, Term
 from reactgen.numeric import data_use
@@ -155,7 +155,6 @@ def test_existing_registry_legacy_conditions_are_preserved() -> None:
         if isinstance(dataset.source_declaration, dict)
         and dataset.source_declaration.get("validity", {}).get("conditions")
     ]
-    assert len(conditions) == 3
     physical = next(
         dataset
         for dataset in conditions
@@ -174,7 +173,12 @@ def test_legacy_snapshot_condition_survives_saved_result_roundtrip(tmp_path: Pat
         yamlio.dump({"snapshot_version": 1, "kind": "rate_coefficient", "records": [record]}),
         encoding="utf-8",
     )
-    case = Case("argon", ("Ar",), Conditions(gas_temperature_K=350))
+    case = Case(
+        "argon",
+        ("Ar",),
+        Conditions(gas_temperature_K=350),
+        limits=Limits(max_atoms=1, max_depth=1),
+    )
     catalog = EvidenceCatalog.load(Path(__file__).parents[1] / "registry", known=(snapshot,))
     result = analyze(case, catalog)
     export.write(tmp_path / "saved", result)

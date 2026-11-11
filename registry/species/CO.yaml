@@ -71,6 +71,36 @@ thermo:
   t_mid: 1000.0
   t_min: 200.0
 records:
+- record_id: ATcT_1.228:630-08-0*0
+  species: CO
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 630-08-0*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=40
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: -113.803
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0.0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        target: CO (g), carbon monoxide
+        atct_formula: CO (g)
+        published_uncertainty:
+          absolute: 0.025
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit
 - record_id: NASA_TM4513_Cantera_3.2.0:CO
   species: CO
   phase: gas

@@ -1,0 +1,20 @@
+schema_version: 1
+id: SiH3-
+display_name: SiH3- (silanide)
+composition: {Si: 1, H: 3}
+charge: -1
+phase: gas
+classes:
+- negative_ion
+- molecule
+state:
+  kind: ground
+  existence: confirmed
+  existence_source: Gas-phase mass-selected SiH3- measured by laser photoelectron spectroscopy.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: ACS
+    citation: M. R. Nimlos and G. B. Ellison, J. Am. Chem. Soc. 108, 6522–6529 (1986)
+    url: https://doi.org/10.1021/ja00281a013

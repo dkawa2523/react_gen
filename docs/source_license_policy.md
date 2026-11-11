@@ -1,202 +1,70 @@
-# Source and license policy
+# Registryの出典・適用条件・再配布
 
-The project separates acquisition, local evidence loading, scientific review,
-numerical selection, and explicit Registry adoption. Access to a database,
-successful parsing, and permission to redistribute its contents answer different
-questions. None of them establishes that a scientific record applies to a
-particular state, channel, or calculation.
+## 1.0の配布範囲
 
-## Source catalog
+1.0のソース配布物（sdist）には、Registryの状態・反応レコード、数値asset、出典記録とnoticeを収録します。wheelは実行パッケージと結果schemaを収録します。展開したソース配布物のRegistryを `rgen analyze --evidence PATH` で明示できます。[通常利用](../README.md)
 
-`external_data/source_catalog.yaml` is the single local catalog, at schema version
-3. Each entry describes a `source_id`, provided quantities, an access route,
-available converters, an endpoint, and rights that require checking. A direct
-release download may additionally declare `file`, `format`, and `format_version`.
-`acquire sources` displays this information without accessing the network.
+この収録はプロジェクト側の配布判断です。第三者資料の利用条件は出典ごとに適用されます。今回、新たに第三者からの許諾を取得した記録はありません。Pateau・Sonの元の反応集成については、包括的な再配布許諾が確認できていません。収録物はプロジェクトの個別レコードと変換済みassetで、原著PDF、原表の画像、取得ページ、外部プログラムは対象外です。個々の数値事実・式と、原資料の説明や創作的な選択・配列には別の検討が必要です。[米国著作権局 Circular 33](https://www.copyright.gov/circs/circ33.pdf)・[NIST SRDの取扱い](https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications)
 
-The catalog describes capabilities and review items. It does not grant a license,
-approve scientific records, set a default scientific status, or rank databases.
-Providers in user evidence do not require catalog registration. An unlisted
-provider still requires adequate source information and compliance with its
-actual terms.
+配布・受渡しでは、`registry/sources/`、各レコードの原宣言、`registry/data_notes/` の帰属・noticeを対応するデータと一緒に保持します。出典、適用条件、利用資格、再配布条件は別々に確認します。[反応データ帰属記録](../registry/data_notes/reaction_data_attribution.txt)
 
-The previous access profile and fetch catalog have been consolidated into this
-file. `acquire fetch --catalog PATH` continues to read a custom download catalog,
-including its legacy `id` field. Old catalog `priority` values are not analysis
-selection rules.
+## 取得元と審査
 
-## Acquisition and storage
+[取得先台帳](../external_data/source_catalog.yaml)は取得形式と利用条件の確認先を案内します。取得は `acquire`、物理対象との照合は `rgen ingest`、Registryへの書込みは `rgen adopt` です。取得や採用の結果は、状態の存在、係数の適用、機構の妥当性を個別に審査する材料になります。用途への採用には、対象・物理量・参照条件・審査範囲が合う記録を使います。[取得・照合の手順](data_sources.md)・[記録形式](registry_data_guide.md)・[判定の責務](core_design.md)
 
-- `rgen analyze` reads explicit local Registry, snapshot, and overlay data. It
-  does not download data, call source APIs, or require optional acquisition
-  packages.
-- Network retrieval belongs to an explicit acquisition command. `acquire fetch`
-  downloads the HTTPS file URL declared by the selected catalog entry and checks
-  the expected content format. A successful content check is not a complete
-  source-format or scientific validation.
-- Retain applicable source and upstream terms, attribution requirements, and
-  redistribution restrictions. A public endpoint or an open-source package
-  license does not establish the redistribution rights of every underlying
-  dataset. Check the contributing database or node as well as an aggregator.
-- Record the requested and final URL, retrieval time, original full SHA-256,
-  format, and format version where acquisition supplies them. Preserve original
-  files and source declarations when making repairs or conversions.
-- LXCat, UMIST, WebBook and CollisionDB conversion retain raw input and its
-  SHA-256 with the snapshot. Other converters retain the source declarations they obtained;
-  metadata not provided by an adapter remains unknown rather than invented.
-- Keep restricted or confidential raw data, snapshots, and assets in suitable
-  local storage. Do not add them to a public repository, distribute a result
-  containing them, or bundle them in a release without checking the relevant
-  rights. The catalog is not an access-control mechanism.
-- Optional acquisition packages remain optional dependencies in
-  `pyproject.toml`, separate from the core analysis runtime.
+出典の確認では、元資料の版、URL、元ID、原単位、変換、取得ハッシュを分かる範囲で保持します。追加の外部数表・スナップショット・分析結果を配布する際も、実際に含まれる資料とその条件を確認します。公開閲覧、引用情報、Text and Data Mining用の許諾は、それぞれが示す範囲で扱います。
 
-## Source-specific access and distribution
+## 反応数値の出典と適用条件
 
-The following source statements were checked on 2026-10-13. Apply the terms to
-the actual collection and record; neither the converter nor catalog grants rights.
+| 収録記録 | 確認した科学上の適用条件 | 出典・再配布条件 |
+|---|---|---|
+| CollisionDB D108105 | H(1s)の電子電離でbare H⁺を生成する積分断面積。配布fit由来の500点をcm²からm²に変換した。数表は13.6–100000 eV、宣言fit範囲は13.601–100000 eV。1.3%はfitのRMS偏差で、推薦精度や統計的測定不確かさとは別。 | [CollisionDB専用方針](https://db-amdis.org/collisiondb/licence/)は個別例外を除きCC BY 4.0。元データの個別例外は確認されていない。Janev・Smith、CollisionDB/IAEA、ライセンス、変換を保持する。[取得記録・原本とCSVのSHA-256](../registry/sources/collisiondb_2026.yaml) |
+| Pateau 2014 | 原32行（R38–50、R119–137）に対応する167件。汎用式の参加種展開を含む。温度・圧力適用範囲は未確認で、装置の運転点や入力温度から補わない。2→1会合の安定化は未指定。単分子R138の表見出しと次数の次元不整合は未解決で、当該数値は未採用。 | 著者公開proofの表III・VIIと脚注の確認範囲を保持。元の反応集成に対する個別許諾は未確認。[論文DOI](https://doi.org/10.1116/1.4853675)・[AIPの再利用方針](https://publishing.aip.org/resources/researchers/rights-and-permissions/permissions/) |
+| Son 2014 | Table 1のR21–60に対応する40件。気体温度700 Kの点に限って使う二次のモデル係数。会合の安定化は未指定。 | 原行・単位換算・出典を保持。出版社は権利照会先を掲示し、元の表の集成に対する個別許諾は未確認。[論文・権利案内](https://link.springer.com/article/10.1007/s11090-013-9513-1)・[本文・Table 1](https://spl.skku.ac.kr/_res/pnpl/etc/2014-02.pdf) |
+| Gaucherel・Rowe、Williams、Wildt | Gaucherel・Roweの2件とWildtの自己消光は総過程の係数で、生成物の内部準位別の係数には使わない。測定温度は未確認。Williamsの1件は該当レコードの条件を適用する。 | 個別の数値宣言を記録。[Elsevierの再利用方針](https://www.elsevier.com/about/policies-and-standards/copyright/permissions)は数値から作る新たな表現と原図表の転載を区別する。著者・原単位・変換は[帰属記録](../registry/data_notes/reaction_data_attribution.txt)と個別レコードに保持。 |
+| Shuman、Chen | 各1係数。Shumanの熱電子によるSF₅付着は300 Kの値。ChenはO⁺＋O₂の記録。 | 個別の数値宣言と出典を保持する。元記事や集成に対する包括許諾は未確認。[AIPの再利用方針](https://publishing.aip.org/resources/researchers/rights-and-permissions/permissions/) |
+| JPL 25-1・19-5 | 現行4式と旧2式。O(¹D)消光で、O₂への式は100–400 K、N₂は100–675 K、CO₂は温度依存fitの採用範囲200–354 K。O₂では総消失率に原資料の分岐割合を掛けた名目値を保持する。O(³P)電子項全体の係数を個別Jや回転振動状態へ配分しない。 | 25-1はCaltechの著作権表示を持つ。収録範囲は少数の評価値・派生式とその出典宣言。25-1原本のSHA-256と原単位・分岐を個別レコードに保持。[原資料のTable 1A・Notes A3/A7/A12](https://science.jpl.nasa.gov/documents/1503/NASA_Data_Evaluation_20.pdf)・[JPLの方針](https://www.jpl.nasa.gov/caltechjpl-privacy-policies-and-important-notices/) |
 
-| Source | Current handling |
+アブストラクトを確認したWildt、Gaucherel・Roweの記録は、元の測定温度、内部状態人口、生成物分岐を保留しています。Ar(4s)のpoolingはPenning過程に分類し、集約した4準位の人口が未確認のため個別準位のエネルギー・速度を転用しません。これらの扱いは式の保存則や宣言した過程の整合と独立です。[Arの原論文](https://doi.org/10.1088/1361-6595/ac3ba1)
+
+SF₆の中性解離で、SF₅＋FとSF₄＋2Fの値は出典の予想値です。SF₃の検出開始値は複数の出口を含みます。該当する式は調査候補に保持し、予想値と断片の観測は出典注記に置きます。[Christophorou・OlthoffのTable 21](https://srd.nist.gov/jpcrdreprint/1.1288407.pdf)
+
+## 物性と分光の出典
+
+| 収録記録 | 参照・適用条件とnotice |
 |---|---|
-| [CollisionDB licence](https://db-amdis.org/collisiondb/licence/) | Data and metadata are CC BY 4.0 unless explicitly stated otherwise. Retain attribution to the original authors, their references/DOIs, licence notices and modification information. Check any record-specific exception. |
-| [LXCat redistribution policy](https://us.lxcat.net/instructions/redistribution.php) | Third-party redistribution is not generally authorised. Direct users to retrieve the data from LXCat and preserve contributor references. Inclusion in a commercial package requires the policy's explicit contributor permission and LXCat notification; a converter does not supply them. |
-| [WebBook](https://webbook.nist.gov/chemistry/) and [NIST SRD policy](https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications) | WebBook is SRD 69 and carries compilation copyright. Public browsing is not blanket redistribution permission. Check the relevant SRD and upstream collection terms before bundling saved pages or data. |
-| Local or licensed files | Retain the actual owner, terms and source description. A local path, package licence or user-defined provider does not change the rights of the underlying observations. |
+| NASA TM-4513の気相NASA7・形成量 | 元の気相標準圧は1 bar。Canteraの圧力省略時の1 atmとは区別する。形成量は298.15 Kをfit範囲に含む中性基底種の導出値。電子熱化学規約が未確認のN⁺・O⁺・O₂⁺のfitは `imported` とし、形成量を導出していない。出典、適用温度域、元資料のSHA-256、対象別の採用根拠を保持。[NASA原資料](https://ntrs.nasa.gov/citations/19940013151)・[取得・対象別記録](../registry/sources/nasa_thermochemistry_2026.yaml)・[Cantera BSD notice](../registry/data_notes/Cantera-LICENSE.txt) |
+| Ar・O₂の独立したNASA7 | [Cantera 3.2.0 air.yaml](https://github.com/Cantera/cantera/blob/v3.2.0/data/air.yaml)と[同版の参照圧規則](https://cantera.org/3.2/yaml/species.html)で照合した。Arは300–5000 K、O₂は200/1000/3500 Kの区分で、いずれも1 atm。異なるfitは独立記録として保持する。 |
+| NIST WebBook・CCCBDB・ASD・Handbook | 収録するのは独立に選んだ数値事実と出典。SRD 69/101/78/108を区別し、元記録で確認できた版を保持する。[WebBookの権利表示](https://webbook.nist.gov/chemistry/contact/)・[CCCBDB](https://cccbdb.nist.gov/)・[ASD](https://www.nist.gov/pml/atomic-spectra-database-contents)・[NIST SRD notice](../registry/data_notes/NIST-SRD-NOTICE.txt) |
+| ATcT Thermochemical Network v1.228 | 炭素・酸素・フッ素系、Cl₂とCl、NF₃系、SiH₄系の選択した気相端点に、元素標準状態基準の0 K生成エンタルピーを収録。版、対象、原ID、単位、公表された不確かさを保持する。本文・データベース表・共分散表の収録はない。個別の不確かさから反応差の誤差や信頼区間を推定しない。[Ruscic・Bross、Argonne National Laboratoryの版固定データ](https://atct.anl.gov/Thermochemical%20Data/version%201.228/) |
+| chemicals | 熱化学・双極子・衝突半径等の個別値。元のdatabankや版が未記録の旧値には、現在の同値を根拠に出典を補わない。[chemicals MIT notice](../registry/data_notes/chemicals-LICENSE.txt) |
+| mendeleev | 原子質量・IE・EA・分極率の値と単位変換。確認したv1.2.0のソフトウェアとデータのMIT noticeをそれぞれ保持する。[ソフトウェア](../registry/data_notes/mendeleev-LICENSE.txt)・[データ](../registry/data_notes/mendeleev-data-LICENSE.txt) |
+| PYroMat | CF、CFO、FOの300 K理想気体エンタルピー評価値を3件収録。GPLv3の対象となるプログラムや係数ファイルは配布対象外。元評価の出典と温度を保持する。[PYroMat公式ライセンス](https://raw.githubusercontent.com/chmarti1/PYroMat/master/LICENSE.txt) |
 
-`acquire webbook SPECIES.yaml --out WORK` explicitly retrieves pages by CAS or
-WebBook ID. `--page PAGE.html` converts a saved page for one target without network
-access. `acquire collisiondb DATASET.txt --out WORK` converts a saved downloaded
-JSON-header/two-column integral cross section; it does not download the whole DB.
-Supported quantities, units, state mappings and frame requirements are defined
-in the [data dictionary](data_dictionary.md) and [source workflow](data_sources.md).
-Retrieval and format acceptance do not establish scientific applicability or approval.
+Ar・Ar⁺とO・O⁺の基底準位・IEは、[ArのNIST ASD電離表](https://physics.nist.gov/cgi-bin/ASD/ie.pl?spectra=Ar&units=1)・[OのNIST ASD電離表](https://physics.nist.gov/cgi-bin/ASD/ie.pl?spectra=O&units=1)に照合しています。O(¹D₂)の励起値はASDと[Handbookの準位表](https://physics.nist.gov/PhysRefData/Handbook/Tables/oxygentable5.htm)の対応を確認し、誤差欄が空の宣言は誤差不明として保持します。O₂の基底電子状態は[WebBookの二原子分子定数](https://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447&Units=SI&Mask=1000#Diatomic)が出典です。準位の同定、物性の資格、励起状態の寿命や人口は個別に扱います。
 
-## Scientific qualification and selection
+基底O₂の断熱IEはSRD 69の評価値12.0697 ± 0.0002 eVで、基底O₂⁺への電離に適用します。基底O₂から基底O原子2個への解離にはWang・Gong・MoによるD₀ 41269.19 ± 0.10 cm⁻¹を独立の端点差として収録します。どちらも通常同位体の基底端点に対応する個別の数値事実で、元の数表・図や論文本文の収録はありません。SRD 69の帰属とnoticeは上表に従います。[SRD 69評価値](https://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447&Mask=864)・[Wangらの原論文情報](https://pubmed.ncbi.nlm.nih.gov/38647301/)
 
-Records retain `provenance` (provider, collection, release, native record ID,
-citation, and URL where known) and `source_declaration` (the original scientific
-declaration). `method`, evidence `tier`, and declared `review_scope` are separate
-fields. A provider name does not determine a measurement method or evidence
-quality; scientific review does not change license terms.
+Cl₂とCl(²P₃/₂)にはATcT v1.228の気相0 K形成量を追加しています。元素標準状態基準であり、核種を指定した解離値や有限温度の係数には適用しません。版、物質ID、公開値とその不確かさの宣言を個別に記録します。[Cl₂](https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=11)・[Cl(²P₃/₂)](https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=2311)
 
-An adjacent `acquisition.yaml` is carried into `acquisition.source_manifest` only
-when its file name and complete SHA-256 match the converted input. The same
-context is retained in scientific source declarations through ingest and adopt.
-Source paths remain within that original manifest, separate from the snapshot's
-new raw path. A same-file hash conflict or malformed declaration fails before
-conversion writes. A manifest for another file is not adopted. Provider,
-collection, and release are retained only when explicitly declared.
+O₂とF₂の化学式IDに、SRD 69の分子構造と照合したSMILESと出典を記録します。明示した核種や異なる内部状態には転用しません。元構造ファイルは収録せず、SRD 69の帰属とnoticeは上表に従います。[O₂](https://webbook.nist.gov/cgi/cbook.cgi?ID=C7782447)・[F₂](https://webbook.nist.gov/cgi/cbook.cgi?ID=C7782414)
 
-Native IDs belong to their stated provider/collection/release namespace. A CAS
-number or WebBook URI identifies a species, not an individual determination.
-WebBook's converter-generated `derived_row_key` and its rule stay in
-`source_declaration`; they do not become native `source.record_id` values.
-Where the source supplies no quantity record ID, the common scientific-content
-ID is used. CollisionDB's actual `qid` remains its native dataset ID.
+NF₃の基底電離の端点差には、Bentleyらの理論値と分光帰属の再評価を取り込んだATcTを使います。従来の光電子帯の観測開始と、最低の振電状態間の断熱差を区別します。NFのa¹Δ・b¹Σ⁺にはSRD 69の分光バンド原点を使い、微細・回転構造へ値を割り当てません。[Bentleyらの原論文](https://pubmed.ncbi.nlm.nih.gov/40184629/)・[NF二原子分子定数](https://webbook.nist.gov/cgi/cbook.cgi?ID=C13967061&Mask=1000)
 
-Mechanically imported records remain `imported` until an appropriate review or
-documented derivation supplies their qualification. Acquisition, matching,
-Registry membership, and adoption do not promote them automatically. Review
-must address the claim actually used: identity, existence, a numerical property,
-an energy relation, or applicability to a calculation. Reviewing one claim does
-not approve the others.
+SiH₄系には、ATcTの気相0 K形成量と、個別に帰属を確認した電離・光脱離・分光値を収録します。SiH₂の一重項と三重項は別の端点です。SiH₄の断熱電離値は親イオンの観測と最低イオン成分の帰属に対応します。元スペクトルや数表は収録せず、値と適用条件、個別の書誌情報を記録します。[Berkowitzらの光電離](https://doi.org/10.1063/1.452213)・[CoudertらのSiH₂の分光](https://doi.org/10.1039/D5CP00558B)
 
-Reaction records check `channel_assertion`, `threshold_eV`, and `delta_e_eV`
-against their stated review scope. A numerical snapshot with no explicit scope
-is limited to its numerical kind; coefficient review does not approve its
-channel or threshold. Unscoped legacy independent channel declarations retain a
-compatibility rule. Reaction threshold and products-minus-reactants energy are
-already independent typed Properties with their own definitions, qualifications
-and scopes; the parent channel cannot approve them implicitly.
+NF₃のν₂とSiH₄のν₄は、主同位体種の気相振動バンド原点を各1件収録します。個別の回転準位、同位体を指定した候補、状態人口にはその値を転用しません。原資料の帰属と適用範囲を記録します。[NF₃の分光](https://doi.org/10.1155/2013/813249)・[SiH₄の分光](https://doi.org/10.3390/molecules30091992)
 
-`data_selection.quantities` ranks or restricts the three numerical quantities,
-formation enthalpy, IE, EA, excitation energy and thermochemical models by
-method, provider, collection or record. `data_selection.targets` overrides a
-quantity policy for one canonical target ID. These requests preserve identity,
-definitions, reference conditions, qualifications and applicability checks;
-they cannot exchange different observables or rate-law orders by source rank.
-Existence and reaction-energy evidence selection are outside these policies.
-The method `estimated` describes value generation and does not by itself supply
-qualification or missing assumptions.
+Ar Iの4s個別準位、Ar IIの微細構造準位、O Iの³P₁・³P₀・¹S₀は、NIST SRD 108の準位表を出典とし、対応する気相基底準位からの差を使います。集約状態Ar(4s)やO(³P)には個別値を移しません。[Ar I準位表](https://physics.nist.gov/PhysRefData/Handbook/Tables/argontable5.htm)・[Ar II準位表](https://pml.nist.gov/PhysRefData/Handbook/Tables/argontable6.htm)・[O I準位表](https://physics.nist.gov/PhysRefData/Handbook/Tables/oxygentable5.htm)
 
-`rgen records RESULT --target TARGET [--quantity QUANTITY]` shows selectable IDs,
-content and qualifications compactly; `--detail` includes complete raw
-declarations. Listing a saved record does not qualify it or recompute a conclusion.
-Multiple imports retain independent records and unresolved source inputs.
-The version 1 review queue stores source/snapshot/kind per input, distinguishes
-this import's review count from all pending inputs, and removes only a matching
-input later accepted by ingest. Edited scientific declarations are not silently
-treated as resolution of older inputs. Overlay and queue are saved together and
-restored after an ordinary IO failure; incomplete recovery retains named backups.
+CF₄、CF₃、COF₂の基底状態には、生成エンタルピーと独立した気相分光の存在根拠を記録します。収録したのは個別の状態同定と書誌情報です。[CF₄の赤外分光](https://doi.org/10.1080/00268976.2022.2093285)・[CF₃のマイクロ波分光](https://doi.org/10.1063/1.444279)・[COF₂のマイクロ波分光](https://doi.org/10.1016/0022-2852(74)90226-4)
 
-WebBook retains unconfirmed precursor states and source structures instead of
-assigning isomer-specific data to a formula-only target. Heavy-particle
-CollisionDB files require their source's `com` or `target` energy frame;
-user-selected axes do not supply a missing frame. Fit-generated tables retain
-their calculated origin and declared domain, without promoting fit error to
-measurement uncertainty. NASA9/Shomate, EEDF integration and surface-flux
-conversion remain unimplemented; acquiring their input does not implement them.
+量の定義と計算条件は[現行設計](core_design.md)を参照してください。[IUPACのEA](https://goldbook.iupac.org/terms/view/E01977)・[NISTの垂直／断熱IE](https://cccbdb.nist.gov/adiabaticx.asp)・[IUPACの出現エネルギー](https://goldbook.iupac.org/terms/view/A00421)・[NIST気相イオン熱化学規約](https://webbook.nist.gov/chemistry/ion/)
 
-## Registry adoption and distribution
+## 未収録資料と確認待ち
 
-Inspect the source, target identity, quantity, applicable conditions, scientific
-qualification, and usage rights before a record is used for a declared purpose
-or distributed. `rgen adopt OVERLAY --registry PATH --dry-run` describes the
-proposed persistent changes. Running it without `--dry-run` is the explicit
-storage operation; it retains the record's original qualification and is not a
-scientific approval step.
+- LXCatの数値表は収録対象外です。公式方針は第三者による再配布を一般に認めず、利用者自身の取得と元データの引用を案内しています。[LXCat再配布方針](https://us.lxcat.net/instructions/redistribution.php)
+- NIST SRD 107のASCII表と、CC BY-NC 4.0の2026年酸素workbookは参照のみです。NISTの公開SRDには固有の権利表示があります。[SRD 107](https://doi.org/10.18434/T4KK5C)・[酸素workbook](https://doi.org/10.60893/figshare.jpr.30850013)・[NISTのSRD方針](https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications)
+- CollisionDB D2984は解離性励起を扱い、束縛したH₂励起種や生成Hの準位別係数への同定を保留しています。D109777は元宣言と文献の対象が不一致で、数値採用を保留しています。[CollisionDB取得記録](../registry/sources/collisiondb_2026.yaml)
 
-Before distributing a Registry, snapshot, asset, or analysis result, verify that
-the retained source information identifies the relevant terms and attribution,
-that the proposed distribution is permitted, and that transformations or repairs
-are traceable to the original. When terms are unknown, preserve that uncertainty
-and resolve it with the source before redistribution. Catalog review items are
-guidance for this check, not blanket permission or a substitute for the source's
-current terms.
-
-## 1.0 property-source review (2026-11-01)
-
-The working Registry's property records were checked as individual numerical values and
-derived scalar estimates in this project's per-species representation. The
-Registry does not contain WebBook/CCCBDB/ASD page archives, their database tables,
-spectral plots, or the chemicals/mendeleev/PYroMat programs. A record's scientific
-qualification is unchanged by this rights review.
-
-Individual scientific facts and the protected expression or arrangement of a
-compilation require different treatment. The
-[U.S. Copyright Office](https://www.copyright.gov/help/faq/faq-protect.html)
-distinguishes facts from their expression. NIST's own
-[SRD workshop report, section 8.1](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.1225.pdf)
-likewise distinguishes numerical scientific data from database presentation,
-arrangement and metadata. These sources support reviewing the actual material
-being distributed; they are not a new licence for arbitrary database exports.
-
-| Local material | Verified source terms and required handling |
-|---|---|
-| WebBook-derived mass, ionization/affinity/formation values, e.g. CF4 and CF2 | [WebBook is SRD 69](https://webbook.nist.gov/chemistry/), not a generic non-SRD NIST work. Its [contact notice](https://webbook.nist.gov/chemistry/contact/) reserves compilation rights. Keep the source and original quantity references. Independent factual entries are distinct from copying its pages, table organisation, explanatory text or spectra. No blanket licence for the WebBook compilation was obtained. |
-| CCCBDB experimental polarizability/dipole values, e.g. BCl3, C2H2, CF4 and CH4 | [CCCBDB identifies itself as SRD 101, release 22](https://cccbdb.nist.gov/). Keep the named determination, units and source reference; the local values are per-species facts, not a copy of its compilation. The general NIST non-SRD redistribution grant is not the basis for redistributing this SRD. |
-| ASD levels, ionization energies and existence references, e.g. Ar, O, N ions | [ASD identifies SRD 78 and version 5.12](https://www.nist.gov/pml/atomic-spectra-database-contents); [Basic Atomic Spectroscopic Data](https://www.nist.gov/pml/handbook-basic-atomic-spectroscopic-data) is the separate SRD 108. Retain the actual database/version and primary references already present. Do not turn the generic citation “NIST Atomic Data” into an invented precise provenance. |
-| chemicals thermochemistry, dipoles, collision radii and effective vibrational estimates | [chemicals v1.5.2](https://raw.githubusercontent.com/CalebBell/chemicals/v1.5.2/LICENSE.txt) is MIT; its copyright and permission notice are retained in [chemicals-LICENSE.txt](../registry/data_notes/chemicals-LICENSE.txt). The package uses several upstream databanks. The original Registry entries often omit the selected table and package release; a matching value today does not prove which historical table supplied it. Retain the existing citation and distinguish factual scalar reuse from copying an upstream table. New acquisitions retain their selected thermochemistry table and release. |
-| mendeleev atomic mass, IE, EA and polarizability values | Both the [mendeleev v1.2.0 package](https://raw.githubusercontent.com/lmmentel/mendeleev/v1.2.0/LICENSE) and the separate [mendeleev-data v1.2.0 repository](https://github.com/lmmentel/mendeleev-data/tree/v1.2.0) are MIT. This provides a data-repository grant, beyond a software-only label. Retain [package notice](../registry/data_notes/mendeleev-LICENSE.txt), [data notice](../registry/data_notes/mendeleev-data-LICENSE.txt), original literature citations and transformations such as polarizability unit conversion. These checked versions do not retroactively supply an absent acquisition version. |
-| PYroMat ideal-gas enthalpy values for CF, CFO and FO | The installed 2.2.6 package and [official source licence](https://raw.githubusercontent.com/chmarti1/PYroMat/master/LICENSE.txt) are GPLv3. Registry contains three scalar evaluations at 300 K, with no program or PYroMat coefficient files. GPLv3 section 2 distinguishes executing the program from output that itself constitutes a covered work. Do not label these numerical outputs, or this whole project, GPL merely because PYroMat evaluated them. If its program or protected database material is bundled later, its own source/notice obligations must be satisfied. Keep the existing program/source citation and evaluated temperature. |
-
-The corresponding [NIST source notice](../registry/data_notes/NIST-SRD-NOTICE.txt)
-preserves compilation attribution and explains the limited material included.
-The [official NIST policy](https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications)
-separates SRD from its worldwide non-SRD data grant. Do not claim that all NIST
-data are public domain, or that preserving a notice obtains a compilation
-redistribution licence. Conversely, a compilation copyright notice does not by
-itself make every cited numerical fact a prohibited copy.
-
-No provider was contacted or new permission obtained in this review. Restrictions
-for bulk/contractual database products, source pages, spectra, original papers or
-future imported assets must be checked for that proposed distribution. The
-present scalar review does not clear those different materials.
-
-The former `tests/fixtures/cccbdb_polarizability.html` contained an excerpt of
-source table markup. It was preserved outside the release tree, then replaced
-by independently authored minimal HTML with invented values and references.
-The fixture covers navigation, row shape, missing cells and sub/sup tags; its
-tests validate the adapter, not physical measurements. The source distribution
-does not ship the former excerpt. Registry values and scientific qualification
-were not changed by this cleanup.
+任意依存のRDKitはローカルのSMILES処理に使用します。ソフトウェアやバイナリを別途同梱する場合は、対象バージョンのBSD 3-Clauseと第三者noticeを適用します。[RDKit公式ライセンス](https://raw.githubusercontent.com/rdkit/rdkit/Release_2024_09_6/license.txt)

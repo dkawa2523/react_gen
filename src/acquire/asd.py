@@ -1,4 +1,4 @@
-"""Read neutral-atom levels and qualified threshold summaries from NIST ASD.
+"""Read atomic spectra and qualified level summaries from NIST ASD.
 
 ASD marks semi-empirical energies with square brackets and calculated energies
 with parentheses. Question marks/daggers denote doubts; ``+x`` denotes an
@@ -22,11 +22,15 @@ import hashlib
 import io
 import math
 import re
+from collections import Counter
 from dataclasses import dataclass, field, replace
 from fractions import Fraction
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+
+from reactgen.chemistry import state_id
+from reactgen.naming import ELEMENTS
 
 ENDPOINT = "https://physics.nist.gov/cgi-bin/ASD/energy1.pl"
 USER_AGENT = "reactgen/acquire"
@@ -65,6 +69,7 @@ class Level:
     withheld_reason: str | None = None
     source_row: int | None = None
     source_record: dict[str, str] = field(default_factory=dict)
+    autoionization_marked: bool = False
 
     @property
     def odd(self) -> bool:
@@ -129,9 +134,10 @@ def _summaries(symbol: str, levels: list[Level], text: str, url: str) -> Levels:
 
 
 def _query_url(symbol: str) -> str:
+    element, charge = _spectrum(symbol)
     query = {
         "de": "0",
-        "spectrum": f"{symbol} I",
+        "spectrum": f"{element} {_roman_stage(charge + 1)}",
         "units": "1",
         "format": "3",
         "output": "0",
@@ -147,6 +153,32 @@ def _query_url(symbol: str) -> str:
         "submit": "Retrieve Data",
     }
     return f"{ENDPOINT}?{urlencode(query)}"
+
+
+def _spectrum(target: str) -> tuple[str, int]:
+    match = re.fullmatch(r"([A-Z][a-z]?)(\+(?:[2-9]|[1-9][0-9])?)?", target)
+    if match is None:
+        raise ValueError("ASD target must be an element symbol or cation such as Ar, Ar+ or Ar+2")
+    suffix = match[2] or ""
+    return match[1], int(suffix[1:] or "1") if suffix else 0
+
+
+def _roman_stage(stage: int) -> str:
+    parts = []
+    for value, token in (
+        (100, "C"),
+        (90, "XC"),
+        (50, "L"),
+        (40, "XL"),
+        (10, "X"),
+        (9, "IX"),
+        (5, "V"),
+        (4, "IV"),
+        (1, "I"),
+    ):
+        count, stage = divmod(stage, value)
+        parts.append(token * count)
+    return "".join(parts)
 
 
 def _request(symbol: str) -> str:
@@ -252,6 +284,7 @@ def _level(
         reason,
         row_number,
         dict(zip(header, cells, strict=True)),
+        energy_text.rstrip().endswith("a"),
     )
 
 
@@ -394,8 +427,91 @@ def _source_level(level: Level) -> dict:
     }
 
 
+def resolved_records(item: Levels, citation: str, maximum_eV: float) -> list[dict]:
+    """Stage specific gaps with an explicit ground zero and a unique ASD level name.
+
+    An unavailable row can prevent an assertion about the lowest level without
+    invalidating an independently identified absolute gap elsewhere in the table.
+    Only levels below the first reported ionization limit enter this bounded set.
+    """
+    element, charge = _spectrum(item.symbol)
+    # The ASD default hydrogen query is explicitly 1H. It cannot define a
+    # level of the engine's isotope-unspecified H state.
+    if element == "H" or element not in ELEMENTS:
+        return []
+    levels = [level for level in item.levels if level.term.casefold() != "limit"]
+    zero = [level for level in levels if level.energy_eV == 0]
+    if (
+        len(zero) != 1
+        or zero[0].withheld_reason
+        or zero[0].j is None
+        or zero[0].autoionization_marked
+    ):
+        return []
+    limits = _ordered([level for level in item.levels if level.term.casefold() == "limit"])
+    if not limits:
+        return []
+    limit = limits[0]
+    limit_eV = limit.energy_eV
+    if limit.withheld_reason or limit_eV is None:
+        return []
+    # The TSV has no separate spectrum column. Its principal limit names
+    # the next spectrum, independently of the requested URL.
+    if limit.configuration.split()[:2] != [element, _roman_stage(charge + 2)]:
+        return []
+    labels = [f"ASD {level.configuration} | {level.term} | J={level.j}" for level in levels]
+    counts = Counter(labels)
+    ground = state_id({element: 1}, charge)
+    source = {
+        "provider": "nist_asd",
+        "collection": "SRD78",
+        "citation": citation,
+        "url": item.query_url,
+    }
+    digest = hashlib.sha256(item.raw_response.encode("utf-8")).hexdigest()
+    out = []
+    for level, label in zip(levels, labels, strict=True):
+        energy = level.energy_eV
+        if (
+            energy is None
+            or not 0 < energy <= maximum_eV
+            or energy >= limit_eV
+            or level.j is None
+            or level.withheld_reason
+            or level.autoionization_marked
+            or counts[label] != 1
+        ):
+            continue
+        record = {
+            "species": state_id({element: 1}, charge, "electronic", label, resolution="resolved"),
+            "phase": "gas",
+            "property": "excitation_energy_eV",
+            "value": energy,
+            "unit": "eV",
+            "related_state": ground,
+            "configuration": level.configuration,
+            "term": level.term,
+            "J": str(level.j),
+            "status": "imported",
+            "source": source,
+            "source_declaration": {
+                "spectrum": item.symbol,
+                "level": _source_level(level),
+                "ground": _source_level(zero[0]),
+                "ionization_limit": _source_level(limit),
+                "response_sha256": digest,
+            },
+        }
+        if level.uncertainty_eV is not None:
+            record["uncertainty"] = {"absolute": level.uncertainty_eV, "unit": "eV"}
+        if level.energy_origin == "calculated":
+            record["method"] = "calculated"
+        out.append(record)
+    return out
+
+
 def records(found: list[Levels], citation: str) -> list[dict]:
-    """Ground-atom summaries plus intact acquisition evidence.
+    """Ground-state summaries plus intact acquisition evidence.
 
     Original levels are not assigned to invented excited-state identities or
     promoted to existence evidence. A withheld summary has no numeric value.

@@ -84,16 +84,15 @@ channels:
     n: 1
   - species: F
     n: 1
-  status: literature_supported
-  threshold_eV: 9.6
-  data:
-    cross_section:
-      path: null
-      format: external_reference_pending_digitization
-      source: Christophorou and Olthoff (2000), Table 21, doi:10.1063/1.1288407
-      status: needs_import
-      note: Expected threshold is registered; channel-specific numeric data are still
-        needed.
+  status: estimated
+  source_record: &neutral_fragment_source
+    source_id: doi:10.1063/1.1288407
+    citation: Christophorou and Olthoff (2000), Table 21, citing Ito et al.
+    url: https://doi.org/10.1063/1.1288407
+  source_declaration:
+    expected_threshold_eV: 9.6
+    measured_threshold: unavailable
+    scope: proposed neutral product partition
 - id: e_SF6_dissociation_SF4_2F
   type: dissociation
   products:
@@ -103,16 +102,12 @@ channels:
     n: 1
   - species: F
     n: 2
-  status: literature_supported
-  threshold_eV: 12.1
-  data:
-    cross_section:
-      path: null
-      format: external_reference_pending_digitization
-      source: Christophorou and Olthoff (2000), Table 21, doi:10.1063/1.1288407
-      status: needs_import
-      note: Expected threshold is registered; channel-specific numeric data are still
-        needed.
+  status: estimated
+  source_record: *neutral_fragment_source
+  source_declaration:
+    expected_threshold_eV: 12.1
+    measured_threshold: unavailable
+    scope: proposed neutral product partition
 - id: e_SF6_dissociation_SF3_3F
   type: dissociation
   products:
@@ -122,16 +117,14 @@ channels:
     n: 1
   - species: F
     n: 3
-  status: literature_supported
-  threshold_eV: 15.9
-  data:
-    cross_section:
-      path: null
-      format: external_reference_pending_digitization
-      source: Christophorou and Olthoff (2000), Table 21, doi:10.1063/1.1288407
-      status: needs_import
-      note: The review lists a measured 16 eV threshold; import the product-resolved
-        curve.
+  status: estimated
+  source_record: *neutral_fragment_source
+  source_declaration:
+    expected_threshold_eV: 16.0
+    detected_fragment: SF3
+    fragment_onset_eV: 16.0
+    fragment_onset_estimated_uncertainty_eV: 0.5
+    scope: fragment onset includes every channel producing SF3
 - id: e_SF6_dissociation_SF2_F2_2F
   type: dissociation
   products:

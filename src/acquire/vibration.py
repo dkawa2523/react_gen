@@ -17,9 +17,7 @@ Everything left over is vibrational, and for a single Einstein mode::
 
 A molecule of ``n`` atoms has ``3n - 6`` modes (``3n - 5`` if linear), and at
 high temperature each contributes R, so the residual has to be divided by that
-count before one mode is fitted to it. Skipping the division makes the fit
-lower ``theta`` until a single mode carries the heat capacity of many, which is
-how every polyatomic came back at the bottom of the search range.
+count before one mode is fitted to it.
 
 Fitting one effective ``theta`` to the per-mode residual gives a model average,
 not the lowest mode or the energy of an identified lumped state. Contributions

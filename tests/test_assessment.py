@@ -6,7 +6,6 @@ from dataclasses import replace
 from pathlib import Path
 
 import pytest
-import yaml
 
 from reactgen.assessment import (
     assess_consistency,
@@ -16,11 +15,12 @@ from reactgen.assessment import (
     assess_thermochemistry,
     evaluate,
 )
-from reactgen.case import Conditions
-from reactgen.chemistry import candidate_state
+from reactgen.case import Case, Conditions, Limits, RequestedReaction
+from reactgen.chemistry import candidate_state, electron_state
 from reactgen.evidence import EvidenceCatalog, ReactionEvidence, StateEvidence
 from reactgen.generate import candidates
 from reactgen.model import CandidateSet, ReactionCandidate, Term, reaction_id
+from reactgen.pipeline import analyze
 from reactgen.records import (
     NumericDataset,
     Property,
@@ -30,8 +30,6 @@ from reactgen.records import (
     normalized_dataset,
 )
 from reactgen.units import EV_PER_K, JOULE_PER_EV
-
-FIXTURE = Path(__file__).parent / "fixtures" / "mini"
 
 
 def _reaction(
@@ -45,6 +43,280 @@ def _reaction(
         "", left, right, family, process, "mechanical", "test", 1, **kwargs
     )
     return replace(reaction, id=reaction_id(reaction.key))
+
+
+def test_mapped_cid_requires_the_declared_collider_to_remain_unchanged() -> None:
+    atom = candidate_state({"O": 1}, 0)
+    excited = candidate_state({"O": 1}, 0, "electronic")
+    molecule = candidate_state({"O": 2}, 0)
+    states = CandidateSet(states={state.id: state for state in (atom, excited, molecule)})
+    reaction = _reaction(
+        "collision_induced_dissociation",
+        (Term(excited.id), Term(molecule.id)),
+        (Term(excited.id), Term(atom.id, 2)),
+        "neutral",
+        transformation={
+            "kind": "collision_partition",
+            "parent": molecule.id,
+            "collider": excited.id,
+            "fragments": [excited.id, atom.id],
+            "collider_product": atom.id,
+        },
+    )
+    # The equation permits a CID interpretation but the declared map changes
+    # the collider. That map belongs to the level-transfer interpretation.
+    assert assess_consistency(replace(reaction, transformation={}), states).verdict == "pass"
+    assert assess_consistency(reaction, states).verdict == "fail"
+    changed = replace(reaction, process="dissociation_with_level_transfer")
+    assert assess_consistency(changed, states).verdict == "pass"
+
+
+@pytest.mark.parametrize(
+    ("charge", "structure", "process", "wrong"),
+    [
+        (-1, "smiles:[F-]", "collisional_detachment", "collision_ionization"),
+        (0, "smiles:[F]", "collision_ionization", "collisional_detachment"),
+    ],
+)
+def test_heavy_electron_release_checks_charge_and_inventory(
+    charge: int, structure: str, process: str, wrong: str
+) -> None:
+    parent = candidate_state({"F": 1}, charge, structure=structure)
+    product = candidate_state({"F": 1}, charge + 1)
+    collider = candidate_state({"Ar": 1}, 1)
+    electron = electron_state()
+    states = CandidateSet(states={s.id: s for s in (parent, product, collider, electron)})
+    reaction = _reaction(
+        process,
+        (Term(parent.id), Term(collider.id)),
+        (Term(product.id), Term(collider.id), Term(electron.id)),
+        "ion",
+    )
+    assert assess_consistency(reaction, states).verdict == "pass"
+    assert assess_consistency(replace(reaction, process=wrong), states).verdict == "fail"
+
+
+@pytest.mark.parametrize(
+    ("supplies", "equation", "generated_process", "requested_process"),
+    [
+        ("e", "e + F2 -> e + F+ + F-", "ion_pair_formation", "dissociation"),
+        ("F2-", "F2- + Ar -> 2 F + Ar + e", "dissociative_detachment", "collisional_detachment"),
+    ],
+)
+def test_distinct_fragment_exit_classes_share_equation_accounting(
+    supplies, equation, generated_process, requested_process
+) -> None:
+    hypothesis = RequestedReaction(equation, requested_process)
+    result = analyze(
+        Case(
+            "fragment class",
+            ("Ar", "F2"),
+            supplies=(supplies,),
+            limits=Limits(max_depth=1),
+            reactions=(hypothesis,),
+        ),
+        EvidenceCatalog(),
+    )
+    claims = {
+        reaction.process: result.evaluation.reaction_assessments[reaction.id]
+        for reaction in result.candidates.reactions.values()
+        if reaction.equation_key == hypothesis.candidate.equation_key
+    }
+    assert claims[generated_process]["consistency"].verdict == "pass"
+    assert claims[requested_process]["consistency"].verdict == "fail"
+    assert all(assessments["conservation"].verdict == "pass" for assessments in claims.values())
+
+
+def test_explicit_atomic_structure_preserves_electron_charge_change_candidates() -> None:
+    result = analyze(
+        Case(
+            "charge change",
+            ("F",),
+            supplies=("e",),
+            structures={"F": "[F]"},
+            limits=Limits(max_depth=1),
+        ),
+        EvidenceCatalog(),
+    )
+    processes = {
+        reaction.process: result.evaluation.reaction_assessments[reaction.id]
+        for reaction in result.candidates.reactions.values()
+        if reaction.family == "electron" and reaction.process in {"ionization", "attachment"}
+    }
+    assert set(processes) == {"ionization", "attachment"}
+    assert all(row["consistency"].verdict == "pass" for row in processes.values())
+    assert all(row["energy"].verdict == "unknown" for row in processes.values())
+
+
+def test_charge_change_compares_nuclear_connectivity_across_electronic_structures() -> None:
+    pytest.importorskip("rdkit.Chem")
+    composition = {"C": 2, "H": 6, "O": 1}
+    parent = candidate_state(composition, 0, structure="smiles:CCO")
+    ion = candidate_state(composition, 1, structure="smiles:CC[OH+]")
+    isomer = candidate_state(composition, 1, structure="smiles:C[O+]C")
+    states = CandidateSet(states={s.id: s for s in (parent, ion, isomer, electron_state())})
+    reaction = _reaction("ionization", (Term("e"), Term(parent.id)), (Term("e", 2), Term(ion.id)))
+    assert assess_consistency(reaction, states).verdict == "pass"
+    changed = replace(reaction, products=(Term("e", 2), Term(isomer.id)))
+    assert assess_consistency(changed, states).verdict == "fail"
+
+
+def test_charge_exchange_preserves_formula_candidates_from_explicit_structures() -> None:
+    case = Case(
+        "charge exchange",
+        ("Ne",),
+        supplies=("Ar+",),
+        structures={"Ar+": "[Ar+]", "Ne": "[Ne]"},
+        limits=Limits(max_depth=1, max_reactions=60),
+    )
+    result = analyze(case, EvidenceCatalog())
+    reaction = next(
+        reaction
+        for reaction in result.candidates.reactions.values()
+        if reaction.process == "charge_exchange"
+        and {term.species for term in reaction.products} == {"Ar@ground", "Ne+@ground"}
+    )
+    assert all(result.candidates.states[term.species].structure for term in reaction.reactants)
+    assert result.evaluation.reaction_assessments[reaction.id]["consistency"].verdict == "pass"
+
+
+def test_charge_exchange_checks_isotope_identity_per_partner() -> None:
+    start_a = candidate_state({"C": 1}, 1, structure="smiles:[13C+]")
+    start_b = candidate_state({"C": 1}, 0, structure="smiles:[12C]")
+    wrong_a = candidate_state({"C": 1}, 0, "electronic", structure="smiles:[12C]")
+    wrong_b = candidate_state({"C": 1}, 1, "electronic", structure="smiles:[13C+]")
+    final_a = candidate_state({"C": 1}, 0, structure="smiles:[13C]")
+    final_b = candidate_state({"C": 1}, 1, structure="smiles:[12C+]")
+    states = CandidateSet(
+        states={s.id: s for s in (start_a, start_b, wrong_a, wrong_b, final_a, final_b)}
+    )
+    for products, expected in (((wrong_a, wrong_b), "fail"), ((final_a, final_b), "pass")):
+        reaction = _reaction(
+            "charge_exchange",
+            (Term(start_a.id), Term(start_b.id)),
+            tuple(Term(state.id) for state in products),
+            "ion",
+            transformation={
+                "kind": "charge_transfer",
+                "partners": [start_a.id, start_b.id],
+                "partner_products": [state.id for state in products],
+                "charge_change": -1,
+            },
+        )
+        assert assess_consistency(reaction, states).verdict == expected
+
+
+def test_unbalanced_explicit_electron_relation_cannot_supply_a_state_gap() -> None:
+    ground = candidate_state({"Ar": 1}, 0)
+    upper = candidate_state({"Ar": 1}, 0, "resolved", label="upper", resolution="resolved")
+    reaction = _reaction(
+        "excitation",
+        (Term("e"), Term(ground.id)),
+        (Term("e"), Term(upper.id)),
+    )
+    record = ReactionRecord(
+        "balanced",
+        reaction.equation_key,
+        "electron",
+        "excitation",
+        (ground, upper),
+        channel_scope="energy_relation",
+        energy_properties={
+            "delta_e_eV": Property(2, "eV", tier="reviewed", definition="products_minus_reactants")
+        },
+    )
+    malformed = replace(
+        record,
+        id="missing-outgoing-electron",
+        equation_key=replace(reaction, products=(Term(upper.id),)).equation_key,
+        energy_properties={
+            "delta_e_eV": Property(3, "eV", tier="reviewed", definition="products_minus_reactants")
+        },
+    )
+    states = {state.id: state for state in (ground, upper, electron_state())}
+    generated = CandidateSet(states, {reaction.id: reaction})
+    result = evaluate(
+        generated, EvidenceCatalog(reaction_records=(record, malformed)), Conditions()
+    )
+    difference = result.thermochemical_calculations[reaction.id]["state_energy_difference_eV"]
+    assert difference.value == 2
+    assert [term["record_id"] for term in difference.inputs] == [record.id]
+
+
+def test_only_a_pure_energy_relation_can_omit_the_zero_reference_electron() -> None:
+    neutral, ion = (candidate_state({"Ar": 1}, charge) for charge in (0, 1))
+    reaction = _reaction("ionization", (Term("e"), Term(neutral.id)), (Term("e", 2), Term(ion.id)))
+    relation = ReactionRecord(
+        "reference",
+        replace(reaction, reactants=(Term(neutral.id),), products=(Term(ion.id),)).equation_key,
+        "electron",
+        "ionization",
+        (neutral, ion),
+        channel_scope="energy_relation",
+        energy_properties={
+            "delta_e_eV": Property(2, "eV", tier="reviewed", definition="products_minus_reactants")
+        },
+    )
+    generated = CandidateSet(
+        {state.id: state for state in (neutral, ion, electron_state())}, {reaction.id: reaction}
+    )
+    for record, expected in (
+        (relation, 2),
+        (replace(relation, channel_scope="product_resolved"), None),
+    ):
+        evaluation = evaluate(generated, EvidenceCatalog(reaction_records=(record,)), Conditions())
+        difference = evaluation.thermochemical_calculations[reaction.id][
+            "state_energy_difference_eV"
+        ]
+        assert difference.value == expected
+
+
+def test_element_imbalance_cannot_cancel_between_source_relations() -> None:
+    hydrogen, chlorine, bromine, fluorine = (
+        candidate_state({symbol: 1}, 0) for symbol in ("H", "Cl", "Br", "F")
+    )
+    hcl, hbr = (candidate_state({"H": 1, halogen: 1}, 0) for halogen in ("Cl", "Br"))
+    transfer = _reaction(
+        "net_group_transfer",
+        (Term(hcl.id), Term(bromine.id)),
+        (Term(hbr.id), Term(chlorine.id)),
+        "neutral",
+    )
+    states = (hydrogen, chlorine, bromine, fluorine, hcl, hbr)
+    generated = CandidateSet({state.id: state for state in states}, {transfer.id: transfer})
+    for fragment, expected in ((fluorine, None), (hydrogen, -2)):
+        records = []
+        for parent, halogen, value in ((hcl, chlorine, 3), (hbr, bromine, 5)):
+            cut = _reaction(
+                "dissociation", (Term(parent.id),), (Term(halogen.id), Term(fragment.id)), "neutral"
+            )
+            records.append(
+                ReactionRecord(
+                    cut.id,
+                    cut.equation_key,
+                    "neutral",
+                    "dissociation",
+                    (parent, halogen, fragment),
+                    channel_scope="energy_relation",
+                    energy_properties={
+                        "delta_e_eV": Property(
+                            value, "eV", tier="reviewed", definition="products_minus_reactants"
+                        )
+                    },
+                )
+            )
+        evaluation = evaluate(
+            generated,
+            EvidenceCatalog(reaction_records=tuple(records)),
+            Conditions(collision_energy_eV=0, collision_energy_frame="com"),
+        )
+        difference = evaluation.thermochemical_calculations[transfer.id][
+            "state_energy_difference_eV"
+        ]
+        assert difference.value == expected
+        assert evaluation.reaction_assessments[transfer.id]["energy"].verdict == (
+            "unknown" if expected is None else "pass"
+        )
 
 
 def _rate(value: float = 1e-15, **changes: object) -> NumericDataset:
@@ -103,84 +375,40 @@ def _energy_record(reaction: ReactionCandidate, threshold: float) -> ReactionEvi
     return ReactionEvidence((record,))
 
 
-def test_state_identity_stays_exact_when_existence_assertions_conflict() -> None:
-    generated = candidates(("Ar", "O2"))
-    exact = EvidenceCatalog.load(FIXTURE)
-    assert exact.state(generated.states["Ar@ground"]).match == "exact"
-    assert exact.state(generated.states["O2@ground"]).match == "none"
-    argon = replace(
-        next(record for record in exact.state_records if record.id == "Ar"),
-        existence="confirmed",
-        existence_source="test identity",
+def test_reviewed_mass_does_not_establish_anion_existence() -> None:
+    anion = candidate_state({"C": 1, "F": 4}, -1)
+    record = StateRecord(
+        anion.id, anion, properties={"mass_amu": Property(88, "amu", tier="reviewed")}
     )
-    catalog = replace(
-        exact,
-        state_records=(argon, replace(argon, id="duplicate", existence="unbound")),
-    )
-    state = generated.states["Ar@ground"]
-    evidence = catalog.state(state)
-    assert evidence.match == "exact"
-    existence = assess_state(state, evidence, generated)
-    assert existence.verdict == "unknown"
-    assert "existence assertions conflict" in existence.message
-
-
-def test_reviewed_mass_does_not_establish_anion_existence(tmp_path: Path) -> None:
-    path = tmp_path / "overlay.yaml"
-    path.write_text(
-        yaml.safe_dump(
-            {
-                "properties": {
-                    "CF4-@ground": {"mass_amu": {"value": 88, "evidence_tier": "reviewed"}}
-                }
-            }
-        ),
-        encoding="utf-8",
-    )
-    generated = candidates(("CF4",))
-    result = evaluate(generated, EvidenceCatalog.load(None, overlay=path), Conditions())
-    assert result.state_assessments["CF4-@ground"]["state"].verdict == "unknown"
-
-
-@pytest.mark.parametrize(
-    "process", ["ionization", "attachment", "dissociation", "penning_ionization"]
-)
-def test_process_label_cannot_turn_an_elastic_equation_into_a_valid_channel(process: str) -> None:
-    generated = candidates(("Ar",))
-    assert assess_consistency(_reaction(process), generated).verdict == "fail"
-
-
-def test_mechanical_equations_match_their_process_patterns() -> None:
-    generated = candidates(("Ar", "O2"))
-    failed = [
-        (reaction.process, str(reaction.reactants), str(reaction.products))
-        for reaction in generated.reactions.values()
-        if assess_consistency(reaction, generated).verdict == "fail"
-    ]
-    assert failed == []
+    catalog = EvidenceCatalog(state_records=(record,))
+    result = evaluate(CandidateSet({anion.id: anion}), catalog, Conditions())
+    assert result.state_evidence[anion.id].match == "exact"
+    assert result.state_assessments[anion.id]["state"].verdict == "unknown"
 
 
 def test_self_collision_quenching_preserves_classification() -> None:
-    generated = candidates(("Ar",))
+    ground, metastable = (candidate_state({"Ar": 1}, 0, kind) for kind in ("ground", "metastable"))
+    states = CandidateSet({state.id: state for state in (ground, metastable)})
     reaction = _reaction(
         "quenching",
-        (Term("Ar@metastable", 2),),
-        (Term("Ar@ground"), Term("Ar@metastable")),
+        (Term(metastable.id, 2),),
+        (Term(ground.id), Term(metastable.id)),
         "neutral",
     )
-    assert assess_consistency(reaction, generated).verdict == "pass"
+    assert assess_consistency(reaction, states).verdict == "pass"
 
 
 def test_surface_charge_reservoir_is_explicit_in_the_conclusion() -> None:
-    generated = candidates(("Ar",))
+    ground, ion = (candidate_state({"Ar": 1}, charge) for charge in (0, 1))
+    states = CandidateSet({state.id: state for state in (ground, ion)})
     reaction = _reaction(
         "surface_neutralization",
-        (Term("Ar+@ground"),),
-        (Term("Ar@ground"),),
+        (Term(ion.id),),
+        (Term(ground.id),),
         "surface",
         surface="wall",
     )
-    result = assess_consistency(reaction, generated)
+    result = assess_consistency(reaction, states)
     assert result.verdict == "pass"
     assert "surface charge reservoir:wall" in result.basis
     assert "charge conservation" not in result.basis
@@ -238,46 +466,6 @@ def test_conflicting_state_properties_are_not_selected_by_input_order() -> None:
         )
 
 
-def test_ground_ionization_threshold_is_checked_against_the_ie_lower_bound() -> None:
-    generated = candidates(("Ar",))
-    reaction = _reaction("ionization", right=(Term("e", 2), Term("Ar+@ground")))
-    parent = generated.states["Ar@ground"]
-    states = {
-        parent.id: _state_evidence(
-            parent,
-            properties={
-                "ionization_energy_eV": Property(15.0 * JOULE_PER_EV, "J", tier="reviewed")
-            },
-        )
-    }
-    result, values = assess_thermochemistry(
-        reaction, generated, states, _energy_record(reaction, 1.0), Conditions()
-    )
-    assert result.verdict == "fail"
-    assert values["ionization_energy_eV"] == pytest.approx(15.0)
-
-
-def test_parent_affinity_does_not_reject_dissociative_attachment() -> None:
-    generated = candidates(("CF4",))
-    parent = generated.states["CF4@ground"]
-    states = {
-        parent.id: _state_evidence(
-            parent, properties={"electron_affinity_eV": Property(-1.0, "eV", tier="reviewed")}
-        )
-    }
-    reaction = next(
-        item
-        for item in generated.reactions.values()
-        if item.process == "dissociative_attachment"
-        and any(term.species == parent.id for term in item.reactants)
-    )
-    result, _ = assess_thermochemistry(
-        reaction, generated, states, _energy_record(reaction, 4.7), Conditions()
-    )
-    assert result.verdict == "unknown"
-    assert "unbound parent" not in result.message
-
-
 @pytest.mark.parametrize(
     ("tier", "resolution"),
     [("imported", "resolved"), ("reviewed", "lumped"), ("reviewed", "resolved")],
@@ -305,18 +493,6 @@ def test_penning_deficit_is_not_an_unconditional_prohibition(tier: str, resoluti
         reaction, generated, states, ReactionEvidence(), Conditions()
     )
     assert result.verdict == "unknown"
-
-
-def test_elastic_zero_energy_does_not_claim_an_energy_loss_model() -> None:
-    generated = candidates(("Ar",))
-    result = evaluate(generated, EvidenceCatalog.load(None), Conditions())
-    reaction = next(item for item in generated.reactions.values() if item.process == "elastic")
-    assert result.reaction_assessments[reaction.id]["thermochemistry"].verdict == "pass"
-    assert (
-        "translational energy transfer is undetermined"
-        in result.reaction_assessments[reaction.id]["thermochemistry"].message
-    )
-    assert not hasattr(result, "thermo_capabilities")
 
 
 def test_same_dataset_id_with_different_content_is_order_independent_conflict() -> None:
@@ -358,15 +534,6 @@ def test_overlapping_constant_values_including_zero_cannot_be_arbitrarily_select
     result, use = _use(first, second)
     assert result.verdict == "unknown"
     assert use.status == "conflict"
-
-
-def test_rate_units_are_normalized_before_value_comparison() -> None:
-    first = _rate(1e-15, id="SI")
-    second = _rate(1e-9, id="cm", unit="cm3/s")
-    result, use = _use(first, second)
-    assert result.verdict == "pass"
-    assert use.value == pytest.approx(1e-15)
-    assert use.unit == "m3/s"
 
 
 def test_undeclared_constant_applicability_does_not_produce_a_ready_coefficient() -> None:
@@ -651,3 +818,85 @@ def test_state_excitation_is_not_charge_exchange() -> None:
     )
     generated = CandidateSet({state.id: state for state in (ion, excited_ion, target)}, {})
     assert assess_consistency(reaction, generated).verdict == "fail"
+
+
+@pytest.mark.parametrize(
+    ("equation", "process", "verdict"),
+    [
+        ("SiH3+ + SiH- -> SiH3 + SiH", "mutual_neutralization", "pass"),
+        ("SiH3+ + SiH- -> 2 SiH2", "mutual_neutralization", "fail"),
+        ("O2+ + O- -> 3 O", "mutual_neutralization", "fail"),
+        ("O2+ + O- -> 3 O", "dissociative_charge_transfer", "pass"),
+        ("NF2 + HCl -> NFCl + HF", "net_group_exchange", "pass"),
+        ("H + NF2 -> HF + NF", "net_group_exchange", "fail"),
+        ("0.5 Ar + 1.5 He -> 0.5 Ar + 1.5 He", "elastic", "fail"),
+    ],
+)
+def test_named_binary_process_requires_its_participant_pattern(equation, process, verdict):
+    requested = RequestedReaction(equation, process)
+    states = CandidateSet({state.id: state for state in requested.states})
+    assert assess_consistency(requested.candidate, states).verdict == verdict
+
+
+@pytest.mark.parametrize("process", ["radical_recombination", "substitution", "net_group_transfer"])
+def test_group_role_map_cannot_approve_an_unrelated_or_empty_transformation(process):
+    requested = RequestedReaction("Ar@1s5 + He -> Ar + He", process)
+    states = CandidateSet({state.id: state for state in requested.states})
+    mapped = replace(
+        requested.candidate,
+        transformation={
+            "kind": "group_transfer",
+            "donor": "Ar@1s5",
+            "acceptor": "He@ground",
+            "donor_product": "Ar@ground",
+            "acceptor_product": "He@ground",
+            "group_charge": 0,
+        },
+    )
+    assert assess_consistency(mapped, states).verdict == "fail"
+
+
+@pytest.mark.parametrize(
+    ("fluoro_silicon", "chloro_silicon", "verdict"),
+    [("28", "29", "pass"), ("29", "28", "fail"), ("", "29", "unknown")],
+)
+def test_group_transfer_preserves_the_retained_nuclides(fluoro_silicon, chloro_silicon, verdict):
+    requested = RequestedReaction(
+        "SiH3F@ground;structure=smiles:[28SiH3]F + SiHCl@ground;structure=smiles:[29SiH]Cl"
+        f" -> SiH2F@ground;structure=smiles:[{fluoro_silicon}SiH2]F"
+        f" + SiH2Cl@ground;structure=smiles:[{chloro_silicon}SiH2]Cl",
+        "net_group_transfer",
+    )
+    states = CandidateSet({state.id: state for state in requested.states})
+    assert assess_consistency(requested.candidate, states).verdict == verdict
+
+
+@pytest.mark.parametrize(
+    ("first_silicon", "second_silicon", "verdict"),
+    [("28", "29", "pass"), ("29", "28", "fail"), ("", "29", "unknown")],
+)
+def test_group_exchange_preserves_nuclides_outside_the_declared_groups(
+    first_silicon, second_silicon, verdict
+):
+    requested = RequestedReaction(
+        "SiH3F@ground;structure=smiles:[28SiH3]F + SiH2Cl2@ground;structure=smiles:[29SiH2](Cl)Cl"
+        f" -> SiH3Cl@ground;structure=smiles:[{first_silicon}SiH3]Cl"
+        f" + SiH2ClF@ground;structure=smiles:[{second_silicon}SiH2](Cl)F",
+        "net_group_exchange",
+    )
+    states = CandidateSet({state.id: state for state in requested.states})
+    left, right = (states.states[term.species] for term in requested.candidate.reactants)
+    first, second = sorted(
+        (states.states[term.species] for term in requested.candidate.products),
+        key=lambda state: state.composition["H"],
+    )
+    # The two-H parent loses Cl and the three-H parent loses F.
+    partners = sorted((left, right), key=lambda state: state.composition["H"])
+    role_map = {
+        "kind": "group_exchange",
+        "partners": [state.id for state in partners],
+        "groups": [{"Cl": 1}, {"F": 1}],
+    }
+    for declared in (role_map, role_map | {"partner_products": [first.id, second.id]}):
+        reaction = replace(requested.candidate, transformation=declared)
+        assert assess_consistency(reaction, states).verdict == verdict

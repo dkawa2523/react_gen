@@ -61,7 +61,9 @@ def _pair_file(root: Path, name: str, channels: list[dict], pair: dict | None = 
 
 def test_multiple_files_retain_all_channels_and_source_records(tmp_path: Path) -> None:
     root = _registry(tmp_path / "registry")
-    _pair_file(root, "a.yaml", [_channel("source-z")])
+    declaration = _channel("source-z")
+    declaration["transformation"] = {"kind": "internal_identity", "target": "O2"}
+    _pair_file(root, "a.yaml", [declaration])
     _pair_file(root, "b.yaml", [_channel("source-a"), _channel("source-m")])
     registry = Registry.load(root)
     group = registry.channels[("neutral_neutral", "Ar", "O2")]
@@ -69,6 +71,10 @@ def test_multiple_files_retain_all_channels_and_source_records(tmp_path: Path) -
     candidate = registry_reaction_candidate(group[0], registry.species)
     assert candidate is not None
     evidence = EvidenceCatalog.load(root).reaction(candidate)
+    mapped = next(record for record in evidence.records if record.id == "source-z")
+    assert mapped.transformation["target"] == "O2@ground"
+    assert group[-1].transformation["target"] == "O2"
+    assert declaration["transformation"]["target"] == "O2"
     assert {record.source["source_id"] for record in evidence.records} == {
         "source-a",
         "source-m",

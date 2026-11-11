@@ -117,7 +117,13 @@ def test_oxygen_nasa_fit_review_does_not_approve_all_molecular_properties(review
     assert thermo.tier == "reviewed"
     assert "v3.2.0/data/air.yaml" in thermo.source
     assert "TPIS89" in thermo.source
-    assert species.properties["ionization_energy_eV"].tier == "imported"
+    # The IE has its own SRD 69 review. The Cantera fit cannot qualify this
+    # scalar, the separate affinity or the formation enthalpy.
+    ionization = species.properties["ionization_energy_eV"]
+    assert ionization.tier == "reviewed"
+    assert ionization.provenance.collection == "SRD69"
+    assert ionization.review_scope == ("ionization_energy_eV",)
+    assert species.properties["electron_affinity_eV"].tier == "imported"
     assert species.properties["enthalpy_formation_eV"].tier == "imported"
     for excited_id in ("O2_a1Delta", "O2_b1Sigma"):
         excited = registry.species[excited_id]

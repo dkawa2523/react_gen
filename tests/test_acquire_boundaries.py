@@ -1,6 +1,7 @@
 """External format declarations must survive conversion without relabelling."""
 
 import csv
+from hashlib import sha256
 from pathlib import Path
 
 import pytest
@@ -58,11 +59,14 @@ def test_headerless_fixed_format_remains_supported(tmp_path: Path) -> None:
     assert lxcat.parse(path)[0].table == [(0, 1e-20), (1, 2e-20)]
 
 
-def test_table_conversion_retains_all_parsed_precision(tmp_path: Path) -> None:
+def test_table_asset_preserves_header_precision_and_content_identity(tmp_path: Path) -> None:
     rows = [(1.23456789012345, 2.34567890123456e-25)]
     relative = snapshot.write_table(tmp_path, "precision", rows, "energy_eV,cross_section_m2")
-    with (tmp_path / relative).open(encoding="utf-8", newline="") as stream:
-        table = list(csv.reader(stream))[1:]
+    path = tmp_path / relative
+    assert relative == f"assets/{sha256(path.read_bytes()).hexdigest()}/precision.csv"
+    with path.open(encoding="utf-8", newline="") as stream:
+        header, *table = csv.reader(stream)
+    assert header == ["energy_eV", "cross_section_m2"]
     assert [tuple(map(float, row)) for row in table] == rows
 
 

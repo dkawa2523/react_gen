@@ -189,12 +189,18 @@ def test_finite_temperature_parent_does_not_invent_an_excited_thermal_correction
 def test_atomic_mass_selection_is_qualified_and_conflict_is_order_independent():
     first = parent()
     imported = replace(first, id="Ar_other", properties={"mass_amu": Property(41, "amu")})
-    registry = registry_of(first, imported)
-    assert derive.element_masses(registry) == {"Ar": 40}
+    molecule = Species("Ar2", {"Ar": 2}, 0, frozenset(), phase="gas")
+    target = registry_state_candidate(molecule).id
+
+    def derived_mass(*atoms):
+        values = derive.overlay(registry_of(*atoms, molecule))["properties"]
+        return values.get(target, {}).get("mass_amu", {}).get("value")
+
+    assert derived_mass(first, imported) == 80
     opposing = replace(imported, properties={"mass_amu": point("mass_amu", 41, "amu")})
     for ordered in ((first, opposing), (opposing, first)):
-        assert derive.element_masses(registry_of(*ordered)) == {}
-    assert derive.element_masses(registry_of(replace(first, status="rejected"))) == {}
+        assert derived_mass(*ordered) is None
+    assert derived_mass(replace(first, status="rejected")) is None
 
 
 def test_composition_mass_retains_atomic_input_declarations():

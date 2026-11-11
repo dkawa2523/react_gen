@@ -6,7 +6,7 @@ from dataclasses import replace
 import pytest
 
 from reactgen import export, yamlio
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.chemistry import candidate_state
 from reactgen.evidence import EvidenceCatalog
 from reactgen.pipeline import analyze
@@ -53,7 +53,11 @@ def test_related_sources_are_retained_without_changing_existing_conclusions(
     generic, structured, other_phase = records()
     initial = (generic,) if generic_exact else (structured,)
     additions = (structured, other_phase) if generic_exact else (other_phase,)
-    case = Case("formula target", ("C2H6O",))
+    case = Case(
+        "formula target",
+        ("C2H6O",),
+        limits=Limits(max_atoms=9, max_depth=1, max_species=16, max_reactions=24),
+    )
     baseline = analyze(case, EvidenceCatalog(state_records=initial))
     enriched = analyze(case, EvidenceCatalog(state_records=initial + additions))
     for field in (
@@ -119,7 +123,11 @@ def test_other_phase_only_is_visible_but_does_not_supply_the_requested_gas_state
     assert not evidence.records
     assert evidence.related_records == (other_phase,)
     assert not evidence.sources
-    case = Case("gas target", ("C2H6O",))
+    case = Case(
+        "gas target",
+        ("C2H6O",),
+        limits=Limits(max_atoms=9, max_depth=1, max_species=16, max_reactions=24),
+    )
     baseline, related = analyze(case, EvidenceCatalog()), analyze(case, catalog)
     assert baseline.evaluation.state_assessments == related.evaluation.state_assessments
     document = export.document(related)

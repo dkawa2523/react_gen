@@ -1,0 +1,21 @@
+schema_version: 1
+id: SiH3+
+display_name: SiH3+
+composition: {Si: 1, H: 3}
+charge: 1
+phase: gas
+classes:
+- positive_ion
+- molecule
+state:
+  kind: ground
+  term: X+ 1A1prime
+  existence: confirmed
+  existence_source: Vacuum-ultraviolet photoelectron spectroscopy assigns the gas-phase cation ground state.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: Elsevier
+    citation: J. M. Dyke et al., Chem. Phys. 81, 481 (1983)
+    url: https://doi.org/10.1016/0301-0104(83)85339-7

@@ -6,7 +6,7 @@ import pytest
 
 from reactgen import yamlio
 from reactgen.assessment import assess_consistency
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.chemistry import candidate_state, electron_state, parse_equation
 from reactgen.evidence import EvidenceCatalog
 from reactgen.model import CandidateSet, ReactionCandidate, Term
@@ -107,11 +107,15 @@ def test_positive_fractional_duplicates_keep_their_meaning(tmp_path: Path) -> No
     parsed = parse_equation("e + 0.25 Ar + 0.75 Ar -> e + Ar")
     assert parsed is not None
     assert parsed[0][2] == parsed[0][3]
-    result = analyze(Case("fractions", ("Ar",)), EvidenceCatalog.load(root))
+    result = analyze(
+        Case("fractions", ("Ar",), limits=Limits(max_atoms=1, max_depth=1)),
+        EvidenceCatalog.load(root),
+    )
     elastic = next(
         reaction
         for reaction in result.candidates.reactions.values()
-        if reaction.process == "elastic" and reaction.reactants == (Term("e"), Term("Ar@ground"))
+        if reaction.process == "elastic"
+        and set(reaction.reactants) == {Term("e"), Term("Ar@ground")}
     )
     assessments = result.evaluation.reaction_assessments[elastic.id]
     assert assessments["consistency"].verdict == "pass"

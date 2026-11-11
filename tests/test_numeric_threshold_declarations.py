@@ -53,7 +53,13 @@ def check(tmp_path, *records: ReactionRecord, related: tuple[ReactionRecord, ...
             "independent_variable": "electron_energy",
             "parameter_units": {"x": "eV"},
             "asset": {"path": path.name},
-            "validity": {"quantity": "electron_energy", "minimum": 8, "maximum": 12, "unit": "eV"},
+            "validity": {
+                "quantity": "electron_energy",
+                "minimum": 8,
+                "maximum": 12,
+                "unit": "eV",
+                "unresolved_conditions": {"energy_frame": "com"},
+            },
             "status": "reviewed",
         },
         base=tmp_path,
@@ -64,7 +70,16 @@ def check(tmp_path, *records: ReactionRecord, related: tuple[ReactionRecord, ...
 
 
 def threshold(**changes) -> Property:
-    return replace(Property(10, "eV", tier="reviewed", definition="channel_threshold"), **changes)
+    return replace(
+        Property(
+            10,
+            "eV",
+            tier="reviewed",
+            definition="channel_threshold",
+            source_declaration={"energy_frame": "com"},
+        ),
+        **changes,
+    )
 
 
 def test_parent_review_cannot_qualify_an_imported_energy(tmp_path) -> None:

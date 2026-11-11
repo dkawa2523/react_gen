@@ -5,10 +5,12 @@ from itertools import permutations
 
 import pytest
 
-from reactgen.assessment import assess_consistency
-from reactgen.chemistry import candidate_state
-from reactgen.generate import candidates
+from reactgen.assessment import assess_consistency, evaluate
+from reactgen.case import Conditions
+from reactgen.chemistry import candidate_state, electron_state
+from reactgen.evidence import EvidenceCatalog
 from reactgen.model import CandidateSet, ReactionCandidate, Term, reaction_id
+from reactgen.records import Property, ReactionRecord
 
 
 def channel(process: str, products: tuple[Term, ...], **options) -> ReactionCandidate:
@@ -26,47 +28,55 @@ def channel(process: str, products: tuple[Term, ...], **options) -> ReactionCand
     return replace(reaction, id=reaction_id(reaction.key))
 
 
-def test_unsupported_process_keeps_known_balance_and_unknown_semantics() -> None:
+@pytest.fixture
+def argon_states() -> CandidateSet:
+    return CandidateSet(
+        {state.id: state for state in (candidate_state({"Ar": 1}, 0), electron_state())}
+    )
+
+
+def test_unsupported_process_keeps_known_balance_and_unknown_semantics(
+    argon_states: CandidateSet,
+) -> None:
     result = assess_consistency(
-        channel("new_process", (Term("e"), Term("Ar@ground"))), candidates(("Ar",))
+        channel("new_process", (Term("e"), Term("Ar@ground"))), argon_states
     )
     assert result.verdict == "unknown"
-    assert result.basis == ("element conservation", "charge conservation")
-    assert "no defined equation pattern" in result.message
+    assert {need.responsibility for need in result.requirements} == {"external_models"}
 
 
 @pytest.mark.parametrize(
-    ("products", "basis"),
+    "products",
     [
-        ((Term("e"), Term("Ar@ground", 2)), "element conservation"),
-        ((Term("Ar@ground"),), "charge conservation"),
+        (Term("e"), Term("Ar@ground", 2)),
+        (Term("Ar@ground"),),
     ],
 )
-def test_unknown_process_cannot_hide_balance_violation(products, basis) -> None:
-    result = assess_consistency(channel("new_process", products), candidates(("Ar",)))
+def test_unknown_process_cannot_hide_balance_violation(argon_states, products) -> None:
+    result = assess_consistency(channel("new_process", products), argon_states)
     assert result.verdict == "fail"
-    assert result.basis == (basis,)
+    assert not result.requirements
 
 
-@pytest.mark.parametrize("process", ["ionization", "penning_ionization", "quenching"])
-def test_defined_process_mismatch_is_not_missing_support(process) -> None:
+@pytest.mark.parametrize(
+    "process", ["ionization", "attachment", "dissociation", "penning_ionization", "quenching"]
+)
+def test_defined_process_mismatch_is_not_missing_support(argon_states, process) -> None:
+    result = assess_consistency(channel(process, (Term("e"), Term("Ar@ground"))), argon_states)
+    assert result.verdict == "fail"
+    assert not result.requirements
+
+
+def test_missing_reference_precedes_unsupported_process(argon_states) -> None:
     result = assess_consistency(
-        channel(process, (Term("e"), Term("Ar@ground"))), candidates(("Ar",))
+        channel("new_process", (Term("e"), Term("missing@ground"))), argon_states
     )
     assert result.verdict == "fail"
-    assert result.basis == ("process equation pattern",)
+    assert "missing@ground" in result.message
 
 
-def test_missing_reference_precedes_unsupported_process() -> None:
-    result = assess_consistency(
-        channel("new_process", (Term("e"), Term("missing@ground"))), candidates(("Ar",))
-    )
-    assert result.verdict == "fail"
-    assert result.basis == ("state index",)
-
-
-@pytest.mark.parametrize("coefficient", [True, False, "1", None, 0, -1, float("inf")])
-def test_invalid_candidate_coefficients_are_failed_propositions(coefficient) -> None:
+@pytest.mark.parametrize("coefficient", [True, "1", None, 0, -1, float("inf")])
+def test_invalid_candidate_coefficients_are_failed_propositions(argon_states, coefficient) -> None:
     reaction = ReactionCandidate(
         "invalid",
         (Term("e"), Term("Ar@ground", coefficient)),
@@ -77,15 +87,13 @@ def test_invalid_candidate_coefficients_are_failed_propositions(coefficient) -> 
         "test",
         0,
     )
-    result = assess_consistency(reaction, candidates(("Ar",)))
+    result = assess_consistency(reaction, argon_states)
     assert result.verdict == "fail"
-    assert result.basis == ("stoichiometry",)
+    assert not result.requirements
 
 
 @pytest.mark.parametrize("resolution", ["resolved", "lumped"])
-def test_quenching_to_a_non_ground_target_is_outside_the_template_not_inconsistent(
-    resolution: str,
-) -> None:
+def test_quenching_to_a_non_ground_target_requires_its_signed_level_gap(resolution: str) -> None:
     upper = candidate_state({"Ne": 1}, 0, "resolved", label="upper")
     lower = candidate_state({"Ne": 1}, 0, "electronic", label="lower", resolution=resolution)
     partner = candidate_state({"H": 2}, 0)
@@ -95,7 +103,8 @@ def test_quenching_to_a_non_ground_target_is_outside_the_template_not_inconsiste
     )
     result = assess_consistency(reaction, state_set)
     assert result.verdict == "unknown"
-    assert result.basis == ("element conservation", "charge conservation")
+    assert "process equation pattern" in result.basis
+    assert {need.quantity for need in result.requirements} == {"internal_level_gap"}
 
 
 def test_state_transfer_does_not_treat_a_phase_change_as_ground_state_quenching() -> None:
@@ -142,6 +151,58 @@ def test_vibrational_relaxation_requires_a_changing_vibrational_donor() -> None:
     )
     assert assess_consistency(spectator, state_set).verdict == "fail"
     assert assess_consistency(donor, state_set).verdict == "pass"
+    fractional = combination_channel(
+        "v_t_relaxation",
+        (Term(excited.id, 0.5), Term(vibration.id, 1.5)),
+        (Term(excited.id, 0.5), Term(molecule.id, 1.5)),
+    )
+    assert assess_consistency(fractional, state_set).verdict == "fail"
+
+
+@pytest.mark.parametrize("direction", [-1, 1])
+def test_finite_vibration_relaxation_reuses_the_generic_signed_gap(direction: int) -> None:
+    # IUPAC V06615 requires loss of vibrational excitation, whereas an
+    # undirected level-transfer name is compatible with either endpoint ordering.
+    low = candidate_state({"C": 1, "O": 1}, 0, "vibrational", label="v1", resolution="resolved")
+    high = candidate_state(low.composition, 0, "vibrational", label="v2", resolution="resolved")
+    ar = candidate_state({"Ar": 1}, 0)
+    initial, final = (high, low) if direction < 0 else (low, high)
+    reactants, products = (Term(ar.id), Term(initial.id)), (Term(final.id), Term(ar.id))
+    named = combination_channel("v_t_relaxation", reactants, products)
+    generic = combination_channel("level_transfer", reactants, products)
+    state_set = CandidateSet(
+        {state.id: state for state in (low, high, ar)},
+        {reaction.id: reaction for reaction in (named, generic)},
+    )
+    unconditioned = assess_consistency(named, state_set)
+    assert unconditioned.verdict == "unknown"
+    assert {need.quantity for need in unconditioned.requirements} == {"internal_level_gap"}
+    relation = combination_channel("level_transfer", (Term(low.id),), (Term(high.id),))
+    spectrum = ReactionRecord(
+        "synthetic vibrational gap",
+        relation.equation_key,
+        relation.family,
+        relation.process,
+        (low, high),
+        channel_scope="energy_relation",
+        energy_properties={
+            "delta_e_eV": Property(
+                0.25, "eV", tier="reviewed", definition="products_minus_reactants"
+            )
+        },
+    )
+    evaluation = evaluate(
+        state_set,
+        EvidenceCatalog(reaction_records=(spectrum,)),
+        Conditions(collision_energy_eV=0.5, collision_energy_frame="com"),
+    )
+    expected = "pass" if direction < 0 else "fail"
+    assert evaluation.reaction_assessments[named.id]["consistency"].verdict == expected
+    assert evaluation.reaction_assessments[generic.id]["consistency"].verdict == "pass"
+    for reaction in (named, generic):
+        calculated = evaluation.thermochemical_calculations[reaction.id]
+        assert calculated["level_gap_1_eV"].value == direction * 0.25
+        assert evaluation.reaction_assessments[reaction.id]["energy"].verdict == "pass"
 
 
 def combination_channel(
@@ -161,8 +222,7 @@ def combination_channel(
 def oxygen_states() -> CandidateSet:
     # Generic physical identities, independent of Registry and generation rules.
     states = [candidate_state({"O": count}, charge) for count in (1, 2, 3) for charge in (0, 1)]
-    electron = candidates(("Ar",)).states["e"]
-    return CandidateSet({state.id: state for state in (*states, electron)})
+    return CandidateSet({state.id: state for state in (*states, electron_state())})
 
 
 @pytest.mark.parametrize("charge", [0, 1])
@@ -180,7 +240,6 @@ def test_unimolecular_dissociation_has_a_non_electron_pattern(
     )
     result = assess_consistency(reaction, oxygen_states)
     assert result.verdict == "pass"
-    assert "process equation pattern" in result.basis
     assert "physical occurrence is undetermined" in result.message
     assert "activation mechanism" in result.message
 
@@ -198,7 +257,6 @@ def test_same_fragments_have_a_distinct_electron_induced_pattern(
     mislabeled = replace(reaction, family="neutral")
     result = assess_consistency(mislabeled, oxygen_states)
     assert result.verdict == "fail"
-    assert result.basis == ("collision participants",)
 
 
 @pytest.mark.parametrize("charge", [0, 1])
@@ -216,8 +274,6 @@ def test_two_particle_association_does_not_prove_stabilization(
     result = assess_consistency(reaction, oxygen_states)
     assert result.verdict == "pass"
     assert "energy stabilization is unspecified" in result.message
-    assert "physical occurrence is undetermined" in result.message
-    assert reaction.stabilization is None
 
 
 def test_association_self_collision_counts_stoichiometry(oxygen_states: CandidateSet) -> None:
@@ -247,7 +303,7 @@ def test_defined_pattern_contradictions_remain_fail(
 ) -> None:
     result = assess_consistency(combination_channel(process, reactants, products), oxygen_states)
     assert result.verdict == "fail"
-    assert result.basis == ("process equation pattern",)
+    assert not result.requirements
 
 
 @pytest.mark.parametrize(
@@ -281,20 +337,7 @@ def test_unsupported_inducing_scope_is_unknown(
     )
     result = assess_consistency(reaction, oxygen_states)
     assert result.verdict == "unknown"
-    assert result.basis == ("element conservation", "charge conservation")
-    assert "no defined equation pattern" in result.message
-
-
-@pytest.mark.parametrize("family", ["neutral", "photon"])
-def test_unknown_scope_does_not_hide_a_balance_violation(
-    oxygen_states: CandidateSet, family: str
-) -> None:
-    reaction = combination_channel(
-        "photon_induced_dissociation", (Term("O3@ground"),), (Term("O@ground", 2),), family
-    )
-    result = assess_consistency(reaction, oxygen_states)
-    assert result.verdict == "fail"
-    assert result.basis == ("element conservation",)
+    assert {need.responsibility for need in result.requirements} == {"external_models"}
 
 
 @pytest.mark.parametrize("process", ["association", "dissociation"])

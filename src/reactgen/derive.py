@@ -30,15 +30,6 @@ from reactgen.units import energy_eV as energy_in_eV
 ELECTRON_MASS_AMU = 0.000548579909
 
 
-def element_masses(registry: Registry) -> dict[str, float]:
-    """Unambiguous qualified atomic point masses; this is input selection."""
-    return {
-        element: properties[0][1].value
-        for element, properties in _atomic_mass_inputs(registry).items()
-        if properties[0][1].value is not None
-    }
-
-
 def _atomic_mass_inputs(registry: Registry) -> dict[str, list[tuple[str, Property]]]:
     offered: dict[str, list[tuple[str, Property]]] = {}
     for species in registry.species.values():
@@ -322,26 +313,20 @@ def _resolved_excitation(species: Species) -> Property | None:
 
 
 def merged(acquired: dict, filled: dict) -> dict:
-    """The acquired overlay with derived entries added where it was silent."""
-
-    for section in ("properties", "thermo"):
-        if section in acquired and not isinstance(acquired[section], dict):
-            raise ValueError(f"overlay.{section} must be a mapping")
-    for state_id, properties in acquired.get("properties", {}).items():
+    """Fill missing property entries in the acquired overlay."""
+    declarations = acquired.get("properties", {})
+    if not isinstance(declarations, dict):
+        raise ValueError("overlay.properties must be a mapping")
+    combined = {}
+    for state_id, properties in declarations.items():
         if not isinstance(properties, dict):
             raise ValueError(f"overlay.properties.{state_id} must be a mapping")
-    out = {key: dict(value) for key, value in (acquired or {}).items() if isinstance(value, dict)}
-    out.update({key: value for key, value in (acquired or {}).items() if key not in out})
-    for section in ("properties", "thermo"):
-        target = out.setdefault(section, {})
-        for species_id, entry in (filled.get(section) or {}).items():
-            if section == "thermo":
-                target.setdefault(species_id, entry)
-            else:
-                held = target.setdefault(species_id, {})
-                for name, value in entry.items():
-                    held.setdefault(name, value)
-    return out
+        combined[state_id] = dict(properties)
+    for state_id, properties in filled["properties"].items():
+        existing = combined.setdefault(state_id, {})
+        for name, value in properties.items():
+            existing.setdefault(name, value)
+    return acquired | {"properties": combined}
 
 
 def relocated_assets(acquired: dict, source_base: Path, destination_base: Path) -> dict:

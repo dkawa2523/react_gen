@@ -6,21 +6,51 @@ An energy value alone is not a positive feasibility judgement.
 
 from __future__ import annotations
 
+from collections import Counter
 from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field, replace
 from math import fsum, isclose, isfinite
 from typing import TypeVar, cast
 
-from reactgen.balance import conservation
+from reactgen.balance import Balance, conservation, retained_nuclide_correspondence
 from reactgen.case import Conditions
-from reactgen.evidence import EvidenceCatalog, ReactionEvidence, StateEvidence
+from reactgen.chemistry import (
+    electron_partition_process,
+    electron_state,
+    merge,
+    parse_equation,
+    parse_state_id,
+    subtract,
+)
+from reactgen.energy import (
+    EnergyInput,
+    EnergyRelation,
+    EnergyRelations,
+    endpoint_order_issue,
+    ground_reference_state,
+    physical_coefficients,
+    signature,
+)
+from reactgen.evidence import (
+    EvidenceCatalog,
+    ReactionEvidence,
+    StateEvidence,
+    bound_molecular_participants,
+    molecular_reference_id,
+)
 from reactgen.model import (
     ELECTRON,
+    VERIFIED_STRUCTURE_BASIS,
     Assessment,
     CandidateSet,
     ReactionCandidate,
     Requirement,
+    ScientificRecordReference,
     StateCandidate,
+    StateKey,
+    Term,
+    ThermochemicalCalculation,
+    bind_transformation_states,
     coefficient_availability_verdict,
     participant_support_verdict,
     validate_stoichiometric_terms,
@@ -34,6 +64,7 @@ from reactgen.records import (
     ReactionRecord,
     StateRecord,
     Thermo,
+    calculation_record_reference,
     channel_energy_status,
     energy_declarations_agree,
     energy_properties_equivalent,
@@ -45,7 +76,25 @@ from reactgen.records import (
     scientific_reaction_content,
     selectable_state_record_id,
 )
+from reactgen.screening import (
+    COLLISION_CONDITION_NOT_APPLICABLE,
+    calculation_reason,
+    collision_condition,
+    relative_collision_energy,
+    screening_calculations,
+)
 from reactgen.selection import DataSelection, QuantitySelection
+from reactgen.structure import (
+    StructureUnavailable,
+    charge_target_correspondence,
+    endpoint_structure_matches,
+    physical_equation_key,
+    physical_state_id,
+    physical_state_key,
+    resonant_charge_correspondence,
+    structure_key,
+    validate_graph_transformation,
+)
 from reactgen.thermo import (
     formation_delta,
     formation_reference,
@@ -64,44 +113,6 @@ VERDICT_NA = "not_applicable"
 StateQuantity = TypeVar("StateQuantity", Property, Thermo)
 
 
-@dataclass(frozen=True)
-class ThermochemicalCalculation:
-    """Availability of one calculated quantity, independent of an energy claim.
-
-    ``computed`` supplies a finite nominal value at the retained conditions.
-    Other states retain the concrete prerequisites or an applicability limit.
-    Source qualification and calculation applicability never establish channel
-    occurrence, uncertainty propagation, or a reversible elementary mechanism.
-    """
-
-    status: str
-    value: float | None
-    unit: str
-    reason: str
-    requirements: tuple[Requirement, ...] = ()
-    conditions: dict[str, float] = field(default_factory=dict)
-
-    def __post_init__(self) -> None:
-        if self.status not in {"computed", "needs_input", "unavailable", "out_of_range"}:
-            raise ValueError("unknown thermochemical calculation status")
-        if (self.status == "computed") != (self.value is not None):
-            raise ValueError("only computed thermochemical quantities may have a value")
-        if self.value is not None and (isinstance(self.value, bool) or not isfinite(self.value)):
-            raise ValueError("thermochemical calculation value must be finite")
-        if not isinstance(self.unit, str) or not self.unit:
-            raise ValueError("thermochemical calculation unit must be nonempty")
-        if not isinstance(self.reason, str) or not self.reason:
-            raise ValueError("thermochemical calculation reason must be nonempty")
-        if any(not isinstance(item, Requirement) for item in self.requirements):
-            raise ValueError("thermochemical calculation requirements must be typed")
-        if any(
-            not isinstance(name, str) or not name or isinstance(value, bool) or not isfinite(value)
-            for name, value in self.conditions.items()
-        ):
-            raise ValueError("thermochemical calculation conditions must be finite quantities")
-        object.__setattr__(self, "requirements", tuple(dict.fromkeys(self.requirements)))
-
-
 @dataclass
 class Evaluation:
     state_assessments: dict[str, dict[str, Assessment]]
@@ -113,6 +124,9 @@ class Evaluation:
     thermochemical_calculations: dict[str, dict[str, ThermochemicalCalculation]] = field(
         default_factory=dict
     )
+    calculation_sources: dict[str, ReactionRecord] = field(default_factory=dict)
+    calculation_state_records: dict[str, tuple[StateRecord, ...]] = field(default_factory=dict)
+    calculation_reference_state_ids: tuple[str, ...] = ()
 
     @property
     def thermochemistry(self) -> Mapping[str, dict[str, float]]:
@@ -155,27 +169,33 @@ def evaluate(
 ) -> Evaluation:
     if selection is not None and not isinstance(selection, DataSelection):
         raise ValueError("selection must be a validated DataSelection")
+    references = _screening_reference_states(candidates.states, catalog)
     if selection is not None:
-        selection.validate_targets(candidates.states, candidates.reactions)
+        selection.validate_targets(
+            candidates.states, candidates.reactions, reference_states=references
+        )
     catalog.validate_targets(candidates)
     state_evidence = {
         state_id: replace(catalog.state(state), selection=selection, target=state_id)
         for state_id, state in candidates.states.items()
     }
+    reference_evidence = {
+        state_id: replace(catalog.state(state), selection=selection, target=state_id)
+        for state_id, state in references.items()
+    }
+    energy_states = candidates.states | references
+    energy_evidence = state_evidence | reference_evidence
     state_assessments = {
-        state_id: {
-            "consistency": assess_state_consistency(state),
-            "state": assess_state(
-                state,
-                state_evidence[state_id],
-                candidates,
-                state_evidence,
-            ),
-            "thermochemistry": assess_state_thermochemistry(state, state_evidence[state_id]),
-        }
+        state_id: _evaluate_state(state, energy_states, energy_evidence)
         for state_id, state in candidates.states.items()
     }
-
+    identity_requirements = {
+        state: tuple(
+            item for item in claims["state"].requirements if item.responsibility == "identity"
+        )
+        for state, claims in state_assessments.items()
+        if any(item.responsibility == "identity" for item in claims["state"].requirements)
+    }
     reaction_evidence = {
         reaction_id: catalog.reaction(reaction)
         for reaction_id, reaction in candidates.reactions.items()
@@ -184,22 +204,56 @@ def evaluate(
     energy_values = {}
     calculations = {}
     numerical_use = {}
+    screening_values = _screening_inputs(energy_evidence)
+    alternative_values = _screening_inputs(energy_evidence, apply_selection=False)
+    screening_issues = _screening_property_issues(
+        energy_evidence, screening_values, alternative_values
+    )
+    screening_relations = _screening_relations(catalog, energy_states)
     for reaction_id, reaction in candidates.reactions.items():
         evidence = reaction_evidence[reaction_id]
+        balance = _checked_balance(reaction, candidates)
+        conservation_result = _conservation_assessment(reaction, balance)
+        consistency = _consistency_assessment(reaction, candidates, balance)
         thermo, values, thermal_calculations = _evaluate_thermochemistry(
             reaction,
             candidates,
             state_evidence,
             evidence,
             conditions,
+            screening_values,
+            conservation=conservation_result,
+            screening_property_issues=screening_issues,
         )
-        kinetics, use = assess_kinetics(reaction, evidence, conditions, selection)
+        kinetics, use = assess_kinetics(
+            reaction, evidence, conditions, selection, conservation=conservation_result
+        )
         if values:
             energy_values[reaction_id] = values
         calculations[reaction_id] = thermal_calculations
+        level_transitions = _validated_level_transitions(reaction, candidates, consistency)
+        screening, energy = screening_calculations(
+            reaction,
+            candidates,
+            screening_values,
+            screening_relations,
+            conditions,
+            selection,
+            alternative_values,
+            energy_states=energy_states,
+            identity_requirements=identity_requirements,
+            property_issues=screening_issues,
+            state_assessments=state_assessments,
+            level_transitions=level_transitions,
+            conservation=conservation_result,
+        )
+        consistency = _directional_level_consistency(
+            reaction, candidates, consistency, level_transitions, screening.get("level_gap_1_eV")
+        )
+        thermal_calculations.update(screening)
         numerical_use[reaction_id] = use
         reaction_assessments[reaction_id] = {
-            "consistency": assess_consistency(reaction, candidates),
+            "consistency": consistency,
             "state": assess_reaction_states(reaction, state_assessments),
             "thermochemistry": thermo,
             "reaction_evidence": assess_reaction_evidence(
@@ -208,7 +262,19 @@ def evaluate(
                 catalog.materials,
             ),
             "kinetics": kinetics,
+            "conservation": conservation_result,
+            "energy": energy,
         }
+    requested_references = (
+        reference_evidence.keys() & (selection.targets if selection else {}).keys()
+    )
+    reaction_sources, state_sources = _calculation_declarations(
+        calculations,
+        catalog.reaction_records,
+        reference_evidence,
+        state_assessments,
+        requested_references,
+    )
     return Evaluation(
         state_assessments,
         reaction_assessments,
@@ -217,7 +283,102 @@ def evaluate(
         energy_values,
         numerical_use,
         calculations,
+        reaction_sources,
+        state_sources,
+        tuple(sorted(state_sources.keys() | requested_references)),
     )
+
+
+def _calculation_declarations(
+    calculations: dict[str, dict[str, ThermochemicalCalculation]],
+    reaction_records: tuple[ReactionRecord, ...],
+    reference_evidence: dict[str, StateEvidence],
+    state_assessments: dict[str, dict[str, Assessment]],
+    requested_references: set[str],
+) -> tuple[dict[str, ReactionRecord], dict[str, tuple[StateRecord, ...]]]:
+    """Retain declarations needed to explain selected and alternative results."""
+    used_records: dict[tuple[str, str], set[str]] = {}
+    for claims in state_assessments.values():
+        for assessment in claims.values():
+            for source in assessment.record_inputs:
+                used_records.setdefault((source.target, source.record_id), set()).add(
+                    source.record_ref
+                )
+    for term in (
+        term
+        for collection in calculations.values()
+        for calculation in collection.values()
+        for term in (
+            *calculation.inputs,
+            *(
+                entry
+                for alternative in calculation.alternatives
+                for entry in alternative.get("inputs", ())
+            ),
+        )
+    ):
+        if "record_ref" in term:
+            source_key = term["target"], term["record_id"]
+            used_records.setdefault(source_key, set()).add(term["record_ref"])
+    reviewed_relations = {
+        requirement.target
+        for collection in calculations.values()
+        for calculation in collection.values()
+        for requirement in calculation.requirements
+        if requirement.responsibility == "source_review" and requirement.quantity == "delta_e_eV"
+    }
+    reaction_sources: dict[str, ReactionRecord] = {}
+    reserved_ids = {record.id for record in reaction_records}
+    for reaction_record in reaction_records:
+        cited_refs = used_records.get((reaction_record.id, reaction_record.id))
+        if reaction_record.id in reviewed_relations or (
+            cited_refs and calculation_record_reference(reaction_record) in cited_refs
+        ):
+            storage_key = reaction_record.id
+            if storage_key in reaction_sources:
+                storage_key = calculation_record_reference(reaction_record)
+                while storage_key in reserved_ids:
+                    storage_key = f"~{storage_key}"
+            reaction_sources.setdefault(storage_key, reaction_record)
+    state_sources = {
+        state_id: records
+        for state_id, evidence in reference_evidence.items()
+        if evidence.match == "exact"
+        and (
+            records := tuple(
+                record
+                for record in evidence.records
+                if state_id in requested_references
+                or (
+                    (refs := used_records.get((state_id, selectable_state_record_id(record))))
+                    and calculation_record_reference(record) in refs
+                )
+            )
+        )
+    }
+    return reaction_sources, state_sources
+
+
+def _evaluate_state(
+    state: StateCandidate,
+    reference_states: Mapping[str, StateCandidate],
+    evidence: dict[str, StateEvidence],
+) -> dict[str, Assessment]:
+    matched = evidence[state.id]
+    binding = (
+        _assess_anion_from_affinity(state, reference_states, evidence)
+        if state.charge == -1 and state.state.kind == "ground"
+        else None
+    )
+    support = _state_assessment(state, matched, binding)
+    claims = {
+        "consistency": assess_state_consistency(state),
+        "state": support,
+        "thermochemistry": assess_state_thermochemistry(state, matched),
+    }
+    if binding is not None and support.proposition != binding.proposition:
+        claims["electron_binding"] = binding
+    return claims
 
 
 def assess_state_consistency(state: StateCandidate) -> Assessment:
@@ -226,8 +387,8 @@ def assess_state_consistency(state: StateCandidate) -> Assessment:
         _state_consistency(state),
         proposition="state_representation_consistency",
         scope=(
-            "Composition and integer charge of this candidate; physical identity "
-            "and existence are undetermined."
+            "Composition and integer charge of this candidate and validation of any "
+            "explicit SMILES. Physical identity and existence are undetermined."
         ),
     )
 
@@ -246,11 +407,23 @@ def _state_consistency(state: StateCandidate) -> Assessment:
         or not isinstance(state.charge, int)
     ):
         return Assessment(VERDICT_FAIL, ("formula",), "composition is empty or non-positive")
-    return Assessment(
-        VERDICT_PASS,
-        ("parsed formula", "integer charge"),
-        "candidate representation is well formed",
-    )
+    basis: tuple[str, ...] = ("parsed formula", "integer charge")
+    if state.structure and state.structure.startswith("smiles:"):
+        try:
+            structure_key(state)
+        except StructureUnavailable as error:
+            return Assessment(
+                VERDICT_UNKNOWN,
+                basis,
+                str(error),
+                requirements=(
+                    Requirement("external_models", state.id, "structure_validation", str(error)),
+                ),
+            )
+        except ValueError as error:
+            return Assessment(VERDICT_FAIL, basis, str(error))
+        basis += (VERIFIED_STRUCTURE_BASIS,)
+    return Assessment(VERDICT_PASS, basis, "candidate representation is well formed")
 
 
 def assess_state(
@@ -259,7 +432,36 @@ def assess_state(
     candidates: CandidateSet,
     all_evidence: dict[str, StateEvidence] | None = None,
 ) -> Assessment:
-    result = _assess_state_support(state, evidence, candidates, all_evidence)
+    binding = (
+        _assess_anion_from_affinity(state, candidates.states, all_evidence)
+        if all_evidence is not None and state.charge == -1 and state.state.kind == "ground"
+        else None
+    )
+    return _state_assessment(state, evidence, binding)
+
+
+def _state_assessment(
+    state: StateCandidate, evidence: StateEvidence, binding: Assessment | None
+) -> Assessment:
+    if state.state.kind == "composition":
+        return Assessment(
+            VERDICT_UNKNOWN,
+            ("composition hypothesis",),
+            "this nuclear inventory and charge do not identify an actual structure "
+            "or internal state",
+            proposition="state_identity_resolution",
+            scope="The generated inventory hypothesis; not an observed or bound molecular state.",
+            requirements=(
+                Requirement(
+                    "identity",
+                    state.id,
+                    "state_identity",
+                    "identify an actual structure and state before assigning its existence "
+                    "or state energy",
+                ),
+            ),
+        )
+    result = _assess_state_support(state, evidence, binding)
     if result.proposition == "ground_anion_electron_binding":
         return result
     return replace(
@@ -275,8 +477,7 @@ def assess_state(
 def _assess_state_support(
     state: StateCandidate,
     evidence: StateEvidence,
-    candidates: CandidateSet,
-    all_evidence: dict[str, StateEvidence] | None,
+    binding: Assessment | None,
 ) -> Assessment:
     if state.id == ELECTRON:
         return Assessment(VERDICT_PASS, ("physical carrier",), "electron is explicitly represented")
@@ -298,9 +499,8 @@ def _assess_state_support(
         recorded = _assess_exact_state(state, evidence)
         if (
             recorded.verdict == VERDICT_UNKNOWN
-            and state.charge == -1
-            and state.state.kind == "ground"
-            and all_evidence is not None
+            and binding is not None
+            and binding.verdict != VERDICT_UNKNOWN
             and all(
                 not review_scope_covers(record.review_scope, "state_existence")
                 or (record.existence in {"unknown", "transient"} and record.status != "conflicting")
@@ -310,9 +510,7 @@ def _assess_state_support(
             # Unknown or short-lived declarations do not decide electron
             # binding. Retain its independent evidence, without overriding an
             # explicit bound, unbound, hypothetical, or conflicting assertion.
-            binding = _assess_anion_from_affinity(state, candidates, all_evidence)
-            if binding.verdict != VERDICT_UNKNOWN:
-                return binding
+            return binding
         return recorded
     if evidence.match == "compatible":
         return Assessment(
@@ -345,8 +543,8 @@ def _assess_state_support(
                 ),
             ),
         )
-    if state.charge == -1 and state.state.kind == "ground" and all_evidence is not None:
-        return _assess_anion_from_affinity(state, candidates, all_evidence)
+    if binding is not None:
+        return binding
     return Assessment(
         VERDICT_UNKNOWN,
         (),
@@ -475,28 +673,37 @@ def _state_existence_conflicts(records: tuple[StateRecord, ...]) -> bool:
 
 def _assess_anion_from_affinity(
     state: StateCandidate,
-    candidates: CandidateSet,
+    states: Mapping[str, StateCandidate],
     evidence: dict[str, StateEvidence],
 ) -> Assessment:
-    result = _affinity_binding_support(state, candidates, evidence)
-    parent = _corresponding_ground_state(state, 0, candidates)
-    requirements = result.requirements
+    parent = ground_reference_state(state, states, 0)
+    matched = evidence.get(parent.id) if parent is not None else None
     if parent is None:
-        requirements = (
-            Requirement(
-                "identity",
-                state.id,
-                "neutral_parent",
-                (
+        result = Assessment(
+            VERDICT_UNKNOWN,
+            (),
+            "a unique corresponding neutral parent is missing",
+            requirements=(
+                Requirement(
+                    "identity",
+                    state.id,
+                    "neutral_parent",
                     "identify a unique corresponding neutral ground state with the same "
-                    "phase and structure"
+                    "phase and structure",
                 ),
             ),
         )
-    elif result.verdict == VERDICT_UNKNOWN and not requirements:
-        requirements = _energy_requirements(
-            parent.id, evidence.get(parent.id), "electron_affinity_eV"
+    else:
+        result = (
+            _electron_binding_support(matched)
+            if matched is not None
+            else Assessment(VERDICT_UNKNOWN, (), "no state record or electron affinity")
         )
+        if result.verdict == VERDICT_UNKNOWN and not result.requirements:
+            result = replace(
+                result,
+                requirements=_energy_requirements(parent.id, matched, "electron_affinity_eV"),
+            )
     return replace(
         result,
         proposition="ground_anion_electron_binding",
@@ -504,22 +711,7 @@ def _assess_anion_from_affinity(
             "Electron-detachment binding of the corresponding ground anion; "
             "lifetime, population, stabilization and occurrence are undetermined."
         ),
-        requirements=requirements,
     )
-
-
-def _affinity_binding_support(
-    state: StateCandidate,
-    candidates: CandidateSet,
-    evidence: dict[str, StateEvidence],
-) -> Assessment:
-    neutral = _corresponding_ground_state(state, 0, candidates)
-    if neutral is None:
-        return Assessment(VERDICT_UNKNOWN, (), "a unique corresponding neutral parent is missing")
-    matched = evidence.get(neutral.id)
-    if matched is None:
-        return Assessment(VERDICT_UNKNOWN, (), "no state record or electron affinity")
-    return _electron_binding_support(matched)
 
 
 def _electron_binding_support(evidence: StateEvidence) -> Assessment:
@@ -532,36 +724,48 @@ def _electron_binding_support(evidence: StateEvidence) -> Assessment:
     unresolved numerical declaration never becomes a definite exclusion.
     """
     name = "electron_affinity_eV"
-    properties = _property_choices(evidence, name) if evidence.match == "exact" else []
-    bounds, sources = _energy_property_bounds(evidence, name)
-    if not properties:
-        return Assessment(VERDICT_UNKNOWN, sources, "no reviewed electron affinity declaration")
-    if _property_declarations_conflict(name, properties):
-        return Assessment(
-            VERDICT_UNKNOWN, sources, "reviewed electron affinity declarations conflict"
+    offers = _property_offers(evidence, name) if evidence.match == "exact" else []
+    properties = [prop for _, prop in offers]
+    bounds, sources = _bounds_from_offers(offers)
+    record_inputs: tuple[ScientificRecordReference, ...] = ()
+    if evidence.target is not None:
+        record_inputs = tuple(
+            sorted(
+                {
+                    ScientificRecordReference(
+                        evidence.target,
+                        name,
+                        selectable_state_record_id(record),
+                        calculation_record_reference(record),
+                    )
+                    for record, _ in offers
+                }
+            )
         )
+        sources = (*sources, *(item.record_id for item in record_inputs))
+
+    def result(verdict: str, message: str) -> Assessment:
+        return Assessment(verdict, sources, message, record_inputs=record_inputs)
+
+    if not properties:
+        return result(VERDICT_UNKNOWN, "no reviewed electron affinity declaration")
+    if _property_declarations_conflict(name, properties):
+        return result(VERDICT_UNKNOWN, "reviewed electron affinity declarations conflict")
     if any(_explicit_electron_nonbinding(prop) for prop in properties):
         if any(prop.value is not None for prop in properties) and (
             bounds is None or bounds[1] >= 0.0
         ):
-            return Assessment(
+            return result(
                 VERDICT_UNKNOWN,
-                sources,
                 "unbound declaration and electron affinity range do not establish "
                 "a consistent electron nonbinding conclusion",
             )
-        return Assessment(
-            VERDICT_FAIL, sources, "reviewed evidence explicitly declares electron nonbinding"
-        )
+        return result(VERDICT_FAIL, "reviewed evidence explicitly declares electron nonbinding")
     if bounds is not None and bounds[1] < 0.0:
-        return Assessment(
-            VERDICT_FAIL, sources, "negative electron affinity range excludes electron binding"
-        )
+        return result(VERDICT_FAIL, "negative electron affinity range excludes electron binding")
     if bounds is not None and bounds[0] > 0.0:
-        return Assessment(
-            VERDICT_PASS, sources, "positive electron affinity range supports electron binding"
-        )
-    return Assessment(VERDICT_UNKNOWN, sources, "electron affinity evidence is inconclusive")
+        return result(VERDICT_PASS, "positive electron affinity range supports electron binding")
+    return result(VERDICT_UNKNOWN, "electron affinity evidence is inconclusive")
 
 
 def _explicit_electron_nonbinding(prop: Property) -> bool:
@@ -753,7 +957,34 @@ def _thermochemistry_sources(record: StateRecord) -> tuple[str, ...]:
 
 def assess_consistency(reaction: ReactionCandidate, candidates: CandidateSet) -> Assessment:
     """Check bookkeeping and the declared process pattern, not physical occurrence."""
-    result = _equation_consistency(reaction, candidates)
+    result = _consistency_assessment(reaction, candidates, _checked_balance(reaction, candidates))
+    if reaction.process not in {
+        *_DIRECTIONAL_ELECTRON_LEVELS,
+        *_DIRECTIONAL_HEAVY_LEVELS,
+        "penning_ionization",
+    }:
+        return result
+    pairs = _validated_level_transitions(reaction, candidates, result)
+    return _directional_level_consistency(reaction, candidates, result, pairs)
+
+
+def _checked_balance(reaction: ReactionCandidate, candidates: CandidateSet) -> Balance | Assessment:
+    try:
+        validate_stoichiometric_terms(reaction.reactants)
+        validate_stoichiometric_terms(reaction.products)
+    except ValueError as error:
+        return Assessment(VERDICT_FAIL, ("stoichiometry",), str(error))
+    return conservation(reaction.reactants, reaction.products, candidates.states)
+
+
+def _consistency_assessment(
+    reaction: ReactionCandidate, candidates: CandidateSet, balance: Balance | Assessment
+) -> Assessment:
+    result = (
+        balance
+        if isinstance(balance, Assessment)
+        else _equation_consistency(reaction, candidates, balance)
+    )
     return replace(
         result,
         proposition="equation_consistency",
@@ -764,13 +995,9 @@ def assess_consistency(reaction: ReactionCandidate, candidates: CandidateSet) ->
     )
 
 
-def _equation_consistency(reaction: ReactionCandidate, candidates: CandidateSet) -> Assessment:
-    try:
-        validate_stoichiometric_terms(reaction.reactants)
-        validate_stoichiometric_terms(reaction.products)
-    except ValueError as error:
-        return Assessment(VERDICT_FAIL, ("stoichiometry",), str(error))
-    result = conservation(reaction.reactants, reaction.products, candidates.states)
+def _equation_consistency(
+    reaction: ReactionCandidate, candidates: CandidateSet, result: Balance
+) -> Assessment:
     if result.missing:
         return Assessment(
             VERDICT_FAIL,
@@ -794,6 +1021,12 @@ def _equation_consistency(reaction: ReactionCandidate, candidates: CandidateSet)
             f"elements {result.left_elements} -> {result.right_elements}; "
             f"differences {result.element_differences}",
         )
+    if result.isotope_conflicts and reaction.surface is None:
+        return Assessment(
+            VERDICT_FAIL,
+            ("isotope conservation",),
+            "explicit isotope labels cannot balance for " + ", ".join(result.isotope_conflicts),
+        )
     pattern = _process_pattern(reaction, candidates)
     if pattern is False:
         return Assessment(
@@ -816,21 +1049,70 @@ def _equation_consistency(reaction: ReactionCandidate, candidates: CandidateSet)
             ),
         )
     if pattern is None:
-        return Assessment(
-            VERDICT_UNKNOWN,
-            _balance_basis(reaction, result.charge_conserved),
-            f"process {reaction.process!r} has no defined equation pattern; "
-            "element/charge balance is accounted for, but process consistency is undetermined",
-            requirements=(
-                Requirement(
-                    "external_models",
-                    reaction.id,
-                    f"process_pattern:{reaction.process}",
-                    "define the participant and state pattern for this physical process",
-                ),
-            ),
-        )
+        return _unresolved_process_pattern(reaction, result.charge_conserved)
     return _consistent_result(reaction, result.charge_conserved)
+
+
+_CHARGE_TRANSFER_PROCESSES = {
+    "charge_exchange",
+    "resonant_charge_exchange",
+    "mutual_neutralization",
+}
+_GROUP_TRANSFER_PROCESSES = {"net_group_transfer", "ligand_transfer"}
+
+
+def _unresolved_process_pattern(reaction: ReactionCandidate, charge_conserved: bool) -> Assessment:
+    process = reaction.process
+    if reaction.third_body is None and process in {
+        *_CHARGE_TRANSFER_PROCESSES,
+        *_GROUP_TRANSFER_PROCESSES,
+        "net_group_exchange",
+    }:
+        if process == "resonant_charge_exchange":
+            quantity = "resonant_charge_correspondence"
+            message = "the ion and neutral cannot yet be identified as the same nuclear system"
+        elif process in _GROUP_TRANSFER_PROCESSES:
+            quantity = "group_transfer_correspondence"
+            message = "the group transfer's per-particle nuclear correspondence is unresolved"
+        elif process == "net_group_exchange":
+            quantity = "group_exchange_correspondence"
+            message = "the exchanged groups and retained nuclear inventories are unresolved"
+        else:
+            quantity = "charge_transfer_correspondence"
+            message = "the charge transfer's per-particle nuclear correspondence is unresolved"
+        requirement = Requirement(
+            "identity",
+            reaction.id,
+            quantity,
+            "resolve isotope and structure identity for the corresponding participants",
+        )
+    else:
+        mapping_pending = (
+            bool(reaction.transformation)
+            and process in _HEAVY_FRAGMENTS
+            and reaction.third_body is None
+        )
+        message = (
+            "the declared fragmentation mapping could not be verified"
+            if mapping_pending
+            else f"process {process!r} has no defined equation pattern. "
+            "Element and charge balance are accounted for. Process consistency is undetermined"
+        )
+        requirement = Requirement(
+            "external_models",
+            reaction.id,
+            f"process_pattern:{process}",
+            "verify the declared parent, fragments and collision partner with the "
+            "structures and graph support needed for the mapping"
+            if mapping_pending
+            else "define the participant and state pattern for this physical process",
+        )
+    return Assessment(
+        VERDICT_UNKNOWN,
+        _balance_basis(reaction, charge_conserved),
+        message,
+        requirements=(requirement,),
+    )
 
 
 def _family_problem(reaction: ReactionCandidate, candidates: CandidateSet) -> str | None:
@@ -843,6 +1125,10 @@ def _family_problem(reaction: ReactionCandidate, candidates: CandidateSet) -> st
         return "a surface process requires an explicit material reservoir"
     if reaction.surface is not None and reaction.family in {"electron", "ion", "neutral"}:
         return "an explicit surface reservoir contradicts the declared gas-collision family"
+    if reaction.family in {"electron", "ion", "neutral"} and any(
+        phase != "unknown" for phase in candidates.nongas_participants(reaction).values()
+    ):
+        return "a nongas participant contradicts the declared gas-collision family"
     electron = any(term.species == ELECTRON for term in reaction.reactants)
     charged = any(
         candidates.states[term.species].charge
@@ -874,6 +1160,15 @@ def _consistent_result(reaction: ReactionCandidate, charge_conserved: bool) -> A
     notes = "equation, family, and process agree; physical occurrence is undetermined"
     if reaction.surface is not None and not charge_conserved:
         notes = "gas charge changes under the explicit surface-reservoir convention"
+    if reaction.process in _ELECTRON_CHARGE_CHANGES or reaction.process in {
+        "charge_exchange",
+        "collision_ionization",
+        "collisional_detachment",
+        "dissociative_charge_transfer",
+        "mutual_neutralization",
+        "penning_ionization",
+    }:
+        notes += ". The formula match leaves any unverified structures unresolved"
     if (
         reaction.process in {"attachment", "recombination", "association"}
         and not reaction.third_body
@@ -888,6 +1183,50 @@ def _consistent_result(reaction: ReactionCandidate, charge_conserved: bool) -> A
     return Assessment(VERDICT_PASS, basis, notes)
 
 
+def _conservation_assessment(
+    reaction: ReactionCandidate, result: Balance | Assessment
+) -> Assessment:
+    requirements: tuple[Requirement, ...] = ()
+    if reaction.surface is not None:
+        verdict, message = VERDICT_NA, "the gas-only balance excludes the material reservoir"
+    elif isinstance(result, Assessment):
+        verdict, message = result.verdict, result.message
+    elif result.missing:
+        verdict, message = VERDICT_UNKNOWN, "participant identities are missing"
+    elif not result.elements_conserved or not result.charge_conserved:
+        verdict = VERDICT_FAIL
+        message = (
+            f"element differences {result.element_differences}; "
+            f"charge difference {result.charge_difference:g}"
+        )
+    elif result.isotope_conflicts:
+        verdict = VERDICT_FAIL
+        elements = ", ".join(result.isotope_conflicts)
+        message = f"explicit isotope labels cannot balance for {elements}"
+    elif result.isotope_unresolved:
+        verdict = VERDICT_UNKNOWN
+        elements = ", ".join(result.isotope_unresolved)
+        message = f"element and charge balance hold; incomplete isotope identities for {elements}"
+        requirements = (
+            Requirement(
+                "identity",
+                reaction.id,
+                "isotopic_composition",
+                f"identify the isotope labels for {elements} in the unmatched participants",
+            ),
+        )
+    else:
+        verdict, message = VERDICT_PASS, "represented nuclear and charge inventories balance"
+    return Assessment(
+        verdict,
+        ("declared reactant/product inventories",),
+        message,
+        proposition="element_charge_conservation",
+        scope="Element and charge inventories, with explicit isotope identities when represented.",
+        requirements=requirements,
+    )
+
+
 @dataclass(frozen=True)
 class _Participants:
     left: list[StateCandidate]
@@ -899,21 +1238,11 @@ class _Participants:
     same_composition: bool
     same_species: bool
     charge_redistributed: bool
+    integer_molecularity: bool
 
     @property
     def one_parent(self) -> bool:
         return self.left_n == 1 and len(self.left) == 1
-
-    @property
-    def same_parent(self) -> bool:
-        return (
-            self.one_parent
-            and self.right_n == 1
-            and len(self.right) == 1
-            and self.left[0].composition == self.right[0].composition
-            and self.left[0].phase == self.right[0].phase
-            and self.left[0].structure == self.right[0].structure
-        )
 
     @property
     def parent_sign(self) -> int:
@@ -923,7 +1252,7 @@ class _Participants:
 
     @property
     def collision(self) -> bool:
-        return self.left_e == self.right_e == 0 and self.left_n == 2
+        return self.integer_molecularity and self.left_e == self.right_e == 0 and self.left_n == 2
 
 
 def _participants(reaction: ReactionCandidate, candidates: CandidateSet) -> _Participants:
@@ -931,8 +1260,16 @@ def _participants(reaction: ReactionCandidate, candidates: CandidateSet) -> _Par
     bags: list[dict[tuple, float]] = []
     charge_bags: list[dict[tuple, float]] = []
     for terms in (reaction.reactants, reaction.products):
+        heavy = [term for term in terms if term.species != ELECTRON]
+        expandable = sum(term.n for term in heavy) <= 5 and all(
+            term.n in {1.0, 2.0, 3.0} for term in heavy
+        )
         sides.append(
-            [candidates.states[term.species] for term in terms if term.species != ELECTRON]
+            [
+                candidates.states[term.species]
+                for term in heavy
+                for _ in range(int(term.n) if expandable else 1)
+            ]
         )
         bag: dict[tuple, float] = {}
         charge_bag: dict[tuple, float] = {}
@@ -955,6 +1292,7 @@ def _participants(reaction: ReactionCandidate, candidates: CandidateSet) -> _Par
         bags[0] == bags[1],
         reaction.equation_key[2] == reaction.equation_key[3],
         charge_bags[0] != charge_bags[1],
+        all(float(term.n).is_integer() for term in (*reaction.reactants, *reaction.products)),
     )
 
 
@@ -968,7 +1306,38 @@ def _process_pattern(reaction: ReactionCandidate, candidates: CandidateSet) -> b
     if reaction.family not in {"electron", "ion", "neutral", "surface"}:
         return None
     participants = _participants(reaction, candidates)
-    pattern = _participant_pattern(reaction, participants)
+    if reaction.process == "isotope_exchange" and (
+        reaction.family != "neutral"
+        or not participants.collision
+        or participants.right_n != 2
+        or any(term.n != 1 for term in (*reaction.reactants, *reaction.products))
+    ):
+        return False
+    declared = _transformation_pattern(reaction, candidates, participants)
+    if declared is False:
+        return False
+    ordinary = (
+        True
+        if reaction.process == "net_group_exchange" and declared is True
+        else _participant_pattern(reaction, participants)
+    )
+    if (
+        ordinary is True
+        and declared is None
+        and reaction.transformation
+        and reaction.process
+        in {
+            *_HEAVY_FRAGMENTS,
+            *_CHARGE_TRANSFER_PROCESSES,
+            *_GROUP_TRANSFER_PROCESSES,
+            "net_group_exchange",
+        }
+    ):
+        return None
+    # A role map supports state correspondence. A named direction or exact
+    # resonance also requires the corresponding physical pattern.
+    independent = reaction.process in {"excitation", "deexcitation", "resonant_charge_exchange"}
+    pattern = declared if declared is True and ordinary is None and not independent else ordinary
     if (
         pattern is True
         and reaction.third_body is not None
@@ -984,7 +1353,22 @@ def _process_pattern(reaction: ReactionCandidate, candidates: CandidateSet) -> b
 def _participant_pattern(reaction: ReactionCandidate, participants: _Participants) -> bool | None:
     process = reaction.process
     if process == "elastic":
-        return participants.same_species
+        return (
+            participants.integer_molecularity
+            and participants.same_species
+            and participants.left_n + participants.left_e == 2
+        )
+    if process.startswith("net_") or process in {"associative_detachment", "level_transfer"}:
+        return _net_pattern(reaction, participants)
+    if process in {
+        "isotope_exchange",
+        "radical_recombination",
+        "radical_addition",
+        "insertion",
+        "substitution",
+        "coordinate_addition",
+    }:
+        return None  # A formula pattern cannot establish a local graph edit.
     if process == "three_body_association":
         return (
             reaction.third_body is not None
@@ -1006,59 +1390,84 @@ def _participant_pattern(reaction: ReactionCandidate, participants: _Participant
     return None
 
 
+_DIRECTIONAL_ELECTRON_LEVELS = {"excitation": 1, "deexcitation": -1}
+
+
+_ELECTRON_CHARGE_CHANGES = {
+    "ionization": (2, 1, 0),
+    "attachment": (0, -1, 0),
+    "recombination": (0, -1, 1),
+    "detachment": (2, 1, -1),
+}
+
+
 def _electron_pattern(process: str, p: _Participants) -> bool | None:
-    charged = {
-        "ionization": (2, 1, 0),
-        "attachment": (0, -1, 0),
-        "recombination": (0, -1, 1),
-        "detachment": (2, 1, -1),
-    }
-    if process in charged:
-        emitted, difference, sign = charged[process]
+    if process in _ELECTRON_CHARGE_CHANGES:
+        emitted, difference, sign = _ELECTRON_CHARGE_CHANGES[process]
         parent_sign_matches = p.parent_sign == sign or (
             process == "ionization" and p.parent_sign == 1
         )
         return (
             p.left_e == 1
             and p.right_e == emitted
-            and p.same_parent
+            and p.one_parent
+            and p.right_n == 1
+            and len(p.right) == 1
             and parent_sign_matches
             and p.right[0].charge == p.left[0].charge + difference
+            and _charge_change_target(p.left[0], p.right[0])
         )
-    dissociative = {
-        "dissociation": (1, 0),
-        "dissociative_ionization": (2, 0),
-        "dissociative_attachment": (0, 0),
-        "dissociative_recombination": (0, 1),
-        "dissociative_detachment": (2, -1),
-    }
-    if process in dissociative:
-        emitted, sign = dissociative[process]
-        parent_sign_matches = p.parent_sign == sign or (
-            process == "dissociative_ionization" and p.parent_sign == 1
-        )
+    if process in {
+        "dissociation",
+        "dissociative_ionization",
+        "dissociative_attachment",
+        "dissociative_recombination",
+        "dissociative_detachment",
+        "ion_pair_formation",
+    }:
+        charges = (state.charge for state in p.right)
         return (
             p.left_e == 1
-            and p.right_e == emitted
             and p.one_parent
             and p.right_n >= 2
-            and parent_sign_matches
+            and p.right_e in {0, 1, 2}
+            and electron_partition_process(p.left[0].charge, p.right_e, charges) == process
         )
-    if process in {"excitation", "deexcitation"}:
+    if process in _DIRECTIONAL_ELECTRON_LEVELS:
         valid = (
             p.left_e == p.right_e == 1
-            and p.same_parent
-            and p.left[0].charge == p.right[0].charge
-            and p.left[0].id != p.right[0].id
+            and p.one_parent
+            and p.right_n == 1
+            and len(p.right) == 1
+            and _internal_state_change(p.left[0], p.right[0])
         )
         if not valid:
             return False
+        if p.left[0].state.kind != "ground" and p.right[0].state.kind != "ground":
+            return True  # The signed gap determines the direction after endpoint reduction.
         return (
             p.right[0].state.kind != "ground"
             if process == "excitation"
             else p.left[0].state.kind != "ground"
         )
     return None
+
+
+_HEAVY_FRAGMENTS = {
+    "collision_induced_dissociation": "holding",
+    "projectile_dissociation": "holding",
+    "dissociation_with_level_transfer": "level_transfer",
+    "dissociative_charge_transfer": "charge_transfer",
+    "collisional_detachment": "detachment",
+    "dissociative_detachment": "detachment",
+}
+
+_DIRECTIONAL_HEAVY_LEVELS = {
+    "ion_induced_excitation": ("ion", 1),
+    "ion_induced_deexcitation": ("ion", -1),
+    "quenching": ("neutral", -1),
+    "v_t_relaxation": ("neutral", -1),
+}
 
 
 def _heavy_pattern(reaction: ReactionCandidate, p: _Participants) -> bool | None:
@@ -1069,65 +1478,126 @@ def _heavy_pattern(reaction: ReactionCandidate, p: _Participants) -> bool | None
         valid = (
             reaction.family == "ion"
             and p.collision
-            and p.right_n == 2
+            and p.right_n == len(p.left) == len(p.right) == 2
+            and p.integer_molecularity
             and p.same_composition
             and any(state.charge for state in p.left)
         )
         if process == "resonant_charge_exchange":
-            return (
-                valid
-                and p.same_species
-                and any(state.charge == 0 for state in p.left)
-                and all(state.composition == p.left[0].composition for state in p.left)
-            )
-        return valid and not p.same_species and p.charge_redistributed
-    if process in {
-        "ion_induced_excitation",
-        "ion_induced_deexcitation",
-        "quenching",
-        "v_t_relaxation",
-    }:
-        return _state_transfer_pattern(reaction, p)
+            if not (valid and p.same_species and any(state.charge == 0 for state in p.left)):
+                return False
+            return resonant_charge_correspondence(p.left[0], p.left[1])
+        return _charge_redistribution(p) if valid and not p.same_species else False
+    if process in _DIRECTIONAL_HEAVY_LEVELS:
+        return bool(_state_transfer_roles(reaction, p))
     if process == "penning_ionization":
-        return (
-            reaction.family == "neutral"
-            and p.left_e == 0
-            and p.right_e == 1
-            and p.left_n == p.right_n == 2
-            and p.same_composition
-            and any(state.state.manifold == "electronic" for state in p.left)
-            and any(state.charge > 0 for state in p.right)
-        )
+        return _collision_ionization_pattern(reaction, p)
     if process == "mutual_neutralization":
-        return (
+        valid = (
             reaction.family == "ion"
             and p.collision
-            and any(state.charge > 0 for state in p.left)
-            and any(state.charge < 0 for state in p.left)
+            and p.right_n == len(p.left) == len(p.right) == 2
+            and p.same_composition
+            and sorted(state.charge for state in p.left) == [-1, 1]
             and all(state.charge == 0 for state in p.right)
         )
-    if process == "collisional_detachment":
-        return (
-            reaction.family == "ion"
-            and p.left_e == 0
-            and p.right_e == 1
-            and p.left_n == 2
-            and any(state.charge < 0 for state in p.left)
-        )
-    if process in {
-        "collision_induced_dissociation",
-        "projectile_dissociation",
-        "dissociative_charge_transfer",
-    }:
-        return (
-            reaction.family == "ion"
-            and p.collision
-            and p.right_n >= 3
-            and any(state.charge for state in p.left)
-        )
-    if process in {"ligand_transfer", "reactive_scattering", "radical_abstraction"}:
+        return _charge_redistribution(p) if valid else False
+    if process in _HEAVY_FRAGMENTS:
+        return _collision_fragment_pattern(reaction, p)
+    return _heavy_reactive_pattern(reaction, p)
+
+
+def _heavy_reactive_pattern(reaction: ReactionCandidate, p: _Participants) -> bool | None:
+    process = reaction.process
+    if process in {"ligand_transfer", "radical_abstraction"}:
+        transfers = [
+            (group, match)
+            for group, charge, match in _inventory_transfers(
+                p, require_partition_change=process != "radical_abstraction"
+            )
+            if charge == 0
+        ]
+        if process == "radical_abstraction":
+            return None if any(group == {"H": 1} for group, _ in transfers) else False
+        return _role_verdict(match for _, match in transfers)
+    if process == "reactive_scattering":
         return p.collision and p.right_n >= 2 and not p.same_species
+    if process in {"ionization", "collision_ionization"}:
+        if process == "ionization" and p.left_e == 0 and p.left_n == 1:
+            return None
+        return _collision_ionization_pattern(reaction, p)
+    if process == "associative_ionization":
+        return p.left_e == 0 and p.left_n == 2 and p.right_e == 1 and p.right_n == 1
     return None
+
+
+def _collision_ionization_pattern(
+    reaction: ReactionCandidate, p: _Participants, declared: dict | None = None
+) -> bool:
+    return next(_collision_ionization_matches(reaction, p, declared), None) is not None
+
+
+def _collision_ionization_matches(
+    reaction: ReactionCandidate, p: _Participants, declared: dict | None = None
+) -> Iterator[tuple[StateCandidate, StateCandidate, StateCandidate, StateCandidate]]:
+    """Yield matched target, ion product, collider and collider product."""
+    penning = reaction.process == "penning_ionization"
+    if not (
+        reaction.family in {"neutral", "ion"}
+        and (not penning or reaction.family == "neutral")
+        and p.left_e == 0
+        and p.right_e == 1
+        and p.left_n == p.right_n == len(p.left) == len(p.right) == 2
+    ):
+        return
+    for target, collider in (p.left, p.left[::-1]):
+        for product, counterpart in (p.right, p.right[::-1]):
+            if (
+                target.charge < 0
+                or product.charge != target.charge + 1
+                or not _charge_change_target(target, product)
+                or not (
+                    collider.key == counterpart.key
+                    or _internal_state_change(
+                        collider,
+                        counterpart,
+                        allow_missing_structure=penning and declared is None,
+                    )
+                )
+                or (
+                    penning
+                    and (collider.state.manifold != "electronic" or collider.key == counterpart.key)
+                )
+            ):
+                continue
+            if declared is None:
+                yield target, product, collider, counterpart
+            elif declared.get("kind") == "penning":
+                if (
+                    declared.get("donor") == collider.id
+                    and declared.get("donor_product") == counterpart.id
+                    and declared.get("target") == target.id
+                ):
+                    yield target, product, collider, counterpart
+            elif (
+                declared.get("parent") == target.id
+                and declared.get("product") == product.id
+                and declared.get("collider") == collider.id
+                and declared.get("collider_product", collider.id) == counterpart.id
+            ):
+                yield target, product, collider, counterpart
+
+
+def _charge_redistribution(p: _Participants) -> bool | None:
+    left, right = p.left
+    options = [
+        (charge_target_correspondence(left, a), charge_target_correspondence(right, b))
+        for a, b in (p.right, p.right[::-1])
+        if a.charge != left.charge and b.charge - right.charge == left.charge - a.charge
+    ]
+    if (True, True) in options:
+        return True
+    return None if any(False not in option for option in options) else False
 
 
 def _heavy_combination_pattern(reaction: ReactionCandidate, p: _Participants) -> bool | None:
@@ -1155,41 +1625,727 @@ def _heavy_combination_pattern(reaction: ReactionCandidate, p: _Participants) ->
     return p.collision and p.right_n == 1 and reaction.third_body is None
 
 
-def _state_transfer_pattern(reaction: ReactionCandidate, p: _Participants) -> bool | None:
+def _state_transfer_roles(reaction: ReactionCandidate, p: _Participants) -> set[tuple[str, str]]:
     process = reaction.process
-    expected_family = "ion" if process.startswith("ion_") else "neutral"
+    family, direction = _DIRECTIONAL_HEAVY_LEVELS[process]
+    if reaction.family != family:
+        return set()
+    roles = set()
+    for changes in _heavy_level_matches(p):
+        if len(changes) != 1:
+            continue
+        ((initial, final),) = changes
+        upper, lower = (initial, final) if direction < 0 else (final, initial)
+        if upper.state.kind == "ground":
+            continue
+        if process == "v_t_relaxation" and (
+            upper.state.manifold != "vibrational"
+            or lower.state.manifold not in {"vibrational", "ground"}
+        ):
+            continue
+        roles.add((initial.id, final.id))
+    return roles
+
+
+def _heavy_level_matches(
+    p: _Participants,
+) -> Iterator[tuple[tuple[StateCandidate, StateCandidate], ...]]:
     if not (
-        reaction.family == expected_family
+        p.integer_molecularity
         and p.collision
         and p.right_n == 2
-        and p.same_composition
-        and not p.charge_redistributed
-        and not p.same_species
+        and len(p.left) == len(p.right) == 2
+    ):
+        return
+    for right in (p.right, p.right[::-1]):
+        changes = tuple((a, b) for a, b in zip(p.left, right, strict=True) if a.key != b.key)
+        if all(_internal_state_change(a, b) for a, b in changes):
+            yield changes
+
+
+def _directional_level_consistency(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    consistency: Assessment,
+    transitions: tuple[tuple[str, str], ...],
+    gap: ThermochemicalCalculation | None = None,
+) -> Assessment:
+    if consistency.verdict != VERDICT_PASS:
+        return consistency
+    if reaction.process == "penning_ionization":
+        # The donor must release internal energy (IUPAC Gold Book 12520).
+        direction = -1
+    elif reaction.family == "electron" and reaction.process in _DIRECTIONAL_ELECTRON_LEVELS:
+        direction = _DIRECTIONAL_ELECTRON_LEVELS[reaction.process]
+    elif reaction.process in _DIRECTIONAL_HEAVY_LEVELS:
+        _, direction = _DIRECTIONAL_HEAVY_LEVELS[reaction.process]
+    else:
+        return consistency
+    # IUPAC V06615 and Q05007 describe loss of excitation. The existing signed
+    # state gap decides nominal direction independently of available collision energy.
+    expected = "increase" if direction > 0 else "decrease"
+    if gap is not None and gap.value is not None:
+        supported = gap.value * direction > 0
+        return replace(
+            consistency,
+            verdict=VERDICT_PASS if supported else VERDICT_FAIL,
+            basis=(*consistency.basis, "calculation:level_gap_1_eV"),
+            message=(
+                f"equation pattern and nominal level gap ({gap.value:g} eV) support "
+                f"the declared internal-energy {expected}. Physical occurrence is undetermined"
+                if supported
+                else f"nominal level gap ({gap.value:g} eV) contradicts the declared "
+                f"internal-energy {expected}"
+            ),
+        )
+    if len(transitions) == 1:
+        initial, final = transitions[0]
+        lower = candidates.states[initial if direction > 0 else final]
+        if lower.state.kind == "ground":
+            return consistency
+    requirements = gap.requirements if gap is not None else ()
+    if not requirements:
+        requirement = (
+            Requirement(
+                "identity",
+                reaction.id,
+                "internal_level_correspondence",
+                "identify the initial and final states of the same participant",
+            )
+            if len(transitions) != 1
+            else Requirement(
+                "source_information",
+                reaction.id,
+                "internal_level_gap",
+                "provide the signed internal-energy gap between the represented levels",
+            )
+        )
+        requirements = (requirement,)
+    return replace(
+        consistency,
+        verdict=VERDICT_UNKNOWN,
+        message=f"Equation pattern matches. The declared internal-energy {expected} is unresolved",
+        requirements=requirements,
+    )
+
+
+def _role_verdict(matches: Iterator[bool | None]) -> bool | None:
+    verdicts = set(matches)
+    return True if True in verdicts else None if None in verdicts else False
+
+
+def _inventory_transfers(
+    p: _Participants, *, require_partition_change: bool = True
+) -> Iterator[tuple[dict[str, int], int, bool | None]]:
+    """Two conjugate inventory changes, without claiming a microscopic path."""
+    if not _two_particle_products(p) or (require_partition_change and p.same_composition):
+        return
+    for donor, acceptor in (p.left, p.left[::-1]):
+        for dproduct, aproduct in (p.right, p.right[::-1]):
+            result = _group_transfer(donor, acceptor, dproduct, aproduct)
+            if result is not None and result[2] is not False:
+                yield result
+
+
+def _two_particle_products(p: _Participants) -> bool:
+    return p.collision and p.right_n == len(p.left) == len(p.right) == 2
+
+
+def _group_transfer(
+    donor: StateCandidate,
+    acceptor: StateCandidate,
+    donor_product: StateCandidate,
+    acceptor_product: StateCandidate,
+) -> tuple[dict[str, int], int, bool | None] | None:
+    group = _positive_composition_difference(donor.composition, donor_product.composition)
+    received = _positive_composition_difference(acceptor_product.composition, acceptor.composition)
+    charge = donor.charge - donor_product.charge
+    if group is None or received != group or acceptor_product.charge - acceptor.charge != charge:
+        return None
+    match = retained_nuclide_correspondence(
+        (donor, donor_product, donor_product.composition),
+        (acceptor, acceptor_product, acceptor.composition),
+    )
+    return group, charge, match
+
+
+def _positive_composition_difference(
+    whole: dict[str, int], part: dict[str, int]
+) -> dict[str, int] | None:
+    result = {element: whole.get(element, 0) - part.get(element, 0) for element in whole | part}
+    return (
+        {element: n for element, n in result.items() if n}
+        if all(n >= 0 for n in result.values()) and any(result.values())
+        else None
+    )
+
+
+def _collision_fragment_pattern(
+    reaction: ReactionCandidate, p: _Participants, declared: dict | None = None
+) -> bool | None:
+    mode = _HEAVY_FRAGMENTS.get(reaction.process)
+    if (
+        mode is None
+        or not p.integer_molecularity
+        or reaction.family not in {"ion", "neutral"}
+        or (mode in {"detachment", "charge_transfer"} and reaction.family != "ion")
+        or p.left_n != 2
+        or len(p.left) != 2
+        or p.right_n != len(p.right)
+        or p.left_e != 0
     ):
         return False
-    source, target = (p.right, p.left) if process == "ion_induced_excitation" else (p.left, p.right)
-    transfers = [
-        (state, other)
-        for state in source
-        if state.state.kind != "ground"
-        and (process != "v_t_relaxation" or state.state.kind == "vibrational")
-        for other in target
-        if (
-            other.composition == state.composition
-            and other.charge == state.charge
-            and other.phase == state.phase
-            and other.structure == state.structure
-            and other.key != state.key
-        )
-    ]
-    if not transfers:
+    outgoing = 1 if mode == "detachment" else 0
+    intact_detachment = reaction.process == "collisional_detachment"
+    if p.right_e != outgoing or (p.right_n != 2 if intact_detachment else p.right_n < 3):
         return False
-    if any(other.state.kind == "ground" for _, other in transfers):
-        return True
-    # The current template recognizes ground/end-state transfers. A different
-    # resolved level or lumped term may be a legitimate lower state, but its
-    # energy ordering is not established by this equation-pattern check.
+    if declared is not None:
+        count = declared.get("outgoing_electrons", outgoing)
+        if type(count) is not int or count != outgoing:
+            return False
+    graph = declared if declared is not None and declared.get("kind") == "graph_edit" else None
+    matches = _collision_fragment_matches(p, mode, declared)
+    if graph is None:
+        return next(matches, None) is not None
+    if mode not in {"holding", "level_transfer"}:
+        return False
+    # The collider's exit is validated by the role match. Only the declared
+    # parent participates in this bond edit, so the collider needs no graph.
+    replays = {
+        validate_graph_transformation((parent,), tuple(fragments), graph, process="dissociation")
+        for parent, fragments in matches
+    }
+    return True if True in replays else (None if None in replays else False)
+
+
+def _collision_fragment_matches(
+    p: _Participants, mode: str, declared: dict | None
+) -> Iterator[tuple[StateCandidate, list[StateCandidate]]]:
+    for parent, collider in (p.left, p.left[::-1]):
+        for index, counterpart in enumerate(p.right):
+            fragments = p.right[:index] + p.right[index + 1 :]
+            if declared is not None and not _fragment_roles(
+                declared, parent, collider, counterpart, fragments
+            ):
+                continue
+            if _fragment_exit(fragments, parent, collider, counterpart, mode):
+                yield parent, fragments
+
+
+def _fragment_roles(
+    declared: dict,
+    parent: StateCandidate,
+    collider: StateCandidate,
+    counterpart: StateCandidate,
+    fragments: list[StateCandidate],
+) -> bool:
+    if declared.get("parent") != parent.id or declared.get("collider") != collider.id:
+        return False
+    if declared.get("kind") == "detachment":
+        return (
+            len(fragments) == 1
+            and declared.get("product") == fragments[0].id
+            and counterpart.key == collider.key
+        )
+    ids = declared.get("fragments")
+    return (
+        declared.get("collider_product") == counterpart.id
+        and isinstance(ids, list)
+        and len(ids) in {2, 3}
+        and all(isinstance(item, str) for item in ids)
+        and sorted(ids) == sorted(fragment.id for fragment in fragments)
+    )
+
+
+def _fragment_exit(
+    fragments: list[StateCandidate],
+    parent: StateCandidate,
+    collider: StateCandidate,
+    counterpart: StateCandidate,
+    mode: str,
+) -> bool:
+    same_collider = (
+        _charge_change_target(collider, counterpart)
+        if mode == "charge_transfer"
+        else _same_nuclei(collider, counterpart)
+    )
+    if not same_collider:
+        return False
+    composition: dict[str, int] = {}
+    for fragment in fragments:
+        if fragment.phase != parent.phase:
+            return False
+        for element, n in fragment.composition.items():
+            composition[element] = composition.get(element, 0) + n
+    if composition != parent.composition:
+        return False
+    charge_change = sum(fragment.charge for fragment in fragments) - parent.charge
+    if mode == "charge_transfer":
+        return counterpart.charge != collider.charge and (
+            charge_change == collider.charge - counterpart.charge
+        )
+    if mode == "level_transfer":
+        return charge_change == 0 and _internal_state_change(collider, counterpart)
+    if counterpart.key != collider.key:
+        return False
+    if mode == "detachment":
+        return (
+            parent.charge < 0
+            and charge_change == 1
+            and (len(fragments) != 1 or _charge_change_target(parent, fragments[0]))
+        )
+    return charge_change == 0
+
+
+def _charge_change_target(initial: StateCandidate, final: StateCandidate) -> bool:
+    """Test the formula pattern without assuming unknown isotope identity."""
+    return charge_target_correspondence(initial, final) is not False
+
+
+def _same_nuclei(
+    left: StateCandidate, right: StateCandidate, *, allow_missing_structure: bool = False
+) -> bool:
+    return (
+        left.composition == right.composition
+        and left.phase == right.phase
+        and (
+            physical_state_key(left)[-1] == physical_state_key(right)[-1]
+            or (allow_missing_structure and None in {left.structure, right.structure})
+        )
+    )
+
+
+def _internal_state_change(
+    initial: StateCandidate, final: StateCandidate, *, allow_missing_structure: bool = False
+) -> bool:
+    return (
+        _same_nuclei(initial, final, allow_missing_structure=allow_missing_structure)
+        and initial.charge == final.charge
+        and initial.state != final.state
+        and "composition" not in {initial.state.kind, final.state.kind}
+    )
+
+
+def _net_pattern(reaction: ReactionCandidate, p: _Participants) -> bool | None:
+    process = reaction.process
+    if process == "net_group_transfer":
+        return _role_verdict(match for _, _, match in _inventory_transfers(p))
+    if process == "net_group_exchange":
+        return _exchange_pattern(p)
+    if process == "net_association_loss":
+        return p.collision and p.right_n == 2 and not p.same_composition
+    if process == "net_association":
+        return p.collision and p.right_n == 1
+    if process == "associative_detachment":
+        return (
+            p.left_e == 0
+            and p.right_e == 1
+            and p.left_n == 2
+            and p.right_n == 1
+            and any(state.charge < 0 for state in p.left)
+        )
+    if process == "level_transfer":
+        if reaction.family == "electron":
+            return (
+                p.left_e == p.right_e == 1
+                and p.one_parent
+                and p.right_n == len(p.right) == 1
+                and _internal_state_change(p.left[0], p.right[0])
+            )
+        valid = next(_heavy_level_matches(p), None) is not None
+        # A state exchange can have the same initial and final inventories.
+        # Only a role map distinguishes it from unchanged internal states.
+        return None if valid and p.same_species else valid
     return None
+
+
+def _transformation_pattern(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    participants: _Participants,
+    declared: dict | None = None,
+) -> bool | None:
+    if declared is None:
+        declared = reaction.transformation
+    if not declared:
+        return None
+    if declared.get("kind") == "alternatives":
+        alternatives = declared.get("alternatives")
+        if not isinstance(alternatives, list):
+            return False
+        answers = [
+            _transformation_pattern(reaction, candidates, participants, item)
+            for item in alternatives
+            if isinstance(item, dict)
+        ]
+        return True if True in answers else (None if None in answers else False)
+    return _declared_transform_pattern(reaction, candidates, participants, declared)
+
+
+def _declared_transform_pattern(
+    reaction: ReactionCandidate, candidates: CandidateSet, p: _Participants, declared: dict
+) -> bool | None:
+    kind = declared.get("kind")
+    if (
+        (kind is not None and not isinstance(kind, str))
+        or (reaction.process == "isotope_exchange" and kind != "graph_edit")
+        or reaction.process not in _INVENTORY_MAP_PROCESSES.get(kind or "", (reaction.process,))
+    ):
+        return False
+    if kind == "group_transfer":
+        return _mapped_transfer(declared, reaction, candidates, p)
+    if kind == "group_exchange":
+        return _mapped_exchange(declared, p, candidates)
+    if kind == "charge_transfer":
+        return _mapped_charge_transfer(declared, reaction, candidates)
+    if kind in {"collision_partition", "detachment"} or (
+        kind == "graph_edit" and reaction.process in _HEAVY_FRAGMENTS
+    ):
+        return _collision_fragment_pattern(reaction, p, declared)
+    if kind in {"collision_ionization", "penning"}:
+        return reaction.process in {
+            "collision_ionization",
+            "ionization",
+            "penning_ionization",
+        } and _collision_ionization_pattern(reaction, p, declared)
+    if kind in {"level_transition", "two_level_transition"}:
+        return _mapped_level_pattern(declared, reaction, candidates, p)
+    if kind == "graph_edit":
+        # A graph edit only checks the cut. Electron partition rules check the charge class.
+        process = (
+            "dissociation"
+            if reaction.family == "electron" and reaction.process == "ion_pair_formation"
+            else reaction.process
+        )
+        return validate_graph_transformation(
+            tuple(p.left), tuple(p.right), declared, process=process
+        )
+    if not _transformation_references(reaction, declared):
+        return False
+    return None
+
+
+_INVENTORY_MAP_PROCESSES = {
+    "charge_transfer": _CHARGE_TRANSFER_PROCESSES,
+    "group_transfer": _GROUP_TRANSFER_PROCESSES,
+    "group_exchange": {"net_group_exchange"},
+}
+
+
+def _transformation_references(reaction: ReactionCandidate, declared: dict) -> bool:
+    for keys, terms in (
+        (("parent", "collider", "initial", "donor", "acceptor"), reaction.reactants),
+        (("collider_product", "final", "product", "fragments"), reaction.products),
+    ):
+        present = {term.species for term in terms}
+        for key in keys:
+            if key not in declared:
+                continue
+            references = declared[key] if isinstance(declared[key], list) else [declared[key]]
+            if any(not isinstance(item, str) or item not in present for item in references):
+                return False
+    return True
+
+
+def _mapped_charge_transfer(
+    declared: dict, reaction: ReactionCandidate, candidates: CandidateSet
+) -> bool | None:
+    partners, products = declared.get("partners"), declared.get("partner_products")
+    if (
+        not isinstance(partners, list)
+        or not isinstance(products, list)
+        or len(partners) != 2
+        or len(products) != 2
+    ):
+        return False
+    if any(
+        not isinstance(key, str) or key not in candidates.states for key in [*partners, *products]
+    ):
+        return False
+    if set(partners) != {term.species for term in reaction.reactants} or set(products) != {
+        term.species for term in reaction.products
+    }:
+        return False
+    a, b, ap, bp = [candidates.states[key] for key in [*partners, *products]]
+    if ap.charge == a.charge or ap.charge - a.charge != b.charge - bp.charge:
+        return False
+    if ap.charge - a.charge != declared.get("charge_change"):
+        return False
+    matches = (charge_target_correspondence(a, ap), charge_target_correspondence(b, bp))
+    return False if False in matches else None if None in matches else True
+
+
+def _mapped_level_pattern(
+    declared: dict, reaction: ReactionCandidate, candidates: CandidateSet, p: _Participants
+) -> bool:
+    if reaction.process not in {
+        "level_transfer",
+        "excitation",
+        "deexcitation",
+        *_DIRECTIONAL_HEAVY_LEVELS,
+    }:
+        return False
+    pairs = _declared_level_transitions(declared)
+    if not pairs or any(
+        initial not in candidates.states or final not in candidates.states
+        for initial, final in pairs
+    ):
+        return False
+    if reaction.process in _DIRECTIONAL_HEAVY_LEVELS and (
+        len(pairs) != 1 or pairs[0] not in _state_transfer_roles(reaction, p)
+    ):
+        return False
+    left, right = zip(*pairs, strict=True)
+    collider = declared.get("collider")
+    if collider is not None:
+        if not isinstance(collider, str) or len(pairs) != 1:
+            return False
+        left, right = (*left, collider), (*right, collider)
+    return (
+        p.left_n == len(left)
+        and p.right_n == len(right)
+        and sorted(left) == sorted(state.id for state in p.left)
+        and sorted(right) == sorted(state.id for state in p.right)
+        and all(
+            _internal_state_change(candidates.states[initial], candidates.states[final])
+            for initial, final in pairs
+        )
+    )
+
+
+def _declared_level_transitions(declared: dict) -> tuple[tuple[str, str], ...]:
+    kind = declared.get("kind")
+    if not isinstance(kind, str):
+        return ()
+    if kind == "two_level_transition":
+        initial, final = declared.get("initial"), declared.get("final")
+        if (
+            isinstance(initial, list)
+            and isinstance(final, list)
+            and len(initial) == len(final) == 2
+            and all(isinstance(item, str) for item in (*initial, *final))
+        ):
+            return tuple(sorted(zip(initial, final, strict=True)))
+        return ()
+    keys = {
+        "level_transition": ("initial", "final"),
+        "collision_partition": ("collider", "collider_product"),
+        "graph_edit": ("collider", "collider_product"),
+        "collision_ionization": ("collider", "collider_product"),
+        "penning": ("donor", "donor_product"),
+    }.get(kind)
+    if keys is None:
+        return ()
+    initial, final = (declared.get(key) for key in keys)
+    if isinstance(initial, str) and isinstance(final, str) and initial != final:
+        return ((initial, final),)
+    return ()
+
+
+def _validated_level_options(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
+    participants: _Participants,
+    declared: dict,
+) -> set[tuple[tuple[str, str], ...]]:
+    if declared.get("kind") == "alternatives":
+        alternatives = declared.get("alternatives")
+        if not isinstance(alternatives, list):
+            return set()
+        return {
+            pairs
+            for item in alternatives
+            if isinstance(item, dict)
+            for pairs in _validated_level_options(reaction, candidates, participants, item)
+        }
+    pairs = _declared_level_transitions(declared)
+    if pairs and _transformation_pattern(reaction, candidates, participants, declared) is True:
+        return {pairs}
+    return set()
+
+
+def _validated_level_transitions(
+    reaction: ReactionCandidate, candidates: CandidateSet, consistency: Assessment
+) -> tuple[tuple[str, str], ...]:
+    """Project role pairs from an equation check without deciding gap signs."""
+    if consistency.verdict == VERDICT_FAIL or reaction.process not in {
+        "level_transfer",
+        "excitation",
+        "deexcitation",
+        "dissociation_with_level_transfer",
+        "ionization",
+        "collision_ionization",
+        "penning_ionization",
+        *_DIRECTIONAL_HEAVY_LEVELS,
+    }:
+        return ()
+    if reaction.transformation:
+        options = _validated_level_options(
+            reaction, candidates, _participants(reaction, candidates), reaction.transformation
+        )
+        if options:
+            return next(iter(options)) if len(options) == 1 else ()
+    if consistency.verdict == VERDICT_PASS and reaction.family in {"ion", "neutral"}:
+        return _unmapped_heavy_level_transitions(reaction, candidates)
+    if reaction.family == "electron" and reaction.process in {
+        "level_transfer",
+        "excitation",
+        "deexcitation",
+    }:
+        # The equation pattern has checked the unique target on each side.
+        initial = next(term.species for term in reaction.reactants if term.species != ELECTRON)
+        final = next(term.species for term in reaction.products if term.species != ELECTRON)
+        return ((initial, final),)
+    return ()
+
+
+def _unmapped_heavy_level_transitions(
+    reaction: ReactionCandidate, candidates: CandidateSet
+) -> tuple[tuple[str, str], ...]:
+    participants = _participants(reaction, candidates)
+    if reaction.process == "penning_ionization":
+        matches = {
+            (initial.id, final.id)
+            for _, _, initial, final in _collision_ionization_matches(reaction, participants)
+        }
+        if len(matches) == 1:
+            ((initial, final),) = matches
+            # A formula hypothesis can allow a missing structure. A gap requires the same species.
+            if _same_nuclei(candidates.states[initial], candidates.states[final]):
+                return ((initial, final),)
+    elif reaction.process in _DIRECTIONAL_HEAVY_LEVELS:
+        named_roles = _state_transfer_roles(reaction, participants)
+        return tuple(named_roles) if len(named_roles) == 1 else ()
+    elif reaction.process == "level_transfer":
+        roles = {
+            tuple(sorted((initial.id, final.id) for initial, final in changes))
+            for changes in _heavy_level_matches(participants)
+        }
+        return next(iter(roles)) if len(roles) == 1 else ()
+    return ()
+
+
+def _mapped_transfer(
+    declared: dict, reaction: ReactionCandidate, candidates: CandidateSet, p: _Participants
+) -> bool | None:
+    if not _two_particle_products(p) or p.same_composition:
+        return False
+    keys = ("donor", "acceptor", "donor_product", "acceptor_product")
+    if any(
+        not isinstance(declared.get(key), str) or declared[key] not in candidates.states
+        for key in keys
+    ):
+        return False
+    donor, acceptor, dproduct, aproduct = [candidates.states[declared[key]] for key in keys]
+    if sorted((donor.id, acceptor.id)) != sorted(state.id for state in p.left) or sorted(
+        (dproduct.id, aproduct.id)
+    ) != sorted(state.id for state in p.right):
+        return False
+    group = declared.get("group")
+    charge = declared.get("group_charge")
+    if not _valid_group(group) or type(charge) is not int:
+        return False
+    if reaction.process == "ligand_transfer" and charge != 0:
+        return False
+    result = _group_transfer(donor, acceptor, dproduct, aproduct)
+    return result[2] if result is not None and result[:2] == (group, charge) else False
+
+
+def _mapped_exchange(declared: dict, p: _Participants, candidates: CandidateSet) -> bool | None:
+    partners, groups = declared.get("partners"), declared.get("groups")
+    if (
+        not isinstance(partners, list)
+        or len(partners) != 2
+        or not isinstance(groups, list)
+        or len(groups) != 2
+    ):
+        return False
+    if any(not _valid_group(group) for group in groups) or any(
+        not isinstance(key, str) or key not in candidates.states for key in partners
+    ):
+        return False
+    if sorted(partners) != sorted(state.id for state in p.left):
+        return False
+    products = declared.get("partner_products")
+    if "partner_products" in declared and (
+        not isinstance(products, list)
+        or any(not isinstance(key, str) for key in products)
+        or sorted(products) != sorted(state.id for state in p.right)
+        or len(products) != 2
+    ):
+        return False
+    left, right = (candidates.states[key] for key in partners)
+    exits = (
+        (candidates.states[products[0]], candidates.states[products[1]])
+        if products is not None
+        else None
+    )
+    return _exchange_pattern(p, (left, right), (groups[0], groups[1]), exits)
+
+
+def _exchange_pattern(
+    p: _Participants,
+    partners: tuple[StateCandidate, StateCandidate] | None = None,
+    groups: tuple[dict[str, int], dict[str, int]] | None = None,
+    partner_products: tuple[StateCandidate, StateCandidate] | None = None,
+) -> bool | None:
+    """Check two retained elemental cores and two nonempty exchanged groups."""
+    if not _two_particle_products(p) or p.same_composition:
+        return False
+    left, right = partners or (p.left[0], p.left[1])
+    matches = []
+    exits = (partner_products,) if partner_products is not None else (p.right, p.right[::-1])
+    for left_product, right_product in exits:
+        if (left.charge, right.charge) != (left_product.charge, right_product.charge):
+            continue
+        exchanged = groups or _inferred_exchange_groups(left, right, left_product, right_product)
+        if exchanged is None:
+            continue
+        outgoing, incoming = exchanged
+        left_core = _positive_composition_difference(left.composition, outgoing)
+        right_core = _positive_composition_difference(right.composition, incoming)
+        if (
+            left_core
+            and right_core
+            and merge(left_core, incoming) == left_product.composition
+            and merge(right_core, outgoing) == right_product.composition
+        ):
+            match = retained_nuclide_correspondence(
+                (left, left_product, left_core), (right, right_product, right_core)
+            )
+            # An unmapped equation gives only one minimal elemental witness.
+            # Other overlapping groups could move a label instead of retaining it.
+            matches.append(None if match is False and groups is None else match)
+    return _role_verdict(iter(matches))
+
+
+def _inferred_exchange_groups(
+    left: StateCandidate,
+    right: StateCandidate,
+    left_product: StateCandidate,
+    right_product: StateCandidate,
+) -> tuple[dict[str, int], dict[str, int]] | None:
+    outgoing = dict(Counter(left.composition) - Counter(left_product.composition))
+    incoming = dict(Counter(right.composition) - Counter(right_product.composition))
+    if outgoing and incoming:
+        return outgoing, incoming
+    # An atom of the same element may appear in both groups and cancel in the
+    # net changes. Both particles must still retain a nonempty inventory.
+    left_core = subtract(left.composition, outgoing)
+    right_core = subtract(right.composition, incoming)
+    shared = left_core.keys() & right_core.keys()
+    if not shared or min(sum(left_core.values()), sum(right_core.values())) < 2:
+        return None
+    common = {min(shared): 1}
+    return merge(outgoing, common), merge(incoming, common)
+
+
+def _valid_group(group: object) -> bool:
+    return (
+        isinstance(group, dict)
+        and bool(group)
+        and all(isinstance(key, str) and type(n) is int and n > 0 for key, n in group.items())
+    )
 
 
 def assess_reaction_states(
@@ -1269,7 +2425,12 @@ def assess_thermochemistry(
     evidence for the energy proposition.
     """
     result, energy_values, calculations = _evaluate_thermochemistry(
-        reaction, candidates, state_evidence, reaction_evidence, conditions
+        reaction,
+        candidates,
+        state_evidence,
+        reaction_evidence,
+        conditions,
+        conservation=_conservation_assessment(reaction, _checked_balance(reaction, candidates)),
     )
     return result, _combined_thermal_values(energy_values, calculations)
 
@@ -1280,10 +2441,44 @@ def _evaluate_thermochemistry(
     state_evidence: dict[str, StateEvidence],
     reaction_evidence: ReactionEvidence,
     conditions: Conditions,
+    screening_values: dict[tuple[str, str], tuple[EnergyInput, ...]] | None = None,
+    *,
+    conservation: Assessment,
+    screening_property_issues: dict[tuple[str, str], tuple[Requirement, ...]] | None = None,
 ) -> tuple[Assessment, dict[str, float], dict[str, ThermochemicalCalculation]]:
-    species = _thermo_records(reaction, state_evidence, conditions.gas_temperature_K)
-    calculations = _thermal_calculations(reaction, candidates, state_evidence, species, conditions)
-    source_values, source_conflicts = _source_energy_values(reaction_evidence)
+    proposition = {
+        "elastic": "elastic_internal_energy_identity",
+        "ionization": "ionization_threshold_lower_bound",
+        "penning_ionization": "penning_energy_requirement",
+        "attachment": "ground_anion_electron_binding",
+        "charge_exchange": "charge_transfer_energy_defect_consistency",
+        "resonant_charge_exchange": "charge_transfer_energy_defect_consistency",
+    }.get(reaction.process, "reaction_energy_relation")
+    if conservation.verdict == VERDICT_FAIL:
+        reason = "reaction thermochemistry requires a conserved equation"
+        return (
+            Assessment(
+                VERDICT_NA,
+                ("assessment:conservation",),
+                reason,
+                proposition=proposition,
+                scope="Thermochemistry of conserved reaction equations.",
+            ),
+            {},
+            {
+                quantity: ThermochemicalCalculation("not_applicable", None, unit, reason)
+                for quantity, unit in (
+                    ("delta_h_eV", "eV"),
+                    ("delta_g_eV", "eV"),
+                    ("equilibrium_constant_number_density", "m^(-3*delta_nu)"),
+                )
+            },
+        )
+    species, sources = _thermo_records(reaction, state_evidence, conditions.gas_temperature_K)
+    calculations = _thermal_calculations(
+        reaction, candidates, state_evidence, species, conditions, sources
+    )
+    source_values, source_conflicts = _source_energy_values(reaction, candidates, reaction_evidence)
     result, values = _assess_energy_relation(
         reaction,
         candidates,
@@ -1293,15 +2488,9 @@ def _evaluate_thermochemistry(
         any(item.value is not None for item in calculations.values()),
         source_values,
         source_conflicts,
+        screening_values,
+        screening_property_issues,
     )
-    proposition = {
-        "elastic": "elastic_internal_energy_identity",
-        "ionization": "ionization_threshold_lower_bound",
-        "penning_ionization": "penning_energy_requirement",
-        "attachment": "ground_anion_electron_binding",
-        "charge_exchange": "charge_transfer_energy_defect_consistency",
-        "resonant_charge_exchange": "charge_transfer_energy_defect_consistency",
-    }.get(reaction.process, "reaction_energy_relation")
     conflicts = tuple(
         sorted(
             set(_reaction_energy_conflicts(reaction, candidates, state_evidence) + source_conflicts)
@@ -1491,11 +2680,18 @@ def _energy_context_requirement(
             "review the qualified energy declaration or obtain usable numerical bounds; "
             "an unsupported limit or annotation cannot be consumed as a point value"
         ),
+        "relation": (
+            "the declared related state does not match the actual charge/ground counterpart; "
+            "resolve this target relationship before using the quantity"
+        ),
+        "value": "a ground-state ionization energy must be positive; verify the declared quantity",
     }
     responsibilities = {
         "model": "external_models",
         "definition": "source_information",
         "qualifier": "source_review",
+        "relation": "identity",
+        "value": "source_review",
     }
     return tuple(
         Requirement(responsibilities[issue], state_id, f"{name}.{issue}", reasons[issue])
@@ -1719,17 +2915,7 @@ def _relation_requirements(
                 ),
             ),
         )
-    return (
-        Requirement(
-            "external_models",
-            reaction.id,
-            f"energy_relation:{reaction.process}",
-            (
-                "implement an energy relation for this process; an enthalpy or Gibbs "
-                "value alone does not decide channel occurrence"
-            ),
-        ),
-    )
+    return ()
 
 
 def _charge_transfer_requirements(
@@ -1771,6 +2957,8 @@ def _assess_energy_relation(
     has_calculated_values: bool,
     source_values: dict[str, float],
     source_conflicts: tuple[str, ...],
+    screening_values: dict[tuple[str, str], tuple[EnergyInput, ...]] | None,
+    screening_property_issues: dict[tuple[str, str], tuple[Requirement, ...]] | None,
 ) -> tuple[Assessment, dict[str, float]]:
     """Check comparable energy relations; values alone do not prove occurrence."""
     values = dict(source_values)
@@ -1779,7 +2967,12 @@ def _assess_energy_relation(
         values[identity[0]] = identity[1]
     if reaction.process == "penning_ionization":
         penning, available = _penning_energy_relation(
-            reaction, candidates, state_evidence, conditions
+            reaction,
+            candidates,
+            state_evidence,
+            conditions,
+            screening_values,
+            screening_property_issues,
         )
         values.update(available)
         return penning, values
@@ -1796,21 +2989,20 @@ def _assess_energy_relation(
     if relation is not None:
         return relation, values
     requirements = _relation_requirements(reaction, candidates, state_evidence, reaction_evidence)
-    unimplemented = any(
-        item.responsibility == "external_models"
-        and item.quantity == f"energy_relation:{reaction.process}"
-        for item in requirements
-    )
     note = (
-        f"no implemented energy relation for process {reaction.process!r}"
-        if unimplemented
-        else "energy relation is undetermined"
+        "energy relation is undetermined"
+        if requirements
+        else f"no applicable declaration comparison for process {reaction.process!r}"
     )
-    note += "; " + "; ".join(dict.fromkeys(item.reason for item in requirements if item.reason))
+    if requirements:
+        note += "; " + "; ".join(dict.fromkeys(item.reason for item in requirements if item.reason))
     if values or has_calculated_values:
         note += "; available calculated or declared values are retained independently"
     return Assessment(
-        VERDICT_UNKNOWN, reaction_evidence.sources, note, requirements=requirements
+        VERDICT_UNKNOWN if requirements else VERDICT_NA,
+        reaction_evidence.sources,
+        note,
+        requirements=requirements,
     ), values
 
 
@@ -1842,6 +3034,7 @@ def _thermal_calculations(
     evidence: dict[str, StateEvidence],
     species: dict[str, StateRecord],
     conditions: Conditions,
+    sources: dict[tuple[str, str], StateRecord],
 ) -> dict[str, ThermochemicalCalculation]:
     """Calculate three distinct quantities from one selected participant view.
 
@@ -1850,6 +3043,24 @@ def _thermal_calculations(
     """
     enthalpy = _formation_calculation(reaction, candidates, evidence, species)
     gibbs, constant = _nasa_calculations(reaction, candidates, evidence, species, conditions)
+    if enthalpy.value is not None:
+        enthalpy = replace(
+            enthalpy,
+            inputs=_thermal_input_trace(reaction, sources, "enthalpy_formation_eV"),
+            operation="formation_enthalpy_difference",
+        )
+    if gibbs.value is not None:
+        gibbs = replace(
+            gibbs,
+            inputs=_thermal_input_trace(reaction, sources, "thermochemical_model"),
+            operation="NASA7_standard_gibbs_difference",
+        )
+    if constant.value is not None:
+        constant = replace(
+            constant,
+            inputs=({"calculation": "delta_g_eV", "coefficient": 1.0},),
+            operation="number_density_equilibrium_from_standard_gibbs",
+        )
     return {
         "delta_h_eV": enthalpy,
         "delta_g_eV": gibbs,
@@ -1857,8 +3068,28 @@ def _thermal_calculations(
     }
 
 
-def _calculation_reason(requirements: tuple[Requirement, ...]) -> str:
-    return "; ".join(dict.fromkeys(item.reason for item in requirements))
+def _thermal_input_trace(
+    reaction: ReactionCandidate,
+    sources: dict[tuple[str, str], StateRecord],
+    quantity: str,
+) -> tuple[dict, ...]:
+    inputs = []
+    for state, coefficient in net_stoichiometry(reaction).items():
+        if state == ELECTRON:
+            inputs.append(
+                {"constant": "retained_electron_enthalpy_convention", "coefficient": coefficient}
+            )
+        elif (record := sources.get((state, quantity))) is not None:
+            inputs.append(
+                {
+                    "record_id": selectable_state_record_id(record),
+                    "record_ref": calculation_record_reference(record),
+                    "target": state,
+                    "quantity": quantity,
+                    "coefficient": coefficient,
+                }
+            )
+    return tuple(inputs)
 
 
 def _surface_thermal_requirement(reaction: ReactionCandidate) -> tuple[Requirement, ...]:
@@ -1882,7 +3113,7 @@ def _formation_calculation(
     if reaction.surface is not None:
         requirements = _surface_thermal_requirement(reaction)
         return ThermochemicalCalculation(
-            "unavailable", None, "eV", _calculation_reason(requirements), requirements
+            "unavailable", None, "eV", calculation_reason(requirements), requirements
         )
     contributors = set(net_stoichiometry(reaction)) - {ELECTRON}
     electron_required = net_electron_coefficient(reaction) != 0.0
@@ -1899,13 +3130,13 @@ def _formation_calculation(
     )
     if missing:
         return ThermochemicalCalculation(
-            "unavailable", None, "eV", _calculation_reason(missing), missing
+            "unavailable", None, "eV", calculation_reason(missing), missing
         )
     reference = formation_reference(reaction, species)
     if reference is None and net_stoichiometry(reaction):
         requirements = _formation_reference_requirements(reaction, candidates, species)
         return ThermochemicalCalculation(
-            "unavailable", None, "eV", _calculation_reason(requirements), requirements
+            "unavailable", None, "eV", calculation_reason(requirements), requirements
         )
     value = formation_delta(reaction, species)
     if value is None:
@@ -1919,7 +3150,7 @@ def _formation_calculation(
             ),
         )
         return ThermochemicalCalculation(
-            "unavailable", None, "eV", _calculation_reason(requirements), requirements
+            "unavailable", None, "eV", calculation_reason(requirements), requirements
         )
     reference_conditions: dict[str, float] = {}
     if reference is not None:
@@ -2056,6 +3287,14 @@ def _nasa_calculations(
     coefficients = net_stoichiometry(reaction)
     density_power = fsum(coefficients.values())
     constant_unit = "dimensionless" if density_power == 0 else f"m{-3 * density_power:g}"
+    if reaction.surface is None and any(
+        term.species == ELECTRON for term in (*reaction.reactants, *reaction.products)
+    ):
+        reason = "standard NASA7 thermal gas ground-state calculations exclude electron channels"
+        return (
+            ThermochemicalCalculation("unavailable", None, "eV", reason),
+            ThermochemicalCalculation("unavailable", None, constant_unit, reason),
+        )
     requirements = _nasa_requirements(
         reaction, candidates, evidence, species, temperature_K=conditions.gas_temperature_K
     )
@@ -2118,7 +3357,7 @@ def _nasa_calculations(
             if requirements:
                 status = "out_of_range"
     if requirements:
-        reason = _calculation_reason(requirements)
+        reason = calculation_reason(requirements)
         return (
             ThermochemicalCalculation(
                 status, None, "eV", reason, requirements, calculation_conditions
@@ -2169,7 +3408,7 @@ def _nasa_calculations(
                     "unavailable",
                     None,
                     unit,
-                    _calculation_reason(requirements),
+                    calculation_reason(requirements),
                     requirements,
                     declared_conditions,
                 )
@@ -2187,16 +3426,6 @@ def _nasa_requirements(
 ) -> tuple[Requirement, ...]:
     if reaction.surface is not None:
         return _surface_thermal_requirement(reaction)
-    if any(term.species == ELECTRON for term in (*reaction.reactants, *reaction.products)):
-        return (
-            Requirement(
-                "external_models",
-                reaction.id,
-                "electron_channel_thermochemical_model",
-                "thermal NASA7 calculations exclude electron channels; an electron "
-                "distribution is not a thermal ground-state chemical species",
-            ),
-        )
     requirements: list[Requirement] = []
     contributors = net_stoichiometry(reaction)
     targets = tuple(contributors) or tuple(
@@ -2296,6 +3525,8 @@ def _missing_thermal_model_requirements(
 
 
 def _source_energy_values(
+    reaction: ReactionCandidate,
+    candidates: CandidateSet,
     evidence: ReactionEvidence,
 ) -> tuple[dict[str, float], tuple[str, ...]]:
     """Return usable declarations and the quantities excluded by disagreement.
@@ -2325,7 +3556,14 @@ def _source_energy_values(
         if len(choices) != len(finite) or not energy_declarations_agree(properties):
             conflicts.append(name)
         elif choices:
-            values[name] = min(choices)
+            value = min(choices)
+            if attribute == "delta_e_eV" and endpoint_order_issue(
+                physical_coefficients(net_stoichiometry(reaction), candidates.states),
+                value,
+            ):
+                conflicts.append(name)
+                continue
+            values[name] = value
     return values, tuple(conflicts)
 
 
@@ -2431,6 +3669,8 @@ def _reaction_claim_content(record: ReactionRecord, claim: str) -> dict:
     Unknown conditions and annotations still matter.
     """
     content = scientific_reaction_content(record)
+    if any((state.structure or "").startswith("smiles:") for state in record.states):
+        _compare_reaction_claim_graphs(record, content)
     if claim in {"threshold_eV", "delta_e_eV"}:
         # A channel assertion's quality or an independent energy is not part
         # of this quantity's qualification. Its own source declaration is
@@ -2465,6 +3705,25 @@ def _reaction_claim_content(record: ReactionRecord, claim: str) -> dict:
         if "review_scope" in declaration:
             declaration["review_scope"] = [claim]
     return content
+
+
+def _compare_reaction_claim_graphs(record: ReactionRecord, content: dict) -> None:
+    physical = physical_equation_key(record.equation_key)
+    for declaration in (content, content.get("source_declaration")):
+        if not isinstance(declaration, dict) or not isinstance(
+            text := declaration.get("reaction"), str
+        ):
+            continue
+        parsed = parse_equation(text)
+        if parsed is None:
+            continue
+        (third_body, _, reactants, products), states = parsed
+        if physical_equation_key((third_body, physical[1], reactants, products)) != physical:
+            continue
+        declaration["reaction"] = physical
+        if isinstance(transformation := declaration.get("transformation"), dict):
+            aliases = {state.id: physical_state_id(state.id) for state in states}
+            declaration["transformation"] = bind_transformation_states(transformation, aliases)
 
 
 def _checked_energy_relation(
@@ -2793,16 +4052,13 @@ def _energy_property_bounds(
     support an energy inequality. No uncertainty declares a point, not an
     invented error bar. Sources remain separate rather than being averaged.
     """
-    choices = _property_choices(evidence, name) if evidence.match == "exact" else []
-    properties = [
-        (record, prop)
-        for record in evidence.records
-        if evidence.match == "exact"
-        and record.status not in {"rejected", "conflicting"}
-        and (prop := record.properties.get(name)) is not None
-        and prop.reviewed_for(name)
-        and prop in choices
-    ]
+    properties = _property_offers(evidence, name) if evidence.match == "exact" else []
+    return _bounds_from_offers(properties)
+
+
+def _bounds_from_offers(
+    properties: list[tuple[StateRecord, Property]],
+) -> tuple[tuple[float, float] | None, tuple[str, ...]]:
     sources = tuple(sorted({prop.source or record.label for record, prop in properties}))
     ranges: list[tuple[float, float]] = []
     for _, prop in properties:
@@ -2977,8 +4233,16 @@ def assess_kinetics(
     evidence: ReactionEvidence,
     conditions: Conditions,
     selection: DataSelection | None = None,
+    *,
+    conservation: Assessment | None = None,
 ) -> tuple[Assessment, DataUse]:
-    use = data_use(reaction, evidence, conditions, selection)
+    use = data_use(
+        reaction,
+        evidence,
+        conditions,
+        selection,
+        equation_refuted=conservation is not None and conservation.verdict == VERDICT_FAIL,
+    )
     verdict = coefficient_availability_verdict(use.status, (item.status for item in use.datasets))
     basis = (
         (use.dataset_id,)
@@ -3003,10 +4267,11 @@ def _thermo_records(
     reaction: ReactionCandidate,
     evidence: dict[str, StateEvidence],
     temperature_K: float | None = None,
-) -> dict[str, StateRecord]:
-    """Select one quantity view for states contributing to the thermal difference."""
+) -> tuple[dict[str, StateRecord], dict[tuple[str, str], StateRecord]]:
+    """Select one quantity view and its actual inputs for the thermal difference."""
     electron_term_required = net_electron_coefficient(reaction) != 0
-    return {
+    sources: dict[tuple[str, str], StateRecord] = {}
+    selected = {
         state_id: record
         for state_id in net_stoichiometry(reaction)
         if (
@@ -3015,10 +4280,12 @@ def _thermo_records(
                 evidence,
                 electron_term_required=electron_term_required,
                 temperature_K=temperature_K,
+                sources=sources,
             )
         )
         is not None
     }
+    return selected, sources
 
 
 def _identity_energy(
@@ -3060,15 +4327,28 @@ def _ionization_parent(
 
     A corresponding ionic excitation can only raise the ground ionic energy;
     a different structure or phase has no such bound from this parent IE.
-    The electron process pattern verifies whole-species stoichiometry and
-    charge increment as well as phase and structure preservation.
+    The electron pattern checks the formula and charge change. The IE model
+    also needs the product to share the parent's represented structure.
     """
-    if reaction.process != "ionization" or _process_pattern(reaction, candidates) is not True:
+    if (
+        reaction.family != "electron"
+        or reaction.process != "ionization"
+        or _process_pattern(reaction, candidates) is not True
+    ):
         return None
     parent = next(
         candidates.states[term.species] for term in reaction.reactants if term.species != ELECTRON
     )
-    return parent if parent.phase == "gas" and parent.state.kind == "ground" else None
+    product = next(
+        candidates.states[term.species] for term in reaction.products if term.species != ELECTRON
+    )
+    return (
+        parent
+        if parent.phase == "gas"
+        and parent.state.kind == "ground"
+        and parent.structure == product.structure
+        else None
+    )
 
 
 def _energy_feasibility(
@@ -3206,7 +4486,7 @@ def _charge_transfer_inputs(
         return None, unsupported
     resolved = []
     for parent, charge in ((ion, 0), (target, 0), (target, ion.charge)):
-        found = _corresponding_ground_state(parent, charge, candidates)
+        found = ground_reference_state(parent, candidates.states, charge)
         if found is None:
             return None, (
                 Requirement(
@@ -3271,6 +4551,8 @@ def _penning_energy_relation(
     candidates: CandidateSet,
     evidence: dict[str, StateEvidence],
     conditions: Conditions,
+    screening_values: dict[tuple[str, str], tuple[EnergyInput, ...]] | None,
+    screening_property_issues: dict[tuple[str, str], tuple[Requirement, ...]] | None,
 ) -> tuple[Assessment, dict[str, float]]:
     """Check N* + M -> N(ground) + M+(ground) + e energy declarations.
 
@@ -3368,9 +4650,59 @@ def _penning_energy_relation(
                 if bounds is None
             ),
         ), values
-    # A gas temperature is not a maximum relative collision energy. It cannot
-    # turn an internal-energy deficit into an unconditional hard prohibition.
-    collision = conditions.value_of("collision_energy")
+    has_uncertainty = all(
+        prop.uncertainty is not None
+        for state_id, name in (
+            (excited_id, "excitation_energy_eV"),
+            (target_id, "ionization_energy_eV"),
+        )
+        for prop in _property_choices(evidence[state_id], name)
+    )
+    if screening_values is None:
+        screening_values = _screening_inputs(evidence)
+    if screening_property_issues is None:
+        screening_property_issues = _screening_property_issues(
+            evidence, screening_values, _screening_inputs(evidence, apply_selection=False)
+        )
+    return _penning_budget(
+        reaction,
+        candidates.states,
+        conditions,
+        screening_values,
+        excitation_bounds,
+        ionization_bounds,
+        basis,
+        has_uncertainty,
+        screening_property_issues,
+    ), values
+
+
+def _penning_budget(
+    reaction: ReactionCandidate,
+    states: dict[str, StateCandidate],
+    conditions: Conditions,
+    screening_values: dict[tuple[str, str], tuple[EnergyInput, ...]],
+    excitation_bounds: tuple[float, float],
+    ionization_bounds: tuple[float, float],
+    basis: tuple[str, ...],
+    has_uncertainty: bool,
+    screening_property_issues: dict[tuple[str, str], tuple[Requirement, ...]],
+) -> Assessment:
+    selected = collision_condition(reaction, conditions)
+    if selected is None:
+        return Assessment(VERDICT_NA, basis, COLLISION_CONDITION_NOT_APPLICABLE)
+    collision, _, collision_requirements = relative_collision_energy(
+        reaction, states, screening_values, *selected, property_issues=screening_property_issues
+    )
+    # Nonnegative kinetic energy can only help the lower bound. A failed
+    # conversion of a supplied condition cannot be treated as zero energy.
+    if collision is None and collision_requirements:
+        return Assessment(
+            VERDICT_UNKNOWN,
+            basis,
+            calculation_reason(collision_requirements),
+            requirements=collision_requirements,
+        )
     kinetic = collision or 0.0
     lower = excitation_bounds[0] + kinetic - ionization_bounds[1]
     upper = excitation_bounds[1] + kinetic - ionization_bounds[0]
@@ -3390,16 +4722,8 @@ def _penning_energy_relation(
                     ),
                 ),
             ),
-        ), values
-    relationship = f"Penning declared available-energy range [{lower:.15g}, {upper:.15g}] eV"
-    has_uncertainty = all(
-        prop.uncertainty is not None
-        for state_id, name in (
-            (excited_id, "excitation_energy_eV"),
-            (target_id, "ionization_energy_eV"),
         )
-        for prop in _property_choices(evidence[state_id], name)
-    )
+    relationship = f"Penning declared available-energy range [{lower:.15g}, {upper:.15g}] eV"
     scope = (
         "Declared energy consistency; confidence, correlations, collision-"
         "energy uncertainty, probability and occurrence are undetermined."
@@ -3416,7 +4740,7 @@ def _penning_energy_relation(
             basis,
             relationship + ": the energy requirement is met throughout that range" + note,
             scope=scope,
-        ), values
+        )
     if (
         collision is not None
         and upper < 0.0
@@ -3430,7 +4754,7 @@ def _penning_energy_relation(
             relationship + ": specified collision energy is below the Penning energy "
             "requirement throughout that range" + note,
             scope=scope,
-        ), values
+        )
     return Assessment(
         VERDICT_UNKNOWN,
         basis,
@@ -3461,56 +4785,38 @@ def _penning_energy_relation(
                 ),
             ),
         ),
-    ), values
+    )
 
 
 def _penning_ground_products(
     reaction: ReactionCandidate,
     candidates: CandidateSet,
 ) -> tuple[str, str] | None:
-    heavy = [term for term in reaction.reactants if term.species != ELECTRON]
-    products = [term for term in reaction.products if term.species != ELECTRON]
+    participants = _participants(reaction, candidates)
     if (
-        len(heavy) != 2
-        or len(products) != 2
-        or any(term.n != 1 for term in (*heavy, *products))
-        or any(term.species == ELECTRON for term in reaction.reactants)
-        or sum(term.n for term in reaction.products if term.species == ELECTRON) != 1
-        or reaction.surface is not None
+        reaction.surface is not None
+        or reaction.third_body is not None
+        or (
+            reaction.transformation
+            and _transformation_pattern(reaction, candidates, participants) is not True
+        )
     ):
         return None
-    donors = [
-        candidates.states[term.species]
-        for term in heavy
-        if candidates.states[term.species].state.manifold == "electronic"
-    ]
-    targets = [
-        candidates.states[term.species]
-        for term in heavy
-        if candidates.states[term.species].state.kind == "ground"
-    ]
-    if len(donors) != 1 or len(targets) != 1:
-        return None
-    donor, target = donors[0], targets[0]
-    if (
-        donor.charge != 0
-        or target.charge != 0
-        or donor.phase != "gas"
-        or target.phase != "gas"
-        or donor.state.resolution == "lumped"
-    ):
-        return None
-    for parent, charge in ((donor, 0), (target, 1)):
-        if not any(
-            (product := candidates.states[term.species]).composition == parent.composition
-            and product.phase == parent.phase
-            and product.structure == parent.structure
-            and product.charge == charge
-            and product.state.kind == "ground"
-            for term in products
+    for target, ion, donor, ground in _collision_ionization_matches(reaction, participants):
+        # Only this model reduces two exact ground correspondences to IE and
+        # the donor's ground-relative excitation energy.
+        if (
+            target.charge == donor.charge == 0
+            and target.state.kind == ion.state.kind == ground.state.kind == "ground"
+            and all(
+                state.phase == "gas" and state.state.resolution == "resolved"
+                for state in (target, ion, donor, ground)
+            )
+            and endpoint_structure_matches(physical_state_key(target), physical_state_key(ion))
+            and endpoint_structure_matches(physical_state_key(donor), physical_state_key(ground))
         ):
-            return None
-    return donor.id, target.id
+            return donor.id, target.id
+    return None
 
 
 def _eV_value(record: StateRecord, name: str) -> float | None:
@@ -3531,6 +4837,7 @@ def _preferred_state(
     *,
     electron_term_required: bool = False,
     temperature_K: float | None = None,
+    sources: dict[tuple[str, str], StateRecord] | None = None,
 ) -> StateRecord | None:
     if state_id is None:
         return None
@@ -3547,7 +4854,8 @@ def _preferred_state(
             if name.endswith("_eV")
         )
     for name in names:
-        compared = _property_choices(matched, name, electron_term_required=electron_term_required)
+        offered = _property_offers(matched, name, electron_term_required=electron_term_required)
+        compared = [prop for _, prop in offered]
         if not compared or _property_declarations_conflict(
             name,
             compared,
@@ -3555,93 +4863,112 @@ def _preferred_state(
             electron_term_required=electron_term_required,
         ):
             continue
-        properties[name] = min(
-            compared, key=lambda prop: (TIER_RANK.get(prop.tier, 5), prop.source or "", repr(prop))
+        record, properties[name] = min(
+            offered,
+            key=lambda pair: (
+                TIER_RANK.get(pair[1].tier, 5),
+                pair[1].source or "",
+                repr(pair[1]),
+                pair[0].id,
+                calculation_record_reference(pair[0]),
+            ),
         )
-    thermos = _thermo_choices(matched, temperature_K=temperature_K)
-    thermo = (
-        min(thermos, key=lambda item: (TIER_RANK.get(item.tier, 5), item.source or ""))
-        if thermos and len({_thermo_physical_key(item) for item in thermos}) == 1
-        else None
-    )
+        if sources is not None:
+            sources[state_id, name] = record
+    thermos = _thermo_offers(matched, temperature_K=temperature_K)
+    thermo = None
+    if thermos and len({_thermo_physical_key(item) for _, item in thermos}) == 1:
+        record, thermo = min(
+            thermos,
+            key=lambda pair: (
+                TIER_RANK.get(pair[1].tier, 5),
+                pair[1].source or "",
+                pair[0].id,
+                calculation_record_reference(pair[0]),
+            ),
+        )
+        if sources is not None:
+            sources[state_id, "thermochemical_model"] = record
     # This is an aggregate, not one raw declaration. Its selected energy
     # Property must not inherit a different source's legacy scalar.
     return replace(matched.preferred, properties=properties, thermo=thermo, energy_eV=None)
 
 
-def _property_choices(
-    evidence: StateEvidence, name: str, *, electron_term_required: bool = False
-) -> list[Property]:
-    """Review this quantity, preserving unqualified declarations in raw evidence.
-
-    Unqualified values cannot invalidate another quantity's qualified inputs.
-    A rejected declaration contributes no usable numerical assertion.
-    """
-    choices = [
-        prop
+def _reviewed_property_records(
+    evidence: StateEvidence, name: str
+) -> list[tuple[StateRecord, Property]]:
+    return [
+        (record, prop)
         for record in evidence.records
         if record.status not in {"rejected", "conflicting"}
         and (prop := record.properties.get(name)) is not None
         and prop.reviewed_for(name)
         and _state_energy_incompatibility(prop, name, record.candidate) is None
     ]
+
+
+def _property_choices(
+    evidence: StateEvidence, name: str, *, electron_term_required: bool = False
+) -> list[Property]:
+    return [
+        prop
+        for _, prop in _property_offers(
+            evidence, name, electron_term_required=electron_term_required
+        )
+    ]
+
+
+def _property_offers(
+    evidence: StateEvidence, name: str, *, electron_term_required: bool = False
+) -> list[tuple[StateRecord, Property]]:
+    """Apply qualification and selection to the original record-property pairs."""
+    choices = _reviewed_property_records(evidence, name)
     policy = _state_quantity_policy(evidence, name)
     if policy is not None and (policy.record is not None or policy.mode == "only"):
-        declarations = [
-            (record, prop)
-            for record in evidence.records
-            if (prop := record.properties.get(name)) is not None and prop in choices
-        ]
-        choices = [
-            prop for _, prop in _requested_state_records(evidence, name, policy, declarations)
-        ]
+        choices = _requested_state_records(evidence, name, policy, choices)
     if name == "enthalpy_formation_eV":
         charge = evidence.records[0].candidate.charge if evidence.records else 0
         referenced = [
-            prop
-            for prop in choices
+            (record, prop)
+            for record, prop in choices
             if prop.formation_reference is not None
             and prop.formation_reference.complete_for_charge(charge)
         ]
         choices = referenced or choices
-        # A missing auxiliary electron term is not a reason to discard a
-        # contradictory, fully referenced Hf value. Resolve Hf comparability
-        # before selecting whole properties which supply the consumed term.
+        # An absent auxiliary electron term cannot hide a contradictory Hf value.
         if electron_term_required and not _property_declarations_conflict(
-            name, choices, charge=charge
+            name, [prop for _, prop in choices], charge=charge
         ):
             completed = [
-                prop
-                for prop in choices
+                (record, prop)
+                for record, prop in choices
                 if prop.formation_reference is not None
                 and prop.formation_reference.complete_for_charge(
                     charge, electron_term_required=True
                 )
             ]
             choices = completed or choices
-    informative = [prop for prop in choices if prop.value is not None or prop.qualifier is not None]
-    choices = informative or choices
-    if policy is None:
-        return choices
-    declarations = [
+    informative = [
         (record, prop)
-        for record in evidence.records
-        if (prop := record.properties.get(name)) is not None and prop in choices
+        for record, prop in choices
+        if prop.value is not None or prop.qualifier is not None
     ]
-    if policy.record is not None:
-        return [prop for _, prop in _requested_state_records(evidence, name, policy, declarations)]
+    choices = informative or choices
+    if policy is None or policy.record is not None:
+        return choices
     usable = [
         (record, prop)
-        for record, prop in declarations
+        for record, prop in choices
         if property_energy_bounds(prop) is not None
         or (name == "electron_affinity_eV" and _explicit_electron_nonbinding(prop))
     ]
-    declarations = usable or declarations
+    choices = usable or choices
+    if policy.mode == "only":
+        return choices
     groups: dict[tuple, list[tuple[StateRecord, Property]]] = {}
-    for record, prop in declarations:
+    for record, prop in choices:
         # Hf at different reference conditions is not a source alternative.
-        # Explicit record/only requests may restrict it; prefer cannot choose
-        # a reference convention on behalf of the user.
+        # Prefer cannot choose a reference convention on behalf of the user.
         key = (
             (
                 _formation_quantity_key(
@@ -3653,9 +4980,9 @@ def _property_choices(
         )
         groups.setdefault(key, []).append((record, prop))
     return [
-        prop
+        item
         for group in groups.values()
-        for _, prop in _requested_state_records(evidence, name, policy, group)
+        for item in _requested_state_records(evidence, name, policy, group)
     ]
 
 
@@ -3683,6 +5010,10 @@ def _requested_state_records(
         offered = [
             record
             for record in evidence.records
+            if calculation_record_reference(record) == policy.record
+        ] or [
+            record
+            for record in evidence.records
             if selectable_state_record_id(record) == policy.record
         ]
         values = [
@@ -3699,11 +5030,7 @@ def _requested_state_records(
             raise ValueError(
                 f"data_selection {quantity}: record {policy.record!r} contradicts only restrictions"
             )
-        return [
-            (record, value)
-            for record, value in eligible
-            if selectable_state_record_id(record) == policy.record
-        ]
+        return [(record, value) for record, value in eligible if record in offered]
     allowed = [
         (record, value) for record, value in eligible if policy.allows(*_state_source_axes(value))
     ]
@@ -3751,6 +5078,8 @@ def _state_energy_incompatibility(prop: Property, name: str, state: StateCandida
         return None if property_has_point_qualifier(prop) else "qualifier"
     if name not in {"ionization_energy_eV", "electron_affinity_eV", "excitation_energy_eV"}:
         return None
+    if not _related_energy_target_matches(prop, name, state):
+        return "relation"
     if name != "excitation_energy_eV" and (state.phase != "gas" or state.state.kind != "ground"):
         return "model"
     qualifier = (prop.qualifier or "").strip().lower()
@@ -3759,6 +5088,8 @@ def _state_energy_incompatibility(prop: Property, name: str, state: StateCandida
         return "qualifier"
     if name == "excitation_energy_eV":
         return None
+    if name == "ionization_energy_eV" and prop.value is not None and prop.value <= 0:
+        return "value"
     if (
         name == "electron_affinity_eV"
         and prop.value is None
@@ -3766,11 +5097,25 @@ def _state_energy_incompatibility(prop: Property, name: str, state: StateCandida
     ):
         return None
     atom = sum(state.composition.values()) == 1
-    if prop.definition == "atomic":
-        return None if atom else "definition"
-    if prop.definition == "adiabatic" or (prop.definition is None and atom):
-        return None
-    return "definition"
+    compatible = prop.definition == "adiabatic" or (atom and prop.definition in {None, "atomic"})
+    return None if compatible else "definition"
+
+
+def _related_energy_target_matches(prop: Property, name: str, state: StateCandidate) -> bool:
+    if prop.related_state is None:
+        return True
+    related = parse_state_id(prop.related_state)
+    if related is None:
+        return False
+    charge = state.charge + {"ionization_energy_eV": 1, "electron_affinity_eV": -1}.get(name, 0)
+    return (
+        related.composition == state.composition
+        and related.charge == charge
+        and related.phase == state.phase
+        and endpoint_structure_matches(physical_state_key(state), physical_state_key(related))
+        and related.state.kind == "ground"
+        and related.state.resolution == "resolved"
+    )
 
 
 def _property_declarations_conflict(
@@ -3817,6 +5162,12 @@ def _property_declarations_conflict(
 
 
 def _thermo_choices(evidence: StateEvidence, *, temperature_K: float | None = None) -> list[Thermo]:
+    return [thermo for _, thermo in _thermo_offers(evidence, temperature_K=temperature_K)]
+
+
+def _thermo_offers(
+    evidence: StateEvidence, *, temperature_K: float | None = None
+) -> list[tuple[StateRecord, Thermo]]:
     declarations = [
         (record, record.thermo)
         for record in evidence.records
@@ -3826,14 +5177,9 @@ def _thermo_choices(evidence: StateEvidence, *, temperature_K: float | None = No
     ]
     policy = _state_quantity_policy(evidence, "thermochemical_model")
     if policy is None:
-        return [thermo for _, thermo in declarations]
+        return declarations
     if policy.record is not None:
-        return [
-            thermo
-            for _, thermo in _requested_state_records(
-                evidence, "thermochemical_model", policy, declarations
-            )
-        ]
+        return _requested_state_records(evidence, "thermochemical_model", policy, declarations)
     if policy.mode == "only":
         declarations = _requested_state_records(
             evidence, "thermochemical_model", policy, declarations
@@ -3853,9 +5199,9 @@ def _thermo_choices(evidence: StateEvidence, *, temperature_K: float | None = No
             key += (thermo.t_min, thermo.t_max)
         groups.setdefault(key, []).append((record, thermo))
     return [
-        thermo
+        item
         for group in groups.values()
-        for _, thermo in _requested_state_records(evidence, "thermochemical_model", policy, group)
+        for item in _requested_state_records(evidence, "thermochemical_model", policy, group)
     ]
 
 
@@ -3970,23 +5316,285 @@ def _reaction_energy_conflicts(
     return tuple(sorted(conflicts))
 
 
-def _corresponding_ground_state(
-    parent: StateCandidate,
-    charge: int,
-    candidates: CandidateSet,
-) -> StateCandidate | None:
-    """Find one ground identity with the parent's composition, phase, and structure.
+_SCREENING_QUANTITIES = (
+    "enthalpy_formation_eV",
+    "ionization_energy_eV",
+    "electron_affinity_eV",
+    "excitation_energy_eV",
+    "proton_affinity_eV",
+    "gas_basicity_eV",
+    "mass_amu",
+)
 
-    The requested charge changes only that identity axis. Multiple ground
-    representations remain unresolved; insertion order never selects a parent.
-    """
-    matches = [
-        candidate
-        for candidate in candidates.states.values()
-        if candidate.composition == parent.composition
-        and candidate.charge == charge
-        and candidate.state.kind == "ground"
-        and candidate.phase == parent.phase
-        and candidate.structure == parent.structure
+
+def _screening_reference_states(
+    states: Mapping[str, StateCandidate], catalog: EvidenceCatalog
+) -> dict[str, StateCandidate]:
+    """Resolve catalog ground references for the charge/level cycles independently of search."""
+    participants: dict[tuple[tuple[str, int], ...], list[StateKey]] = {}
+    for state in states.values():
+        if state.phase == "gas" and state.state.resolution == "resolved":
+            key = physical_state_key(state)
+            participants.setdefault(key[0], []).append(key)
+    represented = {key for group in participants.values() for key in group}
+    references: dict[str, StateCandidate] = {}
+    for state in catalog.declared_states(structural_context=states.values()):
+        if (
+            state.id in states
+            or state.phase != "gas"
+            or state.state.kind != "ground"
+            or state.state.resolution != "resolved"
+        ):
+            continue
+        key = physical_state_key(state)
+        if key in represented or not any(
+            min(0, participant[1]) <= state.charge <= max(0, participant[1])
+            and endpoint_structure_matches(participant, key)
+            for participant in participants.get(key[0], ())
+        ):
+            continue
+        if assess_state_consistency(state).verdict == VERDICT_PASS:
+            references[state.id] = state
+            represented.add(key)
+    return references
+
+
+def _screening_inputs(
+    evidence: dict[str, StateEvidence],
+    *,
+    apply_selection: bool = True,
+) -> dict[tuple[str, str], tuple[EnergyInput, ...]]:
+    """Keep selected input identities instead of losing them in a composite state."""
+    output = {}
+    for state_id, matched in evidence.items():
+        if matched.match != "exact":
+            continue
+        for quantity in _SCREENING_QUANTITIES:
+            choices = _screening_property_inputs(state_id, matched, quantity, apply_selection)
+            if choices:
+                output[state_id, quantity] = tuple(choices)
+    return output
+
+
+def _screening_property_issues(
+    evidence: dict[str, StateEvidence],
+    values: dict[tuple[str, str], tuple[EnergyInput, ...]],
+    unrestricted: dict[tuple[str, str], tuple[EnergyInput, ...]],
+) -> dict[tuple[str, str], tuple[Requirement, ...]]:
+    """Keep qualification failures for offered quantities alongside usable inputs."""
+    issues = {}
+    for state_id, matched in evidence.items():
+        offered = {name for record in matched.records for name in record.properties}
+        for quantity in _SCREENING_QUANTITIES:
+            key = (state_id, quantity)
+            if quantity not in offered or key in values:
+                continue
+            if quantity == "mass_amu":
+                issues[key] = _mass_property_issues(matched, key, unrestricted)
+            else:
+                issues[key] = _energy_requirements(state_id, matched, quantity)
+    return issues
+
+
+def _mass_property_issues(
+    evidence: StateEvidence,
+    key: tuple[str, str],
+    unrestricted: dict[tuple[str, str], tuple[EnergyInput, ...]],
+) -> tuple[Requirement, ...]:
+    if key in unrestricted:
+        return (
+            Requirement(
+                "source_selection", *key, "choose a qualified nominal mass or relax data_selection"
+            ),
+        )
+    if evidence.match != "exact":
+        return (Requirement("identity", *key, "identify the exact state of the mass declaration"),)
+    if any(
+        (prop := record.properties.get("mass_amu")) is not None and prop.value is not None
+        for record in evidence.records
+    ):
+        return (
+            Requirement(
+                "source_review", *key, "review the qualification and unit of the nominal mass"
+            ),
+        )
+    return ()
+
+
+def _screening_property_inputs(
+    state_id: str, evidence: StateEvidence, quantity: str, apply_selection: bool
+) -> list[EnergyInput]:
+    if quantity == "electron_affinity_eV":
+        affinities = _property_choices(evidence, quantity)
+        if _property_declarations_conflict(quantity, affinities) or any(
+            _explicit_electron_nonbinding(prop) for prop in affinities
+        ):
+            return []
+    declarations = [
+        (record, prop)
+        for record, prop in _reviewed_property_records(evidence, quantity)
+        if property_has_point_qualifier(prop)
+        and prop.value is not None
+        and _screening_value(prop, quantity) is not None
     ]
-    return matches[0] if len(matches) == 1 else None
+    groups: dict[tuple, list[tuple[StateRecord, Property]]] = {}
+    for record, prop in declarations:
+        ref = prop.formation_reference
+        # Zero-K internal differences do not depend on an arbitrary standard p.
+        key = (
+            ref.temperature_K if ref else None,
+            ref.basis if ref else None,
+            prop.definition,
+            molecular_reference_id(record, state_id, prop.related_state),
+            ref.standard_pressure_Pa if ref is not None and quantity == "gas_basicity_eV" else None,
+        )
+        groups.setdefault(key, []).append((record, prop))
+    policy = _state_quantity_policy(evidence, quantity) if apply_selection else None
+    selected = []
+    for group in groups.values():
+        offered = _requested_state_records(evidence, quantity, policy, group) if policy else group
+        if apply_selection and offered and energy_declarations_agree([prop for _, prop in offered]):
+            offered = [
+                min(
+                    offered,
+                    key=lambda pair: (
+                        TIER_RANK.get(pair[1].tier, 5),
+                        pair[0].id,
+                        calculation_record_reference(pair[0]),
+                    ),
+                )
+            ]
+        selected.extend(offered)
+    return [
+        EnergyInput(
+            selectable_state_record_id(record),
+            calculation_record_reference(record),
+            state_id,
+            quantity,
+            cast(float, _screening_value(prop, quantity)),
+            cast(float, prop.value),
+            prop.unit,
+            prop.definition,
+            prop.formation_reference,
+            molecular_reference_id(record, state_id, prop.related_state),
+            prop.method,
+            prop.provenance.provider,
+            prop.provenance.collection,
+        )
+        for record, prop in selected
+    ]
+
+
+def _screening_value(prop: Property, quantity: str) -> float | None:
+    if prop.value is None:
+        return None
+    if quantity == "mass_amu":
+        return prop.value if prop.unit in {"u", "amu", "Da"} and prop.value > 0 else None
+    return energy_eV(prop.value, prop.unit)
+
+
+def _screening_relations(
+    catalog: EvidenceCatalog, states: Mapping[str, StateCandidate]
+) -> EnergyRelations:
+    relations = []
+    rejected = []
+    representatives = {
+        physical_state_id(state.id): state
+        for state in states.values()
+        if (state.structure or "").startswith("smiles:")
+    }
+    for record in catalog.reaction_records:
+        prop = qualified_channel_energy(record, "delta_e_eV")
+        if not _usable_state_relation(record, prop):
+            continue
+        prop = cast(Property, prop)
+        original = {state.id: state for state in record.states}
+        bound = bound_molecular_participants(record, representatives)
+        views = (original, original | bound) if bound else (original,)
+        value = cast(float, energy_eV(cast(float, prop.value), prop.unit))
+        source = EnergyInput(
+            record.id,
+            calculation_record_reference(record),
+            record.id,
+            "delta_e_eV",
+            value,
+            cast(float, prop.value),
+            prop.unit,
+            prop.definition,
+            prop.formation_reference,
+            method=prop.method,
+            provider=prop.provenance.provider,
+            collection=prop.provenance.collection,
+        )
+        for view in views:
+            if (vector := _screening_relation_vector(record, view)) is None:
+                continue
+            if issue := endpoint_order_issue(vector, value):
+                rejected.append(
+                    (
+                        signature(vector),
+                        Requirement("source_review", record.id, "delta_e_eV", issue),
+                    )
+                )
+            else:
+                relations.append(EnergyRelation(signature(vector), source))
+    return EnergyRelations(
+        sorted(
+            relations, key=lambda relation: (relation.energy.record_id, relation.energy.record_ref)
+        ),
+        rejected=rejected,
+    )
+
+
+def _screening_relation_vector(
+    record: ReactionRecord, states: dict[str, StateCandidate]
+) -> dict[StateKey, float] | None:
+    left, right = record.equation_key[2:]
+    explicit_electrons = any(state_id == ELECTRON for state_id, _ in (*left, *right))
+    if explicit_electrons:
+        states = states | {ELECTRON: electron_state()}
+    balance = conservation(
+        tuple(Term(*term) for term in left),
+        tuple(Term(*term) for term in right),
+        states,
+    )
+    # A pure state-energy relation can omit zero-reference free electrons.
+    # A declared event, or an explicit electron equation, must balance them.
+    require_charge = explicit_electrons or record.channel_scope != "energy_relation"
+    if (
+        not balance.elements_conserved
+        or balance.isotope_conflicts
+        or balance.isotope_unresolved
+        or (require_charge and not balance.charge_conserved)
+    ):
+        return None
+    coefficients: dict[StateKey, list[float]] = {}
+    for side, sign in ((left, -1.0), (right, 1.0)):
+        for state_id, n in side:
+            if state_id != ELECTRON:
+                key = physical_state_key(states[state_id])
+                coefficients.setdefault(key, []).append(sign * n)
+    return {key: v for key, xs in coefficients.items() if (v := fsum(xs))}
+
+
+def _usable_state_relation(record: ReactionRecord, prop: Property | None) -> bool:
+    if prop is None or prop.value is None or prop.definition != "products_minus_reactants":
+        return False
+    if prop.formation_reference is not None and prop.formation_reference.temperature_K != 0:
+        return False
+    state_ids = {state.id for state in record.states} | {ELECTRON}
+    if any(key not in state_ids for side in record.equation_key[2:] for key, _ in side):
+        return False
+    return (
+        record.equation_key[1] is None
+        and energy_eV(prop.value, prop.unit) is not None
+        and all(
+            state.id == ELECTRON
+            or (
+                state.phase == "gas"
+                and state.state.resolution == "resolved"
+                and state.state.kind != "composition"
+            )
+            for state in record.states
+        )
+    )

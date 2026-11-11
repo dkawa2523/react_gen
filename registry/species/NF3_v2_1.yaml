@@ -1,0 +1,45 @@
+schema_version: 1
+id: NF3_v2_1
+display_name: NF3(v2=1)
+phase: gas
+composition: {N: 1, F: 3}
+charge: 0
+classes: [neutral, molecule]
+molecular_identity:
+  smiles: N(F)(F)F
+  source:
+    provider: NIST
+    collection: SRD 69
+    record_id: C7783542
+    citation: NIST Chemistry WebBook, SRD 69, Nitrogen trifluoride (molecular structure)
+    url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C7783542
+state:
+  kind: vibrational
+  label: v2=1
+  term: X1A1
+  existence: confirmed
+  existence_source: Observed gas-phase v2 fundamental band of 14NF3.
+  status: reviewed
+  method: spectroscopy
+  review_scope: [state_existence]
+  source: &band_source
+    provider: literature
+    collection: The Scientific World Journal
+    record_id: Najib2013:Table2:NF3:v2
+    citation: H. Najib, The Scientific World Journal 2013, 813249, Table 2 and Eq. (4).
+    url: https://doi.org/10.1155/2013/813249
+properties:
+  excitation_energy_eV:
+    value: 647.1340617
+    unit: cm^-1
+    related_state: NF3@ground
+    source: *band_source
+    method: spectroscopy
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [excitation_energy_eV]
+    uncertainty: {absolute: 0.0000073, unit: cm^-1}
+    source_declaration:
+      scope: Gas-phase 14NF3 v2=1 band origin relative to v=0, with other modes unexcited. Individual rotational energies are outside this vibrational model.
+      uncertainty_definition: One standard deviation from the spectroscopic fit.
+      source_license: Creative Commons Attribution License, as declared by the article.

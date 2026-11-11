@@ -6,7 +6,7 @@
 .\.venv\Scripts\python.exe tools/quality.py quality-pr
 ```
 
-この入口はRuff format/check、mypy、pytest、import-linterを実行します。すべて同じPython環境から起動し、import-linterも生成された実行fileを探さず、そのパッケージのCLI入口を使います。CIも同じ入口をPython 3.11で実行します。`quality-fast` はimport-linterを除く同じ確認で、pytest全体を含みます。
+この入口はRuff format/check、mypy、pytest、import-linterを実行します。CIもPython 3.11で同じ入口を使います。
 
 開発中に通常の入出力だけを短時間で確認する入口もあります。
 
@@ -14,43 +14,35 @@
 .\.venv\Scripts\python.exe tools/quality.py quality-smoke
 ```
 
-`quality-smoke` は一時ディレクトリの最小入力を通常CLIで分析し、needs、CSV・network表示、
-hash確認付き再読込みを通します。表示の生成で正規結果が変わらないことも確認します。
-固定の候補件数、ガス固有の期待値、外部データ取得は使いません。出力は一時領域へ置き、失敗したコマンドの出力を表示します。
-既存pytestに同じ境界の検証があるため、quality-prでこの軽量確認を重複実行しません。
+`quality-smoke` は一時ディレクトリで解析、`needs`、CSV・ネットワークの再生成、保存結果の再読込みを通します。
 `quality-nightly` はquality-prに加え、付属caseを現行の`analyze --input ... --evidence registry`で実行し、
-`build/nightly`へ保存します。例の名前は通常処理の分岐に使いません。
+その実行で生成した正規結果とCSVを検証して `build/nightly` へ保存します。終了コード1は、エラー出力がなく、正規結果に探索未完了が記録され、CSVまで検証できた場合に受理します。
 
-変更の進め方は[AGENTS.md](../AGENTS.md#変更ごとの進め方)を使います。PR・作業報告には、
-変わる結論とその所有処理、検証の根拠、整理した旧内容と残る制約を短く記します。
-PRを作らない作業も同じ観点で差分をレビューします。入力・出力の検証が通っただけで、
-科学的妥当性や責務の明確さ、不要処理の不存在まで自動確認したとは扱いません。
+CIの通常ジョブは基本依存で動かし、定期ジョブでは `[structure,thermo]` を導入して実構造と任意の物性取得経路を検査します。任意依存を使うテストは実行前に依存の有無を確認し、処理の例外や取得結果の不一致はテストの失敗として扱います。
 
-テストは変更した命題・境界に合わせ、次の中から必要なものを選びます。全変更へ全項目を課しません。
+RDKitの実装を検証するときは、`from rdkit import Chem` が成功する環境で同じ品質チェックを実行します。Windowsの実行制御がネイティブDLLを拒否する場合、既存のWSL2上でもLinux版RDKitによる構造照合と保存・再読込みを確認できます。WSL2での検証結果はLinux版の動作範囲です。Windowsでの実行には、その環境のポリシーが許可する配布物が必要です。[RDKit公式の導入手順](https://www.rdkit.org/docs/Install.html)・[Windowsの実行制御イベント](https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/operations/event-id-explanations)
 
-| 変更 | 確認の根拠 |
+変更に応じた検証と差分レビューの進め方は[開発指針](../AGENTS.md#変更ごとの進め方)に置きます。
+
+## 検証が守る範囲
+
+| 確認 | 守るもの |
 |---|---|
-| 入力・対象・証拠 | 正常例と誤同定・不正値・不足の違い。関連する結論だけが変わり、無関係な資料や入力順で意味が変わらないこと |
-| 科学判断・計算 | 一次資料、単位・参照条件・保存則・既知の極限。値があることと対象・現象の成立を区別する例 |
-| 保存・表示・外部形式 | 原宣言とhashの往復、同じ正規結果からの表示、変更に関係する失敗時の整合。新旧の必要な外部形式を保持すること |
-| 置換・整理 | 旧名・呼出し元・文書・設定・専用テストを検索した差分。残す互換経路の利用先・撤去条件と、消した経路の代わりになる通常利用 |
+| 科学判定・計算のテスト | 保存則、単位、既知の極限、出典・条件の不一致で結果がどう変わるかを確認する。数値や反証を決める根拠は物理モデルと元資料に置く |
+| 入出力のテスト | 通常の入口から、対象・結論・出典を保存、再読込み、表示で辿れることを確認する。失敗時の保全、参照切れ、既存形式は境界ごとに代表例を残す |
+| 依存関係の契約 | 解析から表示・書込みへの依存、表示から解析・証拠読込みへの依存、通常処理から外部取得への依存を検出する。内部モジュールの順番は実際の責務に合わせて変えられる |
+| 利用時の診断 | 科学判定が返した理由と必要作業を保存し、`needs` と集計はその情報を投影する。ファイル形式・参照の検証は保存境界で扱う |
 
-新しいテスト・診断・契約を加える前に、独立した失敗を見つける役割が既存の確認で足りないか見ます。
-同じ実装を写すassertや、特定gasの件数、診断の存在を検査するだけのテストは増やしません。
-一つの境界の複数の入力は必要に応じてparameterize等でまとめ、置換した実装だけを守るテストは整理します。
-テスト数・coverage・チェック欄の数を改善の指標にしません。新しい懸念がなければ同じ検証を繰り返しません。
-依存方向とcoreのoffline性は`.importlinter`が検査しますが、意味的な責務と科学的な飛躍は差分レビューで確認します。
+異なる故障を検出する検査は分け、同じ検証節に同じ理由で失敗する入力や、内部メソッドの存在・説明文・候補件数だけを固定する検査は整理します。[判定と診断の責務](core_design.md#正規結果経路表示)・[公開結果の整合](output_reference.md#保存の整合と移行)
 
 保存結果の読込み時間は `tools/benchmark_result_io.py <result.yamlのパス> --compare-python-parser` で、化学計算を再実行せず同じ正規検証を含めて測れます。時間は環境に依存するため、品質チェックの合否条件には使いません。
 
-配布前は品質チェックに加え、現在のソースからwheelとsdistを新しい出力先へ作ります。
-ビルド用環境へ`build`を入れ、`python -m build --outdir PATH`を実行します。
-sdistの収録対象は`MANIFEST.in`、wheelの実行データは`pyproject.toml`で定義します。
-`build/`・`dist/`・`work/`や外部原本・取得snapshotはソース配布へ含めません。
+現行の同梱ケースとイオンを明示供給した補足ケースの実測条件・結果は[ベンチマークとDNT向け出力](reaction_judgment_matrix.md#ベンチマークとdnt向け出力)にまとめています。
 
-新しい仮想環境へwheelを通常インストールし、リポジトリ外から`rgen analyze Ar --out RESULT`、
-`rgen needs RESULT`、`rgen view RESULT --kind network --out VIEW`と`python -m pip check`を確認します。
-Registry・台帳を使う確認は、展開したsdistの`registry`と`external_data/source_catalog.yaml`を
-絶対パスで指定します。sdistからwheelを再ビルドできることと、文書・fixture・検証工具の収録も確認します。
-実行可能な成果物が作れたことと、公開版の確定・同梱データの再配布条件が整ったことは
-別の確認です。古い`dist/`の成果物を現在のソースの検証結果として扱いません。
+## 配布物の確認
+
+確定したソースから、品質検査と時間を分けて新しい出力先へwheelとsdistを作ります。`python -m build --outdir PATH` ではsdistを作り、その展開内容からwheelをビルドします。`MANIFEST.in` がsdist、`pyproject.toml` がwheelの収録を定義します。
+
+- sdistでRegistry本体・数表・帰属とnotice、文書、入力例、取得先台帳、fixture、検証工具を確認します。作業結果や外部の取得原本は同梱対象外です。[出典・配布条件](source_license_policy.md)
+- wheelを新しい仮想環境へインストールし、`python -m pip check` を実行します。リポジトリ外から、sdistを展開した `registry` を絶対パスで指定して `rgen check --registry PATH` と `rgen analyze Ar --supply e --evidence PATH --out RESULT` を実行します。続けて `rgen needs RESULT`、CSVの再生成、HTMLの表示を確認します。
+- 確認したwheelとsdistのファイル名、SHA-256、ビルド元のコミットを記録します。

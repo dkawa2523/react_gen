@@ -1,0 +1,42 @@
+schema_version: 1
+id: Ar_1s3
+display_name: Ar(1s3)
+composition:
+  Ar: 1
+charge: 0
+phase: gas
+classes:
+- neutral
+- atom
+- excited
+state:
+  kind: electronic
+  label: 1s3
+  configuration: 3s2 3p5(2P°1/2) 4s
+  term: 2[1/2]
+  J: '0'
+  parity: odd
+  degeneracy: 1
+  existence: confirmed
+  existence_source: NIST Handbook of Basic Atomic Spectroscopic Data, Ar I level table.
+  status: reviewed
+  method: evaluated
+  review_scope: [state_existence]
+  source: &level_source
+    provider: NIST
+    collection: SRD108
+    release: '1.1.2'
+    citation: Sansonetti, Martin and Young (2005), NIST Basic Atomic Spectroscopic Data, Ar I level table, M73.
+    url: https://physics.nist.gov/PhysRefData/Handbook/Tables/argontable5.htm
+properties:
+  excitation_energy_eV:
+    value: 94553.6705
+    unit: cm-1
+    related_state: Ar@ground
+    source: *level_source
+    evidence_tier: reviewed
+    status: reviewed
+    method: evaluated
+    review_scope: [excitation_energy_eV]
+    uncertainty:
+      note: The source level table supplies no numerical uncertainty for this entry.

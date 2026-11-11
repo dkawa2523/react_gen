@@ -17,19 +17,12 @@ FAMILY_COLORS = {
     "neutral": "#71884A",
     "surface": "#B05A7A",
 }
-VERDICT_COLORS = {
-    "pass": "#2F6B9A",
-    "fail": "#A34D52",
-    "unknown": "#D7B45A",
-    "not_applicable": "#C9CFD4",
-}
 REACTANT = "#C56A2D"
 PRODUCT = "#2F6B9A"
 UNCHANGED = "#6E7881"
 INK = "#1F2933"
 MUTED = "#64717D"
 GRID = "#D7DDE2"
-ASSESSMENTS = ("consistency", "state", "thermochemistry", "reaction_evidence", "kinetics")
 # At least one pixel is reserved for every reaction column. Larger results use
 # separate panels rather than overlapping columns at the image-width bound.
 MAX_MATRIX_COLUMNS = 8000
@@ -41,6 +34,7 @@ def network_matrix_png(
     states: list[dict],
     state_names: dict[str, str],
     reactions: list[dict],
+    exploration_status: str = "",
 ) -> bytes:
     """Render one complete matrix; use ``network_matrix_pages`` for larger results."""
     if len(reactions) > MAX_MATRIX_COLUMNS:
@@ -54,6 +48,7 @@ def network_matrix_png(
             states=states,
             state_names=state_names,
             reactions=reactions,
+            exploration_status=exploration_status,
         )
     )[2]
 
@@ -64,6 +59,7 @@ def network_matrix_pages(
     states: list[dict],
     state_names: dict[str, str],
     reactions: list[dict],
+    exploration_status: str = "",
 ) -> Iterator[tuple[int, int, bytes]]:
     """Yield disjoint PNG panels with zero-based, half-open reaction ranges.
 
@@ -85,6 +81,7 @@ def network_matrix_pages(
                 ordered_reactions[start:stop],
                 start,
                 count,
+                exploration_status,
             ),
         )
 
@@ -96,24 +93,21 @@ def _matrix_png(
     ordered_reactions: list[dict],
     column_start: int,
     total_count: int,
+    exploration_status: str,
 ) -> bytes:
     reaction_count = len(ordered_reactions)
     state_count = len(ordered_states)
     label_width = 390
     matrix_width = max(1400, min(MAX_MATRIX_COLUMNS, reaction_count * 3))
     row_height = 24
-    header_height = 245
-    verdict_height = 24
-    footer_height = 105
+    header_height = 220
     width = label_width + matrix_width + 55
-    height = (
-        header_height + state_count * row_height + len(ASSESSMENTS) * verdict_height + footer_height
-    )
+    height = header_height + state_count * row_height + 28
     image = Image.new("RGB", (width, height), "#FFFFFF")
     draw = ImageDraw.Draw(image)
     fonts = _Fonts()
 
-    draw.text((38, 30), f"{case_name} - reaction-state stoichiometric matrix", INK, fonts.title)
+    draw.text((38, 30), f"{case_name} - reaction-state incidence", INK, fonts.title)
     incidences = sum(_reaction_incidence_count(reaction) for reaction in ordered_reactions)
     split = reaction_count != total_count
     range_label = (
@@ -122,14 +116,15 @@ def _matrix_png(
     draw.text(
         (38, 74),
         (
-            f"{range_label if split else f'All candidates: {reaction_count:,} reactions'} | "
+            f"{range_label if split else f'Saved candidates: {reaction_count:,} reactions'} | "
             f"{state_count:,} states | "
             f"{incidences:,} directed state-reaction incidences"
         ),
         MUTED,
         fonts.subtitle,
     )
-    _draw_legend(draw, fonts, 38, 113)
+    draw.text((38, 104), exploration_status, INK, fonts.label_bold)
+    _draw_legend(draw, fonts, 38, 133)
 
     matrix_x = label_width
     matrix_y = header_height
@@ -140,23 +135,21 @@ def _matrix_png(
         INK,
         fonts.label_bold,
     )
-    _draw_family_band(draw, fonts, ordered_reactions, matrix_x, matrix_y - 62, matrix_width)
+    _draw_family_band(draw, fonts, ordered_reactions, matrix_x, matrix_y - 57, matrix_width)
 
     previous_group = ""
     for row, state in enumerate(ordered_states):
         y = matrix_y + row * row_height
         group = _state_group(state)
-        if group != previous_group:
-            draw.line((35, y, matrix_x + matrix_width, y), fill=INK, width=2)
-            previous_group = group
         fill = "#F7F9FA" if row % 2 else "#FFFFFF"
         draw.rectangle((35, y, matrix_x + matrix_width, y + row_height), fill=fill)
+        if group != previous_group:
+            draw.line((35, y, matrix_x + matrix_width, y), fill=GRID, width=1)
+            previous_group = group
         group_color = _state_group_color(group)
         draw.rectangle((35, y + 3, 43, y + row_height - 3), fill=group_color)
         name = state_names.get(state["id"], state["id"])
-        detail = f"{group} | q={int(state['charge']):+d} | {state['state']['kind']}"
         draw.text((53, y + 3), name, INK, fonts.row)
-        draw.text((205, y + 5), detail, MUTED, fonts.row_small)
 
         reactants = _stoichiometry(state["id"], ordered_reactions, "reactants")
         products = _stoichiometry(state["id"], ordered_reactions, "products")
@@ -169,44 +162,15 @@ def _matrix_png(
                 (x0, y + 2, x1, y + row_height - 2),
                 reactant_n,
                 product_n,
-                fonts,
             )
 
     matrix_bottom = matrix_y + state_count * row_height
     draw.line((35, matrix_bottom, matrix_x + matrix_width, matrix_bottom), fill=INK, width=2)
-    for index, assessment in enumerate(ASSESSMENTS):
-        y = matrix_bottom + index * verdict_height
-        label = assessment.replace("_", " ")
-        draw.text((53, y + 4), label, INK, fonts.row)
-        draw.rectangle((35, y, 43, y + verdict_height), fill="#27313A")
-        for column, reaction in enumerate(ordered_reactions):
-            verdict = reaction["assessments"][assessment]["verdict"]
-            x0, x1 = _column_bounds(column, reaction_count, matrix_x, matrix_width)
-            draw.rectangle((x0, y + 3, x1, y + verdict_height - 3), fill=VERDICT_COLORS[verdict])
-    verdict_bottom = matrix_bottom + len(ASSESSMENTS) * verdict_height
-    draw.line((35, verdict_bottom, matrix_x + matrix_width, verdict_bottom), fill=INK, width=2)
-
-    draw.text(
-        (38, verdict_bottom + 25),
-        (
-            "Each reaction in this panel occupies one column; no reaction is sampled, merged, "
-            "or projected into species-species edges."
-        ),
-        INK,
-        fonts.footer,
-    )
-    draw.text(
-        (38, verdict_bottom + 56),
-        (
-            "Generate the network view to zoom, filter assessments, inspect exact equations, "
-            "and follow local reaction hyperedges."
-        ),
-        MUTED,
-        fonts.footer,
-    )
     output = BytesIO()
     metadata = PngImagePlugin.PngInfo()
     metadata.add_text("reactgen.case", case_name)
+    if exploration_status:
+        metadata.add_text("reactgen.exploration_status", exploration_status)
     metadata.add_text("reactgen.state_count", str(state_count))
     metadata.add_text("reactgen.matrix_columns_px", str(matrix_width))
     metadata.add_text("reactgen.reaction_count", str(reaction_count))
@@ -227,29 +191,16 @@ def _matrix_png(
 def _draw_legend(draw: ImageDraw.ImageDraw, fonts: _Fonts, x: int, y: int) -> None:
     draw.text((x, y), "Participation", INK, fonts.label_bold)
     cursor = x + 120
-    for label, color, marker in (
-        ("reactant", REACTANT, "triangle-left"),
-        ("product", PRODUCT, "triangle-right"),
-        ("zero-net participant", UNCHANGED, "diamond"),
+    for label, reactant, product in (
+        ("reactant", 1.0, 0.0),
+        ("product", 0.0, 1.0),
+        ("both, net change", 1.0, 2.0),
+        ("zero-net participant", 1.0, 1.0),
     ):
-        _draw_marker(draw, cursor, y + 4, color, marker)
+        draw.rectangle((cursor, y, cursor + 18, y + 20), outline=GRID)
+        _draw_participation(draw, (cursor + 1, y + 1, cursor + 17, y + 19), reactant, product)
         draw.text((cursor + 24, y), label, INK, fonts.label)
-        cursor += 190 if label != "zero-net participant" else 260
-    draw.text((x, y + 37), "Assessment", INK, fonts.label_bold)
-    cursor = x + 120
-    for verdict in ("pass", "fail", "unknown", "not_applicable"):
-        draw.rectangle((cursor, y + 41, cursor + 15, y + 55), fill=VERDICT_COLORS[verdict])
-        draw.text((cursor + 23, y + 35), verdict.replace("_", " "), INK, fonts.label)
-        cursor += 175
-
-
-def _draw_marker(draw: ImageDraw.ImageDraw, x: int, y: int, color: str, marker: str) -> None:
-    if marker == "triangle-left":
-        draw.polygon(((x, y + 8), (x + 17, y), (x + 17, y + 16)), fill=color)
-    elif marker == "triangle-right":
-        draw.polygon(((x, y), (x + 17, y + 8), (x, y + 16)), fill=color)
-    else:
-        draw.polygon(((x + 8, y), (x + 17, y + 8), (x + 8, y + 16), (x, y + 8)), fill=color)
+        cursor += 180
 
 
 def _draw_family_band(
@@ -286,23 +237,16 @@ def _draw_participation(
     box: tuple[int, int, int, int],
     reactant_n: float,
     product_n: float,
-    fonts: _Fonts,
 ) -> None:
     x0, y0, x1, y1 = box
+    band = (y1 - y0 + 1) // 3
     if reactant_n and product_n and stoichiometric_sum((product_n, -reactant_n)) == 0:
-        draw.rectangle(box, fill=UNCHANGED)
+        draw.rectangle((x0, y0 + band, x1, y1 - band), fill=UNCHANGED)
         return
-    if reactant_n and product_n:
-        middle = (y0 + y1) // 2
-        draw.rectangle((x0, y0, x1, middle), fill=REACTANT)
-        draw.rectangle((x0, middle + 1, x1, y1), fill=PRODUCT)
-    else:
-        draw.rectangle(box, fill=REACTANT if reactant_n else PRODUCT)
-    if x1 - x0 >= 12:
-        coefficient = max(reactant_n, product_n)
-        if coefficient > 1:
-            written = int(coefficient) if coefficient == int(coefficient) else coefficient
-            draw.text((x0 + 2, y0 + 1), str(written), "#FFFFFF", fonts.coefficient)
+    if reactant_n:
+        draw.rectangle((x0, y0, x1, y0 + band - 1), fill=REACTANT)
+    if product_n:
+        draw.rectangle((x0, y1 - band + 1, x1, y1), fill=PRODUCT)
 
 
 def _stoichiometry(state_id: str, reactions: list[dict], side: str) -> list[float]:
@@ -404,8 +348,6 @@ class _Fonts:
         self.label = _font(15)
         self.row = _font(14)
         self.row_small = _font(12)
-        self.coefficient = _font(9, bold=True)
-        self.footer = _font(16)
 
 
 def _font(size: int, *, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:

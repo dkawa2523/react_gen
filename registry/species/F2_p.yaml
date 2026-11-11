@@ -7,3 +7,36 @@ charge: 1
 classes: [positive_ion, molecular_ion]
 state: {kind: ground, label: X, excitation_energy_eV: 0.0}
 metadata: {status: literature_supported}
+records:
+- record_id: ATcT_1.228:12184-86-0*0
+  species: F2+
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 12184-86-0*0
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=2331
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 1514.301
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference:
+        temperature_K: 0.0
+        basis: standard_elements
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope:
+      - enthalpy_formation_eV
+      source_declaration:
+        atct_formula: '[F2]+ (g)'
+        published_uncertainty:
+          absolute: 0.013
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

@@ -1,17 +1,31 @@
-"""Target-centred, topology-only reaction pathway views."""
+"""Render target-centred projections of the saved candidate pathway graph."""
 
 from __future__ import annotations
 
+import json
+from collections import defaultdict
 from collections.abc import Iterable
+from dataclasses import dataclass
 from hashlib import sha256
 from io import BytesIO
-from math import ceil
+from itertools import pairwise
 from pathlib import Path
-from textwrap import wrap
 
 from PIL import Image, ImageDraw, ImageFont, PngImagePlugin
 
-from reactgen.pathway import Pathway, Reachability, reaction_reachability, select_pathway
+from reactgen.model import ELECTRON, THIRD_BODY, Term
+from reactgen.pathway import (
+    Pathway,
+    ProducerPathway,
+    Reachability,
+    net_stoichiometry,
+    pathway_participant_claims,
+    pathway_participants,
+    saved_pathway,
+    saved_reachability,
+)
+from reactgen.presentation import diagram_terms
+from reactgen.reaction_tables import energy_values
 
 FAMILY_COLORS = {
     "electron": "#2F6B9A",
@@ -21,12 +35,24 @@ FAMILY_COLORS = {
 }
 INK = "#1F2933"
 MUTED = "#64717D"
-GRID = "#D7DDE2"
-STATE_WIDTH = 180
-REACTION_WIDTH = 110
-NODE_HEIGHT = 64
-COLUMN_GAP = 215
-ROW_GAP = 90
+STATE_WIDTH = 194
+REACTION_WIDTH = 214
+COLUMN_GAP = 284
+NodeKey = tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class _Node:
+    subject: str
+    role: str
+    level: int
+
+
+@dataclass(frozen=True)
+class _Edge:
+    source: NodeKey
+    target: NodeKey
+    count: float
 
 
 def pathway_png(
@@ -36,381 +62,458 @@ def pathway_png(
     states: list[dict],
     state_names: dict[str, str],
     reactions: list[dict],
-    seeds: tuple[str, ...] | None = None,
+    pathways: dict,
+    exploration_status: str = "",
+    exploration_complete: bool | None = None,
     target: str | None = None,
+    mode: str = "conditioned",
+    selected: ProducerPathway | None = None,
+    skipped_requested_expansions: dict[str, dict] | None = None,
 ) -> bytes:
     """Render one readable example; the HTML remains the target-selectable view."""
 
-    reachability = reaction_reachability(states, reactions, seeds=seeds)
-    pathway = select_pathway(states, reactions, target=target, reachability=reachability)
+    analysis = pathways
+    scope = saved_reachability(analysis, mode)
+    reachability = selected.reachability if selected else scope
+    pathway = (
+        selected.pathway
+        if selected
+        else saved_pathway(reactions, analysis, target=target, mode=mode)
+    )
     state_by_id = {state["id"]: state for state in states}
     reaction_by_id = {reaction["id"]: reaction for reaction in reactions}
-    fonts = _Fonts()
-
-    if pathway.target is None:
-        image = Image.new("RGB", (1500, 440), "#FFFFFF")
-        draw = ImageDraw.Draw(image)
-        draw.text((45, 35), f"{case_name} - hierarchical reaction pathway", INK, fonts.title)
-        draw.text((45, 92), view_label, MUTED, fonts.subtitle)
-        draw.text(
-            (45, 190),
-            (
-                f"Requested target {target} is not reachable from the supplied seed states."
-                if target
-                else "No non-seed target is reachable from all required reactants."
-            ),
-            INK,
-            fonts.label_bold,
-        )
-        draw.text((45, 238), _seed_note(reachability), MUTED, fonts.node_small)
-        draw.text((45, 270), _TOPOLOGY_NOTE, MUTED, fonts.node_small)
-        return _save_png(image, case_name, view_label, pathway, reachability)
-
-    path_states = [state_by_id[state_id] for state_id in pathway.state_ids]
     path_reactions = [reaction_by_id[reaction_id] for reaction_id in pathway.reaction_ids]
-    levels, edges = _pathway_layout(pathway, path_states, path_reactions, reachability)
-    max_level = max(levels.values(), default=0)
-    level_counts: dict[int, int] = {}
-    for level in levels.values():
-        level_counts[level] = level_counts.get(level, 0) + 1
-    max_rows = max(level_counts.values(), default=1)
-    top = 245
-    width = max(1300, 100 + max_level * COLUMN_GAP + 230)
-    key_rows = ceil(len(path_reactions) / 2)
-    network_bottom = top + (max_rows - 1) * ROW_GAP + NODE_HEIGHT
-    key_y = network_bottom + 55
-    height = max(560, key_y + 45 + key_rows * 28 + 65)
-    image = Image.new("RGB", (width, height), "#FFFFFF")
-    draw = ImageDraw.Draw(image)
-
-    target_name = state_names.get(pathway.target, pathway.target)
-    minimum_steps = reachability.state_layers[pathway.target]
-    draw.text((45, 28), f"{case_name} - hierarchical reaction pathway", INK, fonts.title)
-    draw.text(
-        (45, 77),
-        (
-            f"{target_name}  |  {minimum_steps} step{'s' if minimum_steps != 1 else ''}  |  "
-            f"{len(path_states)} states  |  {len(path_reactions)} reactions"
-        ),
-        INK,
-        fonts.subtitle,
-    )
-    draw.text(
-        (45, 108),
-        f"{view_label}  |  topology only",
-        MUTED,
-        fonts.node_small,
-    )
-    _draw_legend(draw, fonts, 45, 132)
-    draw.text((45, 165), _seed_note(reachability), MUTED, fonts.node_small)
-    draw.text((45, 186), _TOPOLOGY_NOTE, MUTED, fonts.node_small)
-    _draw_stage_labels(draw, fonts, max_level, top)
-
-    positions = _node_positions(levels, edges, top, ROW_GAP, COLUMN_GAP)
-    for source, target, family in edges:
-        _draw_edge(draw, source, target, positions, family)
-    reaction_labels = {
-        reaction_id: f"R{index}"
-        for index, reaction_id in enumerate(
-            sorted(
-                pathway.reaction_ids,
-                key=lambda reaction_id: (
-                    reachability.reaction_layers[reaction_id],
-                    reaction_id,
-                ),
-            ),
-            start=1,
-        )
+    unresolved = analysis[mode]["unresolved"]
+    open_reaction_checks = {
+        reaction_id
+        for reaction_id in pathway.reaction_ids
+        if any("state" not in note for note in unresolved.get(reaction_id, ()))
     }
-    for node_id, position in positions.items():
-        if node_id.startswith("state:"):
-            state_id = node_id.removeprefix("state:")
-            _draw_state(
-                draw,
-                position,
-                state_by_id[state_id],
-                state_names.get(state_id, state_id),
-                fonts,
-                is_target=state_id == pathway.target,
-                is_seed=state_id in reachability.seeds,
-            )
-        else:
-            reaction_id = node_id.removeprefix("reaction:")
-            _draw_reaction(
-                draw,
-                position,
-                reaction_by_id[reaction_id],
-                reaction_labels[reaction_id],
-                fonts,
-            )
-
-    _draw_reaction_key(draw, fonts, key_y, width, path_reactions, reaction_labels)
-    draw.text(
-        (45, height - 42),
-        (
-            f"Reachability overview only. Generate the network view for exact equations "
-            f"and {len(pathway.related_reaction_ids)} related reactions."
-        ),
-        MUTED,
-        fonts.node_small,
+    participants = pathway_participants(pathway.state_ids, path_reactions)
+    state_claims = pathway_participant_claims(states, participants)
+    unconfirmed = {
+        state_id: analysis["unconfirmed_states"][state_id]
+        for state_id in sorted(participants & analysis["unconfirmed_states"].keys())
+    }
+    skipped = {
+        reaction_id: skipped_requested_expansions[reaction_id]
+        for reaction_id in pathway.reaction_ids
+        if skipped_requested_expansions and reaction_id in skipped_requested_expansions
+    }
+    blocked = _blocked_direct_producers(
+        reactions, state_by_id, target or pathway.target, scope, analysis[mode]["excluded"]
     )
-    return _save_png(image, case_name, view_label, pathway, reachability)
+    query_notes = {
+        "unconfirmed_states": unconfirmed,
+        "state_claims": state_claims,
+        "skipped_requested_expansions": skipped,
+        "blocked_direct_producers": blocked,
+    }
+    image = _render_pathway(
+        pathway,
+        path_reactions,
+        reachability,
+        state_by_id,
+        state_names,
+        conditions=analysis["conditions"],
+        requested_target=target,
+        case_name=case_name,
+        scope=view_label,
+        partial=exploration_complete is False,
+        open_checks=open_reaction_checks,
+    )
+    return _save_png(
+        image,
+        case_name,
+        view_label,
+        pathway,
+        reachability,
+        analysis,
+        mode,
+        target,
+        exploration_status,
+        query_notes,
+        selected=selected,
+    )
 
 
 _TOPOLOGY_NOTE = (
-    "All explicit reactants required; M and wall availability implicit; no rates or time."
+    "Directed stoichiometric sides. Links between reactions are selected supports; "
+    "local supply and terminal product nodes do not track individual particles. "
+    "Electron occurrences share a node within a reaction stage and side. "
+    "Depth denotes AND reachability."
 )
 
 
-def _seed_note(reachability: Reachability) -> str:
-    seeds = ", ".join(reachability.seeds[:6]) or "none"
-    if len(reachability.seeds) > 6:
-        seeds += f" (+{len(reachability.seeds) - 6} others; PNG metadata lists all)"
-    electron = (
-        "electron explicitly supplied" if "e" in reachability.seeds else "electron not supplied"
-    )
-    return f"Seeds: {seeds} | {electron}"
+def _blocked_direct_producers(
+    reactions: list[dict],
+    state_by_id: dict[str, dict],
+    target: str | None,
+    reachability: Reachability,
+    excluded: dict,
+) -> dict[str, dict]:
+    """Expose reasons for saved direct producers that cannot support the target."""
+    blocked: dict[str, dict] = {}
+    if target is None:
+        return blocked
+    for reaction in reactions:
+        reaction_id = reaction["id"]
+        if reaction_id in reachability.reaction_layers or net_stoichiometry(reaction, target) <= 0:
+            continue
+        if reaction_id in excluded:
+            blocked[reaction_id] = {
+                "excluded": [
+                    _saved_exclusion_details(reaction, state_by_id, reference)
+                    for reference in excluded[reaction_id]
+                ]
+            }
+        else:
+            blocked[reaction_id] = {
+                "unreachable_reactants": sorted(
+                    {
+                        term["species"]
+                        for term in reaction["reactants"]
+                        if term["species"] not in reachability.state_layers
+                    }
+                )
+            }
+    return blocked
+
+
+def _saved_exclusion_details(reaction: dict, state_by_id: dict[str, dict], reference: dict) -> dict:
+    owner = state_by_id[reference["state"]] if "state" in reference else reaction
+    claim = owner.get("assessments", {}).get(reference.get("assessment"), {})
+    return reference | {name: claim[name] for name in ("verdict", "message") if name in claim}
 
 
 def _pathway_layout(
+    pathway: Pathway, reactions: list[dict], reachability: Reachability
+) -> tuple[dict[NodeKey, _Node], list[_Edge]]:
+    """Expand each selected event while sharing only the saved support links."""
+    nodes: dict[NodeKey, _Node] = {
+        ("state", state): _Node(
+            state,
+            "target" if state == pathway.target else "intermediate",
+            3 * reachability.state_layers[state] - 1,
+        )
+        for state in pathway.supported_by
+    }
+    if pathway.target is not None and pathway.target in reachability.seeds:
+        nodes[("state", pathway.target)] = _Node(pathway.target, "supplied_target", 0)
+    edges: list[_Edge] = []
+    for reaction in reactions:
+        identifier = reaction["id"]
+        reaction_key = ("reaction", identifier)
+        level = 3 * reachability.reaction_layers[identifier] - 2
+        nodes[reaction_key] = _Node(identifier, "reaction", level)
+        for term in diagram_terms(reaction, "reactants"):
+            key: NodeKey = ("state", term.species)
+            if key not in nodes:
+                key = _local_participant_key("input", identifier, level, term.species)
+                role = "third_body" if term.species == THIRD_BODY else "supply"
+                nodes[key] = _Node(term.species, role, level - 1)
+            edges.append(_Edge(key, reaction_key, term.n))
+        for term in diagram_terms(reaction, "products"):
+            key = ("state", term.species)
+            if pathway.supported_by.get(term.species) != identifier:
+                key = _local_participant_key("output", identifier, level, term.species)
+                role = "third_body" if term.species == THIRD_BODY else "product"
+                nodes[key] = _Node(term.species, role, level + 1)
+            edges.append(_Edge(reaction_key, key, term.n))
+    return nodes, edges
+
+
+def _local_participant_key(side: str, reaction: str, level: int, species: str) -> NodeKey:
+    return (side, str(level) if species == ELECTRON else reaction, species)
+
+
+def _render_pathway(
     pathway: Pathway,
-    states: list[dict],
     reactions: list[dict],
     reachability: Reachability,
-) -> tuple[dict[str, int], list[tuple[str, str, str]]]:
-    levels = {
-        f"state:{state['id']}": 2 * reachability.state_layers[state["id"]] for state in states
+    states: dict[str, dict],
+    names: dict[str, str],
+    *,
+    conditions: dict,
+    requested_target: str | None,
+    case_name: str,
+    scope: str,
+    partial: bool,
+    open_checks: set[str],
+) -> Image.Image:
+    nodes, edges = _pathway_layout(pathway, reactions, reachability)
+    target = pathway.target or requested_target
+    if not nodes and target:
+        nodes[("state", target)] = _Node(target, "unreachable", 0)
+    fonts = _Fonts()
+    measure = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    by_id = {reaction["id"]: reaction for reaction in reactions}
+    labels = {
+        key: _node_labels(node, by_id, names, conditions, measure, fonts)
+        for key, node in nodes.items()
     }
-    reaction_by_id = {reaction["id"]: reaction for reaction in reactions}
-    edges: list[tuple[str, str, str]] = []
-    for reaction_id in pathway.reaction_ids:
-        reaction = reaction_by_id[reaction_id]
-        reaction_node = f"reaction:{reaction_id}"
-        levels[reaction_node] = 2 * reachability.reaction_layers[reaction_id] - 1
-        for term in reaction["reactants"]:
-            state_node = f"state:{term['species']}"
-            if state_node in levels:
-                edges.append((state_node, reaction_node, reaction["family"]))
-    for state_id, reaction_id in pathway.supported_by.items():
-        edges.append(
-            (
-                f"reaction:{reaction_id}",
-                f"state:{state_id}",
-                reaction_by_id[reaction_id]["family"],
-            )
+    node_height = _node_height(labels, edges)
+    positions, lanes = _node_positions(nodes, edges, node_height)
+    width = max(760, 96 + max((x for x, _ in positions.values()), default=0) + REACTION_WIDTH)
+    height = max(215, 36 + max((y for _, y in positions.values()), default=150) + node_height)
+    image = Image.new("RGB", (width, height), "#FFFFFF")
+    draw = ImageDraw.Draw(image)
+    _draw_heading(draw, fonts, case_name, scope, target is not None, partial)
+    _draw_legend(draw, fonts, {reaction["family"] for reaction in reactions}, bool(open_checks))
+    _draw_connections(draw, fonts, nodes, edges, positions, lanes, node_height, by_id)
+    for key, node in nodes.items():
+        _draw_node(
+            draw, fonts, node, positions[key], node_height, labels[key], states, by_id, open_checks
         )
-    return levels, edges
+    return image
+
+
+def _node_labels(
+    node: _Node,
+    reactions: dict[str, dict],
+    names: dict[str, str],
+    conditions: dict,
+    draw: ImageDraw.ImageDraw,
+    fonts: _Fonts,
+) -> tuple[list[str], list[str]]:
+    primary = names.get(node.subject, node.subject)
+    detail = {
+        "supply": "Supply",
+        "target": "Target",
+        "supplied_target": "Target · supplied",
+        "unreachable": "Unreachable",
+        "third_body": "Third body",
+    }.get(node.role, "")
+    if node.role == "reaction":
+        reaction = reactions[node.subject]
+        primary = reaction["reaction_type"].capitalize()
+        energy = energy_values({"input": {"conditions": conditions}}, reaction)
+        value, frame = energy["relative_collision_energy_eV"], "COM"
+        if value is None:
+            value = energy["incident_energy_eV"]
+            frame = (energy["incident_energy_frame"] or "").upper()
+        incident = f"{value:g} eV {frame}".strip() if value is not None else ""
+        detail = " · ".join(
+            filter(None, (reaction.get("stabilization"), reaction.get("surface"), incident))
+        )
+    width = _node_width(node) - 30
+    return _wrap_label(draw, primary, fonts.node_bold, width), _wrap_label(
+        draw, detail, fonts.node_small, width
+    )
+
+
+def _wrap_label(
+    draw: ImageDraw.ImageDraw,
+    label: str,
+    font: ImageFont.FreeTypeFont | ImageFont.ImageFont,
+    width: int,
+) -> list[str]:
+    lines = []
+    label = " ".join(label.split())
+    while draw.textlength(label, font=font) > width:
+        stop = 1
+        while draw.textlength(label[: stop + 1], font=font) <= width:
+            stop += 1
+        separator = label.rfind(" ", 0, stop + 1)
+        if separator >= stop // 2:
+            stop = separator
+        lines.append(label[:stop].rstrip())
+        label = label[stop:].lstrip()
+    return [*lines, label] if label else lines
+
+
+def _node_width(node: _Node) -> int:
+    return REACTION_WIDTH if node.role == "reaction" else STATE_WIDTH
+
+
+def _node_height(labels: dict[NodeKey, tuple[list[str], list[str]]], edges: list[_Edge]) -> int:
+    incoming: dict[NodeKey, int] = defaultdict(int)
+    outgoing: dict[NodeKey, int] = defaultdict(int)
+    for edge in edges:
+        incoming[edge.target] += 1
+        outgoing[edge.source] += 1
+    line_count = max((len(primary) + len(detail) for primary, detail in labels.values()), default=1)
+    return max(56, 18 + 17 * line_count, 12 + 16 * max([0, *incoming.values(), *outgoing.values()]))
 
 
 def _node_positions(
-    levels: dict[str, int],
-    edges: list[tuple[str, str, str]],
-    top: int,
-    row_gap: int,
-    column_gap: int,
-) -> dict[str, tuple[int, int]]:
-    by_level: dict[int, list[str]] = {}
-    for node_id, level in levels.items():
-        by_level.setdefault(level, []).append(node_id)
-    predecessors: dict[str, list[str]] = {node_id: [] for node_id in levels}
-    successors: dict[str, list[str]] = {node_id: [] for node_id in levels}
-    for source, target, _ in edges:
-        predecessors[target].append(source)
-        successors[source].append(target)
-    for nodes in by_level.values():
-        nodes.sort()
-    for _ in range(5):
-        order = {
-            node_id: index for nodes in by_level.values() for index, node_id in enumerate(nodes)
-        }
-        for level in sorted(by_level):
-            by_level[level].sort(
-                key=lambda node_id: (
-                    _barycentre(predecessors[node_id], order),
-                    node_id,
-                )
-            )
-        order = {
-            node_id: index for nodes in by_level.values() for index, node_id in enumerate(nodes)
-        }
-        for level in sorted(by_level, reverse=True):
-            by_level[level].sort(
-                key=lambda node_id: (
-                    _barycentre(successors[node_id], order),
-                    node_id,
-                )
-            )
-    max_rows = max((len(nodes) for nodes in by_level.values()), default=1)
-    positions = {}
-    for level, nodes in by_level.items():
-        offset = (max_rows - len(nodes)) * row_gap // 2
-        for index, node_id in enumerate(nodes):
-            positions[node_id] = (60 + level * column_gap, top + offset + index * row_gap)
-    return positions
+    nodes: dict[NodeKey, _Node],
+    edges: list[_Edge],
+    node_height: int,
+) -> tuple[dict[NodeKey, tuple[int, int]], list[list[NodeKey]]]:
+    """Reserve a lane in every crossed column before ordering adjacent columns."""
+    columns_in_use = sorted({node.level for node in nodes.values()})
+    column_for_level = {level: index for index, level in enumerate(columns_in_use)}
+    levels = {key: column_for_level[node.level] for key, node in nodes.items()}
+    lanes = []
+    for index, edge in enumerate(edges):
+        route = [edge.source]
+        for level in range(levels[edge.source] + 1, levels[edge.target]):
+            lane = ("lane", str(index), str(level))
+            levels[lane] = level
+            route.append(lane)
+        lanes.append([*route, edge.target])
+    columns: dict[int, list[NodeKey]] = defaultdict(list)
+    predecessors: dict[NodeKey, list[NodeKey]] = defaultdict(list)
+    successors: dict[NodeKey, list[NodeKey]] = defaultdict(list)
+    for key, level in levels.items():
+        columns[level].append(key)
+    for route in lanes:
+        for source, target in pairwise(route):
+            predecessors[target].append(source)
+            successors[source].append(target)
+    for column in columns.values():
+        column.sort()
+    order = {key: index for column in columns.values() for index, key in enumerate(column)}
+    for level in sorted(columns):
+        column = columns[level]
+        column.sort(key=lambda key: (_barycentre(predecessors[key] or successors[key], order), key))
+        order.update((key, index) for index, key in enumerate(column))
+    rows = max(map(len, columns.values()), default=0)
+    row_gap = node_height + 32
+    return {
+        key: (48 + level * COLUMN_GAP, 127 + (rows - len(column)) * row_gap // 2 + index * row_gap)
+        for level, column in columns.items()
+        for index, key in enumerate(column)
+    }, lanes
 
 
-def _barycentre(neighbours: list[str], order: dict[str, int]) -> float:
-    if not neighbours:
-        return 1.0e9
-    return sum(order.get(node, 0) for node in neighbours) / len(neighbours)
+def _barycentre(neighbors: list[NodeKey], order: dict[NodeKey, int]) -> float:
+    return sum(order[key] for key in neighbors) / len(neighbors) if neighbors else len(order)
 
 
-def _draw_edge(
-    draw: ImageDraw.ImageDraw,
-    source_id: str,
-    target_id: str,
-    positions: dict[str, tuple[int, int]],
-    family: str,
-) -> None:
-    source = positions[source_id]
-    target = positions[target_id]
-    x1, y1 = source
-    x2, y2 = target
-    x1 += STATE_WIDTH if source_id.startswith("state:") else REACTION_WIDTH
-    y1 += NODE_HEIGHT // 2
-    y2 += NODE_HEIGHT // 2
-    middle = (x1 + x2) // 2
-    points = [(x1, y1), (middle, y1), (middle, y2), (x2, y2)]
-    color = FAMILY_COLORS.get(family, MUTED)
-    draw.line(points, fill="#FFFFFF", width=8, joint="curve")
-    draw.line(points, fill=color, width=3, joint="curve")
-    draw.polygon([(x2, y2), (x2 - 11, y2 - 6), (x2 - 11, y2 + 6)], fill=color)
-
-
-def _draw_state(
-    draw: ImageDraw.ImageDraw,
-    position: tuple[int, int],
-    state: dict,
-    name: str,
-    fonts: _Fonts,
+def _ports(
+    lanes: list[list[NodeKey]],
+    positions: dict[NodeKey, tuple[int, int]],
+    height: int,
     *,
-    is_target: bool,
-    is_seed: bool,
-) -> None:
-    x, y = position
-    fill = _state_fill(state)
-    outline = FAMILY_COLORS["neutral"] if is_target else INK
-    width = 4 if is_target else 2
-    draw.rounded_rectangle(
-        (x, y, x + STATE_WIDTH, y + NODE_HEIGHT),
-        radius=9,
-        fill=fill,
-        outline=outline,
-        width=width,
-    )
-    name_width = draw.textlength(name, font=fonts.node_bold)
-    draw.text((x + (STATE_WIDTH - name_width) / 2, y + 12), name, INK, fonts.node_bold)
-    role = "TARGET" if is_target else "INPUT" if is_seed else "INTERMEDIATE"
-    role_width = draw.textlength(role, font=fonts.node_small)
-    draw.text((x + (STATE_WIDTH - role_width) / 2, y + 40), role, MUTED, fonts.node_small)
+    output: bool,
+) -> dict[int, float]:
+    groups: dict[NodeKey, list[tuple[int, int]]] = defaultdict(list)
+    for index, route in enumerate(lanes):
+        node, adjacent = (route[0], route[1]) if output else (route[-1], route[-2])
+        groups[node].append((positions[adjacent][1], index))
+    return {
+        index: positions[node][1] + (rank + 1) * height / (len(group) + 1)
+        for node, group in groups.items()
+        for rank, (_, index) in enumerate(sorted(group))
+    }
 
 
-def _draw_reaction(
-    draw: ImageDraw.ImageDraw,
-    position: tuple[int, int],
-    reaction: dict,
-    label: str,
-    fonts: _Fonts,
-) -> None:
-    x, y = position
-    color = FAMILY_COLORS.get(reaction["family"], MUTED)
-    draw.rounded_rectangle(
-        (x, y, x + REACTION_WIDTH, y + NODE_HEIGHT),
-        radius=7,
-        fill="#FFFFFF",
-        outline=color,
-        width=3,
-    )
-    label_width = draw.textlength(label, font=fonts.reaction_id)
-    draw.text(
-        (x + (REACTION_WIDTH - label_width) / 2, y + 7),
-        label,
-        color,
-        fonts.reaction_id,
-    )
-    lines = wrap(
-        _compact_reaction_type(reaction),
-        width=14,
-        break_long_words=False,
-        break_on_hyphens=False,
-    )[:2]
-    for index, line in enumerate(lines):
-        line_width = draw.textlength(line, font=fonts.reaction_small)
-        draw.text(
-            (x + (REACTION_WIDTH - line_width) / 2, y + 35 + index * 13),
-            line,
-            INK,
-            fonts.reaction_small,
-        )
-
-
-def _draw_legend(draw: ImageDraw.ImageDraw, fonts: _Fonts, x: int, y: int) -> None:
-    draw.text((x, y), "Reaction family", INK, fonts.label_bold)
-    cursor = x + 165
-    for family, color in FAMILY_COLORS.items():
-        draw.line((cursor, y + 11, cursor + 28, y + 11), fill=color, width=3)
-        draw.text((cursor + 38, y + 1), family, INK, fonts.label)
-        cursor += 145
-    draw.text((cursor + 10, y + 1), "All lines have equal width", MUTED, fonts.label)
-
-
-def _draw_stage_labels(draw: ImageDraw.ImageDraw, fonts: _Fonts, max_level: int, top: int) -> None:
-    for level in range(0, max_level + 1, 2):
-        if level == 0:
-            label = "INPUT"
-        elif level == max_level:
-            label = "TARGET"
-        else:
-            label = f"STAGE {level // 2}"
-        x = 60 + level * COLUMN_GAP + STATE_WIDTH / 2
-        label_width = draw.textlength(label, font=fonts.node_small)
-        draw.text((x - label_width / 2, top - 28), label, MUTED, fonts.node_small)
-
-
-def _draw_reaction_key(
+def _draw_connections(
     draw: ImageDraw.ImageDraw,
     fonts: _Fonts,
-    y: int,
-    width: int,
-    reactions: list[dict],
-    labels: dict[str, str],
+    nodes: dict[NodeKey, _Node],
+    edges: list[_Edge],
+    positions: dict[NodeKey, tuple[int, int]],
+    lanes: list[list[NodeKey]],
+    height: int,
+    reactions: dict[str, dict],
 ) -> None:
-    draw.line((45, y, width - 45, y), fill=GRID, width=2)
-    draw.text((45, y + 14), "Reaction key", INK, fonts.label_bold)
-    ordered = sorted(reactions, key=lambda reaction: int(labels[reaction["id"]][1:]))
-    column_width = (width - 90) // 2
-    for index, reaction in enumerate(ordered):
-        column = index % 2
-        row = index // 2
-        x = 45 + column * column_width
-        row_y = y + 43 + row * 28
-        color = FAMILY_COLORS.get(reaction["family"], MUTED)
-        draw.rounded_rectangle(
-            (x, row_y, x + 37, row_y + 21), radius=4, fill="#FFFFFF", outline=color, width=2
+    exits = _ports(lanes, positions, height, output=True)
+    entries = _ports(lanes, positions, height, output=False)
+    labels = []
+    for index, (edge, route) in enumerate(zip(edges, lanes, strict=True)):
+        source, target = nodes[edge.source], nodes[edge.target]
+        x1 = positions[edge.source][0] + _node_width(source)
+        x2 = positions[edge.target][0]
+        y1, y2 = exits[index], entries[index]
+        identifier = source.subject if source.role == "reaction" else target.subject
+        color = FAMILY_COLORS.get(reactions[identifier]["family"], MUTED)
+        points = [(x1, y1), (x1 + 14, y1)]
+        points.extend(
+            (positions[key][0] + STATE_WIDTH // 2, positions[key][1] + height / 2)
+            for key in route[1:-1]
         )
-        draw.text((x + 7, row_y + 2), labels[reaction["id"]], color, fonts.reaction_small)
+        points.extend(((x2 - 14, y2), (x2, y2)))
+        draw.line(points, fill="#FFFFFF", width=6, joint="curve")
+        draw.line(points, fill=color, width=2, joint="curve")
+        draw.polygon([(x2, y2), (x2 - 10, y2 - 4), (x2 - 10, y2 + 4)], fill=color)
+        if edge.count != 1:
+            label = str(Term("", edge.count)).strip()
+            labels.append(
+                (x2 - 18, y2, label) if source.role == "reaction" else (x1 + 18, y1, label)
+            )
+    for x, y, label in labels:
         draw.text(
-            (x + 48, row_y + 2),
-            f"{_compact_reaction_type(reaction)}  ·  {reaction['family']}",
+            (x, y - 3),
+            label,
             INK,
             fonts.node_small,
+            anchor="ms",
+            stroke_width=3,
+            stroke_fill="white",
         )
 
 
-def _compact_reaction_type(reaction: dict) -> str:
-    written = str(reaction["reaction_type"])
-    for prefix in (
-        "Electron-impact ",
-        "Electron ",
-        "Ion-neutral ",
-        "Neutral ",
-        "Excited-state ",
-        "Surface ",
-    ):
-        if written.startswith(prefix):
-            written = written.removeprefix(prefix)
-            break
-    return written.replace(" (superelastic)", "").capitalize()
+def _draw_heading(
+    draw: ImageDraw.ImageDraw,
+    fonts: _Fonts,
+    case_name: str,
+    scope: str,
+    has_target: bool,
+    partial: bool,
+) -> None:
+    title = "Reaction pathway" if has_target else "No reachable product"
+    draw.text((48, 23), title, INK, fonts.title)
+    context = " · ".join(filter(None, (case_name, scope, "Partial exploration" if partial else "")))
+    draw.text((48, 64), context, MUTED, fonts.label)
+
+
+def _draw_legend(
+    draw: ImageDraw.ImageDraw, fonts: _Fonts, families: set[str], open_checks: bool
+) -> None:
+    cursor = 48
+    for family in sorted(families):
+        color = FAMILY_COLORS.get(family, MUTED)
+        draw.line((cursor, 100, cursor + 20, 100), fill=color, width=3)
+        draw.text((cursor + 27, 100), family.capitalize(), INK, fonts.node_small, anchor="lm")
+        cursor += int(draw.textlength(family.capitalize(), font=fonts.node_small)) + 48
+    if open_checks:
+        draw.text(
+            (cursor, 100), "?  Open reaction checks", "#886319", fonts.node_small, anchor="lm"
+        )
+
+
+def _draw_node(
+    draw: ImageDraw.ImageDraw,
+    fonts: _Fonts,
+    node: _Node,
+    position: tuple[int, int],
+    height: int,
+    labels: tuple[list[str], list[str]],
+    states: dict[str, dict],
+    reactions: dict[str, dict],
+    open_checks: set[str],
+) -> None:
+    x, y = position
+    width = _node_width(node)
+    if node.role == "reaction":
+        color = FAMILY_COLORS.get(reactions[node.subject]["family"], MUTED)
+        fill, border = "#FFFFFF", 3
+    else:
+        state = states.get(node.subject)
+        fill = _state_fill(state) if state is not None else "#F2F4F5"
+        color, border = MUTED, 1
+        if node.role in {"target", "supplied_target", "unreachable"}:
+            color, border = INK, 3
+        elif node.role == "supply":
+            fill = "#E9F3F8"
+    draw.rounded_rectangle(
+        (x, y, x + width, y + height), radius=8, fill=fill, outline=color, width=border
+    )
+    primary, detail = labels
+    text_y = y + (height - 17 * (len(primary) + len(detail))) / 2 + 8
+    for lines, font, ink in ((primary, fonts.node_bold, INK), (detail, fonts.node_small, MUTED)):
+        for line in lines:
+            draw.text((x + width / 2, text_y), line, ink, font, anchor="mm")
+            text_y += 17
+    if node.role == "reaction" and node.subject in open_checks:
+        badge_x, badge_y = x + width - 10, y + 10
+        draw.ellipse(
+            (badge_x - 8, badge_y - 8, badge_x + 8, badge_y + 8), fill="#FFF7E0", outline="#886319"
+        )
+        draw.text((badge_x, badge_y), "?", "#886319", fonts.node_bold, anchor="mm")
 
 
 def _state_fill(state: dict) -> str:
@@ -431,22 +534,67 @@ def _save_png(
     view_label: str,
     pathway: Pathway,
     reachability: Reachability,
+    analysis: dict,
+    mode: str,
+    requested_target: str | None,
+    exploration_status: str,
+    query_notes: dict,
+    *,
+    selected: ProducerPathway | None = None,
 ) -> bytes:
     output = BytesIO()
     metadata = PngImagePlugin.PngInfo()
     metadata.add_text("reactgen.case", case_name)
     metadata.add_text("reactgen.view", view_label)
+    if exploration_status:
+        metadata.add_text("reactgen.exploration_status", exploration_status)
     metadata.add_text("reactgen.scope", "target_centered_canonical_hyperpath")
     metadata.add_text("reactgen.target", pathway.target or "")
+    metadata.add_text("reactgen.requested_target", requested_target or pathway.target or "")
     metadata.add_text("reactgen.path_state_count", str(len(pathway.state_ids)))
     metadata.add_text("reactgen.path_reaction_count", str(len(pathway.reaction_ids)))
-    metadata.add_text("reactgen.related_reaction_count", str(len(pathway.related_reaction_ids)))
+    metadata.add_text("reactgen.related_reaction_count", str(len(pathway.related_reactions)))
     metadata.add_text(
         "reactgen.path_reaction_ids_sha256",
         sha256("\n".join(pathway.reaction_ids).encode()).hexdigest(),
     )
     metadata.add_text("reactgen.seed_states", ",".join(reachability.seeds))
     metadata.add_text("reactgen.topology_assumptions", _TOPOLOGY_NOTE)
+    metadata.add_text(
+        "reactgen.pathway_query",
+        json.dumps(
+            {
+                "seeds": analysis["seeds"],
+                "effective_seeds": reachability.seeds,
+                "conditions": analysis["conditions"],
+                "mode": mode,
+                "target": requested_target or pathway.target,
+                **(
+                    {
+                        "via": selected.producer,
+                        "equation_and_energy_checks_pass": selected.equation_and_energy_checks_pass,
+                    }
+                    if selected
+                    else {}
+                ),
+                "reaction_ids": pathway.reaction_ids,
+                "related_reactions": pathway.related_reactions,
+                "unresolved": {
+                    key: analysis[mode]["unresolved"][key]
+                    for key in pathway.reaction_ids
+                    if key in analysis[mode]["unresolved"]
+                },
+                **query_notes,
+                **(
+                    {"excluded_seeds": analysis[mode]["excluded_seeds"]}
+                    if "excluded_seeds" in analysis[mode]
+                    else {}
+                ),
+            },
+            ensure_ascii=True,
+            sort_keys=True,
+        ),
+    )
     image.save(output, format="PNG", optimize=True, pnginfo=metadata)
     return output.getvalue()
 
@@ -454,14 +602,9 @@ def _save_png(
 class _Fonts:
     def __init__(self) -> None:
         self.title = _font(31, bold=True)
-        self.subtitle = _font(18)
-        self.label_bold = _font(16, bold=True)
         self.label = _font(15)
         self.node_bold = _font(14, bold=True)
-        self.node_small = _font(11)
-        self.reaction_id = _font(17, bold=True)
-        self.reaction_small = _font(9)
-        self.footer = _font(16)
+        self.node_small = _font(13)
 
 
 def _font(size: int, *, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:

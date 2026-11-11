@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from reactgen import adopt, export, ingest, yamlio
-from reactgen.case import Case
+from reactgen.case import Case, Limits
 from reactgen.chemistry import parse_state_id
 from reactgen.evidence import EvidenceCatalog, snapshot_reaction
 from reactgen.pipeline import analyze
@@ -216,7 +216,10 @@ def test_older_payload_reacquisition_keeps_its_id_and_original_declarations(tmp_
             "records": [old],
         },
     )
-    export.write(tmp_path / "bundle", analyze(Case("argon", ("Ar",)), EvidenceCatalog.load(root)))
+    export.write(
+        tmp_path / "bundle",
+        analyze(Case("argon", ("Ar",), limits=Limits(max_depth=1)), EvidenceCatalog.load(root)),
+    )
     second = _snapshot(tmp_path / "second.yaml", _thermal_record(), 2)
     overlay = _write(tmp_path / "overlay.yaml", {"state_records": {"Ar@ground": [old]}})
     assert ingest.ingest(second, tmp_path / "bundle", overlay).accepted == 1
@@ -289,7 +292,10 @@ def test_reacquisition_roundtrip_keeps_all_originals_and_rejects_scientific_chan
         root / "species" / "Ar.yaml",
         {"id": "Ar", "composition": {"Ar": 1}, "phase": "gas", "state": {"kind": "ground"}},
     )
-    export.write(tmp_path / "bundle", analyze(Case("argon", ("Ar",)), EvidenceCatalog.load(root)))
+    export.write(
+        tmp_path / "bundle",
+        analyze(Case("argon", ("Ar",), limits=Limits(max_depth=1)), EvidenceCatalog.load(root)),
+    )
     paths = (
         _snapshot(tmp_path / "first.yaml", _record(identity), 1),
         _snapshot(tmp_path / "second.yaml", _record(identity), 2),
@@ -355,7 +361,10 @@ def test_adoption_preserves_a_legacy_canonical_id_for_new_acquisition(tmp_path) 
             "records": [saved],
         },
     )
-    export.write(tmp_path / "bundle", analyze(Case("argon", ("Ar",)), EvidenceCatalog.load(root)))
+    export.write(
+        tmp_path / "bundle",
+        analyze(Case("argon", ("Ar",), limits=Limits(max_depth=1)), EvidenceCatalog.load(root)),
+    )
     second = _snapshot(tmp_path / "second.yaml", _record(), 2)
     overlay = tmp_path / "overlay.yaml"
     assert ingest.ingest(second, tmp_path / "bundle", overlay).accepted == 1

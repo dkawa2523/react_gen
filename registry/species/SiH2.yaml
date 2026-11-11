@@ -1,0 +1,85 @@
+schema_version: 1
+id: SiH2
+display_name: SiH2 (silylene, X 1A1)
+composition: {Si: 1, H: 2}
+charge: 0
+phase: gas
+classes:
+- neutral
+- molecule
+state:
+  kind: ground
+  term: X 1A1
+  existence: confirmed
+  existence_source: Threshold photoelectron spectroscopy identifies the gas-phase neutral singlet.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: RSC
+    citation: L. H. Coudert et al., Phys. Chem. Chem. Phys. 27, 6628–6639 (2025)
+    url: https://doi.org/10.1039/D5CP00558B
+properties:
+  ionization_energy_eV:
+    value: 9.16
+    unit: eV
+    definition: adiabatic
+    related_state: SiH2+@ground
+    source:
+      provider: RSC
+      citation: L. H. Coudert et al., Phys. Chem. Chem. Phys. 27, 6628–6639 (2025)
+      url: https://doi.org/10.1039/D5CP00558B
+    method: measured
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [ionization_energy_eV]
+    uncertainty: {absolute: 0.01, unit: eV}
+    source_declaration:
+      scope: Neutral X 1A1 to cation X+ 2A1, adiabatic.
+  electron_affinity_eV:
+    value: 1.087
+    unit: eV
+    definition: adiabatic
+    related_state: SiH2-@ground
+    source:
+      provider: ATcT
+      citation: Nimlos and Ellison (1986), thermochemical network input 8831.2
+      url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=1641
+    method: measured
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [electron_affinity_eV]
+    uncertainty: {absolute: 0.015, unit: eV}
+    source_declaration:
+      scope: 0 K detachment to neutral X 1A1. The quoted uncertainty is the ATcT network input estimate.
+      atct_release: '1.228'
+records:
+- record_id: ATcT_1.228:13825-90-6*2
+  species: SiH2
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 13825-90-6*2
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=294
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 271.98
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0.0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: SiH2 (g, singlet)
+        published_uncertainty:
+          absolute: 0.76
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

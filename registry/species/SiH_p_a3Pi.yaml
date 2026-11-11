@@ -1,0 +1,39 @@
+schema_version: 1
+id: SiH_p_a3Pi
+display_name: SiH+ (a+ 3Pi)
+composition: {Si: 1, H: 1}
+charge: 1
+phase: gas
+classes:
+- positive_ion
+- molecule
+- excited
+state:
+  kind: electronic
+  label: a3Pi
+  term: a+ 3Pi
+  existence: confirmed
+  existence_source: Mass-selected photoelectron spectrum assigns the first excited cation electronic origin.
+  status: reviewed
+  method: measured
+  review_scope: [state_existence]
+  source:
+    provider: AIP
+    citation: N. L. Chen et al., J. Chem. Phys. 157, 014303 (2022)
+    url: https://doi.org/10.1063/5.0094863
+properties:
+  excitation_energy_eV:
+    value: 2.271
+    unit: eV
+    related_state: SiH+@ground
+    source:
+      provider: AIP
+      citation: N. L. Chen et al., J. Chem. Phys. 157, 014303 (2022)
+      url: https://doi.org/10.1063/5.0094863
+    method: measured
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [excitation_energy_eV]
+    uncertainty: {absolute: 0.005, unit: eV}
+    source_declaration:
+      scope: T0(a+) minus T0(X+) reported in Section III.A, no individual spin–orbit component assignment.

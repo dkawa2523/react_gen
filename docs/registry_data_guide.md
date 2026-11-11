@@ -1,7 +1,9 @@
-# Registryの記録と更新
+# 科学記録の形式とRegistryの更新
 
-現行のRegistryは、出典付きの状態・反応・数値データのローカル証拠源です。候補生成の文法とは
-別に管理します。
+Registry・snapshot・overlayは、出典付きの状態、反応、数値を共通の科学記録として読み込みます。
+Registryはローカル証拠源で、候補生成の文法とは別に管理します。
+取得・照合の操作は[データ取得・照合・採用](data_sources.md)、
+収録・配布に必要な出典とnoticeは[出典・配布方針](source_license_policy.md)を参照してください。
 
 ```text
 registry/species/*.yaml
@@ -9,6 +11,29 @@ registry/reactions/<family>/*.yaml
 registry/materials/*.yaml
 registry/assets/**
 ```
+
+## 対象と反応
+
+| 欄 | 意味 |
+|---|---|
+| `species`、`composition`、`charge` | 化学式または状態IDが物理対象を指します。組成・電荷を明示する場合はIDと一致させます。 |
+| `phase`、`structure` | 一般snapshotの相の省略は `unknown` です。構造は異性体や核種を区別する情報です。任意の構造識別子をSMILESとして解釈しません。 |
+| `state.kind`、`label`、`resolution` | 状態の種類、準位名、`resolved/lumped` を分けます。回転準位の例は `H2@J1;kind=rotational` です。`composition/lumped` は組成仮説です。 |
+| `reaction`、`family`、`type` | 反応式、衝突・反応の区分、個別の過程です。式は `A + B -> C + D` と書き、係数は `2 e` のように指定します。 |
+| `third_body`、`surface`、`stabilization` | 第三体、材料、安定化の宣言です。同じ正味反応式でも、これらの条件や過程が異なれば別チャネルとして扱います。 |
+| `channel_scope` | `product_resolved` は指定生成物のチャネル、`total/total_process` は合計、`unknown` は未確認、`energy_relation` はエネルギーの関係量です。 |
+| `transformation` | 組成・電荷、準位、明示Lewisグラフ等の変換の宣言です。形式と整合は[公開出力仕様](output_reference.md)を参照してください。 |
+
+`N2` は `N2@ground`、`H+` は `H+@ground`、`Ar*` は `Ar@electronic` へ正規化します。
+`ground/resolved` は化学式から異性体が確定したという意味ではありません。
+相や構造の指定には `N2@ground;phase=solid`、`C2H6O@ground;structure=...` のような状態IDを使います。
+検索名や原資料の行番号は出典として保持します。
+
+旧外部語彙の `ion_neutral/ion_ion`、`neutral_neutral/three_body/unimolecular`、`electron_ion`
+はそれぞれ `ion`、`neutral`、`electron` へ正規化します。
+`charge_transfer`、`electron_detachment`、`neutralization` はそれぞれ
+`charge_exchange`、`collisional_detachment`、`mutual_neutralization` です。
+未知の原語は原宣言に保ち、似た名称の過程へ割り当てません。
 
 ## 状態と物性
 
@@ -45,6 +70,15 @@ Registry IDとcanonical候補IDは区別します。組成・電荷・状態に�
 groundの`resolved`は異性体まで同定済みという意味ではありません。構造固有の記録には
 `structure`を付けます。lumped状態には実際の`members`を記し、名前がelectronicというだけで
 別準位を排他的としません。
+
+化学式IDで管理しているRegistry種に、原資料で確認したグラフを対応づける場合は、種の
+`molecular_identity` に `smiles` と `source` を記します。`source` には書誌情報とURLが必要です。
+明示構造を入力した解析でだけ照合に使い、組成、電荷、相、準位、核種を含むグラフが一致する
+場合に、その出典が対象とした記録を対応づけます。通常の化学式入力のIDと、原記録の対象IDは保持します。
+独立した `records` 要素の出典が同じグラフを明示している場合は、その要素の `molecular_identity`
+に照合根拠を記します。種全体に置いた構造宣言を、独立記録へ自動で引き継ぐ規則はありません。
+準位差を明示構造に適用するには、その準位記録の構造根拠と参照状態との対応が必要です。
+別構造や明示核種の異なる供給へ、化学式IDが共通することだけを理由に準位を適用しません。
 
 存在の主張は`existence`と`existence_source`で記録します。物性がreviewedであること、
 Registryにあること、反応式に出ることからconfirmedを自動生成しません。
@@ -90,6 +124,8 @@ snapshotとoverlayの物理対象は、化学式・状態IDと明示した組成
 矛盾は、読込み時の入力エラーです。検索名や出典の行IDを物理対象IDへ読み替えません。
 RegistryのローカルIDは別で、種の明示した組成・電荷・状態等からcanonical対象を作ります。
 
+### 出典と資格
+
 `provenance` はprovider、collection、release、record_id、citation、URL等の正規出典情報です。
 `source` の明示識別子も入口でここへ正規化します。`source_declaration` は原宣言・補足を保全し、
 `method` は measured / evaluated / calculated / estimated / unknown、`review_scope` は
@@ -120,9 +156,7 @@ NASA7にはlow/high各7係数、明示した`t_min < t_mid < t_max`、source、p
 NASAモデルが同じ係数、温度域、相、標準圧力を持つ場合は、出典名だけの違いを物理的競合と
 しません。元記録は両方保持します。計算が利用する物性・NASAモデルは`data_selection`で
 量別・対象別に優先・限定・record固定できます。資格・定義・参照条件はその指定でも検査します。
-登録・選択の必要情報は[表記辞書](data_dictionary.md)、出力の規則は[出力仕様](output_reference.md)を参照してください。
-反応エネルギーの独立Property化は実装済みで、[科学量の定義と反応エネルギー](#科学量の定義と反応エネルギー)
-で説明します。今後の拡張は[残件計画](remaining_work_plan.md)へ分けています。
+登録・選択の必要情報は[量ごとに必要な情報](#量ごとに必要な情報)、結果の規則は[公開出力仕様](output_reference.md)を参照してください。
 
 ### 形成エンタルピーの参照
 
@@ -173,10 +207,32 @@ IE/EA等の判定を止めません。旧結果と旧Registryの値は読み込�
 生成します。準位は非負の有限energyと解像対象を必要とし、親記録の拒否・競合、Propertyの
 審査対象外・未解釈注記をtierだけで昇格させません。独立した適格な記録は別に利用できます。
 親形成量と準位Property全体、共通参照を`source_declaration`へ保存します。有限温度の振動・回転等の
-熱寄与差や不確かさ伝播を電子準位energyだけから補いません。Pythonの
-`carried_from(parent, excitation)`はPropertyまたはNoneを受け、scalarと`energy_source`は廃止しました。
-通常の`derive`入口は変わりません。massは励起energyの不足と独立に、適格な親massまたは原子mass
-から近似し、使用したPropertyと省略したmass欠損を保存します。原資料の条件確認は科学データ整備です。
+熱寄与差や不確かさ伝播を電子準位のエネルギーだけから補いません。質量は励起エネルギーの不足と独立に、
+適格な親状態の質量または原子質量から近似し、使用したPropertyと不足した質量の対象を保存します。
+
+## 量ごとに必要な情報
+
+次は各量を科学的に利用するための情報です。未取得の値と未確認の条件は不足として保存できます。
+
+| 量・表現 | 利用する情報 |
+|---|---|
+| `ionization_energy_eV`、`electron_affinity_eV` | 対象、エネルギー単位、資格、`definition: atomic/adiabatic/vertical`。関係先が明示される場合は対応する正イオン／負イオンの基底状態。 |
+| `excitation_energy_eV` | 準位または集団の同定、値、単位、資格。同電荷・同構造の参照基底状態を `related_state` で示します。集団の代表値は単一終状態を定めません。 |
+| `enthalpy_formation_eV` | 共通の参照温度、元素基準と、量に応じた標準圧・電子規約。有限温度の値を単一衝突の0 K状態差へ転用しません。 |
+| `proton_affinity_eV`、`gas_basicity_eV` | `related_state` に対応する共役酸の状態、`formation_reference.temperature_K` に参照温度を置きます。GBでは共通の明示標準圧も必要です。 |
+| `mass_amu` | 対象と正の質量、`u/amu/Da`、資格。lab→COM換算には実際の参加粒子の質量を使います。 |
+| `thermochemical_model` | NASA7のlow/high各7係数、境界温度、相、標準圧、資格。 |
+| `rate_coefficient` | `constant` の値、または `arrhenius` の `A/b/Ea`、`parameter_units.Ea`、`reference_temperature_K`。単位、速度式の次数、測定量、チャネル範囲、適用条件、資格を記録します。 |
+| `cross_section` | 軸の量と単位、2列の数値表asset、測定量、チャネル範囲、適用条件、資格。運動量移行断面積と反応断面積を区別します。 |
+| `sticking_coefficient` | 材料・入射粒子、`sticking_probability`、無次元値または曲線、必要な表面条件、資格。入射流束は別の入力です。 |
+| `threshold_eV`、`delta_e_eV` | 反応記録の独立 `energy_properties` に対象、値・単位、定義、資格を置きます。前者の `channel_threshold/appearance_energy` と後者の `products_minus_reactants` を区別します。 |
+| `reference_only` | 対象と出典を保持します。数値用途では数値表または式を別途取得します。 |
+
+`kind` は量、`form` は表現です。Arrheniusは `k=A(T/Tref)^b exp(−Ea/(kB T))` です。
+速度係数は一次 `s-1`、二次 `m3/s`、三次 `m6/s`、断面積は `m2`、確率は `1` を推奨します。
+`validity` の軸は `gas_temperature/electron_temperature/ion_temperature/surface_temperature`、
+`electron_energy/collision_energy/ion_energy`、`reduced_field` を区別し、正規単位は `K/eV/Td` です。
+温度のエネルギー表現と粒子の衝突エネルギーは別量です。Propertyのエネルギー単位の例は `eV`、`J`、`J/mol`、`kJ/mol` です。
 
 ## 反応とdataset
 
@@ -265,8 +321,8 @@ datasetに `review_scope` を明示する場合は、`rate_coefficient`、`cross
 `reference_only`は数値データではなく、totalデータは個別生成物チャネルへ割り当てません。
 tableは参照assetと宣言／保存実測hashを保持し、実際に解析するbytesを照合します。保存hashを
 現在値へ置換せず、同じ検証済みbytesの保存場所だけで科学競合にしません。原参照と取得来歴は
-保持します。直接Python型も保存実測hashのない表を計算へ使いません。Arrheniusの宣言は[data sources](data_sources.md)
-を参照してください。範囲外や不正データは修復対象であり、現象の否定ではありません。
+保持します。直接Python型も保存実測hashのない表を計算へ使いません。
+範囲外や不正データは修復対象であり、現象の否定ではありません。
 
 利用者は数値3量について入力の `data_selection` で方法・provider・collectionの優先または
 制限、dataset IDの固定を指定できます。記録の適格性確認を飛ばす指定ではありません。
@@ -288,17 +344,80 @@ tableは参照assetと宣言／保存実測hashを保持し、実際に解析す
 
 Propertyは`definition`で量の意味を保存します。IE/EAのatomic・adiabatic・verticalを区別し、同じ単位だけでgroundの比較へ流用しません。定義・相・構造・対象が対応しない量は、その利用を未確定にして原宣言へ残します。
 
+`related_state` は関連する正規状態IDです。EAは電子束縛で放出されるエネルギーを正とし、
+負イオンの基底状態差には適格な正のEAを使います。
+分子の基底状態差には断熱IE／EAが必要です。原子の定義未指定値に対する互換処理は分子へ適用しません。
+プロトン移動 `AH+ + B → A + BH+` では、同温度の `PA(A)−PA(B)` をΔH、
+同温度・同標準圧の `GB(A)−GB(B)` をΔG°として別々に扱います。
+これらの有限温度量と単一衝突の0 K状態差は独立です。[NISTの量定義](https://webbook.nist.gov/chemistry/ion/)
+
 channelおよび独立`records`の`energy_properties`は`threshold_eV`と`delta_e_eV`のProperty mappingです。各量にvalue/unit、definition、tier/status/review_scope、method/provenance、uncertaintyを持たせます。新しい明示Propertyは親channelのtierやreviewで昇格しません。親科学宣言自体のrejected/conflictingは含む量も停止します。
 
-旧外部threshold・deltaEのscalarは入口で一度だけ共通Propertyへ正規化し、元宣言を保全します。新Propertyとの二重宣言に矛盾があれば入力エラーです。内部の同義scalar fieldを独立更新する経路はありません。quantityの詳細と移行は[公開形式](output_reference.md)を参照してください。
+断面積表の閾値比較は、曲線の `validity.unresolved_conditions.energy_frame` と閾値の `source_declaration.energy_frame` または `source_declaration.frame` が比較できる場合に行います。`com` は重心系、`target` と `lab` は静止標的への入射エネルギーを示します。異種の重粒子対の実験室系同士は、`projectile_state` で指定した入射粒子も一致した場合に比較します。同一状態の粒子対は等質量として座標系を換算します。異種粒子対で座標系が異なる場合は、曲線を保持して閾値との照合を保留します。 [IAEA CollisionDBの座標系](https://doi.org/10.1088/1741-4326/acf5da)
+
+外部の旧scalar形式と現行の`energy_properties`を併記する場合は、換算値の一致が必要です。[量の定義と互換形式](output_reference.md#量の定義と独立した反応エネルギー)
+
+D₀は指定の親状態から指定フラグメント状態への0 K差です。
+関係量だけを記録するときは `channel_scope: energy_relation` とします。
+逆向きの記録を用いる場合は原値と符号を反転する係数を保存します。
+次は値と出典を調べる前の入力形式です。
+
+```yaml
+snapshot_version: 1
+records:
+- reaction: F2@ground;phase=gas -> 2 F@ground;phase=gas
+  family: neutral
+  type: dissociation
+  channel_scope: energy_relation
+  status: imported
+  energy_properties:
+    delta_e_eV:
+      value: null
+      unit: eV
+      definition: products_minus_reactants
+      formation_reference: {temperature_K: 0}
+      status: imported
+```
+
+現行計算は、解像された気相端点への直接差、共通参照の0 K形成量差、D₀・IE・EA・準位差を使う限定的なサイクルを扱います。
+適格な複数案が食い違う場合は各入力と不一致を保持します。定義を省略した旧エネルギー差を0 K関係量として推定しません。
+
+## snapshotの入力例
+
+次はWebBookの評価IEを未審査の取得記録として保持する例です。[原資料](https://webbook.nist.gov/cgi/cbook.cgi?ID=C7727379&Mask=21&Units=SI)
+
+```yaml
+snapshot_version: 1
+kind: state_property
+source:
+  provider: nist_webbook
+  collection: SRD69
+  citation: NIST Chemistry WebBook, SRD 69
+  url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C7727379&Mask=21&Units=SI
+records:
+- species: N2
+  phase: gas
+  property: ionization_energy_eV
+  value: 15.581
+  unit: eV
+  uncertainty: {absolute: 0.008, unit: eV}
+  method: evaluated
+  status: imported
+```
+
+別出典を追加する場合は `records` に要素を追加するか、別ファイルを `--evidence` に指定します。
+反応記録は `reaction/type` で対象を記し、数値を持つ場合だけ `kind/form/unit/parameters/validity` 等を添えます。
+未取得の値は `value: null` とします。
+
+共通の `source` はマッピングで指定します。省略または `null` の場合は共通出典の指定なしとして扱います。数値記録では個別の `kind` を優先し、共通の `kind` も省略または `null` の場合は `rate_coefficient` を使います。`--evidence` と `ingest` は同じ規則で読み込みます。
 
 ## 更新操作
 
 ```powershell
-rgen analyze Ar --evidence registry --out result
+rgen analyze Ar --supply e --evidence registry --out result
 acquire lxcat export.txt --out work/lxcat
 rgen ingest work/lxcat/snapshot.yaml --result result --overlay work/overlay.yaml
-rgen analyze Ar --evidence registry --evidence work/overlay.yaml --out result
+rgen analyze Ar --supply e --evidence registry --evidence work/overlay.yaml --out result
 rgen adopt work/overlay.yaml --registry registry --dry-run
 rgen adopt work/overlay.yaml --registry registry
 rgen check --registry registry

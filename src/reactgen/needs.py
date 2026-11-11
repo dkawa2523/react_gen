@@ -34,6 +34,11 @@ RESPONSIBILITIES = {
 
 def build(document: dict, *, detail: bool = False, data_missing_only: bool = False) -> dict:
     """Summarize existing findings without reassessing evidence or opening assets."""
+    labelled = document["metadata"].get("helper_view_format", 1) >= 5
+    if data_missing_only and not labelled:
+        raise ValueError(
+            "data-missing labels are absent from this historical result; analyze again"
+        )
     names = {state["id"]: state_name(state) for state in document["states"]}
     labels = dict(names)
     for reaction in document["reactions"]:
@@ -44,18 +49,17 @@ def build(document: dict, *, detail: bool = False, data_missing_only: bool = Fal
     items = []
     for subject in ("states", "reactions"):
         for candidate in sorted(document[subject], key=lambda item: item["id"]):
-            label = (
-                names[candidate["id"]]
-                if subject == "states"
-                else reaction_equation(candidate, names)
-            )
-            target = {"subject": subject[:-1], "id": candidate["id"], "target": label}
-            items.extend(_assessment_items(candidate, target))
+            target = {
+                "subject": subject[:-1],
+                "id": candidate["id"],
+                "target": labels[candidate["id"]],
+            }
+            items.extend(_assessment_items(candidate, target, labelled=labelled))
             if subject == "reactions":
-                items.extend(_numerical_items(candidate, target))
-                items.extend(_calculation_items(candidate, target))
-    labelled = document["metadata"].get("helper_view_format", 1) >= 5
-    items = _select_findings(items, document, labelled, data_missing_only)
+                items.extend(_numerical_items(candidate, target, labelled=labelled))
+                items.extend(_calculation_items(candidate, target, labelled=labelled))
+    if data_missing_only:
+        items = _data_missing(items)
     groups, details = _groups(items, detail=detail)
     tasks = _tasks(items)
     work = _work_groups(tasks, labels)
@@ -94,63 +98,21 @@ def build(document: dict, *, detail: bool = False, data_missing_only: bool = Fal
         output["details"] = details
         output["work_details"] = list(tasks.values())
     if labelled:
-        output.update(_completion_output(items, document))
+        completion_tasks = tasks if data_missing_only else _tasks(_data_missing(items))
+        output["coverage"] = document["summary"]["coverage"]
+        output["data_completion"] = [
+            task
+            for task in completion_tasks.values()
+            if task["responsibility"] in {"source_information", "investigation"}
+        ]
     return output
 
 
-def _select_findings(
-    items: list[dict], document: dict, labelled: bool, data_only: bool
-) -> list[dict]:
-    if data_only and not labelled:
-        raise ValueError(
-            "data-missing labels are absent from this historical result; analyze again"
-        )
-    if labelled:
-        _saved_labels(items, document)
-    return (
-        [item for item in items if "data_missing" in item["blocking_causes"]]
-        if data_only
-        else items
-    )
+def _data_missing(items: list[dict]) -> list[dict]:
+    return [item for item in items if "data_missing" in item["blocking_causes"]]
 
 
-def _completion_output(items: list[dict], document: dict) -> dict:
-    tasks = _tasks([item for item in items if "data_missing" in item["blocking_causes"]])
-    return {
-        "coverage": document["summary"]["coverage"],
-        "data_completion": [
-            task
-            for task in tasks.values()
-            if task["responsibility"] in {"source_information", "investigation"}
-        ],
-    }
-
-
-def _saved_labels(items: list[dict], document: dict) -> None:
-    """Use the label from the owning result, not the finding's work grouping."""
-    states = {item["id"]: item for item in document["states"]}
-    reactions = {item["id"]: item for item in document["reactions"]}
-    for item in items:
-        if item["subject"] == "dataset":
-            result = next(
-                record
-                for record in reactions[item["reaction_id"]]["data_use"]["datasets"]
-                if record["dataset_id"] == item["id"]
-            )
-        else:
-            target = (states if item["subject"] == "state" else reactions)[item["id"]]
-            name = item["judgment"]
-            if name == "data_use":
-                result = target["data_use"]
-            elif name.startswith("calculation:"):
-                result = target["thermochemical_calculations"][name.removeprefix("calculation:")]
-            else:
-                result = target["assessments"][name]
-        item["label"] = result.get("label", "unresolved")
-        item["blocking_causes"] = result.get("blocking_causes", [])
-
-
-def _assessment_items(candidate: dict, target: dict) -> list[dict]:
+def _assessment_items(candidate: dict, target: dict, *, labelled: bool) -> list[dict]:
     items = []
     for name, judgment in sorted(candidate["assessments"].items()):
         if judgment["verdict"] not in {"unknown", "fail"}:
@@ -159,13 +121,8 @@ def _assessment_items(candidate: dict, target: dict) -> list[dict]:
             "judgment": name,
             "proposition": judgment.get("proposition", ""),
             "status": judgment["verdict"],
-            "responsibility": "failed_proposition"
-            if judgment["verdict"] == "fail"
-            else "investigation",
             "reason": judgment["message"],
-            "requirements": (),
         }
-        prerequisites = judgment.get("requirements", []) if judgment["verdict"] == "unknown" else []
         dependencies = judgment.get("dependencies", [])
         if dependencies:
             base["derived_from"] = [
@@ -180,26 +137,26 @@ def _assessment_items(candidate: dict, target: dict) -> list[dict]:
             base["derived_from"] = [
                 {"subject": "reaction", "id": target["id"], "judgment": "data_use"}
             ]
-        if not prerequisites:
-            items.append(base)
-            continue
-        for responsibility in sorted({item["responsibility"] for item in prerequisites}):
-            selected = [item for item in prerequisites if item["responsibility"] == responsibility]
-            items.append(
-                base
-                | {
-                    "responsibility": responsibility,
-                    "requirements": tuple(sorted({item["quantity"] for item in selected})),
-                    "prerequisites": selected,
-                }
-            )
+        fallback = "failed_proposition" if judgment["verdict"] == "fail" else "investigation"
+        items.extend(_saved_work_items(base, judgment, fallback, labelled=labelled))
     return items
 
 
-def _saved_work_items(base: dict, requirements: list[dict], fallback: str) -> list[dict]:
+def _saved_work_items(base: dict, result: dict, fallback: str, *, labelled: bool) -> list[dict]:
     """Keep assigned work and reasons exactly as stored by its owning operation."""
+    if labelled:
+        base = base | {
+            "label": result.get("label", "unresolved"),
+            "blocking_causes": result.get("blocking_causes", []),
+        }
+        if base["label"] in {"excluded", "out_of_range"}:
+            fallback = "excluded_data"
+    requirements = result.get("requirements", []) if result.get("verdict") != "fail" else []
     if not requirements:
         return [base | {"responsibility": fallback, "requirements": ()}]
+    by_role: dict[str, list[dict]] = {}
+    for requirement in requirements:
+        by_role.setdefault(requirement["responsibility"], []).append(requirement)
     return [
         base
         | {
@@ -207,12 +164,11 @@ def _saved_work_items(base: dict, requirements: list[dict], fallback: str) -> li
             "requirements": tuple(sorted({item["quantity"] for item in selected})),
             "prerequisites": selected,
         }
-        for role in sorted({item["responsibility"] for item in requirements})
-        for selected in [[item for item in requirements if item["responsibility"] == role]]
+        for role, selected in sorted(by_role.items())
     ]
 
 
-def _numerical_items(candidate: dict, target: dict) -> list[dict]:
+def _numerical_items(candidate: dict, target: dict, *, labelled: bool) -> list[dict]:
     use = candidate["data_use"]
     if "requirements" not in use:
         return _historical_numerical_items(candidate, target)
@@ -225,7 +181,7 @@ def _numerical_items(candidate: dict, target: dict) -> list[dict]:
             "status": use["status"],
             "reason": use["reason"],
         }
-        items.extend(_saved_work_items(base, use["requirements"], "investigation"))
+        items.extend(_saved_work_items(base, use, "investigation", labelled=labelled))
     for dataset in use["datasets"]:
         if dataset["status"] == "valid":
             continue
@@ -241,23 +197,24 @@ def _numerical_items(candidate: dict, target: dict) -> list[dict]:
             "reason": dataset["reason"],
         }
         fallback = "excluded_data" if dataset["status"] == "out_of_range" else "investigation"
-        items.extend(_saved_work_items(base, dataset["requirements"], fallback))
+        items.extend(_saved_work_items(base, dataset, fallback, labelled=labelled))
     return items
 
 
-def _calculation_items(candidate: dict, target: dict) -> list[dict]:
+def _calculation_items(candidate: dict, target: dict, *, labelled: bool) -> list[dict]:
     items = []
     for quantity, result in sorted(candidate.get("thermochemical_calculations", {}).items()):
-        if result["status"] == "computed":
+        status, requirements = result["status"], result["requirements"]
+        if status == "computed" or (status == "unavailable" and not requirements):
             continue
         base = target | {
             "judgment": f"calculation:{quantity}",
             "proposition": f"calculation_availability:{quantity}",
-            "status": result["status"],
+            "status": status,
             "reason": result["reason"],
         }
-        fallback = "excluded_data" if result["status"] == "out_of_range" else "investigation"
-        items.extend(_saved_work_items(base, result["requirements"], fallback))
+        fallback = "excluded_data" if status == "out_of_range" else "investigation"
+        items.extend(_saved_work_items(base, result, fallback, labelled=labelled))
     return items
 
 
@@ -341,9 +298,12 @@ def _historical_numerical_items(candidate: dict, target: dict) -> list[dict]:
 def _tasks(items: list[dict]) -> dict[tuple[str, str, str], dict]:
     """Deduplicate explicit prerequisites, never inferred causes of a message."""
     tasks: dict[tuple[str, str, str], dict] = {}
+    references: dict[tuple[str, str, str], set[tuple[str, str, str]]] = {}
     for item in items:
+        identifier = (item["subject"], item["id"], item["judgment"])
         for requirement in item.get("prerequisites", []):
             key = (requirement["responsibility"], requirement["target"], requirement["quantity"])
+            references.setdefault(identifier, set()).add(key)
             task = tasks.setdefault(
                 key,
                 {
@@ -360,18 +320,11 @@ def _tasks(items: list[dict]) -> dict[tuple[str, str, str], dict]:
             affected = {name: item[name] for name in ("subject", "id", "judgment", "proposition")}
             if affected not in task["affected"]:
                 task["affected"].append(affected)
-    _include_dependents(tasks, items)
+    _include_dependents(tasks, references, items)
     return dict(sorted(tasks.items()))
 
 
-def _include_dependents(tasks: dict, items: list[dict]) -> None:
-    references: dict[tuple, list[tuple]] = {}
-    for item in items:
-        key = (item["subject"], item["id"], item["judgment"])
-        references.setdefault(key, []).extend(
-            (req["responsibility"], req["target"], req["quantity"])
-            for req in item.get("prerequisites", [])
-        )
+def _include_dependents(tasks: dict, references: dict, items: list[dict]) -> None:
     for item in items:
         if item["status"] == "fail":
             continue

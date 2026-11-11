@@ -2,25 +2,29 @@
 
 from __future__ import annotations
 
-import csv
 import hashlib
-import io
 import json
 import math
 import os
+import re
 import tempfile
 from collections import Counter
-from dataclasses import asdict, fields, is_dataclass
+from dataclasses import asdict, is_dataclass
+from functools import lru_cache
+from graphlib import CycleError, TopologicalSorter
 from pathlib import Path
 from typing import Any
 
+import yaml
 from jsonschema import Draft202012Validator
 
 from reactgen import outcomes, yamlio
 from reactgen.case import Case, Conditions
 from reactgen.chemistry import parse_state_id, reaction_declaration_matches, reaction_family
+from reactgen.evidence import ReactionEvidence, molecular_equation
 from reactgen.model import (
-    CandidateState,
+    VERIFIED_STRUCTURE_BASIS,
+    EquationKey,
     ReactionCandidate,
     Requirement,
     Term,
@@ -33,14 +37,28 @@ from reactgen.model import (
     state_lifetime_class,
     validate_stoichiometric_terms,
 )
+from reactgen.pathway import PATHWAY_POLICY_FORMAT, analyze_pathways, validate_saved_pathway_graph
 from reactgen.pipeline import AnalysisResult
 from reactgen.presentation import (
+    CalculationRecordIndex,
+    calculation_record_index,
+    calculation_source,
+    calculation_source_offers,
     reaction_equation,
     requirement_summary,
     saved_requirement_summary,
     state_name,
 )
+from reactgen.reaction_tables import (
+    csv_text,
+    judgment_tables,
+    reaction_table,
+    state_judgment_stem,
+    state_judgment_tables,
+    state_table,
+)
 from reactgen.records import (
+    calculation_record_reference,
     normalized_dataset_target,
     normalized_source,
     scientific_datasets_equivalent,
@@ -48,10 +66,17 @@ from reactgen.records import (
     selectable_state_record_id,
     validate_numerical_targets,
 )
+from reactgen.registry import molecular_identity_state, read_molecular_identity
 from reactgen.selection import DataSelection
+from reactgen.structure import (
+    physical_equation_key,
+    saved_structure_alias_matches,
+    saved_supply_structure_matches,
+)
 
 PUBLIC_FILES = ("result.yaml", "states.csv", "reactions.csv")
-VERDICTS = ("pass", "fail", "unknown", "not_applicable")
+FOCUSED_VIEW_FORMAT = 10
+JUDGMENT_PATH = re.compile(r"judgments/[a-z][a-z0-9_-]*[.]csv")
 STATE_COLUMNS = (
     "state",
     "phase",
@@ -89,6 +114,13 @@ class PartialOutputError(OSError):
 
 
 def document(result: AnalysisResult) -> dict:
+    """Project validated analysis values and check their saved references."""
+    payload, views = _document_views(result)
+    _validated_views(payload, views)
+    return payload
+
+
+def _document_views(result: AnalysisResult) -> tuple[dict, dict[str, str]]:
     states = []
     for state in sorted(result.candidates.states.values(), key=lambda item: item.id):
         item = _plain(asdict(state))
@@ -108,7 +140,9 @@ def document(result: AnalysisResult) -> dict:
                 strict=True,
             ):
                 saved["record_id"] = selectable_state_record_id(record)
-        item["assessments"] = _plain(result.evaluation.state_assessments[state.id])
+                if record.molecular_identity is None:
+                    saved.pop("molecular_identity", None)
+        item["assessments"] = _assessment_payload(result.evaluation.state_assessments[state.id])
         states.append(item)
     reactions = []
     for reaction in sorted(result.candidates.reactions.values(), key=lambda item: item.id):
@@ -117,38 +151,100 @@ def document(result: AnalysisResult) -> dict:
         item["products"] = [_plain(term._asdict()) for term in reaction.products]
         item["equation"] = reaction.equation
         item["reaction_type"] = reaction.process.replace("_", " ")
-        item["evidence"] = _plain(
-            result.evaluation.reaction_evidence[reaction.id], declaration=True
+        item["evidence"] = _reaction_evidence_payload(
+            result.evaluation.reaction_evidence[reaction.id]
         )
-        item["assessments"] = _plain(result.evaluation.reaction_assessments[reaction.id])
+        item["assessments"] = _assessment_payload(
+            result.evaluation.reaction_assessments[reaction.id]
+        )
         item["thermochemistry"] = _plain(result.evaluation.thermochemistry.get(reaction.id, {}))
         use = result.evaluation.data_use[reaction.id]
-        item["data_use"] = _plain(use)
-        item["data_use"].update(
-            required_inputs=list(use.required_inputs),
-            required_transforms=list(use.required_transforms),
-        )
-        for stored, assessed in zip(item["data_use"]["datasets"], use.datasets, strict=True):
+        saved_use = item["data_use"] = _plain(use)
+        work = (use.requirements, *(assessment.requirements for assessment in use.datasets))
+        for stored, requirements in zip((saved_use, *saved_use["datasets"]), work, strict=True):
+            inputs, transforms = numerical_requirement_fields(requirements)
             stored.update(
-                required_inputs=list(assessed.required_inputs),
-                required_transforms=list(assessed.required_transforms),
+                required_inputs=list(inputs),
+                required_transforms=list(transforms),
             )
         item["thermochemical_calculations"] = _plain(
             result.evaluation.thermochemical_calculations.get(reaction.id, {})
         )
         reactions.append(item)
     outcomes.add_labels(states, reactions)
-    output = {
+    output: dict[str, Any] = {
         "input": result.input,
-        "metadata": result.metadata | {"helper_view_format": 6},
+        "metadata": result.metadata | {"helper_view_format": FOCUSED_VIEW_FORMAT},
         "summary": summary(states, reactions),
         "states": states,
         "reactions": reactions,
+        "scientific_records": _calculation_records_payload(result),
         "helper_views": {},
     }
-    output["helper_views"] = {name: _hash(content) for name, content in csv_views(output).items()}
-    validate(output)
-    return output
+    if reference_ids := result.evaluation.calculation_reference_state_ids:
+        output["metadata"]["calculation_reference_state_ids"] = list(reference_ids)
+    output["pathways"] = analyze_pathways(
+        states,
+        reactions,
+        seeds=result.metadata.get("supply_state_ids"),
+        conditions=result.input.get("conditions", {}),
+    )
+    views = csv_views(output)
+    output["helper_views"] = {name: _hash(content) for name, content in views.items()}
+    return output, views
+
+
+def _assessment_payload(assessments: dict) -> dict:
+    payload = _plain(assessments)
+    for assessment in payload.values():
+        if not assessment["record_inputs"]:
+            del assessment["record_inputs"]
+    return payload
+
+
+def _calculation_records_payload(result: AnalysisResult) -> dict:
+    records = [
+        (record.id, record.id, _plain(record, declaration=True))
+        for record in result.evaluation.calculation_sources.values()
+    ]
+    records.extend(
+        (
+            record_id,
+            target,
+            _plain(record, declaration=True)
+            | {"record_id": record_id, "calculation_target": target},
+        )
+        for target, references in result.evaluation.calculation_state_records.items()
+        for record in references
+        for record_id in (selectable_state_record_id(record),)
+    )
+    # Keep existing keys for unique portable IDs. Distinct sources/targets with
+    # that ID are independent declarations and must survive the same archive.
+    reserved = {record_id for record_id, _, _ in records}
+    distinct = {
+        (record_id, target, calculation_record_reference(record)): record
+        for record_id, target, record in records
+    }
+    saved = {}
+    for (record_id, target, ref), record in sorted(distinct.items()):
+        key = record_id
+        if key in saved:
+            key = f"{target}/{ref}"
+            while key in reserved or key in saved:
+                key = f"~{key}"
+        saved[key] = record
+    return saved
+
+
+def _reaction_evidence_payload(evidence: ReactionEvidence) -> dict:
+    payload = _plain(evidence, declaration=True)
+    if not evidence.structure_aliases:
+        payload.pop("structure_aliases", None)
+    for group in ("records", "related_records"):
+        for record in payload[group]:
+            if not record["molecular_identities"]:
+                record.pop("molecular_identities")
+    return payload
 
 
 def summary(states: list[dict], reactions: list[dict]) -> dict:
@@ -158,7 +254,13 @@ def summary(states: list[dict], reactions: list[dict]) -> dict:
         "judgments": {
             subject: {
                 layer: dict(
-                    sorted(Counter(item["assessments"][layer]["verdict"] for item in items).items())
+                    sorted(
+                        Counter(
+                            item["assessments"][layer]["verdict"]
+                            for item in items
+                            if layer in item["assessments"]
+                        ).items()
+                    )
                 )
                 for layer in sorted({name for item in items for name in item["assessments"]})
             }
@@ -183,36 +285,38 @@ def summary(states: list[dict], reactions: list[dict]) -> dict:
     return result
 
 
-def write(outdir: Path, result: AnalysisResult) -> None:
-    """Commit one canonical document, then publish hash-checked auxiliary views."""
+def write(outdir: Path, result: AnalysisResult) -> dict:
+    """Commit the validated canonical document and return its decoded content."""
     if outdir.exists() and not outdir.is_dir():
         raise OSError(f"output is not a directory: {outdir}")
     if any((outdir / name).exists() for name in ("states.yaml", "reactions.yaml", "selected.yaml")):
         raise ValueError(
             "schema-4 bundle present; use the migration tool and a new output directory"
         )
-    payload = document(result)
-    _publish(outdir, payload)
+    payload, views = _document_views(result)
+    return _publish(outdir, payload, views)
 
 
-def _publish(outdir: Path, payload: dict) -> None:
-    """Publish an already validated result; CSV failure leaves a readable canonical file."""
+def _publish(outdir: Path, payload: dict, views: dict[str, str]) -> dict:
+    """Validate the staged result before commit; CSV failure leaves it readable."""
     outdir.mkdir(parents=True, exist_ok=True)
-    contents = csv_views(payload)
+    obsolete = _obsolete_companions(outdir, views)
     files = {
         "result.yaml": yamlio.dump(payload, sort_keys=False, allow_unicode=True),
-        **contents,
+        **views,
     }
     temporary: dict[str, Path] = {}
     committed = False
     try:
         for name, content in files.items():
+            destination = outdir / name
+            destination.parent.mkdir(parents=True, exist_ok=True)
             with tempfile.NamedTemporaryFile(
                 mode="w",
                 encoding="utf-8",
                 newline="",
-                dir=outdir,
-                prefix=f".{name}.",
+                dir=destination.parent,
+                prefix=f".{destination.name}.",
                 suffix=".tmp",
                 delete=False,
             ) as stream:
@@ -221,11 +325,16 @@ def _publish(outdir: Path, payload: dict) -> None:
                 stream.flush()
                 os.fsync(stream.fileno())
         # Validate the bytes that will become the sole scientific source.
-        validate(yamlio.load(temporary["result.yaml"].read_text(encoding="utf-8")))
+        saved = _load_document(temporary["result.yaml"])
+        if saved != payload:
+            raise ValueError("staged result differs from the canonical document")
+        _validated_views(saved, views)
         temporary["result.yaml"].replace(outdir / "result.yaml")
         committed = True
-        for name in contents:
+        for name in views:
             temporary[name].replace(outdir / name)
+        for path in obsolete:
+            path.unlink(missing_ok=True)
     except OSError as error:
         if committed:
             raise PartialOutputError(f"result.yaml saved; CSV views incomplete: {error}") from error
@@ -233,11 +342,43 @@ def _publish(outdir: Path, payload: dict) -> None:
     finally:
         for path in temporary.values():
             path.unlink(missing_ok=True)
+    return saved
+
+
+def _obsolete_companions(directory: Path, views: dict[str, str]) -> tuple[Path, ...]:
+    """Find superseded generated judgment tables identified by the last result."""
+    previous = directory / "result.yaml"
+    if not previous.is_file() or not (directory / "judgments").is_dir():
+        return ()
+    try:
+        document = _load_document(previous)
+    except (OSError, ValueError, yaml.YAMLError):
+        return ()
+    manifest = document.get("helper_views") if isinstance(document, dict) else None
+    if not isinstance(manifest, dict):
+        return ()
+    return tuple(
+        path
+        for name, digest in manifest.items()
+        if isinstance(name, str)
+        and JUDGMENT_PATH.fullmatch(name)
+        and name not in views
+        and (path := directory / name).is_file()
+        and hashlib.sha256(path.read_bytes()).hexdigest() == digest
+    )
+
+
+def _result_path(path: Path) -> Path:
+    return path / "result.yaml" if path.is_dir() else path
+
+
+def _load_document(path: Path) -> Any:
+    return yamlio.load(path.read_text(encoding="utf-8"))
 
 
 def read(path: Path, *, verify_views: bool = False) -> dict:
-    canonical = path / "result.yaml" if path.is_dir() else path
-    payload = yamlio.load(canonical.read_text(encoding="utf-8"))
+    canonical = _result_path(path)
+    payload = _load_document(canonical)
     validate(payload)
     if verify_views and (stale := stale_views(payload, canonical.parent)):
         raise ValueError(
@@ -255,47 +396,76 @@ def stale_views(payload: dict, directory: Path) -> tuple[str, ...]:
     )
 
 
-def rebuild_views(payload: dict, directory: Path) -> None:
-    """Regenerate disposable tables without changing saved judgments."""
-    validate(payload)
-    directory.mkdir(parents=True, exist_ok=True)
-    for name, content in csv_views(payload).items():
-        with tempfile.NamedTemporaryFile(
-            mode="w",
-            encoding="utf-8",
-            newline="",
-            dir=directory,
-            prefix=f".{name}.",
-            suffix=".tmp",
-            delete=False,
-        ) as stream:
-            temporary = Path(stream.name)
-            stream.write(content)
+def rebuild_views(payload: dict | Path, directory: Path) -> None:
+    """Regenerate the tables defined by the saved result's format."""
+    document = _load_document(_result_path(payload)) if isinstance(payload, Path) else payload
+    views = _validated_views(document)
+    obsolete = _obsolete_companions(directory, views)
+    write_tables(directory, views)
+    for path in obsolete:
+        path.unlink(missing_ok=True)
+
+
+def write_tables(directory: Path, tables: dict[str, str]) -> None:
+    for name, content in tables.items():
+        destination = directory / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        temporary = None
         try:
-            temporary.replace(directory / name)
+            with tempfile.NamedTemporaryFile(
+                mode="w",
+                encoding="utf-8",
+                newline="",
+                dir=destination.parent,
+                prefix=f".{destination.name}.",
+                suffix=".tmp",
+                delete=False,
+            ) as stream:
+                temporary = Path(stream.name)
+                stream.write(content)
+            temporary.replace(destination)
         finally:
-            temporary.unlink(missing_ok=True)
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)
 
 
 def csv_views(payload: dict) -> dict[str, str]:
-    """Derive tables using the saved format, so historical hashes stay reproducible.
-
-    Historical formats retain their exact columns and hashes. Current views
-    include native quantity scope and independently saved thermal calculations.
-    No format evaluates scientific evidence.
-    """
+    """Derive only the tables defined by the saved helper format."""
     version = _csv_format(payload)
+    if version < FOCUSED_VIEW_FORMAT:
+        return _archived_csv_views(payload, version)
+    return {
+        "states.csv": state_table(payload),
+        "reactions.csv": reaction_table(payload),
+        **{f"judgments/{name}.csv": content for name, content in judgment_tables(payload).items()},
+        **{
+            f"judgments/{state_judgment_stem(name)}.csv": content
+            for name, content in state_judgment_tables(payload).items()
+        },
+    }
+
+
+def _archived_csv_views(payload: dict, version: int) -> dict[str, str]:
+    """Preserve the byte representation of existing formats 1 through 9."""
     names = {state["id"]: state_name(state) for state in payload["states"]}
     state_rows = [
         {
             "state": names[item["id"]],
             "phase": item["phase"],
             "structure": item["structure"] or "",
-            **{f"{name}_verdict": value["verdict"] for name, value in item["assessments"].items()},
+            **{
+                f"{name}_verdict": value["verdict"]
+                for name, value in item["assessments"].items()
+                if name in STATE_JUDGMENTS
+            },
             "reason": " | ".join(
                 f"{name}: {value['message']}"
-                for name, value in item["assessments"].items()
-                if value["message"]
+                for name, value in (
+                    sorted(item["assessments"].items())
+                    if version >= 7
+                    else item["assessments"].items()
+                )
+                if value["message"] and (version >= 7 or name in STATE_JUDGMENTS)
             ),
             "id": item["id"],
         }
@@ -305,7 +475,11 @@ def csv_views(payload: dict) -> dict[str, str]:
         {
             "equation": reaction_equation(item, names),
             "process": item["process"],
-            **{f"{name}_verdict": value["verdict"] for name, value in item["assessments"].items()},
+            **{
+                f"{name}_verdict": value["verdict"]
+                for name, value in item["assessments"].items()
+                if version >= 7 or name in REACTION_JUDGMENTS
+            },
             "delta_h_eV": item["thermochemistry"].get("delta_h_eV", ""),
             "threshold_eV": item["thermochemistry"].get("threshold_eV", ""),
             "data_use": item["data_use"]["status"],
@@ -406,23 +580,66 @@ def csv_views(payload: dict) -> dict[str, str]:
             "data_use_blocking_causes",
             "id",
         )
+    state_columns = _additional_judgment_rows(
+        version, state_rows, payload["states"], state_columns, ("electron_binding",)
+    )
+    reaction_columns = _gas_judgment_rows(version, reaction_rows, payload, reaction_columns)
     return {
-        "states.csv": _csv(state_rows, state_columns),
-        "reactions.csv": _csv(reaction_rows, reaction_columns),
+        "states.csv": csv_text(state_rows, state_columns),
+        "reactions.csv": csv_text(reaction_rows, reaction_columns),
     }
+
+
+def _gas_judgment_rows(version: int, rows: list[dict], payload: dict, columns: tuple) -> tuple:
+    columns = _additional_judgment_rows(
+        version, rows, payload["reactions"], columns, ("conservation", "energy")
+    )
+    if version < 7:
+        return columns
+    for row, item in zip(rows, payload["reactions"], strict=True):
+        row["transformation"] = _cell(item.get("transformation", {}))
+    return (*columns[:-1], "transformation", "id")
+
+
+def _additional_judgment_rows(
+    version: int, rows: list[dict], items: list[dict], columns: tuple, names: tuple[str, ...]
+) -> tuple:
+    """Project optional current judgments without changing historical CSVs."""
+    if version < 7:
+        return columns
+    for row, item in zip(rows, items, strict=True):
+        row.update(_judgment_details(item, names, {}, ""))
+    _current_judgment_rows(rows, items, names)
+    _label_rows(rows, items, names)
+    return (
+        *columns[:-1],
+        *(f"{name}_verdict" for name in names),
+        *_judgment_columns(names),
+        *_prerequisite_columns(names),
+        *_label_columns(names),
+        "id",
+    )
 
 
 def _csv_format(payload: dict) -> int:
     # Missing format metadata denotes historical files. Bare view inputs use
     # current columns, including empty tables.
-    return payload["metadata"].get("helper_view_format", 1) if "metadata" in payload else 6
+    return (
+        payload["metadata"].get("helper_view_format", 1)
+        if "metadata" in payload
+        else PATHWAY_POLICY_FORMAT
+    )
 
 
 def _label_rows(rows: list[dict], items: list[dict], names: tuple[str, ...]) -> None:
     for row, item in zip(rows, items, strict=True):
         for name in names:
             for field in ("label", "blocking_causes"):
-                value = item["assessments"][name][field]
+                value = (
+                    item["assessments"]
+                    .get(name, {})
+                    .get(field, [] if field == "blocking_causes" else "")
+                )
                 row[f"{name}_{field}"] = _cell(value) if field == "blocking_causes" else value
         if "data_use" in item:
             row["data_use_label"] = item["data_use"]["label"]
@@ -446,7 +663,7 @@ def _prerequisite_columns(names: tuple[str, ...]) -> tuple[str, ...]:
 def _current_judgment_rows(rows: list[dict], items: list[dict], names: tuple[str, ...]) -> None:
     for row, item in zip(rows, items, strict=True):
         for name in names:
-            assessment = item["assessments"][name]
+            assessment = item["assessments"].get(name, {})
             row[f"{name}_scope"] = assessment.get("scope", "")
             for field in ("requirements", "dependencies"):
                 row[f"{name}_{field}"] = _cell(assessment.get(field, []))
@@ -458,7 +675,7 @@ def _cell(value: Any) -> str:
 
 def _judgment_details(item: dict, names: tuple[str, ...], scopes: dict, subject: str) -> dict:
     details = {
-        f"{name}_{field}": item["assessments"][name].get(source, "")
+        f"{name}_{field}": item["assessments"].get(name, {}).get(source, "")
         for name in names
         for field, source in (("proposition", "proposition"), ("reason", "message"))
     }
@@ -469,17 +686,36 @@ def _judgment_details(item: dict, names: tuple[str, ...], scopes: dict, subject:
 
 
 def validate(payload: Any) -> None:
-    schema = yamlio.load(Path(__file__).with_name("result.schema.yaml").read_text(encoding="utf-8"))
-    error = next(Draft202012Validator(schema).iter_errors(payload), None)
+    _validated_views(payload)
+
+
+def _validated_views(payload: Any, views: dict[str, str] | None = None) -> dict[str, str]:
+    _validate_shape(payload)
+    return _validate_saved_meaning(payload, views)
+
+
+def _validate_shape(payload: Any) -> None:
+    error = next(_result_validator().iter_errors(payload), None)
     if error is not None:
         location = ".".join(map(str, error.absolute_path)) or "result"
         raise ValueError(f"{location}: {error.message}")
+
+
+@lru_cache(maxsize=1)
+def _result_validator() -> Draft202012Validator:
+    schema = yamlio.load(Path(__file__).with_name("result.schema.yaml").read_text(encoding="utf-8"))
+    return Draft202012Validator(schema)
+
+
+def _validate_saved_meaning(payload: dict, views: dict[str, str] | None) -> dict[str, str]:
     _finite(payload)
     _validate_identities(payload)
-    _validate_input_links(payload)
-    _validate_data_uses(payload)
+    case = _validate_input_links(payload)
+    _validate_data_uses(payload, case.data_selection)
     _validate_assessments(payload)
     _validate_calculations(payload)
+    _validate_calculation_references(payload, case.data_selection)
+    _validate_pathways(payload)
     if payload["metadata"].get("helper_view_format", 1) >= 5:
         outcomes.validate_labels(
             payload["states"],
@@ -494,17 +730,16 @@ def validate(payload: Any) -> None:
         payload["metadata"]["generation"]["completion"].values()
     ):
         raise ValueError("generation completion contradicts its scopes")
-    if payload["helper_views"] != {
-        name: _hash(content) for name, content in csv_views(payload).items()
-    }:
+    views = csv_views(payload) if views is None else views
+    if payload["helper_views"] != {name: _hash(content) for name, content in views.items()}:
         raise ValueError("helper view hashes do not match canonical content")
+    return views
 
 
 def _validate_assessments(payload: dict) -> None:
     """Validate stored meaning and references without recalculating judgments."""
     current = payload["metadata"].get("helper_view_format", 1) >= 3
     states = {item["id"]: item for item in payload["states"]}
-    accepted = {field.name for field in fields(Conditions)}
     for item in (*payload["states"], *payload["reactions"]):
         for name, assessment in item["assessments"].items():
             if current and any(
@@ -515,7 +750,7 @@ def _validate_assessments(payload: dict) -> None:
                 if state_id not in states or key not in states[state_id]["assessments"]:
                     raise ValueError(f"assessment dependency is absent: {item['id']}.{name}")
             for requirement in assessment.get("requirements", []):
-                _validate_requirement(requirement, accepted)
+                _validate_requirement(requirement)
     if payload["metadata"].get("helper_view_format", 1) < 4:
         return
     for reaction in payload["reactions"]:
@@ -556,10 +791,10 @@ def _validate_participant_projection(reaction: dict, states: dict) -> None:
         raise ValueError(f"participant projection contradicts saved state claims: {reaction['id']}")
 
 
-def _validate_requirement(requirement: dict, accepted: set[str]) -> None:
+def _validate_requirement(requirement: dict) -> None:
     if requirement["responsibility"] == "user_inputs":
         name = requirement["quantity"].removeprefix("conditions.")
-        if name not in accepted:
+        if name not in Conditions.__dataclass_fields__:
             raise ValueError(f"requirement is not an accepted input field: {name}")
 
 
@@ -573,16 +808,14 @@ def _validate_numerical_requirements(record: dict, label: str) -> None:
         or list(transforms) != record["required_transforms"]
     ):
         raise ValueError(f"numerical fields contradict saved responsibilities: {label}")
-    accepted = {field.name for field in fields(Conditions)}
     for requirement in record["requirements"]:
-        _validate_requirement(requirement, accepted)
+        _validate_requirement(requirement)
 
 
 def _validate_calculations(payload: dict) -> None:
     """Check saved arithmetic projections, without reopening or reapproving sources."""
     if payload["metadata"].get("helper_view_format", 1) < 4:
         return
-    accepted = {field.name for field in fields(Conditions)}
     for reaction in payload["reactions"]:
         calculations = reaction.get("thermochemical_calculations", {})
         if (
@@ -596,7 +829,7 @@ def _validate_calculations(payload: dict) -> None:
             raise ValueError(f"calculation outcomes are missing: {reaction['id']}")
         for quantity, result in calculations.items():
             for requirement in result["requirements"]:
-                _validate_requirement(requirement, accepted)
+                _validate_requirement(requirement)
             computed = result["status"] == "computed"
             if computed:
                 if result["value"] is None or result["requirements"]:
@@ -610,7 +843,180 @@ def _validate_calculations(payload: dict) -> None:
                 raise ValueError(f"uncomputed quantity has a saved numerical value: {quantity}")
 
 
-def _validate_data_uses(payload: dict) -> None:
+def _validate_pathways(payload: dict) -> None:
+    """Check the derived graph against its saved inputs and judgments."""
+    helper_format = payload["metadata"].get("helper_view_format", 1)
+    if helper_format < 7:
+        return
+    saved = payload.get("pathways")
+    if saved is None:
+        raise ValueError("current result requires the saved pathway analysis")
+    if saved["conditions"] != payload["input"]["conditions"]:
+        raise ValueError("pathway conditions contradict the saved analysis input")
+    if saved["seeds"] != payload["metadata"]["supply_state_ids"]:
+        raise ValueError("pathway supply contradicts the saved analysis input")
+    validate_saved_pathway_graph(
+        payload["states"], payload["reactions"], saved, format_version=helper_format
+    )
+
+
+def _validate_calculation_references(payload: dict, selection: DataSelection) -> None:
+    helper_format = payload["metadata"].get("helper_view_format", 1)
+    if helper_format < 7:
+        return
+    exact_references = helper_format >= 9
+    for record_id, record in payload.get("scientific_records", {}).items():
+        if "calculation_target" in record:
+            _validate_calculation_state_record(record_id, record, exact_references)
+        elif not isinstance(record.get("id"), str) or (
+            not exact_references and record_id != record["id"]
+        ):
+            raise ValueError(f"invalid calculation reaction record: {record_id}")
+    records = calculation_record_index(payload)
+    for subject in (*payload["states"], *payload["reactions"]):
+        for assessment in subject["assessments"].values():
+            for term in assessment.get("record_inputs", ()):
+                _validate_assessment_record_input(records, term, selection)
+    collision_inputs = {
+        f"conditions.collision_pairs[{index}].collision_energy_eV": pair
+        for index, pair in enumerate(payload["input"]["conditions"].get("collision_pairs", ()))
+    }
+    for reaction in payload["reactions"]:
+        _validate_reaction_calculation_inputs(reaction, records, collision_inputs, exact_references)
+
+
+def _validate_assessment_record_input(
+    records: CalculationRecordIndex, term: dict, selection: DataSelection
+) -> None:
+    record = calculation_source(records, term)
+    if record is None:
+        raise ValueError("assessment refers to an absent scientific record, target or quantity")
+    policy = selection.for_quantity(term["quantity"], term["target"])
+    if policy is None:
+        return
+    quantity = record.get("properties", {}).get(term["quantity"], {})
+    if (
+        policy.record is not None and policy.record not in {term["record_id"], term["record_ref"]}
+    ) or (not policy.allows(*_source_axes(quantity))):
+        raise ValueError("assessment scientific record contradicts the saved selection")
+
+
+def _validate_calculation_state_record(
+    record_id: str, record: dict, exact_references: bool
+) -> None:
+    target, candidate = record["calculation_target"], record.get("candidate")
+    if (
+        not isinstance(record.get("record_id"), str)
+        or (not exact_references and record_id != record["record_id"])
+        or not isinstance(target, str)
+        or not isinstance(candidate, dict)
+    ):
+        raise ValueError(f"invalid calculation state record: {record_id}")
+    _validate_state_identity(candidate)
+    if target != candidate["id"]:
+        try:
+            _validate_molecular_state_identity(record, target)
+        except ValueError as error:
+            raise ValueError(
+                f"calculation state record contradicts its target: {record_id}"
+            ) from error
+
+
+def _validate_reaction_calculation_inputs(
+    reaction: dict,
+    records: CalculationRecordIndex,
+    collision_inputs: dict[str, dict],
+    exact_references: bool,
+) -> None:
+    calculations = reaction["thermochemical_calculations"]
+    reactants = {item["species"] for item in reaction["reactants"]}
+    products = {item["species"] for item in reaction["products"]}
+    dependencies: dict[str, set[str]] = {}
+    alternative_dependencies: list[tuple[str, str]] = []
+    for name, calculation in calculations.items():
+        dependencies[name] = _calculation_dependencies(
+            calculation, records, reactants, products, collision_inputs, exact_references
+        )
+        for offer in calculation.get("alternatives", []):
+            alternative_dependencies.extend(
+                (name, dependency)
+                for dependency in _calculation_dependencies(
+                    offer, records, reactants, products, collision_inputs, exact_references
+                )
+            )
+    if any(references - calculations.keys() for references in dependencies.values()) or any(
+        dependency not in calculations for _, dependency in alternative_dependencies
+    ):
+        raise ValueError("calculation refers to an absent upstream calculation")
+    if any(dependencies.values()):
+        try:
+            TopologicalSorter(dependencies).prepare()
+        except CycleError as error:
+            raise ValueError("cyclic calculation references") from error
+    # Each alternative consumes saved calculations. Separate alternatives
+    # are not chosen together when following the inputs of one offer.
+    for name, dependency in alternative_dependencies:
+        if _depends_on(dependencies, dependency, name):
+            raise ValueError("cyclic calculation references in an alternative")
+
+
+def _calculation_dependencies(
+    calculation: dict,
+    records: CalculationRecordIndex,
+    reactants: set[str],
+    products: set[str],
+    collision_inputs: dict[str, dict],
+    exact_references: bool,
+) -> set[str]:
+    dependencies = set()
+    for term in calculation.get("inputs", []):
+        if "record_id" in term or "record_ref" in term:
+            fields = ("target", "record_id", "quantity")
+            if not all(isinstance(term.get(field), str) for field in fields):
+                raise ValueError("calculation scientific record reference is invalid")
+            if exact_references or "record_ref" in term:
+                resolved = (
+                    isinstance(term.get("record_ref"), str)
+                    and calculation_source(records, term) is not None
+                )
+            else:
+                resolved = bool(calculation_source_offers(records, term))
+            if not resolved:
+                raise ValueError(
+                    "calculation refers to an absent scientific record, target or quantity"
+                )
+        if "calculation" in term:
+            dependencies.add(term["calculation"])
+        source = term.get("input", "")
+        if isinstance(source, str) and source.startswith("conditions.collision_pairs["):
+            pair = collision_inputs.get(source)
+            if pair is None or (
+                term.get("frame"),
+                term.get("projectile_state"),
+                term.get("target_state"),
+            ) != (pair["collision_energy_frame"], pair["projectile_state"], pair["target_state"]):
+                raise ValueError("calculation refers to a different or absent collision condition")
+        if term.get("operation") == "level_state_pair" and (
+            term.get("initial") not in reactants or term.get("final") not in products
+        ):
+            raise ValueError("level gap refers to a state outside its reaction side")
+    return dependencies
+
+
+def _depends_on(dependencies: dict[str, set[str]], start: str, target: str) -> bool:
+    pending = [start]
+    seen = set()
+    while pending:
+        name = pending.pop()
+        if name == target:
+            return True
+        if name not in seen:
+            seen.add(name)
+            pending.extend(dependencies[name])
+    return False
+
+
+def _validate_data_uses(payload: dict, selection: DataSelection) -> None:
     requested = payload["input"].get("data_selection", {})
     current = payload["metadata"].get("helper_view_format", 1) >= 4
     for reaction in payload["reactions"]:
@@ -646,47 +1052,64 @@ def _validate_data_uses(payload: dict) -> None:
             "needs_transform": not inputs and bool(transforms),
             "unavailable": unavailable_inputs and not transforms,
             "conflict": True,
+            "not_applicable": not use.get("requirements")
+            and use["dataset_id"] is None
+            and reaction["assessments"].get("conservation", {}).get("verdict") == "fail",
         }
         if not requirements[use["status"]]:
             raise ValueError(f"data_use status contradicts value or requirements: {reaction['id']}")
+        offered = _evidence_datasets(reaction) if current or use["dataset_id"] is not None else {}
         if current:
-            _validate_numerical_requirements(use, reaction["id"])
-            if use["status"] == "coefficient" and use["requirements"]:
-                raise ValueError(
-                    f"coefficient has unresolved saved prerequisites: {reaction['id']}"
-                )
-            _validate_native_record_links(reaction, use["datasets"])
-            for dataset in use["datasets"]:
-                _validate_numerical_requirements(dataset, dataset["dataset_id"])
-                _validate_native_quantity(dataset)
+            _validate_numerical_evaluations(use, offered, reaction["id"])
         _validate_data_selection(use, assessed, reaction["id"], current=current)
-        _validate_selected_evidence(reaction, use, assessed, current=current)
+        _validate_selected_evidence(
+            reaction["id"], use, assessed, offered, selection, current=current
+        )
 
 
-def _evidence_datasets(reaction: dict) -> list[dict]:
+def _evidence_datasets(reaction: dict) -> dict[str, list[dict]]:
     evidence = reaction["evidence"]
     offered = list(evidence.get("overlay_datasets", []))
     for record in evidence.get("records", []):
         offered.extend(record.get("datasets", []))
-    if any(not isinstance(item, dict) for item in offered):
-        raise ValueError(f"invalid numerical evidence records: {reaction['id']}")
-    return offered
+    by_id: dict[str, list[dict]] = {}
+    for item in offered:
+        if not isinstance(item, dict):
+            raise ValueError(f"invalid numerical evidence records: {reaction['id']}")
+        if isinstance(identifier := item.get("id"), str):
+            if item.get("reaction_target") not in {
+                None,
+                reaction["id"],
+            }:
+                declaration = item.get("declared_target", {}).copy()
+                if "reaction" in declaration:
+                    declaration["reaction"] = reaction["equation"]
+                if "reaction_id" in declaration:
+                    declaration["reaction_id"] = reaction["id"]
+                item = item | {"reaction_target": reaction["id"], "declared_target": declaration}
+            by_id.setdefault(identifier, []).append(item)
+    return by_id
 
 
-def _validate_native_record_links(reaction: dict, assessments: list[dict]) -> None:
-    """Native labels refer to offered records; this does not recalculate their values."""
-    offered = _evidence_datasets(reaction)
-    for assessment in assessments:
-        records = [item for item in offered if item.get("id") == assessment["dataset_id"]]
+def _validate_numerical_evaluations(
+    use: dict, offered: dict[str, list[dict]], reaction_id: str
+) -> None:
+    """Validate native and coefficient-purpose results against their own declarations."""
+    _validate_numerical_requirements(use, reaction_id)
+    if use["status"] == "coefficient" and use["requirements"]:
+        raise ValueError(f"coefficient has unresolved saved prerequisites: {reaction_id}")
+    for assessment in use["datasets"]:
+        records = offered.get(assessment["dataset_id"], [])
         if not records:
             raise ValueError(f"native quantity has no offered record: {assessment['dataset_id']}")
-        if assessment["status"] == "conflict" and assessment["kind"] is None:
-            continue
-        labels = {(item.get("kind"), item.get("observable")) for item in records}
-        if (assessment["kind"], assessment["observable"]) not in labels:
-            raise ValueError(
-                f"native quantity labels contradict evidence: {assessment['dataset_id']}"
-            )
+        if not (assessment["status"] == "conflict" and assessment["kind"] is None):
+            labels = {(item.get("kind"), item.get("observable")) for item in records}
+            if (assessment["kind"], assessment["observable"]) not in labels:
+                raise ValueError(
+                    f"native quantity labels contradict evidence: {assessment['dataset_id']}"
+                )
+        _validate_numerical_requirements(assessment, assessment["dataset_id"])
+        _validate_native_quantity(assessment)
 
 
 def _validate_native_quantity(result: dict) -> None:
@@ -717,30 +1140,31 @@ def _validate_native_quantity(result: dict) -> None:
 
 
 def _validate_selected_evidence(
-    reaction: dict, use: dict, assessed: dict[str, dict], *, current: bool = False
+    reaction_id: str,
+    use: dict,
+    assessed: dict[str, dict],
+    offered: dict[str, list[dict]],
+    selection: DataSelection,
+    *,
+    current: bool,
 ) -> None:
     selected_id = use["dataset_id"]
     if selected_id is None:
         return
-    offered = _evidence_datasets(reaction)
-    selected = [item for item in offered if item.get("id") == selected_id]
+    selected = offered.get(selected_id, [])
     if not selected or any(
         not scientific_datasets_equivalent(item, selected[0]) for item in selected
     ):
-        raise ValueError(
-            f"data_use selection has missing or conflicting evidence: {reaction['id']}"
-        )
+        raise ValueError(f"data_use selection has missing or conflicting evidence: {reaction_id}")
     if selected[0].get("kind") != use["kind"]:
-        raise ValueError(f"data_use quantity contradicts selected evidence: {reaction['id']}")
+        raise ValueError(f"data_use quantity contradicts selected evidence: {reaction_id}")
     if current and use["estimated"] != (selected[0].get("tier") == "estimated"):
         raise ValueError(
-            f"data_use estimate annotation contradicts selected evidence: {reaction['id']}"
+            f"data_use estimate annotation contradicts selected evidence: {reaction_id}"
         )
-    policy = DataSelection.from_document(use.get("selection", {})).for_quantity(
-        use["kind"], reaction["id"]
-    )
+    policy = selection.for_quantity(use["kind"], reaction_id)
     if policy is not None:
-        _validate_source_request(reaction["id"], selected[0], offered, assessed, policy, current)
+        _validate_source_request(reaction_id, selected[0], offered, assessed, policy, current)
 
 
 def _validate_source_request(
@@ -754,7 +1178,8 @@ def _validate_source_request(
     if policy.mode == "prefer" and policy.record is None:
         eligible = [
             item
-            for item in offered
+            for group in offered.values()
+            for item in group
             if item.get("kind") == selected["kind"]
             and assessed.get(item.get("id"), {}).get("status") in {"valid", "needs_input"}
             and (
@@ -820,13 +1245,27 @@ def _validate_unselected_payload(use: dict, reaction_id: str) -> None:
         raise ValueError(f"data_use has a value or usable status without selection: {reaction_id}")
 
 
-def _validate_input_links(payload: dict) -> None:
+def _validate_input_links(payload: dict) -> Case:
     case = Case.from_document(payload["input"])
+    reaction_ids = {reaction["id"] for reaction in payload["reactions"]}
+    state_ids = {state["id"] for state in payload["states"]}
     case.data_selection.validate_targets(
-        (state["id"] for state in payload["states"]),
-        (reaction["id"] for reaction in payload["reactions"]),
+        state_ids,
+        reaction_ids,
+        reference_states=_validate_reference_state_ids(payload, state_ids),
     )
-    if case.document() != payload["input"]:
+    if any(item.candidate.id not in reaction_ids for item in case.reactions):
+        raise ValueError("saved result is missing a requested reaction")
+    normalized = case.document()
+    if payload["metadata"].get("helper_view_format", 1) < 7:
+        normalized = {key: normalized[key] for key in payload["input"]}
+        for group in ("limits", "conditions"):
+            normalized[group] = {
+                key: value
+                for key, value in normalized[group].items()
+                if key in payload["input"][group]
+            }
+    if normalized != payload["input"]:
         raise ValueError("saved input is not normalized")
     expected = {f"{gas}@ground" for gas in case.gases}
     actual = {
@@ -834,10 +1273,113 @@ def _validate_input_links(payload: dict) -> None:
         for state in payload["states"]
         if state["id"] != "e" and "input" in state["introduced_by"]
     }
-    if actual != expected:
+    if payload["metadata"].get("helper_view_format", 1) < 7 and actual != expected:
         raise ValueError("saved input contradicts generated input states")
+    if payload["metadata"].get("helper_view_format", 1) >= 7:
+        _validate_supply_links(payload, case)
     if payload["input"]["limits"] != payload["metadata"]["generation"]["limits"]:
         raise ValueError("saved input limits contradict generation limits")
+    return case
+
+
+def _validate_reference_state_ids(payload: dict, state_ids: set[str]) -> set[str]:
+    references = set(payload["metadata"].get("calculation_reference_state_ids", ()))
+    if references & state_ids:
+        raise ValueError("calculation reference state duplicates a candidate state")
+    for target in references:
+        state = parse_state_id(target)
+        if (
+            state is None
+            or state.id != target
+            or state.phase != "gas"
+            or state.state.kind != "ground"
+            or state.state.resolution != "resolved"
+            or not any(
+                candidate["phase"] == "gas"
+                and candidate["state"]["resolution"] == "resolved"
+                and candidate["composition"] == state.composition
+                and min(0, candidate["charge"]) <= state.charge <= max(0, candidate["charge"])
+                for candidate in payload["states"]
+            )
+        ):
+            raise ValueError(f"invalid calculation reference state: {target}")
+    return references
+
+
+def _validate_supply_links(payload: dict, case: Case) -> None:
+    supplied = {item["id"]: item for item in payload["states"] if "feed" in item["classes"]}
+    metadata = payload["metadata"]
+    if sorted(supplied) != metadata["supply_state_ids"]:
+        raise ValueError("saved supply metadata contradicts the feed states")
+    expected = {f"{gas}@ground" for gas in case.gases} | set(case.supplies)
+    unmatched = set(supplied)
+    bindings = metadata.get("input_structure_bindings", {})
+    older_binding = metadata.get("helper_view_format", 1) < 9
+    if not older_binding and bindings.keys() != case.structures.keys():
+        raise ValueError("saved structure bindings do not correspond to the input structures")
+    for state_id in expected:
+        state = parse_state_id(state_id)
+        if state is None:
+            raise ValueError("invalid saved supply state")
+        mapped = case.structures.get(state_id)
+        if mapped is None:
+            matches = {state_id} & supplied.keys()
+        elif older_binding:
+            matches = {
+                key
+                for key in supplied
+                if (saved := parse_state_id(key)) is not None
+                and saved_supply_structure_matches(state, mapped, saved, recorded_verification=True)
+            }
+        else:
+            binding = bindings[state_id]
+            key = binding["state"]
+            item = supplied.get(key)
+            saved = parse_state_id(key) if item is not None else None
+            recorded = item is not None and _recorded_feed_graph_verification(item)
+            declarations = {mapped, binding["smiles"]}
+            matches = (
+                {key}
+                if saved is not None
+                and all(
+                    saved_supply_structure_matches(
+                        state,
+                        declaration,
+                        saved,
+                        recorded_verification=recorded and declaration == binding["smiles"],
+                    )
+                    for declaration in declarations
+                )
+                else set()
+            )
+        if not matches:
+            raise ValueError("saved supply does not correspond to the input particles")
+        unmatched -= matches
+    if unmatched:
+        raise ValueError("saved supply contains particles absent from the input")
+
+
+def _recorded_feed_graph_verification(state: dict) -> bool:
+    claim = state["assessments"].get("consistency", {})
+    return (
+        claim.get("proposition") == "state_representation_consistency"
+        and claim.get("verdict") == "pass"
+        and VERIFIED_STRUCTURE_BASIS in claim.get("basis", ())
+    )
+
+
+def _validate_state_identity(state: dict) -> None:
+    state_id = state.get("id")
+    parsed = parse_state_id(state_id) if isinstance(state_id, str) else None
+    if (
+        parsed is None
+        or parsed.composition != state.get("composition")
+        or parsed.charge != state.get("charge")
+        or asdict(parsed.state) != state.get("state")
+        or parsed.phase != state.get("phase")
+        or parsed.structure != state.get("structure")
+    ):
+        raise ValueError(f"state identity contradicts ID: {state_id}")
 
 
 def _validate_identities(payload: dict) -> None:
@@ -845,17 +1387,11 @@ def _validate_identities(payload: dict) -> None:
     if len(states) != len(payload["states"]):
         raise ValueError("duplicate state IDs")
     for state in states.values():
-        parsed = parse_state_id(state["id"])
-        expected_state = CandidateState(**state["state"])
-        if (
-            parsed is None
-            or parsed.composition != state["composition"]
-            or parsed.charge != state["charge"]
-            or parsed.state != expected_state
-            or parsed.phase != state["phase"]
-            or parsed.structure != state["structure"]
-        ):
-            raise ValueError(f"state identity contradicts ID: {state['id']}")
+        _validate_state_identity(state)
+        if state["structure"] and state["evidence"]["match"] == "exact":
+            for record in state["evidence"].get("records", []):
+                if record["candidate"]["id"] != state["id"]:
+                    _validate_molecular_state_identity(record, state["id"])
     identifiers = set()
     numerical_targets: list[tuple[str, str]] = []
     legacy_id_encoding = payload["metadata"].get("helper_view_format", 1) <= 5
@@ -874,8 +1410,7 @@ def _validate_identities(payload: dict) -> None:
             item["depth"],
             item["third_body"],
             item["surface"],
-            tuple(item["kinetic_effects"]),
-            item["stabilization"],
+            stabilization=item["stabilization"],
         )
         if reaction.equation != item["equation"] or not _saved_reaction_id_matches(
             reaction, item["id"], legacy_id_encoding
@@ -916,17 +1451,30 @@ def _legacy_side_key(terms: tuple[Term, ...]) -> tuple[tuple[str, float], ...]:
 
 
 def _saved_numerical_targets(reaction: ReactionCandidate, evidence: dict) -> list[tuple[str, str]]:
-    offered = [(dataset, reaction) for dataset in evidence.get("overlay_datasets", [])]
+    offered = [
+        (dataset, reaction, reaction.equation_key)
+        for dataset in evidence.get("overlay_datasets", [])
+    ]
+    aliases = evidence.get("structure_aliases", {})
+    if not isinstance(aliases, dict) or any(
+        not isinstance(source, str)
+        or not isinstance(target, str)
+        or source == target
+        or target in aliases
+        or not saved_structure_alias_matches(source, target)
+        for source, target in aliases.items()
+    ):
+        raise ValueError(f"invalid saved structure alias for reaction: {reaction.id}")
     for name in ("records", "related_records"):
         for record in evidence.get(name, []):
-            target = _saved_reaction_target(record, reaction)
-            if name == "records" and target.key != reaction.key:
+            target, equation = _saved_reaction_target(record, reaction, aliases)
+            if name == "records" and target.key[:5] != reaction.key[:5]:
                 raise ValueError(
                     f"saved reaction record contradicts its physical target: {record['id']}"
                 )
-            offered.extend((dataset, target) for dataset in record.get("datasets", []))
+            offered.extend((dataset, target, equation) for dataset in record.get("datasets", []))
     bindings = []
-    for dataset, target in offered:
+    for dataset, target, equation in offered:
         if not isinstance(dataset, dict) or not isinstance(dataset.get("id"), str):
             raise ValueError("saved numerical evidence requires a dataset ID")
         canonical = reaction_id(target.key)
@@ -937,11 +1485,14 @@ def _saved_numerical_targets(reaction: ReactionCandidate, evidence: dict) -> lis
             raise ValueError(
                 f"saved numerical dataset contradicts physical target: {dataset['id']}"
             )
-        bindings.append((dataset["id"], canonical))
+        key = (*target.key[:5], *physical_equation_key(equation, aliases)[2:])
+        bindings.append((dataset["id"], reaction_id(key)))
     return bindings
 
 
-def _saved_reaction_target(record: dict, enclosing: ReactionCandidate) -> ReactionCandidate:
+def _saved_reaction_target(
+    record: dict, enclosing: ReactionCandidate, aliases: dict[str, str]
+) -> tuple[ReactionCandidate, EquationKey]:
     third_body, surface, reactants, products = record["equation_key"]
     validate_stoichiometric_terms(reactants)
     validate_stoichiometric_terms(products)
@@ -958,9 +1509,46 @@ def _saved_reaction_target(record: dict, enclosing: ReactionCandidate) -> Reacti
         surface,
         stabilization=record.get("stabilization"),
     )
-    if target.equation_key != enclosing.equation_key or target.family != enclosing.family:
+    declarations = record.get("molecular_identities", {})
+    participants = {term.species for term in (*target.reactants, *target.products)}
+    if not isinstance(declarations, dict) or (
+        declarations and (record.get("origin") != "registry" or declarations.keys() - participants)
+    ):
+        raise ValueError(f"invalid saved molecular identity targets: {record['id']}")
+    identities = {
+        name: identity
+        for name, declaration in declarations.items()
+        if (identity := read_molecular_identity(declaration)) is not None
+    }
+    equation = molecular_equation(
+        target.equation_key, identities, enclosing.equation_key, saved_aliases=aliases
+    )
+    if target.family != enclosing.family or physical_equation_key(
+        equation, aliases
+    ) != physical_equation_key(enclosing.equation_key, aliases):
         raise ValueError(f"saved reaction record contradicts its physical target: {record['id']}")
-    return target
+    # One raw Registry dataset can be used under both its nominal and its
+    # cited explicit representation. Its stored target remains the raw one.
+    return target, target.equation_key if identities else equation
+
+
+def _validate_molecular_state_identity(record: dict, target: str) -> None:
+    source = record["candidate"]["id"]
+    identity = read_molecular_identity(record.get("molecular_identity"))
+    if identity is None and saved_structure_alias_matches(source, target):
+        return
+    nominal = parse_state_id(source)
+    explicit = (
+        molecular_identity_state(nominal, identity, verify_graph=False)
+        if nominal is not None and identity is not None
+        else None
+    )
+    if (
+        record.get("origin") != "registry"
+        or explicit is None
+        or not saved_structure_alias_matches(explicit.id, target)
+    ):
+        raise ValueError(f"invalid saved molecular state identity: {target}")
 
 
 def _plain(value: Any, *, declaration: bool = False) -> Any:
@@ -994,11 +1582,3 @@ def _finite(value: Any) -> None:
 
 def _hash(content: str) -> str:
     return hashlib.sha256(content.encode("utf-8")).hexdigest()
-
-
-def _csv(rows: list[dict], columns: tuple[str, ...]) -> str:
-    stream = io.StringIO(newline="")
-    writer = csv.DictWriter(stream, fieldnames=columns, lineterminator="\n")
-    writer.writeheader()
-    writer.writerows(rows)
-    return stream.getvalue()

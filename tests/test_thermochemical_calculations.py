@@ -11,12 +11,21 @@ from dataclasses import replace
 
 import pytest
 
+from reactgen import export
 from reactgen.assessment import assess_state_thermochemistry, evaluate
-from reactgen.case import Conditions
+from reactgen.case import Case, Conditions
 from reactgen.chemistry import candidate_state, electron_state
 from reactgen.evidence import EvidenceCatalog, StateEvidence
 from reactgen.model import CandidateSet, ReactionCandidate, Term
-from reactgen.records import FormationReference, Property, ReactionRecord, StateRecord, Thermo
+from reactgen.pipeline import analyze
+from reactgen.records import (
+    FormationReference,
+    Property,
+    ReactionRecord,
+    StateRecord,
+    Thermo,
+    normalized_dataset,
+)
 from reactgen.thermo import AVOGADRO, GAS_CONSTANT, formation_delta, net_stoichiometry
 
 
@@ -87,8 +96,14 @@ def result(reaction, records, temperature=300):
 def test_three_calculations_project_the_same_values_and_keep_reaction_claim_separate():
     reaction, records = inputs()
     calculations, flat, energy = result(reaction, records)
-    assert all(calculation.status == "computed" for calculation in calculations.values())
-    for name, calculation in calculations.items():
+    thermal = {
+        name: calculations[name]
+        for name in ("delta_h_eV", "delta_g_eV", "equilibrium_constant_number_density")
+    }
+    assert all(calculation.status == "computed" for calculation in thermal.values())
+    # Finite-temperature H/G are independent results, not zero-K state differences.
+    assert calculations["state_energy_difference_eV"].status == "unavailable"
+    for name, calculation in thermal.items():
         assert flat[name] == calculation.value
         assert all(flat[key] == value for key, value in calculation.conditions.items())
         assert calculation.requirements == ()
@@ -98,8 +113,45 @@ def test_three_calculations_project_the_same_values_and_keep_reaction_claim_sepa
     constant = calculations["equilibrium_constant_number_density"]
     assert constant.value == pytest.approx(100000 / (GAS_CONSTANT * 300) * AVOGADRO)
     assert constant.unit == "m-3"
-    assert energy.verdict == "unknown"
-    assert tuple(item.quantity for item in energy.requirements) == ("energy_relation:dissociation",)
+    assert energy.verdict == "not_applicable"
+    assert not energy.requirements
+
+
+def test_nonconserved_equation_cannot_supply_reaction_quantities_after_save(tmp_path):
+    _, records = inputs()
+    case = Case.from_document(
+        {
+            "gases": ["F2"],
+            "conditions": {"gas_temperature_K": 300},
+            "limits": {"max_atoms": 2, "max_depth": 1},
+            "reactions": [{"equation": "F2 -> F", "process": "dissociation"}],
+        }
+    )
+    target = case.reactions[0].candidate.id
+    source = normalized_dataset(
+        {
+            "id": "test-rate",
+            "kind": "rate_coefficient",
+            "form": "constant",
+            "unit": "s-1",
+            "status": "reviewed",
+            "parameters": {"value": 1e5},
+            "validity": {"quantity": "gas_temperature", "unit": "K", "minimum": 250},
+        }
+    )
+    catalog = EvidenceCatalog(state_records=records, overlay_datasets={target: (source,)})
+    export.write(tmp_path, analyze(case, catalog))
+    saved = export.read(tmp_path, verify_views=True)
+    reaction = next(item for item in saved["reactions"] if item["id"] == target)
+    assert reaction["assessments"]["conservation"]["verdict"] == "fail"
+    assert reaction["assessments"]["kinetics"]["verdict"] == "not_applicable"
+    assert reaction["thermochemistry"] == {}
+    assert {
+        (calc["status"], calc["value"]) for calc in reaction["thermochemical_calculations"].values()
+    } == {("not_applicable", None)}
+    assert reaction["data_use"]["status"] == "not_applicable"
+    assert reaction["data_use"]["value"] is None
+    assert reaction["data_use"]["datasets"][0]["value"] == 1e5
 
 
 def test_legacy_flat_access_is_a_read_view_of_the_calculation_values():
@@ -113,16 +165,10 @@ def test_legacy_flat_access_is_a_read_view_of_the_calculation_values():
         Conditions(gas_temperature_K=300),
     )
     view = evaluation.thermochemistry
-    assert dict(view.items())[reaction.id] == view.get(reaction.id)
-    assert len(view) == 1
-    assert evaluation.energy_values == {}
     detached = view[reaction.id]
     detached["delta_h_eV"] = 999
     assert view[reaction.id]["delta_h_eV"] == -1
     assert evaluation.thermochemical_calculations[reaction.id]["delta_h_eV"].value == -1
-    evaluation.energy_values[reaction.id] = {"delta_h_eV": 123}
-    with pytest.raises(ValueError, match="cannot overwrite"):
-        view[reaction.id]
 
 
 @pytest.mark.parametrize("temperature", [None, 150, 7000])
@@ -146,7 +192,8 @@ def test_temperature_input_and_domain_limits_do_not_change_reference_formation_d
                 item.responsibility == "source_information" for item in calculation.requirements
             )
             assert all("extrapolating" in item.reason for item in calculation.requirements)
-    assert {item.responsibility for item in energy.requirements} == {"external_models"}
+    assert energy.verdict == "not_applicable"
+    assert not energy.requirements
     assert "gas_temperature_K" not in energy.message
 
 
@@ -250,10 +297,8 @@ def test_electron_spectator_remains_outside_the_nasa_channel_contract():
     assert calculations["delta_h_eV"].status == "computed"
     assert "delta_g_eV" not in flat
     assert calculations["delta_g_eV"].status == "unavailable"
-    assert all(
-        item.quantity == "electron_channel_thermochemical_model"
-        for item in calculations["delta_g_eV"].requirements
-    )
+    assert not calculations["delta_g_eV"].requirements
+    assert "exclude electron channels" in calculations["delta_g_eV"].reason
 
 
 def test_nasa_qualification_and_temperature_input_are_not_the_same_missing_information():
@@ -355,6 +400,7 @@ def test_thermal_identity_does_not_require_or_consume_temperature_pressure_or_po
         "delta_g_eV": 0.0,
         "equilibrium_constant_number_density": 1.0,
         "equilibrium_constant_density_power": 0.0,
+        "state_energy_difference_eV": 0.0,
     }
     assert evaluation.state_assessments[state.id]["state"].verdict == "unknown"
     assert evaluation.state_assessments[state.id]["thermochemistry"].verdict == "unknown"
@@ -407,11 +453,13 @@ def test_thermal_identity_does_not_bypass_electron_or_surface_model_exclusions(
         assert result.status == "unavailable"
         assert result.value is None
         assert quantity not in evaluation.thermochemistry.get(reaction.id, {})
-        assert {item.quantity for item in result.requirements} == {
-            "electron_channel_thermochemical_model"
-            if excluded_channel == "electron"
-            else "surface_thermochemical_balance"
-        }
+        if excluded_channel == "electron":
+            assert not result.requirements
+            assert "exclude electron channels" in result.reason
+        else:
+            assert {item.quantity for item in result.requirements} == {
+                "surface_thermochemical_balance"
+            }
 
 
 def test_thermal_identity_does_not_resolve_a_conflicting_energy_declaration():

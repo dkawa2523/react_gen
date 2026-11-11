@@ -27,8 +27,11 @@ class Dataset:
 
 
 def parse(path: Path) -> Dataset:
+    return parse_text(path.read_text(encoding="utf-8"))
+
+
+def parse_text(body: str) -> Dataset:
     """Validate the declared coordinates before converting any numerical values."""
-    body = path.read_text(encoding="utf-8")
     split = re.split(r"^\s*-{5,}\s*$", body, maxsplit=1, flags=re.M)
     if len(split) != 2:
         raise ValueError("CollisionDB file requires a JSON metadata header and separator")
@@ -143,7 +146,6 @@ def record(
     """Preserve unresolved source meanings; explicit mappings are declarations, not approval."""
     metadata = item.metadata
     native = str(metadata.get("qid") or "dataset")
-    safe_name = re.sub(r"[^A-Za-z0-9_-]", "_", native)
     source = _metadata_fields(metadata)
     _require_energy_frame(source, str(metadata["reaction"]))
     conditions = {}
@@ -207,9 +209,7 @@ def record(
     )
     if source.get("data_from_fit") is True:
         _fit_domain(result, source)
-    result["asset"] = snapshot.write_table(
-        outdir, safe_name, item.rows, "energy_eV,cross_section_m2"
-    )
+    result["asset"] = snapshot.write_table(outdir, native, item.rows, "energy_eV,cross_section_m2")
     return result
 
 

@@ -1,0 +1,49 @@
+schema_version: 1
+id: NF2+
+display_name: NF2+
+phase: gas
+composition: {N: 1, F: 2}
+charge: 1
+classes: [ion, cation, molecule]
+state:
+  kind: ground
+  term: X1A1
+  existence: confirmed
+  existence_source: Gas-phase photoelectron vibrational spectrum assigned to the ion ground electronic state.
+  status: reviewed
+  method: evaluated
+  review_scope: [state_existence]
+  source:
+    provider: NIST
+    collection: SRD 69
+    citation: M. E. Jacox, Vibrational and Electronic Energy Levels of Polyatomic Transient Molecules, NF2+, NIST Chemistry WebBook.
+    url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C31685311&Mask=800
+records:
+- record_id: ATcT_1.228:31685-31-1*2
+  species: NF2+
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 31685-31-1*2
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical Network v1.228, Argonne National Laboratory.
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=1029
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: 1157.74
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference: {temperature_K: 0, basis: standard_elements}
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope: [enthalpy_formation_eV]
+      source_declaration:
+        atct_formula: '[NF2]+ (g, singlet)'
+        published_uncertainty:
+          absolute: 0.48
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit

@@ -5,3 +5,6 @@
 *.jpeg binary
 *.gif binary
 *.pdf binary
+
+# Registry numerical assets are verified against the exact recorded bytes.
+registry/assets/**/*.csv -text whitespace=cr-at-eol

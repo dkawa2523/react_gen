@@ -255,11 +255,11 @@ def test_calculable_delta_h_does_not_supply_an_unimplemented_occurrence_judgment
         Conditions(),
     )
     assert values["delta_h_eV"] == 2
-    assert result.verdict == "unknown"
+    assert result.verdict == "not_applicable"
     assert result.proposition == "reaction_energy_relation"
-    assert {item.responsibility for item in result.requirements} == {"external_models"}
+    assert not result.requirements
     assert "No implemented energy relation" in result.scope
-    assert "no implemented energy relation for process 'dissociation'" in result.message
+    assert "no applicable declaration comparison for process 'dissociation'" in result.message
     assert "available calculated or declared values are retained independently" in result.message
     assert "evidence or required conditions are missing" not in result.message
 

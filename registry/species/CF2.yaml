@@ -150,3 +150,39 @@ thermo:
       t_max: 5000.0
       t_mid: 1000.0
       t_min: 300.0
+records:
+- record_id: ATcT_1.228:2154-59-8*2
+  species: CF2
+  phase: gas
+  source:
+    provider: ATcT
+    collection: Thermochemical Network
+    release: '1.228'
+    record_id: 2154-59-8*2
+    citation: B. Ruscic and D. H. Bross, Active Thermochemical Tables, Thermochemical
+      Network v1.228, Argonne National Laboratory (2026)
+    url: https://atct.anl.gov/Thermochemical%20Data/version%201.228/species/?species_number=475
+  status: imported
+  tier: imported
+  properties:
+    enthalpy_formation_eV:
+      value: -193.86
+      unit: kJ/mol
+      definition: standard_formation_enthalpy
+      formation_reference:
+        temperature_K: 0.0
+        basis: standard_elements
+      method: evaluated
+      evidence_tier: reviewed
+      status: reviewed
+      review_scope:
+      - enthalpy_formation_eV
+      source_declaration:
+        atct_formula: CF2 (g, singlet)
+        published_uncertainty:
+          absolute: 0.29
+          unit: kJ/mol
+          interpretation: estimated 95% confidence limit
+        ground_state_assignment:
+          term: X 1A1
+          source: https://doi.org/10.1002/chem.200801699

@@ -1,0 +1,34 @@
+schema_version: 1
+id: NF_a1Delta
+display_name: NF(a1Delta)
+phase: gas
+composition: {N: 1, F: 1}
+charge: 0
+classes: [neutral, molecule, metastable]
+state:
+  kind: electronic
+  label: a1Delta
+  term: a1Delta
+  existence: confirmed
+  existence_source: Gas-phase NF band assignment, Huber and Herzberg, NIST Chemistry WebBook.
+  status: reviewed
+  method: evaluated
+  review_scope: [state_existence]
+  source: &band_source
+    provider: NIST
+    collection: SRD 69
+    citation: K. P. Huber and G. H. Herzberg, Constants of Diatomic Molecules, NF, NIST Chemistry WebBook.
+    url: https://webbook.nist.gov/cgi/cbook.cgi?ID=C13967061&Mask=1000
+properties:
+  excitation_energy_eV:
+    value: 11435.16
+    unit: cm^-1
+    related_state: NF@ground
+    source: *band_source
+    method: evaluated
+    evidence_tier: reviewed
+    status: reviewed
+    review_scope: [excitation_energy_eV]
+    source_declaration:
+      band: a1Delta(v=0) -> X3Sigma-(v=0)
+      scope: Reported 0–0 band origin relative to ground NF, also used by ATcT v1.228 for the triplet-to-singlet 0 K relation.

@@ -7,7 +7,7 @@ import pytest
 
 from reactgen import adopt, export, ingest, yamlio
 from reactgen.assessment import evaluate
-from reactgen.case import Case, Conditions
+from reactgen.case import Case, Conditions, Limits
 from reactgen.chemistry import parse_equation
 from reactgen.evidence import EvidenceCatalog, reaction_record_candidate
 from reactgen.pipeline import analyze
@@ -36,8 +36,13 @@ def rate(**changes):
     }
 
 
+def atomic_case(name, gases, **options):
+    # These subjects are atomic channels; cluster growth is unrelated to ID binding.
+    return Case(name, gases, limits=Limits(max_atoms=1, max_depth=1), **options)
+
+
 def elastic_targets():
-    result = analyze(Case("mixture", ("Ar", "Ne")), EvidenceCatalog())
+    result = analyze(atomic_case("mixture", ("Ar", "Ne")), EvidenceCatalog())
     return {
         gas: next(
             reaction
@@ -86,7 +91,7 @@ def test_one_numerical_id_cannot_be_bound_to_two_channels_but_same_target_confli
         {"datasets": {targets["Ar"].id: [rate(), rate(parameters={"value": 2e-15})]}},
     )
     result = analyze(
-        Case("argon", ("Ar",), conditions=Conditions(gas_temperature_K=350)),
+        atomic_case("argon", ("Ar",), conditions=Conditions(gas_temperature_K=350)),
         EvidenceCatalog.load_paths((path,)),
     )
     assert result.evaluation.data_use[targets["Ar"].id].status == "conflict"
@@ -107,12 +112,12 @@ def test_explicit_numerical_subject_must_agree_with_its_enclosing_channel(tmp_pa
     target = elastic_targets()["Ne"]
     path = write(tmp_path / "overlay.yaml", {"datasets": {target.id: [rate(**assertion)]}})
     with pytest.raises(ValueError, match="physical reaction target"):
-        analyze(Case("neon", ("Ne",)), EvidenceCatalog.load_paths((path,)))
+        analyze(atomic_case("neon", ("Ne",)), EvidenceCatalog.load_paths((path,)))
 
 
 def test_numerical_subject_survives_ingest_adopt_and_saved_result_validation(tmp_path):
     targets = elastic_targets()
-    case = Case("mixture", ("Ar", "Ne"), conditions=Conditions(gas_temperature_K=350))
+    case = atomic_case("mixture", ("Ar", "Ne"), conditions=Conditions(gas_temperature_K=350))
     bundle, overlay = tmp_path / "result", tmp_path / "overlay.yaml"
     export.write(bundle, analyze(case, EvidenceCatalog()))
     snapshot = write(
@@ -173,7 +178,9 @@ def test_source_declaration_is_not_reinterpreted_as_an_explicit_target(tmp_path)
     dataset = normalized_dataset(record)
     assert not dataset.declared_target
     path = write(tmp_path / "overlay.yaml", {"datasets": {target.id: [dataset_payload(dataset)]}})
-    document = export.document(analyze(Case("neon", ("Ne",)), EvidenceCatalog.load_paths((path,))))
+    document = export.document(
+        analyze(atomic_case("neon", ("Ne",)), EvidenceCatalog.load_paths((path,)))
+    )
     selected = next(row for row in document["reactions"] if row["id"] == target.id)
     assert (
         selected["evidence"]["overlay_datasets"][0]["source_declaration"]
@@ -187,7 +194,7 @@ def test_saved_numerical_ids_cannot_move_between_channels(tmp_path):
         tmp_path / "overlay.yaml",
         {"datasets": {target.id: [rate(id=gas)] for gas, target in targets.items()}},
     )
-    result = analyze(Case("mixture", ("Ar", "Ne")), EvidenceCatalog.load_paths((path,)))
+    result = analyze(atomic_case("mixture", ("Ar", "Ne")), EvidenceCatalog.load_paths((path,)))
     document = export.document(result)
     neon = next(row for row in document["reactions"] if row["id"] == targets["Ne"].id)
     neon["evidence"]["overlay_datasets"][0]["id"] = "Ar"
@@ -198,7 +205,7 @@ def test_saved_numerical_ids_cannot_move_between_channels(tmp_path):
 def test_ingest_checks_existing_overlay_target_assertions_before_writing(tmp_path):
     targets = elastic_targets()
     bundle, overlay = tmp_path / "result", tmp_path / "overlay.yaml"
-    export.write(bundle, analyze(Case("mixture", ("Ar", "Ne")), EvidenceCatalog()))
+    export.write(bundle, analyze(atomic_case("mixture", ("Ar", "Ne")), EvidenceCatalog()))
     write(
         overlay,
         {"datasets": {targets["Ne"].id: [rate(reaction="e + Ar -> e + Ar")]}},
@@ -221,7 +228,7 @@ def test_saved_channel_evidence_cannot_retarget_its_quantities_or_normalize_inva
             ]
         },
     )
-    result = analyze(Case("mixture", ("Ar", "Ne")), EvidenceCatalog.load_paths((path,)))
+    result = analyze(atomic_case("mixture", ("Ar", "Ne")), EvidenceCatalog.load_paths((path,)))
     document = export.document(result)
     argon = next(row for row in document["reactions"] if row["id"] == targets["Ar"].id)
     neon = next(row for row in document["reactions"] if row["id"] == targets["Ne"].id)
@@ -280,7 +287,7 @@ def test_record_selection_does_not_borrow_another_sources_missing_property(tmp_p
     catalog = EvidenceCatalog.load_paths((root, overlay))
     retained = next(record for record in catalog.state_records if record.record_id == "original-F2")
     assert retained.value("enthalpy_formation_eV") is None
-    case = Case("fluorine", ("F2",))
+    case = Case("fluorine", ("F2",), limits=Limits(max_atoms=2, max_depth=1))
     for selection, expected in ((selected, None), (DataSelection(), -1)):
         result = analyze(replace(case, data_selection=selection), catalog)
         dissociation = next(
@@ -313,7 +320,7 @@ def test_quantity_target_does_not_depend_on_optional_participant_record_copies(
     assert catalog.reaction_records[0].datasets[0].reaction_target == target.id
     if family == "electron":
         result = analyze(
-            Case("argon", ("Ar",), conditions=Conditions(gas_temperature_K=350)), catalog
+            atomic_case("argon", ("Ar",), conditions=Conditions(gas_temperature_K=350)), catalog
         )
         assert result.evaluation.data_use[target.id].value == 1e-15
         export.document(result)
@@ -321,7 +328,7 @@ def test_quantity_target_does_not_depend_on_optional_participant_record_copies(
 
 def test_candidate_reference_aliases_are_resolved_before_physical_dataset_binding():
     targets = elastic_targets()
-    candidates = analyze(Case("mixture", ("Ar", "Ne")), EvidenceCatalog()).candidates
+    candidates = analyze(atomic_case("mixture", ("Ar", "Ne")), EvidenceCatalog()).candidates
     aliases = {
         gas: replace(target, id=f"{gas} candidate reference") for gas, target in targets.items()
     }
